@@ -1,0 +1,70 @@
+.steps-horizontal {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    list-style: none;
+}
+
+.steps-horizontal .nav-item {
+    position: relative;
+    z-index: 2;
+}
+
+.steps-horizontal .nav-link {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0;
+    font-weight: bold;
+    background: #e9ecef;
+    color: #495057;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Estados */
+.steps-horizontal .nav-link.active {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.steps-horizontal .nav-link.completed {
+    background: #198754;
+    color: #fff;
+}
+
+.steps-horizontal .nav-link.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Linha de fundo (cinza) */
+.steps-horizontal::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    right: 18px;
+    height: 4px;
+    background: #e9ecef;
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 2px;
+}
+
+/* Linha de progresso preenchida */
+.steps-horizontal::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    height: 4px;
+    background: #198754; /* cor da linha de progresso */
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 2px;
+    width: calc(100% * var(--progress)); /* valor dinâmico via estilo inline */
+}

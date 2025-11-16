@@ -1,0 +1,30 @@
+/* Estilo para cards inativos */
+.card-inactive {
+    background-color: #f8f9fa !important;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.card-inactive .card-title,
+.card-inactive .card-text {
+    color: #6c757d !important;
+}
+
+.card-inactive:hover {
+    transform: none !important;
+}
+
+/* Opcional: adicionar um badge "Em breve" */
+.card-inactive::before {
+    content: "Em Breve";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #6c757d;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 1;
+}

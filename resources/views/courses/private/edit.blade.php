@@ -1,0 +1,50 @@
+@extends('layouts.dash.admin')
+
+@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Editar Curso')
+
+@section('dash-content')
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0"><i class="bi bi-book me-2"></i>Editar Curso</h4>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('courses.edit', $course->id) }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="name" class="form-label required">Nome:</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
+                        name="name" value="{{ $course->name }}">
+                    @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label required">Descrição:</label>
+                    <input type="text" class="form-control @error('description') is-invalid @enderror"
+                        id="description" name="description" value="{{ $course->description }}">
+                    @error('description')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="vacancies" class="form-label required">Vagas:</label>
+                    <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
+                        name="vacancies" value="{{ $course->vacancies }}">
+                    @error('vacancies')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <button type="submit" class="btn btn-primary">Gravar</button>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

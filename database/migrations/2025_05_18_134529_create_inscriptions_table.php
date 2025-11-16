@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('inscriptions', function (Blueprint $table) {
+            $table->id();
+
+            // Relacionamentos com chaves estrangeiras
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            
+            $table->timestamps();
+
+            // Garante que um usuário não possa se inscrever duas vezes no mesmo curso
+            $table->unique(['user_id', 'course_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('inscriptions');
+    }
+};

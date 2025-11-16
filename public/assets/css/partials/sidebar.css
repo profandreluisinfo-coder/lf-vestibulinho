@@ -1,0 +1,104 @@
+/* === VARIÁVEIS === */
+:root {
+    --sidebar-width: 260px;
+}
+
+/* === SIDEBAR GERAL (BASE) === */
+.sidebar,
+.offcanvas {
+    background-color: #001a8c; /* Azul escuro padrão */
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+/* === SIDEBAR FIXA (DESKTOP) === */
+.sidebar {
+    flex-shrink: 0; /* Evita encolhimento */
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background-color: #000080; /* Mantém cor fixa */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset -6px 0 6px -4px rgba(0, 0, 0, 0.2);
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* Firefox */
+}
+
+/* === SUBMENUS (COLLAPSE) === */
+.sidebar .collapse,
+.sidebar .collapse.show {
+    background-color: #000080 !important; /* Mantém cor uniforme */
+    border-left: 2px solid rgba(255, 255, 255, 0.1); /* leve destaque opcional */
+    padding-left: 5px;
+    overflow: visible;
+    transition: height 0.3s ease;
+}
+
+.sidebar .collapse a.nav-link {
+    background: transparent !important;
+    color: #fff !important;
+    padding-left: 20px; /* ligeiro recuo visual */
+}
+
+.sidebar .collapse a.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* === SCROLLBAR PERSONALIZADO (WebKit) === */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* === OFFCANVAS (MOBILE) === */
+.offcanvas-start {
+    width: var(--sidebar-width);
+}
+
+.offcanvas .offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === LINKS DO MENU (sidebar e offcanvas) === */
+.sidebar a,
+.offcanvas .offcanvas-body a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover,
+.offcanvas .offcanvas-body a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* === ÍCONES DO MENU === */
+.sidebar i,
+.offcanvas i {
+    font-size: 1.2rem;
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 991px) {
+    .sidebar {
+        display: none;
+    }
+}

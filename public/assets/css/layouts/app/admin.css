@@ -1,0 +1,87 @@
+:root {
+    --sidebar-width: 260px;
+    --sidebar-bg: #1f2937;
+    --sidebar-hover: #374151;
+    --sidebar-text: #f9fafb;
+    --navbar-bg: #f8f9fa;
+    --accent: #198754;
+}
+
+/* ====== RESET E BASE ====== */
+body {
+    overflow-x: hidden;
+    background-color: #f1f3f5;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg) !important;
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: width 0.3s ease;
+}
+
+.sidebar .nav-link {
+    color: var(--sidebar-text) !important;
+    border-radius: 6px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus {
+    background-color: var(--sidebar-hover) !important;
+}
+
+.sidebar .collapse {
+    padding-left: 1rem;
+}
+
+.sidebar .collapse a.nav-link {
+    font-size: 0.95rem;
+}
+
+/* ====== OFFCANVAS ====== */
+.offcanvas {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+}
+
+/* ====== NAVBAR ====== */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+}
+
+.navbar .nav-link {
+    color: #212529;
+}
+
+/* ====== CONTEÚDO ====== */
+#mainContent {
+    overflow-x: hidden;
+}
+
+/* ====== MODAL E FORM ====== */
+.form-label {
+    font-weight: 500;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 991px) {
+    .sidebar {
+        display: none;
+    }
+
+    #mainContent {
+        width: 100%;
+    }
+}

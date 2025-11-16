@@ -1,0 +1,37 @@
+/* ==================== LOGIN / REGISTER ==================== */
+.login {
+  min-height: 100vh;
+  background-color: #F0EFF0;
+}
+
+.bg-image {
+  /* background-image: url('https://leandrofranceschini.com.br/wp-content/uploads/pslf2026.webp'); */
+  background-image: url('/assets/img/vest2026.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.login-heading {
+  font-weight: 300;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+/* ==================== TIPOGRAPHY ==================== */
+
+.text-justify-custom {
+  text-align: justify;
+}
+
+/* ==================== IMAGES ==================== */
+#img-logo {
+  width: 85px;
+}

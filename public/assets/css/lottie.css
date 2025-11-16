@@ -1,0 +1,14 @@
+#lottie {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+/* Ajuste para telas menores que 768px */
+@media (max-width: 768px) {
+
+    /* Logotipo */
+    #lottie {
+        width: 175px;
+    }
+}
