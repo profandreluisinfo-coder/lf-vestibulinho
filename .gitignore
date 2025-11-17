@@ -1,23 +1,62 @@
-/.phpunit.cache
+# ========================================================
+# Laravel - Arquivos de Ambiente
+# ========================================================
+.env
+.env.*
+!.env.example
+
+# ========================================================
+# Diretórios de Build / Dependências
+# ========================================================
 /node_modules
+/vendor
 /public/build
 /public/hot
-/public/storage
+
+# ========================================================
+# Laravel - Storage (NUNCA versionar)
+# ========================================================
 /storage/*.key
+/storage/app/*
+/storage/framework/*
+/storage/logs/*
 /storage/pail
-/vendor
-.env
-.env.backup
-.env.production
-.phpactor.json
+!storage/app/public/
+
+# ========================================================
+# Laravel - Symlink do Storage
+# ========================================================
+/public/storage
+
+# ========================================================
+# PHPUnit / PHP Tools
+# ========================================================
+.phpunit.cache
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
+.phpactor.json
+
+# ========================================================
+# Arquivos de Debug / Log
+# ========================================================
 npm-debug.log
 yarn-error.log
-/auth.json
-/.fleet
+
+# ========================================================
+# Homestead
+# ========================================================
+Homestead.json
+Homestead.yaml
+
+# ========================================================
+# IDEs e Ferramentas de Desenvolvimento
+# ========================================================
 /.idea
-/.nova
 /.vscode
+/.fleet
+/.nova
 /.zed
+
+# ========================================================
+# Outros
+# ========================================================
+auth.json

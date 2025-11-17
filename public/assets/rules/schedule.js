@@ -56,7 +56,15 @@ $(document).ready(function () {
                 required: 'Obrigatório'
             }
         },
+        // submitHandler: function (form) {
+        //     form.submit();
+        // },
         submitHandler: function (form) {
+            var $submitBtn = $(form).find('button[type="submit"]');
+
+            $submitBtn.prop('disabled', true)
+                .html('<span class="spinner-border spinner-border-sm me-2"></span>Aguarde...');
+
             form.submit();
         },
         errorPlacement: function (error, element) {

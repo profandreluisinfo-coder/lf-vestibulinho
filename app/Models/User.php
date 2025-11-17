@@ -123,13 +123,13 @@ class User extends Authenticatable
      */
     public function hasConfirmedCall(): bool
     {
-        $examResult = $this->inscription->exam_result ?? null;
+        $result = $this->inscription->exam_result ?? null;
 
-        if (!$examResult) {
+        if (!$result) {
             return false;
         }
 
-        return Call::where('exam_result_id', $examResult->id)
+        return Call::where('exam_result_id', $result->id)
             ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
             ->exists();
     }

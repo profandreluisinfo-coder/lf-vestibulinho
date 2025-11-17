@@ -3,7 +3,7 @@
 @section('page-title', config('app.name') . ' ' . $calendar->year . ' | Meus Dados')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/details.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard/user/perfil.css') }}">
 @endpush
 
 @section('dash-content')

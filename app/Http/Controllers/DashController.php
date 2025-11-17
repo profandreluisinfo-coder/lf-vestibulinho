@@ -23,7 +23,7 @@ class DashController extends Controller
 
         // Se não tem inscrição, manda pra home
         if (!$user->inscription()->exists()) {
-            return view('dashboard.home', compact('user'));
+            return view('dashboard.inscription', compact('user'));
         }
 
         // Carrega tudo em *uma pancada só* com eager loading
