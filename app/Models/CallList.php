@@ -19,11 +19,21 @@ class CallList extends Model
     ];
     }
 
+    /**
+     * Relação com todas as chamadas associadas a essa lista de chamada.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function calls(): HasMany
     {
         return $this->hasMany(Call::class);
     }
 
+    /**
+     * Obter todos os resultados de exame associados a essa lista de chamada.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function examResults(): BelongsToMany
     {
         return $this->belongsToMany(ExamResult::class, 'call_list_exam_result');

@@ -65,7 +65,11 @@ class User extends Authenticatable
         ];
     }
 
-    // Relacionamentos
+    /**
+     * Obter os arquivos de provas do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function archives(): HasMany
     {
         return $this->hasMany(Archive::class);

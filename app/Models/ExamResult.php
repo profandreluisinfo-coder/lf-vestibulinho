@@ -24,24 +24,41 @@ class ExamResult extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Obter a inscrição associada
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function inscription()
     {
         return $this->belongsTo(Inscription::class);
     }
 
-    // Recomendo renomear para examLocation (fica mais intuitivo)
+    /**
+     * Obter o local de realização de prova associado a essa prova.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function examLocation()
     {
-        return $this->belongsTo(ExamLocation::class, 'exam_location_id');
+        return $this->belongsTo(ExamLocation::class);
     }
 
-    // Relação com todas as chamadas
+    /**
+     * Relação com todas as chamadas associadas a essa prova.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function calls()
     {
         return $this->hasMany(Call::class);
     }
 
-    // Acesso direto ao usuário da inscrição
+    /**
+     * Obter o usuário que realizou a inscrição associada a essa prova.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
     public function user()
     {
         return $this->hasOneThrough(
@@ -60,6 +77,11 @@ class ExamResult extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Obter a chamada finalizada diretamente associada a essa prova.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function completedCall()
     {
         return $this->hasOne(Call::class)

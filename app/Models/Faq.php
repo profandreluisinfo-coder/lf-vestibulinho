@@ -16,6 +16,11 @@ class Faq extends Model
         'user_id'
     ];
 
+    /**
+     * Obtenha o usuário que realizou a pergunta frequentemente.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
