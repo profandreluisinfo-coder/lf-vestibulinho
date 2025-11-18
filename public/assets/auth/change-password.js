@@ -32,6 +32,8 @@ $(document).ready(function () {
             }
         },
         submitHandler: function (form) {
+            const $btn = $(form).find('button[type="submit"]');
+            $btn.prop("disabled", true).html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Aguarde...`);
             form.submit();
         },
         errorPlacement: function (error, element) {
