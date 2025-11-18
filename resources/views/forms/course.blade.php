@@ -35,7 +35,7 @@
       @enderror
     </div>
 
-    <div class="d-flex justify-content-center border-top pt-3">
+    <div class="col-12">
       <button type="button" class="btn btn-sm btn-secondary w-auto">
         <i class="bi bi-arrow-left-circle me-2"></i>
         <a href="{{ route('step.other') }}" class="text-decoration-none">Voltar</a>

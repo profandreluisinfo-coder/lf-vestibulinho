@@ -31,14 +31,14 @@
     <a class="nav-link {{ request()->routeIs('family') ? 'active' : '' }} {{ !session()->has('step4_done') ? 'disabled-link' : '' }} {{ session()->has('step5_done') ? 'completed' : '' }}"
       href="{{ session()->has('step4_done') ? route('step.family') : '#' }}">
       <span class="step-number">5</span>
-      <span class="step-title">Filiação / Responsável Legal</span>
+      <span class="step-title">Filiação</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link {{ request()->routeIs('other') ? 'active' : '' }} {{ !session()->has('step5_done') ? 'disabled-link' : '' }} {{ session()->has('step6_done') ? 'completed' : '' }}"
       href="{{ session()->has('step5_done') ? route('step.other') : '#' }}">
       <span class="step-number">6</span>
-      <span class="step-title">Informações Complementares</span>
+      <span class="step-title">Outras Informações</span>
     </a>
   </li>
   <li class="nav-item">

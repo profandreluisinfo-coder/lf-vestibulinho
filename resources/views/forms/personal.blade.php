@@ -17,6 +17,7 @@
         </div>
       @enderror
     </div>
+    
     <div class="form-group col-md-9">
       <label for="name" class="form-label required">Nome completo do candidato</label>
       <input name="name" id="name" class="form-control @error('name') is-invalid @enderror"
@@ -27,6 +28,23 @@
         </div>
       @enderror
     </div>
+
+    <div class="form-group col-md-3">
+      <label for="gender" class="form-label required">Gênero</label>
+      <select class="form-select @error('gender') is-invalid @enderror" id="gender" name="gender">
+        <option value="" selected>...</option>
+        @foreach ($genders as $gender => $value)
+          <option value="{{ $gender }}" {{ old('gender', session('step1.gender')) == $gender ? 'selected' : '' }}>
+            {{ $value }}</option>
+        @endforeach
+      </select>
+      @error('gender')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+      @enderror
+    </div>
+    
     <div class="form-group col-md-12">
       <p><span class="fw-semibold required">Deseja ser tratado(a) pelo nome social/afetivo?</span></p>
       <p>
@@ -45,6 +63,7 @@
           data-bs-content="Dispõe sobre o uso do nome afetivo nos cadastros das instituições escolares, de saúde ou de cultura e lazer para crianças e adolescentes que estejam sob guarda da família adotiva, no período anterior à destituição do pátrio poder familiar">LEI
           Nº 16.785, DE 03 DE JULHO DE 2018</a>)
       </p>
+      
       <div class="form-check form-check-inline">
         <input class="form-check-input @error('socialNameOption') is-invalid @enderror" type="radio"
           name="socialNameOption" id="radio1" value="1"
@@ -68,6 +87,7 @@
         </div>
       @enderror
     </div>
+    
     <div id="socialName" class="form-group col-md-12 d-none">
       <label for="social_name" class="form-label">Nome social/afetivo do candidato </label>
       <input name="social_name" id="social_name" class="form-control @error('social_name') is-invalid @enderror"
@@ -79,22 +99,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-5">
-      <label for="gender" class="form-label required">Gênero</label>
-      <select class="form-select @error('gender') is-invalid @enderror" id="gender" name="gender">
-        <option value="" selected>...</option>
-        @foreach ($genders as $gender => $value)
-          <option value="{{ $gender }}" {{ old('gender', session('step1.gender')) == $gender ? 'selected' : '' }}>
-            {{ $value }}</option>
-        @endforeach
-      </select>
-      @error('gender')
-        <div class="invalid-feedback">
-          {{ $message }}
-        </div>
-      @enderror
-    </div>
-    <div class="form-group col-md-6">
+
+    <div class="form-group col-md-3">
       <label for="birth" class="form-label required">Nascimento</label>
       <input type="date" class="form-control @error('birth') is-invalid @enderror" id="birth" name="birth"
         value="{{ old('birth', session('step1.birth')) }}">
@@ -104,7 +110,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-4">
+    
+    <div class="form-group col-md-3">
       <label for="nationality" class="form-label required">Nacionalidade</label>
       <select class="form-select @error('nationality') is-invalid @enderror" id="nationality" name="nationality">
         <option value="" selected tabindex="-1">...</option>
@@ -120,7 +127,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-7">
+    
+    <div class="form-group col-md-3">
       <label for="doc_type" class="form-label required">Tipo de documento</label>
       <select class="form-select @error('doc_type') is-invalid @enderror" id="doc_type" name="doc_type">
         <option value="" selected>...</option>
@@ -136,6 +144,7 @@
         </div>
       @enderror
     </div>
+    
     <div class="form-group col-md-3">
       <label for="doc_number" class="form-label required">Número do documento</label>
       <input type="text" class="form-control @error('doc_number') is-invalid @enderror" id="doc_number"
@@ -146,6 +155,7 @@
         </div>
       @enderror
     </div>
+    
     <div class="form-group col-md-3">
       <label for="phone" class="form-label required">Telefone do candidato</label>
       <input type="text" class="form-control phone-mask @error('phone') is-invalid @enderror" id="phone"
@@ -156,10 +166,10 @@
         </div>
       @enderror
     </div>
-    <div class="col-12 d-flex justify-content-center">
+    <div class="col-12">
     <button type="submit" class="btn btn-primary btn-sm w-auto">Avançar <i class="bi bi-arrow-right-circle ms-2"></i></button>
     </div>
-  </form>
+ </form>
 
 @endsection
 

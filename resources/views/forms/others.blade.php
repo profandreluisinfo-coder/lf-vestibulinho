@@ -117,7 +117,7 @@
 
         <div class="form-group col-md-6 mt-3 mb-3 {{ $selectedProgram == 1 ? '' : 'd-none' }}">
             <label for="inscricaoSocial" class="form-label required">
-                Se SIM, informe o seu NIS – Número de Identificação Social
+                Informe o seu NIS – Número de Identificação Social
             </label>
             <input type="text" class="form-control @error('nis') is-invalid @enderror" id="nis" name="nis"
                 value="{{ old('nis', session('step6.nis')) }}">
@@ -128,13 +128,14 @@
             @enderror
         </div>
 
-        <div class="d-flex justify-content-center border-top pt-3">
+        <div class="col-12">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.family') }}" class="text-decoration-none">Voltar</a>
             </button>
             <button type="submit" class="btn btn-sm btn-primary ms-2">Avançar <i
-                    class="bi bi-arrow-right-circle ms-2"></i></button>
+                    class="bi bi-arrow-right-circle ms-2"></i>
+            </button>
         </div>
     </form>
 

@@ -6,7 +6,9 @@
 
   <form id="inscription" class="row g-4" action="{{ route('step.certificate') }}" method="POST">
     @csrf
+    
     <h5 class="fw-semibold border-bottom pb-1">Certidão de Nascimento</h5>
+    
     <div class="form-group">
       <p><span class="fw-semibold required">Selecione o modelo da sua Certidão de Nascimento</span></p>
       <div class="form-check">
@@ -37,7 +39,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-6 d-none" id="newCertificateModel">
+
+    <div class="form-group col-md-12 d-none" id="newCertificateModel">
       <label for="numeroCertidao" class="form-label required">Matrícula</label>
       <input type="text" class="form-control @error('new_number') is-invalid @enderror" id="new_number"
         name="new_number" value="{{ old('new_number', session('step2.new_number')) }}">
@@ -47,7 +50,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-5 d-none oldCertificateModel">
+
+    <div class="form-group col-md-4 d-none oldCertificateModel">
       <label for="folhas" class="form-label required">Folhas</label>
       <input type="text" class="form-control @error('fls') is-invalid @enderror" id="fls" name="fls"
         value="{{ old('fls', session('step2.fls')) }}">
@@ -57,7 +61,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-6 d-none oldCertificateModel">
+
+    <div class="form-group col-md-4 d-none oldCertificateModel">
       <label for="livro" class="form-label required">Livro de Registro</label>
       <input type="text" class="form-control @error('book') is-invalid @enderror" id="book" name="book"
         value="{{ old('book', session('step2.book')) }}">
@@ -67,7 +72,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-6 d-none oldCertificateModel">
+
+    <div class="form-group col-md-4 d-none oldCertificateModel">
       <label for="numeroCertidao" class="form-label required">Termo ou Número da certidão:</label>
       <input type="text" class="form-control @error('old_number') is-invalid @enderror" id="old_number"
         name="old_number" value="{{ old('old_number', session('step2.old_number')) }}">
@@ -77,7 +83,8 @@
         </div>
       @enderror
     </div>
-    <div class="form-group col-md-6 d-none oldCertificateModel">
+
+    <div class="form-group col-md-4 d-none oldCertificateModel">
       <label for="municipio" class="form-label required">Município de Nascimento</label>
       <input type="text" class="form-control @error('municipality') is-invalid @enderror" id="municipality"
         name="municipality" value="{{ old('municipality', session('step2.municipality')) }}">
@@ -88,15 +95,16 @@
       @enderror
     </div>
 
-    <div class="d-flex justify-content-center border-top pt-3">
+    <div class="col-12">
       <button type="button" class="btn btn-sm btn-secondary">
         <i class="bi bi-arrow-left-circle"></i>
         <a href="{{ route('step.personal') }}" class="text-decoration-none ms-2">Voltar</a>
-
       </button>
       <button type="submit" class="btn btn-sm btn-primary ms-2">Avançar <i
-          class="bi bi-arrow-right-circle ms-2"></i></button>
+          class="bi bi-arrow-right-circle ms-2"></i>
+      </button>
     </div>
+
   </form>
 
   <div class="modal fade" id="newCertificateModal">

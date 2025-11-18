@@ -182,7 +182,7 @@
     </ul>
   </fieldset>
 
-  <form id="finalize-inscription" class="d-flex justify-content-center mt-3" action="{{ route('step.finalize') }}"
+  <form id="finalize-inscription" class="col-12 mt-3" action="{{ route('step.finalize') }}"
     method="POST">
     @csrf
     <button type="button" class="btn btn-sm btn-secondary me-2">

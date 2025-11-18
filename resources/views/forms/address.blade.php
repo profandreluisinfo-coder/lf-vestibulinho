@@ -6,7 +6,9 @@
 
     <form id="inscription" class="row g-4" action="{{ route('step.address') }}" method="POST">
         @csrf
+
         <h5 class="fw-semibold border-bottom pb-1">Endereço</h5>
+
         <div class="form-group col-md-4">
             <label for="cep" class="form-label required">CEP</label> <a
                 href="https://buscacepinter.correios.com.br/app/endereco/index.php"
@@ -19,6 +21,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-6">
             <label for="rua" class="form-label required">Rua</label>
             <input type="text" class="form-control @error('street') is-invalid @enderror" id="street" name="street"
@@ -29,6 +32,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-2">
             <label for="numero" class="form-label required">Número</label>
             <input type="text" class="form-control @error('number') is-invalid @enderror" id="number" name="number"
@@ -39,6 +43,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-4">
             <label for="complemento" class="form-label">Complemento (opcional)</label>
             <input type="text" class="form-control @error('complement') is-invalid @enderror" id="complement"
@@ -49,6 +54,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-8">
             <label for="bairro" class="form-label required">Bairro</label>
             <input type="text" class="form-control @error('burgh') is-invalid @enderror" id="burgh" name="burgh"
@@ -59,6 +65,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-6">
             <label for="city" class="form-label required">Cidade</label>
             <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" name="city"
@@ -69,6 +76,7 @@
                 </div>
             @enderror
         </div>
+
         <div class="form-group col-md-6">
             <label for="state" class="form-label required">Estado</label>
             <select class="form-select form-select-md @error('state') is-invalid @enderror" id="state" name="state">
@@ -107,7 +115,8 @@
                 </div>
             @enderror
         </div>
-        <div class="d-flex justify-content-center border-top pt-3">
+
+        <div class="col-12">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.certificate') }}" class="text-decoration-none">Voltar</a>                 

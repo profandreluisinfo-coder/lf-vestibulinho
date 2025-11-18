@@ -6,7 +6,9 @@
 
     <form id="inscription" class="row g-4" action="{{ route('step.family') }}" method="POST">
         @csrf
+        
         <h5 class="fw-semibold border-bottom pb-1">Filiação</h5>
+        
         <div class="form-group col-sm-8">
             <label for="mae" class="form-label required">Nome Completo da Mãe</label>
             <input type="text" class="form-control @error('mother') is-invalid @enderror" id="mother" name="mother"
@@ -17,6 +19,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-4">
             <label for="telefoneDaMae" class="form-label">Telefone</label>
             <input type="text" class="form-control phone-mask @error('mother_phone') is-invalid @enderror"
@@ -27,6 +30,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-8">
             <label for="pai" class="form-label">Nome Completo do Pai</label>
             <input type="text" class="form-control @error('father') is-invalid @enderror" id="father" name="father"
@@ -37,6 +41,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-4">
             <label for="telefoneDoPai" class="form-label">Telefone</label>
             <input type="text" class="form-control phone-mask @error('father_phone') is-invalid @enderror"
@@ -47,7 +52,9 @@
                 </div>
             @enderror
         </div>
+        
         <h6 class="fw-semibold border-bottom pb-1">Responsável Legal</h6>
+        
         <div class="form-group">
             <p><span class="fw-semibold required">Deseja informar um responsável legal, curador ou tutor?</span></p>
             <div class="form-check form-check-inline">
@@ -65,6 +72,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-8 respLegal d-none">
             <label for="responsavelLegal" class="form-label required">Nome Completo do Responsável Legal</label>
             <input type="text" class="form-control @error('responsible') is-invalid @enderror" id="responsible"
@@ -73,6 +81,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-4 respLegal d-none">
             <label for="grauDeParentesco" class="form-label required">Grau de Parentesco</label>
             <select name="degree" id="degree" class="form-select @error('degree') is-invalid @enderror">
@@ -88,6 +97,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="form-group respLegal d-none" id="other_relationship"> <!-- Agora com respLegal -->
             <label for="especifique" class="form-label required">Se OUTRO, especifique</label>
             <input type="text" class="form-control @error('kinship') is-invalid @enderror" id="kinship" name="kinship"
@@ -96,6 +106,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-4 respLegal d-none"> <!-- Adicionei respLegal e d-none -->
             <label for="telefoneDoResponsavel" class="form-label required">Telefone do Responsável</label>
             <input type="text" class="form-control phone-mask @error('responsible_phone') is-invalid @enderror"
@@ -105,7 +116,9 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="border-top pt-3"></div>
+        
         <div class="form-group col-sm-6">
             <label for="emailDosResponsaveis" class="form-label required">E-mail (pais ou responsável)</label>
             <input type="email" class="form-control @error('parents_email') is-invalid @enderror" id="parents_email"
@@ -114,6 +127,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         <div class="form-group col-sm-6">
             <label for="confirmeEmail" class="form-label required">Confirme o e-mail</label>
             <input type="email" class="form-control @error('parents_email_confirmation') is-invalid @enderror"
@@ -123,13 +137,15 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <div class="d-flex justify-content-center border-top pt-3">
+        
+        <div class="col-12">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.academic') }}" class="text-decoration-none">Voltar</a>
             </button>
             <button type="submit" class="btn btn-sm btn-primary ms-2">Avançar <i
-                    class="bi bi-arrow-right-circle ms-2"></i></button>
+                    class="bi bi-arrow-right-circle ms-2"></i>
+            </button>
         </div>
     </form>
 

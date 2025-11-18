@@ -33,12 +33,12 @@
                     @if ($notice && $notice->file && file_exists(public_path('storage/' . $notice->file)))
                       <a href="{{ asset('storage/' . $notice->file) }}" target="_blank" class="text-decoration-none">Edital
                         {{ config('app.name') }}
-                        {{ config('app.year') }}</a>
+                        {{ $calendar->year }}</a>
                       em nosso site oficial.
                     @else
                       <a href="javascript:void(0);" target="_blank" class="text-decoration-none">Edital
                         {{ config('app.name') }}
-                        {{ config('app.year') }}
+                        {{ $calendar->year }}
                       </a>
                       em nosso site oficial.
                     @endif
@@ -123,7 +123,7 @@
           </p>
           <p class="text-muted small mb-0">
             É uma honra contar com seu interesse no <strong>{{ config('app.name') }}
-              {{ config('app.year') }}</strong>!
+              {{ $calendar->year }}</strong>!
           </p>
         </div>
 
@@ -140,7 +140,7 @@
             <p class="fw-bold">Prezado(a) Candidato(a),</p>
             <p>
             <i class="bi bi-exclamation-circle me-1"></i>
-            O período de inscrições para o {{ config('app.name') }} {{ config('app.year') }} foi <u>encerrado</u> em <strong>{{ $calendar?->inscription_end->format('d/m/Y') }}</strong>.
+            O período de inscrições para o {{ config('app.name') }} {{ $calendar->year }} foi <u>encerrado</u> em <strong>{{ $calendar?->inscription_end->format('d/m/Y') }}</strong>.
             </p>
         </div>
 

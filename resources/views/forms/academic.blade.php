@@ -6,7 +6,9 @@
 
     <form id="inscription" class="row g-4" action="{{ route('step.academic') }}" method="POST">
         @csrf
+        
         <h5 class="fw-semibold border-bottom pb-1">Dados Escolares</h5>
+        
         <div class="form-group col-md-12">
             <label for="escola" class="form-label required">Escola onde concluiu (concluirá) o Ensino
                 Fundamental</label>
@@ -26,6 +28,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-md-6">
             <label for="registroAcademico" class="form-label required">Registro Acadêmico - RA </label>
             <a class="text-decoration-none" href="https://sed.educacao.sp.gov.br/NCA/CadastroAluno/ConsultaRAAluno"
@@ -41,6 +44,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-md-6">
             <label for="school_year" class="form-label required">Ano de conclusão</label>
             <input type="number" name="school_year" id="school_year"
@@ -52,6 +56,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-md-6">
             <label for="cidade" class="form-label required">Cidade</label>
             <input type="text" name="school_city" class="form-control @error('school_city') is-invalid @enderror"
@@ -62,6 +67,7 @@
                 </div>
             @enderror
         </div>
+        
         <div class="form-group col-md-6">
             <label for="estado" class="form-label required">Estado</label>
             <select class="form-select form-select-md @error('school_state') is-invalid @enderror" name="school_state"
@@ -109,13 +115,14 @@
             @enderror
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="col-12">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.address') }}" class="text-decoration-none">Voltar</a>
             </button>
             <button type="submit" class="btn btn-sm btn-primary ms-2">Avançar <i
-                    class="bi bi-arrow-right-circle ms-2"></i></button>
+                    class="bi bi-arrow-right-circle ms-2"></i>
+            </button>
         </div>
     </form>
 
