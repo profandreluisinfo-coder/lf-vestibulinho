@@ -31,108 +31,140 @@
 
 <body>
 
-    {{-- CONTEÚDO PRINCIPAL --}}
-    <div class="container">
+    {{-- Topbar --}}
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top " style="background-color: #1a1a1a;">
+        <div class="container-fluid px-3">
+            {{-- Logo/Brand --}}
+            <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="{{ route('home') ?? '/' }}">
+                <i class="bi bi-mortarboard fs-5"></i>
+                <span class="text-light d-none d-md-inline fs-6">{{ config('app.name') }} {{ $calendar?->year }}</span>
+                <span class="text-light d-inline d-md-none fs-6">{{ config('app.name') }}</span>
+            </a>
 
-        {{-- Topbar --}}
-        <nav
-            class="navbar navbar-light bg-light shadow-sm px-3 d-flex flex-column flex-sm-row justify-content-between align-items-center fixed-top">
-            <span class="navbar-text d-flex justify-content-center align-items-center gap-2 p-0">
-                {{-- <img src="{{ asset('assets/img/logo.webp') }}" alt="Avatar Logo" style="width:50px;" class="img-fluid"> --}}
-                <i class="bi bi-mortarboard me-2 fs-4"></i>
-                <h5 class="m-0 text-secondary">{{ config('app.name') }} {{ $calendar?->year }}</h5>
-            </span>
+            {{-- Toggle button for mobile --}}
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            @auth
-                <div class="dropdown mt-2 mt-sm-0">
-                    <a class="text-decoration-none text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-1"></i>
-                        <span class="text-muted">{{ auth()->user()->social_name ?? auth()->user()->name }}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                data-bs-target="#changePasswordModal">
-                                <i class="bi bi-key me-2"></i> Alterar Senha
+            {{-- Navbar content --}}
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
+                                role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-5"></i>
+                                <span class="text-light">{{ auth()->user()->social_name ?? auth()->user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        <i class="bi bi-key"></i>
+                                        <span>Alterar Senha</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                        @csrf
+                                        <button class="dropdown-item d-flex align-items-center gap-2" type="submit">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            <span>Sair</span>
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') ?? '/login' }}">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>
+                                Entrar
                             </a>
                         </li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST">@csrf
-                                <button class="dropdown-item" type="submit">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Sair
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @endauth
-        </nav>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    {{-- CONTEÚDO PRINCIPAL --}}
+    <div class="container border border-0 rounded-3 bg-light p-4">
         {{-- Conteúdo da Dashboard --}}
-        <div class="container">
-            @auth
-                @yield('dash-content')
-                {{-- Modal Alterar Senha --}}
-                <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="changePasswordModalLabel">Alterar Senha</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Fechar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="change-password" method="POST" action="{{ route('alterar.senha') }}">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="currentPassword" class="form-label">Senha atual</label>
-                                        <input type="password" name="current_password"
-                                            class="form-control @error('current_password') is-invalid @enderror"
-                                            id="currentPassword" placeholder="••••••••">
-                                        @error('current_password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="newPassword" class="form-label">Nova senha</label>
-                                        <input type="password" name="new_password"
-                                            class="form-control @error('new_password') is-invalid @enderror"
-                                            id="newPassword" placeholder="••••••••">
-                                        @error('new_password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="repeatPassword" class="form-label">Repetir senha</label>
-                                        <input type="password" name="password_confirmation"
-                                            class="form-control @error('password_confirmation') is-invalid @enderror"
-                                            id="repeatPassword" placeholder="••••••••">
-                                        @error('password_confirmation')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="bi bi-check-circle me-2"></i> Alterar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            </div>
+        <section>
+            <article>
+        @auth
+            @yield('dash-content')
+            {{-- Modal Alterar Senha --}}
+            <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePasswordModalLabel">Alterar Senha</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="change-password" method="POST" action="{{ route('alterar.senha') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Senha atual</label>
+                                    <input type="password" name="current_password"
+                                        class="form-control @error('current_password') is-invalid @enderror"
+                                        id="currentPassword" placeholder="••••••••">
+                                    @error('current_password')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">Nova senha</label>
+                                    <input type="password" name="new_password"
+                                        class="form-control @error('new_password') is-invalid @enderror" id="newPassword"
+                                        placeholder="••••••••">
+                                    @error('new_password')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="repeatPassword" class="form-label">Repetir senha</label>
+                                    <input type="password" name="password_confirmation"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        id="repeatPassword" placeholder="••••••••">
+                                    @error('password_confirmation')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle me-2"></i> Alterar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </div>
                 </div>
-            @endauth
-        </div>
+            </div>
+        @endauth
+            </article>
+        </section>
+    </div>
+
+    <div class="container small text-muted mt-3 py-2">
+        &copy; {{ $currentYear }} ala
     </div>
 
     {{-- JS --}}

@@ -1,6 +1,6 @@
-section {
-    margin: 100px 0;
-}
+/* section {
+    margin-top: 100px 0;
+} */
 
 /* Estilo geral das tabelas */
 .table th {
@@ -65,9 +65,9 @@ section {
 }
 
 @media (max-width: 768px) {
-    section {
+    /* section {
         margin-top: 125px;
-    }
+    } */
 
     .table th,
     .table td {

@@ -1,6 +1,7 @@
 /* ==================== VARIÁVEIS DE TEMA ==================== */
 :root {
-    --body-bg: #f0eff0;
+    /* --body-bg: #f0eff0; */
+    --body-bg: #F2F2F2;
 
     /* Navbar */
     --navbar-bg: #000080;
@@ -34,22 +35,52 @@
     box-sizing: border-box;
 }
 
-/* html,
 body {
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    
-    max-width: 100%;
-} */
-
-body {
+    padding-top: 85px;
     background-color: var(--body-bg);
     color: var(--bs-body-color, #212529);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ==================== NAVBAR ==================== */
+/* Cor customizada da navbar */
+.navbar {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
 
+/* Ícones brancos */
+.navbar .bi {
+    color: #ffffff;
+}
+
+/* Melhoria na transição do dropdown */
+.dropdown-menu {
+    animation: slideDown 0.3s ease-out;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Melhor hover nos itens do dropdown */
+.dropdown-item {
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    padding-left: 1.5rem;
+}
 
 /* ==================== CARDS ==================== */
 .card-header {
@@ -73,21 +104,14 @@ body {
 }
 
 /* ==================== BOTÕES ==================== */
-/* .btn-default {
-    background: var(--btn-default-bg);
-    color: var(--btn-default-color);
-    text-decoration: none !important;
+.btn a {
+    color: #fff !important;
 }
 
-.btn-default:hover {
-    background: var(--btn-default-hover);
-    color: var(--btn-default-color);
+/* ==================== FORMS ==================== */
+.form-label {
+    font-weight: 500;
 }
-
-.btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
-} */
 
 .required::after {
     content: "*";
@@ -196,56 +220,39 @@ legend {
     background-color: transparent;
 }
 
-/* ==================== MODAIS / FORMULÁRIOS ==================== */
+/* ==================== MODAIS ==================== */
 .modal-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: #333;
 }
 
-/* .modal-header,
-.modal-footer {
-    border: none;
-}
-
-.modal-body {
-    font-size: 0.95rem;
-    line-height: 1.5;
-} */
-
-.form-label {
-    font-weight: 500;
-}
-
-.btn a {
-    color: #fff !important;
-}
-
+/* ==================== TITLES ==================== */
 h4 {
     color: var(--text-header);
 }
 
-/* ==================== AJUSTES DE OVERFLOW ==================== */
-/* img,
-.card,
-.card-body,
-.container-fluid,
-.row {
-    box-sizing: border-box;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-} */
-
 /* ==================== RESPONSIVIDADE ==================== */
-@media (min-width: 576px) {
+
+/* Responsividade do nome no mobile */
+/* @media (min-width: 576px) {
     .wrapper {
         max-width: 540px;
         margin: 60px auto;
     }
-}
+
+    
+} */
 
 @media (max-width: 768px) {
+    body {
+        padding: 75px 10px 10px 10px;
+    }
+    
+    .navbar-brand span {
+        font-size: 0.9rem;
+    }
+
     .forms {
         margin-top: -25px !important;
     }
@@ -259,7 +266,7 @@ h4 {
     }
 }
 
-@media (max-width: 991.98px) {
+/* @media (max-width: 991.98px) {
     .navbar.fixed-top {
         left: 0;
         width: 100%;
@@ -270,4 +277,4 @@ h4 {
     .navbar.fixed-top {
         border-left: 1px solid rgba(0, 0, 0, 0.1);
     }
-}
+} */
