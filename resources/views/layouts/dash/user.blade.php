@@ -62,7 +62,7 @@
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2" href="#"
                                         data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                        <i class="bi bi-key"></i>
+                                        <i class="bi bi-key text-secondary"></i>
                                         <span>Alterar Senha</span>
                                     </a>
                                 </li>
@@ -73,7 +73,7 @@
                                     <form action="{{ route('logout') }}" method="POST" class="m-0">
                                         @csrf
                                         <button class="dropdown-item d-flex align-items-center gap-2" type="submit">
-                                            <i class="bi bi-box-arrow-right"></i>
+                                            <i class="bi bi-box-arrow-right text-secondary"></i>
                                             <span>Sair</span>
                                         </button>
                                     </form>
