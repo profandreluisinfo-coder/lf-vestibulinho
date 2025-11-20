@@ -2,29 +2,53 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Editar FaQ')
 
+@push('styles')
+    <!-- Summernote -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+@endpush
+
 @section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0"><i class="bi bi-question-circle me-2"></i>Editar FaQ</h4>
         </div>
 
-
         <div class="card shadow-sm">
             <div class="card-body">
-                <form action="{{ route('faq.edit', $faq->id) }}" method="POST" id="edit-faq-form-{{ $faq->id }}">
+                <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST" id="edit-faq-form-{{ $faq->id }}">
                     @csrf
+                    {{-- @method('PUT') --}}
                     <div class="mb-3">
                         <label for="question" class="form-label required">Pergunta:</label>
                         <input type="text" class="form-control" id="question" name="question"
-                            value="{{ $faq->question }}">
+                            value="{{ $faq->question }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="answer" class="form-label required">Resposta:</label>
-                        <textarea class="form-control" id="answer" name="answer" rows="3">{{ $faq->answer }}</textarea>
+                        <textarea class="form-control summernote" id="answer" name="answer" rows="6" required>{{ $faq->answer }}</textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Gravar</button>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i> Atualizar
+                        </button>
+                        <a href="{{ route('faq.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Voltar
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+
+@push('plugins')
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    <!-- Summernote -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/rules/faq-edit.js') }}"></script>
+@endpush

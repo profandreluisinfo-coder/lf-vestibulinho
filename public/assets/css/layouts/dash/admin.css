@@ -1,0 +1,530 @@
+/* ==================== VARIÁVEIS ==================== */
+:root {
+    --sidebar-width: 260px;
+    --topbar-height: 60px;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --sidebar-bg: #0f172a;
+    --sidebar-hover: #1e293b;
+    --sidebar-text: #cbd5e1;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* ==================== BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8fafc;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ==================== SIDEBAR ==================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #475569;
+    border-radius: 3px;
+}
+
+/* ====== Marca ====== */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 20px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.sidebar-brand img {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.sidebar-brand h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* ====== Menu ====== */
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+/* ====== Seções ====== */
+.menu-section {
+    margin-bottom: 24px;
+}
+
+.menu-section-title {
+    padding: 8px 20px;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ====== Links e Dropdowns ====== */
+.menu-item {
+    padding: 0 16px;
+    margin-bottom: 4px;
+}
+
+.menu-dropdown {
+    padding: 0 16px;
+    margin-bottom: 4px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    color: var(--sidebar-text);
+    border-radius: var(--radius);
+    background: transparent;
+    border: none;
+    transition: var(--transition);
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+}
+
+.dropdown-toggle-custom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    color: var(--sidebar-text);
+    border-radius: var(--radius);
+    background: transparent;
+    border: none;
+    transition: var(--transition);
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+}
+
+.menu-link i,
+.dropdown-toggle-custom i:first-child {
+    font-size: 18px;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.menu-link:hover,
+.dropdown-toggle-custom:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+.menu-link.active {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* ====== Dropdown interno ====== */
+.dropdown-toggle-custom .bi-chevron-down {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.dropdown-toggle-custom[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu-custom {
+    padding-left: 48px;
+    padding-right: 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.dropdown-menu-custom.show {
+    max-height: 500px;
+    padding-top: 4px;
+    padding-bottom: 8px;
+}
+
+.dropdown-item-custom {
+    display: block;
+    color: #94a3b8;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    margin-bottom: 2px;
+}
+
+.dropdown-item-custom:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+/* ====== Botão de sair dentro do form ====== */
+.sidebar form {
+    padding: 0 16px;
+    margin-bottom: 4px;
+}
+
+.sidebar form button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    color: #cbd5e1;
+    border: none;
+    border-radius: var(--radius);
+    background: transparent;
+    transition: var(--transition);
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.sidebar form button:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+.sidebar form button i {
+    font-size: 18px;
+    width: 20px;
+}
+
+/* ==================== TOPBAR ==================== */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: var(--topbar-height);
+    background: #fff;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 900;
+    transition: var(--transition);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #475569;
+    cursor: pointer;
+    display: none;
+}
+
+/* ====== Ícones ====== */
+.topbar-icon {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #475569;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.topbar-icon:hover {
+    background: #f1f5f9;
+    color: var(--primary-color);
+}
+
+.topbar-icon .badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 3px 5px;
+    font-size: 10px;
+}
+
+/* ====== Usuário ====== */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.user-menu:hover {
+    background: #f1f5f9;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
+/* ==================== MAIN CONTENT ==================== */
+.main-content {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--topbar-height);
+    padding: 24px;
+    min-height: calc(100vh - var(--topbar-height));
+    transition: var(--transition);
+}
+
+/* ==================== OFFCANVAS MENU ==================== */
+.offcanvas {
+    width: 380px !important;
+}
+
+.offcanvas-header {
+    padding: 20px 24px;
+}
+
+.offcanvas-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.offcanvas-body {
+    padding: 24px;
+}
+
+/* Cards de ações rápidas */
+.offcanvas-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 12px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: var(--transition);
+    gap: 12px;
+    height: 100%;
+}
+
+.offcanvas-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.offcanvas-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.offcanvas-card span {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Links úteis */
+.list-group-item {
+    color: var(--text-dark);
+    transition: var(--transition);
+    padding: 12px 0;
+}
+
+.list-group-item:hover {
+    color: var(--primary-color);
+    background: transparent;
+    padding-left: 8px;
+}
+
+.list-group-item i {
+    font-size: 18px;
+}
+
+/* ==================== OVERLAY (MOBILE) ==================== */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 900;
+}
+
+.sidebar-overlay.show {
+    display: block;
+}
+
+/* ==================== FORMS ==================== */
+.form-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* ==================== TABLES ==================== */
+.table th,
+.table td {
+    text-align: center;
+}
+
+.table th {
+    vertical-align: middle
+}
+
+.freezed-table thead th {
+    position: sticky !important;
+    top: 0;
+    z-index: 5;
+    background-color: var(--bs-table-bg, #d1e7dd);
+}
+
+/* ==================== OTHERS ==================== */
+.d-flex h4 {
+    color: #475569;
+}
+
+i {
+    align-self: center;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .topbar {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .user-info {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .topbar {
+        padding: 0 16px;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .offcanvas {
+        width: 100% !important;
+    }
+
+    .offcanvas-body {
+        padding: 20px;
+    }
+}

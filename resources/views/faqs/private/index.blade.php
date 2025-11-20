@@ -12,6 +12,8 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles2.css') }}">
+    <!-- Summernote -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 @endpush
 
 @section('dash-content')
@@ -62,7 +64,7 @@
                             aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#faqAccordion">
 
                             <div class="accordion-body">
-                                {{ $faq->answer }}
+                                {!! $faq->answer !!}
 
                                 <div
                                     class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1">
@@ -137,15 +139,15 @@
                     <div class="modal-body">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <form action="{{ route('faq.store') }}" method="POST">
+                                <form action="{{ route('faq.store') }}" method="POST" id="faqForm">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="question" class="form-label required">Pergunta:</label>
-                                        <input type="text" class="form-control" id="question" name="question">
+                                        <input type="text" class="form-control" id="question" name="question" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="answer" class="form-label required">Resposta:</label>
-                                        <textarea class="form-control" id="answer" name="answer" rows="3"></textarea>
+                                        <textarea class="form-control summernote" id="answer" name="answer" rows="6" required></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Gravar</button>
                                 </form>
@@ -164,9 +166,14 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    <!-- Summernote -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/rules/faq-create.js')}}"></script>
+    <script src="{{ asset('assets/rules/faq-edit.js')}}"></script>
     <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>

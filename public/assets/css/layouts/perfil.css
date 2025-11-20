@@ -1,0 +1,92 @@
+section {
+    margin: 100px 0;
+}
+
+/* Estilo geral das tabelas */
+.table th {
+    width: 180px;
+    /* largura fixa para os rótulos */
+    background-color: #f8f9fa;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.table td {
+    text-align: left !important;
+    /* garante alinhamento à esquerda */
+    vertical-align: middle;
+}
+
+/* Cabeçalhos das seções */
+.table thead th {
+    background: linear-gradient(90deg, #e8f1ff, #f8fbff);
+    color: #0d6efd;
+    font-weight: 600;
+    border-bottom: 2px solid #cfe2ff;
+    font-size: 0.95rem;
+}
+
+/* Efeito de destaque sutil nos blocos */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Margem entre as tabelas */
+.table-responsive {
+    margin-bottom: 1rem;
+}
+
+/* Ajuste na tabela */
+.table th,
+.table td {
+    padding: 0.75rem 1rem;
+    /* 12px vertical, 16px horizontal */
+}
+
+/* Suaviza visual em PDF e tela */
+.table td,
+.table th {
+    border-color: #dee2e6 !important;
+}
+
+/* Deixa a tabela de Educação Especial com cor diferente */
+.table-info thead th {
+    background: linear-gradient(90deg, #eaf7ff, #f4fbff);
+    color: #055160;
+    border-bottom: 2px solid #b6effb;
+}
+
+/* Ajuste no cabeçalho do card */
+.card-header {
+    background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+}
+
+@media (max-width: 768px) {
+    section {
+        margin-top: 125px;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.4rem !important;
+        /* menor espaçamento em dispositivos móveis */
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+    }
+
+    .table th {
+        width: 110px;
+        /* menor largura em dispositivos móveis */
+    }
+
+    .table td {
+        text-wrap: wrap !important;
+        /* quebra de linha automática */
+    }
+}
