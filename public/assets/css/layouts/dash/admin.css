@@ -9,6 +9,7 @@
     --sidebar-text: #cbd5e1;
     --text-dark: #1e293b;
     --text-muted: #64748b;
+    --text-required: red;
     --border-color: #e2e8f0;
     --radius: 8px;
     --transition: all 0.3s ease;
@@ -456,6 +457,13 @@ a {
     font-size: 16px;
     font-weight: 600;
     color: var(--text-dark);
+}
+
+.required::after {
+    content: "*";
+    color: var(--text-required);
+    margin-left: 4px;
+    font-style: italic;
 }
 
 /* ==================== TABLES ==================== */

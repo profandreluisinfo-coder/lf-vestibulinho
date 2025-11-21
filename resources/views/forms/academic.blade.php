@@ -131,5 +131,5 @@
 @push('scripts')
 <script src="{{ asset('assets/cleave/masks.js') }}"></script>
 <script src="{{ asset('assets/interactions/popover.js') }}"></script>
-<script src="{{ asset('assets/rules/academic.js') }}"></script>
+<script src="{{ asset('assets/rules/user/academic.js') }}"></script>
 @endpush

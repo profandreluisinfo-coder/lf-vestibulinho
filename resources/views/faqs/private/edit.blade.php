@@ -50,5 +50,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/faq-edit.js') }}"></script>
+    <script src="{{ asset('assets/rules/admin/faqs/edit.js') }}"></script>
 @endpush

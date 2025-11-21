@@ -144,5 +144,5 @@
 @push('scripts')
     <script src="{{ asset('assets/cleave/masks.js') }}"></script>
     <script src="{{ asset('assets/js/others.js') }}"></script>
-    <script src="{{ asset('assets/rules/others.js') }}"></script>
+    <script src="{{ asset('assets/rules/user/others.js') }}"></script>
 @endpush

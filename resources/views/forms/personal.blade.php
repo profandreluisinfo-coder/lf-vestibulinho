@@ -183,5 +183,5 @@
   <script src="{{ asset('assets/cleave/masks.js') }}"></script>
   <script src="{{ asset('assets/interactions/name.js') }}"></script>
   <script src="{{ asset('assets/interactions/popover.js') }}"></script>
-  <script src="{{ asset('assets/rules/user.js') }}"></script>
+  <script src="{{ asset('assets/rules/user/personal.js') }}"></script>
 @endpush

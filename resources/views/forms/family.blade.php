@@ -154,5 +154,5 @@
 @push('scripts')
 <script src="{{ asset('assets/js/family.js') }}"></script>
 <script src="{{ asset('assets/cleave/masks.js') }}"></script>
-<script src="{{ asset('assets/rules/family.js') }}"></script>
+<script src="{{ asset('assets/rules/user/family.js') }}"></script>
 @endpush

@@ -10,9 +10,9 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('courses.edit', $course->id) }}" method="POST">
+            <form id="courseForm" action="{{ route('courses.edit', $course->id) }}" method="POST">
                 @csrf
-                <div class="mb-3">
+                <div class="form-group mb-3">
                     <label for="name" class="form-label required">Nome:</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                         name="name" value="{{ $course->name }}">
@@ -22,7 +22,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="mb-3">
+                <div class="form-group mb-3">
                     <label for="description" class="form-label required">Descrição:</label>
                     <input type="text" class="form-control @error('description') is-invalid @enderror"
                         id="description" name="description" value="{{ $course->description }}">
@@ -32,7 +32,7 @@
                         </div>
                     @enderror
                 </div>
-                <div class="mb-3">
+                <div class="form-group mb-3">
                     <label for="vacancies" class="form-label required">Vagas:</label>
                     <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
                         name="vacancies" value="{{ $course->vacancies }}">
@@ -42,9 +42,14 @@
                         </div>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary">Gravar</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2"></i>Gravar</button>
             </form>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/rules/admin/courses/create.js') }}"></script>
+    <script src="{{ asset('assets/swa/courses/delete.js') }}"></script>
+@endpush
