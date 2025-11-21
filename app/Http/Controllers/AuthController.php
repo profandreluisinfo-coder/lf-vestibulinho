@@ -29,7 +29,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view('auth.login');
+        return view('auth.user.login');
     }
 
     /**
@@ -112,7 +112,7 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        return view('auth.register');
+        return view('auth.user.register');
     }
 
     /**
@@ -194,7 +194,7 @@ class AuthController extends Controller
      */
     public function forgotPassword(): View
     {
-        return view('auth.forgot-password');
+        return view('auth.user.forgot-password');
     }
 
     /**
@@ -234,7 +234,7 @@ class AuthController extends Controller
             return redirect()->route('login');
         }
 
-        return view('auth.reset-password', ['token' => $token]);
+        return view('auth.user.reset-password', ['token' => $token]);
     }
 
     /**
@@ -274,7 +274,7 @@ class AuthController extends Controller
 
     public function resendEmail(): View
     {
-        return view('auth.resend-email-verification');
+        return view('auth.user.resend-email-verification');
     }
 
     public function resendEmailAction(Request $request, UserService $userService): RedirectResponse
@@ -293,7 +293,7 @@ class AuthController extends Controller
 
     public function adminLogin(): View
     {
-        return view('auth.admin');
+        return view('auth.admin.login');
     }
 
     public function logout(Request $request): RedirectResponse
