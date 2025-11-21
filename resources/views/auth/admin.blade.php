@@ -7,16 +7,10 @@
         <meta http-equiv="Expires" content="0" />
     @endif
     <meta name="description"
-        content="Área de acesso exclusivo para administradores do {{ config('app.name') }} {{ config('app.year') }}">
+        content="Área de acesso exclusivo para administradores do {{ config('app.name') }} {{ $calendar->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . config('app.year') . ' | Painel Administrativo')
-
-@push('head-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@endpush
-
-@section('body-class', 'bg-light')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Painel Administrativo')
 
 @section('content')
 
@@ -30,8 +24,9 @@
                         <header
                             class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
                             <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem;" aria-hidden="true"></i>
-                            <h2 class="h4 text-center">{{ config('app.name') }} {{ config('app.year') }}</h2>
+                            <h2 class="h4 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
                         </header>
+
                         <div class="card-body">
                             <h1 class="h4 mb-4 text-center">
                                 <span class="d-inline-flex align-items-center title">
@@ -40,13 +35,19 @@
                                 </span>
                             </h1>
 
+                            <div>
+                                <p class="text-center">Informe seus dados de acesso:</p>
+                            </div>
+
+                            @include('components.alerts')
+
                             <form id="form-login" method="POST" action="{{ route('login') }}" autocomplete="off">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">E-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="loginEmail"
-                                        value="{{ old('email') }}" placeholder="exemplo@email.com" required
+                                        value="{{ old('email') }}" required
                                         autocomplete="username" aria-describedby="@error('email') emailError @enderror">
                                     @error('email')
                                         <div id="emailError" class="invalid-feedback">
@@ -59,7 +60,7 @@
                                     <label for="loginPassword" class="form-label">Senha</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="loginPassword"
-                                        placeholder="••••••••" required autocomplete="current-password"
+                                        required autocomplete="current-password"
                                         aria-describedby="@error('password') passwordError @enderror">
                                     @error('password')
                                         <div id="passwordError" class="invalid-feedback">
@@ -81,19 +82,6 @@
                                 </div>
                             </form>
 
-                            @if (session('error'))
-                                <div class="alert alert-danger mb-3 mt-3 text-center"
-                                    role="alert">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
-
-                            @if (session('status'))
-                                <div class="alert alert-{{ session('status.alert-type') }} mb-3 mt-3 text-center"
-                                    role="alert">
-                                    {{ session('status.message') }}
-                                </div>
-                            @endif
                         </div>
                     </article>
                 </div>

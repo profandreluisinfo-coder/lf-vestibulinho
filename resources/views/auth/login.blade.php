@@ -16,7 +16,6 @@
 
     @include('partials.videos.back-login')
 
-
     <main class="auth mt-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -48,7 +47,7 @@
                                     <label for="loginEmail" class="form-label required">E-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="loginEmail"
-                                        value="{{ old('email') }}" placeholder="exemplo@email.com" required
+                                        value="{{ old('email') }}" required
                                         autocomplete="username" aria-describedby="@error('email') emailError @enderror">
                                     @error('email')
                                         <div id="emailError" class="invalid-feedback">
@@ -60,7 +59,7 @@
                                     <label for="loginPassword" class="form-label required">Senha</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="loginPassword"
-                                        placeholder="••••••••" required autocomplete="current-password"
+                                        required autocomplete="current-password"
                                         aria-describedby="@error('password') passwordError @enderror">
                                     @error('password')
                                         <div id="passwordError" class="invalid-feedback">
@@ -68,16 +67,19 @@
                                         </div>
                                     @enderror
                                 </div>
+
                                 <div class="form-check mb-3">
                                     <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
                                     <label class="form-check-label" for="rememberMe">Lembrar de mim</label>
                                 </div>
+
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>
                                         Entrar
                                     </button>
                                 </div>
+
                                 <div class="mt-3 text-center">
                                     <a href="{{ route('forgot.password') }}" class="text-decoration-none">Esqueceu a
                                         senha?</a>

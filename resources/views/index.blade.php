@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/calendar/styles.css') }}">
 @endpush
 
-@section('body-class')
+@section('body-class', 'py-5')
 
 @section('content')
     @php
