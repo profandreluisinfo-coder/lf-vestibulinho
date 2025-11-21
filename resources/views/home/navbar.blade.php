@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white shadow-sm m-0 py-1">
     <div class="container">
         <a class="navbar-brand text-primary" href="{{ route('home') }}" title="Página Inicial">
             <i class="bi bi-mortarboard me-2"></i>Vestibulinho LF {{ $calendar?->year ?? '' }}

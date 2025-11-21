@@ -1,7 +1,3 @@
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/quick-access/styles.css') }}">
-@endpush
-
 <section id="acesso-rapido" class="bg-light py-5">
     <div class="container">
         <h2 class="section-title text-center">Acesso Rápido</h2>
@@ -87,6 +83,3 @@
         </div>
     </div>
 </section>
-@push('scripts')
-<script src="{{ asset('assets/js/quick-access.js') }}"></script>
-@endpush

@@ -1,6 +1,3 @@
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/calendar/styles.css') }}">
-@endpush
 <section id="calendary" class="bg-light py-5">
     <div class="container">
         <h2 class="section-title text-center mb-5">

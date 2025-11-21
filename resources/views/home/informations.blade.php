@@ -1,19 +1,3 @@
-@php
-     $statusData = $calendar?->getInscriptionStatusData() ?? [
-        'color' => 'secondary',
-        'icon' => 'bi-calendar-x',
-        'title' => 'Sem Calendário Ativo',
-        'message' => 'Nenhum calendário está ativo no momento.',
-        'show_button' => false,
-    ];
-
-    // Convocação / Matrícula
-    $chamadaDisponivel = $calls_exists;
-    $matriculaColor    = $chamadaDisponivel ? 'info' : 'secondary';
-    $matriculaIcon     = $chamadaDisponivel ? 'bi-megaphone-fill' : 'bi-hourglass-split';
-    $matriculaTitle    = $chamadaDisponivel ? 'Convocação para Matrícula Disponível' : 'Aguardando Convocação';
-@endphp
-
 <section id="calendario" class="py-5 bg-light">
     <div class="container">
         <h2 class="section-title text-center mb-4">

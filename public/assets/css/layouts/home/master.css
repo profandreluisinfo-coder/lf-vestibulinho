@@ -1,16 +1,28 @@
+
+/* Estabelece as cores principais do sistema */
 :root {
+    /* Cor principal (usada em botões e etc.) */
     --primary-color: #2c5aa0;
+    /* Cor secundária (usada em backgrounds e etc.) */
     --secondary-color: #f8f9fa;
+    /* Cor de destaque (usada em elementos de destaque) */
     --accent-color: #28a745;
+    /* Cor de texto escuro */
     --text-dark: #333;
+    /* Cor de texto de alerta */
     --text-warning: #f5d02d;
+    /* Cor de texto cinza */
     --text-gray: #424242;
+    /* Cor de texto verde */
     --text-green: #6da17d;
+    /* Cor de texto azul */
     --text-blue: #2fa1e0;
+    /* Cor de texto para títulos */
     --text-title: #1e3a5f;
 }
 
 body {
+    padding-top: 60px;
     height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -34,11 +46,26 @@ body {
     font-weight: 400;
 }
 
+/**
+ * Estiliza o para a navbar quando ela com scrolling
+ * Adiciona uma sombra de translucidez e um efeito de blur para a navbar
+ * Altera a cor de fundo da navbar para branco com opacidade de 0.75
+ */
 .navbar-scrolled {
+    /**
+     * Translada a navbar para cima 2 pixels para cima
+     * Adiciona uma sombra de translucidez para a navbar
+     * Adiciona um efeito de blur para a navbar
+     */
     transform: translateY(-2px) !important;
-    /* Levanta levemente a navbar */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    /**
+     * Altera a cor de fundo da navbar para branco com opacidade de 0.75
+     */
     background-color: rgba(255, 255, 255, 0.75) !important;
+    /**
+     * Adiciona um efeito de blur para a navbar
+     */
     backdrop-filter: blur(8px) !important;
 }
 
@@ -274,9 +301,9 @@ body {
 
 .countdown-container {
     background: white;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     position: relative;
     overflow: hidden;
 }
@@ -288,11 +315,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
+    /* background: linear-gradient(
         135deg,
         rgba(44, 90, 160, 0.05) 0%,
         rgba(40, 167, 69, 0.05) 100%
-    );
+    ); */
     pointer-events: none;
 }
 
@@ -554,3 +581,4 @@ body {
         margin-top: 0;
     }
 }
+
