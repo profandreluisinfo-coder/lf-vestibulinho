@@ -9,14 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 class WithInscription
 {
     /**
-     * Se o usuário estiver inscrito, ele pode acessar a rota. Senão, seerá exibido um erro.
+     * Se o usuário não estiver inscrito, ele não pode acessar a rota. Senão, será redirecionado para
+     * área de preenchimento de ficha de inscrição.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->user()->inscription()->exists()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard.index');
         }
 
         return $next($request);

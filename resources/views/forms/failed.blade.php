@@ -108,7 +108,7 @@
 
           <!-- Action Buttons -->
           <div class="d-grid d-md-flex justify-content-md-center gap-2">
-            <a href="{{ route('dashboard') }}" class="btn btn-primary px-4">
+            <a href="{{ route('dashboard.index') }}" class="btn btn-primary px-4">
               <i class="bi bi-arrow-left me-2"></i>
               Voltar ao Início
             </a>

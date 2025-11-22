@@ -15,8 +15,6 @@ Route::middleware(['auth'])->group(function () {
     //
     Route::middleware([NotAdmin::class])->group(function () {
 
-        Route::get('/area-do-candidato', [DashController::class, 'index'])->name('dashboard'); // OK        
-
         // 📄 Área do candidato (inscrição concluída)
         Route::prefix('candidato')
             ->name('user.')

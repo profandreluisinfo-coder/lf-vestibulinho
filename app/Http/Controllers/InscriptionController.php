@@ -24,6 +24,42 @@ use App\Http\Requests\CertificateRequest;
 
 class InscriptionController extends Controller
 {
+    public function profile()
+    {
+        $user = auth()->user();
+
+        // Segurança extra caso acessem direto sem ter inscrição
+        if (!$user->inscription()->exists()) {
+            return redirect()
+                ->route('dashboard.index')
+                ->with('warning', 'Você ainda não possui inscrição ativa.');
+        }
+
+        // Carrega tudo que o painel precisa
+        $user->load([
+            'inscription.exam_result.examLocation',
+            'inscription.exam_result.completedCall',
+        ]);
+
+        $inscription  = $user->inscription;
+        $examResult   = $inscription->exam_result;
+        $examLocation = $examResult?->examLocation;
+
+        $exam = $examLocation ? [
+            'location_name' => $examLocation->name,
+            'address'       => $examLocation->address,
+            'room_number'   => $examResult->room_number,
+            'exam_date'     => $examResult->exam_date,
+            'exam_time'     => $examResult->exam_time,
+            'user_id'       => $user->id,
+            'pne'           => $user->pne,
+        ] : null;
+
+        $call = $examResult?->completedCall;
+
+        return view('inscriptions.private.profile', compact('user', 'exam', 'examResult', 'call'));
+    }
+
     /**
      * Exibe a lista de candidatos inscritos (inclusive candidatos com deficiência).
      *
@@ -390,7 +426,7 @@ class InscriptionController extends Controller
 
         // Se não houver dados, redireciona para o dashboard
         if (empty($data)) {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard.index');
         }
 
         // Define o título da etapa
@@ -412,7 +448,7 @@ class InscriptionController extends Controller
         try {
             $inscriptionService->store();
 
-            return redirect()->route('dashboard')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('inscription.profile')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
             Log::error('Erro no banco: ' . $e->getMessage());
 
@@ -450,33 +486,6 @@ class InscriptionController extends Controller
             );
         }
     }
-
-    /**
-     * Mostra a ficha de inscrição do candidato atual de forma resumida, com os principais dados.
-     *
-     */
-    // public function summary(): View|RedirectResponse
-    // {
-    //     $user = Auth::user()->load('inscription');
-
-    //     return view('inscription.summary')->with(['user' => $user]);
-    // }
-
-    /**
-     * Exibe a ficha de inscrição do candidato atual de forma completa, com todas as informações.
-     *
-     */
-    // public function details(): View
-    // {
-    //     $title = "Ficha de Inscrição | " . Auth::user()->name;
-
-    //     $user = Auth::user()->load('inscription');
-
-    //     return view('inscription.details')->with([
-    //         'title' => $title,
-    //         'user' => $user
-    //     ]);
-    // }
 
     /**
      * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.

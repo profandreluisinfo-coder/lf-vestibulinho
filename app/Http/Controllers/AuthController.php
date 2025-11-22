@@ -84,17 +84,26 @@ class AuthController extends Controller
      */
     protected function redirectUserBasedOnRole(User $user): RedirectResponse
     {
-        return match ($user->role) {
-            'admin' => redirect()->route('admin.painel'),
-            'user'  => redirect()->route('dashboard'),
-            default => redirect()->route('login')->with([
-                'status' => [
-                    'alert-type' => 'danger',
-                    'message' => 'Perfil de usuário desconhecido.',
-                ]
-            ])
-        };
-    }
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.painel');
+        }
+
+        if ($user->role === 'user') {
+            // Verifica se o usuário possui inscrição
+            $hasInscription = $user->inscription()->exists();
+
+            return $hasInscription
+                ? redirect()->route('inscription.profile')
+                : redirect()->route('dashboard.index');
+        }
+
+        return redirect()->route('login')->with([
+            'status' => [
+                'alert-type' => 'danger',
+                'message' => 'Perfil de usuário desconhecido.',
+            ]
+        ]);
+    }    
 
     /**
      * Mostra a página de registro de dados de acesso para o usuário.

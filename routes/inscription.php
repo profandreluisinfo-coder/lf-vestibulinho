@@ -1,18 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\{
+    DashController,
     InscriptionController,
 };
 
-use App\Http\Middleware\{NotAdmin, NoInscription};
+use App\Http\Middleware\{NotAdmin, NoInscription, WithInscription};
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->group(function () {
-    
+
     // 📝 Processo de inscrição
     Route::middleware([NotAdmin::class])->group(function () {
+
+        Route::get('/dashboard', [DashController::class, 'index'])->name('dashboard.index')->middleware([NoInscription::class]); // OK
+        Route::get('/area-do-candidato', [InscriptionController::class, 'profile'])->name('inscription.profile')->middleware([WithInscription::class]); // OK    
 
         // Formulário de inscrição (sem inscrição existente)
         Route::prefix('inscricao')
