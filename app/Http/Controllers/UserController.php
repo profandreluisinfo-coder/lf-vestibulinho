@@ -216,7 +216,7 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
-        $pdf = Pdf::loadView('user.pdf.exam-card', compact('exam'))
+        $pdf = Pdf::loadView('pdf.exam-card', compact('exam'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('cartao-local-prova.pdf');
@@ -234,7 +234,7 @@ class UserController extends Controller
             return redirect()->route('user.results')->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
-        return Pdf::loadView('user.pdf.result-card', compact('examResult', 'user'))
+        return Pdf::loadView('pdf.result-card', compact('examResult', 'user'))
             ->setPaper('a4', 'portrait')
             ->download('resultado-prova.pdf');
     }
@@ -260,7 +260,7 @@ class UserController extends Controller
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
-        $pdf = Pdf::loadView('user.pdf.call_invitation', [
+        $pdf = Pdf::loadView('pdf.generate-call-pdf', [
             'user' => $user,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
