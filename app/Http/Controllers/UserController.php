@@ -27,7 +27,7 @@ class UserController extends Controller
 
         view()->share('users', $users);
 
-        return view('user.registered.index');
+        return view('user.index');
     }
 
     /**
