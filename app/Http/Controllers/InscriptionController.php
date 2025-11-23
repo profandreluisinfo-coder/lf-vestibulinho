@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Notice;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\UserRequest;
@@ -65,11 +66,23 @@ class InscriptionController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // caso queira dados da inscrição no view
-            ->get();
+        $search = $request->get('search');
+
+        $users = User::whereHas('inscription')
+            ->with('inscription')
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->select('users.*')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('users.name', 'like', "%{$search}%")
+                        ->orWhere('users.cpf', 'like', "%{$search}%")
+                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('inscriptions.id', 'asc')
+            ->paginate(15);
 
         view()->share('users', $users);
 

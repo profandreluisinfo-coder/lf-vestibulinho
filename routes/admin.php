@@ -146,21 +146,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/calendar', [CalendarController::class, 'store'])->name('store');
         });
 
-    // ==========================
-    // 🧾 Inscrições
-    // ==========================
-    Route::prefix('inscricoes') // OK
-        ->name('inscriptions.')
-        ->group(function () {
-            Route::get('/', [InscriptionController::class, 'index'])->name('index');
-            Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'getListOfPCD'])->name('pcd');
-            Route::get('/lista-geral', [InscriptionController::class, 'getListOfInscriptions'])->name('general-list');
-            Route::get('/nome-social', [InscriptionController::class, 'getListOfSocialName'])->name('social-name');
-            Route::get('/detalhes-do-candidato/{id}', [InscriptionController::class, 'getDetailsOfUser'])->name('details');
-            Route::patch('/users/{user}/clear-social-name', [UserController::class, 'clearSocialName'])->name('clearSocialName');
-            Route::patch('/users/{user}/clear-pne', [UserController::class, 'clearPne'])->name('clearPne');
-        });
-
     // Usuários sem inscrição
     Route::prefix('usuarios-sem-inscricao') // OK
         ->name('users.')

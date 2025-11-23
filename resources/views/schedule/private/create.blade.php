@@ -13,66 +13,116 @@
             </a>
         </div>
 
+        <div class="row g-4 mb-4">
+
+            {{-- Card: Informações da Prova --}}
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-calendar-event me-2"></i>Informações da Prova
+                        </h5>
+
+                        <p class="mb-1">
+                            <strong>Data:</strong>
+                            {{ \Carbon\Carbon::parse($examInfo->date)->format('d/m/Y') }}
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Horário:</strong>
+                            {{ \Carbon\Carbon::parse($examInfo->time)->format('H:i') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Card: Acesso aos Locais de Prova --}}
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
+                        </h5>
+
+                        <form id="location-access-form" action="{{ route('exam.access.location') }}" method="POST">
+                            @csrf
+
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="location" name="location"
+                                    onchange="confirmLocationAccess(this)" {{ $accesStatus->location ? 'checked' : '' }}>
+
+                                <label class="form-check-label" for="location">
+                                    Status:
+                                    <span class="badge bg-{{ $accesStatus->location ? 'success' : 'danger' }} ms-2">
+                                        @if ($accesStatus->location)
+                                            <i class="bi bi-unlock-fill"></i> Liberado
+                                        @else
+                                            <i class="bi bi-lock-fill"></i> Bloqueado
+                                        @endif
+                                    </span>
+                                </label>
+                            </div>
+                        </form>
+
+                        @if ($accesStatus->location)
+                            <a href="{{ route('system.queue.monitor') }}" target="_blank" class="text-decoration-none">
+                                <i class="bi bi-display me-2"></i>Monitoramento da Fila
+                            </a>
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+
+            {{-- Card: Relatórios & Detalhes --}}
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-file-earmark-text me-2"></i>Relatórios
+                        </h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <a href="{{ route('exam.list') }}" target="_blank" class="text-decoration-none">
+                                    <i class="bi bi-search me-2"></i>Detalhes da Prova
+                                </a>
+                            </li>
+
+                            <li class="mb-2">
+                                <a href="{{ route('report.exportAllocationToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
+                                </a>
+                            </li>
+
+                            <li class="mb-2">
+                                <a href="{{ route('report.exportRoomsToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('report.exportSignaturesSheetsToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         {{-- Exibição dos dados cadastrados --}}
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table class="table table-striped freezed-table mb-0 caption-top">
-                <caption>{{ config('app.name') }} {{ config('app.year') }} - Lista de Alocação de Candidatos</caption>
-
-                @if ($examInfo)
-                    <p><strong>Data da Prova:</strong> {{ \Carbon\Carbon::parse($examInfo->date)->format('d/m/Y') }}</p>
-                    <p><strong>Horário:</strong> {{ \Carbon\Carbon::parse($examInfo->time)->format('H:i') }}</p>
-
-                    <form id="location-access-form" action="{{ route('exam.access.location') }}" method="POST">
-                        @csrf
-                        <div class="form-check form-switch mb-3 mt-3">
-                            <input class="form-check-input" type="checkbox" id="location" name="location"
-                                onchange="confirmLocationAccess(this)" {{ $accesStatus->location ? 'checked' : '' }}>
-
-                            <label class="form-check-label" for="location">
-                                Status do acesso aos locais de prova:
-                                <span class="badge bg-{{ $accesStatus->location ? 'success' : 'danger' }} ms-2">
-                                    @if ($accesStatus->location)
-                                        <i class="bi bi-unlock-fill"></i> Liberado
-                                    @else
-                                        <i class="bi bi-lock-fill"></i> Bloqueado
-                                    @endif
-                                </span>
-                            </label>
-                        </div>
-                    </form>
-
-                    @if ($accesStatus->location)
-                        <div class="mt-3">
-                            <a href="{{ route('system.queue.monitor') }}" class="text-decoration-none" target="_blank"><i
-                                    class="bi bi-display animate__animated animate__fadeIn me-2"></i>Monitoramento de Fila
-                                de Envio de E-mails</a>
-                        </div>
-                    @endif
-
-                    <div class="mt-3">
-                        <a href="{{ route('exam.list') }}" class="text-decoration-none" target="_blank">
-                            <i class="bi bi-search animate__animated animate__fadeIn me-2"></i> Detalhes
-                        </a>
-                        <span class="mx-2">|</span>
-                        {{-- Relatórios --}}
-                        <a href="{{ route('report.exportAllocationToPdf') }}" target="_blank" class="text-decoration-none">
-                            <i class="bi bi-file-earmark-pdf-fill animate__animated animate__fadeIn me-2"></i> Relatório
-                            para simples conferência
-                        </a>
-                        <span class="mx-2">|</span>
-                        <a href="{{ route('report.exportRoomsToPdf') }}" target="_blank" class="text-decoration-none">
-                            <i class="bi bi-file-earmark-pdf-fill animate__animated animate__fadeIn me-2"></i> Mural e Salas
-                            (PDF)
-                        </a>
-                        <span class="mx-2">|</span>
-                        <a href="{{ route('report.exportSignaturesSheetsToPdf') }}" target="_blank"
-                            class="text-decoration-none">
-                            <i class="bi bi-file-earmark-pdf-fill animate__animated animate__fadeIn me-2"></i> Assinaturas
-                            (PDF)
-                        </a>
-                    </div>
-                @endif
-
+                <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Alocação de Candidatos</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Local</th>
@@ -143,7 +193,8 @@
                                 <input type="time" name="exam_time" class="form-control" id="exam_time">
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Iniciar Alocação</button>
+                            <button type="submit" class="btn btn-primary"><i
+                                    class="bi bi-skip-start-circle me-2"></i>Iniciar Alocação</button>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -162,6 +213,6 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/schedule.js') }}"></script>
+    <script src="{{ asset('assets/rules/admin/schedule/create.js') }}"></script>
     <script src="{{ asset('assets/swa/locations/seetings.js') }}"></script>
 @endpush

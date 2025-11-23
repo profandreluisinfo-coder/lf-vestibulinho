@@ -5,7 +5,7 @@
 @section('dash-content')
 
 <div class="container mt-5" style="background-color: #f8f9fa; border-radius: 10px; padding: 30px;">
-    <h2 class="mb-4 border-bottom pb-2">📊 Monitoramento de Fila de E-mails</h2>
+    <h4 class="mb-4 border-bottom pb-2">📊 Monitoramento de Fila de E-mails</h4>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

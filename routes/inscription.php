@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashController,
+    UserController,
     InscriptionController,
 };
 
-use App\Http\Middleware\{NotAdmin, NoInscription, WithInscription};
+use App\Http\Middleware\{NotAdmin, IsAdmin, NoInscription, WithInscription};
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->group(function () {
@@ -51,6 +52,26 @@ Route::middleware(['auth'])->group(function () {
             });
     });
 
+
+    // ==========================
+    // 🧾 Inscrições
+    // ==========================
+    Route::middleware([IsAdmin::class])->group(function () {
+
+
+        Route::prefix('inscricoes') // OK
+            ->name('inscriptions.')
+            ->group(function () {
+
+                Route::get('/', [InscriptionController::class, 'index'])->name('index');
+                Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'getListOfPCD'])->name('pcd');
+                Route::get('/lista-geral', [InscriptionController::class, 'getListOfInscriptions'])->name('general-list');
+                Route::get('/nome-social', [InscriptionController::class, 'getListOfSocialName'])->name('social-name');
+                Route::get('/detalhes-do-candidato/{id}', [InscriptionController::class, 'getDetailsOfUser'])->name('details');
+                Route::patch('/users/{user}/clear-social-name', [UserController::class, 'clearSocialName'])->name('clearSocialName');
+                Route::patch('/users/{user}/clear-pne', [UserController::class, 'clearPne'])->name('clearPne');
+            });
+    });
     // PDF genérico
     Route::post('/comprovante-de-inscricao', [InscriptionController::class, 'pdf'])->name('pdf');
 });

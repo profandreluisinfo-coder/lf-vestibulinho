@@ -113,7 +113,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('schedule.private.settings');
+        return view('schedule.private.create');
     }
 
     /**
