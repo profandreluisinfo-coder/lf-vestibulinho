@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{
-    // DashController,
-    // AuthController,
+use App\Http\Controllers\{   
     UserController
 };
 use App\Http\Middleware\{NotAdmin, WithInscription};
@@ -13,6 +11,11 @@ use App\Http\Middleware\{NotAdmin, WithInscription};
 // 🏠 Rotas públicas
 //
 Route::middleware(['guest'])->group(function () {
+    // Login e registro padrão (necessário para Laravel/Fortify)
+    Route::get('/login', [UserController::class, 'login'])->name('login');
+    Route::post('/login', [UserController::class, 'authenticate'])->middleware('throttle:3,1');
+
+    // Route::post('/login', [UserController::class, 'authenticate'])->middleware('throttle:3,1');
     Route::get('/registrar', [UserController::class, 'register'])->name('register');
     Route::post('/registrar', [UserController::class, 'store']);
 });

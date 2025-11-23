@@ -19,16 +19,6 @@ Route::middleware(['guest'])->group(function () {
     // ====================
     Route::get('/validate/{token}', [AuthController::class, 'verify'])->name('verify');
 
-    // Login e registro padrão (necessário para Laravel/Fortify)
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'authenticate'])->middleware('throttle:3,1');
-
-    // Route::get('/registrar', [AuthController::class, 'register'])->name('register');
-    // Route::post('/registrar', [AuthController::class, 'store']);
-
-    // Login de admins
-    // Route::get('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login');
-
     // Recuperação de senha
     Route::get('/esqueci-minha-senha', [AuthController::class, 'forgotPassword'])->name('forgot.password');
     Route::post('/esqueci-minha-senha', [AuthController::class, 'forgotPasswordAction'])->middleware('throttle:3,1');

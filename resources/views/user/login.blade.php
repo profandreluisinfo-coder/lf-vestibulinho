@@ -7,10 +7,10 @@
         <meta http-equiv="Expires" content="0" />
     @endif
     <meta name="description"
-        content="Área de acesso exclusivo para administradores do {{ config('app.name') }} {{ $calendar->year }}">
+        content="Área de acesso exclusivo para candidatos do {{ config('app.name') }} {{ $calendar->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Painel Administrativo')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Área do Candidato')
 
 @section('content')
 
@@ -24,14 +24,14 @@
                         <header
                             class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
                             <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem;" aria-hidden="true"></i>
-                            <h2 class="h4 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
+                            <h2 class="h3 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
                         </header>
 
                         <div class="card-body">
                             <h1 class="h4 mb-4 text-center">
                                 <span class="d-inline-flex align-items-center title">
-                                    <i class="bi bi-person-gear me-2" aria-hidden="true"></i>
-                                    Painel Administrativo
+                                    <i class="bi bi-person-lock me-2" aria-hidden="true"></i>
+                                    Área do Candidato
                                 </span>
                             </h1>
 
@@ -44,7 +44,7 @@
                             <form id="form-login" method="POST" action="{{ route('login') }}" autocomplete="off">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="loginEmail" class="form-label">E-mail</label>
+                                    <label for="loginEmail" class="form-label required">E-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="loginEmail"
                                         value="{{ old('email') }}" required
@@ -55,9 +55,8 @@
                                         </div>
                                     @enderror
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="loginPassword" class="form-label">Senha</label>
+                                    <label for="loginPassword" class="form-label required">Senha</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="loginPassword"
                                         required autocomplete="current-password"
@@ -80,8 +79,19 @@
                                         Entrar
                                     </button>
                                 </div>
-                            </form>
 
+                                <div class="mt-3 text-center">
+                                    <a href="{{ route('forgot.password') }}" class="text-decoration-none">Esqueceu a
+                                        senha?</a>
+                                    <span aria-hidden="true">
+                                        @if ($calendar?->isInscriptionOpen())
+                                            |
+                                            <a href="{{ route('register') }}" class="text-decoration-none">Registrar
+                                                e-mail</a>
+                                        @endif
+                                    </span>
+                                </div>
+                            </form>
                         </div>
                     </article>
                 </div>
@@ -89,7 +99,7 @@
         </div>
     </main>
 
-    <footer class="mini-footer mt-auto">
+    <footer class="mini-footer">
         @include('home.mini-footer')
     </footer>
 
@@ -99,7 +109,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
 @endpush
-
 @push('scripts')
     <script src="{{ asset('assets/auth/login.js') }}"></script>
 @endpush
