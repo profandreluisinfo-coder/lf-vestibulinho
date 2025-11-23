@@ -57,7 +57,6 @@
                         <a href="{{ route('notice.index') }}" class="dropdown-item-custom">Edital</a>
                         <a href="{{ route('faq.index') }}" class="dropdown-item-custom">Registrar FAQ</a>
                         <a href="{{ route('archive.index') }}" class="dropdown-item-custom">Acervo de Provas</a>
-                        {{-- <a href="{{ route('system.index') }}" class="dropdown-item-custom">Redefinir Dados</a> --}}
                     </div>
                 </div>
             </div>

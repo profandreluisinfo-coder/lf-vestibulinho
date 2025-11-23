@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\OtherRequest;
 use Illuminate\Support\Facades\Log;
@@ -61,28 +62,17 @@ class InscriptionController extends Controller
         return view('inscriptions.private.profile', compact('user', 'exam', 'examResult', 'call'));
     }
 
-    /**
-     * Exibe a lista de candidatos inscritos (inclusive candidatos com deficiência).
-     *
-     * @return View
-     */
     public function index(Request $request): View
     {
         $search = $request->get('search');
-
         $users = User::whereHas('inscription')
             ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
-            ->select('users.*')
-            ->when($search, function ($query, $search) {
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')->select('users.*')->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('users.name', 'like', "%{$search}%")
-                        ->orWhere('users.cpf', 'like', "%{$search}%")
-                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
+                    $q->where('users.name', 'like', "%{$search}%")->orWhere('users.cpf', 'like', "%{$search}%")->orWhere('inscriptions.id', 'like', "%{$search}%");
                 });
-            })
-            ->orderBy('inscriptions.id', 'asc')
-            ->paginate(15);
+            })->orderBy('inscriptions.id', 'asc')
+            ->paginate(10);
 
         view()->share('users', $users);
 
@@ -526,5 +516,31 @@ class InscriptionController extends Controller
         }
 
         return redirect()->route('errors.404');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->get('search');
+
+        $users = User::whereHas('inscription')
+            ->with('inscription')
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->select('users.*')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('users.name', 'like', "%{$search}%")
+                        ->orWhere('users.cpf', 'like', "%{$search}%")
+                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('inscriptions.id', 'asc')
+            ->get();
+
+        $pdf = Pdf::loadView('pdf.inscriptions-list', [
+            'users' => $users,
+            'search' => $search,
+        ]);
+
+        return $pdf->download('inscricoes.pdf');
     }
 }

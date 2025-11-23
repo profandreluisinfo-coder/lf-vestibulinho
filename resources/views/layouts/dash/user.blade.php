@@ -73,8 +73,8 @@
                                     <form action="{{ route('logout') }}" method="POST" class="m-0">
                                         @csrf
                                         <button class="dropdown-item d-flex align-items-center gap-2" type="submit">
-                                            <i class="bi bi-box-arrow-right text-secondary"></i>
-                                            <span>Sair</span>
+                                            <i class="bi bi-box-arrow-right text-danger"></i>
+                                            <span class="text-danger">Sair</span>
                                         </button>
                                     </form>
                                 </li>
@@ -116,7 +116,7 @@
                                     <label for="currentPassword" class="form-label">Senha atual</label>
                                     <input type="password" name="current_password"
                                         class="form-control @error('current_password') is-invalid @enderror"
-                                        id="currentPassword" placeholder="••••••••">
+                                        id="currentPassword">
                                     @error('current_password')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -127,7 +127,7 @@
                                     <label for="newPassword" class="form-label">Nova senha</label>
                                     <input type="password" name="new_password"
                                         class="form-control @error('new_password') is-invalid @enderror" id="newPassword"
-                                        placeholder="••••••••">
+                                    >
                                     @error('new_password')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -138,7 +138,7 @@
                                     <label for="repeatPassword" class="form-label">Repetir senha</label>
                                     <input type="password" name="password_confirmation"
                                         class="form-control @error('password_confirmation') is-invalid @enderror"
-                                        id="repeatPassword" placeholder="••••••••">
+                                        id="repeatPassword">
                                     @error('password_confirmation')
                                         <div class="invalid-feedback">
                                             {{ $message }}
