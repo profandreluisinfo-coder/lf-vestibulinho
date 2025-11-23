@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {    
@@ -64,5 +65,10 @@ class AdminController extends Controller
             'sexos' => $sexos,
             'sexoPorCurso' => $sexoPorCurso
         ]);
+    }
+
+    public function login(): View
+    {
+        return view('admin.login');
     }
 }

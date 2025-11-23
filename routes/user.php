@@ -3,10 +3,19 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
-    DashController,
+    // DashController,
+    // AuthController,
     UserController
 };
 use App\Http\Middleware\{NotAdmin, WithInscription};
+
+//
+// 🏠 Rotas públicas
+//
+Route::middleware(['guest'])->group(function () {
+    Route::get('/registrar', [UserController::class, 'register'])->name('register');
+    Route::post('/registrar', [UserController::class, 'store']);
+});
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->group(function () {
@@ -25,5 +34,4 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/chamada/pdf', [UserController::class, 'generateCallPdf'])->name('call.pdf');
             });
     });
-
 });

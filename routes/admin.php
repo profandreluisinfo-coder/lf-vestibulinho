@@ -22,6 +22,14 @@ use App\Http\Controllers\{
     QueueMonitorController
 };
 
+//
+// 🏠 Rotas públicas
+//
+Route::middleware(['guest'])->group(function () {
+    // Login de admins
+    Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
+});
+
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
 
