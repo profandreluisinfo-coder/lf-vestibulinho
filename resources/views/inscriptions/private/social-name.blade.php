@@ -26,7 +26,7 @@
         @endif
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
-                <caption>{{ config('app.name') }} {{ config('app.year') }} - Lista de Candidatos com Nome Social</caption>
+                <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Candidatos com Nome Social</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Inscrição</th>

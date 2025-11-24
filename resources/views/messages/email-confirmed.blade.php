@@ -7,10 +7,10 @@
     <meta http-equiv="Expires" content="0" />
   @endif
   <meta name="description"
-    content="Confirmação de e-mail para candidatos do {{ config('app.name') }} {{ config('app.year') }}">
+    content="Confirmação de e-mail para candidatos do {{ config('app.name') }} {{ $calendar->year }}">
 @endpush
 
-@section('title', config('app.name') . ' ' . config('app.year') . ' | Registro Confirmado')
+@section('title', config('app.name') . ' ' . $calendar->year . ' | Registro Confirmado')
 
 @section('body-class', 'bg-light')
 
@@ -25,7 +25,7 @@
           <article class="card shadow-sm">
             <header class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
               <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem;" aria-hidden="true"></i>
-              <h2 class="h3 text-center">{{ config('app.name') }} {{ config('app.year') }}</h2>
+              <h2 class="h3 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
             </header>
             <div class="card-body text-center">
               <h1 class="h4 mb-4 text-center">

@@ -1,6 +1,6 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . config('app.year') . ' | Convocação para Matrícula')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Convocação para Matrícula')
 
 @push('datatable-styles')
     <!-- datatables -->

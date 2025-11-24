@@ -1,11 +1,11 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . config('app.year') . ' | Monitoramento de Fila de E-mails')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Monitoramento de Fila de E-mails')
 
 @section('dash-content')
 
 <div class="container mt-5" style="background-color: #f8f9fa; border-radius: 10px; padding: 30px;">
-    <h4 class="mb-4 border-bottom pb-2">📊 Monitoramento de Fila de E-mails</h4>
+    <h5 class="mb-4 border-bottom pb-2">📊 Monitoramento de Fila de E-mails</h5>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -57,7 +57,7 @@
 
     <hr class="my-5">
 
-    <h4 class="mb-3">📋 Últimos Jobs com Falha</h4>
+    <h5 class="mb-3">📋 Últimos Jobs com Falha</h5>
     @if($failedJobs->count() === 0)
         <p class="text-muted">Nenhum job com falha recente 🎉</p>
     @else

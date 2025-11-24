@@ -35,7 +35,7 @@
                 <div class="table-responsive mt-3 calls" style="max-height: 500px; overflow-y: auto;">
                   <table id="calls-{{ $callNumber }}" class="table-sm table-striped mb-0 table caption-top">
                     <caption class="bg-warning text-light px-4">
-                      <strong>{{ config('app.name') }} {{ config('app.year') }} - Chamada nº {{ $callNumber }}</strong>
+                      <strong>{{ config('app.name') }} {{ $calendar->year }} - Chamada nº {{ $callNumber }}</strong>
                     </caption>
                     <thead class="table-success">
                       <tr>

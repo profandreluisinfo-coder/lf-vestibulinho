@@ -63,7 +63,7 @@
     @foreach ($rooms as $room => $candidates)
       <div class="header">
         {{-- <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola"> --}}
-        <h3>{{ config('app.name') }} {{ config('app.year') }}</h3>
+        <h3>{{ config('app.name') }} {{ $calendar->year }}</h3>
         <h3>LOCAL: {{ $location }}</h3>
         <h4>SALA: {{ $room }}</h4>
       </div>

@@ -26,7 +26,7 @@
                         <tr>
                             <td>
                                 <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
-                                    Edital {{ config('app.year') }}.pdf
+                                    Edital {{ $calendar->year }}.pdf
                                 </a>
                             </td>
                             <td><span

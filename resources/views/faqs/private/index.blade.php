@@ -1,6 +1,6 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . config('app.year') . ' | Nova FaQ')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Nova FaQ')
 
 @push('datatable-styles')
     <!-- datatables -->

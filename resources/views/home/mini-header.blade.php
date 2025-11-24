@@ -4,6 +4,6 @@
     </div>
 
     <h2 class="text-title mb-1">
-        {{ config('app.name') }} {{ config('app.year') }}
+        {{ config('app.name') }} {{ $calendar->year }}
     </h2>
 </div>

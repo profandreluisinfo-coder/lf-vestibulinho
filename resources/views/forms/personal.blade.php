@@ -1,6 +1,6 @@
 @extends('layouts.forms.master')
 
-@section('page-title', ' Inscrição | Dados Pessoais' . ' | ' . config('app.name') . ' ' . config('app.year'))
+@section('page-title', ' Inscrição | Dados Pessoais' . ' | ' . config('app.name') . ' ' . $calendar->year)
 
 @section('forms')
 

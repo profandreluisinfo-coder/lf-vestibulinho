@@ -285,4 +285,16 @@ class Calendar extends Model
 
         return now()->gt($this->enrollment_end->endOfDay());
     }
+
+    /**
+     * Retorna o ano do calendário ativo ou do calendário mais recente.
+     *
+     * @return int|null
+     */
+    public static function getYear(): ?int
+    {
+        $calendar = self::getActive() ?? self::orderBy('year', 'desc')->first();
+
+        return $calendar ? $calendar->year : null;
+    }
 }

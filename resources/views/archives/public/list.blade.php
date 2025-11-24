@@ -4,7 +4,7 @@
     <meta name="description" content="Área de provas anteriores do {{ config('app.name') }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . config('app.year') . ' | Perguntas Frequentes')
+@section('page-title', config('app.name') . ' | Provas Anteriores')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/archives/styles.css') }}">

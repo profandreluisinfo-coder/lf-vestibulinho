@@ -4,7 +4,7 @@
     <meta name="description" content="Classificação geral do {{ config('app.name') }} {{ $calendar?->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Classificação Geral')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Classificação Geral')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">
@@ -19,13 +19,13 @@
     <section id="faq" class="bg-light my-5 py-5">
         <div class="container">
             <h2 class="section-title text-center">
-                {{ config('app.name') }} {{ config('app.year') }} | Classificação Geral
+                {{ config('app.name') }} {{ $calendar->year }} | Classificação Geral
             </h2>
 
             <div class="row">
 
                 <div class="col-lg-8 mx-auto mb-3 border-bottom">
-                    <p>A Escola Municipal Dr. Leandro Franceschini, em conformidade com o item 5.10 do <a href="{{ asset('storage/' . $notice->file) }}" class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do Processo Seletivo {{ config('app.year') }}, torna pública a classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a menor idade, conforme disposto no item 5.11 do mesmo Edital.</p>
+                    <p>A Escola Municipal Dr. Leandro Franceschini, em conformidade com o item 5.10 do <a href="{{ asset('storage/' . $notice->file) }}" class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do Processo Seletivo {{ $calendar->year }}, torna pública a classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a menor idade, conforme disposto no item 5.11 do mesmo Edital.</p>
                 </div>
                 <div class="col-lg-8 mx-auto">
 
@@ -60,7 +60,7 @@
                     {{-- <div class="table-responsive mt-3"> --}}
                     <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                         <table id="classification" class="table-sm table-striped mb-0 table caption-top">
-                            <caption>{{ config('app.name') }} {{ config('app.year') }} - Lista de Classificação Geral
+                            <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Classificação Geral
                             </caption>
 
                             <thead class="table-success">

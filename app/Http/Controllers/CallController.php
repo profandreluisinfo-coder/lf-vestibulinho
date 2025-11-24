@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendCallNotificationJob;
+use App\Models\Calendar;
 use Illuminate\Support\Facades\DB;
 
 
@@ -245,10 +246,16 @@ class CallController extends Controller
      */
     public function finalize(CallList $callList, MailService $mailService)
     {
+        // Obtém o ano do calendário atual
+        $actual_calendar = Calendar::getYear();
+
+        // Atualiza o status da lista de chamadas para 'completed'
         $callList->update(['status' => 'completed']);
 
+        // Carrega todas as chamadas associadas à lista de chamadas, incluindo os dados do usuário
         $calls = $callList->calls()->with('examResult.inscription.user')->get();
 
+        // Envia e-mails de convocação para os usuários associados às chamadas
         foreach ($calls as $call) {
             $user = $call->examResult->inscription->user;
 
@@ -259,7 +266,7 @@ class CallController extends Controller
 
             $subject = sprintf(
                 'CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s E.M. DR. LEANDRO FRANCESCHINI — CHAMADA %d',
-                config('app.year'),
+                $actual_calendar,
                 $callList->number
             );
 
@@ -279,7 +286,7 @@ class CallController extends Controller
             );
         }
 
-        return back()->with('success', 'Chamada finalizada! Os convocados foram notificados por e-mail.');
+        return back()->with('success', 'Chamada finalizada! Os convocados serão notificados por e-mail.');
     }
 
     /**

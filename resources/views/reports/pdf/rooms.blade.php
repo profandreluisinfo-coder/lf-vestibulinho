@@ -44,7 +44,7 @@
     @foreach($allocations as $location => $rooms)
         @foreach($rooms as $room => $candidates)
             <div class="sala">
-                <div class="title">{{ config('app.name') }} {{ config('app.year') }}</div>
+                <div class="title">{{ config('app.name') }} {{ $calendar->year }}</div>
 
                 <div class="header">
                     <strong>LOCAL:</strong> {{ $location }} -
