@@ -30,7 +30,7 @@
     <tbody>
         @foreach($users as $user)
         <tr>
-            <td>{{ $user->inscription?->id }}</td>
+            <td style="text-align: center;">{{ $user->inscription?->id }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->cpf }}</td>
         </tr>

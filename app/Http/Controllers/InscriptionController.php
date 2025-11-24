@@ -26,6 +26,16 @@ use App\Http\Requests\CertificateRequest;
 
 class InscriptionController extends Controller
 {
+    /**
+     * Exibe a página com os dados da inscrição do usuário atual.
+     *
+     * Caso o usuário não possua inscrição ativa, redireciona para a página
+     * com um aviso.
+     *
+     * Carrega os dados necessários para a exibição correta da página.
+     *
+     * @return \Illuminate\View\View
+     */
     public function profile()
     {
         $user = auth()->user();
@@ -62,21 +72,81 @@ class InscriptionController extends Controller
         return view('inscriptions.private.profile', compact('user', 'exam', 'examResult', 'call'));
     }
 
-    public function index(Request $request): View
+    /**
+     * Exibe a lista de candidatos com inscrição ativa.
+     *
+     * @return View
+     */
+    public function index(): View
     {
-        $search = $request->get('search');
-        $users = User::whereHas('inscription')
-            ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')->select('users.*')->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('users.name', 'like', "%{$search}%")->orWhere('users.cpf', 'like', "%{$search}%")->orWhere('inscriptions.id', 'like', "%{$search}%");
-                });
-            })->orderBy('inscriptions.id', 'asc')
-            ->paginate(10);
-
-        view()->share('users', $users);
-
+        // Agora apenas retorna a view, os dados virão via AJAX
         return view('inscriptions.private.index');
+    }
+
+    /**
+     * Retorna os dados paginados para o DataTables via AJAX
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getInscriptionsData(Request $request): JsonResponse
+    {
+        // Captura os parâmetros do DataTables
+        $draw = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $searchValue = $request->input('search.value');
+        $orderColumnIndex = $request->input('order.0.column', 0);
+        $orderDir = $request->input('order.0.dir', 'asc');
+
+        // Mapeamento de colunas para ordenação
+        $columns = ['inscriptions.id', 'users.name', 'users.cpf'];
+        $orderColumn = $columns[$orderColumnIndex] ?? 'inscriptions.id';
+
+        // Query base
+        $query = User::whereHas('inscription')
+            ->with('inscription')
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->select('users.*', 'inscriptions.id as inscription_id');
+
+        // Aplicar busca se houver
+        if (!empty($searchValue)) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('users.name', 'like', "%{$searchValue}%")
+                    ->orWhere('users.cpf', 'like', "%{$searchValue}%")
+                    ->orWhere('inscriptions.id', 'like', "%{$searchValue}%");
+            });
+        }
+
+        // Total de registros (sem filtro)
+        $totalRecords = User::whereHas('inscription')->count();
+
+        // Total de registros filtrados
+        $totalFiltered = $query->count();
+
+        // Aplicar ordenação e paginação
+        $users = $query->orderBy($orderColumn, $orderDir)
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        // Formatar dados para o DataTables
+        $data = $users->map(function ($user) {
+            return [
+                'inscription_id' => $user->inscription?->id ?? $user->inscription_id,
+                'name' => $user->name,
+                'cpf' => $user->cpf,
+                'user_id' => $user->id,
+                'actions' => view('inscriptions.private.partials.inscription-actions', compact('user'))->render()
+            ];
+        });
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -86,14 +156,75 @@ class InscriptionController extends Controller
      */
     public function getListOfPCD(): View
     {
-        $users = User::where('pne', true)
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // caso queira dados da inscrição no view
+        // Não carrega mais os dados aqui, apenas retorna a view vazia
+        return view('inscriptions.private.pcd');
+    }
+
+    /**
+     * Retorna os dados paginados para o DataTables via AJAX
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getPCDData(Request $request): JsonResponse
+    {
+        // Captura os parâmetros do DataTables
+        $draw = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $searchValue = $request->input('search.value');
+        $orderColumnIndex = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'asc');
+
+        // Mapeamento de colunas para ordenação
+        $columns = ['id', 'name', 'accessibility'];
+        $orderColumn = $columns[$orderColumnIndex] ?? 'id';
+
+        // Query base
+        $query = User::where('pne', true)
+            ->whereHas('inscription')
+            ->with(['inscription', 'user_detail']);
+
+        // Aplicar busca se houver
+        if (!empty($searchValue)) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('name', 'like', "%{$searchValue}%")
+                    ->orWhere('cpf', 'like', "%{$searchValue}%")
+                    ->orWhereHas('inscription', function ($subQ) use ($searchValue) {
+                        $subQ->where('id', 'like', "%{$searchValue}%");
+                    });
+            });
+        }
+
+        // Total de registros (sem filtro)
+        $totalRecords = User::where('pne', true)->whereHas('inscription')->count();
+
+        // Total de registros filtrados
+        $totalFiltered = $query->count();
+
+        // Aplicar ordenação e paginação
+        $users = $query->orderBy($orderColumn, $orderDir)
+            ->skip($start)
+            ->take($length)
             ->get();
 
-        view()->share('users', $users);
+        // Formatar dados para o DataTables
+        $data = $users->map(function ($user) {
+            return [
+                'inscription_id' => $user->inscription?->id,
+                'name' => $user->name,
+                'accessibility' => $user->user_detail?->accessibility ?? '-',
+                'user_id' => $user->id,
+                'actions' => view('inscriptions.private.partials.pcd-actions', compact('user'))->render()
+            ];
+        });
 
-        return view('inscriptions.private.pcd');
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -105,7 +236,7 @@ class InscriptionController extends Controller
     {
         $users = User::whereNotNull('social_name')
             ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // caso queira dados da inscrição no view
+            ->with('inscription')     // dados da inscrição na view
             ->get();
 
         view()->share('users', $users);
@@ -518,6 +649,12 @@ class InscriptionController extends Controller
         return redirect()->route('errors.404');
     }
 
+    /**
+     * Exporta a lista de inscrições em formato PDF.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function exportPdf(Request $request)
     {
         $search = $request->get('search');
@@ -536,6 +673,7 @@ class InscriptionController extends Controller
             ->orderBy('inscriptions.id', 'asc')
             ->get();
 
+        // código de geração de PDF...
         $pdf = Pdf::loadView('pdf.inscriptions-list', [
             'users' => $users,
             'search' => $search,

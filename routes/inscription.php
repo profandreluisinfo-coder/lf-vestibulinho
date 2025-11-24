@@ -57,9 +57,16 @@ Route::middleware(['auth'])->group(function () {
     // 🧾 Inscrições
     // ==========================
     Route::middleware([IsAdmin::class])->group(function () {
+
         Route::prefix('inscricoes') // OK
             ->name('inscriptions.')
             ->group(function () {
+
+                Route::post('/inscriptions/data', [InscriptionController::class, 'getInscriptionsData'])
+                    ->name('getInscriptionsData');
+
+                Route::post('/pcd-data', [InscriptionController::class, 'getPCDData'])
+                    ->name('getPCDData');
 
                 Route::get('/', [InscriptionController::class, 'index'])->name('index');
 

@@ -2,51 +2,28 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Inscrições')
 
-@section('dash-content')
+@push('datatable-styles')
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+@endpush
 
+@section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0"><i class="bi bi-people me-2"></i>Candidatos Inscritos</h4>
         </div>
-        {{-- Formulário de Busca --}}
-        <div class="card shadow-sm mb-4">
-
-            <div class="card-body">
-                <form method="GET" action="{{ route('inscriptions.index') }}" class="row g-3">
-                    <div class="col-md-10">
-                        <div class="input-group"> <span class="input-group-text bg-light"> <i class="bi bi-search"></i>
-                            </span> <input type="text" name="search" class="form-control"
-                                placeholder="Buscar por inscrição, nome ou CPF..." value="{{ request('search') }}"> </div>
-                    </div>
-                    <div class="col-md-2 d-flex gap-2"> <button type="submit" class="btn btn-primary flex-fill"> <i
-                                class="bi bi-search me-1"></i>Buscar </button>
-                        @if (request('search'))
-                            <a href="{{ route('inscriptions.index') }}" class="btn btn-outline-secondary"
-                                title="Limpar filtros"> <i class="bi bi-x-lg"></i> </a>
-                        @endif
-                    </div>
-                </form>
-            </div>
-
-        </div>
 
         <div class="d-flex gap-2 mb-4">
-            <a href="{{ route('inscriptions.pdf', ['search' => request('search')]) }}"
-                class="btn btn-danger d-flex align-items-center justify-content-center" id="pdfButton" target="_blank">
+            <button id="pdfButton" class="btn btn-danger d-flex align-items-center justify-content-center">
                 <i class="bi bi-filetype-pdf me-1"></i>
-                <span>Gerar PDF</span>
-            </a>
-
+                <span>Gerar PDF (Todos)</span>
+            </button>
         </div>
 
         <div class="table-responsive">
-
             <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
-                <caption> Lista Geral de Inscritos
-                    @if (request('search'))
-                        - Filtrando por: "{{ request('search') }}"
-                    @endif
-                </caption>
+                <caption>Lista Geral de Inscritos</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th>Inscrição</th>
@@ -56,59 +33,143 @@
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                    @forelse ($users as $user)
-                        <tr>
-                            <th scope="row"> {{ $user->inscription?->id }} </th>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->cpf }}</td>
-                            <td> <a href="{{ route('inscriptions.details', Crypt::encrypt($user->id)) }}"
-                                    class="text-decoration-none"> <i
-                                        class="bi bi-search animate__animated animate__fadeIn me-2" title="Visualizar"></i>
-                                </a> </td>
-                    </tr> @empty <tr>
-                            <td colspan="4" class="text-center py-4"> <i
-                                    class="bi bi-inbox fs-1 text-muted d-block mb-2"></i>
-                                @if (request('search'))
-                                    Nenhum inscrito encontrado para "{{ request('search') }}"
-                                @else
-                                    Nenhum inscrito encontrado
-                                @endif
-                            </td>
-                        </tr>
-                    @endforelse
+                    <!-- Os dados serão carregados via AJAX -->
                 </tbody>
             </table>
         </div>
-        {{-- Links de paginação --}}
-        @if ($users->hasPages())
-            <div class="d-flex justify-content-center mt-4"> {{ $users->appends(request()->query())->links() }} </div>
-        @endif
     </div>
 @endsection
 
+@push('plugins')
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.colVis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+@endpush
+
 @push('scripts')
     <script>
-        document.getElementById('pdfButton').addEventListener('click', function(event) {
-            const btn = this;
+        $(document).ready(function() {
+            var table = $('#subscribers').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('inscriptions.getInscriptionsData') }}",
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                },
+                columns: [{
+                        data: 'inscription_id',
+                        name: 'inscription_id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'cpf',
+                        name: 'cpf'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center no-export'
+                    }
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
+                    processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Carregando...</span>'
+                },
+                responsive: true,
+                autoWidth: false,
+                lengthChange: true,
+                pageLength: 10,
+                lengthMenu: [
+                    [10, 25, 50, 100, 500], // Remova o -1
+                    [10, 25, 50, 100, 500]
+                ],
+                ordering: true,
+                order: [
+                    [0, 'asc']
+                ], // Ordena por inscrição (primeira coluna)
+                info: true,
+                dom: 'lBfrtip',
+                buttons: [{
+                        extend: 'excel',
+                        text: '<i class="bi bi-file-earmark-excel me-1 text-white"></i> Excel',
+                        className: 'btn btn-sm btn-success',
+                        exportOptions: {
+                            columns: ':visible:not(.no-export)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="bi bi-file-earmark-pdf me-1 text-white"></i> PDF',
+                        className: 'btn btn-sm btn-danger',
+                        exportOptions: {
+                            columns: ':visible:not(.no-export)'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="bi bi-printer me-1 text-white"></i> Imprimir',
+                        className: 'btn btn-sm btn-primary',
+                        exportOptions: {
+                            columns: ':visible:not(.no-export)'
+                        }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<i class="bi bi-eye me-1"></i> Colunas',
+                        className: 'btn btn-sm btn-secondary'
+                    }
+                ]
+            });
 
-            btn.classList.add('disabled');
-            btn.style.pointerEvents = 'none';
+            table.buttons().container().appendTo('#subscribers_wrapper .col-md-6:eq(0)');
 
-            btn.innerHTML = `
-        <span class="spinner-border spinner-border-sm me-2"></span>
-        Gerando PDF, aguarde...
-    `;
+            // Botão de gerar PDF com todos os registros
+            $('#pdfButton').on('click', function() {
+                const btn = $(this);
+                const searchValue = table.search(); // Pega o filtro atual do DataTables
 
-            // Após alguns segundos, volta ao normal (PDF já estará baixando)
-            setTimeout(() => {
-                btn.classList.remove('disabled');
-                btn.style.pointerEvents = 'auto';
+                btn.addClass('disabled').css('pointer-events', 'none');
+                btn.html(`
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Gerando PDF, aguarde...
+                `);
 
-                btn.innerHTML = `
-            <i class="bi bi-filetype-pdf me-1"></i>
-            <span>PDF</span>
-        `;
-            }, 3000); // 3 segundos é ideal
+                // Monta a URL com o filtro de busca (se houver)
+                let pdfUrl = "{{ route('inscriptions.pdf') }}";
+                if (searchValue) {
+                    pdfUrl += '?search=' + encodeURIComponent(searchValue);
+                }
+
+                // Abre o PDF em nova aba
+                window.open(pdfUrl, '_blank');
+
+                // Volta ao estado normal após 3 segundos
+                setTimeout(() => {
+                    btn.removeClass('disabled').css('pointer-events', 'auto');
+                    btn.html(`
+                        <i class="bi bi-filetype-pdf me-1"></i>
+                        <span>Gerar PDF (Todos)</span>
+                    `);
+                }, 3000);
+            });
         });
     </script>
 @endpush
