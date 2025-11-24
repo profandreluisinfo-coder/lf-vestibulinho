@@ -4,7 +4,7 @@
     --body-bg: #F2F2F2;
 
     /* Navbar */
-    --navbar-bg: #000080;
+    --navbar-bg: #0c255a;
     --navbar-text: #fff;
     --navbar-active: #ffecb5;
     --navbar-hover: #fff9e6;
@@ -45,7 +45,8 @@ body {
 /* ==================== NAVBAR ==================== */
 /* Cor customizada da navbar */
 .navbar {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    background-color: var(--navbar-bg) !important;
+    color: var(--navbar-text) !important;
 }
 
 /* Ícones brancos */

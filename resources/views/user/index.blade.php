@@ -23,9 +23,9 @@
         @if (!($users->isEmpty()))
         <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <div class="fw-semibold">
-                <i class="bi bi-info-circle me-2"></i>
-                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte do e-mail, "sim", "não" ou insira uma data.
+            <div class="fw-semibold d-flex align-items-center">
+                <i class="bi bi-info-circle me-2 fs-5"></i>
+                <span class="text-muted">Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte do e-mail, "sim" ou "não".</span>
             </div>
         </div>
         @endif
@@ -37,7 +37,7 @@
                     <tr>
                         <th>E-mail</th>
                         <th>E-mail Verificado?</th>
-                        <th>Último Acesso</th>
+                        {{-- <th>Último Acesso</th> --}}
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -49,11 +49,11 @@
                             <td><span
                                     class="badge bg-{{ $user->email_verified_at ? 'success' : 'danger' }}">{{ $user->email_verified_at ? 'SIM' : 'NÃO' }}
                                 </span></td>
-                            <td>{{ \Carbon\Carbon::parse($user->last_login_at)->format('d/m/Y H:i:s') }}</td>
+                            {{-- <td>{{ \Carbon\Carbon::parse($user->last_login_at)->format('d/m/Y H:i:s') }}</td> --}}
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3">Nenhum registro encontrado</td>
+                            <td colspan="2">Nenhum registro encontrado</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -90,10 +90,10 @@
                 responsive: true,
                 autoWidth: true,
                 lengthChange: true,
-                pageLength: 10,
+                pageLength: 25,
                 lengthMenu: [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "Tudo"]
+                    [10, 25, 50, 100, 500],
+                    [10, 25, 50, 100, 500]
                 ],
                 ordering: true,
                 info: true,

@@ -22,8 +22,8 @@
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
                 <caption>Pessoas com Deficiência</caption>
                 <thead class="table-success text-center">
                     <tr>
@@ -91,8 +91,8 @@
                 lengthChange: true,
                 pageLength: 25,
                 lengthMenu: [
-                    [10, 25, 50, 100],
-                    [10, 25, 50, 100]
+                    [10, 25, 50, 100, 500],
+                    [10, 25, 50, 100, 500]
                 ],
                 ordering: true,
                 info: true,

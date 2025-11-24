@@ -32,7 +32,7 @@
 <body>
 
     {{-- Topbar --}}
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top " style="background-color: #1a1a1a;">
+    <nav class="navbar navbar-expand-lg shadow-sm fixed-top navbar-dark">
         <div class="container-fluid px-3">
             {{-- Logo/Brand --}}
             <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="{{ route('home') ?? '/' }}">
@@ -45,7 +45,7 @@
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon text-light"></span>
             </button>
 
             {{-- Navbar content --}}

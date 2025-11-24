@@ -93,8 +93,8 @@
                 lengthChange: true,
                 pageLength: 25,
                 lengthMenu: [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "Tudo"]
+                    [10, 25, 50, 100, 500],
+                    [10, 25, 50, 100, 500]
                 ],
                 ordering: true,
                 info: true,

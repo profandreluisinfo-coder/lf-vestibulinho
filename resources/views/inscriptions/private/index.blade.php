@@ -14,6 +14,15 @@
             <h4 class="mb-0"><i class="bi bi-people me-2"></i>Candidatos Inscritos</h4>
         </div>
 
+        <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="fw-semibold">
+                <i class="bi bi-info-circle me-2"></i>
+                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do
+                candidato ou do CPF.
+            </div>
+        </div>
+
         <div class="d-flex gap-2 mb-4">
             <button id="pdfButton" class="btn btn-danger d-flex align-items-center justify-content-center">
                 <i class="bi bi-filetype-pdf me-1"></i>
@@ -21,8 +30,8 @@
             </button>
         </div>
 
-        <div class="table-responsive">
-            <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
                 <caption>Lista Geral de Inscritos</caption>
                 <thead class="table-success text-center">
                     <tr>
@@ -96,9 +105,9 @@
                 responsive: true,
                 autoWidth: false,
                 lengthChange: true,
-                pageLength: 10,
+                pageLength: 25,
                 lengthMenu: [
-                    [10, 25, 50, 100, 500], // Remova o -1
+                    [10, 25, 50, 100, 500],
                     [10, 25, 50, 100, 500]
                 ],
                 ordering: true,

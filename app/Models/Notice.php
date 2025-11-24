@@ -7,13 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notice extends Model
 {
-    protected $fillable = [
-        'file',
-        'status',
-        'user_id',
-    ];
+    protected $fillable = ['file', 'status', 'user_id'];
 
-    // 🔹 Limpa o cache automaticamente quando salvar ou excluir
+    /**
+     * Scope: avisos ativos
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+
+    /**
+     * Verifica se existe algum aviso ativo
+     */
+    public static function hasActive()
+    {
+        return self::active()->exists();
+    }
+
+    // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {
         static::saved(fn() => Cache::forget('global_notice'));

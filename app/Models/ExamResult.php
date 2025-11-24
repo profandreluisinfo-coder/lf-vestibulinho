@@ -20,6 +20,26 @@ class ExamResult extends Model
 
     /*
     |--------------------------------------------------------------------------
+    | Verificar se ExamResult não está vazio (sem registros)
+    |--------------------------------------------------------------------------
+    */
+    public static function hasRecords(): bool
+    {
+        return self::exists();
+    }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Verificar se o campo score de ExamResult não está vazio (sem registros com score definido)
+    |--------------------------------------------------------------------------
+    */
+    public static function hasScores(): bool
+    {
+        return self::whereNotNull('score')->exists();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Relações principais
     |--------------------------------------------------------------------------
     */

@@ -138,7 +138,7 @@
                 </div>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit">
+                    <button type="submit" class="text-danger">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Sair</span>
                     </button>
