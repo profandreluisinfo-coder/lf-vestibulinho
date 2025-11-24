@@ -14,7 +14,7 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h4>
+            <h5 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h5>
             @if (!empty($countResults))
                 <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewCall">
                     <i class="bi bi-plus-circle me-1"></i> Nova Chamada

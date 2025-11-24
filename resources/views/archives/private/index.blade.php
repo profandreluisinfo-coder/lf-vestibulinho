@@ -6,7 +6,7 @@
 
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h4>
+    <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h5>
     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setFile">
       <i class="bi bi-plus-circle me-1"></i> Novo Arquivo
     </a>

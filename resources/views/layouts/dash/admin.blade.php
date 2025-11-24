@@ -192,7 +192,7 @@
         </div>
     </header>
     <!-- Conteúdo -->
-    <main class="main-content">
+    <main class="main-content py-5">
         @yield('dash-content')
 
         {{-- Modal Alterar Senha --}}

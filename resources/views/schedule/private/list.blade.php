@@ -6,7 +6,7 @@
 
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0"><i class="bi bi-card-list me-2"></i>Alocação de Candidatos por Sala</h4>
+    <h5 class="mb-0"><i class="bi bi-card-list me-2"></i>Alocação de Candidatos por Sala</h5>
   </div>
 
   <div class="accordion" id="accordionCandidates">

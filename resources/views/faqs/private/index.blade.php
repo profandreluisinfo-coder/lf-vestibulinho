@@ -19,7 +19,7 @@
 @section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h4>
+            <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
                 <i class="bi bi-plus-circle me-2"></i> Nova
             </a>

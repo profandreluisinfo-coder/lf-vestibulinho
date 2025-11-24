@@ -5,9 +5,9 @@
 @section('dash-content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0">
+        <h5 class="mb-0">
             <i class="bi bi-calendar4-week me-2"></i>Calendário do Processo Seletivo
-        </h4>
+        </h5>
 
         @php
             $calendar = \App\Models\Calendar::first();

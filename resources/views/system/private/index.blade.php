@@ -6,7 +6,7 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-database-dash me-2"></i>Redefinir Dados do Sistema</h4>
+            <h5 class="mb-0"><i class="bi bi-database-dash me-2"></i>Redefinir Dados do Sistema</h5>
         </div>
 
         <div class="card border-danger shadow-sm">

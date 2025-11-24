@@ -6,7 +6,7 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital do Processo Seletivo</h4>
+            <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital do Processo Seletivo</h5>
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFile">
                 <i class="bi bi-plus-circle me-1"></i> Upload de Edital
             </a>

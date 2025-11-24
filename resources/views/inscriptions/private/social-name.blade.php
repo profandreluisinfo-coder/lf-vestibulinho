@@ -13,13 +13,13 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-person me-2"></i>Candidatos com Nome Social</h4>
+            <h5 class="mb-0"><i class="bi bi-person me-2"></i>Candidatos com Nome Social</h5>
         </div>
         @if (!($users->isEmpty()))
         <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <div class="fw-semibold">
-                <i class="bi bi-info-circle me-2"></i>
+            <div class="d-flex align-items-center fw-semibold">
+                <i class="bi bi-info-circle fs-5 me-2"></i>
                 Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do candidato ou do CPF.
             </div>
         </div>
