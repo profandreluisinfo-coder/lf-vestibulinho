@@ -57,7 +57,7 @@ class InscriptionController extends Controller
         $examResult   = $inscription->exam_result;
         $examLocation = $examResult?->examLocation;
 
-        $exam = $examLocation ? [
+        /*$exam = $examLocation ? [
             'location_name' => $examLocation->name,
             'address'       => $examLocation->address,
             'room_number'   => $examResult->room_number,
@@ -65,7 +65,9 @@ class InscriptionController extends Controller
             'exam_time'     => $examResult->exam_time,
             'user_id'       => $user->id,
             'pne'           => $user->pne,
-        ] : null;
+        ] : null; */
+        
+        $exam = $examResult; // O EXAM REAL — o model completo
 
         $call = $examResult?->completedCall;
 

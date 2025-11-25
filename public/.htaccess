@@ -23,3 +23,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+# RewriteCond %{HTTP_HOST} ^vestibulinho\.leandrofranceschini\.com\.br$ [OR]
+# RewriteCond %{HTTP_HOST} ^www\.vestibulinho\.leandrofranceschini\.com\.br$
+# RewriteRule ^public$ "https\:\/\/vestibulinho\.leandrofranceschini\.com\.br\/" [R=301,L]
+

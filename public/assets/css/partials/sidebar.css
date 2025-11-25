@@ -13,36 +13,12 @@
 
 /* === SIDEBAR FIXA (DESKTOP) === */
 .sidebar {
-    flex-shrink: 0; /* Evita encolhimento */
     width: var(--sidebar-width);
-    min-width: var(--sidebar-width);
-    background-color: #000080; /* Mantém cor fixa */
-    overflow-y: auto;
-    overflow-x: hidden;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset -6px 0 6px -4px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
     scrollbar-width: thin; /* Firefox */
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent; /* Firefox */
-}
-
-/* === SUBMENUS (COLLAPSE) === */
-.sidebar .collapse,
-.sidebar .collapse.show {
-    background-color: #000080 !important; /* Mantém cor uniforme */
-    border-left: 2px solid rgba(255, 255, 255, 0.1); /* leve destaque opcional */
-    padding-left: 5px;
-    overflow: visible;
-    transition: height 0.3s ease;
-}
-
-.sidebar .collapse a.nav-link {
-    background: transparent !important;
-    color: #fff !important;
-    padding-left: 20px; /* ligeiro recuo visual */
-}
-
-.sidebar .collapse a.nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: inset -6px 0 6px -4px rgba(0, 0, 0, 0.2); /* Sombra interna lateral direita */
 }
 
 /* === SCROLLBAR PERSONALIZADO (WebKit) === */
@@ -88,6 +64,12 @@
 .sidebar a:hover,
 .offcanvas .offcanvas-body a:hover {
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar a.active,
+.offcanvas .offcanvas-body a.active {
+    background-color: #28a745;
+    color: #fff !important;
 }
 
 /* === ÍCONES DO MENU === */

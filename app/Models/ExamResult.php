@@ -63,6 +63,17 @@ class ExamResult extends Model
     {
         return $this->belongsTo(ExamLocation::class);
     }
+    
+    /**
+ * Alias para examLocation — permite usar $result->location
+ *
+ * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+ */
+public function location()
+{
+    return $this->belongsTo(ExamLocation::class, 'exam_location_id');
+}
+
 
     /**
      * Relação com todas as chamadas associadas a essa prova.

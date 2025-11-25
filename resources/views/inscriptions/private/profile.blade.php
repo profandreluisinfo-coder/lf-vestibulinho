@@ -465,101 +465,120 @@
         </div>
     </div>
 
-    @if ($settings->location)
-        <!-- Modal de definição de local de prova -->
-        <div class="modal" id="localDeProva">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+   @if ($settings->location && $exam)
+    <!-- Modal de definição de local de prova -->
+    <div class="modal" id="localDeProva">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title"><i class="bi bi-geo-alt-fill"></i> Local de Prova</h4>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-person me-2"></i>Candidato:
-                                        </td>
-                                        <td class="w-75">
-                                            {{ auth()->user()->social_name ? auth()->user()->social_name : auth()->user()->name }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-door-open me-2"></i>Local:
-                                        </td>
-                                        <td class="w-75">
-                                            <div class="border-bottom mb-2">{{ $exam?->location_name }}</div>
-                                            <div class="small text-muted"> {{ $exam?->address }} </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-door-open me-2"></i>Sala:
-                                        </td>
-                                        <td class="w-75">
-                                            {{ $exam?->room_number }}
-                                            @if ($exam?->pne)
-                                                <div class="alert alert-warning mt-3 p-2">
-                                                    <i class="bi bi-universal-access-circle"></i>
-                                                    Sala de Atendimento Especializado.
-                                                </div>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-calendar-event me-2"></i>Data:
-                                        </td>
-                                        <td class="w-75">
-                                            {{ \Carbon\Carbon::parse($exam?->exam_date)->format('d/m/Y') }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-clock me-2"></i>Hora:
-                                        </td>
-                                        <td class="w-75">
-                                            {{ \Carbon\Carbon::parse($exam?->exam_time)->format('H:i') }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">
-                                            <i class="bi bi-info-circle-fill"></i> Instruções:
-                                        </td>
-                                        <td class="w-75">
-                                            <ul class="mb-0 small">
-                                                <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
-                                                <li>Leve documento com foto e caneta azul ou preta.</li>
-                                                <li class="text-danger fw-bold">Não é permitido usar dispositivos
-                                                    eletrônicos durante a prova.</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex gap-2 flex-wrap mt-3">
-                            <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-download"></i> Baixar PDF
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title"><i class="bi bi-geo-alt-fill"></i> Local de Prova</h4>
                 </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+
+                                <!-- Candidato -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-person me-2"></i>Candidato:
+                                    </td>
+                                    <td class="w-75">
+                                        {{ auth()->user()->social_name ?: auth()->user()->name }}
+                                    </td>
+                                </tr>
+
+                                <!-- Local de Prova -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-building me-2"></i>Local:
+                                    </td>
+                                    <td class="w-75">
+                                        <div class="border-bottom mb-2">
+                                            {{ $exam->location?->name }}
+                                        </div>
+                                        <div class="small text-muted">
+                                            {{ $exam->location?->address }}
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Sala -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-door-open me-2"></i>Sala:
+                                    </td>
+                                    <td class="w-75">
+                                        {{ $exam->room_number }}
+
+                                        @if ($exam->pne ?? false)
+                                            <div class="alert alert-warning mt-3 p-2">
+                                                <i class="bi bi-universal-access-circle"></i>
+                                                Sala de Atendimento Especializado.
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+
+                                <!-- Data -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-calendar-event me-2"></i>Data:
+                                    </td>
+                                    <td class="w-75">
+                                        {{ \Carbon\Carbon::parse($exam->exam_date)->format('d/m/Y') }}
+                                    </td>
+                                </tr>
+
+                                <!-- Hora -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-clock me-2"></i>Hora:
+                                    </td>
+                                    <td class="w-75">
+                                        {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}
+                                    </td>
+                                </tr>
+
+                                <!-- Instruções -->
+                                <tr>
+                                    <td class="w-25">
+                                        <i class="bi bi-info-circle-fill me-2"></i>Instruções:
+                                    </td>
+                                    <td class="w-75">
+                                        <ul class="mb-0 small">
+                                            <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
+                                            <li>Leve documento com foto e caneta azul ou preta.</li>
+                                            <li class="text-danger fw-bold">Não é permitido usar dispositivos eletrônicos durante a prova.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex gap-2 flex-wrap mt-3">
+                        <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-download"></i> Baixar PDF
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                </div>
+
             </div>
         </div>
-    @endif
+    </div>
+@endif
+
 
     @if ($settings->result)
         <!-- Modal de exibição de classificação na prova-->
