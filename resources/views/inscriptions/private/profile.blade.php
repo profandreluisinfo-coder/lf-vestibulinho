@@ -108,7 +108,7 @@
         </a>
 
         @if ($settings->location)
-            <a href="#" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+            <a href="#" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal"
                 data-bs-target="#localDeProva">
                 <i class="bi bi-search"></i> Local de Prova
             </a>
