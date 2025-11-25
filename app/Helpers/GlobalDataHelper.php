@@ -18,13 +18,13 @@ class GlobalDataHelper
     {
         View::composer('*', function ($view) {
 
-            // 🔹 Configurações gerais
+            // Configurações gerais
             $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
 
-            // 🔹 Chamadas existentes
+            // Chamadas existentes
             $calls_exists = Cache::remember('calls_exists', 60, fn() => Call::exists());
 
-            // 🔹 Estatísticas de inscrições
+            // Estatísticas de inscrições
             $totalInscriptions = Cache::remember('global_total_inscriptions', 60, fn() => Inscription::count());
 
             $usersWithoutInscription = Cache::remember(
@@ -35,17 +35,17 @@ class GlobalDataHelper
                             ->count()
             );
 
-            // 🔹 Edital
+            // Edital
             $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
 
-            // 🔹 Calendário
+            // Calendário
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
 
-            // 🔹 Usuário autenticado e ano atual
+            // Usuário autenticado e ano atual
             $authUser = Auth::user();
             $currentYear = now()->year;
 
-            // 🔹 Envia tudo para as views
+            // Envia tudo para as views
             $view->with(compact(
                 'settings',
                 'calls_exists',

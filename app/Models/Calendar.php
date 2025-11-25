@@ -46,7 +46,7 @@ class Calendar extends Model
         'is_active' => 'boolean'
     ];
 
-    // 🔹 Limpa o cache automaticamente quando salvar ou excluir
+    // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {
         static::saved(fn() => Cache::forget('global_calendar'));

@@ -5,20 +5,20 @@
             <div class="col">
                 <div class="card quick-access-card h-100 d-flex flex-column border-0 shadow-sm {{ !$notice->status ? 'card-inactive' : '' }}">
                     <div class="card-body d-flex flex-column">
-                        <i class="bi bi-file-text quick-access-icon fs-1 text-{{ $notice->status ? 'success' : 'primary' }}"></i>
+                        <i class="bi bi-file-text quick-access-icon fs-1 text-{{ $notice->status ? 'success' : 'secondary' }}"></i>
                         <h5 class="card-title mt-3">Edital</h5>
                         <p class="card-text">Baixe o edital completo</p>
                         <div class="mt-auto">
                         @if ($notice->status)
                             <a href="{{ asset('storage/' . $notice->file) }}" class="btn btn-sm btn-success" title="Leia o edital na íntegra" target="_blank">Ler Edital</a>
                         @else
-                            <a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Baixe o edital e manual completo">Ler Edital</a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary" title="Baixe o edital e manual completo">Ler Edital</a>
                         @endif
                         </div>
                     </div>
                 </div>
             </div>
-            @if ($calendar?->isInscriptionOpen())
+            @if ($calendar->isInscriptionOpen())
             <div class="col">
                 <div class="card quick-access-card h-100 d-flex flex-column border-0 shadow-sm">
                     <div class="card-body d-flex flex-column">
