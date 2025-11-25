@@ -51,7 +51,7 @@
             <div class="col">
                 <div class="card quick-access-card h-100 d-flex flex-column border-0 shadow-sm {{ !$settings->result ? 'card-inactive' : '' }}">
                     <div class="card-body d-flex flex-column">
-                        <i class="bi bi-trophy quick-access-icon fs-1 text-{{ $settings->result ? 'success' : 'secondary' }}"></i>
+                        <i class="bi bi-trophy quick-access-icon fs-1 me-3 text-{{ $settings->result ? 'success' : 'secondary' }}"></i>
                         <h5 class="card-title mt-3">Resultados</h5>
                         <p class="card-text">Confira os resultados publicados</p>
                         <div class="mt-auto">
@@ -67,7 +67,7 @@
             <div class="col">
                 <div class="card quick-access-card h-100 d-flex flex-column border-0 shadow-sm {{ !$calls ? 'card-inactive' : '' }}">
                     <div class="card-body d-flex flex-column">
-                        <i class="bi bi-megaphone quick-access-icon fs-1 text-{{ $calls ? 'success' : 'secondary' }}"></i>
+                        <i class="bi bi-megaphone quick-access-icon fs-1 me-3 text-{{ $calls ? 'success' : 'secondary' }}"></i>
                         <h5 class="card-title mt-3">Matrículas</h5>
                         <p class="card-text">Acompanhe as convocações para realização das matrículas</p>
                         <div class="mt-auto">

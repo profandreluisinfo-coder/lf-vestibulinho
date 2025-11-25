@@ -2,85 +2,142 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Painel Administrativo')
 
+@push('styles')
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dashboard/admin/dashboard.css') }}"> --}}
+    <style>
+        /* Contêiner principal */
+        .stepper-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Itens */
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Divisor (linha vertical no mobile) */
+        .step-divider {
+            width: 2px;
+            height: 30px;
+            background: #dee2e6;
+            margin: 0 auto;
+        }
+
+        /* Layout desktop */
+        @media (min-width: 768px) {
+
+            .stepper-container {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0;
+            }
+
+            /* Linha horizontal */
+            .step-divider {
+                width: 100%;
+                height: 3px;
+            }
+        }
+    </style>
+@endpush
+
 @section('dash-content')
 
     @php
         $calendar_active = App\Models\Calendar::getActive();
-        $notice_active   = App\Models\Notice::hasActive();
-        $local_status    = App\Models\ExamResult::hasRecords();
-        $ranking_active  = App\Models\ExamResult::hasScores();
+        $notice_active = App\Models\Notice::hasActive();
+        $local_status = App\Models\ExamResult::hasRecords();
+        $ranking_active = App\Models\ExamResult::hasScores();
     @endphp
 
     <div class="container" style="background-color: #f8f9fa; border-radius: 10px;">
 
         <h5 class="border-bottom pb-2 mb-4">📝 Fluxo de Tarefas</h5>
-        <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div class="stepper-container mb-5">
 
             <!-- Etapa 1 -->
-            <div class="text-center">
-                @if ($calendar_active)
-                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
-                @else
-                    <i class="bi bi-hourglass-split text-warning fs-3"></i>
-                @endif
-                <p class="mt-2 mb-0">Definir calendário</p>
-                <span
-                    class="badge {{ $calendar_active ? 'bg-success' : 'bg-danger' }}">{{ $calendar_active ? 'Concluído' : 'Pendente' }}</span>
+            <div class="step-item text-center">
+                <i
+                    class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
+                <span class="badge {{ $calendar_active ? 'bg-success' : 'bg-danger' }}">
+                    {{ $calendar_active ? 'Concluído' : 'Pendente' }}
+                </span>
             </div>
 
-            <!-- Linha -->
-            <div class="flex-grow-1 border-top border-3 mx-2"></div>
+            <!-- Divider -->
+            <div class="step-divider"></div>
 
             <!-- Etapa 2 -->
-            <div class="text-center">
+            <div class="step-item text-center">
                 <i
                     class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
-                <p class="mt-2 mb-0">Publicar edital</p>
-                <span
-                    class="badge {{ $notice_active ? 'bg-success' : 'bg-danger' }}">{{ $notice_active ? 'Concluído' : 'Pendente' }}</span>
+                <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
+                <span class="badge {{ $notice_active ? 'bg-success' : 'bg-danger' }}">
+                    {{ $notice_active ? 'Concluído' : 'Pendente' }}
+                </span>
             </div>
 
-            <!-- Linha -->
-            <div class="flex-grow-1 border-top border-3 mx-2"></div>
+            <!-- Divider -->
+            <div class="step-divider"></div>
 
             <!-- Etapa 3 -->
-            <div class="text-center">
-                <i class="bi bi-{{ $local_status ? 'check-circle-fill text-success' : 'clock-fill text-secondary' }} fs-3"></i>
-                <p class="mt-2 mb-0">Agendar prova</p>
-                <span class="badge {{ $local_status ? 'bg-success' : 'bg-secondary' }}">{{ $local_status ? 'Concluído' : 'Aguardando' }}</span>
+            <div class="step-item text-center">
+                <i
+                    class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
+                <span class="badge {{ $local_status ? 'bg-success' : 'bg-secondary' }}">
+                    {{ $local_status ? 'Concluído' : 'Aguardando' }}
+                </span>
             </div>
 
-            <!-- Linha -->
-            <div class="flex-grow-1 border-top border-3 mx-2"></div>
+            <!-- Divider -->
+            <div class="step-divider"></div>
 
             <!-- Etapa 4 -->
-            <div class="text-center">
-                <i class="bi bi-{{ $ranking_active ? 'check-circle-fill text-success' : 'clock-fill text-secondary' }} fs-3"></i>
-                <p class="mt-2 mb-0">Importar notas</p>
-                <span class="badge {{ $ranking_active ? 'bg-success' : 'bg-secondary' }}">{{ $ranking_active ? 'Concluído' : 'Aguardando' }}</span>
+            <div class="step-item text-center">
+                <i
+                    class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
+                <span class="badge {{ $ranking_active ? 'bg-success' : 'bg-secondary' }}">
+                    {{ $ranking_active ? 'Concluído' : 'Aguardando' }}
+                </span>
             </div>
 
-            <!-- Linha -->
-            <div class="flex-grow-1 border-top border-3 mx-2"></div>
+            <!-- Divider -->
+            <div class="step-divider"></div>
 
             <!-- Etapa 5 -->
-            <div class="text-center">
-                <i class="bi bi-{{ $settings->result ? 'check-circle-fill text-success' : 'clock-fill text-secondary' }} fs-3"></i>
-                <p class="mt-2 mb-0">Publicar resultados</p>
-                <span class="badge {{ $settings->result ? 'bg-success' : 'bg-secondary' }}">{{ $settings->result ? 'Concluído' : 'Aguardando' }}</span>
+            <div class="step-item text-center">
+                <i
+                    class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>
+                <span class="badge {{ $settings->result ? 'bg-success' : 'bg-secondary' }}">
+                    {{ $settings->result ? 'Concluído' : 'Aguardando' }}
+                </span>
             </div>
 
-            <!-- Linha -->
-            <div class="flex-grow-1 border-top border-3 mx-2"></div>
+            <!-- Divider -->
+            <div class="step-divider"></div>
 
             <!-- Etapa 6 -->
-            <div class="text-center">
-                <i class="bi bi-{{ $calls_exists ? 'check-circle-fill text-success' : 'clock-fill text-secondary' }} fs-3"></i>
-                <p class="mt-2 mb-0">Definir chamadas</p>
-                <span class="badge {{ $calls_exists ? 'bg-success' : 'bg-secondary' }}">{{ $calls_exists ? 'Concluído' : 'Aguardando' }}</span>
+            <div class="step-item text-center">
+                <i
+                    class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>
+                <span class="badge {{ $calls_exists ? 'bg-success' : 'bg-secondary' }}">
+                    {{ $calls_exists ? 'Concluído' : 'Aguardando' }}
+                </span>
             </div>
 
         </div>
+
 
         <h5 class="border-bottom pb-2 mb-4 ">📊 Estatísticas</h5>
 

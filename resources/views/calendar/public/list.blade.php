@@ -19,7 +19,7 @@
       <h2 class="section-title text-center">Calendário do Processo Seletivo {{ $calendar->year }}</h2>
       @if ($calendar?->hasInscriptionStarted())
         <div class="row">
-          <div class="col-lg-8 mx-auto">
+          <div class="col-lg-9 mx-auto">
             <div class="calendar-container">
 
               {{-- Período de Inscrições --}}
@@ -107,19 +107,19 @@
               </div>
 
               {{-- Divulgação dos Locais de Prova --}}
-              <div class="calendar-event {{ !$calendar->hasInscriptionEnded() ? 'event-inactive' : ($calendar->isExamLocationPublished() ? 'event-completed' : 'event-active') }}">
+              <div class="calendar-event {{ !$calendar->hasInscriptionEnded() ? 'event-inactive' : ($settings->location ? 'event-completed' : 'event-active') }}">
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="flex-grow-1">
                     <h5 class="mb-1">Divulgação dos Locais de Prova</h5>
                     <p class="mb-0">Consulte onde será realizada sua prova</p>
                   </div>
                   <div class="d-flex flex-column align-items-end">
-                    <span class="badge {{ $calendar->isExamLocationPublished() ? 'bg-success' : 'bg-warning' }} text-dark mb-2">
+                    <span class="badge {{ $settings->location ? 'bg-success' : 'bg-warning' }} text-light mb-2">
                       {{ Carbon\Carbon::parse($calendar->exam_location_publish)->format('d/m') }}
                     </span>
                     @if (!$calendar->hasInscriptionEnded())
                       <span class="event-status-badge">Em Breve</span>
-                    @elseif ($calendar->isExamLocationPublished())
+                    @elseif ($settings->location)
                       <span class="event-status-badge event-status-completed">Publicado</span>
                     @else
                       <span class="event-status-badge event-status-active">Aguardando</span>

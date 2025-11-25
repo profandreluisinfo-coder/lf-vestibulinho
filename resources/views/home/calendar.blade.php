@@ -1,8 +1,9 @@
 <section id="calendary" class="bg-light py-5">
     <div class="container">
         <h2 class="section-title text-center mb-5">
-            Calendário do Processo Seletivo {{ $calendar->year }}
+            Calendário do {{ config('app.name') }} {{ $calendar->year }}
         </h2>
+        <h5 class="pb-2 mb-4 text-center text-muted text-uppercase">Principais Etapas</h5>
 
         @if ($calendar)
             <div class="row">

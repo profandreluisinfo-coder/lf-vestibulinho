@@ -209,18 +209,6 @@ class Calendar extends Model
     }
 
     /**
-     * Verifica se o local de prova já foi publicado
-     */
-    public function isExamLocationPublished(): bool
-    {
-        if (!$this->exam_location_publish) {
-            return false;
-        }
-
-        return now()->gte($this->exam_location_publish);
-    }
-
-    /**
      * Verifica se o gabarito já foi publicado
      */
     public function isAnswerKeyPublished(): bool
