@@ -21,7 +21,7 @@
                 </p>
 
                 <div class="d-flex gap-2">
-                    <button class="btn btn-danger" id="btn-reset-system" onclick="resetSystem()">
+                    <button class="btn btn-danger btn-sm" id="btn-reset-system" onclick="resetSystem()">
                         <i class="bi bi-trash me-1"></i> Redefinir Sistema
                     </button>
                 </div>

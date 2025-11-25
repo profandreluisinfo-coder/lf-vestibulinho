@@ -1,6 +1,6 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Provas')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Provas')
 
 
 @section('dash-content')
@@ -8,7 +8,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-calendar2-week me-2"></i>Agendamento de Prova</h5>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setLocalModal">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
                 <i class="bi bi-plus-circle me-1"></i> Novo Agendamento
             </a>
         </div>
@@ -17,7 +17,7 @@
 
             {{-- Card: Informações da Prova --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             <i class="bi bi-calendar-event me-2"></i>Informações da Prova
@@ -38,7 +38,7 @@
 
             {{-- Card: Acesso aos Locais de Prova --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
@@ -77,7 +77,7 @@
 
             {{-- Card: Relatórios & Detalhes --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
@@ -193,12 +193,12 @@
                                 <input type="time" name="exam_time" class="form-control" id="exam_time">
                             </div>
 
-                            <button type="submit" class="btn btn-primary"><i
+                            <button type="submit" class="btn btn-primary btn-sm"><i
                                     class="bi bi-skip-start-circle me-2"></i>Iniciar Alocação</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>

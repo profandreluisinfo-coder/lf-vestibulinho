@@ -4,7 +4,7 @@
     <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $calendar?->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Classificação Geral')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Convocação para Matrícula')
 
 @push('styles')
   <link rel="stylesheet" href="{{ asset('assets/css/calls/styles.css') }}">
@@ -16,7 +16,7 @@
   @include('home.navbar')
   <section id="faq" class="my-5 py-5">
     <div class="container">
-      <h2 class="section-title text-center">{{ config('app.name') }} {{ $calendar?->year }} | Convocação para Matrícula
+      <h2 class="section-title text-center">{{ config('app.name') }} {{ $calendar->year }} | Convocação para Matrícula
       </h2>
       <div class="row">
         <div class="col-lg-8 mx-auto">

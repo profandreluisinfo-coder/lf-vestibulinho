@@ -28,8 +28,8 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" width="32" height="32">
-            <h4>{{ config('app.name') }} {{ $calendar?->year }}</h4>
+            <img src="{{ asset('assets/img/logo.webp') }}"  alt="Logo" height="32">
+            <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
         </div>
 
         <nav class="sidebar-menu">

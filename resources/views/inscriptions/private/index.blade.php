@@ -24,7 +24,7 @@
         </div>
 
         <div class="d-flex gap-2 mb-4">
-            <button id="pdfButton" class="btn btn-danger d-flex align-items-center justify-content-center">
+            <button id="pdfButton" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
                 <i class="bi bi-filetype-pdf me-1"></i>
                 <span>Gerar PDF (Todos)</span>
             </button>

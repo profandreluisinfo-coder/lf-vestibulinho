@@ -7,7 +7,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Locais de Prova</h5>
-        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setLocalModal">
+        <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
             <i class="bi bi-plus-circle me-1"></i> Novo Local
         </a>
     </div>
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="bi bi-plus-circle"></i> Cadastrar
                                     </button>
                                 </div>
@@ -136,7 +136,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>

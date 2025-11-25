@@ -1,12 +1,12 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Importar Notas')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Importar Notas')
 
 @section('dash-content')
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-upload me-2"></i>Importar Notas</h4>
+            <h5 class="mb-0"><i class="bi bi-upload me-2"></i>Importar Notas</h5>
         </div>
         <div class="card">
             <div class="card-body">
@@ -30,7 +30,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Importar Notas</button>
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-upload me-2"></i>Importar Notas</button>
                 </form>
             </div>
         </div>

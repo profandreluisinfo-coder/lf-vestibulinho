@@ -3,47 +3,7 @@
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Painel Administrativo')
 
 @push('styles')
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dashboard/admin/dashboard.css') }}"> --}}
-    <style>
-        /* Contêiner principal */
-        .stepper-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Itens */
-        .step-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Divisor (linha vertical no mobile) */
-        .step-divider {
-            width: 2px;
-            height: 30px;
-            background: #dee2e6;
-            margin: 0 auto;
-        }
-
-        /* Layout desktop */
-        @media (min-width: 768px) {
-
-            .stepper-container {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 0;
-            }
-
-            /* Linha horizontal */
-            .step-divider {
-                width: 100%;
-                height: 3px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard/admin/dashboard.css') }}">    
 @endpush
 
 @section('dash-content')
@@ -57,92 +17,70 @@
 
     <div class="container" style="background-color: #f8f9fa; border-radius: 10px;">
 
-        <h5 class="border-bottom pb-2 mb-4">📝 Fluxo de Tarefas</h5>
-
+        <h5 class="step-title border-bottom pb-2 mb-4">📝 Fluxo de Tarefas</h5>
         <div class="stepper-container mb-5">
-
             <!-- Etapa 1 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                <i class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
                 <span class="badge {{ $calendar_active ? 'bg-success' : 'bg-danger' }}">
                     {{ $calendar_active ? 'Concluído' : 'Pendente' }}
                 </span>
             </div>
-
             <!-- Divider -->
             <div class="step-divider"></div>
-
             <!-- Etapa 2 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                <i class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
                 <span class="badge {{ $notice_active ? 'bg-success' : 'bg-danger' }}">
                     {{ $notice_active ? 'Concluído' : 'Pendente' }}
                 </span>
             </div>
-
             <!-- Divider -->
             <div class="step-divider"></div>
-
             <!-- Etapa 3 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <i class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
                 <span class="badge {{ $local_status ? 'bg-success' : 'bg-secondary' }}">
                     {{ $local_status ? 'Concluído' : 'Aguardando' }}
                 </span>
             </div>
-
             <!-- Divider -->
             <div class="step-divider"></div>
-
             <!-- Etapa 4 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <i class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
                 <span class="badge {{ $ranking_active ? 'bg-success' : 'bg-secondary' }}">
                     {{ $ranking_active ? 'Concluído' : 'Aguardando' }}
                 </span>
             </div>
-
             <!-- Divider -->
             <div class="step-divider"></div>
-
             <!-- Etapa 5 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <i class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>
                 <span class="badge {{ $settings->result ? 'bg-success' : 'bg-secondary' }}">
                     {{ $settings->result ? 'Concluído' : 'Aguardando' }}
                 </span>
             </div>
-
             <!-- Divider -->
             <div class="step-divider"></div>
-
             <!-- Etapa 6 -->
             <div class="step-item text-center">
-                <i
-                    class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                <i class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
                 <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>
                 <span class="badge {{ $calls_exists ? 'bg-success' : 'bg-secondary' }}">
                     {{ $calls_exists ? 'Concluído' : 'Aguardando' }}
                 </span>
             </div>
-
         </div>
 
-
         <h5 class="border-bottom pb-2 mb-4 ">📊 Estatísticas</h5>
-
         <div class="row g-4 mb-5">
-
             <!-- Inscritos por Curso -->
             <div class="col-md-12">
                 <div class="card shadow-sm">
@@ -166,7 +104,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Inscritos por Sexo -->
             <div class="col-md-6">
                 <div class="card shadow-sm">
@@ -190,7 +127,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Distribuição de Gêneros por Curso -->
             <div class="col-md-6">
                 <div class="card shadow-sm">
@@ -214,10 +150,9 @@
                     </div>
                 </div>
             </div>
-
             <!-- 10 Bairros com Mais Candidatos -->
             <div class="col-md-6">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">10 Bairros com Mais Candidatos</h5>
@@ -238,7 +173,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 10 Escolas de Origem -->
             <div class="col-md-6">
                 <div class="card shadow-sm">
@@ -262,7 +196,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
