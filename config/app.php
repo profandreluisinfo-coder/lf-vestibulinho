@@ -14,8 +14,6 @@ return [
     */
 
     'name' => env('APP_NAME', 'Vestibulinho'),
-    'year' => env('APP_YEAR', '2026'),
-
     'version' => env('APP_VERSION', '1.0.0'),
 
     /*
@@ -84,9 +82,9 @@ return [
 
     'locale' => env('APP_LOCALE', 'pt_BR'),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'pt'),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
-    'faker_locale' => env('APP_FAKER_LOCALE', 'pt_BR'),
+    'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*
     |--------------------------------------------------------------------------
@@ -124,7 +122,7 @@ return [
 
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        'store' => env('APP_MAINTENANCE_STORE', 'file'),
     ],
 
 ];
