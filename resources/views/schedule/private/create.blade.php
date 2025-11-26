@@ -32,10 +32,54 @@
                             <strong>Horário:</strong>
                             {{ \Carbon\Carbon::parse($examInfo->time)->format('H:i') }}
                         </p>
+                        <ul class="list-unstyled mt-3 mb-0">
+                            <li class="mb-2">
+                                <a href="{{ route('exam.list') }}" class="text-decoration-none">
+                                    <i class="bi bi-search me-2"></i>Detalhes do Agendamento
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
+            {{-- Card: Relatórios & Detalhes --}}
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
+                    <div class="card-body">
+
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-file-earmark-text me-2"></i>Relatórios
+                        </h5>
+
+                        <ul class="list-unstyled mb-0">
+
+                            <li class="mb-2">
+                                <a href="{{ route('report.exportAllocationToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
+                                </a>
+                            </li>
+
+                            <li class="mb-2">
+                                <a href="{{ route('report.exportRoomsToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('report.exportSignaturesSheetsToPdf') }}" target="_blank"
+                                    class="text-decoration-none">
+                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            
             {{-- Card: Acesso aos Locais de Prova --}}
             <div class="col-12 col-md-4">
                 <div class="card shadow-sm h-100" style="background-color: #ffffb3">
@@ -65,53 +109,11 @@
                             </div>
                         </form>
 
-                        @if ($accesStatus->location)
+                        {{-- @if ($accesStatus->location)
                             <a href="{{ route('system.queue.monitor') }}" target="_blank" class="text-decoration-none">
                                 <i class="bi bi-display me-2"></i>Monitoramento da Fila
                             </a>
-                        @endif
-
-                    </div>
-                </div>
-            </div>
-
-            {{-- Card: Relatórios & Detalhes --}}
-            <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
-                    <div class="card-body">
-
-                        <h5 class="card-title mb-3">
-                            <i class="bi bi-file-earmark-text me-2"></i>Relatórios
-                        </h5>
-
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2">
-                                <a href="{{ route('exam.list') }}" target="_blank" class="text-decoration-none">
-                                    <i class="bi bi-search me-2"></i>Detalhes do Agendamento
-                                </a>
-                            </li>
-
-                            <li class="mb-2">
-                                <a href="{{ route('report.exportAllocationToPdf') }}" target="_blank"
-                                    class="text-decoration-none">
-                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
-                                </a>
-                            </li>
-
-                            <li class="mb-2">
-                                <a href="{{ route('report.exportRoomsToPdf') }}" target="_blank"
-                                    class="text-decoration-none">
-                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('report.exportSignaturesSheetsToPdf') }}" target="_blank"
-                                    class="text-decoration-none">
-                                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
-                                </a>
-                            </li>
-                        </ul>
+                        @endif --}}
 
                     </div>
                 </div>

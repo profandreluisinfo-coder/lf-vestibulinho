@@ -335,49 +335,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Seção de Notificações --}}
-            {{-- <div>
-                <h6 class="text-muted mb-3 text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Notificações Recentes</h6>
-                <div class="d-flex flex-column gap-3">
-                    <div class="d-flex gap-3 align-items-start">
-                        <div class="flex-shrink-0">
-                            <div style="width: 36px; height: 36px; background: #dbeafe; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #2563eb;">
-                                <i class="bi bi-bell-fill"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold mb-1" style="font-size: 14px;">Nova inscrição</div>
-                            <div class="text-muted" style="font-size: 12px;">Maria Silva realizou inscrição</div>
-                            <small class="text-muted">Há 5 minutos</small>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-3 align-items-start">
-                        <div class="flex-shrink-0">
-                            <div style="width: 36px; height: 36px; background: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #10b981;">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold mb-1" style="font-size: 14px;">Importação concluída</div>
-                            <div class="text-muted" style="font-size: 12px;">Notas importadas com sucesso</div>
-                            <small class="text-muted">Há 1 hora</small>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-3 align-items-start">
-                        <div class="flex-shrink-0">
-                            <div style="width: 36px; height: 36px; background: #fef3c7; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f59e0b;">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold mb-1" style="font-size: 14px;">Atenção</div>
-                            <div class="text-muted" style="font-size: 12px;">Prazo de inscrições terminando</div>
-                            <small class="text-muted">Há 2 horas</small>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </div>
     {{-- === JS === --}}

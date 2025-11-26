@@ -10,12 +10,13 @@
 @section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0"><i class="bi bi-question-circle me-2"></i>Editar FaQ</h4>
+            <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Editar FaQ</h5>
         </div>
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST" id="edit-faq-form-{{ $faq->id }}">
+                <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST"
+                    id="edit-faq-form-{{ $faq->id }}">
                     @csrf
                     {{-- @method('PUT') --}}
                     <div class="mb-3">
@@ -28,11 +29,11 @@
                         <textarea class="form-control summernote" id="answer" name="answer" rows="6" required>{{ $faq->answer }}</textarea>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary btn-sm">
                             <i class="bi bi-check-circle me-1"></i> Atualizar
                         </button>
-                        <a href="{{ route('faq.index') }}" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left me-1"></i> Voltar
+                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
                         </a>
                     </div>
                 </form>

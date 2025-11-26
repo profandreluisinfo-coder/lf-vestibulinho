@@ -275,16 +275,5 @@
 @push('scripts')
     <script src="{{ asset('assets/home/scrolling.js') }}"></script>
     <script src="{{ asset('assets/components/countdown.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.navbar');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 20) {
-                    navbar.classList.add('navbar-scrolled');
-                } else {
-                    navbar.classList.remove('navbar-scrolled');
-                }
-            });
-        });
-    </script>
+    <script src="{{ asset('assets/home/navbar-scroll-effect.js') }}"></script>
 @endpush

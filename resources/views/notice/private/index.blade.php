@@ -7,7 +7,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital do Processo Seletivo</h5>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFile">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFile">
                 <i class="bi bi-plus-circle me-1"></i> Upload de Edital
             </a>
         </div>
@@ -72,9 +72,8 @@
             aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="setFileLabel">Arquivo do Edital</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <div class="modal-header bg-primary text-light">
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Arquivo do Edital</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -97,7 +96,7 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary btn-sm">
                                             <i class="bi bi-plus-circle"></i> Gravar
                                         </button>
                                     </div>
@@ -107,7 +106,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>

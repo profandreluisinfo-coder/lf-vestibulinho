@@ -11,7 +11,7 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles2.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
     <!-- Summernote -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 @endpush
@@ -20,7 +20,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
                 <i class="bi bi-plus-circle me-2"></i> Nova
             </a>
         </div>
@@ -132,9 +132,8 @@
             aria-labelledby="setNewFAQModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="setLocalModalLabel">Gravar Nova FaQ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <div class="modal-header bg-primary text-light">
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar Nova FaQ</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -149,13 +148,13 @@
                                         <label for="answer" class="form-label required">Resposta:</label>
                                         <textarea class="form-control summernote" id="answer" name="answer" rows="6" required></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -172,8 +171,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/faq-create.js')}}"></script>
-    <script src="{{ asset('assets/rules/faq-edit.js')}}"></script>
+    <script src="{{ asset('assets/rules/admin/faqs/create.js')}}"></script>
     <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>

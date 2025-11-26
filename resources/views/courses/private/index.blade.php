@@ -6,7 +6,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-book me-2"></i>Cursos</h5>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setNewCourse">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCourse">
                 <i class="bi bi-plus-circle me-1"></i> Novo Curso
             </a>
         </div>
@@ -25,11 +25,11 @@
                 <tbody class="table-group-divider">
                     @forelse ($courses as $course)
                         <tr>
-                            <td>{{ $course->name }}</td>
-                            <td>{{ $course->description }}</td>
+                            <td class="w-25">{{ $course->name }}</td>
+                            <td class="w-50">{{ $course->description }}</td>
                             <td>{{ $course->vacancies }}</td>
                             <td>
-                                <div class="d-flex justify-content-end gap-2">
+                                <div class="d-flex justify-content-center gap-2">
                                     <!-- Editar -->
                                     <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square" title="Editar"></i> Editar
@@ -100,13 +100,13 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-2"></i>Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
