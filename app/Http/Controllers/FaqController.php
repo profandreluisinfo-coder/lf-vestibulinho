@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-/**
- * Mostra as perguntas frequentes do sistema.
- *
- * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema
- *
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Mostra as perguntas frequentes do sistema.
+     *
+     * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $faqs = Faq::all();
@@ -23,11 +23,16 @@ class FaqController extends Controller
         return view('faqs.private.index');
     }
 
-    // public function create()
-    // {
-        
-    // }
-
+    /**
+     * Grava uma nova pergunta frequente no sistema.
+     *
+     * Valida os dados da requisição e grava uma nova pergunta frequente com os dados fornecidos.
+     *
+     * Redireciona para a página de listagem de perguntas frequentes com uma mensagem de sucesso.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         // Validar dados

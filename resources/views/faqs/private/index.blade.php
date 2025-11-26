@@ -1,13 +1,11 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Nova FaQ')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Perguntas Frequentes')
 
 @push('datatable-styles')
-    <!-- datatables -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <!-- // datatables -->
 @endpush
 
 @push('styles')
@@ -127,7 +125,7 @@
             </div>
         @endif
 
-        {{-- Modal de lançar chamada --}}
+        {{-- Modal de lançar nova pergunta --}}
         <div class="modal fade" id="setNewFAQ" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="setNewFAQModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
