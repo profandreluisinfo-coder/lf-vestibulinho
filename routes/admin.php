@@ -133,6 +133,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/editar/{faq}', [FaqController::class, 'update']);
             Route::delete('/excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
             Route::put('/publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
+            Route::put('/update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
         });
 
     // ==========================

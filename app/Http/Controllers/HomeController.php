@@ -27,7 +27,7 @@ class HomeController extends Controller
         $courses = Course::all();
 
         // limite a 4 perguntas
-        $faqs = Faq::where('status', true)->limit(4)->get();
+        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(4)->get();
 
         // Verifica quantos registros de chamada existem
         $calls = Call::all()->count();

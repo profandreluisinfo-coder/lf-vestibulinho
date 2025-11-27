@@ -12,6 +12,29 @@
     <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
     <!-- Summernote -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+    
+    <!-- Estilos para drag and drop -->
+    <style>
+        .drag-handle {
+            cursor: move;
+            padding: 0 10px;
+            color: #6c757d;
+        }
+        .drag-handle:hover {
+            color: #0d6efd;
+        }
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #f8f9fa;
+        }
+        .sortable-chosen {
+            background: #e7f3ff;
+        }
+        .accordion-button {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 @endpush
 
 @section('dash-content')
@@ -24,6 +47,12 @@
         </div>
 
         @if ($faqs->isNotEmpty())
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Dica:</strong> Clique e arraste o ícone <i class="bi bi-grip-vertical"></i> para reordenar as perguntas.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="input-group input-group-sm">
@@ -47,13 +76,15 @@
                     </div>
                 </div>
             </div>
+            
             <div class="accordion accordion-flush" id="faqAccordion">
                 @foreach ($faqs as $faq)
-                    <div class="accordion-item">
+                    <div class="accordion-item" data-faq-id="{{ $faq->id }}">
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false"
                                 aria-controls="collapse{{ $faq->id }}">
+                                <i class="bi bi-grip-vertical drag-handle me-2" title="Arraste para reordenar"></i>
                                 {{ $faq->question }}
                             </button>
                         </h2>
@@ -166,6 +197,8 @@
     <!-- Summernote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
+    <!-- SortableJS para drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 @endpush
 
 @push('scripts')
@@ -173,4 +206,5 @@
     <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>
+    <script src="{{ asset('assets/js/faqs/sortable.js') }}"></script>
 @endpush
