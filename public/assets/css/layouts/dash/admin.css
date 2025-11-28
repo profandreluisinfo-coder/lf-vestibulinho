@@ -89,6 +89,34 @@ a {
     padding: 20px 0;
 }
 
+/* Adicione ao seu arquivo admin.css */
+
+/* Item de menu ativo */
+.menu-link.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.menu-link.active i {
+    color: #3b82f6;
+}
+
+/* Item de dropdown ativo */
+.dropdown-item-custom.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    font-weight: 600;
+    border-left: 3px solid #3b82f6;
+    padding-left: calc(1rem - 3px);
+}
+
+/* Dropdown aberto por padrão */
+.dropdown-menu-custom.show {
+    display: block;
+    max-height: 500px;
+}
+
 /* ====== Seções ====== */
 .menu-section {
     margin-bottom: 24px;
