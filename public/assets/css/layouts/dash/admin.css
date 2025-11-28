@@ -2,7 +2,8 @@
 :root {
     --sidebar-width: 260px;
     --topbar-height: 60px;
-    --primary-color: #2563eb;
+    /* --primary-color: #2563eb; */
+    --primary-color: #000080;
     --primary-hover: #1d4ed8;
     /* --sidebar-bg: #0f172a; */
     --sidebar-bg: #08193E;
@@ -99,7 +100,7 @@ a {
 }
 
 .menu-link.active i {
-    color: #3b82f6;
+    color: #fff;
 }
 
 /* Item de dropdown ativo */
