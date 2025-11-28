@@ -154,9 +154,8 @@
             aria-labelledby="changePasswordModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="setLocalModalLabel">Lançar Nova Chamada</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <div class="modal-header bg-primary text-light">
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-1"></i>Nova Chamada</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -204,19 +203,19 @@
                                         class="form-control @error('time') is-invalid @enderror" required>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Registrar Chamada</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Registrar Chamada</button>
                             </form>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
         </div>
 
         @if (!$callLists->isEmpty())
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="bi bi-bar-chart-fill"></i> Convocados por Curso
             </button>
             <!-- The Modal -->
@@ -226,8 +225,7 @@
 
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h4 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Gráfico - Convocados por Curso</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Gráfico - Convocados por Curso</h5>
                         </div>
 
                         <!-- Modal body -->
@@ -237,7 +235,7 @@
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                         </div>
 
                     </div>
