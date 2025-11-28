@@ -222,10 +222,13 @@ legend {
 }
 
 /* ==================== MODAIS ==================== */
+.modal-header {
+    background-color: var(--navbar-bg);
+}
+
 .modal-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
+    color: var(--text-light);
+    font-weight: 400;
 }
 
 /* ==================== TITLES ==================== */

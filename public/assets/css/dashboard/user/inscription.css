@@ -1,12 +1,3 @@
-/* section {
-    margin: 100px 0;
-}
-
-@media (max-width: 768px) {
-    section {
-        margin-top: 125px;
-    }
-} */
 .step-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

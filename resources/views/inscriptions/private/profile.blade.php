@@ -103,13 +103,12 @@
     @endif
 
     <div class="d-flex flex-column flex-sm-row gap-2">
-        <a href="#" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#fichaDeInscricao">
+        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#fichaDeInscricao">
             <i class="bi bi-search"></i> Inscrição
         </a>
 
         @if ($settings->location)
-            <a href="#" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal"
-                data-bs-target="#localDeProva">
+            <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
                 <i class="bi bi-search"></i> Local de Prova
             </a>
         @endif
@@ -128,15 +127,14 @@
             </a>
         @endif
     </div>
-    
+
     <!-- Modal com todos os dados da inscrição do candidato -->
     <div class="modal" id="fichaDeInscricao">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
-
                 <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title"><i class="bi bi-person-vcard me-2"></i> Ficha de Inscrição do Candidato</h4>
+                <div class="modal-header text-white">
+                    <h5 class="modal-title"><i class="bi bi-person-vcard me-2"></i> Ficha de Inscrição do Candidato</h5>
                 </div>
 
                 <!-- Modal body -->
@@ -458,113 +456,156 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                 </div>
 
             </div>
         </div>
     </div>
 
-   @if ($settings->location && $exam)
-    <!-- Modal de definição de local de prova -->
-    <div class="modal" id="localDeProva">
+    @if ($settings->location && $exam)
+        <!-- Modal de definição de local de prova -->
+        <div class="modal" id="localDeProva">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="bi bi-geo-alt-fill"></i> Local de Prova</h5>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <!-- Candidato -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-person me-2"></i>Candidato:
+                                        </td>
+                                        <td class="w-75">
+                                            {{ auth()->user()->social_name ?: auth()->user()->name }}
+                                        </td>
+                                    </tr>
+                                    <!-- Local de Prova -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-building me-2"></i>Local:
+                                        </td>
+                                        <td class="w-75">
+                                            <div class="border-bottom mb-2">
+                                                {{ $exam->location?->name }}
+                                            </div>
+                                            <div class="small text-muted">
+                                                {{ $exam->location?->address }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Sala -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-door-open me-2"></i>Sala:
+                                        </td>
+                                        <td class="w-75">
+                                            {{ $exam->room_number }}
+
+                                            @if ($exam->pne ?? false)
+                                                <div class="alert alert-warning mt-3 p-2">
+                                                    <i class="bi bi-universal-access-circle"></i>
+                                                    Sala de Atendimento Especializado.
+                                                </div>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <!-- Data -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-calendar-event me-2"></i>Data:
+                                        </td>
+                                        <td class="w-75">
+                                            {{ \Carbon\Carbon::parse($exam->exam_date)->format('d/m/Y') }}
+                                        </td>
+                                    </tr>
+                                    <!-- Hora -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-clock me-2"></i>Hora:
+                                        </td>
+                                        <td class="w-75">
+                                            {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}
+                                        </td>
+                                    </tr>
+                                    <!-- Instruções -->
+                                    <tr>
+                                        <td class="w-25">
+                                            <i class="bi bi-info-circle-fill me-2"></i>Instruções:
+                                        </td>
+                                        <td class="w-75">
+                                            <ul class="mb-0 small">
+                                                <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
+                                                <li>Leve documento com foto e caneta azul ou preta.</li>
+                                                <li class="text-danger fw-bold">Não é permitido usar dispositivos
+                                                    eletrônicos durante a prova.</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap mt-3">
+                            <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download"></i> Baixar PDF
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+
+@if ($settings->result)
+    <!-- Modal de exibição de classificação na prova-->
+    <div class="modal" id="resultadoDeProva">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title"><i class="bi bi-geo-alt-fill"></i> Local de Prova</h4>
-                </div>
-
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tbody>
+                    <div class="card border-success shadow-sm" id="result-card">
+                        <div
+                            class="card-header bg-success d-flex justify-content-between align-items-center text-white">
+                            <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i> Resultado da Prova Objetiva</h5>
+                            <span class="badge bg-light text-success">Ano {{ $calendar->year }}</span>
+                        </div>
 
-                                <!-- Candidato -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-person me-2"></i>Candidato:
-                                    </td>
-                                    <td class="w-75">
-                                        {{ auth()->user()->social_name ?: auth()->user()->name }}
-                                    </td>
-                                </tr>
+                        <div class="card-body text-center">
+                            <h5 class="text-muted">Candidato(a)</h5>
+                            <h4 class="fw-bold">{{ $user->name }}</h4>
+                            <p class="mb-2">
+                                CPF <br><strong>{{ $user->cpf }}</strong><br>
+                            </p>
 
-                                <!-- Local de Prova -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-building me-2"></i>Local:
-                                    </td>
-                                    <td class="w-75">
-                                        <div class="border-bottom mb-2">
-                                            {{ $exam->location?->name }}
-                                        </div>
-                                        <div class="small text-muted">
-                                            {{ $exam->location?->address }}
-                                        </div>
-                                    </td>
-                                </tr>
+                            <hr class="my-4">
 
-                                <!-- Sala -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-door-open me-2"></i>Sala:
-                                    </td>
-                                    <td class="w-75">
-                                        {{ $exam->room_number }}
+                            <h1 class="display-4 fw-bold text-success">{{ $examResult?->score }}</h1>
+                            <p class="text-muted mb-1">Nota obtida</p>
 
-                                        @if ($exam->pne ?? false)
-                                            <div class="alert alert-warning mt-3 p-2">
-                                                <i class="bi bi-universal-access-circle"></i>
-                                                Sala de Atendimento Especializado.
-                                            </div>
-                                        @endif
-                                    </td>
-                                </tr>
+                            <h2 class="text-primary mt-4">{{ $examResult?->ranking }}º</h2>
+                            <p class="mb-0">Classificação Geral</p>
+                        </div>
 
-                                <!-- Data -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-calendar-event me-2"></i>Data:
-                                    </td>
-                                    <td class="w-75">
-                                        {{ \Carbon\Carbon::parse($exam->exam_date)->format('d/m/Y') }}
-                                    </td>
-                                </tr>
-
-                                <!-- Hora -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-clock me-2"></i>Hora:
-                                    </td>
-                                    <td class="w-75">
-                                        {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}
-                                    </td>
-                                </tr>
-
-                                <!-- Instruções -->
-                                <tr>
-                                    <td class="w-25">
-                                        <i class="bi bi-info-circle-fill me-2"></i>Instruções:
-                                    </td>
-                                    <td class="w-75">
-                                        <ul class="mb-0 small">
-                                            <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
-                                            <li>Leve documento com foto e caneta azul ou preta.</li>
-                                            <li class="text-danger fw-bold">Não é permitido usar dispositivos eletrônicos durante a prova.</li>
-                                        </ul>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                        <div class="card-footer text-muted small text-center">
+                            Os critérios de desempate consideraram a idade do candidato (mais jovem tem prioridade).
+                        </div>
                     </div>
 
-                    <div class="d-flex gap-2 flex-wrap mt-3">
-                        <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary">
-                            <i class="bi bi-download"></i> Baixar PDF
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('user.result.pdf') }}" class="btn btn-outline-primary me-2">
+                            <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
                         </a>
                     </div>
                 </div>
@@ -579,116 +620,62 @@
     </div>
 @endif
 
+@if ($call && auth()->user()->hasConfirmedCall())
+    <!-- Modal de exibição de detalhes da convocação -->
+    <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="callDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-primary">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="callDetailModalLabel"><i class="bi bi-megaphone me-2"></i> Detalhes
+                        da Convocação</h5>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nome:</strong> {{ auth()->user()->social_name ?? auth()->user()->name }}</p>
+                    <p><strong>Chamada nº:</strong> {{ $call?->call_number }}</p>
+                    <p><strong>Data:</strong> {{ Carbon\Carbon::parse($call?->date)->format('d/m/Y') }}</p>
+                    <p><strong>Horário:</strong> {{ Carbon\Carbon::parse($call?->time)->format('H:i') }}</p>
 
-    @if ($settings->result)
-        <!-- Modal de exibição de classificação na prova-->
-        <div class="modal" id="resultadoDeProva">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+                    <hr>
 
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="card border-success shadow-sm" id="result-card">
-                            <div
-                                class="card-header bg-success d-flex justify-content-between align-items-center text-white">
-                                <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i> Resultado da Prova Objetiva</h5>
-                                <span class="badge bg-light text-success">Ano {{ $calendar->year }}</span>
-                            </div>
+                    <h6 class="fw-bold text-primary">Local da Matrícula</h6>
+                    <p class="mb-1">R. Geraldo de Souza, 221 - Jardim São Carlos</p>
+                    <p class="mb-1">Sumaré - SP, 13170-232</p>
+                    <p class="mb-1"><strong>Telefone:</strong> (19) 3873-2605</p>
+                    <p class="mb-3"><strong>Horário de Funcionamento:</strong> 14:00 às 23:00</p>
 
-                            <div class="card-body text-center">
-                                <h5 class="text-muted">Candidato(a)</h5>
-                                <h4 class="fw-bold">{{ $user->name }}</h4>
-                                <p class="mb-2">
-                                    CPF <br><strong>{{ $user->cpf }}</strong><br>
-                                </p>
-
-                                <hr class="my-4">
-
-                                <h1 class="display-4 fw-bold text-success">{{ $examResult?->score }}</h1>
-                                <p class="text-muted mb-1">Nota obtida</p>
-
-                                <h2 class="text-primary mt-4">{{ $examResult?->ranking }}º</h2>
-                                <p class="mb-0">Classificação Geral</p>
-                            </div>
-
-                            <div class="card-footer text-muted small text-center">
-                                Os critérios de desempate consideraram a idade do candidato (mais jovem tem prioridade).
-                            </div>
-                        </div>
-
-                        <div class="mt-4 text-center">
-                            <a href="{{ route('user.result.pdf') }}" class="btn btn-outline-primary me-2">
-                                <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-
+                    <h6 class="fw-bold text-primary">INFORMAÇÕES IMPORTANTES!</h6>
+                    <p>A falta de documentação ou não comparecimento na data e horário estabelecido acarretará na perda
+                        da vaga,
+                        portanto não se esqueça de comparecer no dia e horário indicado portando todos os documentos
+                        previstos no
+                        item <strong>7.4</strong> do edital. </p>
+                    <ol class="docs-list">
+                        <li>Declaração de Conclusão do Ensino Fundamental ou Histórico Escolar do Ensino Fundamental
+                            (Original e
+                            01 cópia);</li>
+                        <li>01 foto 3x4;</li>
+                        <li>Original e 01 cópia do documento de identidade (RG/CIN ou RNE para estrangeiro) atualizado e
+                            com foto
+                            que identifique o portador;</li>
+                        <li>Original e 01 cópia do CPF;</li>
+                        <li>Original e 01 cópia da certidão de nascimento;</li>
+                        <li>Carteira de vacinação (Original e 01 cópia);</li>
+                        <li>Comprovante de residência no município de Sumaré com menos de 60 dias de emissão, em nome
+                            dos pais ou
+                            do responsável legal pelo (a) candidato (a); (Original e 01 cópia)</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route('user.call.pdf') }}" class="btn btn-outline-danger btn-sm me-2">
+                        <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
+                    </a>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Fechar
+                    </button>
                 </div>
             </div>
         </div>
-    @endif
-
-    @if ($call && auth()->user()->hasConfirmedCall())
-        <!-- Modal de exibição de detalhes da convocação -->
-        <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
-            aria-labelledby="callDetailModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content border-primary">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="callDetailModalLabel"><i class="bi bi-megaphone me-2"></i> Detalhes
-                            da Convocação</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Nome:</strong> {{ auth()->user()->social_name ?? auth()->user()->name }}</p>
-                        <p><strong>Chamada nº:</strong> {{ $call?->call_number }}</p>
-                        <p><strong>Data:</strong> {{ Carbon\Carbon::parse($call?->date)->format('d/m/Y') }}</p>
-                        <p><strong>Horário:</strong> {{ Carbon\Carbon::parse($call?->time)->format('H:i') }}</p>
-
-                        <hr>
-
-                        <h6 class="fw-bold text-primary">Local da Matrícula</h6>
-                        <p class="mb-1">R. Geraldo de Souza, 221 - Jardim São Carlos</p>
-                        <p class="mb-1">Sumaré - SP, 13170-232</p>
-                        <p class="mb-1"><strong>Telefone:</strong> (19) 3873-2605</p>
-                        <p class="mb-3"><strong>Horário de Funcionamento:</strong> 14:00 às 23:00</p>
-
-                        <h6 class="fw-bold text-primary">INFORMAÇÕES IMPORTANTES!</h6>
-                        <p>A falta de documentação ou não comparecimento na data e horário estabelecido acarretará na perda
-                            da vaga,
-                            portanto não se esqueça de comparecer no dia e horário indicado portando todos os documentos
-                            previstos no
-                            item <strong>7.4</strong> do edital. </p>
-                        <ol class="docs-list">
-                            <li>Declaração de Conclusão do Ensino Fundamental ou Histórico Escolar do Ensino Fundamental
-                                (Original e
-                                01 cópia);</li>
-                            <li>01 foto 3x4;</li>
-                            <li>Original e 01 cópia do documento de identidade (RG/CIN ou RNE para estrangeiro) atualizado e
-                                com foto
-                                que identifique o portador;</li>
-                            <li>Original e 01 cópia do CPF;</li>
-                            <li>Original e 01 cópia da certidão de nascimento;</li>
-                            <li>Carteira de vacinação (Original e 01 cópia);</li>
-                            <li>Comprovante de residência no município de Sumaré com menos de 60 dias de emissão, em nome
-                                dos pais ou
-                                do responsável legal pelo (a) candidato (a); (Original e 01 cópia)</li>
-                        </ol>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="{{ route('user.call.pdf') }}" class="btn btn-outline-danger">
-                            <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
-                        </a>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle"></i> Fechar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
+    </div>
+@endif
 @endsection
