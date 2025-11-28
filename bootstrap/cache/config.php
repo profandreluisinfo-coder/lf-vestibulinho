@@ -115,10 +115,10 @@
   ),
   'app' => 
   array (
-    'name' => 'Vestibulinho LF',
+    'name' => 'Vestibulinho',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://vestibulinho.test.com/',
+    'url' => 'http://vestibulinho.test.com',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'America/Sao_Paulo',
@@ -126,7 +126,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:2WuwhIZqYzd1UuTQlzIucx0KMIJcYN5/GYg+3RuU0V8=',
+    'key' => 'base64:fUs0SWCkpCgk8fxiwIJgliJl8apNLuCGZROSN8focSU=',
     'previous_keys' => 
     array (
     ),
@@ -328,7 +328,7 @@
         ),
       ),
     ),
-    'prefix' => 'vestibulinho_lf_cache_',
+    'prefix' => 'vestibulinho_cache_',
   ),
   'database' => 
   array (
@@ -432,7 +432,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'vestibulinho_lf_database_',
+        'prefix' => 'vestibulinho_database_',
         'persistent' => false,
       ),
       'default' => 
@@ -594,7 +594,7 @@
       array (
         'driver' => 'local',
         'root' => 'C:\\laragon\\www\\vestibulinho\\storage\\app/public',
-        'url' => 'http://vestibulinho.test.com//storage',
+        'url' => 'http://vestibulinho.test.com/storage',
         'visibility' => 'public',
         'throw' => false,
         'report' => false,
@@ -783,7 +783,7 @@
     'from' => 
     array (
       'address' => 'hello@example.com',
-      'name' => 'Vestibulinho LF',
+      'name' => 'Vestibulinho',
     ),
     'markdown' => 
     array (
@@ -907,7 +907,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'vestibulinho_lf_session',
+    'cookie' => 'vestibulinho_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,

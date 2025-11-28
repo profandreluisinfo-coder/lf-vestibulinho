@@ -1,12 +1,12 @@
 # ========================================================
-# Laravel - Arquivos de Ambiente
+# Laravel – Arquivos de Ambiente (NUNCA versionar)
 # ========================================================
 .env
-.env.*
+.env.*        # Except .env.example
 !.env.example
 
 # ========================================================
-# Diretórios de Build / Dependências
+# Dependências / Builds
 # ========================================================
 /node_modules
 /vendor
@@ -14,32 +14,36 @@
 /public/hot
 
 # ========================================================
-# Laravel - Storage (NUNCA versionar)
+# Laravel – Cache, Logs e Arquivos Temporários
 # ========================================================
 /storage/*.key
+
+# Conteúdo interno dessas pastas NÃO será versionado,
+# pois cada uma possui .gitignore interno mantendo apenas a pasta
 /storage/app/*
 /storage/framework/*
 /storage/logs/*
 /storage/pail
+
+# Mas mantenha o public:
 !storage/app/public/
 
-# ========================================================
-# Laravel - Symlink do Storage
-# ========================================================
+# Symlink criado pelo artisan storage:link
 /public/storage
 
 # ========================================================
-# PHPUnit / PHP Tools
+# PHPUnit / Testes / Ferramentas
 # ========================================================
 .phpunit.cache
 .phpunit.result.cache
 .phpactor.json
 
 # ========================================================
-# Arquivos de Debug / Log
+# Arquivos de Log / Debug de ferramentas JS
 # ========================================================
 npm-debug.log
 yarn-error.log
+pnpm-debug.log
 
 # ========================================================
 # Homestead
@@ -48,15 +52,16 @@ Homestead.json
 Homestead.yaml
 
 # ========================================================
-# IDEs e Ferramentas de Desenvolvimento
+# Configurações de IDEs (evitar sujar o repositório)
 # ========================================================
 /.idea
 /.vscode
 /.fleet
 /.nova
 /.zed
+/.phpstorm.meta.php
 
 # ========================================================
-# Outros
+# Outros arquivos sensíveis e auxiliares
 # ========================================================
 auth.json
