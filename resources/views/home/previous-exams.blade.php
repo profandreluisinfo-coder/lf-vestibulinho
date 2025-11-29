@@ -10,7 +10,7 @@
                         <h5 class="card-title">Vestibulinho {{ $file->year }}</h5>
                         <p class="card-text">Prova completa para download</p>
                         <a href="{{ asset('storage/' . $file->file) }}" target="_blank"
-                            class="btn btn-outline-primary">
+                            class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-download me-2"></i>Download
                         </a>
                     </div>

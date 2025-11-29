@@ -1,6 +1,6 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Editar FaQ')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Editar FaQ')
 
 @push('styles')
     <!-- Summernote -->
@@ -18,7 +18,6 @@
                 <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST"
                     id="edit-faq-form-{{ $faq->id }}">
                     @csrf
-                    {{-- @method('PUT') --}}
                     <div class="mb-3">
                         <label for="question" class="form-label required">Pergunta:</label>
                         <input type="text" class="form-control" id="question" name="question"
@@ -32,7 +31,7 @@
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="bi bi-check-circle me-1"></i> Atualizar
                         </button>
-                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm text-danger">
                             <i class="bi bi-x-circle me-1"></i> Cancelar
                         </a>
                     </div>

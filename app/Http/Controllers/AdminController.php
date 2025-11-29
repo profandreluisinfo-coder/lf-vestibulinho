@@ -58,7 +58,7 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('admin.dashboard', [
+        return view('dashboard.admin.cpanel', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,

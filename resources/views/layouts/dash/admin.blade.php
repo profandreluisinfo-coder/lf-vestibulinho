@@ -26,174 +26,174 @@
 
 <body>
     <!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-        <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
-        <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
-    </div>
-
-    <nav class="sidebar-menu">
-        <div class="menu-section">
-            <div class="menu-section-title">Principal</div>
-            <div class="menu-item">
-                <a href="{{ route('admin.painel') }}" 
-                   class="menu-link {{ request()->routeIs('admin.painel') ? 'active' : '' }}">
-                    <i class="bi bi-house-door"></i>
-                    <span>Início</span>
-                </a>
-            </div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
+            <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
         </div>
 
-        <div class="menu-section">
-            <div class="menu-section-title">Vestibulinho</div>
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuVestibulinho')">
-                    <i class="bi bi-calendar-event"></i>
-                    <span>Gerenciar</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs(['calendar.*', 'courses.*', 'notice.*', 'faq.*', 'archive.*']) ? 'show' : '' }}" 
-                     id="menuVestibulinho">
-                    <a href="{{ route('calendar.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
-                        Calendário
-                    </a>
-                    <a href="{{ route('courses.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('courses.*') ? 'active' : '' }}">
-                        Cursos
-                    </a>
-                    <a href="{{ route('notice.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('notice.*') ? 'active' : '' }}">
-                        Edital
-                    </a>
-                    <a href="{{ route('faq.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('faq.*') ? 'active' : '' }}">
-                        Registrar FAQ
-                    </a>
-                    <a href="{{ route('archive.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('archive.*') ? 'active' : '' }}">
-                        Acervo de Provas
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="menu-section">
-            <div class="menu-section-title">Usuários e Inscrições</div>
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuUsuarios')">
-                    <i class="bi bi-people-fill"></i>
-                    <span>Usuários</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs('users.*') ? 'show' : '' }}" 
-                     id="menuUsuarios">
-                    <a href="{{ route('users.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                        Lista de Usuários
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-section-title">Principal</div>
+                <div class="menu-item">
+                    <a href="{{ route('admin.painel') }}"
+                        class="menu-link {{ request()->routeIs('admin.painel') ? 'active' : '' }}">
+                        <i class="bi bi-house-door"></i>
+                        <span>Início</span>
                     </a>
                 </div>
             </div>
 
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuInscricoes')">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Inscrições</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs('inscriptions.*') ? 'show' : '' }}" 
-                     id="menuInscricoes">
-                    <a href="{{ route('inscriptions.index') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
-                        Lista Geral
-                    </a>
-                    <a href="{{ route('inscriptions.pcd') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
-                        Pessoas com Deficiência
-                    </a>
-                    <a href="{{ route('inscriptions.social-name') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('inscriptions.social-name') ? 'active' : '' }}">
-                        Nome Social
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="menu-section">
-            <div class="menu-section-title">Provas e Resultados</div>
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuProvas')">
-                    <i class="bi bi-journal-check"></i>
-                    <span>Provas</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs(['exam.locations', 'exam.schedule', 'export.users']) ? 'show' : '' }}" 
-                     id="menuProvas">
-                    <a href="{{ route('exam.locations') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('exam.locations') ? 'active' : '' }}">
-                        Locais
-                    </a>
-                    <a href="{{ route('exam.schedule') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
-                        Agendar
-                    </a>
-                    <a href="{{ route('export.users') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}">
-                        Planilha de Notas
-                    </a>
+            <div class="menu-section">
+                <div class="menu-section-title">Vestibulinho</div>
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuVestibulinho')">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Gerenciar</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['calendar.*', 'courses.*', 'notice.*', 'faq.*', 'archive.*']) ? 'show' : '' }}"
+                        id="menuVestibulinho">
+                        <a href="{{ route('calendar.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                            Calendário
+                        </a>
+                        <a href="{{ route('courses.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('courses.*') ? 'active' : '' }}">
+                            Cursos
+                        </a>
+                        <a href="{{ route('notice.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('notice.*') ? 'active' : '' }}">
+                            Edital
+                        </a>
+                        <a href="{{ route('faq.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('faq.*') ? 'active' : '' }}">
+                            Registrar FAQ
+                        </a>
+                        <a href="{{ route('archive.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('archive.*') ? 'active' : '' }}">
+                            Acervo de Provas
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
-                    <i class="bi bi-bar-chart-line"></i>
-                    <span>Resultados</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs(['import.results', 'ranking']) ? 'show' : '' }}" 
-                     id="menuResultados">
-                    <a href="{{ route('import.results') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('import.results') ? 'active' : '' }}">
-                        Importar Notas
-                    </a>
-                    <a href="{{ route('ranking') }}" 
-                       class="dropdown-item-custom {{ request()->routeIs('ranking') ? 'active' : '' }}">
-                        Classificação Geral
+            <div class="menu-section">
+                <div class="menu-section-title">Usuários e Inscrições</div>
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuUsuarios')">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Usuários</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs('users.*') ? 'show' : '' }}"
+                        id="menuUsuarios">
+                        <a href="{{ route('users.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            Lista de Usuários
+                        </a>
+                    </div>
+                </div>
+
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuInscricoes')">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Inscrições</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs('inscriptions.*') ? 'show' : '' }}"
+                        id="menuInscricoes">
+                        <a href="{{ route('inscriptions.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
+                            Lista Geral
+                        </a>
+                        <a href="{{ route('inscriptions.pcd') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
+                            Pessoas com Deficiência
+                        </a>
+                        <a href="{{ route('inscriptions.social-name') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social-name') ? 'active' : '' }}">
+                            Nome Social
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-section-title">Provas e Resultados</div>
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuProvas')">
+                        <i class="bi bi-journal-check"></i>
+                        <span>Provas</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['exam.locations', 'exam.schedule', 'export.users']) ? 'show' : '' }}"
+                        id="menuProvas">
+                        <a href="{{ route('exam.locations') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('exam.locations') ? 'active' : '' }}">
+                            Locais
+                        </a>
+                        <a href="{{ route('exam.schedule') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
+                            Agendar
+                        </a>
+                        <a href="{{ route('export.users') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}">
+                            Planilha de Notas
+                        </a>
+                    </div>
+                </div>
+
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Resultados</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['import.results', 'ranking']) ? 'show' : '' }}"
+                        id="menuResultados">
+                        <a href="{{ route('import.results') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('import.results') ? 'active' : '' }}">
+                            Importar Notas
+                        </a>
+                        <a href="{{ route('ranking') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('ranking') ? 'active' : '' }}">
+                            Classificação Geral
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-section-title">Matrícula</div>
+                <div class="menu-item">
+                    <a href="{{ route('callings.create') }}"
+                        class="menu-link {{ request()->routeIs('callings.*') ? 'active' : '' }}">
+                        <i class="bi bi-broadcast-pin"></i>
+                        <span>Chamadas</span>
                     </a>
                 </div>
             </div>
-        </div>
 
-        <div class="menu-section">
-            <div class="menu-section-title">Matrícula</div>
-            <div class="menu-item">
-                <a href="{{ route('callings.create') }}" 
-                   class="menu-link {{ request()->routeIs('callings.*') ? 'active' : '' }}">
-                    <i class="bi bi-broadcast-pin"></i>
-                    <span>Chamadas</span>
-                </a>
+            <div class="menu-section">
+                <div class="menu-section-title">Sistema</div>
+                <div class="menu-item">
+                    <a href="{{ route('system.index') }}"
+                        class="menu-link {{ request()->routeIs('system.*') ? 'active' : '' }}">
+                        <i class="bi bi-gear"></i>
+                        <span>Configurações</span>
+                    </a>
+                </div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-danger">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sair</span>
+                    </button>
+                </form>
             </div>
-        </div>
-
-        <div class="menu-section">
-            <div class="menu-section-title">Sistema</div>
-            <div class="menu-item">
-                <a href="{{ route('system.index') }}" 
-                   class="menu-link {{ request()->routeIs('system.*') ? 'active' : '' }}">
-                    <i class="bi bi-gear"></i>
-                    <span>Configurações</span>
-                </a>
-            </div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="text-danger">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span>Sair</span>
-                </button>
-            </form>
-        </div>
-    </nav>
-</aside>
+        </nav>
+    </aside>
     <!-- Overlay para mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <!-- Topbar -->
@@ -215,7 +215,7 @@
                 <div class="user-menu" data-bs-toggle="dropdown">
                     <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                     <div class="user-info">
-                        <div class="user-name">{{ auth()->user()->social_name ?? auth()->user()->name }}</div>
+                        <div class="user-name">{{ auth()->user()->name }}</div>
                         <div class="user-role">Administrador</div>
                     </div>
                     <i class="bi bi-chevron-down"></i>
@@ -341,16 +341,14 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-book me-2"></i>Gerenciar Cursos
                     </a>
-                    <a href="{{ route('faq.index') }}"
-                        class="list-group-item list-group-item-action border-0 px-0">
+                    <a href="{{ route('faq.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
                     <a href="{{ route('exam.schedule') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
-                    <a href="{{ route('ranking') }}"
-                        class="list-group-item list-group-item-action border-0 px-0">
+                    <a href="{{ route('ranking') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
                     <a href="{{ route('callings.create') }}"

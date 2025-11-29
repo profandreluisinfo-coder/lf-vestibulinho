@@ -273,7 +273,7 @@ a {
     left: var(--sidebar-width);
     right: 0;
     height: var(--topbar-height);
-    background: #fff;
+    background: #EAEAEA;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
