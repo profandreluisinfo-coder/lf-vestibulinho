@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
-{    
+{
     /**
      * Verifica se o token informado é válido e, se for, redireciona o usuário para a página de confirmação de e-mail.
      * Se o token for inválido, o usuário será redirecionado para a página de início.
@@ -129,11 +129,26 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', $result['message']);
     }
 
+    /**
+     * Exibe a página de reenvio de e-mail de verificação.
+     *
+     * @return View
+     */
     public function resendEmail(): View
     {
         return view('auth.user.resend-email-verification');
     }
 
+    /**
+     * Reenvia um e-mail para o usuário com um link para redefinição de senha.
+     * Valida os campos 'email' e tenta reenviar um e-mail para o usuário com base no token informado.
+     * Se o token for inválido, o usuário será redirecionado para a página de início.
+     * Se o token for válido, o endereço de e-mail armazenado no token será exibido na página de redefinição de senha.
+     *
+     * @param Request $request
+     * @param UserService $userService
+     * @return RedirectResponse
+     */
     public function resendEmailAction(Request $request, UserService $userService): RedirectResponse
     {
         $credentials = $request->validate([
@@ -147,11 +162,6 @@ class AuthController extends Controller
 
         return redirect()->route('resend.email')->with($response['success'] ? 'success' : 'warning', $response['message']);
     }
-
-    // public function adminLogin(): View
-    // {
-    //     return view('auth.admin.login');
-    // }
 
     public function logout(Request $request): RedirectResponse
     {
