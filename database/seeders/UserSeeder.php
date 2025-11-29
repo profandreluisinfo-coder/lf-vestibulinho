@@ -13,16 +13,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin fixo 1
-        // User::updateOrCreate(
-        //     ['email' => 'adm@lf.com'],
-        //     [
-        //         'name' => 'André Luís Alves',
-        //         'cpf' => '12345678901',
-        //         'role' => 'admin',
-        //         'password' => Hash::make('123'),
-        //         'email_verified_at' => now()
-        //     ]
-        // );
+        User::updateOrCreate(
+            ['email' => 'adm@lf.com'],
+            [
+                'name' => 'André Luís Alves',
+                'cpf' => '12345678901',
+                'role' => 'admin',
+                'password' => Hash::make('123'),
+                'email_verified_at' => now()
+            ]
+        );
 
         // Admin fixo 2
         // User::updateOrCreate(
@@ -49,16 +49,16 @@ class UserSeeder extends Seeder
         // );
 
         // Cria 10 usuários fake
-        User::factory(10)->create()->each(function ($user) {
-            // Cria detalhes do usuário
-            UserDetail::factory()->create([
-                'user_id' => $user->id
-            ]);
+        // User::factory(10)->create()->each(function ($user) {
+        //     // Cria detalhes do usuário
+        //     UserDetail::factory()->create([
+        //         'user_id' => $user->id
+        //     ]);
 
-            // Cria 1 inscrição para o usuário
-            Inscription::factory()->create([
-                'user_id' => $user->id
-            ]);
-        });
+        //     // Cria 1 inscrição para o usuário
+        //     Inscription::factory()->create([
+        //         'user_id' => $user->id
+        //     ]);
+        // });
     }
 }

@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use App\Services\MailService;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use App\Jobs\SendVerificationEmailJob;
 
 class UserService
 {
@@ -178,32 +179,34 @@ class UserService
             ];
         }
 
+        // gera o token
         $user->token = Str::random(64);
         $user->token_expires_at = now()->addMinutes(5);
 
         $link = route('verify', ['token' => $user->token]);
 
-        $emailEnviado = $this->mailService->send(
-            to: $user->email,
-            subject: 'Verificação de e-mail',
-            content: ['name' => $user->social_name ?? $user->name, 'link' => $link],
-            view: 'mail.verify-email'
-        );
+        // dispara o job
+        dispatch(new SendVerificationEmailJob(
+            email: $user->email,
+            // name: $user->social_name ?? $user->name,
+            link: $link
+        ));
 
-        if ($emailEnviado) {
-            $user->save();
-            return [
-                'success' => true,
-                'message' => 'E-mail enviado com sucesso! Verifique a sua caixa de e-mail principal ou spam para prosseguir com a verificação do e-mail.',
-            ];
-        }
+        // salva token no banco
+        $user->save();
 
         return [
-            'success' => false,
-            'message' => 'Erro ao enviar e-mail. Tente novamente mais tarde.',
+            'success' => true,
+            'message' => 'Solicitação registrada! Em instantes você receberá um e-mail para finalizar a verificação.',
         ];
     }
-
+    
+    /**
+     * Envia um e-mail para o usuário informando que a senha foi alterada com sucesso.
+     *
+     * @param User $user
+     * @return array
+     */
     public function passwordChanged(User $user)
     {
         $this->mailService->send(
