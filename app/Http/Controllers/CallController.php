@@ -58,6 +58,7 @@ class CallController extends Controller
      */
     public function create(): View
     {
+        // Este trecho de código recupera todos os registros de `CallList` do banco de dados, faz o carregamento previsorio das associações relacionadas `calls` e `examResult.inscription.user`, conta o número de `calls` para cada `CallList` e ordena os resultados pela coluna `number`. Os dados resultantes são armazenados na variável `$callLists`.
         $callLists = CallList::withCount('calls')
             ->with(['calls.examResult.inscription.user'])
             ->orderBy('number')

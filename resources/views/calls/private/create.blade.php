@@ -3,11 +3,9 @@
 @section('page-title', config('app.name') . ' ' . $calendar->year . ' | Convocação para Matrícula')
 
 @push('datatable-styles')
-    <!-- datatables -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <!-- // datatables -->
 @endpush
 
 @section('dash-content')
@@ -21,8 +19,9 @@
                 </a>
             @endif
         </div>
-        
+
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            @if ($callLists->isNotEmpty())
             <table class="table table-striped freezed-table align-middle">
                 <thead>
                     <tr class="table-success">
@@ -35,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                    @forelse ($callLists as $callList)
+                    @foreach ($callLists as $callList)
                         <tr>
                             <th>{{ $callList->number }}</th> <!-- Número da chamada -->
                             <td>{{ \Carbon\Carbon::parse($callList->date)->format('d/m/Y') }}</td>
@@ -117,20 +116,15 @@
                                                     $user = $call->examResult->inscription->user;
                                                 @endphp
                                                 <tr>
-                                                    <th>{{ $call->examResult->ranking }}</td>
+                                                    <td>{{ $call->examResult->ranking }}</td>
                                                     <td>{{ $call->examResult->inscription_id }}</td>
-                                                    <th>{{ $user->social_name ?? $user->name }}
-                                                    </th>
+                                                    <td>{{ $user->social_name ?? $user->name }}</td>
                                                     <td>{{ $user->cpf }}</td>
                                                     <td>
                                                         @if ($user->pne)
-                                                            <span class="badge bg-success"
-                                                                title="Candidato PCD"><i class="bi bi-universal-access"></i></span>
+                                                            <span class="badge bg-success" title="Candidato PCD"><i
+                                                                    class="bi bi-universal-access"></i></span>
                                                         @endif
-                                                        {{-- @if ($call->is_manual)
-                                                            <span class="badge bg-warning text-dark"
-                                                                title="Candidato PCD convocado manualmente"><i class="bi bi-universal-access"></i></span>
-                                                        @endif --}}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -139,110 +133,114 @@
                                 </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6">Nenhum registro encontrado. Possivelmente, nenhuma chamada foi lançada, ou, a
-                                tabela de classificação está vazia.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
+            @else
+            @include('components.no-records', [
+                        'message' => 'Causas de problemas com as chamadas:',
+                        'submessage' => 'Provavelmente nenhuma chamada ainda foi regisstrada.',
+                        'action' => true,
+                        'actionMessage' =>
+                            'Solução: Tente cadastrar uma nova chamada. Se o problema persistir, entre em contato com o suporte.',
+                    ])
+            @endif
         </div>
 
-        {{-- Modal de lançar chamada --}}
-        <div class="modal fade" id="setNewCall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+    {{-- Modal de lançar chamada --}}
+    <div class="modal fade" id="setNewCall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-light">
+                    <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-1"></i>Nova Chamada</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="card shadow-sm">
+                        <form action="{{ route('callings.store') }}" method="POST" class="p-3" id="setNewCallForm">
+                            @csrf
+
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Número da Chamada</label>
+                                <input type="number" name="number" id="number"
+                                    class="form-control @error('number') is-invalid @enderror" min="1" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="limit" class="form-label">Quantidade de Candidatos</label>
+                                <input type="number" name="limit" id="limit"
+                                    class="form-control @error('limit') is-invalid @enderror" min="1" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="pne_exam_result_ids" class="form-label">Selecionar Candidatos PCD
+                                    (opcional)</label>
+                                <select name="manual_pcds[]" id="manual_pcds" class="form-select" multiple>
+                                    @foreach ($pneCandidates as $candidate)
+                                        <option value="{{ $candidate->id }}">
+                                            {{ $candidate->inscription->user->name }} — CPF:
+                                            {{ $candidate->inscription->user->cpf }} —
+                                            Posição: {{ $candidate->ranking }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text">Segure Ctrl (ou Cmd) para selecionar múltiplos.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Data de Comparecimento</label>
+                                <input type="date" name="date" id="date"
+                                    class="form-control @error('date') is-invalid @enderror" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="time" class="form-label">Hora de Comparecimento</label>
+                                <input type="time" name="time" id="time"
+                                    class="form-control @error('time') is-invalid @enderror" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-sm"><i
+                                    class="bi bi-plus-circle me-1"></i>Registrar Chamada</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!$callLists->isEmpty())
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+            <i class="bi bi-bar-chart-fill"></i> Convocados por Curso
+        </button>
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-1"></i>Nova Chamada</h5>
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Gráfico - Convocados por Curso
+                        </h5>
                     </div>
+
+                    <!-- Modal body -->
                     <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <form action="{{ route('callings.store') }}" method="POST" class="p-3"
-                                id="setNewCallForm">
-                                @csrf
-
-                                <div class="mb-3">
-                                    <label for="number" class="form-label">Número da Chamada</label>
-                                    <input type="number" name="number" id="number"
-                                        class="form-control @error('number') is-invalid @enderror" min="1"
-                                        required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="limit" class="form-label">Quantidade de Candidatos</label>
-                                    <input type="number" name="limit" id="limit"
-                                        class="form-control @error('limit') is-invalid @enderror" min="1" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="pne_exam_result_ids" class="form-label">Selecionar Candidatos PCD
-                                        (opcional)</label>
-                                    <select name="manual_pcds[]" id="manual_pcds" class="form-select" multiple>
-                                        @foreach ($pneCandidates as $candidate)
-                                            <option value="{{ $candidate->id }}">
-                                                {{ $candidate->inscription->user->name }} — CPF:
-                                                {{ $candidate->inscription->user->cpf }} —
-                                                Posição: {{ $candidate->ranking }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <div class="form-text">Segure Ctrl (ou Cmd) para selecionar múltiplos.</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="date" class="form-label">Data de Comparecimento</label>
-                                    <input type="date" name="date" id="date"
-                                        class="form-control @error('date') is-invalid @enderror" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="time" class="form-label">Hora de Comparecimento</label>
-                                    <input type="time" name="time" id="time"
-                                        class="form-control @error('time') is-invalid @enderror" required>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Registrar Chamada</button>
-                            </form>
-                        </div>
+                        <canvas id="convocadosChart" height="100"></canvas>
                     </div>
+
+                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
+
                 </div>
             </div>
         </div>
+    @endif
 
-        @if (!$callLists->isEmpty())
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
-                <i class="bi bi-bar-chart-fill"></i> Convocados por Curso
-            </button>
-            <!-- The Modal -->
-            <div class="modal" id="myModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Gráfico - Convocados por Curso</h5>
-                        </div>
-
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <canvas id="convocadosChart" height="100"></canvas>
-                        </div>
-
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        @endif
-        
     </div>
 @endsection
 

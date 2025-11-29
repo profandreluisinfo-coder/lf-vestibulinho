@@ -49,7 +49,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="2" class="text-center">Nenhum curso cadastrado</td>
+                            <td colspan="4" class="text-center">Nenhum curso cadastrado</td>
                         </tr>
                     @endforelse
                 </tbody>

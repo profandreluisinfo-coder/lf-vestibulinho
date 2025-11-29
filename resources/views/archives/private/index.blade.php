@@ -65,7 +65,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="3">Nenhuma prova encontrada.</td>
+            <td colspan="5">Nenhuma registro encontrado.</td>
           </tr>
         @endforelse
 

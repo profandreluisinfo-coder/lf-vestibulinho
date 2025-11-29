@@ -12,9 +12,8 @@
                 <i class="bi bi-plus-circle me-1"></i> Novo Agendamento
             </a>
         </div>
-
+        @if ($examInfo)
         <div class="row g-4 mb-4">
-
             {{-- Card: Informações da Prova --}}
             <div class="col-12 col-md-4">
                 <div class="card shadow-sm h-100" style="background-color: #ffffb3">
@@ -22,15 +21,21 @@
                         <h5 class="card-title mb-3">
                             <i class="bi bi-calendar-event me-2"></i>Informações da Prova
                         </h5>
-
                         <p class="mb-1">
                             <strong>Data:</strong>
+                            @if (!$examInfo)
+                                <span class="text-danger">N/A</span>
+                            @else
                             {{ \Carbon\Carbon::parse($examInfo->date)->format('d/m/Y') }}
+                            @endif
                         </p>
-
                         <p class="mb-0">
                             <strong>Horário:</strong>
+                            @if (!$examInfo)
+                                <span class="text-danger">N/A</span>
+                            @else
                             {{ \Carbon\Carbon::parse($examInfo->time)->format('H:i') }}
+                            @endif
                         </p>
                         <ul class="list-unstyled mt-3 mb-0">
                             <li class="mb-2">
@@ -42,7 +47,6 @@
                     </div>
                 </div>
             </div>
-
             {{-- Card: Relatórios & Detalhes --}}
             <div class="col-12 col-md-4">
                 <div class="card shadow-sm h-100" style="background-color: #ffffb3">
@@ -78,8 +82,7 @@
 
                     </div>
                 </div>
-            </div>
-            
+            </div>            
             {{-- Card: Acesso aos Locais de Prova --}}
             <div class="col-12 col-md-4">
                 <div class="card shadow-sm h-100" style="background-color: #ffffb3">
@@ -108,19 +111,10 @@
                                 </label>
                             </div>
                         </form>
-
-                        {{-- @if ($accesStatus->location)
-                            <a href="{{ route('system.queue.monitor') }}" target="_blank" class="text-decoration-none">
-                                <i class="bi bi-display me-2"></i>Monitoramento da Fila
-                            </a>
-                        @endif --}}
-
                     </div>
                 </div>
             </div>
-
         </div>
-
         {{-- Exibição dos dados cadastrados --}}
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table class="table table-striped freezed-table mb-0 caption-top">
@@ -147,7 +141,15 @@
                 </tbody>
             </table>
         </div>
-
+        @else
+        @include('components.no-records', [
+                    'message' => 'Causas de problemas com agendamento de prova:',
+                    'submessage' => 'Provavelmente nenhum agendamento ainda foi realizado, ou o calendário ainda não foi definido.',
+                    'action' => true,
+                    'actionMessage' =>
+                        'Solução: Verifique se o calendário foi definido. Tente agendar uma nova prova. Se o problema persistir, entre em contato com o suporte.',
+                ])
+        @endif
         {{-- Modal de definição de local --}}
         <div class="modal fade" id="setLocalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="changePasswordModalLabel" aria-hidden="true">

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
     <!-- Summernote -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
-    
+
     <!-- Estilos para drag and drop -->
     <style>
         .drag-handle {
@@ -20,16 +20,20 @@
             padding: 0 10px;
             color: #6c757d;
         }
+
         .drag-handle:hover {
             color: #0d6efd;
         }
+
         .sortable-ghost {
             opacity: 0.4;
             background: #f8f9fa;
         }
+
         .sortable-chosen {
             background: #e7f3ff;
         }
+
         .accordion-button {
             display: flex;
             align-items: center;
@@ -49,7 +53,8 @@
         @if ($faqs->isNotEmpty())
             <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <i class="bi bi-info-circle me-2"></i>
-                <strong>Dica:</strong> Clique e arraste o ícone <i class="bi bi-grip-vertical"></i> para reordenar as perguntas.
+                <strong>Dica:</strong> Clique e arraste o ícone <i class="bi bi-grip-vertical"></i> para reordenar as
+                perguntas.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
@@ -76,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="accordion accordion-flush" id="faqAccordion">
                 @foreach ($faqs as $faq)
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}">
@@ -151,9 +156,12 @@
                 @endforeach
             </div>
         @else
-            <div class="alert alert-info text-center">
-                Nenhuma pergunta cadastrada ainda.
-            </div>
+            @include('components.no-records', [
+                'message' => 'Causas de problemas com as perguntas e respostas:',
+                'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
+                'action' => true,
+                'actionMessage' => 'Solução: Tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
+            ])
         @endif
 
         {{-- Modal de lançar nova pergunta --}}
@@ -162,7 +170,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar Nova FaQ</h5>
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar
+                            Nova FaQ</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -171,7 +180,8 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="question" class="form-label required">Pergunta:</label>
-                                        <input type="text" class="form-control" id="question" name="question" required>
+                                        <input type="text" class="form-control" id="question" name="question"
+                                            required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="answer" class="form-label required">Resposta:</label>
@@ -202,7 +212,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/faqs/create.js')}}"></script>
+    <script src="{{ asset('assets/rules/admin/faqs/create.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>

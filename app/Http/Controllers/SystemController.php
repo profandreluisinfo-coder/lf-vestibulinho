@@ -42,11 +42,14 @@ class SystemController extends Controller
             // Apaga todos os registros da tabela de calendarios 
             Calendar::truncate();
 
+            // Apagar os dados de autenticação
+            session()->flush();
+
             return response()->json([
                 'success' => true,
-                'message' => 'Sistema redefinido com sucesso.'
+                'message' => 'Sistema redefinido com sucesso. Por favor, faca login novamente.'
             ]);
-        } catch (\Throwable $e) {            
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao redefinir o sistema.',

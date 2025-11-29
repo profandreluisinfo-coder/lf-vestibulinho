@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        $calendar = Calendar::first();
+        $calendar = Calendar::first() ?? new Calendar();
 
         if (!$calendar->hasInscriptionStarted()) {
             return redirect()->route('home');

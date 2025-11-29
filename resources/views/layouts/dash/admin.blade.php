@@ -31,7 +31,6 @@
             <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
             <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
         </div>
-
         <nav class="sidebar-menu">
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>
@@ -43,7 +42,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="menu-section">
                 <div class="menu-section-title">Vestibulinho</div>
                 <div class="menu-dropdown">
@@ -77,7 +75,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="menu-section">
                 <div class="menu-section-title">Usuários e Inscrições</div>
                 <div class="menu-dropdown">
@@ -118,7 +115,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="menu-section">
                 <div class="menu-section-title">Provas e Resultados</div>
                 <div class="menu-dropdown">
@@ -137,10 +133,17 @@
                             class="dropdown-item-custom {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
                             Agendar
                         </a>
-                        <a href="{{ route('export.users') }}"
+                        {{-- <a href="{{ route('export.users') }}"
                             class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}">
                             Planilha de Notas
-                        </a>
+                        </a> --}}
+                        <a href="#"
+                            id="exportLink"
+                            class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}"
+                            onclick="handleExport(event, '{{ route('export.users') }}')">
+                            Planilha de Notas
+                            </a>
+
                     </div>
                 </div>
 
@@ -392,6 +395,7 @@
     <script src="{{ asset('assets/auth/change-password.js') }}"></script>
     <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
+    <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
     @stack('plugins')
     @include('partials.alerts.admins')
     @stack('scripts')

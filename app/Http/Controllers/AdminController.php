@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Calendar;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {    
