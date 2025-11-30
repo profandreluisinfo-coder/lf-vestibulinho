@@ -2,11 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\ExamResult;
+use App\Models\Setting;
 use App\Models\Calendar;
-use App\Jobs\SendExamLocationMailJob;
+use App\Models\ExamResult;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendExamLocationMailJob;
 
 class SendDailyExamLocationEmails extends Command
 {
@@ -16,11 +17,23 @@ class SendDailyExamLocationEmails extends Command
 
     public function handle()
     {
-        $limit = 300; // ajuste se quiser
+        $limit = 300;
 
-        Log::info("📬 Iniciando envio diário de emails (limit = {$limit})");
+        Log::info("📬 Verificando permissão para envio diário...");
 
-        // 🔎 Carrega o calendário
+        // 🔎 Busca as configurações
+        $settings = Setting::first();
+
+        // ❌ Se o admin NÃO liberou o acesso, não envia nada
+        if (!$settings || !$settings->location) {
+            Log::warning("⛔ Envio bloqueado: acesso aos locais de prova ainda não liberado pelo admin.");
+            $this->info("Envio bloqueado. Libere o acesso aos locais de prova para iniciar o envio.");
+            return Command::SUCCESS;
+        }
+
+        Log::info("🔓 Acesso liberado! Iniciando processamento de envios...");
+
+        // 🔎 Carrega calendário
         $calendar = Calendar::first();
 
         // 🔎 Busca exam_results ainda não enviados
@@ -30,13 +43,12 @@ class SendDailyExamLocationEmails extends Command
             ->get();
 
         if ($results->isEmpty()) {
-            Log::info("📬 Nenhum email para enviar hoje.");
+            Log::info("📬 Nenhum email pendente.");
             $this->info("Nenhum email pendente.");
             return Command::SUCCESS;
         }
 
         foreach ($results as $result) {
-
             $user = $result->inscription->user;
 
             SendExamLocationMailJob::dispatch(
@@ -53,7 +65,6 @@ class SendDailyExamLocationEmails extends Command
                 view: 'mail.exam_location_info'
             );
 
-            // Marca como enviado
             $result->update(['email_sent_at' => now()]);
         }
 

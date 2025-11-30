@@ -16,7 +16,7 @@
         <div class="row g-4 mb-4">
             {{-- Card: Informações da Prova --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
+                <div class="card shadow h-100" style="background-color: #ffffe6">
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             <i class="bi bi-calendar-event me-2"></i>Informações da Prova
@@ -49,7 +49,7 @@
             </div>
             {{-- Card: Relatórios & Detalhes --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
+                <div class="card shadow h-100" style="background-color: #ffffe6">
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
@@ -85,7 +85,7 @@
             </div>            
             {{-- Card: Acesso aos Locais de Prova --}}
             <div class="col-12 col-md-4">
-                <div class="card shadow-sm h-100" style="background-color: #ffffb3">
+                <div class="card shadow h-100" style="background-color: #ffffe6">
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
@@ -111,6 +111,13 @@
                                 </label>
                             </div>
                         </form>
+                        <div>
+                            {!! 
+                                $pending > 0 
+                                    ? '<i class="bi bi-info-circle text-primary me-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="O limite diário de envio de e-mails do servidor atual é de 500 envios por dia."></i><span class="text-primary">Ainda falta(m) <strong>' . $pending . '</strong> candidato(s) receber(em) o e-mail de local de prova.</span>' 
+                                    : '<i class="bi bi-check-circle text-success me-1" data-bs-toggle="popover" title="Popover Header" data-bs-content="Nenhuma pendência"></i><span class="text-success">Todos os candidatos receberam o e-mail de local de prova.</span>' 
+                            !!}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,4 +226,5 @@
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/schedule/create.js') }}"></script>
     <script src="{{ asset('assets/swa/locations/seetings.js') }}"></script>
+    <script src="{{ asset('assets/interactions/popover.js') }}"></script>
 @endpush

@@ -8,9 +8,10 @@ use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\ExamLocation;
 use Illuminate\Http\Request;
-use App\Services\MailService;
+// use App\Services\MailService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendExamLocationMailJob;
 use App\Services\ExamAllocationService;
 
 class ExamController extends Controller
@@ -87,6 +88,8 @@ class ExamController extends Controller
      */
     public function scheduleSettings(): View
     {
+        $pending = ExamResult::whereNull('email_sent_at')->count();
+
         $accesStatus = Setting::first() ?? new Setting();
 
         $rooms = DB::table('exam_results')
@@ -107,6 +110,7 @@ class ExamController extends Controller
 
         // Passar para a view
         view()->share([
+            'pending' => $pending,
             'accesStatus' => $accesStatus,
             'rooms' => $rooms,
             'examInfo' => $examInfo,
@@ -310,58 +314,29 @@ class ExamController extends Controller
      */
     public function setAccessToLocation(Request $request)
     {
-        set_time_limit(0);
-
-        // Atualiza configuração
+        // Define se acesso foi liberado
         $locationAccess = $request->filled('location');
-        Setting::updateOrCreate(['id' => 1], ['location' => $locationAccess]);
 
-        // Se bloqueou o acesso, só retorna
+        // Atualiza a configuração
+        Setting::updateOrCreate(
+            ['id' => 1],
+            ['location' => $locationAccess]
+        );
+
+        // Se bloqueou, simplesmente retorna
         if (!$locationAccess) {
             return redirect()->back()->with('success', 'Acesso ao local bloqueado com sucesso!');
         }
 
-        Log::info('🚀 Iniciando liberação de acesso ao local de prova com envio de e-mails em fila...');
+        // Se liberou, também não enviamos nada aqui.
+        // Apenas permitimos que o CRON diurno processe o envio
+        // de forma segura e em lotes (300/dia, por exemplo).
 
-        $subject = 'CONVOCAÇÃO PARA PROVA – PROCESSO SELETIVO 2026 E.M. DR. LEANDRO FRANCESCHINI';
-        $view = 'mail.exam_location_info';
-
-        // Processa em lotes para evitar sobrecarga de memória
-        ExamResult::with(['inscription.user', 'location'])
-            ->chunk(100, function ($results) use ($subject, $view) {
-                foreach ($results as $result) {
-                    $user = $result->inscription->user ?? null;
-
-                    if (!$user || !$user->email) {
-                        Log::warning("⚠️ Usuário sem e-mail - inscrição ID {$result->inscription_id}");
-                        continue;
-                    }
-
-                    $email = $user->email;
-                    $content = [
-                        'name' => $user->social_name ?? $user->name,
-                        'date' => $result->exam_date,
-                        'time' => $result->exam_time,
-                        'location' => $result->location->name ?? 'Não informado',
-                        'address' => $result->location->address ?? 'Endereço não cadastrado',
-                        'room_number' => $result->room_number ?? 'Não definido'
-                    ];
-
-                    // Dispara o Job pra fila
-                    dispatch(new \App\Jobs\SendExamLocationMailJob(
-                        email: $email,
-                        subject: $subject,
-                        content: $content,
-                        view: $view
-                    ))->delay(now()->addSeconds(rand(0, 10))); // Pequeno delay ajuda o servidor
-
-                    Log::info("📨 Job de e-mail criado para {$email}");
-                }
-            });
-
-        return redirect()->back()->with('success', 'Acesso ao Local liberado e e-mails agendados para envio em fila!');
+        return redirect()->back()->with(
+            'success',
+            'Acesso ao Local liberado! Os e-mails serão enviados automaticamente pelo sistema.'
+        );
     }
-
 
     /**
      * Converte uma string para maiúsculas, considerando a codificação UTF-8.
