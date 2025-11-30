@@ -114,8 +114,8 @@
                         <div>
                             {!! 
                                 $pending > 0 
-                                    ? '<i class="bi bi-info-circle text-primary me-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="O limite diário de envio de e-mails do servidor atual é de 500 envios por dia."></i><span class="text-primary">Ainda falta(m) <strong>' . $pending . '</strong> candidato(s) receber(em) o e-mail de local de prova.</span>' 
-                                    : '<i class="bi bi-check-circle text-success me-1" data-bs-toggle="popover" title="Popover Header" data-bs-content="Nenhuma pendência"></i><span class="text-success">Todos os candidatos receberam o e-mail de local de prova.</span>' 
+                                    ? '<i class="bi bi-info-circle text-primary fs-5 me-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="O limite diário de envio de e-mails do servidor atual é de 500 envios por dia."></i><span class="text-primary">Ainda falta(m) <strong>' . $pending . '</strong> candidato(s) receber(em) o e-mail de local de prova.</span>' 
+                                    : '<i class="bi bi-check-circle text-success fs-5 me-1" data-bs-toggle="popover" title="Popover Header" data-bs-content="Nenhuma pendência"></i><span class="text-success">Todos os candidatos receberam o e-mail de local de prova.</span>' 
                             !!}
                         </div>
                     </div>
