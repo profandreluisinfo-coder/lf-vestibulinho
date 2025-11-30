@@ -15,6 +15,7 @@ class ExamResult extends Model
         'score',
         'ranking',
         'room_number',
+        'email_sent_at',
         'exam_location_id',
     ];
 

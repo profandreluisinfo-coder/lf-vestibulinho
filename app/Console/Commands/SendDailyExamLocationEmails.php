@@ -17,21 +17,21 @@ class SendDailyExamLocationEmails extends Command
 
     public function handle()
     {
-        $limit = 300;
+        $limit = 225;
 
-        Log::info("📬 Verificando permissão para envio diário...");
+        Log::info("Verificando permissão para envio diário...");
 
         // 🔎 Busca as configurações
         $settings = Setting::first();
 
         // ❌ Se o admin NÃO liberou o acesso, não envia nada
         if (!$settings || !$settings->location) {
-            Log::warning("⛔ Envio bloqueado: acesso aos locais de prova ainda não liberado pelo admin.");
+            Log::warning("Envio bloqueado: acesso aos locais de prova ainda não liberado pelo admin.");
             $this->info("Envio bloqueado. Libere o acesso aos locais de prova para iniciar o envio.");
             return Command::SUCCESS;
         }
 
-        Log::info("🔓 Acesso liberado! Iniciando processamento de envios...");
+        Log::info("Acesso liberado! Iniciando processamento de envios...");
 
         // 🔎 Carrega calendário
         $calendar = Calendar::first();
@@ -43,7 +43,7 @@ class SendDailyExamLocationEmails extends Command
             ->get();
 
         if ($results->isEmpty()) {
-            Log::info("📬 Nenhum email pendente.");
+            Log::info("Nenhum email pendente.");
             $this->info("Nenhum email pendente.");
             return Command::SUCCESS;
         }
@@ -68,7 +68,7 @@ class SendDailyExamLocationEmails extends Command
             $result->update(['email_sent_at' => now()]);
         }
 
-        Log::info("📬 Lote diário enviado com sucesso: {$results->count()} emails.");
+        Log::info("Lote diário enviado com sucesso: {$results->count()} emails.");
 
         $this->info("Enviados {$results->count()} emails hoje.");
 
