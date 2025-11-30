@@ -38,10 +38,10 @@ class SendExamLocationMailJob implements ShouldQueue
                 queue: false
             );
 
-            Log::info("📬 Enviado: {$this->email}");
+            Log::info("Enviado: {$this->email}");
 
         } catch (\Throwable $e) {
-            Log::error("❌ Erro ao enviar para {$this->email}: {$e->getMessage()}");
+            Log::error("Erro ao enviar para {$this->email}: {$e->getMessage()}");
             $this->fail($e);
         }
     }
