@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\ExamRankingService;
 use Illuminate\Support\Facades\DB;
+use App\Imports\SimpleImport;
 
 class ImportController extends Controller
 {
@@ -18,49 +19,56 @@ class ImportController extends Controller
         $this->rankingService = $rankingService;
     }
 
-    // Método para exibir o formulário para importação de notas a partir de um arquivo .xlsx
+    // Exibe o formulário de importação
     public function index()
     {
         return view('import.private.index');
     }
 
-/**
- * Importa as notas de um arquivo .xlsx
- *
- * Valida se o arquivo tem ao menos 2 colunas e se a primeira coluna tem um valor numérico e a quinta coluna tem um valor numérico.
- * Se a validação for bem sucedida, atualiza as notas na tabela de resultados.
- * Se a validação falhar, retorna um erro.
- * Se a importação for bem sucedida, recalcula a classificação geral e redireciona para a página de classificação.
- *
- * @param \Illuminate\Http\Request $request
- * @return \Illuminate\Http\RedirectResponse
- */
+    /**
+     * Importa as notas de um arquivo .xlsx
+     */
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:xlsx',
+            'file' => 'required|file',
+        ], [
+            'file.required' => 'Carregue um arquivo.',
+            'file.file'     => 'O arquivo está corrompido.'
         ]);
 
         $file = $request->file('file');
-        $spreadsheet = Excel::toArray([], $file);
-        $rows = $spreadsheet[0];
+
+        // Import sem depender de TemporaryFile (funciona 100% no Windows)
+        $import = new SimpleImport();
+        Excel::import($import, $file);
+
+        // Converte coleção para array comum
+        $rows = $import->rows->toArray();
 
         // Validação básica
         if (count($rows) < 2) {
             return back()->withErrors(['file' => 'Arquivo vazio ou sem colunas suficientes.']);
         }
 
-        unset($rows[0]); // Remove cabeçalho
+        // Remove cabeçalho
+        unset($rows[0]);
 
         DB::beginTransaction();
 
         try {
             foreach ($rows as $row) {
-                $inscriptionId = $row[0]; // coluna: inscription_id
-                $points = (int) $row[5];  // coluna: points
+
+                // Protege contra linhas vazias
+                if (!isset($row[0]) || !isset($row[5])) {
+                    continue;
+                }
+
+                $inscriptionId = $row[0]; // coluna inscription_id
+                $points = (int) $row[5];  // coluna points
 
                 if (!$inscriptionId || !is_numeric($points)) {
-                    continue; // pula linhas inválidas
+                    continue;
                 }
 
                 ExamResult::where('inscription_id', $inscriptionId)
@@ -68,10 +76,10 @@ class ImportController extends Controller
             }
 
             $this->rankingService->calculate();
-
             DB::commit();
 
             return redirect()->route('ranking')->with('success', 'Operação realizada com sucesso!');
+        
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['file' => 'Erro ao importar: ' . $e->getMessage()]);
