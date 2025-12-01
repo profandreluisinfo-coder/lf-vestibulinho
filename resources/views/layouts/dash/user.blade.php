@@ -35,7 +35,7 @@
     <nav class="navbar navbar-expand-lg shadow-sm fixed-top navbar-dark">
         <div class="container-fluid px-3">
             {{-- Logo/Brand --}}
-            <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="{{ route('home') ?? '/' }}">
+            <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="javascript:void(0);">
                 <i class="bi bi-mortarboard fs-5"></i>
                 <span class="text-light d-none d-md-inline fs-6">{{ config('app.name') }} {{ $calendar?->year }}</span>
                 <span class="text-light d-inline d-md-none fs-6">{{ config('app.name') }}</span>
@@ -62,7 +62,7 @@
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center gap-2" href="#"
                                         data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                        <i class="bi bi-key text-secondary"></i>
+                                        <i class="bi bi-lock text-secondary"></i>
                                         <span>Alterar Senha</span>
                                     </a>
                                 </li>
@@ -103,11 +103,12 @@
             {{-- Modal Alterar Senha --}}
             <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="changePasswordModalLabel">Alterar Senha</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                            <h5 class="modal-title" id="changePasswordModalLabel">
+                                <i class="bi bi-lock me-2"></i>Alterar Senha
+                            </h5>
                         </div>
                         <div class="modal-body">
                             <form id="change-password" method="POST" action="{{ route('alterar.senha') }}">
@@ -146,14 +147,14 @@
                                     @enderror
                                 </div>
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-secondary btn-sm">
                                         <i class="bi bi-check-circle me-2"></i> Alterar
                                     </button>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </div>
                 </div>

@@ -61,9 +61,6 @@
 }
 
 @media (max-width: 768px) {
-    /* section {
-        margin-top: 125px;
-    } */
 
     .table th,
     .table td {
@@ -73,16 +70,11 @@
 
     .table th,
     .table td {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .table th {
         width: 110px;
         /* menor largura em dispositivos móveis */
-    }
-
-    .table td {
-        text-wrap: wrap !important;
-        /* quebra de linha automática */
     }
 }

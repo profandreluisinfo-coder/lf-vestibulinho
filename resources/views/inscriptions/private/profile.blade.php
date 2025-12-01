@@ -129,8 +129,8 @@
     </div>
 
     <!-- Modal com todos os dados da inscrição do candidato -->
-    <div class="modal" id="fichaDeInscricao">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal fade" id="fichaDeInscricao">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header text-white">
@@ -465,8 +465,8 @@
 
     @if ($settings->location && $exam)
         <!-- Modal de definição de local de prova -->
-        <div class="modal" id="localDeProva">
-            <div class="modal-dialog modal-lg">
+        <div class="modal fade" id="localDeProva">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -482,7 +482,7 @@
                                         <td class="w-25">
                                             <i class="bi bi-person me-2"></i>Candidato:
                                         </td>
-                                        <td class="w-75">
+                                        <td class="w-75 fw-semibold">
                                             {{ auth()->user()->social_name ?: auth()->user()->name }}
                                         </td>
                                     </tr>
@@ -492,7 +492,7 @@
                                             <i class="bi bi-building me-2"></i>Local:
                                         </td>
                                         <td class="w-75">
-                                            <div class="border-bottom mb-2">
+                                            <div class="border-bottom mb-2 fw-semibold">
                                                 {{ $exam->location?->name }}
                                             </div>
                                             <div class="small text-muted">
@@ -505,11 +505,11 @@
                                         <td class="w-25">
                                             <i class="bi bi-door-open me-2"></i>Sala:
                                         </td>
-                                        <td class="w-75">
+                                        <td class="w-75 fw-semibold">
                                             {{ $exam->room_number }}
 
                                             @if ($exam->pne ?? false)
-                                                <div class="alert alert-warning mt-3 p-2">
+                                                <div class="alert alert-warning mt-3 p-2 fw-semibold">
                                                     <i class="bi bi-universal-access-circle"></i>
                                                     Sala de Atendimento Especializado.
                                                 </div>
@@ -521,7 +521,7 @@
                                         <td class="w-25">
                                             <i class="bi bi-calendar-event me-2"></i>Data:
                                         </td>
-                                        <td class="w-75">
+                                        <td class="w-75 fw-semibold">
                                             {{ \Carbon\Carbon::parse($exam->exam_date)->format('d/m/Y') }}
                                         </td>
                                     </tr>
@@ -530,17 +530,17 @@
                                         <td class="w-25">
                                             <i class="bi bi-clock me-2"></i>Hora:
                                         </td>
-                                        <td class="w-75">
+                                        <td class="w-75 fw-semibold">
                                             {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}
                                         </td>
                                     </tr>
                                     <!-- Instruções -->
                                     <tr>
                                         <td class="w-25">
-                                            <i class="bi bi-info-circle-fill me-2"></i>Instruções:
+                                            <i class="bi bi-info-circle me-2"></i>Instruções:
                                         </td>
                                         <td class="w-75">
-                                            <ul class="mb-0 small">
+                                            <ul class="mb-0 ps-3 small">
                                                 <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
                                                 <li>Leve documento com foto e caneta azul ou preta.</li>
                                                 <li class="text-danger fw-bold">Não é permitido usar dispositivos
@@ -569,7 +569,7 @@
 
 @if ($settings->result)
     <!-- Modal de exibição de classificação na prova-->
-    <div class="modal" id="resultadoDeProva">
+    <div class="modal fade" id="resultadoDeProva">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 

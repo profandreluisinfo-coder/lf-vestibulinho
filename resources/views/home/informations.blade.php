@@ -62,7 +62,7 @@
                                     <a href="{{ route('results') }}"
                                         class="fw-semibold text-success text-decoration-none">
                                         página de resultados
-                                    </a>.
+                                    </a> ou na <a href="{{ route('login') }}" class="fw-semibold text-success text-decoration-none">Área do Candidato</a>.
                                 </p>
                                 <a href="{{ route('results') }}" class="btn btn-success btn-sm px-3">
                                     Ver Resultado
