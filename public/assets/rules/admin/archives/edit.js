@@ -1,4 +1,4 @@
-$('#form-file').validate({
+$('#form-file-edit').validate({
     rules: {
         year: {
             required: true,
