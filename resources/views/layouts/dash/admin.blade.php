@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-bs-theme="light">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -7,20 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <title>@yield('page-title', 'Painel Administrativo - Vestibulinho LF')</title>
+
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     {{-- Bootstrap & Ícones --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
     {{-- Estilos adicionais --}}
     @stack('datatable-styles')
+
     {{-- Estilos --}}
     <link rel="stylesheet" href="{{ asset('assets/css/layouts/dash/admin.css') }}">
+
     @stack('styles')
+
     {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     @stack('head-scripts')
 </head>
 
@@ -133,17 +143,12 @@
                             class="dropdown-item-custom {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
                             Agendar
                         </a>
-                        {{-- <a href="{{ route('export.users') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}">
-                            Planilha de Notas
-                        </a> --}}
                         <a href="#"
                             id="exportLink"
                             class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}"
                             onclick="handleExport(event, '{{ route('export.users') }}')">
                             Planilha de Notas
-                            </a>
-
+                        </a>
                     </div>
                 </div>
 
@@ -197,8 +202,10 @@
             </div>
         </nav>
     </aside>
+
     <!-- Overlay para mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    
     <!-- Topbar -->
     <header class="topbar">
         <div class="topbar-left">
@@ -227,7 +234,7 @@
                     <li>
                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                             data-bs-target="#changePasswordModal">
-                            <i class="bi bi-key me-2"></i>Alterar Senha
+                            <i class="bi bi-lock me-2"></i>Alterar Senha
                         </a>
                     </li>
                     <li>
@@ -242,8 +249,10 @@
             </div>
         </div>
     </header>
+
     <!-- Conteúdo -->
     <main class="main-content py-5">
+
         @yield('dash-content')
 
         {{-- Modal Alterar Senha --}}
@@ -252,7 +261,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="changePasswordModalLabel">Alterar Senha</h5>
+                        <h5 class="modal-title" id="changePasswordModalLabel"><i class="bi bi-lock me-2"></i>Alterar Senha</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Fechar"></button>
                     </div>
@@ -284,7 +293,9 @@
                 </div>
             </div>
         </div>
+
     </main>
+
     {{-- Offcanvas Menu --}}
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
         <div class="offcanvas-header border-bottom">
@@ -386,18 +397,23 @@
             </div>
         </div>
     </div>
+
     {{-- === JS === --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    
     {{-- Scripts --}}
     <script src="{{ asset('assets/auth/change-password.js') }}"></script>
     <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
+    
     @stack('plugins')
+    
     @include('partials.alerts.admins')
+    
     @stack('scripts')
 </body>
 

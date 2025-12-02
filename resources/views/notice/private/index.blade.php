@@ -1,13 +1,13 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Calendário do Processo Seletivo')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Calendário do Processo Seletivo')
 
 @section('dash-content')
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital do Processo Seletivo</h5>
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFile">
+            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewFile">
                 <i class="bi bi-plus-circle me-1"></i> Upload de Edital
             </a>
         </div>
@@ -40,7 +40,7 @@
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $notice->status ? 'warning' : 'success' }} me-2"
+                                    class="btn btn-sm btn-{{ $notice->status ? 'warning' : 'success' }} rounded-pill"
                                     onclick="confirmNoticePublish({{ $notice->id }}, 'Edital {{ $notice->year }}')">
                                     <i class="bi bi-{{ $notice->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                     {{ $notice->status ? 'Ocultar' : 'Publicar' }}
@@ -52,7 +52,7 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <button type="button" class="btn btn-sm btn-danger"
+                                <button type="button" class="btn btn-sm btn-danger rounded-pill"
                                     onclick="confirmNoticeDelete({{ $notice->id }}, 'Edital {{ $notice->year }}')">
                                     <i class="bi bi-trash me-1"></i> Excluir
                                 </button>
@@ -73,40 +73,44 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Arquivo do Edital</h5>
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Arquivo do
+                            Edital</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <form id="form-file" action="{{ route('notice.create') }}" method="POST"
-                                    enctype="multipart/form-data" novalidate>
-                                    @csrf
+                                <div class="form-group">
+                                    <form id="form-file" action="{{ route('notice.create') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
 
-                                    {{-- Arquivo relacionado --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="file" name="file"
-                                            class="form-control @error('file') is-invalid @enderror" id="file"
-                                            placeholder="Endereço" value="{{ old('file') }}" required>
-                                        <label for="file" class="form-label required">Arquivo relacionado</label>
-                                        @error('file')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
+                                        {{-- Arquivo relacionado --}}
+                                        <div class="form-floating mb-3">
+                                            <input type="file" name="file"
+                                                class="form-control @error('file') is-invalid @enderror" id="file"
+                                                placeholder="Endereço" value="{{ old('file') }}">
+                                            <label for="file" class="form-label required">Arquivo relacionado</label>
+                                            @error('file')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
 
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-plus-circle"></i> Gravar
-                                        </button>
-                                    </div>
-                                </form>
+                                        <div class="text-end">
+                                            <button type="submit" class="btn btn-primary btn-sm rounded-pill">
+                                                <i class="bi bi-plus-circle me-1"></i> Gravar
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal"><i
+                                class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>
@@ -116,6 +120,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/rules/admin/notice/index.js') }}"></script>
     <script src="{{ asset('assets/swa/notice/delete.js') }}"></script>
     <script src="{{ asset('assets/swa/notice/publish.js') }}"></script>
 @endpush

@@ -45,8 +45,8 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
-                <i class="bi bi-plus-circle me-2"></i> Nova
+            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
+                <i class="bi bi-plus-circle me-1"></i> Nova
             </a>
         </div>
 
@@ -101,12 +101,12 @@
                                 {!! $faq->answer !!}
 
                                 <div
-                                    class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1">
-                                    <span class="me-2">Autor: {{ $faq->user->name }}</span> |
-                                    <span class="mx-2">Criado em: {{ $faq->created_at->format('d/m/Y H:i:s') }}</span> |
-                                    <span class="mx-2">Alterado em: {{ $faq->updated_at->format('d/m/Y H:i:s') }}</span>
-                                    |
-                                    <span class="ms-2">Status:
+                                    class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1 bg-light">
+                                    <span class="me-2"><i class="bi bi-person me-1"></i> {{ $faq->user->name }}</span> 
+                                    <span class="mx-2"><i class="bi bi-floppy me-1"></i> {{ $faq->created_at->format('d/m/Y H:i:s') }}</span> 
+                                    <span class="mx-2"><i class="bi bi-pencil-square me-1"></i> {{ $faq->updated_at->format('d/m/Y H:i:s') }}</span>
+                                    
+                                    <span class="ms-2">
                                         <span class="badge bg-{{ $faq->status ? 'success' : 'warning' }}">
                                             {{ $faq->status ? 'Publicado' : 'Não Publicado' }}
                                         </span>
@@ -122,7 +122,7 @@
                                             @method('PUT')
                                         </form>
                                         <button type="button"
-                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}"
+                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }} rounded-pill" style="width: 100px;"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                             {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
@@ -131,8 +131,8 @@
 
                                     {{-- Botão de editar --}}
                                     @can('manage-faq', $faq)
-                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary">
-                                            <i class="bi bi-pencil-square me-1" title="Editar"></i> Editar
+                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary rounded-pill" style="width: 100px;">
+                                            <i class="bi bi-pencil-square me-1" style="width: 100px;" title="Editar"></i> Editar
                                         </a>
                                     @endcan
 
@@ -143,7 +143,7 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-danger"
+                                        <button type="button" class="btn btn-sm btn-danger rounded-pill" style="width: 100px;"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-trash me-1"></i> Excluir
                                         </button>
@@ -178,22 +178,21 @@
                             <div class="card-body">
                                 <form action="{{ route('faq.store') }}" method="POST" id="faqForm">
                                     @csrf
-                                    <div class="mb-3">
+                                    <div class="form-group">
                                         <label for="question" class="form-label required">Pergunta:</label>
-                                        <input type="text" class="form-control" id="question" name="question"
-                                            required>
+                                        <input type="text" class="form-control" id="question" name="question">
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="form-group mb-3">
                                         <label for="answer" class="form-label required">Resposta:</label>
-                                        <textarea class="form-control summernote" id="answer" name="answer" rows="6" required></textarea>
+                                        <textarea class="form-control summernote" id="answer" name="answer" rows="6"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm">Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill"><i class="bi bi-check-circle me-1"></i>Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>
@@ -212,7 +211,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/faqs/create.js') }}"></script>
+    <script src="{{ asset('assets/rules/admin/faqs/index.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>

@@ -9,21 +9,21 @@
 @section('dash-content')
 
     @php
-        $calendar_active = \App\Models\Calendar::first();
-        $notice_active = App\Models\Notice::hasActive();
-        $local_status = App\Models\ExamResult::hasRecords();
-        $ranking_active = App\Models\ExamResult::hasScores();
+        $calendar_active = App\Models\Calendar::first();
+        $notice_active   = App\Models\Notice::hasActive();
+        $local_status    = App\Models\ExamResult::hasRecords();
+        $ranking_active  = App\Models\ExamResult::hasScores();
     @endphp
 
     <div class="accordion accordion-flush" id="accordionFlushExample">
-        <div class="accordion-item">
+        <div class="accordion-item" id="flush-headingOne">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                     📝 Fluxo de Tarefas
                 </button>
             </h2>
-            <div id="flush-collapseOne" class="accordion-collapse collapse show">
+            <div id="flush-collapseOne" class="accordion-collapse collapse show bg-light" aria-labelledby="flush-headingOne">
                 <div class="accordion-body">
                     <div class="stepper-container mb-5">
                         <!-- Etapa 1 -->
@@ -95,16 +95,16 @@
             </div>
         </div>
         @if ($calendar_active?->hasInscriptionStarted())
-        <div class="accordion-item">            
+        <div class="accordion-item bg-light">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                     📊 Estatísticas
                 </button>
             </h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <div class="row g-4 mb-5">
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo">
+                <div class="accordion-body p-0">
+                    <div class="row g-4">
                     <!-- Inscritos por Curso -->
                     <div class="col-md-12">
                         <div class="card shadow-sm">

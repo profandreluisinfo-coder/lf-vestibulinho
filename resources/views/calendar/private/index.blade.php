@@ -13,7 +13,7 @@
             $calendar = \App\Models\Calendar::first();
         @endphp
 
-        <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-warning btn-sm">
+        <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-primary btn-sm rounded-pill">
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar ? 'Editar Calendário' : 'Cadastrar Calendário' }}
         </a>

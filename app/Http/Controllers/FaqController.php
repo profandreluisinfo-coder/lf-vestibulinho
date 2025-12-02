@@ -150,9 +150,9 @@ class FaqController extends Controller
             return redirect()->route('home');
         }
 
-        view()->share('faqs', $faqs);
+        // view()->share('faqs', $faqs);
 
-        return view('faqs.public.list');
+        return view('faqs.public.list', compact('faqs'));
     }
 
     public function publish(Faq $faq)

@@ -28,10 +28,10 @@
                         <textarea class="form-control summernote" id="answer" name="answer" rows="6" required>{{ $faq->answer }}</textarea>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary btn-sm">
+                        <button type="submit" class="btn btn-primary btn-sm rounded-pill" style="width: 100px;">
                             <i class="bi bi-check-circle me-1"></i> Atualizar
                         </button>
-                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm text-danger">
+                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm rounded-pill" style="width: 100px;">
                             <i class="bi bi-x-circle me-1"></i> Cancelar
                         </a>
                     </div>

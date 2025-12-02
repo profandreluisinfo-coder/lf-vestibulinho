@@ -513,6 +513,11 @@ a {
     background-color: var(--bs-table-bg, #d1e7dd);
 }
 
+/* ==================== BUTTONS ==================== */
+.btn {
+    min-width: 100px;
+}
+
 /* ==================== OTHERS ==================== */
 .d-flex h4 {
     color: #475569;

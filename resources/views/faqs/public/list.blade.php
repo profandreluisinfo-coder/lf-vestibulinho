@@ -37,13 +37,13 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false"
                                         aria-controls="collapse{{ $faq->id }}">
-                                        {{ $faq->question }}
+                                        {!! $faq->question !!}
                                     </button>
                                 </h2>
                                 <div id="collapse{{ $faq->id }}" class="accordion-collapse collapse"
                                     aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#faqAccordion">
                                     <div class="accordion-body">
-                                        {{ $faq->answer }}
+                                        {!! $faq->answer !!}
                                     </div>
                                 </div>
                             </div>

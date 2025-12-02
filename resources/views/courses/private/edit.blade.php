@@ -42,7 +42,8 @@
                         </div>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2"></i>Gravar</button>
+                <a href="{{ route('courses.index') }}" class="btn btn-secondary btn-sm rounded-pill"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                <button type="submit" class="btn btn-primary btn-sm rounded-pill"><i class="bi bi-check-circle me-1"></i>Gravar</button>
             </form>
         </div>
     </div>
@@ -50,6 +51,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/courses/create.js') }}"></script>
+    <script src="{{ asset('assets/rules/admin/courses/edit.js') }}"></script>
     <script src="{{ asset('assets/swa/courses/delete.js') }}"></script>
 @endpush

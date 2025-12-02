@@ -1,13 +1,13 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Acervo de Provas')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Acervo de Provas')
 
 @section('dash-content')
 
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h5>
-    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setFile">
+    <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setFile">
       <i class="bi bi-plus-circle me-1"></i> Novo Arquivo
     </a>
   </div>
@@ -39,26 +39,29 @@
                 class="badge bg-{{ $file->status ? 'success' : 'warning' }}">{{ $file->status ? 'publicado' : 'não publicado' }}</span>
             </td>
             <td>{{ $file->user->name }}</td>
-            <td class="d-flex justify-content-center align-items-center">
+            <td class="d-flex justify-content-around align-items-center">
+
               {{-- Botão de publicar (alterar status) --}}
               <form id="archive-form-{{ $file->id }}" action="{{ route('archive.publish', $file->id) }}"
                 method="POST" class="d-none">
                 @csrf
                 @method('PUT')
               </form>
-              <button type="button" class="btn btn-sm btn-{{ $file->status ? 'warning' : 'success' }} me-2"
+              <button type="button" class="btn btn-sm btn-{{ $file->status ? 'warning' : 'success' }}  rounded-pill" style="width: 125px;"
                 onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
                 <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
                 {{ $file->status ? 'Não Publicar' : 'Publicar' }}
               </button>
-              <a href="{{ route('archive.edit', $file->id) }}" class="btn btn-sm btn-primary me-2" title="Editar">
-                <i class="bi bi-pencil-square me-2"></i> Editar
+
+              <a href="{{ route('archive.edit', $file->id) }}" class="btn btn-sm btn-primary  rounded-pill" style="width: 125px;" title="Editar">
+                <i class="bi bi-pencil-square me-1"></i> Editar
               </a>
+              
               <form action="{{ route('archive.destroy', $file->id) }}" method="post">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger" title="Excluir">
-                  <i class="bi bi-trash me-2"></i> Excluir
+                <button type="submit" class="btn btn-sm btn-danger  rounded-pill" style="width: 125px;" title="Excluir">
+                  <i class="bi bi-trash me-1"></i> Excluir
                 </button>
               </form>
             </td>

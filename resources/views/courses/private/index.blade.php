@@ -6,7 +6,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-book me-2"></i>Cursos</h5>
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCourse">
+            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewCourse">
                 <i class="bi bi-plus-circle me-1"></i> Novo Curso
             </a>
         </div>
@@ -31,7 +31,7 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Editar -->
-                                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary rounded-pill">
                                         <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                     </a>
                                     <!-- Excluir -->
@@ -40,7 +40,7 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-danger"
+                                    <button type="button" class="btn btn-sm btn-danger rounded-pill"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
                                         <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
@@ -100,13 +100,14 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-2"></i>Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill"><i class="bi bi-plus-circle me-1"></i>Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>

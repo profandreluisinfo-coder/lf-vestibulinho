@@ -47,6 +47,11 @@
 
 /* Layout mobile */
 @media (max-width: 768px) {
+    
+    #flush-headingOne {
+        display: none;
+    }
+
     .step-title,
     .stepper-container {
         display: none;

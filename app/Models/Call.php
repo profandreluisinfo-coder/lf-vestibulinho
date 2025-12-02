@@ -80,4 +80,62 @@ class Call extends Model
         static::saved(fn() => Cache::forget('calls_exists'));
         static::deleted(fn() => Cache::forget('calls_exists'));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Funções: verificar quantos canddidatos com necessidade especial existem 
+    | na última chamada
+    |--------------------------------------------------------------------------
+    */
+    public static function countPcdInLastCall()
+    {
+        // Pega o ID da última call_list
+        $lastCallListId = CallList::orderByDesc('number')
+            ->value('id');
+
+        if (!$lastCallListId) {
+            return 0;
+        }
+
+        // Conta quantos chamados são PCD na última call_list
+        return self::where('call_list_id', $lastCallListId)
+            ->whereHas(
+                'examResult.inscription.user',
+                fn($q) =>
+                $q->where('pne', true)
+            )
+            ->count();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Retorna a lista de convocados com necessidade especial na última chamada.
+    | @return \Illuminate\Database\Eloquent\Collection
+    |
+    | Exemplo do que conseguir acessar em cada item da lista:
+    |
+    | $lista = Call::pcdListInLastCall();
+    |
+    | foreach ($lista as $call) {
+    |    $user = $call->examResult->inscription->user;
+    |
+    |    echo $user->name;
+    |    echo $user->email;
+    |    echo $call->examResult->ranking;
+    | }
+    |--------------------------------------------------------------------------
+    */
+    public static function pcdListInLastCall()
+    {
+        $lastCallListId = CallList::orderByDesc('number')->value('id');
+
+        return self::with('examResult.inscription.user')
+            ->where('call_list_id', $lastCallListId)
+            ->whereHas(
+                'examResult.inscription.user',
+                fn($q) =>
+                $q->where('pne', true)
+            )
+            ->get();
+    }
 }

@@ -29,7 +29,7 @@
         {{-- Arquivo relacionado --}}
         <div class="form-floating mb-3">
           <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" id="file"
-            placeholder="Endereço" required>
+            placeholder="Endereço">
           <label for="file" class="form-label required">Arquivo relacionado</label>
           @error('file')
             <div class="invalid-feedback">
@@ -39,7 +39,7 @@
         </div>
 
         <div class="text-end">
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary btn-sm rounded-pill">
             <i class="bi bi-plus-circle"></i> Gravar
           </button>
         </div>
@@ -53,4 +53,5 @@
 @push('plugins')
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+  <script src="{{ asset('assets/rules/admin/archives/index.js') }}"></script>
 @endpush

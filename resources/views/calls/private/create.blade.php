@@ -14,8 +14,8 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h5>
             @if (!empty($countResults))
-                <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
-                    <i class="bi bi-plus-circle me-1"></i> Nova Chamada
+                <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewCall">
+                    <i class="bi bi-plus-circle me-2"></i> Nova Chamada
                 </a>
             @endif
         </div>
@@ -48,21 +48,21 @@
                                 </span>
                             </td> <!-- Status da chamada -->
                             <td>
-                                <div class="d-flex gap-2">
+                                <div class="d-flex flex-wrap justify-content-center gap-2">
                                     <!-- Botão de excluir -->
                                     <form id="delete-form-{{ $callList->id }}"
                                         action="{{ route('callings.destroy', $callList->id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger"
+                                        <button type="button" class="btn btn-sm btn-danger rounded-pill" style="width:100px"
                                             onclick="confirmDelete({{ $callList->id }})">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>
                                     </form>
 
                                     <!-- Botão de detalhes -->
-                                    <button class="btn btn-sm btn-secondary text-white" data-bs-toggle="collapse"
+                                    <button class="btn btn-sm btn-secondary rounded-pill text-white"  style="width:100px" data-bs-toggle="collapse"
                                         data-bs-target="#details-{{ $callList->id }}" aria-expanded="false"
                                         aria-controls="details-{{ $callList->id }}">
                                         <i class="bi bi-info-circle"></i> Detalhes
@@ -75,7 +75,7 @@
                                             class="d-inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="button" class="btn btn-sm btn-success"
+                                            <button type="button" class="btn btn-sm btn-success rounded-pill" style="width:100px"
                                                 onclick="confirmFinalize({{ $callList->id }})">
                                                 <i class="bi bi-check-circle"></i> Finalizar
                                             </button>
@@ -89,7 +89,7 @@
                                         </a> --}}
 
                                         <a href="{{ route('callings.pdf', $callList->number) }}"
-                                            class="btn btn-sm btn-primary text-white" target="_blank">
+                                            class="btn btn-sm btn-primary rounded-pill text-white" style="width:100px" target="_blank">
                                             <i class="bi bi-file-earmark-pdf"></i> PDF
                                         </a>
                                     @endif
@@ -150,26 +150,41 @@
     {{-- Modal de lançar chamada --}}
     <div class="modal fade" id="setNewCall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-light">
-                    <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-1"></i>Nova Chamada</h5>
+                    <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Nova Chamada</h5>
                 </div>
                 <div class="modal-body">
                     <div class="card shadow-sm">
+                        @php
+                            $last_call = App\Models\Call::orderBy('call_number', 'desc')->first();
+                            $amount = $last_call?->amount ?? 0;
+                            $number_of_pcd = App\Models\Call::countPcdInLastCall();
+                        @endphp
                         <form action="{{ route('callings.store') }}" method="POST" class="p-3" id="setNewCallForm">
                             @csrf
 
                             <div class="mb-3">
                                 <label for="number" class="form-label">Número da Chamada</label>
                                 <input type="number" name="number" id="number"
-                                    class="form-control @error('number') is-invalid @enderror" min="1" required>
+                                    class="form-control @error('number') is-invalid @enderror" min="1">
+                                <div class="form-text text-success">
+                                    @if ($last_call)
+                                    <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Ultima chamada registrada:</span> <span class="fs-6 fw-bold">{{ $last_call?->call_number }}</span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="limit" class="form-label">Quantidade de Candidatos</label>
                                 <input type="number" name="limit" id="limit"
-                                    class="form-control @error('limit') is-invalid @enderror" min="1" required>
+                                    class="form-control @error('limit') is-invalid @enderror" min="1">
+                                <div class="form-text text-success">
+                                    @if ($last_call)
+                                    <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Quantidade de candidatos da última chamada:</span> <span class="fs-6 fw-bold">{{ $amount }}</span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -184,23 +199,27 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <div class="form-text">Segure Ctrl (ou Cmd) para selecionar múltiplos.</div>
+                                <div class="form-text text-success mt-2">
+                                    <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Número de candidatos PCD convocados até o momento: <span class="fs-6 fw-bold">{{ $number_of_pcd }}</span></div>
+                                    <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Segure Ctrl (ou Cmd) para selecionar múltiplos.</div>
+                                    <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Verifique se a posição do candidato já está contemplada na chamada.</div>
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="date" class="form-label">Data de Comparecimento</label>
                                 <input type="date" name="date" id="date"
-                                    class="form-control @error('date') is-invalid @enderror" required>
+                                    class="form-control @error('date') is-invalid @enderror">
                             </div>
 
                             <div class="mb-3">
                                 <label for="time" class="form-label">Hora de Comparecimento</label>
                                 <input type="time" name="time" id="time"
-                                    class="form-control @error('time') is-invalid @enderror" required>
+                                    class="form-control @error('time') is-invalid @enderror">
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-sm"><i
-                                    class="bi bi-plus-circle me-1"></i>Registrar Chamada</button>
+                                    class="bi bi-plus-circle me-2"></i>Registrar Chamada</button>
                         </form>
                     </div>
                 </div>
@@ -212,7 +231,7 @@
     </div>
 
     @if (!$callLists->isEmpty())
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+        <button type="button" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#myModal">
             <i class="bi bi-bar-chart-fill"></i> Convocados por Curso
         </button>
         <!-- The Modal -->
@@ -266,7 +285,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/calling.js') }}"></script>
+    <script src="{{ asset('assets/rules/user/calling.js') }}"></script>
     <script src="{{ asset('assets/swa/calls/delete.js') }}"></script>
     <script src="{{ asset('assets/swa/calls/finalize.js') }}"></script>
     <!-- Importa o Chart.js -->
