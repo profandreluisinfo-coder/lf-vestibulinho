@@ -14,8 +14,8 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h5>
             @if (!empty($countResults))
-                <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewCall">
-                    <i class="bi bi-plus-circle me-2"></i> Nova Chamada
+                <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
+                    <i class="bi bi-plus-circle me-2"></i> Novo
                 </a>
             @endif
         </div>
@@ -55,17 +55,17 @@
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger rounded-pill" style="width:100px"
+                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                             onclick="confirmDelete({{ $callList->id }})">
-                                            <i class="bi bi-trash"></i> Excluir
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
 
                                     <!-- Botão de detalhes -->
-                                    <button class="btn btn-sm btn-secondary rounded-pill text-white"  style="width:100px" data-bs-toggle="collapse"
+                                    <button class="btn btn-sm btn-secondary text-white" title="Detalhes"  data-bs-toggle="collapse"
                                         data-bs-target="#details-{{ $callList->id }}" aria-expanded="false"
                                         aria-controls="details-{{ $callList->id }}">
-                                        <i class="bi bi-info-circle"></i> Detalhes
+                                        <i class="bi bi-info-circle"></i>
                                     </button>
 
                                     <!-- Botão de finalizar -->
@@ -75,9 +75,9 @@
                                             class="d-inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="button" class="btn btn-sm btn-success rounded-pill" style="width:100px"
+                                            <button type="button" class="btn btn-sm btn-success" title="Finalizar chamada"
                                                 onclick="confirmFinalize({{ $callList->id }})">
-                                                <i class="bi bi-check-circle"></i> Finalizar
+                                                <i class="bi bi-check-circle"></i>
                                             </button>
                                         </form>
                                     @endif
@@ -89,8 +89,8 @@
                                         </a> --}}
 
                                         <a href="{{ route('callings.pdf', $callList->number) }}"
-                                            class="btn btn-sm btn-primary rounded-pill text-white" style="width:100px" target="_blank">
-                                            <i class="bi bi-file-earmark-pdf"></i> PDF
+                                            class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
+                                            <i class="bi bi-file-earmark-pdf"></i>
                                         </a>
                                     @endif
 
@@ -218,21 +218,20 @@
                                     class="form-control @error('time') is-invalid @enderror">
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-sm"><i
-                                    class="bi bi-plus-circle me-2"></i>Registrar Chamada</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-2"></i>Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 
     @if (!$callLists->isEmpty())
-        <button type="button" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#myModal">
-            <i class="bi bi-bar-chart-fill"></i> Convocados por Curso
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+            <i class="bi bi-bar-chart-fill me-2"></i> Relatório
         </button>
         <!-- The Modal -->
         <div class="modal" id="myModal">
@@ -241,7 +240,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Gráfico - Convocados por Curso
+                        <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Convocados por Curso
                         </h5>
                     </div>
 
@@ -252,7 +251,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-2"></i>Fechar</button>
                     </div>
 
                 </div>

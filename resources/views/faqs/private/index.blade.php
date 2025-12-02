@@ -42,15 +42,18 @@
 @endpush
 
 @section('dash-content')
+
     <div class="container">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
-            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
                 <i class="bi bi-plus-circle me-1"></i> Nova
             </a>
         </div>
 
         @if ($faqs->isNotEmpty())
+
             <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <i class="bi bi-info-circle me-2"></i>
                 <strong>Dica:</strong> Clique e arraste o ícone <i class="bi bi-grip-vertical"></i> para reordenar as
@@ -83,7 +86,9 @@
             </div>
 
             <div class="accordion accordion-flush" id="faqAccordion">
+               
                 @foreach ($faqs as $faq)
+
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}">
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
@@ -122,7 +127,7 @@
                                             @method('PUT')
                                         </form>
                                         <button type="button"
-                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }} rounded-pill" style="width: 100px;"
+                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}" style="width: 100px;"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                             {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
@@ -131,7 +136,7 @@
 
                                     {{-- Botão de editar --}}
                                     @can('manage-faq', $faq)
-                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary rounded-pill" style="width: 100px;">
+                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary" style="width: 100px;">
                                             <i class="bi bi-pencil-square me-1" style="width: 100px;" title="Editar"></i> Editar
                                         </a>
                                     @endcan
@@ -143,7 +148,7 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-danger rounded-pill" style="width: 100px;"
+                                        <button type="button" class="btn btn-sm btn-danger" style="width: 100px;"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-trash me-1"></i> Excluir
                                         </button>
@@ -153,15 +158,20 @@
 
                         </div>
                     </div>
+
                 @endforeach
+
             </div>
+
         @else
+
             @include('components.no-records', [
                 'message' => 'Causas de problemas com as perguntas e respostas:',
                 'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
                 'action' => true,
                 'actionMessage' => 'Solução: Tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
             ])
+        
         @endif
 
         {{-- Modal de lançar nova pergunta --}}
@@ -186,13 +196,13 @@
                                         <label for="answer" class="form-label required">Resposta:</label>
                                         <textarea class="form-control summernote" id="answer" name="answer" rows="6"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill"><i class="bi bi-check-circle me-1"></i>Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>

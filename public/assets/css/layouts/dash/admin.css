@@ -1,6 +1,6 @@
 /* ==================== VARIÁVEIS ==================== */
 :root {
-    --sidebar-width: 260px;
+    --sidebar-width: 270px;
     --topbar-height: 60px;
     /* --primary-color: #2563eb; */
     --primary-color: #000080;
@@ -515,7 +515,7 @@ a {
 
 /* ==================== BUTTONS ==================== */
 .btn {
-    min-width: 100px;
+    min-width: 50px;
 }
 
 /* ==================== OTHERS ==================== */

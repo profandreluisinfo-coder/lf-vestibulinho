@@ -6,8 +6,8 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-book me-2"></i>Cursos</h5>
-            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewCourse">
-                <i class="bi bi-plus-circle me-1"></i> Novo Curso
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCourse">
+                <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
 
@@ -31,8 +31,8 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Editar -->
-                                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary rounded-pill">
-                                        <i class="bi bi-pencil-square" title="Editar"></i> Editar
+                                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-pencil-square" title="Editar"></i>
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-course-form-{{ $course->id }}"
@@ -40,9 +40,9 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-danger rounded-pill"
+                                    <button type="button" class="btn btn-sm btn-danger"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
-                                        <i class="bi bi-trash me-1"></i> Excluir
+                                        <i class="bi bi-trash me-1"></i>
                                     </button>
                                 </div>
                             </td>
@@ -61,8 +61,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Registrar Novo
-                            Curso</h5>
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -100,13 +99,13 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill"><i class="bi bi-plus-circle me-1"></i>Gravar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>

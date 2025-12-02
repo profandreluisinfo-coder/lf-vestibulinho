@@ -3,7 +3,9 @@
 @section('page-title', config('app.name') . ' | Calendário')
 
 @section('dash-content')
+
 <div class="container py-4">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0">
             <i class="bi bi-calendar4-week me-2"></i>Calendário do Processo Seletivo
@@ -13,7 +15,7 @@
             $calendar = \App\Models\Calendar::first();
         @endphp
 
-        <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-primary btn-sm rounded-pill">
+        <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar ? 'Editar' : 'Cadastrar' }}
         </a>

@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-calendar2-week me-2"></i>Agendamento de Prova</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
-                <i class="bi bi-plus-circle me-1"></i> Novo Agendamento
+                <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
         @if ($examInfo)
@@ -40,7 +40,7 @@
                         <ul class="list-unstyled mt-3 mb-0">
                             <li class="mb-2">
                                 <a href="{{ route('exam.list') }}" class="text-decoration-none">
-                                    <i class="bi bi-search me-2"></i>Detalhes do Agendamento
+                                    <i class="bi bi-search me-2"></i>Detalhes
                                 </a>
                             </li>
                         </ul>
@@ -157,6 +157,7 @@
                         'Solução: Verifique se o calendário foi definido. Tente agendar uma nova prova. Se o problema persistir, entre em contato com o suporte.',
                 ])
         @endif
+
         {{-- Modal de definição de local --}}
         <div class="modal fade" id="setLocalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="changePasswordModalLabel" aria-hidden="true">
@@ -204,16 +205,16 @@
                                 <input type="time" name="exam_time" class="form-control" id="exam_time">
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-sm"><i
-                                    class="bi bi-skip-start-circle me-2"></i>Iniciar Alocação</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 @endsection

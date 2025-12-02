@@ -200,10 +200,10 @@
 
             {{-- Botão de Ação --}}
             <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-              <a href="{{ route('calendar.index') }}" class="btn btn-secondary rounded-pill" style="width: 130px;">
+              <a href="{{ route('calendar.index') }}" class="btn btn-secondary">
                 <i class="bi bi-x-circle me-1"></i>Cancelar
               </a>
-              <button type="submit" class="btn btn-success rounded-pill" style="width: 130px;">
+              <button type="submit" class="btn btn-success">
                 <i class="bi bi-check-circle me-1"></i>Salvar
               </button>
             </div>

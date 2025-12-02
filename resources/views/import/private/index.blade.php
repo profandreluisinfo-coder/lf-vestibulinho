@@ -12,13 +12,12 @@
                 <i class="bi bi-upload me-2 text-primary"></i>
                 Importar Notas
             </h4>
-            <small class="text-muted">Envie um arquivo .xlsx contendo as notas dos candidatos.</small>
         </div>
 
         {{-- Card Principal --}}
         <div class="card shadow-sm">
             <div class="card-header bg-light">
-                <strong><i class="bi bi-file-earmark-excel me-2 text-success"></i>Envio da Planilha de Notas</strong>
+                <strong><i class="bi bi-file-earmark-excel me-2 text-success"></i>Planilha de Notas</strong>
             </div>
 
             <div class="card-body">
@@ -91,7 +90,7 @@
                     </div>
                     {{-- Botão Importar --}}
                     <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
-                        <i class="bi bi-upload me-2"></i> Importar Notas
+                        <i class="bi bi-upload me-2"></i> Importar
                     </button>
 
                 </form>

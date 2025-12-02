@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Locais de Prova</h5>
         <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
-            <i class="bi bi-plus-circle me-1"></i> Novo Local
+            <i class="bi bi-plus-circle me-1"></i> Novo
         </a>
     </div>
 
@@ -42,16 +42,16 @@
                                     @method('DELETE')
                                 </form>
                                 <!-- Botão de excluir -->
-                                <button type="button"
+                                <button type="button" title="Excluir"
                                     onclick="confirmLocationDelete({{ $location->id }}, '{{ addslashes($location->name) }}')"
                                     class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash me-2"></i> Excluir
+                                    <i class="bi bi-trash"></i>
                                 </button>
                                 <!-- Editar -->
-                                <button type="button" class="btn btn-sm btn-primary">
+                                <button type="button" class="btn btn-sm btn-primary" title="Editar">
                                     <a href="{{ route('exam.location.update', $location->id) }}"
                                         class="text-white text-decoration-none">
-                                        <i class="bi bi-pencil-square me-2" title="Editar"></i> Editar
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </button>
 
@@ -127,7 +127,7 @@
 
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus-circle"></i> Cadastrar
+                                        <i class="bi bi-plus-circle"></i> Gravar
                                     </button>
                                 </div>
                             </form>

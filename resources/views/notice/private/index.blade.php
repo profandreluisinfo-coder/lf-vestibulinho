@@ -6,14 +6,14 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital do Processo Seletivo</h5>
-            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setNewFile">
-                <i class="bi bi-plus-circle me-1"></i> Upload de Edital
+            <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital</h5>
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFile">
+                <i class="bi bi-plus-circle me-1"></i> Upload
             </a>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover table-striped align-middle">
+            <table class="table table-hover align-middle">
                 <thead class="table-success">
                     <tr>
                         <th scope="col">Arquivo</th>
@@ -30,7 +30,7 @@
                                 </a>
                             </td>
                             <td><span
-                                    class="badge bg-{{ $notice->status == '1' ? 'success' : 'warning' }}">{{ $notice->status == '1' ? 'Publicado' : 'Publicar' }}</span>
+                                    class="badge bg-{{ $notice->status == '1' ? 'success' : 'secondary' }}">{{ $notice->status == '1' ? 'Publicado' : 'Publicar' }}</span>
                             </td>
                             <td>
                                 {{-- Botão de publicar (alterar status) --}}
@@ -40,10 +40,9 @@
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $notice->status ? 'warning' : 'success' }} rounded-pill"
+                                    class="btn btn-sm btn-{{ $notice->status ? 'secondary' : 'success' }}" title="{{ $notice->status ? 'Ocultar' : 'Publicar' }}"
                                     onclick="confirmNoticePublish({{ $notice->id }}, 'Edital {{ $notice->year }}')">
                                     <i class="bi bi-{{ $notice->status ? 'eye-slash' : 'eye' }} me-1"></i>
-                                    {{ $notice->status ? 'Ocultar' : 'Publicar' }}
                                 </button>
 
                                 {{-- Botão de excluir --}}
@@ -52,9 +51,9 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <button type="button" class="btn btn-sm btn-danger rounded-pill"
+                                <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                     onclick="confirmNoticeDelete({{ $notice->id }}, 'Edital {{ $notice->year }}')">
-                                    <i class="bi bi-trash me-1"></i> Excluir
+                                    <i class="bi bi-trash me-1"></i>
                                 </button>
                             </td>
                         </tr>
@@ -98,8 +97,8 @@
                                         </div>
 
                                         <div class="text-end">
-                                            <button type="submit" class="btn btn-primary btn-sm rounded-pill">
-                                                <i class="bi bi-plus-circle me-1"></i> Gravar
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-check-circle me-1"></i> Gravar
                                             </button>
                                         </div>
                                     </form>
@@ -109,8 +108,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal"><i
-                                class="bi bi-x-circle me-1"></i>Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>

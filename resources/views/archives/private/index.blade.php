@@ -7,7 +7,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h5>
-            <a href="#" class="btn btn-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#setFile">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
@@ -39,7 +39,7 @@
                                     class="badge bg-{{ $file->status ? 'success' : 'warning' }}">{{ $file->status ? 'publicado' : 'não publicado' }}</span>
                             </td>
                             <td>{{ $file->user->name }}</td>
-                            <td class="d-flex justify-content-around align-items-center">
+                            <td class="d-flex align-items-center justify-content-center gap-2">
 
                                 {{-- Botão de publicar (alterar status) --}}
                                 <form id="archive-form-{{ $file->id }}"
@@ -48,24 +48,23 @@
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $file->status ? 'warning' : 'success' }}  rounded-pill"
-                                    style="width: 125px;"
+                                    class="btn btn-sm btn-{{ $file->status ? 'warning' : 'success' }} l"
+                                    title="{{ $file->status ? 'Não Publicar' : 'Publicar' }}"
                                     onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
-                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
-                                    {{ $file->status ? 'Não Publicar' : 'Publicar' }}
+                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>                                    
                                 </button>
 
                                 <a href="{{ route('archive.edit', $file->id) }}"
-                                    class="btn btn-sm btn-primary  rounded-pill" style="width: 125px;" title="Editar">
-                                    <i class="bi bi-pencil-square me-1"></i> Editar
+                                    class="btn btn-sm btn-primary l" title="Editar">
+                                    <i class="bi bi-pencil-square me-1"></i>
                                 </a>
 
                                 <form action="{{ route('archive.destroy', $file->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger  rounded-pill" style="width: 125px;"
+                                    <button type="submit" class="btn btn-sm btn-danger l"
                                         title="Excluir">
-                                        <i class="bi bi-trash me-1"></i> Excluir
+                                        <i class="bi bi-trash me-1"></i>
                                     </button>
                                 </form>
                             </td>
@@ -124,8 +123,8 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">
-                                            <i class="bi bi-plus-circle"></i> Gravar
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-check-circle"></i> Gravar
                                         </button>
                                     </div>
                                 </form>
@@ -134,7 +133,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-bs-dismiss="modal"><i
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                                 class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
