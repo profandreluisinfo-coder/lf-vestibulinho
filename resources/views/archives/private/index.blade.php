@@ -5,6 +5,7 @@
 @section('dash-content')
 
     <div class="container">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
@@ -13,8 +14,11 @@
         </div>
 
         <div class="table-responsive">
+
             <table class="table-striped table caption-top">
+
                 <caption>Lista de Provas do Vestibulinho</caption>
+
                 <thead class="table-success text-center">
                     <tr>
                         {{-- <th scope="col">#</th> --}}
@@ -25,6 +29,7 @@
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
+
                 <tbody class="table-group-divider">
 
                     @forelse($files as $file)
@@ -48,10 +53,10 @@
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $file->status ? 'warning' : 'success' }} l"
+                                    class="btn btn-sm btn-{{ $file->status ? 'secondary' : 'success' }} l"
                                     title="{{ $file->status ? 'Não Publicar' : 'Publicar' }}"
                                     onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
-                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>                                    
+                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                 </button>
 
                                 <a href="{{ route('archive.edit', $file->id) }}"
@@ -76,7 +81,9 @@
                     @endforelse
 
                 </tbody>
+
             </table>
+
         </div>
 
         <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -90,6 +97,7 @@
                     <div class="modal-body">
                         <div class="card shadow-sm">
                             <div class="card-body">
+
                                 <form id="form-file" action="{{ route('archive.create') }}" method="POST"
                                     enctype="multipart/form-data" novalidate>
                                     @csrf
@@ -123,11 +131,13 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-check-circle"></i> Gravar
+                                        {{-- prettier-ignore --}}
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi bi-check-circle me-1"></i>Salvar
                                         </button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
 
@@ -139,6 +149,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 @endsection

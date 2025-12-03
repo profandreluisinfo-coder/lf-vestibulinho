@@ -5,13 +5,15 @@
 @section('dash-content')
 
 <div class="container">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0"><i class="bi bi-geo me-2"></i>Editar</h4>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form id="exam-location" action="{{ route('exam.location.update', $location->id) }}" method="POST" novalidate>
+
+            <form id="exam-location" action="{{ route('exam.update', $location->id) }}" method="POST" novalidate>
                 @csrf
                 {{-- Nome --}}
                 <div class="form-floating mb-3 ">
@@ -72,12 +74,15 @@
                     @enderror
                 </div>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-check-circle me-1"></i>Gravar
-                    </button>
-                </div>
+                {{-- prettier-ignore --}}
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="bi bi-check-circle me-1"></i>Salvar
+                </button>
+                {{-- prettier-ignore --}}
+                <a href="{{ route('exam.locations') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+
             </form>
+
         </div>
     </div>
 </div>

@@ -4,9 +4,10 @@
 
 @section('dash-content')
 
-<div class="container py-4">
+<div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <h5 class="mb-0">
             <i class="bi bi-calendar4-week me-2"></i>Calendário do Processo Seletivo
         </h5>
@@ -19,17 +20,22 @@
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar ? 'Editar' : 'Cadastrar' }}
         </a>
+
     </div>
 
     @if (session('success'))
+
         <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
             <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+
     @endif
 
     @if ($calendar)
+
         <div class="row g-4">
+
             {{-- Card de Período de Inscrições --}}
             <div class="col-md-6 col-lg-4">
                 <div class="card border-0 shadow-sm h-100">
@@ -133,13 +139,19 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
     @else
+
         <div class="alert alert-info shadow-sm text-center py-4">
             <i class="bi bi-info-circle me-2"></i>
             Nenhum calendário cadastrado até o momento.<br>
             <small class="text-muted">Clique no botão acima para iniciar o cadastro.</small>
         </div>
+
     @endif
+
 </div>
+
 @endsection

@@ -17,8 +17,11 @@
     @include('home.navbar')
 
     <section id="provas-anteriores" class="bg-light my-5 py-5">
+
         <div class="container">
+
             <h2 class="section-title mb-4 text-center">Provas Anteriores</h2>
+
             <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4 justify-content-center">
 
                 @if ($files->isNotEmpty())
@@ -44,7 +47,9 @@
                 @endif
 
             </div>
+
         </div>
+
     </section>
 
     @include('home.footer')

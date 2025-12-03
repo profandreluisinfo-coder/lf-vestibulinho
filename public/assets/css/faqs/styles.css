@@ -25,3 +25,28 @@
     background: white;
     box-shadow: none;
 }
+
+/* Estilos para drag and drop */
+.drag-handle {
+    cursor: move;
+    padding: 0 10px;
+    color: #6c757d;
+}
+
+.drag-handle:hover {
+    color: #0d6efd;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+    background: #f8f9fa;
+}
+
+.sortable-chosen {
+    background: #e7f3ff;
+}
+
+.accordion-button {
+    display: flex;
+    align-items: center;
+}

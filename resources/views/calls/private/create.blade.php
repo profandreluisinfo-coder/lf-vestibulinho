@@ -9,19 +9,26 @@
 @endpush
 
 @section('dash-content')
+
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h5>
+
             @if (!empty($countResults))
+
                 <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
                     <i class="bi bi-plus-circle me-2"></i> Novo
                 </a>
+
             @endif
+
         </div>
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+
             @if ($callLists->isNotEmpty())
+
             <table class="table table-striped freezed-table align-middle">
                 <thead>
                     <tr class="table-success">
@@ -136,7 +143,9 @@
                     @endforeach
                 </tbody>
             </table>
+
             @else
+
             @include('components.no-records', [
                         'message' => 'Causas de problemas com as chamadas:',
                         'submessage' => 'Provavelmente nenhuma chamada ainda foi regisstrada.',
@@ -144,10 +153,12 @@
                         'actionMessage' =>
                             'Solução: Tente cadastrar uma nova chamada. Se o problema persistir, entre em contato com o suporte.',
                     ])
+
             @endif
+
         </div>
 
-    {{-- Modal de lançar chamada --}}
+    {{-- Modal para criar uma chamada --}}
     <div class="modal fade" id="setNewCall" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -156,12 +167,15 @@
                     <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Nova Chamada</h5>
                 </div>
                 <div class="modal-body">
+
                     <div class="card shadow-sm">
+
                         @php
                             $last_call = App\Models\Call::orderBy('call_number', 'desc')->first();
                             $amount = $last_call?->amount ?? 0;
                             $number_of_pcd = App\Models\Call::countPcdInLastCall();
                         @endphp
+
                         <form action="{{ route('callings.store') }}" method="POST" class="p-3" id="setNewCallForm">
                             @csrf
 
@@ -218,7 +232,10 @@
                                     class="form-control @error('time') is-invalid @enderror">
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
+                            {{-- prettier-ignore --}}
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="bi bi-check-circle me-1"></i>Salvar
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -230,9 +247,11 @@
     </div>
 
     @if (!$callLists->isEmpty())
+
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
             <i class="bi bi-bar-chart-fill me-2"></i> Relatório
         </button>
+
         <!-- The Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-lg">
@@ -257,12 +276,15 @@
                 </div>
             </div>
         </div>
+
     @endif
 
     </div>
+
 @endsection
 
 @push('plugins')
+
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
     <!-- Datatables -->
@@ -281,9 +303,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
 @endpush
 
 @push('scripts')
+
     <script src="{{ asset('assets/rules/user/calling.js') }}"></script>
     <script src="{{ asset('assets/swa/calls/delete.js') }}"></script>
     <script src="{{ asset('assets/swa/calls/finalize.js') }}"></script>
@@ -377,4 +401,5 @@
             });
         });
     </script>
+
 @endpush

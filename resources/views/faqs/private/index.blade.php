@@ -10,35 +10,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
-    <!-- Summernote -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
-
-    <!-- Estilos para drag and drop -->
-    <style>
-        .drag-handle {
-            cursor: move;
-            padding: 0 10px;
-            color: #6c757d;
-        }
-
-        .drag-handle:hover {
-            color: #0d6efd;
-        }
-
-        .sortable-ghost {
-            opacity: 0.4;
-            background: #f8f9fa;
-        }
-
-        .sortable-chosen {
-            background: #e7f3ff;
-        }
-
-        .accordion-button {
-            display: flex;
-            align-items: center;
-        }
-    </style>
 @endpush
 
 @section('dash-content')
@@ -48,7 +20,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
-                <i class="bi bi-plus-circle me-1"></i> Nova
+                <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
 
@@ -86,10 +58,10 @@
             </div>
 
             <div class="accordion accordion-flush" id="faqAccordion">
-               
-                @foreach ($faqs as $faq)
 
+                @foreach ($faqs as $faq)
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}">
+
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false"
@@ -103,14 +75,17 @@
                             aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#faqAccordion">
 
                             <div class="accordion-body">
+
                                 {!! $faq->answer !!}
 
                                 <div
                                     class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1 bg-light">
-                                    <span class="me-2"><i class="bi bi-person me-1"></i> {{ $faq->user->name }}</span> 
-                                    <span class="mx-2"><i class="bi bi-floppy me-1"></i> {{ $faq->created_at->format('d/m/Y H:i:s') }}</span> 
-                                    <span class="mx-2"><i class="bi bi-pencil-square me-1"></i> {{ $faq->updated_at->format('d/m/Y H:i:s') }}</span>
-                                    
+                                    <span class="me-2"><i class="bi bi-person me-1"></i> {{ $faq->user->name }}</span>
+                                    <span class="mx-2"><i class="bi bi-floppy me-1"></i>
+                                        {{ $faq->created_at->format('d/m/Y H:i:s') }}</span>
+                                    <span class="mx-2"><i class="bi bi-pencil-square me-1"></i>
+                                        {{ $faq->updated_at->format('d/m/Y H:i:s') }}</span>
+
                                     <span class="ms-2">
                                         <span class="badge bg-{{ $faq->status ? 'success' : 'warning' }}">
                                             {{ $faq->status ? 'Publicado' : 'Não Publicado' }}
@@ -119,6 +94,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
+
                                     {{-- Botão de publicar (alterar status) --}}
                                     @can('manage-faq', $faq)
                                         <form id="publish-faq-form-{{ $faq->id }}"
@@ -127,38 +103,36 @@
                                             @method('PUT')
                                         </form>
                                         <button type="button"
-                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}" style="width: 100px;"
+                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}"
+                                            title="{{ $faq->status ? 'Não Publicar' : 'Publicar' }}"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
-                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }} me-1"></i>
-                                            {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
+                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i>
                                         </button>
-                                    @endcan
 
-                                    {{-- Botão de editar --}}
-                                    @can('manage-faq', $faq)
-                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary" style="width: 100px;">
-                                            <i class="bi bi-pencil-square me-1" style="width: 100px;" title="Editar"></i> Editar
+                                        {{-- Botão de editar --}}
+                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-pencil-square" title="Editar"></i>
                                         </a>
-                                    @endcan
 
-                                    {{-- Botão de excluir --}}
-                                    @can('manage-faq', $faq)
+                                        {{-- Botão de excluir --}}
                                         <form id="delete-faq-form-{{ $faq->id }}"
                                             action="{{ route('faq.destroy', $faq->id) }}" method="POST" class="d-none">
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-danger" style="width: 100px;"
+                                        <button type="button" class="btn btn-sm btn-danger"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
-                                            <i class="bi bi-trash me-1"></i> Excluir
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     @endcan
+
                                 </div>
+
                             </div>
 
                         </div>
-                    </div>
 
+                    </div>
                 @endforeach
 
             </div>
@@ -169,12 +143,12 @@
                 'message' => 'Causas de problemas com as perguntas e respostas:',
                 'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
                 'action' => true,
-                'actionMessage' => 'Solução: Tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
+                'actionMessage' =>
+                    'Solução: Tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
             ])
-        
+
         @endif
 
-        {{-- Modal de lançar nova pergunta --}}
         <div class="modal fade" id="setNewFAQ" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="setNewFAQModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -186,6 +160,7 @@
                     <div class="modal-body">
                         <div class="card shadow-sm">
                             <div class="card-body">
+                                
                                 <form action="{{ route('faq.store') }}" method="POST" id="faqForm">
                                     @csrf
                                     <div class="form-group">
@@ -196,27 +171,31 @@
                                         <label for="answer" class="form-label required">Resposta:</label>
                                         <textarea class="form-control summernote" id="answer" name="answer" rows="6"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
+                                    {{-- prettier-ignore --}}
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>Salvar
+                                    </button>
                                 </form>
+
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-1"></i>Fechar</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                                class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-    <!-- Summernote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
-    <!-- SortableJS para drag and drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 @endpush
 

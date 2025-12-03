@@ -5,6 +5,7 @@
 @section('dash-content')
 
 <div class="container">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Locais de Prova</h5>
         <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
@@ -13,6 +14,7 @@
     </div>
 
     <div class="table-responsive">
+
         <table class="table-striped table caption-top">
             <caption>{{ config('app.name') }} {{ $calendar?->year }} - Lista de Locais de Prova</caption>
             <thead class="table-success text-center">
@@ -36,7 +38,7 @@
                             <div class="d-flex gap-2 justify-content-center">
                                 <!-- Excluir -->
                                 <form id="delete-location-form-{{ $location->id }}"
-                                    action="{{ route('exam.location.destroy', $location->id) }}" method="POST"
+                                    action="{{ route('exam.destroy', $location->id) }}" method="POST"
                                     style="display:none;">
                                     @csrf
                                     @method('DELETE')
@@ -49,7 +51,7 @@
                                 </button>
                                 <!-- Editar -->
                                 <button type="button" class="btn btn-sm btn-primary" title="Editar">
-                                    <a href="{{ route('exam.location.update', $location->id) }}"
+                                    <a href="{{ route('exam.update', $location->id) }}"
                                         class="text-white text-decoration-none">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -65,6 +67,7 @@
                 @endforelse
             </tbody>
         </table>
+
     </div>
 
     {{-- Modal de definição de local --}}
@@ -79,6 +82,7 @@
                 <div class="modal-body">
                     <div class="card shadow-sm">
                         <div class="card-body">
+                            
                             <form id="exam-location" action="{{ route('exam.locations') }}" method="POST"
                                 novalidate>
                                 @csrf
@@ -125,18 +129,18 @@
                                     @enderror
                                 </div>
 
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus-circle"></i> Gravar
-                                    </button>
-                                </div>
+                                {{-- prettier-ignore --}}
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="bi bi-check-circle me-1"></i>Salvar
+                                </button>
                             </form>
+
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>

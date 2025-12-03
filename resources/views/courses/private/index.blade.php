@@ -12,6 +12,7 @@
         </div>
 
         <div class="table-responsive">
+
             <table id="courses" class="table-striped table-hover table caption-top">
                 <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Cursos</caption>
                 <thead class="table-success text-center">
@@ -23,7 +24,9 @@
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
+
                     @forelse ($courses as $course)
+
                         <tr>
                             <td class="w-25">{{ $course->name }}</td>
                             <td class="w-50">{{ $course->description }}</td>
@@ -40,20 +43,24 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-danger"
+                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
-                                        <i class="bi bi-trash me-1"></i>
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
+
                     @empty
+
                         <tr>
                             <td colspan="4" class="text-center">Nenhum curso cadastrado</td>
                         </tr>
                     @endforelse
+
                 </tbody>
             </table>
+
         </div>
 
         <div class="modal fade" id="setNewCourse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -64,8 +71,10 @@
                         <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo</h5>
                     </div>
                     <div class="modal-body">
+
                         <div class="card shadow-sm">
                             <div class="card-body">
+
                                 <form id="courseForm" action="{{ route('courses.create') }}" method="POST">
                                     @csrf
                                     <div class="form-group mb-3">
@@ -91,7 +100,8 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="vacancies" class="form-label required">Vagas:</label>
-                                        <input type="number" min="1" max="120" class="form-control @error('vacancies') is-invalid @enderror"
+                                        <input type="number" min="1" max="120"
+                                            class="form-control @error('vacancies') is-invalid @enderror"
                                             id="vacancies" name="vacancies" value="{{ old('vacancies') }}">
                                         @error('vacancies')
                                             <div class="invalid-feedback">
@@ -99,10 +109,14 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-circle me-1"></i>Gravar</button>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>Salvar
+                                    </button>
+
                                 </form>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">

@@ -16,6 +16,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
+
                 <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST"
                     id="edit-faq-form-{{ $faq->id }}">
                     @csrf
@@ -29,14 +30,16 @@
                         <textarea class="form-control summernote" id="answer" name="answer" rows="6" required>{{ $faq->answer }}</textarea>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="bi bi-check-circle me-1"></i> Gravar
+                        {{-- prettier-ignore --}}
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
-                        <a href="{{ route('faq.index') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ route('faq.index') }}" class="btn btn-secondary btn-sm">
                             <i class="bi bi-x-circle me-1"></i> Cancelar
                         </a>
                     </div>
                 </form>
+            
             </div>
         </div>
 
@@ -47,7 +50,6 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
 @endpush

@@ -17,68 +17,41 @@ use App\Services\ExamAllocationService;
 class ExamController extends Controller
 {
     /**
-     * Recupere todos os locais de exames e compartilhe-os com a visualização.
+     * Mostra a lista de alocação dos candidatos por sala.
      *
-     * @return View A view que exibe a lista de locais de exames.
+     * @return \Illuminate\View\View
      */
-
-    public function examLocations(): View
+    // public function listSchedule()
+    public function index()
     {
-        // Obter todos as locais de prova
-        $examLocations = ExamLocation::all();
+        $candidates = DB::table('exam_results')
+            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
+            ->join('users', 'inscriptions.user_id', '=', 'users.id')
+            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
+            ->select(
+                'exam_results.room_number',
+                'exam_locations.name as location_name',
+                'users.cpf as candidate_cpf',
+                'users.name as candidate_name',
+                'users.social_name as candidate_social_name',
+                'users.pne as candidate_pne',
+                'exam_results.exam_date as date',
+                'exam_results.exam_time as time',
+                'inscriptions.id as inscription_id' // 👈 aqui entra o número de inscrição
+            )
+            ->orderBy('exam_results.room_number')
+            ->orderBy('users.name')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->location_name . ' - Sala ' . $item->room_number;
+            });
 
         // Passar para a view
-        view()->share('examLocations', $examLocations);
-
-        return view('locations.private.list');
-    }
-
-    /**
-     * Armazene um novo local de exame.
-     *
-     * Essa ação valida os dados do formulário e armazena um novo local de exame.
-     * A view compartilha os dados válidos com o formulário para que possam ser
-     * reutilizados em caso de erro.
-     *
-     * @param Request $request A solicitação HTTP com os dados do formulário.
-     *
-     * @return RedirectResponse Uma resposta de redirecionamento para a página anterior.
-     */
-    public function storeLocations(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|max:100',
-            'address' => 'required|max:200',
-            'rooms_available' => 'required|numeric|min:1|max:40',
-        ], [
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.max' => 'O campo nome deve ter no máximo :max caracteres.',
-            'address.required' => 'O campo endereço é obrigatório.',
-            'address.max' => 'O campo endereço deve ter no máximo :max caracteres.',
-            'rooms_available.required' => 'O campo salas disponíveis é obrigatório.',
-            'rooms_available.numeric' => 'O campo salas disponíveis deve ser numérico.',
-            'rooms_available.min' => 'O campo salas disponíveis deve ser maior do que zero.',
-            'rooms_available.max' => 'O campo salas disponíveis deve menor ou igual a :max.',
+        view()->share([
+            'candidates' => $candidates,
         ]);
 
-        $examLocation = new ExamLocation();
-        $examLocation->name = $this->stringToUpper($data['name']); // Converter para maiúsculas e UTF-8 para evitar problemas com acentuações e caracteres especiais.
-        $examLocation->address = $this->stringToUpper($data['address']);
-        $examLocation->rooms_available = $data['rooms_available'];
-        $examLocation->save();
-
-        // Verificar se a operação foi bem-sucedida
-        if ($examLocation->wasRecentlyCreated) {
-            return redirect()->back()->with(
-                'success',
-                'Local de exame cadastrado com sucesso!'
-            );
-        }
-
-        return redirect()->back()->with(
-            'danger',
-            'Ocorreu um erro ao cadastrar o local de exame.'
-        );
+        return view('exam.private.index');
     }
 
     /**
@@ -86,7 +59,7 @@ class ExamController extends Controller
      *
      * @return View Retorna a view com as informações de configuração de agendamento de provas.
      */
-    public function scheduleSettings(): View
+    public function create(): View
     {
         $pending = ExamResult::whereNull('email_sent_at')->count();
 
@@ -117,7 +90,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('schedule.private.create');
+        return view('exam.private.create');
     }
 
     /**
@@ -130,7 +103,7 @@ class ExamController extends Controller
      * @param  ExamAllocationService  $service
      * @return RedirectResponse
      */
-    public function storeSchedule(Request $request, ExamAllocationService $service)
+    public function store(Request $request, ExamAllocationService $service)
     {
         $data = $request->validate([
             'candidates_per_room' => 'required|numeric|min:1|max:50',
@@ -201,47 +174,75 @@ class ExamController extends Controller
 
         $service->allocate($data);
 
-        return redirect()->route('exam.schedule')->with(
+        return redirect()->route('exam.create')->with(
             'success',
             'Prova agendada com sucesso!'
         );
     }
 
     /**
-     * Mostra a lista de alocação dos candidatos por sala.
+     * Recupere todos os locais de exames e compartilhe-os com a visualização.
      *
-     * @return \Illuminate\View\View
+     * @return View A view que exibe a lista de locais de exames.
      */
-    public function listSchedule()
+
+    public function locations(): View
     {
-        $candidates = DB::table('exam_results')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
-            ->select(
-                'exam_results.room_number',
-                'exam_locations.name as location_name',
-                'users.cpf as candidate_cpf',
-                'users.name as candidate_name',
-                'users.social_name as candidate_social_name',
-                'users.pne as candidate_pne',
-                'exam_results.exam_date as date',
-                'exam_results.exam_time as time',
-                'inscriptions.id as inscription_id' // 👈 aqui entra o número de inscrição
-            )
-            ->orderBy('exam_results.room_number')
-            ->orderBy('users.name')
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->location_name . ' - Sala ' . $item->room_number;
-            });
+        // Obter todos as locais de prova
+        $examLocations = ExamLocation::all();
 
         // Passar para a view
-        view()->share([
-            'candidates' => $candidates,
+        view()->share('examLocations', $examLocations);
+
+        return view('locations.private.list');
+    }
+
+    /**
+     * Armazene um novo local de exame.
+     *
+     * Essa ação valida os dados do formulário e armazena um novo local de exame.
+     * A view compartilha os dados válidos com o formulário para que possam ser
+     * reutilizados em caso de erro.
+     *
+     * @param Request $request A solicitação HTTP com os dados do formulário.
+     *
+     * @return RedirectResponse Uma resposta de redirecionamento para a página anterior.
+     */
+    public function storeLocations(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|max:100',
+            'address' => 'required|max:200',
+            'rooms_available' => 'required|numeric|min:1|max:40',
+        ], [
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.max' => 'O campo nome deve ter no máximo :max caracteres.',
+            'address.required' => 'O campo endereço é obrigatório.',
+            'address.max' => 'O campo endereço deve ter no máximo :max caracteres.',
+            'rooms_available.required' => 'O campo salas disponíveis é obrigatório.',
+            'rooms_available.numeric' => 'O campo salas disponíveis deve ser numérico.',
+            'rooms_available.min' => 'O campo salas disponíveis deve ser maior do que zero.',
+            'rooms_available.max' => 'O campo salas disponíveis deve menor ou igual a :max.',
         ]);
 
-        return view('schedule.private.list');
+        $examLocation = new ExamLocation();
+        $examLocation->name = $this->stringToUpper($data['name']); // Converter para maiúsculas e UTF-8 para evitar problemas com acentuações e caracteres especiais.
+        $examLocation->address = $this->stringToUpper($data['address']);
+        $examLocation->rooms_available = $data['rooms_available'];
+        $examLocation->save();
+
+        // Verificar se a operação foi bem-sucedida
+        if ($examLocation->wasRecentlyCreated) {
+            return redirect()->back()->with(
+                'success',
+                'Local de exame cadastrado com sucesso!'
+            );
+        }
+
+        return redirect()->back()->with(
+            'danger',
+            'Ocorreu um erro ao cadastrar o local de exame.'
+        );
     }
 
     /**
@@ -250,7 +251,7 @@ class ExamController extends Controller
      * @param int $id ID do local de prova.
      * @return \Illuminate\View\View
      */
-    public function editLocation($id)
+    public function edit($id)
     {
         $location = ExamLocation::find($id);
 
@@ -269,7 +270,7 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateLocationPost(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $location = ExamLocation::find($id);
         $location->name = $this->stringToUpper($request->name);

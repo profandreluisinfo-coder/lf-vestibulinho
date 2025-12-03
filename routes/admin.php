@@ -194,24 +194,21 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('exam.')
         ->group(function () {
             // Prova (local)
-            Route::get('/configuracoes', fn() => view('admin.exam.settings'))->name('settings');
+            // Route::get('/configuracoes', fn() => view('exam.private.settings'))->name('settings');
+            Route::get('/salas', [ExamController::class, 'index'])->name('index');
 
-            Route::get('/local', [ExamController::class, 'examLocations'])->name('locations');
+            Route::get('/agendar', [ExamController::class, 'create'])->name('create');
+            Route::post('/agendar', [ExamController::class, 'store']);
+
+            Route::get('/local', [ExamController::class, 'locations'])->name('locations'); // Locais de prova
             Route::post('/local', [ExamController::class, 'storeLocations']);
 
-            Route::get('editar/{id}', [ExamController::class, 'editLocation'])->name('location.update');
-            Route::post('editar/{id}', [ExamController::class, 'updateLocationPost']);
+            Route::get('editar/{id}', [ExamController::class, 'edit'])->name('update');
+            Route::post('editar/{id}', [ExamController::class, 'update']);
 
-            Route::delete('excluir/{id}', [ExamController::class, 'destroy'])->name('location.destroy');
+            Route::delete('excluir/{id}', [ExamController::class, 'destroy'])->name('destroy');
 
             Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access.location');
-
-            Route::get('/agendar', [ExamController::class, 'scheduleSettings'])->name('schedule');
-            Route::post('/agendar', [ExamController::class, 'storeSchedule']);
-
-            Route::get('/salas', [ExamController::class, 'listSchedule'])->name('list');
-
-            //Route::get('/resultados', fn() => view('results.private.index'))->name('results'); // Para admins
-
         });
+        
 }); // Fim Middleware de autenticado

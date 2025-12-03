@@ -133,14 +133,14 @@
                         <span>Provas</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['exam.locations', 'exam.schedule', 'export.users']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['exam.locations', 'exam.create', 'export.users']) ? 'show' : '' }}"
                         id="menuProvas">
                         <a href="{{ route('exam.locations') }}"
                             class="dropdown-item-custom {{ request()->routeIs('exam.locations') ? 'active' : '' }}">
                             Locais
                         </a>
-                        <a href="{{ route('exam.schedule') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('exam.schedule') ? 'active' : '' }}">
+                        <a href="{{ route('exam.create') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('exam.create') ? 'active' : '' }}">
                             Agendar
                         </a>
                         <a href="#"
@@ -358,7 +358,7 @@
                     <a href="{{ route('faq.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
-                    <a href="{{ route('exam.schedule') }}"
+                    <a href="{{ route('exam.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
