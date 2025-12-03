@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     RankingController,
     CalendarController,
     InscriptionController,
+    LocalController,
     QueueMonitorController
 };
 
@@ -188,27 +189,28 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
+    // 🧾 Local
+    // ==========================
+    Route::prefix('local')
+        ->name('local.')
+        ->group(function () {
+            Route::get('/', [LocalController::class, 'index'])->name('index');
+            Route::get('/criar', [LocalController::class, 'create'])->name('create');
+            Route::post('/criar', [LocalController::class, 'store']);
+            Route::get('/editar/{location}', [LocalController::class, 'edit'])->name('edit');
+            Route::post('/editar/{location}', [LocalController::class, 'update']);
+            Route::delete('/excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
+        });
+    // ==========================
     // 🧾 Provas
     // ==========================
     Route::prefix('prova') // OK
         ->name('exam.')
         ->group(function () {
-            // Prova (local)
-            // Route::get('/configuracoes', fn() => view('exam.private.settings'))->name('settings');
             Route::get('/salas', [ExamController::class, 'index'])->name('index');
-
             Route::get('/agendar', [ExamController::class, 'create'])->name('create');
             Route::post('/agendar', [ExamController::class, 'store']);
-
-            Route::get('/local', [ExamController::class, 'locations'])->name('locations'); // Locais de prova
-            Route::post('/local', [ExamController::class, 'storeLocations']);
-
-            Route::get('editar/{id}', [ExamController::class, 'edit'])->name('update');
-            Route::post('editar/{id}', [ExamController::class, 'update']);
-
-            Route::delete('excluir/{id}', [ExamController::class, 'destroy'])->name('destroy');
-
             Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access.location');
-        });
+        });        
         
 }); // Fim Middleware de autenticado

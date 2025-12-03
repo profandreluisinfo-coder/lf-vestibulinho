@@ -1,13 +1,13 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Provas')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Provas')
 
 @section('dash-content')
 
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Locais de Prova</h5>
+        <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Local de Prova</h5>
         <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
             <i class="bi bi-plus-circle me-1"></i> Novo
         </a>
@@ -16,7 +16,7 @@
     <div class="table-responsive">
 
         <table class="table-striped table caption-top">
-            <caption>{{ config('app.name') }} {{ $calendar?->year }} - Lista de Locais de Prova</caption>
+            <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Locais de Prova</caption>
             <thead class="table-success text-center">
                 <tr>
                     {{-- <th scope="col">#</th> --}}
@@ -38,7 +38,7 @@
                             <div class="d-flex gap-2 justify-content-center">
                                 <!-- Excluir -->
                                 <form id="delete-location-form-{{ $location->id }}"
-                                    action="{{ route('exam.destroy', $location->id) }}" method="POST"
+                                    action="{{ route('local.destroy', $location->id) }}" method="POST"
                                     style="display:none;">
                                     @csrf
                                     @method('DELETE')
@@ -51,7 +51,7 @@
                                 </button>
                                 <!-- Editar -->
                                 <button type="button" class="btn btn-sm btn-primary" title="Editar">
-                                    <a href="{{ route('exam.update', $location->id) }}"
+                                    <a href="{{ route('local.edit', $location->id) }}"
                                         class="text-white text-decoration-none">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -61,9 +61,13 @@
                         </td>
                     </tr>
                 @empty
-                    <tr>
-                        <td colspan="4" class="text-center">Nenhum local registrado</td>
-                    </tr>
+                    @include('components.no-records', [
+                        'message' => 'Causas de problemas com os locais de prova:',
+                        'submessage' => 'Provavelmente nenhum local foi cadastrado no sistema.',
+                        'action' => true,
+                        'actionMessage' =>
+                            'Solução: Clique no botão "Novo" e tente cadastrar um local. Se o problema persistir, entre em contato com o suporte.',
+                    ])
                 @endforelse
             </tbody>
         </table>
@@ -83,7 +87,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             
-                            <form id="exam-location" action="{{ route('exam.locations') }}" method="POST"
+                            <form id="exam-location" action="{{ route('local.create') }}" method="POST"
                                 novalidate>
                                 @csrf
 

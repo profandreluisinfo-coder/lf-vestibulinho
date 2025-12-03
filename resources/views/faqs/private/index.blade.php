@@ -60,6 +60,7 @@
             <div class="accordion accordion-flush" id="faqAccordion">
 
                 @foreach ($faqs as $faq)
+
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
@@ -133,6 +134,7 @@
                         </div>
 
                     </div>
+
                 @endforeach
 
             </div>
@@ -140,12 +142,12 @@
         @else
 
             @include('components.no-records', [
-                'message' => 'Causas de problemas com as perguntas e respostas:',
-                'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
-                'action' => true,
-                'actionMessage' =>
-                    'Solução: Tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
-            ])
+                        'message' => 'Causas de problemas com as perguntas e respostas:',
+                        'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
+                        'action' => true,
+                        'actionMessage' =>
+                            'Solução: Clique no botão "Novo" e tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
+                    ])
 
         @endif
 

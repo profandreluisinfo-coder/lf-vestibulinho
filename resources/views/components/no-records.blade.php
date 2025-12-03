@@ -20,8 +20,8 @@
         <h5 class="text-muted mb-2">{{ $message }}</h5>
 
         @if ($submessage)
-            <p class="text-muted mb-3"><i class="bi bi-check-circle me-2"></i>{{ $submessage }}</p>
-            <p><i class="bi bi-arrow-left-right me-2"></i>{{ $actionMessage }}</p>
+            <p class="text-primary mb-3"><i class="bi bi-check-circle me-2"></i>{{ $submessage }}</p>
+            <p class="text-success fw-semibold mb-3"><i class="bi bi-arrow-left-right me-2"></i>{{ $actionMessage }}</p>
         @endif
 
         @if ($action && $actionRoute)

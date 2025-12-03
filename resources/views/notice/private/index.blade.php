@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFile">
-                <i class="bi bi-plus-circle me-1"></i> Upload
+                <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
 
@@ -24,6 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @forelse ($notices as $notice)
                         <tr>
                             <td>
@@ -62,11 +63,19 @@
 
                             </td>
                         </tr>
+
                     @empty
-                        <tr>
-                            <td colspan="3" class="text-center">Nenhum edital cadastrado</td>
-                        </tr>
+
+                        @include('components.no-records', [
+                            'message' => 'Causas de problemas com editais:',
+                            'submessage' => 'Provavelmente nenhum edital foi cadastrado até o momento.',
+                            'action' => true,
+                            'actionMessage' =>
+                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
+                        ])
+
                     @endforelse
+
                 </tbody>
             </table>
 

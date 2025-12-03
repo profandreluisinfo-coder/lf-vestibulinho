@@ -60,7 +60,7 @@
                         <span>Gerenciar</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['calendar.*', 'courses.*', 'notice.*', 'faq.*', 'archive.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['calendar.*', 'courses.*', 'notice.*', 'faq.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
                         <a href="{{ route('calendar.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
@@ -77,11 +77,7 @@
                         <a href="{{ route('faq.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('faq.*') ? 'active' : '' }}">
                             Registrar FAQ
-                        </a>
-                        <a href="{{ route('archive.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('archive.*') ? 'active' : '' }}">
-                            Acervo de Provas
-                        </a>
+                        </a>                        
                     </div>
                 </div>
             </div>
@@ -133,10 +129,10 @@
                         <span>Provas</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['exam.locations', 'exam.create', 'export.users']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['local.index', 'exam.create', 'export.users', 'archive.*']) ? 'show' : '' }}"
                         id="menuProvas">
-                        <a href="{{ route('exam.locations') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('exam.locations') ? 'active' : '' }}">
+                        <a href="{{ route('local.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('local.index') ? 'active' : '' }}">
                             Locais
                         </a>
                         <a href="{{ route('exam.create') }}"
@@ -148,6 +144,10 @@
                             class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}"
                             onclick="handleExport(event, '{{ route('export.users') }}')">
                             Planilha de Notas
+                        </a>
+                        <a href="{{ route('archive.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('archive.*') ? 'active' : '' }}">
+                            Arquivos
                         </a>
                     </div>
                 </div>

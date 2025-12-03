@@ -57,7 +57,7 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuProvas">
-            <a href="{{ route('exam.locations') }}" class="nav-link text-light">Locais de Prova</a>
+            <a href="{{ route('exam.index') }}" class="nav-link text-light">Locais de Prova</a>
             <a href="{{ route('exam.create') }}" class="nav-link text-light">Agendar Prova</a>
             <a href="{{ route('export.users') }}" class="nav-link text-light">Gerar Planilha de Notas</a>
         </div>

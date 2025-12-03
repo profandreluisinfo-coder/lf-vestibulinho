@@ -1,13 +1,13 @@
 @extends('layouts.dash.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Acervo de Provas')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Arquivos de Provas')
 
 @section('dash-content')
 
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Acervo de Provas</h5>
+            <h5 class="mb-0"><i class="bi bi-file-earmark-zip me-2"></i>Arquivos</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
@@ -33,6 +33,7 @@
                 <tbody class="table-group-divider">
 
                     @forelse($files as $file)
+                        
                         <tr>
                             <td scope="row">{{ $file->year }}</td>
                             <td>
@@ -74,10 +75,17 @@
                                 </form>
                             </td>
                         </tr>
+
                     @empty
-                        <tr>
-                            <td colspan="5">Nenhuma registro encontrado.</td>
-                        </tr>
+
+                        @include('components.no-records', [
+                            'message' => 'Causas de problemas com arquivos:',
+                            'submessage' => 'Provavelmente nenhuma arquivo de prova foi cadastrado no sistema.',
+                            'action' => true,
+                            'actionMessage' =>
+                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
+                        ])
+
                     @endforelse
 
                 </tbody>

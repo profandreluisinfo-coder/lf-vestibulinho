@@ -53,9 +53,14 @@
 
                     @empty
 
-                        <tr>
-                            <td colspan="4" class="text-center">Nenhum curso cadastrado</td>
-                        </tr>
+                        @include('components.no-records', [
+                            'message' => 'Causas de problemas com cursos:',
+                            'submessage' => 'Provavelmente nenhum curso foi cadastrado até o momento.',
+                            'action' => true,
+                            'actionMessage' =>
+                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
+                        ])
+
                     @endforelse
 
                 </tbody>

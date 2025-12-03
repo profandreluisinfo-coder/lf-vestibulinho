@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h5 class="mb-0">
-            <i class="bi bi-calendar4-week me-2"></i>Calendário do Processo Seletivo
+            <i class="bi bi-calendar4-week me-2"></i>Calendário
         </h5>
 
         @php
@@ -18,7 +18,7 @@
 
         <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
-            {{ $calendar ? 'Editar' : 'Cadastrar' }}
+            {{ $calendar ? 'Editar' : 'Novo' }}
         </a>
 
     </div>
@@ -144,11 +144,13 @@
 
     @else
 
-        <div class="alert alert-info shadow-sm text-center py-4">
-            <i class="bi bi-info-circle me-2"></i>
-            Nenhum calendário cadastrado até o momento.<br>
-            <small class="text-muted">Clique no botão acima para iniciar o cadastro.</small>
-        </div>
+        @include('components.no-records', [
+                'message' => 'Causas de problemas com o calendário:',
+                'submessage' => 'Provavelmente nenhum calendário foi cadastrado no sistema.',
+                'action' => true,
+                'actionMessage' =>
+                    'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
+                ])
 
     @endif
 
