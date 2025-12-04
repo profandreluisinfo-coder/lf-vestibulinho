@@ -18,9 +18,7 @@ use App\Http\Controllers\{
     ArchiveController,
     RankingController,
     CalendarController,
-    InscriptionController,
     LocalController,
-    QueueMonitorController
 };
 
 //
@@ -116,9 +114,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->group(function () {
             Route::get('/', [SystemController::class, 'index'])->name('index');
             Route::get('/redefinir-dados', [SystemController::class, 'reset'])->name('reset');
-            Route::get('/filas', [QueueMonitorController::class, 'index'])->name('queue.monitor');
-            Route::post('/filas/retry', [QueueMonitorController::class, 'retryFailed'])->name('queue.retry');
-            Route::post('/filas/flush', [QueueMonitorController::class, 'flushFailed'])->name('queue.flush');
         });
 
     // ==========================
