@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Notice;
 use App\Models\Calendar;
 use App\Models\CallList;
+use App\Models\Course;
+use App\Models\ExamResult;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -46,11 +48,17 @@ class SystemController extends Controller
             $nextInscriptionId = $maxInscriptionId ? $maxInscriptionId + 1 : 1;
             DB::statement("ALTER TABLE inscriptions AUTO_INCREMENT = " . (int) $nextInscriptionId);
 
+            // Zera vagas dos cursos
+            Course::whereNotNull('vacancies')->update(['vacancies' => 0]);
+
             // Apaga todos os registros da tabela de calendarios 
             Calendar::truncate();
 
             // Apaga todos os registros da tabela de edital
             Notice::truncate();
+
+            // Apaga todos os registros da tabela de resultados de exames
+            ExamResult::truncate();
 
             // Apaga todos os registros da tabela de chamadas
             CallList::truncate();
@@ -60,6 +68,8 @@ class SystemController extends Controller
 
             // Apaga todos os registros da tabela de settings
             Setting::truncate();
+
+
 
             // Apagar os dados de autenticação
             session()->flush();
