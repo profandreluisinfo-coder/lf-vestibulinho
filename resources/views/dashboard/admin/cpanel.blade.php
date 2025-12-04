@@ -51,7 +51,7 @@
                         <!-- Etapa 3 -->
                         <div class="step-item text-center">
                             <i
-                                class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                                class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
                             {{-- <span class="badge {{ $local_status ? 'bg-success' : 'bg-secondary' }}">
                                 {{ $local_status ? 'Concluído' : 'Aguardando' }}
@@ -62,7 +62,7 @@
                         <!-- Etapa 4 -->
                         <div class="step-item text-center">
                             <i
-                                class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                                class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
                             {{-- <span class="badge {{ $ranking_active ? 'bg-success' : 'bg-secondary' }}">
                                 {{ $ranking_active ? 'Concluído' : 'Aguardando' }}
@@ -73,7 +73,7 @@
                         <!-- Etapa 5 -->
                         <div class="step-item text-center">
                             <i
-                                class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                                class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>
                             {{-- <span class="badge {{ $settings->result ? 'bg-success' : 'bg-secondary' }}">
                                 {{ $settings->result ? 'Concluído' : 'Aguardando' }}
@@ -84,7 +84,7 @@
                         <!-- Etapa 6 -->
                         <div class="step-item text-center">
                             <i
-                                class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-clock-fill text-secondary' }} fs-3"></i>
+                                class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>
                             {{-- <span class="badge {{ $calls_exists ? 'bg-success' : 'bg-secondary' }}">
                                 {{ $calls_exists ? 'Concluído' : 'Aguardando' }}

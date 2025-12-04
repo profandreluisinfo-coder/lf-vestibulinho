@@ -13,6 +13,8 @@
             </a>
         </div>
 
+        @if ($notices->isNotEmpty())
+
         <div class="table-responsive">
 
             <table class="table align-middle">
@@ -25,7 +27,8 @@
                 </thead>
                 <tbody>
 
-                    @forelse ($notices as $notice)
+                    @foreach ($notices as $notice)
+                        
                         <tr>
                             <td>
                                 <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
@@ -64,17 +67,7 @@
                             </td>
                         </tr>
 
-                    @empty
-
-                        @include('components.no-records', [
-                            'message' => 'Causas de problemas com editais:',
-                            'submessage' => 'Provavelmente nenhum edital foi cadastrado até o momento.',
-                            'action' => true,
-                            'actionMessage' =>
-                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
-                        ])
-
-                    @endforelse
+                    @endforeach
 
                 </tbody>
             </table>
@@ -129,6 +122,18 @@
                 </div>
             </div>
         </div>
+
+        @else
+
+            @include('components.no-records', [
+                        'message' => 'Causas de problemas com editais:',
+                        'submessage' => 'Provavelmente nenhum edital foi cadastrado até o momento.',
+                        'action' => true,
+                        'actionMessage' =>
+                            'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
+                    ])
+
+        @endif
 
     </div>
 

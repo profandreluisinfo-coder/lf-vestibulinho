@@ -38,7 +38,7 @@ class GlobalDataHelper
             // Edital
             $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
 
-            // Calendário
+            // Calendário: Se não houver registros, retorna uma instância vazia
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
 
             // Usuário autenticado e ano atual
