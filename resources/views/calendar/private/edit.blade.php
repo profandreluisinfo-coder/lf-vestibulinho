@@ -4,6 +4,10 @@
 
 @section('dash-content')
 
+    {{-- @php
+    $calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();    
+    @endphp --}}
+    
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -19,16 +23,16 @@
 
                     <div class="card-body p-4">
 
-                        @if (session('success'))
+                        {{-- @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
-                        @endif
+                        @endif --}}
 
                         {{-- <form method="post" action="{{ route('calendar.index') }}"> --}}
-                        <form method="post" action="{{ route('calendar.store') }}">
+                        <form id="form-calendar" action="{{ route('calendar.save') }}" method="POST">
                             @csrf
 
                             {{-- Seção: Informações Básicas --}}
@@ -44,8 +48,7 @@
                                         </label>
                                         <input type="number" class="form-control @error('year') is-invalid @enderror"
                                             id="year" name="year" min="2026"
-                                            value="{{ old('year', $calendar->year ?? '') }}"
-                                            placeholder="Ex: 2026">
+                                            value="{{ old('year', $calendar->year ?? '') }}">
                                         @error('year')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -257,3 +260,7 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/rules/admin/calendar/edit.js') }}"></script>
+@endpush

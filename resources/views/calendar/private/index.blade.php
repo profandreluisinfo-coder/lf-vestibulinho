@@ -13,12 +13,13 @@
         </h5>
 
         @php
-            $calendar = \App\Models\Calendar::first();
+            $notice   = \App\Models\Notice::first();
+            //$calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();
         @endphp
 
-        <a href="{{ route('calendar.edit', $calendar?->id) }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
-            {{ $calendar ? 'Editar' : 'Novo' }}
+            {{ $calendar->exists() ? 'Editar' : 'Novo' }}
         </a>
 
     </div>
@@ -32,7 +33,7 @@
 
     @endif
 
-    @if ($calendar)
+    @if ($calendar->exists())
 
         <div class="row g-4">
 

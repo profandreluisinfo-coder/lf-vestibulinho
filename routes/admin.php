@@ -144,8 +144,8 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('calendar.')
         ->group(function () {
             Route::get('/', [CalendarController::class, 'index'])->name('index');
-            Route::get('/calendar/edit', [CalendarController::class, 'edit'])->name('edit');
-            Route::post('/calendar', [CalendarController::class, 'store'])->name('store');
+            Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
+            Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
         });
 
     // Usuários sem inscrição
