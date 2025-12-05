@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calendar;
+use App\Models\Notice;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
@@ -16,28 +17,14 @@ class CalendarController extends Controller
     {
         return view('calendar.private.index');
     }
-
-    /**
-     * Exibe o formulário do calendário (criar ou editar).
-     * Como só existe um calendário no sistema, busca o primeiro ou cria um vazio.
-     * 
-     * @return \Illuminate\View\View
-     */
-    public function edit()
-    {
-        // Busca o único registro ou cria um objeto vazio
-        $calendar = Calendar::first() ?? new Calendar();
-        
-        return view('calendar.private.edit', compact('calendar'));
-    }
-
+  
     /**
      * Salva ou atualiza o calendário.
      * 
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function save(Request $request)
     {
         $validated = $request->validate([
             'inscription_start' => 'required|date',
@@ -87,6 +74,13 @@ class CalendarController extends Controller
             'year.max' => 'O campo ano do processo seletivo deve ser menor ou igual a 2100.',
         ]);
 
+        $notice = Notice::first() ?? new Notice();
+        
+         // Verifica se existe um edital cadastrado
+        if (!$notice->exists()) {
+            return redirect()->back()->withErrors(['error' => 'É necessário ter um edital antes de configurar o calendário do vestibulinho.']);
+        }
+
         // Se já existe um calendário, atualiza. Senão, cria novo.
         $calendar = Calendar::first();
         
@@ -98,9 +92,22 @@ class CalendarController extends Controller
             $message = 'Calendário criado com sucesso!';
         }
 
-        return redirect()->route('calendar.edit')->with('success', $message);
+        return redirect()->route('calendar.index')->with('success', $message);
     }
 
+    /**
+     * Exibe o formulário do calendário (criar ou editar).
+     * Como só existe um calendário no sistema, busca o primeiro ou cria um vazio.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function edit()
+    {
+        // Busca o único registro ou cria um objeto vazio
+        //$calendar = Calendar::first() ?? new Calendar();
+        
+        return view('calendar.private.edit');
+    }
     /**
      * Lista as datas do vestibulinho no site público.
      *
