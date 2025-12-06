@@ -683,4 +683,9 @@ class InscriptionController extends Controller
 
         return $pdf->download('inscricoes.pdf');
     }
+
+    public function create()
+    {   // resources\views\inscriptions\create.blade.php
+        return view('inscriptions.create');
+    }   
 }

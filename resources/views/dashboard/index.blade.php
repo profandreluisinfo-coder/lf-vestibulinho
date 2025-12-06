@@ -109,10 +109,16 @@
                 <i class="bi bi-question-circle me-1"></i>
                 Dúvidas? Entre em contato através dos nossos canais de atendimento.
             </p>
-            <a href="{{ route('step.personal') }}" class="btn btn-primary btn-lg px-5 shadow-sm">
+            {{-- <a href="{{ route('step.personal') }}" class="btn btn-primary btn-lg px-5 shadow-sm">
                 <i class="bi bi-person-plus me-2"></i>
                 Iniciar Inscrição
-            </a>
+            </a> --}}
+            
+            <a href="{{ route('form.inscription') }}" class="btn btn-primary btn-lg px-5 shadow-sm">
+                <i class="bi bi-person-plus me-2"></i>
+                Iniciar Inscrição
+            </a> {{-- NOVA ROTA --}}
+
             <p class="text-muted small mt-3 mb-0">
                 É uma honra contar com seu interesse no <strong>{{ config('app.name') }} {{ $calendar->year }}</strong>!
             </p>
