@@ -25,9 +25,7 @@ class UserController extends Controller
     {
         $users = User::getWithoutInscription();
 
-        view()->share('users', $users);
-
-        return view('user.index');
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -110,8 +108,8 @@ class UserController extends Controller
             $hasInscription = $user->inscription()->exists();
 
             return $hasInscription
-                ? redirect()->route('inscription.profile')
-                : redirect()->route('dashboard.index');
+                ? redirect()->route('inscription.profile') // Vai para o perfil de inscrição
+                : redirect()->route('dashboard.index'); // Vai para o dashboard de inscrição
         }
 
         return redirect()->route('login')->with([

@@ -11,9 +11,9 @@ class DashController extends Controller
     /**
      * Página principal do painel de administração do candidato
      * 
-     * Exibe as informações do usuário logado, do resultado da prova e da chamada para o resultado com lista finalizada.
+     * Exibe as informações do usuário logado, bem como as informações de como fazer a inscrição.
      * 
-     * Route: GET / candidato
+     * Route: GET /dashboard (dashboard.index)
      * 
      * @return \Illuminate\View\View
      */

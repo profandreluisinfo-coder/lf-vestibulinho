@@ -15,7 +15,10 @@ Route::middleware(['auth'])->group(function () {
     // 📝 Processo de inscrição
     Route::middleware([NotAdmin::class])->group(function () {
 
-        Route::get('/dashboard', [DashController::class, 'index'])->name('dashboard.index')->middleware([NoInscription::class]); // OK
+        // Area do candidato: exibe dashboard com as informações de como fazer a inscrição
+        Route::get('/dashboard', [DashController::class, 'index'])->name('dashboard.index')->middleware([NoInscription::class]);
+        
+        // Área do candidato: exibe o perfil da inscrição existente
         Route::get('/area-do-candidato', [InscriptionController::class, 'profile'])->name('inscription.profile')->middleware([WithInscription::class]); // OK    
 
         // Formulário de inscrição (sem inscrição existente)
@@ -49,6 +52,15 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/finalizar', [InscriptionController::class, 'inscriptionStore'])->name('finalize');
 
                 Route::get('/erro', fn() => view('forms.failed'))->name('failed');
+            });
+
+        
+            // Novo caminho para fazer a inscrição (com inscrição existente)
+        Route::prefix('formulario-de-inscricao')
+            ->name('form.')
+            ->middleware([NoInscription::class])
+            ->group(function () {
+                Route::get('/', [InscriptionController::class, 'create'])->name('inscription');
             });
     });
 
