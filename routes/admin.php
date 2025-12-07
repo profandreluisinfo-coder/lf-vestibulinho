@@ -208,5 +208,17 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/agendar', [ExamController::class, 'store']);
             Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access.location');
         });        
-    
+    // ==========================
+    // 🧾 Gabaritos
+    // ==========================
+    Route::prefix('gabaritos') // OK
+        ->name('answer.')
+        ->group(function () {
+            Route::get('/', [AnswerController::class, 'index'])->name('index');
+            Route::get('/criar', [AnswerController::class, 'create'])->name('create');
+            Route::post('/criar', [AnswerController::class, 'store']);
+            // Route::get('/editar/{answer}', [AnswerController::class, 'edit'])->name('edit');
+            // Route::post('/editar/{answer}', [AnswerController::class, 'update']);
+            Route::delete('/excluir/{answer}', [AnswerController::class, 'destroy'])->name('destroy');
+        });
 }); // Fim Middleware de autenticado

@@ -17,7 +17,7 @@ class Setting extends Model
         'result',
     ];
 
-    // 🔹 Limpa o cache automaticamente quando salvar ou excluir
+    // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {
         static::saved(fn() => Cache::forget('global_settings'));

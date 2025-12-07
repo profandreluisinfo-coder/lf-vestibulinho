@@ -12,8 +12,8 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                
-              <form id="form-file-edit" action="{{ route('archive.edit', $archive) }}" method="POST"
+
+                <form id="form-file-edit" action="{{ route('archive.edit', $archive) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
 
@@ -43,15 +43,28 @@
                         @enderror
                     </div>
 
-                    {{-- prettier-ignore --}}
+                    {{-- Gabarito relacionado --}}
+                    <div class="form-floating mb-3">
+                        <input type="file" name="answer"
+                            class="form-control @error('answer') is-invalid @enderror" id="answer"
+                            value="{{ old('answer') }}">
+                        <label for="answer" class="form-label required">Gabarito relacionado (Se houver)</label></label>
+                        @error('answer')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                        {{-- prettier-ignore --}}
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
-                    </button>
-                    {{-- prettier-ignore --}}
+                        </button>
+                        {{-- prettier-ignore --}}
                     <a href="{{ route('archive.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
                 </form>
-            
-              </div>
+
+            </div>
         </div>
 
     </div>

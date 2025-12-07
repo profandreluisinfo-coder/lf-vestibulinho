@@ -1,9 +1,5 @@
 $('#form-file').validate({
     rules: {
-        year: {
-            required: true,
-            number: true
-        },
         file: {
             required: true,
             extension: "pdf"
@@ -14,10 +10,6 @@ $('#form-file').validate({
         }
     },
     messages: {
-        year: {
-            required: 'Ano em que a prova foi realizada',
-            number: 'Ano em que a prova foi realizada'
-        },
         file: {
             required: 'Selecione o arquivo do gabarito',
             extension: 'Formato de arquivo inválido'

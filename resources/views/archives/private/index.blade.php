@@ -13,6 +13,10 @@
             </a>
         </div>
 
+        <div class="text-info fw-semibold mb-2">
+            <i class="bi bi-info-circle fs-6 me-1"></i>Cada prova poderá conter (ou não) um gabarito vinculado, que poderá ser registrado no momento do cadastro da prova, ou, durante a edição da mesma.
+        </div>
+
         <div class="table-responsive">
 
             <table class="table-striped table caption-top">
@@ -24,6 +28,7 @@
                         {{-- <th scope="col">#</th> --}}
                         <th scope="col">Ano</th>
                         <th scope="col">Prova</th>
+                        <th scope="col">Gabarito</th>
                         <th scope="col">Status</th>
                         <th scope="col">Usuário</th>
                         <th scope="col">Ações</th>
@@ -40,6 +45,15 @@
                                 <a href="{{ asset('storage/' . $file->file) }}" target="_blank">
                                     Vestibulinho {{ $file->year }}
                                 </a>
+                            </td>
+                            <td>
+                                @if ($file->answer?->file)
+                                <a href="{{ asset('storage/' . $file->answer->file) }}" target="_blank">
+                                    Gabarito
+                                </a>
+                                @else
+                                    <span class="text-danger">Não possui</span>
+                                @endif
                             </td>
                             <td><span
                                     class="badge bg-{{ $file->status ? 'success' : 'warning' }}">{{ $file->status ? 'publicado' : 'não publicado' }}</span>
@@ -95,7 +109,7 @@
         </div>
 
         <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            aria-labelledby="createArchiveModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
@@ -128,8 +142,7 @@
                                     {{-- Arquivo relacionado --}}
                                     <div class="form-floating mb-3">
                                         <input type="file" name="file"
-                                            class="form-control @error('file') is-invalid @enderror" id="file"
-                                            placeholder="Endereço" value="{{ old('file') }}" required>
+                                            class="form-control @error('file') is-invalid @enderror" id="file" value="{{ old('file') }}" required>
                                         <label for="file" class="form-label required">Arquivo relacionado</label>
                                         @error('file')
                                             <div class="invalid-feedback">
@@ -137,6 +150,17 @@
                                             </div>
                                         @enderror
                                     </div>
+
+                                    {{-- Gabarito relacionado --}}
+                                    <div class="form-floating mb-3">
+                                        <input type="file" name="answer"
+                                            class="form-control @error('answer') is-invalid @enderror" id="answer" value="{{ old('answer') }}">
+                                        <label for="answer" class="form-label required">Gabarito relacionado (Se houver)</label></label>
+                                    @error('answer')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
 
                                     <div class="text-end">
                                         {{-- prettier-ignore --}}

@@ -49,6 +49,29 @@
                     </div>
                 @endif
 
+                {{-- Gabarito da Prova --}}
+                @if ($last_archive->status && $last_archive->answer?->status)
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-file-earmark-text-fill text-success fs-3 me-3"></i>
+                            <div>
+                                <h6 class="fw-semibold text-success mb-1">Gabarito da Prova de {{ Carbon\Carbon::parse($calendar->exam_date)->format('d/m/Y') }}</h6>
+                                <p class="text-muted small mb-2">
+                                    O gabarito da prova já está disponível.
+                                </p>
+                                <a href="{{ asset('storage/' . $last_archive->file) }}" class="btn btn-success btn-sm px-3 text-white" target="_blank">
+                                    <i class="bi bi-download me-1"></i> Prova
+                                </a>
+                                @if ($last_archive->answer)
+                                <a href="{{ asset('storage/' . $last_archive->answer->file) }}" class="btn btn-success btn-sm px-3 text-white" target="_blank">
+                                    <i class="bi bi-download me-1"></i> Gabarito
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 {{-- Resultados --}}
                 @if ($settings->result)
                     <div class="col-md-6">

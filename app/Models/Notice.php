@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Answer;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,7 @@ class Notice extends Model
     {
         return self::active()->exists();
     }
-
+    
     // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {

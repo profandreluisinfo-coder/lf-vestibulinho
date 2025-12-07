@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\Call;
 use App\Models\User;
 use App\Models\Notice;
+use App\Models\Archive;
 use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\Inscription;
@@ -21,6 +22,9 @@ class GlobalDataHelper
             // Configurações gerais
             $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
 
+            // Obter o último arquivo (arquivo mais recente) na tabela "archives" (model Archive)
+            $last_archive = Cache::remember('global_archive', 60, fn() => Archive::latest()->first() ?? new Archive());
+
             // Chamadas existentes
             $calls_exists = Cache::remember('calls_exists', 60, fn() => Call::exists());
 
@@ -28,11 +32,11 @@ class GlobalDataHelper
             $totalInscriptions = Cache::remember('global_total_inscriptions', 60, fn() => Inscription::count());
 
             $usersWithoutInscription = Cache::remember(
-                'global_users_without_inscription', 
-                60, 
+                'global_users_without_inscription',
+                60,
                 fn() => User::where('role', 'user')
-                            ->doesntHave('inscription')
-                            ->count()
+                    ->doesntHave('inscription')
+                    ->count()
             );
 
             // Edital
@@ -48,6 +52,7 @@ class GlobalDataHelper
             // Envia tudo para as views
             $view->with(compact(
                 'settings',
+                'last_archive',
                 'calls_exists',
                 'notice',
                 'calendar',

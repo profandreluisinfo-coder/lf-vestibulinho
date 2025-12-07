@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('answers', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->boolean('status')->default(false)->after('file');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('answers', function (Blueprint $table) {
-            $table->boolean('status')->default(false);
+            $table->dropColumn('status');
         });
     }
 };

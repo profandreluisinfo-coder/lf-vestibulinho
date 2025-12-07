@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ArchiveFileService;
 
 class ArchiveController extends Controller
 {
@@ -22,7 +24,7 @@ class ArchiveController extends Controller
     public function index()
     {
         // Obter todos os arquivos de prova
-        $files = Archive::all();
+        $files = Archive::orderBy('year', 'desc')->get();
 
         // Passar para a view
         view()->share('files', $files);
@@ -46,6 +48,7 @@ class ArchiveController extends Controller
         $request->validate([
             'year' => 'required|numeric|digits:4',
             'file' => 'required|file|mimetypes:application/pdf',
+            'answer' => 'nullable|file|mimetypes:application/pdf',
         ], [
             'year.required' => 'O campo ano é obrigatório.',
             'year.numeric' => 'O campo ano deve ser numérico.',
@@ -53,28 +56,48 @@ class ArchiveController extends Controller
             'file.required' => 'O arquivo de prova é obrigatório.',
             'file.file' => 'O arquivo de prova deve ser um arquivo.',
             'file.mimetypes' => 'O arquivo de prova deve ser um PDF.',
+            'answer.file' => 'O gabarito deve ser um arquivo.',
+            'answer.mimetypes' => 'O gabarito deve ser um PDF.',
         ]);
 
+        // Arquivo de prova
         $file = $request->file('file');
 
         // Pega o nome original do arquivo (sem espaços)
-        $originalName = str_replace(' ', '_', $file->getClientOriginalName());
+        $originalNameForArchive = str_replace(' ', '_', $file->getClientOriginalName());
 
         // Gera o nome final: ano_nomeoriginal_timestamp.pdf
-        $fileName = $request->year . '_' . pathinfo($originalName, PATHINFO_FILENAME)
+        $fileNameArchive = $request->year . '_' . pathinfo($originalNameForArchive, PATHINFO_FILENAME)
             . '_' . time()
             . '.' . $file->getClientOriginalExtension();
-
         // Salva no disco 'public' na pasta archives
-        $path = $file->storeAs('archives', $fileName, 'public');
+        $pathForArchive = $file->storeAs('archives', $fileNameArchive, 'public');
 
         // Salva no banco apenas o caminho relativo
         Archive::create([
-            'file' => $path, // ex: archives/2025_prova_1691778382.pdf
+            'file' => $pathForArchive, // ex: archives/2025_prova_1691778382.pdf
             'year' => $request->year,
             'status' => false,
             'user_id' => auth()->id(),
         ]);
+
+        // Verificar se o gabarito foi enviado
+        if ($request->hasFile('answer')) {
+            $answer = $request->file('answer'); // Gabarito
+            // Pega o nome original do arquivo (sem espaços)
+            $originalNameForAnswer = str_replace(' ', '_', $answer->getClientOriginalName());
+            // Gera o nome final: ano_nomeoriginal_timestamp.pdf
+            $fileNameAnswer = $request->year . '_' . pathinfo($originalNameForAnswer, PATHINFO_FILENAME)
+                . '_' . time()
+                . '.' . $answer->getClientOriginalExtension();
+            // Salva no disco 'public' na pasta archives
+            $pathForAnswer = $answer->storeAs('archives', $fileNameAnswer, 'public');
+            // Salva no banco apenas o caminho relativo
+            Answer::create([
+                'file' => $pathForAnswer, // ex: archives/2025_prova_1691778382.pdf
+                'archive_id' => Archive::latest()->first()->id,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Arquivo cadastrado com sucesso!');
     }
@@ -107,48 +130,56 @@ class ArchiveController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function update(Request $request, Archive $archive)
+    public function update(Request $request, Archive $archive, ArchiveFileService $fileService)
     {
         $request->validate([
             'year' => 'required|numeric|digits:4',
             'file' => 'nullable|file|mimetypes:application/pdf',
-        ], [
-            'year.required' => 'O campo ano é obrigatório.',
-            'year.numeric' => 'O campo ano deve ser numérico.',
-            'year.digits' => 'O campo ano deve ter 4 dígitos.',
-            'file.file' => 'O arquivo de prova deve ser um arquivo.',
-            'file.mimetypes' => 'O arquivo de prova deve ser um PDF.',
+            'answer' => 'nullable|file|mimetypes:application/pdf',
         ]);
 
-        $file = $request->file('file');
+        // Atualiza arquivo da prova
+        if ($request->hasFile('file')) {
+            $archive->file = $fileService->replaceFile(
+                $request->file('file'),
+                $request->year,
+                $archive->file // antigo
+            );
 
-        // Pega o nome original do arquivo (sem espaços)
-        $originalName = str_replace(' ', '_', $file->getClientOriginalName());
+            $archive->status = false;
+        }
 
-        // Gera o nome final: ano_nomeoriginal_timestamp.pdf
-        $fileName = $request->year . '_' . pathinfo($originalName, PATHINFO_FILENAME)
-            . '_' . time()
-            . '.' . $file->getClientOriginalExtension();
+        // Atualiza dados gerais
+        $archive->year = $request->year;
+        $archive->user_id = auth()->id();
+        $archive->save();
 
-        // Salva no disco 'public' na pasta archives
-        $path = $file->storeAs('archives', $fileName, 'public');
 
-        // Salva no banco apenas o caminho relativo
-        Archive::where('id', $archive->id)->update([
-            'file' => $path, // ex: archives/2025_prova_1691778382.pdf
-            'year' => $request->year,
-            'status' => false,
-            'user_id' => auth()->id(),
-        ]);
+        // Atualiza ou cria o gabarito
+        if ($request->hasFile('answer')) {
 
-        return redirect()->route('archive.index')->with('success', 'Arquivo atualizado com sucesso!');
+            $answerModel = $archive->answer()->firstOrCreate([
+                'archive_id' => $archive->id,
+            ]);
+
+            $answerModel->file = $fileService->replaceFile(
+                $request->file('answer'),
+                $request->year,
+                $answerModel->file // antigo
+            );
+
+            $answerModel->save();
+        }
+
+        return redirect()->route('archive.index')
+            ->with('success', 'Arquivo atualizado com sucesso!');
     }
 
     /**
      * Exclui um arquivo de prova.
      *
      * Este método exclui um arquivo de prova da pasta 'archives' no disco
-     * 'public' e remove as informações do banco de dados.
+     * 'public' e, se houver um gabarito, também. Além disso, remove as informações do banco de dados.
      *
      * @param int $id ID do arquivo de prova a ser excluído.
      * @return \Illuminate\Http\RedirectResponse
@@ -158,6 +189,8 @@ class ArchiveController extends Controller
         $archive = Archive::findOrFail($id);
 
         Storage::disk('public')->delete($archive->file);
+        Storage::disk('public')->delete($archive->answer->file ?? null);
+
         $archive->delete();
 
         return redirect()->back()->with('success', 'Arquivo excluido com sucesso!');
@@ -177,7 +210,12 @@ class ArchiveController extends Controller
         $archive->status = !$archive->status;
         $archive->save();
 
-        return redirect()->back()->with('success', 'Arquivo publicado com sucesso!');
+        if ($archive->answer) {
+            $archive->answer->status = !$archive->answer->status;
+            $archive->answer->save();
+        }
+
+        return redirect()->back()->with('success', 'Status alterado com sucesso!');
     }
 
     /**
