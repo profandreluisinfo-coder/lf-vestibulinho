@@ -2,7 +2,7 @@
 function confirmFilePublish(id, fileName) {
     Swal.fire({
         title: 'Confirmar publicação',
-        text: ` Vocês deseja alterrar o status da publicação do arquivo: "${fileName}"?`,
+        text: ` Você deseja alterar o status da publicação do arquivo: "${fileName}"?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

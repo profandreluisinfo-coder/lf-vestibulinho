@@ -92,8 +92,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Arquivo do
-                            Edital</h5>
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Edital</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">

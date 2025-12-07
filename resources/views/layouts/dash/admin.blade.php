@@ -77,7 +77,7 @@
                         <a href="{{ route('faq.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('faq.*') ? 'active' : '' }}">
                             Registrar FAQ
-                        </a>                        
+                        </a>
                     </div>
                 </div>
             </div>

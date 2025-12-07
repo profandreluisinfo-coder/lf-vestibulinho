@@ -6,7 +6,6 @@ use App\Models\Faq;
 use App\Models\Call;
 use App\Models\Course;
 use App\Models\Archive;
-use App\Models\Setting;
 use App\Models\Calendar;
 
 class HomeController extends Controller

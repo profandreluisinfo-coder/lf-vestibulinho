@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     RankingController,
     CalendarController,
     LocalController,
+    AnswerController
 };
 
 //
@@ -207,5 +208,5 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/agendar', [ExamController::class, 'store']);
             Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access.location');
         });        
-        
+    
 }); // Fim Middleware de autenticado
