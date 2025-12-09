@@ -32,6 +32,7 @@ class RankingController extends Controller
                 'users.name',
                 'users.social_name',
                 'users.birth',
+                'users.pne',
                 'exam_results.score',
                 'exam_results.ranking'
             )
