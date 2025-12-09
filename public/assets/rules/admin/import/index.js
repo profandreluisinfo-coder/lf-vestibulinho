@@ -1,59 +1,129 @@
 $(document).ready(function () {
-    $.validator.addMethod("excelExtension", function (value, element) {
-        if (!value) return false;
-        let ext = value.split('.').pop().toLowerCase();
-        return ext === "xlsx";
-    }, "Apenas arquivos .xlsx são permitidos");
 
-    $('#import-results').validate({
+    const $form = $('#import-results');
+    const $btn  = $('#btn-submit');
+    const $progressWrapper = $('#progress-wrapper');
+    const $progressBar = $('#progress-bar');
+    const originalBtnHtml = $btn.html();
+
+    // ===== Validação simples =====
+    $form.validate({
         rules: {
             file: {
                 required: true,
-                excelExtension: true,
-                filesize: 10485760
+                extension: "xlsx"
             }
         },
         messages: {
             file: {
-                required: "Selecione um arquivo",
-                excelExtension: "Apenas arquivos .xlsx são permitidos",
-                filesize: "O arquivo deve ter no máximo 10MB"
+                required: "Selecione um arquivo.",
+                extension: "Apenas arquivos .xlsx são permitidos."
             }
         },
-
-        submitHandler: function (form) {
-            const $btn = $("#btn-submit");
-
-            $btn.prop("disabled", true).html(
-                `<span class="spinner-border spinner-border-sm me-1"></span>Aguarde, por favor...    `
-            );
-
-            setTimeout(() => form.submit(), 50);
-        },
+        errorClass: 'is-invalid',
+        validClass: 'is-valid',
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
-            element.closest('div').append(error);
-        },
-
-        highlight: function (element) {
-            $(element).addClass('is-invalid');
-        },
-
-        unhighlight: function (element) {
-            $(element).removeClass('is-invalid');
+            element.closest('.form-group, .mb-3').append(error);
         }
     });
 
-    // Previne envio com Enter
-    $("#import-results").on("keyup keypress", function (e) {
-        if (e.keyCode === 13) {
-            e.preventDefault();
-            return false;
-        }
-    });
+    // ===== Submit AJAX =====
+    $form.on('submit', function (e) {
+        e.preventDefault();
 
-    $("#import-results").on("invalid-form.validate", function () {
-        alert("Existem campos inválidos. Por favor, revise o formulário.");
+        if (!$form.valid()) {
+            return;
+        }
+
+        const formData = new FormData(this);
+
+        // UI - trava botão e mostra progresso
+        $btn.prop('disabled', true).html(
+            `<span class="spinner-border spinner-border-sm me-2"></span>
+             Importando...`
+        );
+
+        $progressWrapper.removeClass('d-none');
+        $progressBar
+            .css('width', '0%')
+            .text('0%')
+            .addClass('progress-bar-animated')
+            .removeClass('bg-success bg-danger');
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+
+            // ===== Progresso de upload =====
+            xhr: function () {
+                let xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        let percent = Math.round((e.loaded / e.total) * 100);
+                        $progressBar
+                            .css('width', percent + '%')
+                            .text(percent + '%');
+                    }
+                });
+
+                return xhr;
+            },
+
+            // ===== SUCESSO =====
+            success: function (response) {
+                $progressBar
+                    .removeClass('progress-bar-animated')
+                    .addClass('bg-success')
+                    .css('width', '100%')
+                    .text('Concluído ✅');
+
+                $btn.html(
+                    `<i class="bi bi-check-lg me-2"></i>Importado`
+                );
+
+                // Redireciona após um pequeno delay
+                setTimeout(() => {
+                    window.location.href = "/importar/notas";
+                }, 800);
+            },
+
+            // ===== ERRO =====
+            error: function (xhr) {
+
+                let message = 'Erro inesperado ao importar.';
+
+                // Validação Laravel (422)
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON?.errors;
+                    message = xhr.responseJSON?.message ?? message;
+
+                    if (errors?.file) {
+                        message = errors.file[0];
+                        $('#file').addClass('is-invalid');
+                    }
+                }
+
+                // Erro interno (500)
+                if (xhr.status === 500) {
+                    message = xhr.responseJSON?.message ?? message;
+                }
+
+                $progressBar
+                    .removeClass('progress-bar-animated')
+                    .addClass('bg-danger')
+                    .text('Erro ❌');
+
+                alert(message);
+
+                // Restaura botão
+                $btn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
     });
 
 });

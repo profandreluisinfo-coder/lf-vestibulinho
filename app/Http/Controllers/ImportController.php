@@ -37,35 +37,31 @@ class ImportController extends Controller
             'file.file'     => 'O arquivo está corrompido.'
         ]);
 
-        $file = $request->file('file');
-
-        // Import sem depender de TemporaryFile (funciona 100% no Windows)
-        $import = new SimpleImport();
-        Excel::import($import, $file);
-
-        // Converte coleção para array comum
-        $rows = $import->rows->toArray();
-
-        // Validação básica
-        if (count($rows) < 2) {
-            return back()->withErrors(['file' => 'Arquivo vazio ou sem colunas suficientes.']);
-        }
-
-        // Remove cabeçalho
-        unset($rows[0]);
-
-        DB::beginTransaction();
-
         try {
+            $import = new SimpleImport();
+            Excel::import($import, $request->file('file'));
+
+            $rows = $import->rows->toArray();
+
+            if (count($rows) < 2) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Arquivo vazio ou inválido.'
+                ], 422);
+            }
+
+            unset($rows[0]);
+
+            DB::beginTransaction();
+
             foreach ($rows as $row) {
 
-                // Protege contra linhas vazias
-                if (!isset($row[0]) || !isset($row[5])) {
+                if (!isset($row[0], $row[5])) {
                     continue;
                 }
 
-                $inscriptionId = $row[0]; // coluna inscription_id
-                $points = (int) $row[5];  // coluna points
+                $inscriptionId = $row[0];
+                $points        = (int) $row[5];
 
                 if (!$inscriptionId || !is_numeric($points)) {
                     continue;
@@ -78,11 +74,17 @@ class ImportController extends Controller
             $this->rankingService->calculate();
             DB::commit();
 
-            return redirect()->route('ranking')->with('success', 'Operação realizada com sucesso!');
-        
-        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Importação concluída com sucesso!'
+            ]);
+        } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withErrors(['file' => 'Erro ao importar: ' . $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao importar: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

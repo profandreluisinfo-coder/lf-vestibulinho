@@ -14,6 +14,13 @@
             </h4>
         </div>
 
+        <div class="progress mb-3 d-none" id="progress-wrapper">
+            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                id="progress-bar"
+                role="progressbar"
+                style="width: 0%">0%</div>
+        </div>
+
         {{-- Card Principal --}}
         <div class="card shadow-sm">
             <div class="card-header bg-light">
@@ -29,12 +36,14 @@
                             <strong>Atenção! </strong>
                         </div>
 
-                        <div class="p-3 mb-3">O arquivo deve conter obrigatoriamente os seguintes cabeçalhos, na seguinte ordem:
+                        <div class="p-3 mb-3">O arquivo deve conter obrigatoriamente os seguintes cabeçalhos, na seguinte
+                            ordem:
                         </div>
 
                         <div class="table-responsive mb-3">
                             <table class="table table-sm">
-                                <caption class="py-2 px-3 text-muted" style="font-size:12px;"><i class="bi bi-info-circle me-2"></i>Modelo de cabeçalhos</caption>
+                                <caption class="py-2 px-3 text-muted" style="font-size:12px;"><i
+                                        class="bi bi-info-circle me-2"></i>Modelo de cabeçalhos</caption>
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">inscription_id</th>
@@ -65,46 +74,56 @@
                                     estar sem acentos ou espaços extras.</li>
                                 <li class="list-group-item p-2"><i class="bi bi-check2-circle me-2"></i>Cada importação
                                     substituirá os dados anteriores.</li>
-                                <li class="list-group-item p-2"><i class="bi bi-check2-circle me-2"></i>Formato aceito: .xlsx (máx. 10MB)</li>
+                                <li class="list-group-item p-2"><i class="bi bi-check2-circle me-2"></i>Formato aceito:
+                                    .xlsx (máx. 10MB)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <form id="import-results" class="mb-3" action="{{ route('import.results') }}" method="POST"
+                <form id="import-results" class="mb-3"
+                    action="{{ route('import.results') }}"
+                    method="POST"
                     enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group mb-3">
-                        {{-- Campo: Seleção de arquivo --}}
                         <label for="file" class="form-label fw-semibold">
-                            Selecione o arquivo que deseja importar <span class="text-danger">*</span>
+                            Selecione o arquivo <span class="text-danger">*</span>
                         </label>
-                        {{-- Input File --}}
+
                         <input type="file" name="file" id="file"
-                            accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            class="form-control @error('file') is-invalid @enderror" required>
-                        @error('file')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                            class="form-control"
+                            required>
                     </div>
-                    {{-- Botão Importar --}}
+
+                    <div class="progress mb-3 d-none" id="progress-wrapper">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            id="progress-bar"
+                            role="progressbar"
+                            style="width: 0%">0%</div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
                         <i class="bi bi-upload me-2"></i> Importar
                     </button>
 
                 </form>
+
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer d-flex flex-column">
                 @php
                     $count = \App\Models\ExamResult::count('ranking');
                 @endphp
                 @if ($count > 0)
                     <small class="text-success fw-semibold">
                         <i class="bi bi-check-circle me-2"></i>
-                        {{ $count }} notas importadas com sucesso!
+                        {{ $count }} notas importadas com sucesso! Clique no botão abaixo para ver os resultados.
                     </small>
+                    <a href="{{ route('ranking') }}" class="btn btn-success btn-sm mt-2">
+                        <i class="bi bi-check-circle me-2"></i> Ver Resultados
+                    </a>
                 @endif
             </div>
         </div>
