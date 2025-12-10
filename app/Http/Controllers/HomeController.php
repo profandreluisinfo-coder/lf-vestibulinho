@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->format('Y-m-d H:i:s');
 
         // Busca todos os arquivos de prova ativos e apenas retorna os 3 primeiros ordenados por ano decrescente
-        $files = Archive::where('status', true)->limit(4)->orderBy('year', 'desc')->get();
+        $files = Archive::where('status', true)->limit(8)->orderBy('year', 'desc')->get();
         
         // Obter todos os cursos
         $courses = Course::all();

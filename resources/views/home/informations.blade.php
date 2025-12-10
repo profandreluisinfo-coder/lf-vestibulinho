@@ -1,4 +1,4 @@
-<section id="calendario" class="py-5 bg-light">
+<section class="py-5 bg-light">
     <div class="container">
         <h2 class="section-title text-center mb-4">
             Informações do {{ config('app.name') }} {{ $calendar?->year }}

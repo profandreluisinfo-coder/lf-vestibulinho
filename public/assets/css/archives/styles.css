@@ -38,6 +38,12 @@
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
+.card-recente {
+    background-color: #F8F9FA;
+    border: 2px solid #198754;
+    box-shadow: 0 0 12px rgba(25, 135, 84, 0.45);
+}
+
 /* Efeito hover no card */
 .card-animada:hover {
     transform: translateY(-5px);

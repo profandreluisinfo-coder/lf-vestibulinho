@@ -10,6 +10,7 @@
 @section('body-class', 'py-5')
 
 @section('content')
+
     @php
         $statusData = $calendar?->getInscriptionStatusData() ?? [
             'color' => 'secondary',
@@ -25,6 +26,7 @@
         $matriculaIcon = $chamadaDisponivel ? 'bi-megaphone-fill' : 'bi-hourglass-split';
         $matriculaTitle = $chamadaDisponivel ? 'Convocação para Matrícula Disponível' : 'Aguardando Convocação';
     @endphp
+
     @include('home.navbar')
     @include('home.hero-banner')
     @include('home.countdown')
@@ -36,6 +38,7 @@
     @include('home.faq')
     @include('home.cta')
     @include('home.footer')
+
 @endsection
 
 @push('scripts')
@@ -43,4 +46,5 @@
     <script src="{{ asset('assets/home/navbar-scrolled.js') }}"></script>
     <script src="{{ asset('assets/components/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/quick-access.js') }}"></script>
+    <script src="{{ asset('assets/home/previous-exams.js') }}"></script>
 @endpush

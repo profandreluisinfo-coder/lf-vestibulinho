@@ -62,7 +62,7 @@
                         </div>
 
                         {{-- Resultado Final --}}
-                        <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : ($calendar->isFinalResultPublished() ? 'cal-item-completed' : 'cal-item-active') }}">
+                        <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : ($calendar->isFinalResultPublished() ? 'cal-item-completed' : 'cal-item-active') }}" style="width: 280px;">
                             <div class="cal-icon bg-success">
                                 <i class="bi bi-trophy"></i>
                             </div>

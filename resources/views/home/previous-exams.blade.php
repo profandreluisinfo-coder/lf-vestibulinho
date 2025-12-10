@@ -7,7 +7,7 @@
         @foreach ($files as $file)
 
             <div class="col-6 col-md-4 col-lg-3">
-                <div class="card h-100 {{ $loop->first ? 'border border-warning bg-light' : '' }}">
+                <div class="card h-100 {{ $loop->first ? 'border border-success bg-light' : '' }}">
                     <div class="card-body text-center">
                         <i class="bi bi-file-pdf text-danger mb-3" style="font-size: 3rem;"></i>
                         <h5 class="card-title">Vestibulinho {{ $file->year }}</h5>

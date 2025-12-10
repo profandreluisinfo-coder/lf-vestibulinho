@@ -23,14 +23,25 @@
             <h2 class="section-title mb-4 text-center">Provas Anteriores</h2>
 
             <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4 justify-content-center">
+                @php
+                    $recenteId = $files->first()->id ?? null;
+                @endphp
 
                 @if ($files->isNotEmpty())
                     @foreach ($files as $file)
                         <div class="col">
-                            <div class="card h-100 card-animada shadow-sm">
+                            <div class="card h-100 card-animada shadow-sm {{ $file->id === $recenteId ? 'card-recente' : '' }}">
+
                                 <div class="card-body text-center">
+                                    @if ($file->id === $recenteId)
+                                    <div class="d-flex justify-content-end">
+                                        <span class="badge bg-success ms-2">
+                                            <i class="bi bi-award me-1"></i>Recente
+                                        </span>
+                                    </div>
+                                    @endif
                                     <i class="bi bi-file-pdf text-danger mb-3" style="font-size: 3rem;"></i>
-                                    <h5 class="card-title">Vestibulinho {{ $file->year }}</h5>
+                                    <h5 class="card-title">Vestibulinho {{ $file->year }}</h5>                                    
                                     <p class="card-text">Prova completa para download</p>
                                     <a href="{{ asset('storage/' . $file->file) }}" target="_blank"
                                         class="btn btn-outline-primary btn-sm">
