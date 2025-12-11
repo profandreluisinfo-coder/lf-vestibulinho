@@ -163,7 +163,7 @@
                     </span>
                     @if (!$calendar->hasExamDatePassed())
                       <span class="event-status-badge">Em Breve</span>
-                    @elseif ($calendar->isAnswerKeyPublished())
+                    @elseif ($calendar->isAnswerKeyPublished() && $last_archive->status && $last_archive->answer?->status)
                       <span class="event-status-badge event-status-completed">Publicado</span>
                     @else
                       <span class="event-status-badge event-status-active">Aguardando</span>

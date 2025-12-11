@@ -4,7 +4,6 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/calendar/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/quick-access/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/calendar/styles.css') }}">
 @endpush
 
 @section('body-class', 'py-5')
@@ -46,5 +45,5 @@
     <script src="{{ asset('assets/home/navbar-scrolled.js') }}"></script>
     <script src="{{ asset('assets/components/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/quick-access.js') }}"></script>
-    <script src="{{ asset('assets/home/previous-exams.js') }}"></script>
+    {{-- <script src="{{ asset('assets/home/previous-exams.js') }}"></script> --}}
 @endpush

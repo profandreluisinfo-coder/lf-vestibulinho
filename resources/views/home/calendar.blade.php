@@ -61,6 +61,23 @@
                             </div>
                         </div>
 
+                        {{-- Gabarito da Prova --}}
+                        @if ($last_archive->status && $last_archive->answer?->status)
+                        <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : 'cal-item-completed' }}" style="width: 280px;">
+                            <div class="cal-icon bg-success">
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                            </div>
+                            <div class="cal-card">
+                                <h5 class="fw-bold mb-1">Gabarito da Prova</h5>
+                                <p class="small text-muted mb-2">Prova objetiva para todos os candidatos</p>
+                                <span class="badge bg-success p-2">
+                                    {{ Carbon\Carbon::parse($calendar->exam_date)->format('d/m/Y') }}
+                                </span>
+                                <span class="cal-status-badge cal-status-completed">Publicado</span>
+                            </div>
+                        </div>
+                        @endif
+
                         {{-- Resultado Final --}}
                         <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : ($calendar->isFinalResultPublished() ? 'cal-item-completed' : 'cal-item-active') }}" style="width: 280px;">
                             <div class="cal-icon bg-success">

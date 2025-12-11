@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('metas')
     
-    <title>@yield('page-title', 'Vestibulinho 2026')</title>
+    <title>@yield('page-title', 'Vestibulinho {{ $calendar->year }}')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,14 +24,19 @@
     @stack('styles')
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @stack('head-scripts')
 </head>
 
 <body class="@yield('body-class')">
+
 @yield('content')
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
 @stack('plugins')
+
 @stack('scripts')
 
 </body>
