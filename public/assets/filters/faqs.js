@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     function normalize(str) {
         return str
             .normalize("NFD")
@@ -6,45 +7,79 @@ $(document).ready(function () {
             .toLowerCase();
     }
 
-    function filterFaqs() {
-        var value = normalize($("#search").val());
-
-        // pega checkboxes
-        var showPublished = $("#filterPublished").is(":checked");
-        var showUnpublished = $("#filterUnpublished").is(":checked");
-
-        $(".accordion-item").each(function () {
-            let $btn = $(this).find(".accordion-header button");
-            let originalText = $btn.data("original") || $btn.text();
-            let normalizedText = normalize(originalText);
-
-            // restaurar antes de highlight
-            $btn.html(originalText);
-            $btn.data("original", originalText);
-
-            // status da FAQ pelo badge
-            let faqStatus = $(this).find(".badge").text().trim() === "Publicado" ? "1" : "0";
-
-            // regras de filtro
-            let matchesText = value === "" || normalizedText.indexOf(value) > -1;
-            let matchesStatus =
-                (faqStatus === "1" && showPublished) ||
-                (faqStatus === "0" && showUnpublished);
-
-            if (matchesText && matchesStatus) {
-                if (value !== "") {
-                    let regex = new RegExp("(" + value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")",
-                        "gi");
-                    let highlighted = originalText.replace(regex, "<mark>$1</mark>");
-                    $btn.html(highlighted);
-                }
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
+    // debounce simples
+    function debounce(fn, delay = 300) {
+        let timer;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
     }
 
-    $("#search").on("keyup", filterFaqs);
-    $("#filterPublished, #filterUnpublished").on("change", filterFaqs);
+    function filterFaqs() {
+    let value = normalize($("#search").val());
+    let firstMatchOpened = false;
+
+    $(".accordion-item").each(function () {
+        let $item = $(this);
+        let $btn = $item.find(".accordion-button");
+        let $body = $item.find(".accordion-body");
+        let $collapse = $item.find(".accordion-collapse");
+
+        if (!$btn.data("original")) {
+            $btn.data("original", $btn.html());
+        }
+
+        let originalQuestion = $btn.data("original");
+
+        let questionText = normalize($btn.text());
+        let answerText = normalize($body.text());
+
+        let matches =
+            value === "" ||
+            questionText.includes(value) ||
+            answerText.includes(value);
+
+        $btn.html(originalQuestion);
+
+        if (matches) {
+            if (value !== "") {
+                let regex = new RegExp(
+                    "(" + value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")",
+                    "gi"
+                );
+                $btn.html(originalQuestion.replace(regex, "<mark>$1</mark>"));
+            }
+
+            $item.show();
+
+            // 👉 abre só o primeiro match
+            if (value !== "" && !firstMatchOpened) {
+                $btn.removeClass("collapsed");
+                $collapse.addClass("show");
+
+                // scroll suave até ele
+                $('html, body').animate({
+                    scrollTop: $item.offset().top - 120
+                }, 400);
+
+                firstMatchOpened = true;
+            } else {
+                $btn.addClass("collapsed");
+                $collapse.removeClass("show");
+            }
+        } else {
+            $item.hide();
+            $btn.addClass("collapsed");
+            $collapse.removeClass("show");
+        }
+    });
+}
+
+
+    // aplica debounce no input
+    $("#search").on(
+        "keyup",
+        debounce(filterFaqs, 300)
+    );
 });

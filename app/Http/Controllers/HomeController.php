@@ -20,13 +20,13 @@ class HomeController extends Controller
             ->format('Y-m-d H:i:s');
 
         // Busca todos os arquivos de prova ativos e apenas retorna os 3 primeiros ordenados por ano decrescente
-        $files = Archive::where('status', true)->limit(8)->orderBy('year', 'desc')->get();
+        $files = Archive::where('status', true)->orderBy('year', 'desc')->get();
         
         // Obter todos os cursos
         $courses = Course::all();
 
         // limite a 4 perguntas
-        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(4)->get();
+        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->get();
 
         // Verifica quantos registros de chamada existem
         $calls = Call::all()->count();

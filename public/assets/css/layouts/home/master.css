@@ -1,5 +1,7 @@
 /* Estabelece as cores principais do sistema */
 :root {
+    --card-link-bg: #3166b4;
+    --card-header-bg: #3166b4;
     /* Cor principal (usada em botões e etc.) */
     --primary-color: #2c5aa0;
     /* Cor secundária (usada em backgrounds e etc.) */
@@ -18,6 +20,7 @@
     --text-blue: #2fa1e0;
     /* Cor de texto para títulos */
     --text-title: #1e3a5f;
+
 }
 
 body {
@@ -102,6 +105,7 @@ body {
             rgba(30, 58, 95, 0.6));
 }
 
+/* HERO BANNER */
 /* BANNER */
 .hero-banner {
     position: relative;
@@ -111,7 +115,7 @@ body {
 
     /* Aplica a imagem e o degradê junto */
     background: linear-gradient(135deg, rgba(0, 32, 96, 0.6), rgba(30, 58, 95, 0.6)),
-        url("/assets/img/BannerSiteLF.png");
+        url("/assets/img/hero.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -146,44 +150,11 @@ body {
     margin-top: 2rem;
 }
 
-/* ACESSO RÁPIDO */
-.quick-access-card {
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    height: 100%;
-}
-
-.quick-access-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.quick-access-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.quick-access-icon {
-    transition: transform 0.2s ease;
-}
-
-.scale-up {
-    transform: scale(1.2);
-}
-
-.quick-access-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.quick-access-card .card-body {
-    display: flex;
-    flex-direction: column;
-}
-
 /* CURSOS */
+#courses {
+    margin-bottom: 4rem;
+}
+
 .course-card {
     background: white;
     border-radius: 10px;
@@ -198,28 +169,6 @@ body {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
-.calendar-container {
-    background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.calendar-event {
-    background: var(--secondary-color);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    border-left: 4px solid var(--primary-color);
-}
-
-/* FAQ */
-.faq-item {
-    background: white;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
 
 /* BOTÕES */
 .btn-primary {
@@ -254,7 +203,7 @@ body {
 }
 
 .btn-primary-alt,
-.btn-secondary,
+/* .btn-secondary, */
 .btn-info {
     padding: 0.75rem 2rem;
     border-radius: 25px;
@@ -268,6 +217,21 @@ body {
     margin-bottom: 2rem;
     position: relative;
     padding-bottom: 0.5rem;
+}
+
+.simple-title {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.card-header {
+    background: var(--card-header-bg);
+    color: var(--secondary-color);
+    font-size: 17px;
+    font-weight: 500;
 }
 
 .section-title::after {
@@ -319,11 +283,6 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* background: linear-gradient(
-        135deg,
-        rgba(44, 90, 160, 0.05) 0%,
-        rgba(40, 167, 69, 0.05) 100%
-    ); */
     pointer-events: none;
 }
 
@@ -448,48 +407,8 @@ body {
     margin-left: 4px;
 }
 
-/* CARROSEL */
-/* Estilo customizado para os controles do carousel */
-#carouselAutoplaying .carousel-control-prev,
-#carouselAutoplaying .carousel-control-next {
-    opacity: 1;
-}
-
-#carouselAutoplaying .carousel-control-prev-icon,
-#carouselAutoplaying .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 20px;
-}
-
-#carouselAutoplaying .carousel-control-prev:hover .carousel-control-prev-icon,
-#carouselAutoplaying .carousel-control-next:hover .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
 @media (max-width: 576px) {
-    .quick-access-card .btn {
-        font-size: 0.85rem;
-        padding: 0.4rem 0.75rem;
-        max-width: 160px;
-        margin: 0 auto;
-        display: block;
-    }
-
+    
     .countdown-number {
         font-size: 1.8rem;
     }
@@ -501,6 +420,7 @@ body {
 
 /* Mobile First - Padrão para telas pequenas */
 @media (max-width: 767px) {
+    
     .hero-banner {
         padding: 4rem 0 2.5rem 0 !important;
         /* top | right | bottom | left */
@@ -542,30 +462,8 @@ body {
         margin-bottom: 0;
     }
 
-    .carousel-inner .row {
-        flex-wrap: nowrap !important;
-        overflow-x: auto;
-        margin: 0;
-    }
-
-    .carousel-inner .row .col-sm-6 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-        padding: 0 15px;
-    }
-
-    #provas-anteriores .carousel-item {
-        overflow: visible;
-    }
-
-    /* Remove o overflow horizontal da linha principal */
-    #provas-anteriores .container {
-        overflow: hidden;
-    }
-
-    /* Ajusta o espaçamento entre os cards */
-    .carousel-inner .row.g-4 {
-        --bs-gutter-x: 0;
+    .simple-title {
+        text-align: center;
     }
 
     .footer {
@@ -599,10 +497,6 @@ body {
         padding: 2rem 0;
     }
 
-    .quick-access-icon {
-        font-size: 2rem;
-    }
-
     .countdown-number {
         font-size: 2rem;
     }
@@ -616,19 +510,6 @@ body {
         padding: 1.5rem;
     }
 
-    /* CARROSEL */
-    .carousel-indicators {
-        display: block;
-    }
-
-    #carouselAutoplaying {
-        padding: 0 30px !important;
-    }
-
-    #carouselAutoplaying .carousel-control-prev {
-        /* left: -20px !important; */
-        display: none;
-    }
 }
 
 /* Desktop */

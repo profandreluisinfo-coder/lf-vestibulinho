@@ -32,7 +32,7 @@
                                 <i class="bi bi-pencil-square me-2"></i>Inscrever-se Agora
                             </a>
                         @endif
-                        <a href="#cursos" class="btn btn-outline-light btn-lg" title="Conhecer Cursos">
+                        <a href="#courses" class="btn btn-outline-light btn-lg" title="Conhecer Cursos">
                             <i class="bi bi-book me-2"></i>Conhecer Cursos
                         </a>
                     </div>

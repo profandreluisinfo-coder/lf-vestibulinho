@@ -7,7 +7,7 @@
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Perguntas Frequentes')
 
 @push('styles')
-  <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
 @endpush
 
 @section('body-class', 'bg-light')
@@ -16,48 +16,58 @@
 
     @include('home.navbar')
 
-    <section id="faq" class="bg-light my-5 py-5">
+    <section id="faqs" class="bg-light py-5">
         <div class="container">
-            <h2 class="section-title text-center">Perguntas Frequentes</h2>
+            <h2 class="section-title text-center">Dúvidas Frequentes</h2>
             <div class="row mb-3">
                 <div class="col-lg-8 mx-auto">
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" id="search" name="search"
-                            placeholder="Pesquisar por.." autocomplete="off">
+                            placeholder="Pesquisar por..." autocomplete="off">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    @foreach ($faqs as $faq)
-                        <div class="accordion accordion-flush" id="faqAccordion">
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        @foreach ($faqs as $faq)
                             <div class="accordion-item mb-3">
                                 <h2 class="accordion-header" id="heading{{ $faq->id }}">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapse{{ $faq->id }}" aria-expanded="false"
+                                    <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $faq->id }}"
+                                        aria-expanded="false"
                                         aria-controls="collapse{{ $faq->id }}">
                                         {!! $faq->question !!}
                                     </button>
                                 </h2>
-                                <div id="collapse{{ $faq->id }}" class="accordion-collapse collapse"
-                                    aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#faqAccordion">
+
+                                <div id="collapse{{ $faq->id }}"
+                                    class="accordion-collapse collapse"
+                                    aria-labelledby="heading{{ $faq->id }}"
+                                    data-bs-parent="#faqAccordion">
                                     <div class="accordion-body">
                                         {!! $faq->answer !!}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center pt-3">
+                    <div>Não encontrou a resposta que procurava?</div> <a href="mailto:{{ config('mail.from.address') }}">Fale conosco</a>
                 </div>
             </div>
         </div>
     </section>
 
-    @include('home.footer')
-
 @endsection
 
 @push('scripts')
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>
+    <script src="{{ asset('assets/interactions/infinite-scroll.js') }}"></script>
 @endpush

@@ -16,46 +16,74 @@
 
     @include('home.navbar')
 
+    @php
+        $recenteId = $files->first()->id ?? null;
+    @endphp
+
     <section id="provas-anteriores" class="bg-light my-5 py-5">
 
         <div class="container">
 
-            <h2 class="section-title mb-4 text-center">Provas Anteriores</h2>
+            <div class="card">
 
-            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4 justify-content-center">
-                @php
-                    $recenteId = $files->first()->id ?? null;
-                @endphp
+                <div class="card-header"><i class="bi bi-file-earmark-pdf"></i> Provas e Gabaritos</div>
 
-                @if ($files->isNotEmpty())
-                    @foreach ($files as $file)
-                        <div class="col">
-                            <div class="card h-100 card-animada shadow-sm {{ $file->id === $recenteId ? 'card-recente' : '' }}">
+                <div class="card-body">
 
-                                <div class="card-body text-center">
-                                    @if ($file->id === $recenteId)
-                                    <div class="d-flex justify-content-end">
-                                        <span class="badge bg-success ms-2">
-                                            <i class="bi bi-award me-1"></i>Recente
-                                        </span>
-                                    </div>
-                                    @endif
-                                    <i class="bi bi-file-pdf text-danger mb-3" style="font-size: 3rem;"></i>
-                                    <h5 class="card-title">Vestibulinho {{ $file->year }}</h5>                                    
-                                    <p class="card-text">Prova completa para download</p>
-                                    <a href="{{ asset('storage/' . $file->file) }}" target="_blank"
-                                        class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-download me-2"></i>Download
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="alert alert-info text-center">
-                        Nenhum resultado foi encontrado.
+                    <div class="table-responsive py-3">
+
+                        <table class="table table-hover align-middle text-center">
+                            <caption class="text-muted text-end border-top pt-2">(*) A prova não possui gabarito associado.</caption>
+                            <thead class="table-success">
+                                <th>#</th>
+                                <th>Ano</th>
+                                <th>Prova</th>
+                                <th>Gabarito</th>
+                            </thead>
+
+                            <tbody class="table-group-divider">
+
+                                @forelse ($files as $file)
+                                    <tr class="{{ $file->id === $recenteId ? 'table-active fw-bold' : '' }}">
+                                        <td><i class="bi bi-file-earmark-pdf fs-5 text-danger"></i></td>
+                                        <th scope="row">
+                                            @if ($file->id === $recenteId)
+                                                <i class="bi bi-star-fill text-warning me-1" title="Prova mais recente"></i>
+                                            @endif
+                                            {{ $file->year }}
+                                            @if ($file->id === $recenteId)
+                                                <span class="badge bg-success ms-2">Mais recente</span>
+                                            @endif
+                                        </th>
+                                        <td>
+                                            <a href="{{ asset('storage/' . $file->file) }}" target="_blank">
+                                                <i class="bi bi-download me-2"></i> Download
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @if ($file->answer?->file)
+                                                <a href="{{ asset('storage/' . $file->answer?->file) }}" target="_blank">
+                                                    <i class="bi bi-download me-2"></i> Download
+                                                </a>
+                                            @else
+                                                <span class="text-muted">*</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                @empty
+                                    <tr>
+                                        <td colspan="4">Nenhuma prova encontrada</td>
+                                    </tr>
+                                @endforelse
+
+                            </tbody>
+
+                        </table>
+
                     </div>
-                @endif
+
+                </div>
 
             </div>
 
@@ -66,7 +94,3 @@
     @include('home.footer')
 
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('assets/js/archives.js') }}"></script>
-@endpush

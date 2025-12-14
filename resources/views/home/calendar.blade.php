@@ -64,7 +64,7 @@
                         {{-- Gabarito da Prova --}}
                         @if ($last_archive->status && $last_archive->answer?->status)
                         <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : 'cal-item-completed' }}" style="width: 280px;">
-                            <div class="cal-icon bg-success">
+                            <div class="cal-icon bg-success" style="margin-left: 85px">
                                 <i class="bi bi-file-earmark-text-fill"></i>
                             </div>
                             <div class="cal-card">
@@ -79,8 +79,8 @@
                         @endif
 
                         {{-- Resultado Final --}}
-                        <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : ($calendar->isFinalResultPublished() ? 'cal-item-completed' : 'cal-item-active') }}" style="width: 280px;">
-                            <div class="cal-icon bg-success">
+                        <div class="cal-item {{ !$calendar->hasExamDatePassed() ? 'cal-item-inactive' : ($calendar->isFinalResultPublished() ? 'cal-item-completed' : 'cal-item-active') }}" style="width: 280px; margin-right: 10px;">
+                            <div class="cal-icon bg-success" style="margin-left: 70px">
                                 <i class="bi bi-trophy"></i>
                             </div>
                             <div class="cal-card">

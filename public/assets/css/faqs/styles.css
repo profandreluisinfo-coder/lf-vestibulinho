@@ -1,3 +1,7 @@
+#faqs {
+    margin: 3rem 0;
+}
+
 /* Container do input group */
 .input-group {
     transition: all 0.4s ease-in-out;

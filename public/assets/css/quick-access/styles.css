@@ -1,30 +1,86 @@
-/* Estilo para cards inativos */
-.card-inactive {
-    background-color: #f8f9fa !important;
-    opacity: 0.7;
-    cursor: not-allowed;
+/* QUICK ACCESS */
+#quick-access {
+    margin: 4rem 0
 }
 
-.card-inactive .card-title,
-.card-inactive .card-text {
-    color: #6c757d !important;
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: start;
+    align-items: center;
+    /* flex-wrap: wrap; */
 }
 
-.card-inactive:hover {
-    transform: none !important;
+.links a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    word-wrap: break-word !important;
+    /* justify-content: center; */
+    padding: 7px;
+    gap: 3px;
+    width: 125px;
+    height: 132px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    background-color: #fff;
+    color: var(--primary-color);
+    box-shadow: 0 .5rem 0.8rem rgba(0, 0, 0, .15);
+    transition: all 0.3s ease;
 }
 
-/* Opcional: adicionar um badge "Em breve" */
-.card-inactive::before {
-    content: "Em Breve";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #6c757d;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    z-index: 1;
+.links a:hover {
+    background-color: var(--card-link-bg);
+}
+
+.links a:hover i,
+.links a:hover {
+    color: #E6E6E6 !important;
+}
+
+.links i {
+    margin-top: 0.5rem !important;
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE / Edge antigo */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari, Edge */
+}
+
+/* Mobile First - Padrão para telas pequenas */
+@media (max-width: 767px) {
+
+    #quick-access {
+        margin-top: 2rem
+    }
+
+    .links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+        justify-content: space-between;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .links a:link {
+        width: 162px;
+        height: 128px;
+        margin-bottom:0.2rem !important;
+    }
+
+    .links i {
+        margin-top: 1rem !important;
+    }
+
 }
