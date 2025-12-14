@@ -46,9 +46,7 @@ class CallController extends Controller
             return redirect()->route('home');
         }
 
-        view()->share('calls', $calls);
-
-        return view('calls.public.index');
+        return view('calls.public.index', compact('calls'));
     }
 
     /**

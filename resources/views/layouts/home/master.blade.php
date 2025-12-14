@@ -39,6 +39,8 @@
 
 @stack('scripts')
 
+<script src="{{ asset("assets/swa/confirm-external.js")}}"></script>
+
 </body>
 
 </html>

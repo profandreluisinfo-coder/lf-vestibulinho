@@ -17,12 +17,12 @@
                         <i class="bi bi-person-lock"></i> Área do Candidato
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://leandrofranceschini.com.br/#form-contato"
-                        title="Entre em contato conosco" target="_blank">
-                        <i class="bi bi-telephone"></i> Contato
-                    </a>
-                </li>
+                <a class="nav-link js-confirm-external"
+                    href="https://leandrofranceschini.com.br/#form-contato"
+                    title="Entre em contato conosco"
+                    target="_blank">
+                    <i class="bi bi-telephone"></i> Contato
+                </a>
             </ul>
         </div>
     </div>

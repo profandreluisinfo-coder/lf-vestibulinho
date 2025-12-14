@@ -38,9 +38,7 @@ class UserController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        $calendar = Calendar::first() ?? new Calendar();
-
-        if (!$calendar->hasInscriptionStarted()) {
+        if (!Calendar::first()->hasInscriptionStarted()) {
             return redirect()->route('home');
         }
 
@@ -130,9 +128,7 @@ class UserController extends Controller
      */
     public function register(): View | RedirectResponse
     {
-        $calendar = Calendar::first();
-
-        if (!$calendar->isInscriptionOpen()) {
+        if (!Calendar::first()->isInscriptionOpen()) {
             return redirect()->route('home');
         }
 

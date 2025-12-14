@@ -59,7 +59,12 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center pt-3">
-                    <div>Não encontrou a resposta que procurava?</div> <a href="mailto:{{ config('mail.from.address') }}">Fale conosco</a>
+                    <div class="text-muted mb-3">Não encontrou a resposta que procurava?</div> <a class="btn btn-sm btn-primary js-confirm-external"
+                    href="https://leandrofranceschini.com.br/#form-contato"
+                    title="Entre em contato conosco"
+                    target="_blank">
+                    <i class="bi bi-telephone me-2"></i> Contato
+                </a>
                 </div>
             </div>
         </div>

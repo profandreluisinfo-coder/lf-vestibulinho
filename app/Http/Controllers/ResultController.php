@@ -20,20 +20,20 @@ class ResultController extends Controller
  */
     public function index()
     {
+        // verifica se o  acesso ao resultado foi liberado
+        // $settings = Setting::first() ?? new Setting();
+        // $status = $settings->result;
+
+        // se o acesso ao resultado nao foi liberado, redireciona para a home
+        if (!Setting::first()->result) {
+            return redirect()->route('home');
+        }
+
         // Busca pelo arquivo do edital em 'notices'
         $notice = Notice::all()->first();
 
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
-
-        // verifica se o  acesso ao resultado foi liberado
-        $settings = Setting::first() ?? new Setting();
-        $status = $settings->result;
-
-        // se o acesso ao resultado nao foi liberado, redireciona para a home
-        if (!$status) {
-            return redirect()->route('home');
-        }
 
         // Busca todos os resultados com user e user_details carregados
         $results = ExamResult::whereNotNull('score')
