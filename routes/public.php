@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
-    FaqController, AuthController, HomeController, Public\ArchiveController,
+    Public\FaqController, AuthController, HomeController, Public\ArchiveController,
     ResultController, CallController, CalendarController
 };
 
@@ -31,7 +31,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/reenviar-email', [AuthController::class, 'resendEmailAction']);
 
     // FaQ
-    Route::get('/perguntas-frequentes', [FaqController::class, 'list'])->name('questions');
+    Route::get('/perguntas-frequentes', [FaqController::class, 'index'])->name('faq.public.index');
 
     // Provas anteriores
     Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.public.index');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\{
-    FaqController,
+    Admin\FaqController,
     CallController,
     ExamController,
     UserController,
@@ -121,7 +121,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // ❓ Perguntas Frequentes (FAQ)
     // ==========================
     Route::prefix('faq') // OK
-        ->name('faq.')
+        ->name('faq.admin.')
         ->group(function () {
             Route::get('/', [FaqController::class, 'index'])->name('index');
             Route::post('/gravar', [FaqController::class, 'store'])->name('store');

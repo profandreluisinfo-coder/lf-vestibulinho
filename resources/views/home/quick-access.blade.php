@@ -14,7 +14,7 @@
 
                         <div class="links">
 
-                            <a href="{{ route('questions') }}">
+                            <a href="{{ route('faq.public.index') }}">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
 

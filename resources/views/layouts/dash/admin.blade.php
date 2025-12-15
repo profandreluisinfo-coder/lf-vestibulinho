@@ -74,7 +74,7 @@
                             class="dropdown-item-custom {{ request()->routeIs('notice.*') ? 'active' : '' }}">
                             Edital
                         </a>
-                        <a href="{{ route('faq.index') }}"
+                        <a href="{{ route('faq.admin.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('faq.*') ? 'active' : '' }}">
                             Registrar FAQ
                         </a>
@@ -370,7 +370,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-book me-2"></i>Gerenciar Cursos
                     </a>
-                    <a href="{{ route('faq.index') }}" class="list-group-item list-group-item-action border-0 px-0">
+                    <a href="{{ route('faq.admin.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
                     <a href="{{ route('exam.index') }}"

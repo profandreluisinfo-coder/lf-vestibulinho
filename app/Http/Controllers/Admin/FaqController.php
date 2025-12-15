@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FaqController extends Controller
 {
@@ -53,7 +54,7 @@ class FaqController extends Controller
             'order' => $maxOrder + 1,  // Nova FAQ vai para o final
         ]);
 
-        return redirect()->route('faq.index')->with('success', 'FAQ criada com sucesso!');
+        return redirect()->route('faq.admin.index')->with('success', 'FAQ criada com sucesso!');
     }
 
     /**
@@ -117,7 +118,7 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return redirect()->route('faq.index')->with('success', 'FAQ atualizada com sucesso!');
+        return redirect()->route('faq.admin.index')->with('success', 'FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
@@ -130,27 +131,7 @@ class FaqController extends Controller
         $faq->delete();
         // $faq->forceDelete();
 
-        return redirect()->route('faq.index')->with('success', 'FAQ excluida com sucesso!');
-    }
-
-    /**
-     * Mostra a lista de perguntas frequentes do sistema.
-     *
-     * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema.
-     *
-     * Compartilha a variável $faqs com a view.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list()
-    {
-        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->get();
-
-        if ($faqs->isEmpty()) {
-            return redirect()->route('home');
-        }
-
-        return view('faqs.public.list', compact('faqs'));
+        return redirect()->route('faq.admin.index')->with('success', 'FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
@@ -163,6 +144,6 @@ class FaqController extends Controller
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return redirect()->route('faq.index')->with('success', 'Status da FAQ atualizado com sucesso!');
+        return redirect()->route('faq.admin.index')->with('success', 'Status da FAQ atualizado com sucesso!');
     }
 }

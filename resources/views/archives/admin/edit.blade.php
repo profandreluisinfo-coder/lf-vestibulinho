@@ -61,7 +61,7 @@
                         <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
                         {{-- prettier-ignore --}}
-                    <a href="{{ route('archive.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                    <a href="{{ route('archive.admin.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
                 </form>
 
             </div>

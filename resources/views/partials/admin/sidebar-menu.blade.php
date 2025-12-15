@@ -17,8 +17,8 @@
             <a href="{{ route('calendar.index') }}" class="nav-link text-light">Calendário</a>
             <a href="{{ route('courses.index') }}" class="nav-link text-light">Cursos</a>
             <a href="{{ route('notice.index') }}" class="nav-link text-light">Edital</a>
-            <a href="{{ route('faq.index') }}" class="nav-link text-light">Registrar FAQ</a>
-            <a href="{{ route('archive.index') }}" class="nav-link text-light">Acervo de Provas</a>
+            <a href="{{ route('faq.admin.index') }}" class="nav-link text-light">Registrar FAQ</a>
+            <a href="{{ route('archive.admin.index') }}" class="nav-link text-light">Acervo de Provas</a>
             <a href="{{ route('system.index') }}" class="nav-link text-light">Redefinir Dados</a>
         </div>
     </li>
