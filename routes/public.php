@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
-    FaqController, AuthController, HomeController, ArchiveController,
+    FaqController, AuthController, HomeController, Public\ArchiveController,
     ResultController, CallController, CalendarController
 };
 
@@ -34,7 +34,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/perguntas-frequentes', [FaqController::class, 'list'])->name('questions');
 
     // Provas anteriores
-    Route::get('/provas-anteriores', [ArchiveController::class, 'list'])->name('archives');
+    Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.public.index');
 
     // Resultados
     Route::get('/resultado-final', [ResultController::class, 'index'])->name('results');

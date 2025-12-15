@@ -1,4 +1,5 @@
 @extends('layouts.home.master')
+
 @section('page-title', 'Vestibulinho LF ' . $calendar?->year)
 
 @push('styles')

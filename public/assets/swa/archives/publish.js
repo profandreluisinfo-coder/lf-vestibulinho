@@ -1,7 +1,7 @@
 // alerta de alteração de status de publicação de arquivo de prova anteiror do processo seletivo
 function confirmFilePublish(id, fileName) {
     Swal.fire({
-        title: 'Confirmar publicação',
+        title: 'Confirmar ação',
         text: ` Você deseja alterar o status da publicação do arquivo: "${fileName}"?`,
         icon: 'question',
         showCancelButton: true,

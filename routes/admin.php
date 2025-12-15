@@ -15,7 +15,7 @@ use App\Http\Controllers\{
     NoticeController,
     ReportController,
     SystemController,
-    ArchiveController,
+    Admin\ArchiveController,
     RankingController,
     CalendarController,
     LocalController,
@@ -77,11 +77,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📚 Arquivos (Provas anteriores)
     // ==========================
     Route::prefix('arquivos') // OK
-        ->name('archive.')
+        ->name('archive.admin.')
         ->group(function () {
             Route::get('/', [ArchiveController::class, 'index'])->name('index');
             Route::get('/criar', [ArchiveController::class, 'create'])->name('create');
-            Route::post('/criar', [ArchiveController::class, 'store']);
+            Route::post('/salvar', [ArchiveController::class, 'store'])->name('store');
             Route::get('/editar/{archive}', [ArchiveController::class, 'edit'])->name('edit');
             Route::post('/editar/{archive}', [ArchiveController::class, 'update']);
             Route::delete('/excluir/{archive}', [ArchiveController::class, 'destroy'])->name('destroy');

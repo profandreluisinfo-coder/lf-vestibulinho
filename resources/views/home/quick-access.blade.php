@@ -18,7 +18,7 @@
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
 
-                            <a href="{{ route('archives') }}">
+                            <a href="{{ route('archives.public.index') }}">
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
 

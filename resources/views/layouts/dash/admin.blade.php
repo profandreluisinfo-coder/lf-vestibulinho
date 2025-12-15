@@ -14,10 +14,8 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     {{-- Bootstrap & Ícones --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     {{-- Estilos adicionais --}}
@@ -42,6 +40,7 @@
             <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
         </div>
         <nav class="sidebar-menu">
+
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>
                 <div class="menu-item">
@@ -52,6 +51,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="menu-section">
                 <div class="menu-section-title">Vestibulinho</div>
                 <div class="menu-dropdown">
@@ -81,8 +81,11 @@
                     </div>
                 </div>
             </div>
+
             <div class="menu-section">
+
                 <div class="menu-section-title">Usuários e Inscrições</div>
+                
                 <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuUsuarios')">
                         <i class="bi bi-people-fill"></i>
@@ -121,14 +124,19 @@
                     </div>
                 </div>
             </div>
+
             <div class="menu-section">
+
                 <div class="menu-section-title">Provas e Resultados</div>
+                
                 <div class="menu-dropdown">
+                    
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuProvas')">
                         <i class="bi bi-journal-check"></i>
                         <span>Provas</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
+                    
                     <div class="dropdown-menu-custom {{ request()->routeIs(['local.index', 'exam.create', 'export.users', 'archive.*']) ? 'show' : '' }}"
                         id="menuProvas">
                         <a href="{{ route('local.index') }}"
@@ -145,8 +153,8 @@
                             onclick="handleExport(event, '{{ route('export.users') }}')">
                             Planilha de Notas
                         </a>
-                        <a href="{{ route('archive.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('archive.*') ? 'active' : '' }}">
+                        <a href="{{ route('archive.admin.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('archive.admin.*') ? 'active' : '' }}">
                             Arquivos
                         </a>
                     </div>
@@ -208,6 +216,7 @@
     
     <!-- Topbar -->
     <header class="topbar">
+        
         <div class="topbar-left">
             <button class="menu-toggle" onclick="toggleSidebar()">
                 <i class="bi bi-list"></i>
@@ -215,6 +224,7 @@
         </div>
 
         <div class="topbar-right">
+            
             <!-- Botão Offcanvas -->
             <button class="topbar-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu"
                 aria-controls="offcanvasMenu">
@@ -222,6 +232,7 @@
             </button>
 
             <div class="dropdown">
+
                 <div class="user-menu" data-bs-toggle="dropdown">
                     <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                     <div class="user-info">
@@ -230,6 +241,7 @@
                     </div>
                     <i class="bi bi-chevron-down"></i>
                 </div>
+
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                     <li>
                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -246,8 +258,11 @@
                         </form>
                     </li>
                 </ul>
+
             </div>
+
         </div>
+
     </header>
 
     <!-- Conteúdo -->

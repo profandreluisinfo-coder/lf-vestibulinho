@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Answer;
 use App\Models\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ArchiveFileService;
+use App\Http\Controllers\Controller;
 
 class ArchiveController extends Controller
 {
@@ -29,7 +30,7 @@ class ArchiveController extends Controller
         // Passar para a view
         view()->share('files', $files);
 
-        return view('archives.private.index');
+        return view('archives.admin.index');
     }
 
     /**
@@ -116,7 +117,7 @@ class ArchiveController extends Controller
      */
     public function edit(Archive $archive)
     {
-        return view('archives.private.edit', compact('archive'));
+        return view('archives.admin.edit', compact('archive'));
     }
 
     /**
@@ -216,29 +217,5 @@ class ArchiveController extends Controller
         }
 
         return redirect()->back()->with('success', 'Status alterado com sucesso!');
-    }
-
-    /**
-     * Obter todos os arquivos de prova em ordem decrescente.
-     *
-     * Este método obtem todos os arquivos de prova da pasta 'archives' no banco de dados
-     * que estejam publicados e os ordena em ordem decrescente de ano.
-     * 
-     * Os arquivos de prova são passados para a view 'archives.public.list', que exibirá os arquivos para 
-     * os uários que acessarem o site do vestibulinho.
-     * 
-     * Última atualização: 09/11/2025 às 13:00
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function list()
-    {
-        // Obter todos os arquivos de prova em ordem decrescente
-        $files = Archive::where('status', true)->orderBy('year', 'desc')->get();
-
-        // Passar para a view
-        view()->share('files', $files);
-
-        return view('archives.public.list');
     }
 }
