@@ -124,7 +124,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('faq.')
         ->group(function () {
             Route::get('/', [FaqController::class, 'index'])->name('index');
-            // Route::get('/criar', [FaqController::class, 'create'])->name('create');
             Route::post('/gravar', [FaqController::class, 'store'])->name('store');
             Route::get('/editar/{faq}', [FaqController::class, 'edit'])->name('edit');
             Route::post('/editar/{faq}', [FaqController::class, 'update']);

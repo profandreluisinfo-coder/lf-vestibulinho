@@ -4,8 +4,9 @@
             <div class="col-lg-8">
                 <div class="hero-content">
                     <div class="d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start">
-                        <img src="{{ asset('assets/img/logo.webp') }}" class="img-fluid" alt="Avatar Logo" width="75">
-
+                        <a href="https://leandrofranceschini.com.br/" class="nav-link">
+                            <img src="{{ asset('assets/img/logo.webp') }}" class="img-fluid" alt="Avatar Logo" width="75">
+                        </a>
                         <h1 class="display-4 fw-bold mb-3 mb-md-0">
                             Vestibulinho LF {{ $calendar->year ?? '' }}
                         </h1>

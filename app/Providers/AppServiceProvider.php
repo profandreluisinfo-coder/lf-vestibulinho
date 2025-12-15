@@ -42,12 +42,7 @@ class AppServiceProvider extends ServiceProvider
             return $user->id === $faq->user_id && $user->role === 'admin';
         });
 
-        // Permitir que o autor edite a própria FAQ
-        Gate::define('update-faq', function (User $user, Faq $faq) {
-            return $user->id === $faq->user_id || $user->role === 'admin';
-        });
-
-        // 🔹 Torna variáveis globais acessíveis em todas as views
+        // Torna variáveis globais acessíveis em todas as views
         GlobalDataHelper::share();
 
         Paginator::useBootstrapFive();
