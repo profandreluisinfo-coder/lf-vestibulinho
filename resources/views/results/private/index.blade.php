@@ -135,6 +135,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/filters/results.js') }}"></script>
+    <script src="{{ asset('assets/filters/results/private.js') }}"></script>x
     <script src="{{ asset('assets/swa/ranking/results.js') }}"></script>
 @endpush

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/quick-access/styles.css') }}">
 @endpush
 
-@section('body-class', 'py-5')
+@section('has-footer', 'has-footer')
 
 @section('content')
 

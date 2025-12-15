@@ -7,10 +7,12 @@
 @section('page-title', config('app.name') . ' | Provas Anteriores')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/archives/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/exam/public/styles.css') }}">
 @endpush
 
 @section('body-class', 'bg-light')
+
+@section('has-footer', 'has-footer')
 
 @section('content')
 
@@ -20,7 +22,7 @@
         $recenteId = $files->first()->id ?? null;
     @endphp
 
-    <section id="provas-anteriores" class="bg-light my-5 py-5">
+    <section id="previous-exams" class="bg-light my-5 py-5">
 
         <div class="container">
 

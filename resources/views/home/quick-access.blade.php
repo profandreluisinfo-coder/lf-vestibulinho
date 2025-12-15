@@ -22,14 +22,14 @@
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
 
-                            @if (!$status_edital)
+                            @if ($status_edital)
                                 <a href="#" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdropNotice">
                                     <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
                                 </a>
                             @endif
 
-                            @if (!$calendar->isInscriptionOpen())
+                            @if ($calendar->isInscriptionOpen())
                                 <a href="{{ route('register') }}">
                                     <i class="bi bi-person-plus fs-1"></i> Registrar-se
                                 </a>
@@ -41,13 +41,13 @@
                                 </a>
                             @endif
 
-                            @if (!$settings->result)
+                            @if ($settings->result)
                                 <a href="{{ route('results') }}">
                                     <i class="bi bi-trophy fs-1"></i> Classificação
                                 </a>
                             @endif
 
-                            @if (!$calls)
+                            @if ($calls)
                                 <a href="{{ route('calls') }}">
                                     <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
                                 </a>

@@ -24,10 +24,19 @@
 }
 
 body {
-    /* padding-top: 60px; */
-    height: 100vh;
+    min-height: 100vh; /* Permite que o body cresça além da viewport */
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+}
+
+/* Aplica flexbox apenas em páginas com footer */
+body.has-footer {
+    display: flex;
+    flex-direction: column;
+}
+
+body.has-footer .footer {
+    margin-top: auto;
 }
 
 .navbar {
@@ -110,6 +119,7 @@ body {
 .hero-banner {
     position: relative;
     color: white;
+    margin-top: 2rem;
     padding: 4rem 0;
     overflow: hidden;
 
@@ -168,7 +178,6 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
-
 
 /* BOTÕES */
 .btn-primary {
@@ -244,7 +253,6 @@ body {
     height: 3px;
 }
 
-/* FOOTER */
 .footer {
     background-color: var(--primary-color);
     color: white;
