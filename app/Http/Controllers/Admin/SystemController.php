@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Call;
 use App\Models\User;
@@ -12,6 +12,7 @@ use App\Models\ExamResult;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
@@ -68,8 +69,6 @@ class SystemController extends Controller
 
             // Apaga todos os registros da tabela de settings
             Setting::truncate();
-
-
 
             // Apagar os dados de autenticação
             session()->flush();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Call;
 use App\Models\CallList;
@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendCallNotificationJob;
 use App\Models\Calendar;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 
 /**
@@ -26,29 +27,6 @@ use Illuminate\Support\Facades\DB;
  */
 class CallController extends Controller
 {
-    /**
-     * Obter todas as chamadas e seus respectivos dados: nº da chamada, data e hora, além do, nome do usuário e 
-     * o nº da sua inscrição.
-     * As informações são exibdas na página pública de chamadas do site.
-     * $calls é uma coleção agrupada
-     */
-    public function index()
-    {
-        // Obter todas as chamadas e seus respectivos dados
-        $calls = Call::with('callList', 'examResult.inscription.user')
-            ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
-            ->get()
-            ->groupBy(fn($call) => $call->callList->number)
-            ->sortKeys();
-
-        // verificar se 'calls' é uma coleção vazia
-        if ($calls->isEmpty()) {
-            return redirect()->route('home');
-        }
-
-        return view('calls.public.index', compact('calls'));
-    }
-
     /**
      * Renderiza a view para criar uma nova chamada
      *
@@ -195,7 +173,7 @@ class CallController extends Controller
             });
 
             return redirect()
-                ->route('callings.create')
+                ->route('callings.admin.create')
                 ->with('success', 'Chamada registrada com sucesso!');
         } catch (\Exception $e) {
             report($e);
@@ -231,7 +209,7 @@ class CallController extends Controller
     {
         $callList->delete();
 
-        return redirect()->route('callings.create')->with('success', 'Chamada excluída com sucesso!');
+        return redirect()->route('callings.admin.create')->with('success', 'Chamada excluída com sucesso!');
     }
 
     /**

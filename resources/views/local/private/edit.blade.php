@@ -13,7 +13,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form id="exam-location" action="{{ route('local.edit', $location->id) }}" method="POST" novalidate>
+            <form id="exam-location" action="{{ route('local.admin.edit', $location->id) }}" method="POST" novalidate>
                 @csrf
                 {{-- Nome --}}
                 <div class="form-floating mb-3 ">
@@ -79,7 +79,7 @@
                     <i class="bi bi-check-circle me-1"></i>Salvar
                 </button>
                 {{-- prettier-ignore --}}
-                <a href="{{ route('exam.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                <a href="{{ route('exam.admin.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
 
             </form>
 

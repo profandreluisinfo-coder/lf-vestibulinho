@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
-    Public\FaqController, AuthController, HomeController, Public\ArchiveController,
-    ResultController, CallController, CalendarController
+    AuthController,
+    Public\ArchiveController,
+    Public\CallController,
+    Public\FaqController,
+    HomeController,
+    Public\ResultController,
 };
 
 //
@@ -37,11 +41,8 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.public.index');
 
     // Resultados
-    Route::get('/resultado-final', [ResultController::class, 'index'])->name('results');
+    Route::get('/resultado-final', [ResultController::class, 'index'])->name('results.public.index');
 
     // Chamadas
-    Route::get('/chamadas', [CallController::class, 'index'])->name('calls');
-
-    // Calendário
-    Route::get('/calendario-completo', [CalendarController::class, 'list'])->name('calendary');
+    Route::get('/chamadas', [CallController::class, 'index'])->name('callings.admin.index');
 });

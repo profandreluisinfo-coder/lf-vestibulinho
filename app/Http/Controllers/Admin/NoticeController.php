@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class NoticeController extends Controller
 {
@@ -22,7 +23,7 @@ class NoticeController extends Controller
 
     public function create()
     {
-        return view('notice.create');
+        return view('notice.private.create');
     }
 
     public function store(Request $request)
@@ -59,7 +60,7 @@ class NoticeController extends Controller
 
     public function edit(Notice $notice)
     {
-        return view('notice.edit', compact('notice'));
+        return view('notice.private.edit', compact('notice'));
     }
 
     public function update(Request $request, Notice $notice)

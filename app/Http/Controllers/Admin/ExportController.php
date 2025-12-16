@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Inscription;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersWithInscriptionsExport;
 use App\Models\ExamResult;
+use App\Http\Controllers\Controller;
 
 class ExportController extends Controller
 {

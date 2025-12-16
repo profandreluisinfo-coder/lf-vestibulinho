@@ -66,11 +66,11 @@
                             class="dropdown-item-custom {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
                             Calendário
                         </a>
-                        <a href="{{ route('courses.index') }}"
+                        <a href="{{ route('courses.admin.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('courses.*') ? 'active' : '' }}">
                             Cursos
                         </a>
-                        <a href="{{ route('notice.index') }}"
+                        <a href="{{ route('notice.admin.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('notice.*') ? 'active' : '' }}">
                             Edital
                         </a>
@@ -137,20 +137,20 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
                     
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['local.index', 'exam.create', 'export.users', 'archive.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['local.admin.index', 'exam.admin.*', 'export.admin.users', 'archive.*']) ? 'show' : '' }}"
                         id="menuProvas">
-                        <a href="{{ route('local.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('local.index') ? 'active' : '' }}">
+                        <a href="{{ route('local.admin.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('local.admin.index') ? 'active' : '' }}">
                             Locais
                         </a>
-                        <a href="{{ route('exam.create') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('exam.create') ? 'active' : '' }}">
+                        <a href="{{ route('exam.admin.create') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('exam.admin.create') ? 'active' : '' }}">
                             Agendar
                         </a>
                         <a href="#"
                             id="exportLink"
-                            class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('export.users') }}')">
+                            class="dropdown-item-custom {{ request()->routeIs('export.admin.users') ? 'active' : '' }}"
+                            onclick="handleExport(event, '{{ route('export.admin.users') }}')">
                             Planilha de Notas
                         </a>
                         <a href="{{ route('archive.admin.index') }}"
@@ -166,13 +166,13 @@
                         <span>Resultados</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['import.results', 'ranking']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['import.admin.results', 'ranking']) ? 'show' : '' }}"
                         id="menuResultados">
-                        <a href="{{ route('import.results') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('import.results') ? 'active' : '' }}">
+                        <a href="{{ route('import.admin.results') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('import.admin.results') ? 'active' : '' }}">
                             Importar Notas
                         </a>
-                        <a href="{{ route('ranking') }}"
+                        <a href="{{ route('ranking.admin.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('ranking') ? 'active' : '' }}">
                             Classificação Geral
                         </a>
@@ -183,7 +183,7 @@
             <div class="menu-section">
                 <div class="menu-section-title">Matrícula</div>
                 <div class="menu-item">
-                    <a href="{{ route('callings.create') }}"
+                    <a href="{{ route('callings.admin.create') }}"
                         class="menu-link {{ request()->routeIs('callings.*') ? 'active' : '' }}">
                         <i class="bi bi-broadcast-pin"></i>
                         <span>Chamadas</span>
@@ -194,7 +194,7 @@
             <div class="menu-section">
                 <div class="menu-section-title">Sistema</div>
                 <div class="menu-item">
-                    <a href="{{ route('system.index') }}"
+                    <a href="{{ route('system.admin.index') }}"
                         class="menu-link {{ request()->routeIs('system.*') ? 'active' : '' }}">
                         <i class="bi bi-gear"></i>
                         <span>Configurações</span>
@@ -351,7 +351,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('ranking') }}" class="offcanvas-card">
+                        <a href="{{ route('ranking.admin.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fef3c7; color: #f59e0b;">
                                 <i class="bi bi-bar-chart-line"></i>
                             </div>
@@ -366,21 +366,21 @@
                 <h6 class="text-muted mb-3 text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Links Úteis
                 </h6>
                 <div class="list-group list-group-flush">
-                    <a href="{{ route('courses.index') }}"
+                    <a href="{{ route('courses.admin.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-book me-2"></i>Gerenciar Cursos
                     </a>
                     <a href="{{ route('faq.admin.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
-                    <a href="{{ route('exam.index') }}"
+                    <a href="{{ route('exam.admin.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
-                    <a href="{{ route('ranking') }}" class="list-group-item list-group-item-action border-0 px-0">
+                    <a href="{{ route('ranking.admin.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
-                    <a href="{{ route('callings.create') }}"
+                    <a href="{{ route('callings.admin.create') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula
                     </a>

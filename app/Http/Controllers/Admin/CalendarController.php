@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Calendar;
 use App\Models\Notice;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CalendarController extends Controller
 {
@@ -107,20 +108,5 @@ class CalendarController extends Controller
         //$calendar = Calendar::first() ?? new Calendar();
         
         return view('calendar.private.edit');
-    }
-    /**
-     * Lista as datas do vestibulinho no site público.
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function list()
-    {
-        $calendar = Calendar::first();
-
-        if (!$calendar) {
-            return redirect()->route('home');
-        }
-
-        return view('calendar.public.list', compact('calendar'));
     }
 }

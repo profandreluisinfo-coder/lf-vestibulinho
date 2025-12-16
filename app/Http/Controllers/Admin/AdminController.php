@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Calendar;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {    
@@ -70,6 +70,6 @@ class AdminController extends Controller
 
     public function login(): View
     {
-        return view('admin.login');
+        return view('admin.public.login');
     }
 }

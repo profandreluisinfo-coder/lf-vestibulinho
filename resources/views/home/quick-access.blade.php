@@ -42,13 +42,13 @@
                             @endif
 
                             @if ($settings->result)
-                                <a href="{{ route('results') }}">
+                                <a href="{{ route('results.public.index') }}">
                                     <i class="bi bi-trophy fs-1"></i> Classificação
                                 </a>
                             @endif
 
                             @if ($calls)
-                                <a href="{{ route('calls') }}">
+                                <a href="{{ route('callings.admin.index') }}">
                                     <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
                                 </a>
                             @endif

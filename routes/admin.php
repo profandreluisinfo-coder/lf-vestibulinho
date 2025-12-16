@@ -4,22 +4,21 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\{
-    Admin\FaqController,
-    CallController,
-    ExamController,
-    UserController,
-    AdminController,
-    CourseController,
-    ExportController,
-    ImportController,
-    NoticeController,
-    ReportController,
-    SystemController,
+    Admin\AdminController,
     Admin\ArchiveController,
-    RankingController,
-    CalendarController,
-    LocalController,
-    AnswerController
+    Admin\FaqController,
+    Admin\CalendarController,
+    Admin\CourseController,
+    Admin\CallController,
+    Admin\ExamController,
+    Admin\ExportController,
+    Admin\ImportController,
+    Admin\LocalController,
+    Admin\NoticeController,
+    Admin\RankingController,
+    Admin\ReportController,
+    Admin\SystemController,
+    UserController
 };
 
 //
@@ -33,9 +32,7 @@ Route::middleware(['guest'])->group(function () {
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
 
-    //
     // 🛠️ Área administrativa
-    //
 
     // Painel principal
     Route::prefix('admin')
@@ -48,11 +45,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 🎓 Cursos
     // ==========================
     Route::prefix('cursos') // OK
-        ->name('courses.')
+        ->name('courses.admin.')
         ->group(function () {
             Route::get('/', [CourseController::class, 'index'])->name('index');
             Route::get('/criar', [CourseController::class, 'create'])->name('create');
-            Route::post('/criar', [CourseController::class, 'store']);
+            Route::post('/salvar', [CourseController::class, 'store'])->name('store');
             Route::get('/editar/{course}', [CourseController::class, 'edit'])->name('edit');
             Route::post('/editar/{course}', [CourseController::class, 'update']);
             Route::delete('/excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
@@ -62,11 +59,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📄 Editais
     // ==========================
     Route::prefix('edital') // OK
-        ->name('notice.')
+        ->name('notice.admin.')
         ->group(function () {
             Route::get('/', [NoticeController::class, 'index'])->name('index');
             Route::get('/criar', [NoticeController::class, 'create'])->name('create');
-            Route::post('/criar', [NoticeController::class, 'store']);
+            Route::post('/salvar', [NoticeController::class, 'store'])->name('store');
             Route::get('/editar/{notice}', [NoticeController::class, 'edit'])->name('edit');
             Route::post('/editar/{notice}', [NoticeController::class, 'update']);
             Route::delete('/excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
@@ -92,7 +89,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📤 Exportar Dados
     // ==========================
     Route::prefix('exportar') // OK
-        ->name('export.')
+        ->name('export.admin.')
         ->group(function () {
             Route::get('/candidatos', [ExportController::class, 'exportUsers'])->name('users');
         });
@@ -101,7 +98,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📥 Importar Dados
     // ==========================
     Route::prefix('importar') // OK
-        ->name('import.')
+        ->name('import.admin.')
         ->group(function () {
             Route::get('/notas', [ImportController::class, 'index'])->name('results');
             Route::post('/notas', [ImportController::class, 'import']);
@@ -111,7 +108,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // ⚙️ Configurações do Sistema
     // ==========================
     Route::prefix('sistema') // OK
-        ->name('system.')
+        ->name('system.admin.')
         ->group(function () {
             Route::get('/', [SystemController::class, 'index'])->name('index');
             Route::get('/redefinir-dados', [SystemController::class, 'reset'])->name('reset');
@@ -154,25 +151,25 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📊 Relatórios
     // ==========================
     Route::prefix('relatorios') // OK
-        ->name('report.')
+        ->name('report.admin.')
         ->group(function () {
             // Relatórios
-            Route::get('/alocacao', [ReportController::class, 'exportAllocationToPdf'])->name('exportAllocationToPdf');
-            Route::get('/salas', [ReportController::class, 'exportRoomsToPdf'])->name('exportRoomsToPdf');
-            Route::get('/assinaturas', [ReportController::class, 'exportSignaturesSheetsToPdf'])->name('exportSignaturesSheetsToPdf');
+            Route::get('/alocacao', [ReportController::class, 'exportAllocationToPdf'])->name('allocation');
+            Route::get('/salas', [ReportController::class, 'exportRoomsToPdf'])->name('rooms');
+            Route::get('/assinaturas', [ReportController::class, 'exportSignaturesSheetsToPdf'])->name('signs');
         });
 
     // ==========================
     // 🏆 Ranking de Provas
     // ==========================
-    Route::get('/notas-e-classificacao', [RankingController::class, 'index'])->name('ranking');
+    Route::get('/notas-e-classificacao', [RankingController::class, 'index'])->name('ranking.admin.index');
     Route::post('/liberar-classificacao', [RankingController::class, 'setAccessToResult'])->name('setAccessToResult');
 
     // ==========================
     // 📞 Chamadas
     // ==========================
     Route::prefix('chamadas') // OK
-        ->name('callings.')
+        ->name('callings.admin.')
         ->group(function () {
             Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('show');
             Route::get('/criar', [CallController::class, 'create'])->name('create');
@@ -187,11 +184,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 🧾 Local
     // ==========================
     Route::prefix('local')
-        ->name('local.')
+        ->name('local.admin.')
         ->group(function () {
             Route::get('/', [LocalController::class, 'index'])->name('index');
             Route::get('/criar', [LocalController::class, 'create'])->name('create');
-            Route::post('/criar', [LocalController::class, 'store']);
+            Route::post('/salvar', [LocalController::class, 'store'])->name('store');
             Route::get('/editar/{location}', [LocalController::class, 'edit'])->name('edit');
             Route::post('/editar/{location}', [LocalController::class, 'update']);
             Route::delete('/excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
@@ -200,24 +197,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 🧾 Provas
     // ==========================
     Route::prefix('prova') // OK
-        ->name('exam.')
+        ->name('exam.admin.')
         ->group(function () {
             Route::get('/salas', [ExamController::class, 'index'])->name('index');
             Route::get('/agendar', [ExamController::class, 'create'])->name('create');
-            Route::post('/agendar', [ExamController::class, 'store']);
-            Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access.location');
-        });        
-    // ==========================
-    // 🧾 Gabaritos
-    // ==========================
-    Route::prefix('gabaritos') // OK
-        ->name('answer.')
-        ->group(function () {
-            Route::get('/', [AnswerController::class, 'index'])->name('index');
-            Route::get('/criar', [AnswerController::class, 'create'])->name('create');
-            Route::post('/criar', [AnswerController::class, 'store']);
-            // Route::get('/editar/{answer}', [AnswerController::class, 'edit'])->name('edit');
-            // Route::post('/editar/{answer}', [AnswerController::class, 'update']);
-            Route::delete('/excluir/{answer}', [AnswerController::class, 'destroy'])->name('destroy');
+            Route::post('/salvar', [ExamController::class, 'store'])->name('store');
+            Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access');
         });
 }); // Fim Middleware de autenticado

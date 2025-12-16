@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CourseController extends Controller
 {
@@ -15,10 +16,7 @@ class CourseController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        // Passar para a view
-        view()->share('courses', $courses);
-
-        return view('courses.private.index');
+        return view('courses.private.index', compact('courses'));
     }
 
     /**
@@ -54,7 +52,7 @@ class CourseController extends Controller
         $course->vacancies = $request->vacancies;
         $course->save();
 
-        return redirect()->route('courses.index')->with('success', 'Curso registrado com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso registrado com sucesso!');
     }
 
     /**
@@ -104,7 +102,7 @@ class CourseController extends Controller
         $course->vacancies = $request->vacancies;
         $course->save();
 
-        return redirect()->route('courses.index')->with('success', 'Curso editado com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso editado com sucesso!');
     }
 
     /**
@@ -118,6 +116,6 @@ class CourseController extends Controller
         // Excluir o curso
         $course->delete();
 
-        return redirect()->route('courses.index')->with('success', 'Curso excluido com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso excluido com sucesso!');
     }
 }

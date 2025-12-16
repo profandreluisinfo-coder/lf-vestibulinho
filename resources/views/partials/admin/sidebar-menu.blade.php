@@ -15,11 +15,11 @@
         </button>
         <div class="collapse ps-3" id="menuVestibulinho">
             <a href="{{ route('calendar.index') }}" class="nav-link text-light">Calendário</a>
-            <a href="{{ route('courses.index') }}" class="nav-link text-light">Cursos</a>
-            <a href="{{ route('notice.index') }}" class="nav-link text-light">Edital</a>
+            <a href="{{ route('courses.admin.index') }}" class="nav-link text-light">Cursos</a>
+            <a href="{{ route('notice.admin.index') }}" class="nav-link text-light">Edital</a>
             <a href="{{ route('faq.admin.index') }}" class="nav-link text-light">Registrar FAQ</a>
             <a href="{{ route('archive.admin.index') }}" class="nav-link text-light">Acervo de Provas</a>
-            <a href="{{ route('system.index') }}" class="nav-link text-light">Redefinir Dados</a>
+            <a href="{{ route('system.admin.index') }}" class="nav-link text-light">Redefinir Dados</a>
         </div>
     </li>
 
@@ -57,9 +57,9 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuProvas">
-            <a href="{{ route('exam.index') }}" class="nav-link text-light">Locais de Prova</a>
-            <a href="{{ route('exam.create') }}" class="nav-link text-light">Agendar Prova</a>
-            <a href="{{ route('export.users') }}" class="nav-link text-light">Gerar Planilha de Notas</a>
+            <a href="{{ route('exam.admin.index') }}" class="nav-link text-light">Locais de Prova</a>
+            <a href="{{ route('exam.admin.index') }}" class="nav-link text-light">Agendar Prova</a>
+            <a href="{{ route('export.admin.users') }}" class="nav-link text-light">Gerar Planilha de Notas</a>
         </div>
     </li>
 
@@ -71,9 +71,9 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuResultados">
-            <a href="{{ route('import.results') }}" class="nav-link text-light">Importar Notas</a>
-            <a href="{{ route('ranking') }}" class="nav-link text-light">Classificação Geral</a>
-            <a href="{{ route('callings.create') }}" class="nav-link text-light">Chamadas</a>
+            <a href="{{ route('import.admin.results') }}" class="nav-link text-light">Importar Notas</a>
+            <a href="{{ route('ranking.admin.index') }}" class="nav-link text-light">Classificação Geral</a>
+            <a href="{{ route('callings.admin.create') }}" class="nav-link text-light">Chamadas</a>
         </div>
     </li>
 

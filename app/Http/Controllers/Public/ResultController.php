@@ -1,23 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Public;
 
 use App\Models\Course;
+use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\ExamResult;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class RankingController extends Controller
+class ResultController extends Controller
 {
-    /**
-     * Mostra a lista de resultados na página de classificação do painel administrativo com base na nota de corte
-     *
-     * @return \Illuminate\View\View
-     */
+/**
+ * Mostra a lista de resultados na página de resultados do site com base na nota de corte
+ *
+ * @param int $limit Número de vagas que uma nota de corte tem
+ * @param ExamResult[] $results Resultados da nota de corte com base na nota de corte
+ * @param int $cutoffScore Pontuação de corte para decidir se uma nota é de corte ou não
+ *
+ * @return \Illuminate\View\View
+ */
     public function index()
     {
         // verifica se o  acesso ao resultado foi liberado
-        $status = Setting::first() ?? new Setting();
+        // $settings = Setting::first() ?? new Setting();
+        // $status = $settings->result;
+
+        // se o acesso ao resultado nao foi liberado, redireciona para a home
+        if (!Setting::first()->result) {
+            return redirect()->route('home');
+        }
+
+        // Busca pelo arquivo do edital em 'notices'
+        $notice = Notice::all()->first();
 
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
@@ -32,7 +46,6 @@ class RankingController extends Controller
                 'users.name',
                 'users.social_name',
                 'users.birth',
-                'users.pne',
                 'exam_results.score',
                 'exam_results.ranking'
             )
@@ -47,29 +60,12 @@ class RankingController extends Controller
 
          // envia pra view
         view()->share([
+            'notice' => $notice,
             'results' => $results,
-            'status' => $status,
             'limit' => $limit,
             'cutoffScore' => $cutoffScore,
         ]);
 
-        return view('results.private.index');
-    }
-
-    public function setAccessToResult(Request $request)
-    {
-        $settings = [
-            'result' => $request->filled('result')
-        ];
-
-        Setting::updateOrCreate(['id' => 1], [
-            'result' => $settings['result']
-        ]);
-
-        if (Setting::first()->result) {
-            return redirect()->back()->with('success', 'Acesso ao resultado liberado com sucesso!');
-        }
-
-        return redirect()->back()->with('success', 'Acesso ao resultado bloqueado com sucesso!');
+        return view('results.public.index');
     }
 }

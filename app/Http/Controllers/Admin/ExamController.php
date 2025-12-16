@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Setting;
 use Illuminate\View\View;
@@ -8,11 +8,11 @@ use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\ExamLocation;
 use Illuminate\Http\Request;
-// use App\Services\MailService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Jobs\SendExamLocationMailJob;
+// use Illuminate\Support\Facades\Log;
+// use App\Jobs\SendExamLocationMailJob;
 use App\Services\ExamAllocationService;
+use App\Http\Controllers\Controller;
 
 class ExamController extends Controller
 {
@@ -174,7 +174,7 @@ class ExamController extends Controller
 
         $service->allocate($data);
 
-        return redirect()->route('exam.create')->with(
+        return redirect()->route('exam.admin.index')->with(
             'success',
             'Prova agendada com sucesso!'
         );

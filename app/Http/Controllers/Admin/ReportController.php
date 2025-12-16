@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\ExamResult;
-// use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\ExamReportService;
+use App\Http\Controllers\Controller;
 
 class ReportController extends Controller
 {
