@@ -8,7 +8,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-card-list me-2"></i>Candidatos por Sala</h5>
-            <a href="{{ route('exam.admin.create') }}" class="btn btn-outline-primary btn-sm">
+            <a href="{{ route('exam.create') }}" class="btn btn-outline-primary btn-sm">
                 <i class="bi bi-arrow-left me-1"></i> Voltar
             </a>
         </div>

@@ -58,7 +58,7 @@
                                 <div class="d-flex flex-wrap justify-content-center gap-2">
                                     <!-- Botão de excluir -->
                                     <form id="delete-form-{{ $callList->id }}"
-                                        action="{{ route('callings.admin.destroy', $callList->id) }}" method="POST"
+                                        action="{{ route('callings.destroy', $callList->id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -78,7 +78,7 @@
                                     <!-- Botão de finalizar -->
                                     @if ($callList->status === 'pending')
                                         <form id="finalize-form-{{ $callList->id }}"
-                                            action="{{ route('callings.admin.finalize', $callList->id) }}" method="POST"
+                                            action="{{ route('callings.finalize', $callList->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('PATCH')
@@ -95,7 +95,7 @@
                                             <i class="bi bi-file-earmark-excel"></i> Excel
                                         </a> --}}
 
-                                        <a href="{{ route('callings.admin.pdf', $callList->number) }}"
+                                        <a href="{{ route('callings.pdf', $callList->number) }}"
                                             class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
                                             <i class="bi bi-file-earmark-pdf"></i>
                                         </a>
@@ -176,7 +176,7 @@
                             $number_of_pcd = App\Models\Call::countPcdInLastCall();
                         @endphp
 
-                        <form action="{{ route('callings.admin.store') }}" method="POST" class="p-3" id="setNewCallForm">
+                        <form action="{{ route('callings.store') }}" method="POST" class="p-3" id="setNewCallForm">
                             @csrf
 
                             <div class="mb-3">

@@ -34,12 +34,12 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Editar -->
-                                    <a href="{{ route('courses.admin.edit', $course->id) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square" title="Editar"></i>
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-course-form-{{ $course->id }}"
-                                        action="{{ route('courses.admin.destroy', $course->id) }}" method="POST" class="d-none">
+                                        action="{{ route('courses.destroy', $course->id) }}" method="POST" class="d-none">
                                         @csrf
                                         @method('DELETE')
                                     </form>
@@ -80,7 +80,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <form id="courseForm" action="{{ route('courses.admin.store') }}" method="POST">
+                                <form id="courseForm" action="{{ route('courses.store') }}" method="POST">
                                     @csrf
                                     <div class="form-group mb-3">
                                         <label for="name" class="form-label required">Nome:</label>

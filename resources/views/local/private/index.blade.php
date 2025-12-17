@@ -38,7 +38,7 @@
                             <div class="d-flex gap-2 justify-content-center">
                                 <!-- Excluir -->
                                 <form id="delete-location-form-{{ $location->id }}"
-                                    action="{{ route('local.admin.destroy', $location->id) }}" method="POST"
+                                    action="{{ route('local.destroy', $location->id) }}" method="POST"
                                     style="display:none;">
                                     @csrf
                                     @method('DELETE')
@@ -51,7 +51,7 @@
                                 </button>
                                 <!-- Editar -->
                                 <button type="button" class="btn btn-sm btn-primary" title="Editar">
-                                    <a href="{{ route('local.admin.edit', $location->id) }}"
+                                    <a href="{{ route('local.edit', $location->id) }}"
                                         class="text-white text-decoration-none">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -87,7 +87,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             
-                            <form id="exam-location" action="{{ route('local.admin.store') }}" method="POST"
+                            <form id="exam-location" action="{{ route('local.store') }}" method="POST"
                                 novalidate>
                                 @csrf
 

@@ -42,7 +42,7 @@
                                 
                                 {{-- Botão de publicar (alterar status) --}}
                                 <form id="publish-notice-form-{{ $notice->id }}"
-                                    action="{{ route('notice.admin.publish', $notice->id) }}" method="POST" class="d-none">
+                                    action="{{ route('notice.publish', $notice->id) }}" method="POST" class="d-none">
                                     @csrf
                                     @method('PUT')
                                 </form>
@@ -55,7 +55,7 @@
 
                                 {{-- Botão de excluir --}}
                                 <form id="delete-notice-form-{{ $notice->id }}"
-                                    action="{{ route('notice.admin.destroy', $notice->id) }}" method="POST" class="d-none">
+                                    action="{{ route('notice.destroy', $notice->id) }}" method="POST" class="d-none">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -98,7 +98,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <form id="form-file" action="{{ route('notice.admin.store') }}" method="POST"
+                                <form id="form-file" action="{{ route('notice.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
 

@@ -1,8 +1,3 @@
-@php
-    $status_edital  = $notice->status;
-    $edital         = $notice->file;
-@endphp
-
 <section id="quick-access">
     <div class="container">
         <div class="row">
@@ -22,9 +17,8 @@
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
 
-                            @if ($status_edital)
-                                <a href="#" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdropNotice">
+                            @if ($notice->status)
+                                <a href="{{ asset('storage/' . $notice->file) }}">
                                     <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
                                 </a>
                             @endif
@@ -48,7 +42,7 @@
                             @endif
 
                             @if ($calls)
-                                <a href="{{ route('callings.admin.index') }}">
+                                <a href="{{ route('callings.index') }}">
                                     <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
                                 </a>
                             @endif

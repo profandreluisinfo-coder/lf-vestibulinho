@@ -47,7 +47,7 @@
                             </ul>
                         </div>
                         <div class="d-flex gap-2 flex-wrap mt-3">
-                            <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary">
+                            <a href="{{ route('candidate.card.pdf') }}" class="btn btn-outline-primary">
                                 <i class="bi bi-download"></i> Baixar PDF
                             </a>
                         </div>

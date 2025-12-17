@@ -27,54 +27,6 @@ use App\Http\Requests\CertificateRequest;
 class InscriptionController extends Controller
 {
     /**
-     * Exibe a página com os dados da inscrição do usuário atual.
-     *
-     * Caso o usuário não possua inscrição ativa, redireciona para a página
-     * com um aviso.
-     *
-     * Carrega os dados necessários para a exibição correta da página.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function profile()
-    {
-        $user = auth()->user();
-
-        // Segurança extra caso acessem direto sem ter inscrição
-        if (!$user->inscription()->exists()) {
-            return redirect()
-                ->route('dashboard.index')
-                ->with('warning', 'Você ainda não possui inscrição ativa.');
-        }
-
-        // Carrega tudo que o painel precisa
-        $user->load([
-            'inscription.exam_result.examLocation',
-            'inscription.exam_result.completedCall',
-        ]);
-
-        $inscription  = $user->inscription;
-        $examResult   = $inscription->exam_result;
-        $examLocation = $examResult?->examLocation;
-
-        /*$exam = $examLocation ? [
-            'location_name' => $examLocation->name,
-            'address'       => $examLocation->address,
-            'room_number'   => $examResult->room_number,
-            'exam_date'     => $examResult->exam_date,
-            'exam_time'     => $examResult->exam_time,
-            'user_id'       => $user->id,
-            'pne'           => $user->pne,
-        ] : null; */
-        
-        $exam = $examResult; // O EXAM REAL — o model completo
-
-        $call = $examResult?->completedCall;
-
-        return view('inscriptions.private.profile', compact('user', 'exam', 'examResult', 'call'));
-    }
-
-    /**
      * Exibe a lista de candidatos com inscrição ativa.
      *
      * @return View
@@ -584,7 +536,7 @@ class InscriptionController extends Controller
         try {
             $inscriptionService->store();
 
-            return redirect()->route('inscription.profile')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('candidate.profile')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
             Log::error('Erro no banco: ' . $e->getMessage());
 

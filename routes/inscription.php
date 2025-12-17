@@ -14,13 +14,7 @@ Route::middleware(['auth'])->group(function () {
 
     // 📝 Processo de inscrição
     Route::middleware([NotAdmin::class])->group(function () {
-
-        // Area do candidato: exibe dashboard com as informações de como fazer a inscrição
-        Route::get('/dashboard', [DashController::class, 'index'])->name('dashboard.index')->middleware([NoInscription::class]);
         
-        // Área do candidato: exibe o perfil da inscrição existente
-        Route::get('/area-do-candidato', [InscriptionController::class, 'profile'])->name('inscription.profile')->middleware([WithInscription::class]); // OK    
-
         // Formulário de inscrição (sem inscrição existente)
         Route::prefix('inscricao')
             ->name('step.')

@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-require 'public.php';
-require 'general.php';
+require 'app.php';
+require 'guest.php';
+require 'auth.php';
+require 'dash.php';
 require 'user.php';
 require 'inscription.php';
 require 'admin.php';

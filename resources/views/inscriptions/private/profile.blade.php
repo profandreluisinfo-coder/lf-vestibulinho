@@ -552,7 +552,7 @@
                             </table>
                         </div>
                         <div class="d-flex gap-2 flex-wrap mt-3">
-                            <a href="{{ route('user.card.pdf') }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('candidate.card.pdf') }}" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-download"></i> Baixar PDF
                             </a>
                         </div>
@@ -604,7 +604,7 @@
                     </div>
 
                     <div class="mt-4 text-center">
-                        <a href="{{ route('user.result.pdf') }}" class="btn btn-outline-primary me-2">
+                        <a href="{{ route('candidate.result.pdf') }}" class="btn btn-outline-primary me-2">
                             <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
                         </a>
                     </div>

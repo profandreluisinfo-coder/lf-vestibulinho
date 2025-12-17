@@ -82,7 +82,7 @@
                 </div>
 
                 <form id="import-results" class="mb-3"
-                    action="{{ route('import.admin.results') }}"
+                    action="{{ route('import.results') }}"
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf
@@ -121,7 +121,7 @@
                         <i class="bi bi-check-circle me-2"></i>
                         {{ $count }} notas importadas com sucesso! Clique no botão abaixo para ver os resultados.
                     </small>
-                    <a href="{{ route('ranking.admin.index') }}" class="btn btn-success btn-sm mt-2">
+                    <a href="{{ route('ranking.index') }}" class="btn btn-success btn-sm mt-2">
                         <i class="bi bi-check-circle me-2"></i> Ver Resultados
                     </a>
                 @endif

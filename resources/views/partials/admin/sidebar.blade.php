@@ -1,7 +1,7 @@
 {{-- === SIDEBAR (DESKTOP) === --}}
 <nav class="sidebar d-none d-lg-flex flex-column p-3">
     <div class="text-center mb-4">
-        <a href="{{ route('admin.painel') }}" class="d-flex flex-column align-items-center text-decoration-none text-light">
+        <a href="{{ route('control.panel') }}" class="d-flex flex-column align-items-center text-decoration-none text-light">
             <img src="{{ asset('assets/img/logo.webp') }}" width="60" class="mb-2" alt="Logo">
             <h5 class="m-0 fw-semibold text-white">{{ config('app.name') }} {{ $calendar?->year }}</h5>
         </a>
