@@ -9,8 +9,6 @@ use App\Models\Inscription;
 use App\Models\ExamLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Log;
-// use App\Jobs\SendExamLocationMailJob;
 use App\Services\ExamAllocationService;
 use App\Http\Controllers\Controller;
 
@@ -178,49 +176,5 @@ class ExamController extends Controller
             'success',
             'Prova agendada com sucesso!'
         );
-    }
-
-    /**
-     * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
-     *
-     * Caso o acesso seja liberado (location = true),
-     * cria um Job para cada candidato com local de prova definido.
-     */
-    public function setAccessToLocation(Request $request)
-    {
-        // Define se acesso foi liberado
-        $locationAccess = $request->filled('location');
-
-        // Atualiza a configuração
-        Setting::updateOrCreate(
-            ['id' => 1],
-            ['location' => $locationAccess]
-        );
-
-        // Se bloqueou, simplesmente retorna
-        if (!$locationAccess) {
-            return redirect()->back()->with('success', 'Acesso ao local bloqueado com sucesso!');
-        }
-
-        // Se liberou, também não enviamos nada aqui.
-        // Apenas permitimos que o CRON diurno processe o envio
-        // de forma segura e em lotes (300/dia, por exemplo).
-
-        return redirect()->back()->with(
-            'success',
-            'Acesso ao Local liberado! Os e-mails serão enviados automaticamente pelo sistema.'
-        );
-    }
-
-    /**
-     * Converte uma string para maiúsculas, considerando a codificação UTF-8.
-     *
-     * @param string $string String a ser convertida.
-     *
-     * @return string String convertida para maiúsculas.
-     */
-    private function stringToUpper($string)
-    {
-        return mb_strtoupper($string, 'UTF-8'); // Converter para maiúsculas e UTF-8 para evitar problemas com acentuações e caracteres especiais.
     }
 }

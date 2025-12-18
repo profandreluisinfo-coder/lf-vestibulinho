@@ -15,8 +15,7 @@ use App\Http\Controllers\App\{
     LocalController,
     NoticeController,
     ReportController,
-    ResultController,
-    SystemController,
+    ResultController
 };
 
 // 🔒 Rotas que exigem login
@@ -87,16 +86,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // ⚙️ Configurações do Sistema
-    // ==========================
-    Route::prefix('sistema') // OK
-        ->name('system.')
-        ->group(function () {
-            Route::get('/', [SystemController::class, 'index'])->name('index');
-            Route::get('/redefinir-dados', [SystemController::class, 'reset'])->name('reset');
-        });
-
-    // ==========================
     // ❓ Perguntas Frequentes (FAQ)
     // ==========================
     Route::prefix('faq') // OK
@@ -121,7 +110,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
             Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
         });
-
 
     // ==========================
     // 📊 Relatórios
@@ -172,7 +160,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::get('/salas', [ExamController::class, 'index'])->name('index');
             Route::get('/agendar', [ExamController::class, 'create'])->name('create');
             Route::post('/salvar', [ExamController::class, 'store'])->name('store');
-            Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access');
         });
 
     // ==========================
@@ -182,6 +169,5 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('result.')
         ->group(function () {
             Route::get('/notas-e-classificacao', [ResultController::class, 'index'])->name('index');
-            Route::post('/liberar-acesso', [ResultController::class, 'freeAccess'])->name('free');
         });
 });

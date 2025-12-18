@@ -15,7 +15,7 @@
         @if ($results?->isNotEmpty())
             <div class="row">
                 <div class="col mx-auto">
-                    <form id="result-access-form" class="mb-3" action="{{ route('result.free') }}" method="POST">
+                    <form id="result-access-form" class="mb-3" action="{{ route('system.result') }}" method="POST">
                         @csrf
                         <div class="form-check form-switch mt-3">
                             <input class="form-check-input" type="checkbox" id="result" name="result"

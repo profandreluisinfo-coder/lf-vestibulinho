@@ -8,6 +8,7 @@ require 'auth.php';
 require 'dash.php';
 require 'user.php';
 require 'inscription.php';
+require 'system.php';
 require 'admin.php';
 
 // ==============

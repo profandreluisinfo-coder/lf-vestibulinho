@@ -19,9 +19,7 @@
             <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Locais de Prova</caption>
             <thead class="table-success text-center">
                 <tr>
-                    {{-- <th scope="col">#</th> --}}
                     <th scope="col">Local</th>
-                    {{-- <th scope="col">Endereço</th> --}}
                     <th scope="col">Salas Disponíveis</th>
                     <th scope="col">Ações</th>
                 </tr>
@@ -32,7 +30,6 @@
                         <th scope="row">
                             {{ $location->name }}
                         </th>
-                        {{-- <td>{{ $location->address }}</td> --}}
                         <td>{{ $location->rooms_available }}</td>
                         <td>
                             <div class="d-flex gap-2 justify-content-center">

@@ -422,7 +422,7 @@
     
     {{-- Scripts --}}
     <script src="{{ asset('assets/auth/change-password.js') }}"></script>
-    <script src="{{ asset('assets/swa/alerts-js') }}"></script>
+    <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
     

@@ -101,14 +101,14 @@
                 {{-- Card: Acesso aos Locais de Prova --}}
                 <div class="col-12 col-md-4">
 
-                    <div class="card shadow h-100" style="background-color: #ffffe6">                        
+                    <div class="card shadow h-100" style="background-color: #ffffe6">
                         <div class="card-body">
 
                             <h5 class="card-title mb-3">
                                 <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                             </h5>
 
-                            <form id="location-access-form" action="{{ route('exam.access') }}" method="POST">
+                            <form id="location-access-form" action="{{ route('system.location') }}" method="POST">
                                 @csrf
 
                                 <div class="form-check form-switch mb-3">
@@ -266,6 +266,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/schedule/create.js') }}"></script>
-    <script src="{{ asset('assets/swa/locations/seetings.js') }}"></script>
+    <script src="{{ asset('assets/swa/locations/settings.js') }}"></script>
     <script src="{{ asset('assets/interactions/popover.js') }}"></script>
 @endpush

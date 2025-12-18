@@ -22,7 +22,9 @@ class LoginController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        if (!Calendar::first()->hasInscriptionStarted()) {
+        $calendar = Calendar::first() ?? new Calendar();
+        
+        if (!$calendar->hasInscriptionStarted()) {
             return redirect()->route('home');
         }
 

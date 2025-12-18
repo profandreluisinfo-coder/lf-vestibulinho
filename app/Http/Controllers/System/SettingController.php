@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\App;
+namespace App\Http\Controllers\System;
 
 use App\Models\Call;
 use App\Models\User;
+use App\Models\Course;
 use App\Models\Notice;
+use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\CallList;
-use App\Models\Course;
+use Illuminate\View\View;
 use App\Models\ExamResult;
-use App\Models\Setting;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 
-class SystemController extends Controller
+class SettingController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('system.admin.index');
     }
 
-    public function reset()
+    public function reset(): JsonResponse
     {
         try {
             // Garante que só admin possa resetar o sistema
@@ -91,5 +94,54 @@ class SystemController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
+     *
+     * Caso o acesso seja liberado (location = true),
+     * cria um Job para cada candidato com local de prova definido.
+     */
+    public function location(Request $request)
+    {
+        // Define se acesso foi liberado
+        $status = $request->filled('location');
+
+        // Atualiza a configuração
+        Setting::updateOrCreate(
+            ['id' => 1],
+            ['location' => $status]
+        );
+
+        // Se bloqueou, simplesmente retorna
+        if (!$status) {
+            return redirect()->back()->with('success', 'Acesso ao local bloqueado com sucesso!');
+        }
+
+        // Se liberou, também não enviamos nada aqui.
+        // Apenas permitimos que o CRON diurno processe o envio
+        // de forma segura e em lotes (300/dia, por exemplo).
+
+        return redirect()->back()->with(
+            'success',
+            'Acesso ao Local liberado! Os e-mails serão enviados automaticamente pelo sistema.'
+        );
+    }
+
+    public function result(Request $request)
+    {
+        $settings = [
+            'result' => $request->filled('result')
+        ];
+
+        Setting::updateOrCreate(['id' => 1], [
+            'result' => $settings['result']
+        ]);
+
+        if (Setting::first()->result) {
+            return redirect()->back()->with('success', 'Acesso ao resultado liberado com sucesso!');
+        }
+
+        return redirect()->back()->with('success', 'Acesso ao resultado bloqueado com sucesso!');
     }
 }

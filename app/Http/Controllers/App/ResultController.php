@@ -56,22 +56,5 @@ class ResultController extends Controller
 
         return view('results.admin.index');
     }
-
-    public function freeAccess(Request $request)
-    {
-        $settings = [
-            'result' => $request->filled('result')
-        ];
-
-        Setting::updateOrCreate(['id' => 1], [
-            'result' => $settings['result']
-        ]);
-
-        if (Setting::first()->result) {
-            return redirect()->back()->with('success', 'Acesso ao resultado liberado com sucesso!');
-        }
-
-        return redirect()->back()->with('success', 'Acesso ao resultado bloqueado com sucesso!');
-    }
-        
+    
 }
