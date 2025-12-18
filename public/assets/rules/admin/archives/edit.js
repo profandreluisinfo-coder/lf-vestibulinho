@@ -14,8 +14,8 @@ $('#form-file-edit').validate({
     },
     messages: {
         year: {
-            required: 'Ano em que a prova foi realizada',
-            number: 'Ano em que a prova foi realizada'
+            required: 'Ano de referência da prova',
+            number: 'Ano de referência da prova'
         },
         file: {
             required: 'Arquivo relacionado',

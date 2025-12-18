@@ -90,14 +90,8 @@
                                         $isTieClassified = !$isDirectClassified && $result->score == $cutoffScore;
                                         $isClassified = $isDirectClassified || $isTieClassified;
 
-                                        // Define a cor da linha conforme a situação
-                                        $rowClass = $isDirectClassified
-                                            ? 'table-success'
-                                            : ($isTieClassified
-                                                ? 'table-warning'
-                                                : 'table-light');
                                     @endphp
-                                    <tr class="{{ $rowClass }}"
+                                    <tr
                                         data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}"
                                         data-pcd="{{ $result->pne ? 'pcd' : 'nao' }}">
                                         <th scope="col">{{ $result->ranking }}º</th>

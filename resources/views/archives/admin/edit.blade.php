@@ -22,7 +22,7 @@
                         <input type="text" name="year" class="form-control @error('year') is-invalid @enderror"
                             id="year"
                             placeholder="Ano em que a prova foi realizada" value="{{ $archive->year }}">
-                        <label for="year" class="form-label required">Ano em que a prova foi aplicada</label>
+                        <label for="year" class="form-label required">Ano de referência da prova:</label>
                         @error('year')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -35,7 +35,7 @@
                         <input type="file" name="file" class="form-control @error('file') is-invalid @enderror"
                             id="file"
                             placeholder="Endereço">
-                        <label for="file" class="form-label required">Arquivo relacionado</label>
+                        <label for="file" class="form-label required">Arquivo relacionado à prova:</label>
                         @error('file')
                             <div class="invalid-feedback">
                                 {{ $message }}

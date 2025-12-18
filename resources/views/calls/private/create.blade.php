@@ -29,6 +29,35 @@
 
             @if ($callLists->isNotEmpty())
 
+            <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
+                <i class="bi bi-bar-chart-fill me-2"></i> Convocados por Curso
+            </button>
+
+            <!-- The Modal -->
+            <div class="modal" id="myModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Convocados por Curso
+                            </h5>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <canvas id="convocadosChart" height="100"></canvas>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-2"></i>Fechar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             <table class="table table-striped freezed-table align-middle">
                 <thead>
                     <tr class="table-success">
@@ -56,6 +85,7 @@
                             </td> <!-- Status da chamada -->
                             <td>
                                 <div class="d-flex flex-wrap justify-content-center gap-2">
+                                    
                                     <!-- Botão de excluir -->
                                     <form id="delete-form-{{ $callList->id }}"
                                         action="{{ route('callings.destroy', $callList->id) }}" method="POST"
@@ -246,38 +276,7 @@
         </div>
     </div>
 
-    @if (!$callLists->isEmpty())
-
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
-            <i class="bi bi-bar-chart-fill me-2"></i> Relatório
-        </button>
-
-        <!-- The Modal -->
-        <div class="modal" id="myModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Convocados por Curso
-                        </h5>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <canvas id="convocadosChart" height="100"></canvas>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i class="bi bi-x-circle me-2"></i>Fechar</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    @endif
+    
 
     </div>
 

@@ -21,6 +21,20 @@
                 style="width: 0%">0%</div>
         </div>
 
+        @php
+            $count = \App\Models\ExamResult::count('ranking');
+        @endphp
+        @if ($count > 0)
+        <div class="d-flex flex-row align-items-center mb-3">
+            <small class="text-success fw-semibold">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ $count }} notas importadas com sucesso! Clique no <a href="{{ route('ranking.index') }}">
+                aqui
+            </a> para ver os resultados.
+            </small>
+        </div>
+        @endif
+
         {{-- Card Principal --}}
         <div class="card shadow-sm">
             <div class="card-header bg-light">
@@ -110,21 +124,6 @@
 
                 </form>
 
-            </div>
-
-            <div class="card-footer d-flex flex-column">
-                @php
-                    $count = \App\Models\ExamResult::count('ranking');
-                @endphp
-                @if ($count > 0)
-                    <small class="text-success fw-semibold">
-                        <i class="bi bi-check-circle me-2"></i>
-                        {{ $count }} notas importadas com sucesso! Clique no botão abaixo para ver os resultados.
-                    </small>
-                    <a href="{{ route('ranking.index') }}" class="btn btn-success btn-sm mt-2">
-                        <i class="bi bi-check-circle me-2"></i> Ver Resultados
-                    </a>
-                @endif
             </div>
         </div>
 
