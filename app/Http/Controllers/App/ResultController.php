@@ -8,9 +8,9 @@ use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class RankingController extends Controller
+class ResultController extends Controller
 {
-    /**
+/**
      * Mostra a lista de resultados na página de classificação do painel administrativo com base na nota de corte
      *
      * @return \Illuminate\View\View
@@ -54,10 +54,10 @@ class RankingController extends Controller
             'cutoffScore' => $cutoffScore,
         ]);
 
-        return view('results.private.index');
+        return view('results.admin.index');
     }
 
-    public function setAccessToResult(Request $request)
+    public function freeAccess(Request $request)
     {
         $settings = [
             'result' => $request->filled('result')
@@ -73,4 +73,5 @@ class RankingController extends Controller
 
         return redirect()->back()->with('success', 'Acesso ao resultado bloqueado com sucesso!');
     }
+        
 }

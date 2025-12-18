@@ -18,13 +18,13 @@ class NoticeController extends Controller
         view()->share('notices', $notices);
 
         // Renderizar a view com a lista de arquivos
-        return view('notice.private.index');
+        return view('notice.admin.index');
     }
 
-    public function create()
-    {
-        return view('notice.private.create');
-    }
+    // public function create()
+    // {
+    //     return view('notice.admin.create');
+    // }
 
     public function store(Request $request)
     {
@@ -58,10 +58,10 @@ class NoticeController extends Controller
         return redirect()->back()->with('success', 'Edital cadastrado com sucesso!');
     }
 
-    public function edit(Notice $notice)
-    {
-        return view('notice.private.edit', compact('notice'));
-    }
+    // public function edit(Notice $notice)
+    // {
+    //     return view('notice.admin.edit', compact('notice'));
+    // }
 
     public function update(Request $request, Notice $notice)
     {

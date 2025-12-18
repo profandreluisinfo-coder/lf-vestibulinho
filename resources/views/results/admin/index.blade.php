@@ -15,7 +15,7 @@
         @if ($results?->isNotEmpty())
             <div class="row">
                 <div class="col mx-auto">
-                    <form id="result-access-form" class="mb-3" action="{{ route('setAccessToResult') }}" method="POST">
+                    <form id="result-access-form" class="mb-3" action="{{ route('result.free') }}" method="POST">
                         @csrf
                         <div class="form-check form-switch mt-3">
                             <input class="form-check-input" type="checkbox" id="result" name="result"
@@ -28,7 +28,6 @@
                             </label>
                         </div>
                     </form>
-                    {{-- Filtro e legenda --}}
                     {{-- Filtros e legenda --}}
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
 

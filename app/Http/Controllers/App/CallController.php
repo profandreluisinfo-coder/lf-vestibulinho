@@ -79,7 +79,7 @@ class CallController extends Controller
 
         view()->share(compact('callLists', 'pneCandidates', 'chartData', 'countResults'));
 
-        return view('calls.private.create');
+        return view('calls.admin.create');
     }
 
     /**
@@ -195,7 +195,7 @@ class CallController extends Controller
             ->where('call_number', $call_number)
             ->get();
 
-        return view('calls.private.show', compact('convocados', 'call_number'));
+        return view('calls.admin.show', compact('convocados', 'call_number'));
     }
 
     /**
@@ -329,7 +329,7 @@ class CallController extends Controller
             ->select('calls.*')
             ->get();
 
-        $pdf = Pdf::loadView('calls.private.pdf', compact('callListMembers'))
+        $pdf = Pdf::loadView('calls.admin.pdf', compact('callListMembers'))
             ->setPaper('a4', 'portrait');
 
         // return $pdf->download("chamada_{$call_number}.pdf"); // faz download

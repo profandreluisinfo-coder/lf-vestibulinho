@@ -16,7 +16,7 @@ class CourseController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        return view('courses.private.index', compact('courses'));
+        return view('courses.admin.index', compact('courses'));
     }
 
     /**
@@ -74,7 +74,7 @@ class CourseController extends Controller
         // Passar para a view
         view()->share('course', $course);
 
-        return view('courses.private.edit');
+        return view('courses.admin.edit');
     }
 
     /**

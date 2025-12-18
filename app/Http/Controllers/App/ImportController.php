@@ -22,7 +22,7 @@ class ImportController extends Controller
     // Exibe o formulário de importação
     public function index()
     {
-        return view('import.private.index');
+        return view('import.admin.index');
     }
 
     /**

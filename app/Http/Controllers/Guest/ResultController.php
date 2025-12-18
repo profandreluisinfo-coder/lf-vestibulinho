@@ -10,21 +10,17 @@ use App\Http\Controllers\Controller;
 
 class ResultController extends Controller
 {
-/**
- * Mostra a lista de resultados na página de resultados do site com base na nota de corte
- *
- * @param int $limit Número de vagas que uma nota de corte tem
- * @param ExamResult[] $results Resultados da nota de corte com base na nota de corte
- * @param int $cutoffScore Pontuação de corte para decidir se uma nota é de corte ou não
- *
- * @return \Illuminate\View\View
- */
+    /**
+     * Mostra a lista de resultados na página de resultados do site com base na nota de corte
+     *
+     * @param int $limit Número de vagas que uma nota de corte tem
+     * @param ExamResult[] $results Resultados da nota de corte com base na nota de corte
+     * @param int $cutoffScore Pontuação de corte para decidir se uma nota é de corte ou não
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
-        // verifica se o  acesso ao resultado foi liberado
-        // $settings = Setting::first() ?? new Setting();
-        // $status = $settings->result;
-
         // se o acesso ao resultado nao foi liberado, redireciona para a home
         if (!Setting::first()->result) {
             return redirect()->route('home');
@@ -58,7 +54,7 @@ class ResultController extends Controller
         // ✅ 2️⃣ Descobre a nota de corte
         $cutoffScore = $lastInLimit ? $lastInLimit->score : 0;
 
-         // envia pra view
+        // envia pra view
         view()->share([
             'notice' => $notice,
             'results' => $results,

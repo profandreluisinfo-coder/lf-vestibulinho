@@ -16,7 +16,7 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        return view('calendar.private.index');
+        return view('calendar.admin.index');
     }
   
     /**
@@ -107,6 +107,6 @@ class CalendarController extends Controller
         // Busca o único registro ou cria um objeto vazio
         //$calendar = Calendar::first() ?? new Calendar();
         
-        return view('calendar.private.edit');
+        return view('calendar.admin.edit');
     }
 }

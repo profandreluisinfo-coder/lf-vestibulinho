@@ -72,7 +72,7 @@
         </button>
         <div class="collapse ps-3" id="menuResultados">
             <a href="{{ route('import.results') }}" class="nav-link text-light">Importar Notas</a>
-            <a href="{{ route('ranking.index') }}" class="nav-link text-light">Classificação Geral</a>
+            <a href="{{ route('result.index') }}" class="nav-link text-light">Classificação Geral</a>
             <a href="{{ route('callings.create') }}" class="nav-link text-light">Chamadas</a>
         </div>
     </li>

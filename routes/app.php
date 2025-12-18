@@ -14,8 +14,8 @@ use App\Http\Controllers\App\{
     ImportController,
     LocalController,
     NoticeController,
-    RankingController,
     ReportController,
+    ResultController,
     SystemController,
 };
 
@@ -37,7 +37,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::put('/publicar/{notice}', [NoticeController::class, 'publish'])->name('publish');
         });
 
-        // ==========================
+    // ==========================
     // 🎓 Cursos
     // ==========================
     Route::prefix('cursos') // OK
@@ -51,7 +51,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::delete('/excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
         });
 
-    
+
     // ==========================
     // 📚 Arquivos (Provas anteriores)
     // ==========================
@@ -136,12 +136,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // 🏆 Ranking de Provas
-    // ==========================
-    Route::get('/notas-e-classificacao', [RankingController::class, 'index'])->name('ranking.index');
-    Route::post('/liberar-classificacao', [RankingController::class, 'setAccessToResult'])->name('setAccessToResult');
-
-    // ==========================
     // 📞 Chamadas
     // ==========================
     Route::prefix('chamadas') // OK
@@ -173,11 +167,21 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 🧾 Provas
     // ==========================
     Route::prefix('prova') // OK
-    ->name('exam.')
+        ->name('exam.')
         ->group(function () {
             Route::get('/salas', [ExamController::class, 'index'])->name('index');
             Route::get('/agendar', [ExamController::class, 'create'])->name('create');
             Route::post('/salvar', [ExamController::class, 'store'])->name('store');
             Route::post('/config/access/location', [ExamController::class, 'setAccessToLocation'])->name('access');
+        });
+
+    // ==========================
+    // 🏆 Resultados
+    // ==========================
+    Route::prefix('resultados') // OK
+        ->name('result.')
+        ->group(function () {
+            Route::get('/notas-e-classificacao', [ResultController::class, 'index'])->name('index');
+            Route::post('/liberar-acesso', [ResultController::class, 'freeAccess'])->name('free');
         });
 });

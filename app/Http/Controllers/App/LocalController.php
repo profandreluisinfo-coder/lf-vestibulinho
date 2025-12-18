@@ -22,7 +22,7 @@ class LocalController extends Controller
         // Obter todos as locais de prova
         $examLocations = ExamLocation::all();
 
-        return view('local.private.index', compact('examLocations'));
+        return view('local.admin.index', compact('examLocations'));
     }
 
     /**
@@ -87,7 +87,7 @@ class LocalController extends Controller
             'location' => $location,
         ]);
 
-        return view('local.private.edit');
+        return view('local.admin.edit');
     }
 
     /**

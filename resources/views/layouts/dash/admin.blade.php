@@ -173,7 +173,7 @@
                             class="dropdown-item-custom {{ request()->routeIs('import.results') ? 'active' : '' }}">
                             Importar Notas
                         </a>
-                        <a href="{{ route('ranking.index') }}"
+                        <a href="{{ route('result.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('ranking') ? 'active' : '' }}">
                             Classificação Geral
                         </a>
@@ -352,7 +352,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('ranking.index') }}" class="offcanvas-card">
+                        <a href="{{ route('result.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fef3c7; color: #f59e0b;">
                                 <i class="bi bi-bar-chart-line"></i>
                             </div>
@@ -378,7 +378,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
-                    <a href="{{ route('ranking.index') }}" class="list-group-item list-group-item-action border-0 px-0">
+                    <a href="{{ route('result.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
                     <a href="{{ route('callings.create') }}"

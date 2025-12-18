@@ -18,7 +18,7 @@ class SystemController extends Controller
 {
     public function index()
     {
-        return view('system.private.index');
+        return view('system.admin.index');
     }
 
     public function reset()

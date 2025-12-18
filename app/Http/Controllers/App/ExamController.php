@@ -51,7 +51,7 @@ class ExamController extends Controller
             'candidates' => $candidates,
         ]);
 
-        return view('exam.private.index');
+        return view('exam.admin.index');
     }
 
     /**
@@ -90,7 +90,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('exam.private.create');
+        return view('exam.admin.create');
     }
 
     /**

@@ -28,7 +28,7 @@
         <div class="d-flex flex-row align-items-center mb-3">
             <small class="text-success fw-semibold">
                 <i class="bi bi-check-circle me-2"></i>
-                {{ $count }} notas importadas com sucesso! Clique no <a href="{{ route('ranking.index') }}">
+                {{ $count }} notas importadas com sucesso! Clique no <a href="{{ route('result.index') }}">
                 aqui
             </a> para ver os resultados.
             </small>
