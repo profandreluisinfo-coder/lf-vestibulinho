@@ -13,6 +13,6 @@
 
     <p>Atenciosamente,<br>
     Comissão Organizadora do Vestibulinho</p>
-    @include("mail.footer")
+    @include("partials.mail.footer")
 </body>
 </html>

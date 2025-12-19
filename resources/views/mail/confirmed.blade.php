@@ -4,4 +4,4 @@
 <p>Desejamos boa sorte no <strong>{{ config('app.name') }} {{ $calendar->year }}</strong>.</p>
 <p>Até breve,</p>
 <p><strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong></p>
-@include("mail.footer")
+@include("partials.mail.footer")

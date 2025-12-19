@@ -9,4 +9,4 @@
 
 <p><strong>Escola Municipal Dr. Leandro Franceschini<br>Prefeitura Municipal de Sumaré</strong></p>
 
-@include("mail.footer")
+@include("partials.mail.footer")

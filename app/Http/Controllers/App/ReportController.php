@@ -14,7 +14,7 @@ class ReportController extends Controller
     {
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('reports.pdf.report-allocation', compact('allocations'))
+        $pdf = Pdf::loadView('reports.pdf.allocation', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('relatorio-alocacao.pdf');

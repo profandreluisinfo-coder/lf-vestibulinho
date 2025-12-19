@@ -56,7 +56,7 @@
     Equipe de Seleção E.M. Dr. Leandro Franceschini<br>
     <strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong>
   </p>
-  @include('mail.footer')
+  @include('partials.mail.footer')
 </body>
 
 </html>
