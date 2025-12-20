@@ -72,3 +72,10 @@ td {
     z-index: 10;
     background-color: var(--bs-table-bg, #d1e7dd);
 }
+
+/* First mobile */
+@media (max-width: 768px) {
+    #results-disclaimer {
+        text-align: justify;
+    }
+}

@@ -26,7 +26,7 @@
 
             <div class="row">
 
-                <div class="col-lg-8 mx-auto mb-3 border-bottom">
+                <div id="results-disclaimer" class="col-lg-8 mx-auto mb-3 border-bottom">
                     <p>A <strong>Escola Municipal Dr. Leandro Franceschini</strong>, em conformidade com o item
                         <strong>5.10</strong> do <a href="{{ asset('storage/' . $notice->file) }}"
                             class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do
