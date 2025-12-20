@@ -19,11 +19,34 @@ use Illuminate\Support\Facades\Gate;
 
 class SettingController extends Controller
 {
+    /**
+     * Exibe a a view para a página de redefinição do sistema
+     *
+     * @return View
+     */
     public function index(): View
     {
         return view('system.admin.index');
     }
 
+    /**
+     * Redefine o sistema
+     *
+     * Garante que só admin possa resetar o sistema.
+     * Apaga todos os usuários que não são admin.
+     * Apaga todas as inscrições (e suas dependências) via CASCADE.
+     * Ajusta AUTO_INCREMENT dos users.
+     * Ajusta AUTO_INCREMENT das inscrições.
+     * Zera vagas dos cursos.
+     * Apaga todos os registros da tabela de calendários.
+     * Apaga todos os registros da tabela de edital.
+     * Apaga todos os registros da tabela de resultados de exames.
+     * Apaga todos os registros da tabela de chamadas.
+     * Apaga todos os registros da tabela de chamadas.
+     * Apaga todos os registros da tabela de settings.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function reset(): JsonResponse
     {
         try {
@@ -128,6 +151,15 @@ class SettingController extends Controller
         );
     }
 
+    /**
+     * Atualiza o status de acesso ao resultado e dispara e-mails em fila.
+     *
+     * Caso o acesso seja liberado (result = true),
+     * cria um Job para cada candidato com resultado definido.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function result(Request $request)
     {
         $settings = [
