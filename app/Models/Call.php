@@ -59,6 +59,46 @@ class Call extends Model
         return $this->hasMany(Call::class);
     }
 
+    /**
+     * Obter todas as chamadas finalizadas, agrupadas por lista de chamada.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     *
+     * Exemplo do que conseguir acessar em cada item da lista:
+     * $calls = Call::callsCompleted();
+     * foreach ($calls as $call_number => $calls_in_call_number) {
+     *     foreach ($calls_in_call_number as $call) {
+     *         $user = $call->examResult->inscription->user;
+     *         echo $user->name;
+     *         echo $user->email;
+     *         echo $call->examResult->ranking;
+     *     }
+     * }
+     */
+    public static function callsCompleted()
+    {
+        return Call::with('callList', 'examResult.inscription.user')
+            ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
+            ->get()
+            ->groupBy(function ($call) {
+                return $call->callList->number
+                    . '|' . $call->date
+                    . '|' . $call->time;
+            })
+            ->sortKeys();
+    }
+
+    // public static function callsCompleted()
+    // {
+    //     $calls = Call::with('callList', 'examResult.inscription.user')
+    //         ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
+    //         ->get()
+    //         ->groupBy(fn($call) => $call->callList->number)
+    //         ->sortKeys();
+
+    //     return $calls;
+    // }
+
     /*
     |--------------------------------------------------------------------------
     | Scopes

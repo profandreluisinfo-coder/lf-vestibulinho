@@ -2,7 +2,6 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-8">
-
                 <div class="card h-100 shadow border border-0">
                     <div class="card-header"><i class="bi bi-list-check"></i> Acesso Rápido</div>
                     <div class="card-body pt-3 pb-5">
@@ -74,9 +73,7 @@
                                     @endif
                                 </li>
                             @endforeach
-
                         </ul>
-
                     </div>
                 </div>
             </div>

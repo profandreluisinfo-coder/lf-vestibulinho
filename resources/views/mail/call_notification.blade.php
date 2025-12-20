@@ -18,7 +18,7 @@
 
   <p>
     <strong>Dia:</strong> {{ $data }}<br>
-    <strong>Horário:</strong> {{ $hora }}<br>
+    <strong>Horário:</strong> {{ $hora }} às 19:00h<br>
     <strong>Local:</strong> R. Geraldo de Souza, 157/221 - Jardim São Carlos, Sumaré - SP, 13170-232
   </p>
 

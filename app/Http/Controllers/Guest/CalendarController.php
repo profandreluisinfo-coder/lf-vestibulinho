@@ -21,6 +21,6 @@ class CalendarController extends Controller
             return redirect()->route('home');
         }
 
-        return view('calendar.public.list', compact('calendar'));
+        return view('calendar.public.index', compact('calendar'));
     }
 }

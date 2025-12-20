@@ -28,6 +28,25 @@ use App\Http\Controllers\Controller;
 class CallController extends Controller
 {
     /**
+     * Obter todas as chamadas e seus respectivos dados: nº da chamada, data e hora, além do, nome do usuário e 
+     * o nº da sua inscrição.
+     * As informações são exibdas na página pública de chamadas do site.
+     * $calls é uma coleção agrupada
+     */
+    public function index()
+    {
+        // Obter todas as chamadas e seus respectivos dados
+        $calls = Call::callsCompleted();
+
+        // verificar se 'calls' é uma coleção vazia
+        if ($calls->isEmpty()) {
+            return redirect()->route('home');
+        }
+
+        return view('calls.public.index', compact('calls'));
+    }
+
+    /**
      * Renderiza a view para criar uma nova chamada
      *
      * @return \Illuminate\View\View
@@ -110,8 +129,8 @@ class CallController extends Controller
         $time = $request->time;
 
         // 🔍 Impede chamadas duplicadas
-        if (CallList::where('number', $number)->exists()) {
-            return back()->withErrors(['number' => 'Já existe uma chamada com esse número.'])->withInput();
+        if (CallList::where('number', $number)->exists() && CallList::where('date', $date)->where('time', $time)->exists()) {
+            return back()->withErrors(['number' => 'Já existe uma chamada com esse número, data e hora.'])->withInput();
         }
 
         try {
@@ -323,7 +342,7 @@ class CallController extends Controller
     {
         $callListMembers = Call::with('examResult.inscription.user.user_detail')
             ->where('call_number', $call_number)
-            ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
+            // ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
             ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')
             ->orderBy('exam_results.ranking')
             ->select('calls.*')

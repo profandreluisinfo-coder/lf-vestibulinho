@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">
 @endpush
 
-@section('body-class')
+@section('body-class', 'bg-light')
 
 @section('content')
 

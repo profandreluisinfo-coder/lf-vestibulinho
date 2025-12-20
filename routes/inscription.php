@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    DashController,
     UserController,
     InscriptionController,
 };
 
-use App\Http\Middleware\{NotAdmin, IsAdmin, NoInscription, WithInscription};
+use App\Http\Middleware\{NotAdmin, IsAdmin, NoInscription};
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->group(function () {

@@ -1,3 +1,7 @@
+#calendar {
+    margin: 7rem 0;
+}
+
 .calendar-horizontal-wrapper {
     overflow-x: auto;
     padding-bottom: 1rem;

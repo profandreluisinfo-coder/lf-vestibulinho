@@ -4,17 +4,18 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Guest\{
     ArchiveController,
-    CallController,
     FaqController,
     HomeController,
     ResultController,
+    CalendarController
 };
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\App\{
+    CallController
+};
 
-//
 // 🏠 Rotas públicas
-//
+
 Route::middleware(['guest'])->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');   
@@ -30,4 +31,7 @@ Route::middleware(['guest'])->group(function () {
 
     // Chamadas
     Route::get('/chamadas', [CallController::class, 'index'])->name('callings.index');
+
+    // Calendario
+    Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index'); // Calendario público
 });
