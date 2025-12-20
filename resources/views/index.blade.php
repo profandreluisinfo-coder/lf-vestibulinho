@@ -15,7 +15,7 @@
     @include('home.countdown')
     @include('home.quick-access')
     @include('home.courses')
-    {{-- @include('home.footer') --}}
+    @include('home.footer')
 
 @endsection
 
