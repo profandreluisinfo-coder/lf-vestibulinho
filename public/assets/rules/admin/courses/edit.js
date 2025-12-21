@@ -8,12 +8,21 @@ $(document).ready(function () {
             description: {
                 required: true,
                 minlength: 3
+            },            
+            duration: {
+                required: true,
+                minlength: 1,
+                digits: true
             },
             vacancies: {
                 required: true,
                 number: true,
                 min: 1,
                 max: 120
+            },
+            info: {
+                required: true,
+                minlength: 3
             }
         },
         messages: {
@@ -25,12 +34,21 @@ $(document).ready(function () {
                 required: "Por favor, insira a descrição do curso",
                 minlength: "A descrição do curso deve ter pelo menos 3 caracteres"
             },
+            duration: {
+                required: "Por favor, insira a duração do curso",
+                minlength: "A duração do curso deve ter pelo menos 1 caractere",
+                digits: "A duração do curso deve conter apenas números"
+            },
             vacancies: {
                 required: "Por favor, insira a quantidade de vagas",
                 number: "A quantidade de vagas deve ser um número",
                 min: "A quantidade de vagas deve ser maior que 0",
                 max: "A quantidade de vagas deve ser menor ou igual a 120"
             },
+            info: {
+                required: "Por favor, insira as informações sobre o perfil profissional do curso",
+                minlength: "As informações sobre o perfil profissional do curso devem ter pelo menos 3 caracteres"
+            }
         },
         submitHandler: function (form) {
             const $btn = $(form).find('button[type="submit"]');

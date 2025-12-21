@@ -39,11 +39,34 @@
                         @enderror
                     </div>
 
+                    {{-- Duration --}}
+                    <div class="form-group mb-3">
+                        <label for="duration" class="form-label required">Duração:</label>
+                        <input type="text" class="form-control @error('duration') is-invalid @enderror" id="duration"
+                            name="duration" value="{{ $course->duration }}">
+                        @error('duration')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     <div class="form-group mb-3">
                         <label for="vacancies" class="form-label required">Vagas:</label>
                         <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
                             name="vacancies" value="{{ $course->vacancies }}">
                         @error('vacancies')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="info" class="form-label required">Perfil profissional do egresso:</label>
+                        <input type="text" class="form-control @error('info') is-invalid @enderror" id="info"
+                            name="info" value="{{ $course->info }}">
+                        @error('info')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -68,5 +91,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/courses/edit.js') }}"></script>
-    <script src="{{ asset('assets/swa/courses/delete.js') }}"></script>
+    {{-- <script src="{{ asset('assets/swa/courses/delete.js') }}"></script> --}}
 @endpush

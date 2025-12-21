@@ -18,21 +18,24 @@
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Cursos</th>
-                        <th scope="col">Descrição</th>
                         <th scope="col">Vagas</th>
-                        <th scope="col">Ações</th>
+                        <th scope="col" class="w-25">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
 
                     @forelse ($courses as $course)
-
                         <tr>
                             <td class="w-25">{{ $course->name }}</td>
-                            <td class="w-50">{{ $course->description }}</td>
                             <td>{{ $course->vacancies }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    <!-- Detalhes -->
+                                    <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#viewCourse"
+                                        onclick="showCourseDetails({{ $course->id }}, '{{ addslashes($course->name) }}', '{{ addslashes($course->description) }}', '{{ $course->duration }}', '{{ addslashes($course->info) }}', {{ $course->vacancies }})">
+                                        <i class="bi bi-eye" title="Ver Detalhes"></i>
+                                    </a>
                                     <!-- Editar -->
                                     <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square" title="Editar"></i>
@@ -60,7 +63,6 @@
                             'actionMessage' =>
                                 'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
                         ])
-
                     @endforelse
 
                 </tbody>
@@ -68,6 +70,7 @@
 
         </div>
 
+        {{-- Modal para cadastro de novo curso --}}
         <div class="modal fade" id="setNewCourse" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="setNewCourseModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -103,11 +106,35 @@
                                             </div>
                                         @enderror
                                     </div>
+                                    {{-- Duration --}}
+                                    <div class="form-group mb-3">
+                                        <label for="duration" class="form-label required">Duração:</label>
+                                        <input type="text" class="form-control @error('duration') is-invalid @enderror"
+                                            id="duration" name="duration" value="{{ old('duration') }}">
+                                        @error('duration')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    {{-- Info --}}
+                                    <div class="form-group mb-3">
+                                        <label for="information" class="form-label required">Perfil profissional do
+                                            egresso:</label>
+                                        <input type="text" class="form-control @error('info') is-invalid @enderror"
+                                            id="info" name="info" value="{{ old('info') }}">
+                                        @error('info')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    {{-- Vacancies --}}
                                     <div class="form-group mb-3">
                                         <label for="vacancies" class="form-label required">Vagas:</label>
                                         <input type="number" min="1" max="120"
-                                            class="form-control @error('vacancies') is-invalid @enderror"
-                                            id="vacancies" name="vacancies" value="{{ old('vacancies') }}">
+                                            class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
+                                            name="vacancies" value="{{ old('vacancies') }}">
                                         @error('vacancies')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -130,6 +157,37 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal para visualizar detalhes de um curso --}}
+        <div class="modal fade" id="viewCourse" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-eye me-2"></i>Detalhes do Curso
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <p><strong>Nome:</strong> <span id="view-name"></span></p>
+                                <p><strong>Descrição:</strong> <span id="view-description"></span></p>
+                                <p><strong>Duração:</strong> <span id="view-duration"></span></p>
+                                <p><strong>Perfil do Egresso:</strong> <span id="view-info"></span></p>
+                                <p><strong>Vagas:</strong> <span id="view-vacancies"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 @endsection
@@ -137,4 +195,13 @@
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/courses/create.js') }}"></script>
     <script src="{{ asset('assets/swa/courses/delete.js') }}"></script>
+    <script>
+        function showCourseDetails(id, name, description, duration, info, vacancies) {
+            document.getElementById('view-name').textContent = name;
+            document.getElementById('view-description').textContent = description;
+            document.getElementById('view-duration').textContent = duration;
+            document.getElementById('view-info').textContent = info;
+            document.getElementById('view-vacancies').textContent = vacancies;
+        }
+    </script>
 @endpush
