@@ -78,9 +78,9 @@ class CalendarController extends Controller
         $notice = Notice::first() ?? new Notice();
         
          // Verifica se existe um edital cadastrado
-        if (!$notice->exists()) {
-            return redirect()->back()->withErrors(['error' => 'É necessário ter um edital antes de configurar o calendário do vestibulinho.']);
-        }
+        // if (!$notice->exists()) {
+        //     return redirect()->back()->withErrors(['error' => 'É necessário ter um edital antes de configurar o calendário do vestibulinho.']);
+        // }
 
         // Se já existe um calendário, atualiza. Senão, cria novo.
         $calendar = Calendar::first();

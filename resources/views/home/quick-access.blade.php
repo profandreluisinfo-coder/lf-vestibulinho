@@ -59,6 +59,8 @@
                         {{ $calendar?->year }}
                     </div>
                     <div class="card-body events pt-3 pb-5 overflow-y-scroll hide-scrollbar" style="max-height: 320px;" id="autoScrollEvents">
+
+                        @if (App\Models\Calendar::getActive())
                         
                         <ul class="list-group list-group-flush">
 
@@ -74,6 +76,10 @@
                                 </li>
                             @endforeach
                         </ul>
+
+                        @else
+                            <p class="text-center">Nenhuma informação disponível.</p>
+                        @endif
                     </div>
                 </div>
             </div>

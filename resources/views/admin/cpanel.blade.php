@@ -54,7 +54,7 @@
                         <!-- Etapa 4 -->
                         <div class="step-item text-center">
                             <i
-                                class="bi {{ $last_archive->status && $last_archive->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                                class="bi {{ App\Models\Archive::latest('id')->first()->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
                         </div>
                         <!-- Divider -->

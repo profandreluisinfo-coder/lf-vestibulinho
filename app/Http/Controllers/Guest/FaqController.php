@@ -18,12 +18,11 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->get();
-
-        if ($faqs->isEmpty()) {
+        if (!Faq::hasActiveFaqs()) {
             return redirect()->route('home');
         }
 
+        $faqs = Faq::getActiveFaqs();
         return view('faqs.public.index', compact('faqs'));
     }
 }

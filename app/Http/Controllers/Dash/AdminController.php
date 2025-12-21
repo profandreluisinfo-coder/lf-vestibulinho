@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Dash;
 
-use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
-{    
+{
     /**
      * Página Index do dashboard do admin
      *
@@ -59,12 +59,12 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('dashboard.admin.cpanel', [
+        return view('admin.cpanel', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,
             'sexos' => $sexos,
             'sexoPorCurso' => $sexoPorCurso
         ]);
-    }    
+    }
 }

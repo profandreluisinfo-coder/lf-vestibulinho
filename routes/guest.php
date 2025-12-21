@@ -14,6 +14,10 @@ use App\Http\Controllers\App\{
     CallController
 };
 
+use App\Http\Middleware\{
+    isResultEnabled
+};
+
 // 🏠 Rotas públicas
 
 Route::middleware(['guest'])->group(function () {
@@ -27,11 +31,14 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.public.index');
 
     // Resultados
-    Route::get('/resultado-final', [ResultController::class, 'index'])->name('results.public.index');
+    Route::get('/resultado-final', [ResultController::class, 'index'])
+    ->name('results.public.index')
+    ->middleware([isResultEnabled::class]);
 
     // Chamadas
-    Route::get('/chamadas', [CallController::class, 'index'])->name('callings.index');
+    Route::get('/chamadas', [CallController::class, 'index'])
+    ->name('callings.index');
 
     // Calendario
-    Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index'); // Calendario público
+    //Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index'); // Calendario público
 });

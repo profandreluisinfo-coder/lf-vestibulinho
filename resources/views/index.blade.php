@@ -12,9 +12,9 @@
 
     @include('home.navbar')
     @include('home.hero-banner')
-    @include('home.countdown')
     @include('home.quick-access')
     @include('home.courses')
+    @include('home.countdown')
     @include('home.footer')
 
 @endsection

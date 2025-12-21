@@ -21,10 +21,7 @@ class GlobalDataHelper
 
             // Configurações gerais
             $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
-
-            // Obter o último arquivo (arquivo mais recente) na tabela "archives" (model Archive)
-            $last_archive = Cache::remember('global_archive', 60, fn() => Archive::latest()->first() ?? new Archive());
-
+            
             // Chamadas existentes
             $calls_exists = Cache::remember('calls_exists', 60, fn() => Call::exists());
 
@@ -52,7 +49,6 @@ class GlobalDataHelper
             // Envia tudo para as views
             $view->with(compact(
                 'settings',
-                'last_archive',
                 'calls_exists',
                 'notice',
                 'calendar',

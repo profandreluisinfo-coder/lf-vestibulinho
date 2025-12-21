@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dash\{
     ProfileController
 };
-use App\Http\Middleware\{NotAdmin, NoInscription, WithInscription};
+use App\Http\Middleware\{NotAdmin, NoInscription, WithInscription, isLocationEnabled, isResultEnabled
+};
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->group(function () {
@@ -23,8 +24,15 @@ Route::middleware(['auth'])->group(function () {
             ->group(function () {
                 // Área do candidato: exibe o perfil da inscrição existente
                 Route::get('/area-restrita', [ProfileController::class, 'inscription'])->name('profile');
-                Route::get('/meu-local/pdf', [ProfileController::class, 'examCardPdf'])->name('card.pdf');
-                Route::get('/meu-resultado/pdf', [ProfileController::class, 'resultCardPdf'])->name('result.pdf');
+
+                Route::get('/meu-local/pdf', [ProfileController::class, 'examCardPdf'])
+                ->name('card.pdf')
+                ->middleware([isLocationEnabled::class]);
+
+                Route::get('/meu-resultado/pdf', [ProfileController::class, 'resultCardPdf'])
+                ->name('result.pdf')
+                ->middleware([isResultEnabled::class]);
+
                 Route::get('/chamada/pdf', [ProfileController::class, 'generateCallPdf'])->name('call.pdf');
             });
     });

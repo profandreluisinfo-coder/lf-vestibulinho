@@ -22,12 +22,12 @@ class ArchiveController extends Controller
      */
     public function index()
     {
-        // Obter todos os arquivos de prova em ordem decrescente
-        $files = Archive::where('status', true)->orderBy('year', 'desc')->get();
+        if (!Archive::hasActiveArchives()) {
+            return redirect()->route('home');
+        }
 
-        // Passar para a view
-        view()->share('files', $files);
+        $archives = Archive::getActiveArchives();
 
-        return view('archives.public.index');
+        return view('archives.public.index', compact('archives'));
     }
 }

@@ -19,7 +19,7 @@
     @include('home.navbar')
 
     @php
-        $recenteId = $files->first()->id ?? null;
+        $recenteId = $archives->first()->id;
     @endphp
 
     <section id="previous-exams" class="bg-light my-5 py-5">
@@ -45,26 +45,26 @@
 
                             <tbody class="table-group-divider">
 
-                                @forelse ($files as $file)
-                                    <tr class="{{ $file->id === $recenteId ? 'table-active fw-bold' : '' }}">
+                                @forelse ($archives as $archive)
+                                    <tr class="{{ $archive->id === $recenteId ? 'table-active fw-bold' : '' }}">
                                         <td><i class="bi bi-file-earmark-pdf fs-5 text-danger"></i></td>
                                         <th scope="row">
-                                            @if ($file->id === $recenteId)
+                                            @if ($archive->id === $recenteId)
                                                 <i class="bi bi-star-fill text-warning me-1" title="Prova mais recente"></i>
                                             @endif
-                                            {{ $file->year }}
-                                            @if ($file->id === $recenteId)
+                                            {{ $archive->year }}
+                                            @if ($archive->id === $recenteId)
                                                 <span class="badge bg-success ms-2">Mais recente</span>
                                             @endif
                                         </th>
                                         <td>
-                                            <a href="{{ asset('storage/' . $file->file) }}" target="_blank">
+                                            <a href="{{ asset('storage/' . $archive->file) }}" target="_blank">
                                                 <i class="bi bi-download me-2"></i> Download
                                             </a>
                                         </td>
                                         <td>
-                                            @if ($file->answer?->file)
-                                                <a href="{{ asset('storage/' . $file->answer?->file) }}" target="_blank">
+                                            @if ($archive->answer?->file)
+                                                <a href="{{ asset('storage/' . $archive->answer?->file) }}" target="_blank">
                                                     <i class="bi bi-download me-2"></i> Download
                                                 </a>
                                             @else

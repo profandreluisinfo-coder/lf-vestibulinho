@@ -17,6 +17,20 @@ class Setting extends Model
         'result',
     ];
 
+    // Retornar o valor de 'location'
+    public static function isLocationEnabled()
+    {
+        $setting = self::first();
+        return $setting ? (bool) $setting->location : false;
+    }
+
+    // Retornar o valor de 'result'
+    public static function isResultEnabled()
+    {
+        $setting = self::first();
+        return $setting ? (bool) $setting->result : false;
+    }
+
     // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {

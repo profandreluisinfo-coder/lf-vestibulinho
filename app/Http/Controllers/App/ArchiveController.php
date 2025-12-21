@@ -4,10 +4,12 @@ namespace App\Http\Controllers\App;
 
 use App\Models\Answer;
 use App\Models\Archive;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Services\ArchiveFileService;
 use App\Http\Controllers\Controller;
+use App\Services\ArchiveFileService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ArchiveController extends Controller
 {
@@ -15,22 +17,19 @@ class ArchiveController extends Controller
      * Exibir uma lista de todos os arquivos compactados.
      *
      * Recupera todos os arquivos do modelo de arquivo e os compartilha com a visualização
-     * para renderização na página de índice do arquivo de administração.
+     * para renderização na página de índice do arquivo área ADMINISTRATIVA.
      * 
-     * Última atualização: 09/11/2025 às 13:00
+     * Última atualização: 20/12/2025 às 20:17
      *
      * @return \Illuminate\View\View
      */
 
-    public function index()
+    public function index(): View
     {
         // Obter todos os arquivos de prova
         $files = Archive::orderBy('year', 'desc')->get();
 
-        // Passar para a view
-        view()->share('files', $files);
-
-        return view('archives.admin.index');
+        return view('archives.admin.index', compact('files'));
     }
 
     /**
@@ -43,7 +42,7 @@ class ArchiveController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // Validação
         $request->validate([
@@ -115,7 +114,7 @@ class ArchiveController extends Controller
      * @param \App\Models\Archive $archive
      * @return \Illuminate\View\View
      */
-    public function edit(Archive $archive)
+    public function edit(Archive $archive): View
     {
         return view('archives.admin.edit', compact('archive'));
     }
@@ -131,7 +130,7 @@ class ArchiveController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function update(Request $request, Archive $archive, ArchiveFileService $fileService)
+    public function update(Request $request, Archive $archive, ArchiveFileService $fileService): RedirectResponse
     {
         $request->validate([
             'year' => 'required|numeric|digits:4',
@@ -185,7 +184,7 @@ class ArchiveController extends Controller
      * @param int $id ID do arquivo de prova a ser excluído.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $archive = Archive::findOrFail($id);
 
@@ -206,16 +205,11 @@ class ArchiveController extends Controller
      * @param \App\Models\Archive $archive Arquivo de prova a ser publicado/despublicado.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function publish(Archive $archive)
+    public function publish(Archive $archive): RedirectResponse
     {
         $archive->status = !$archive->status;
         $archive->save();
 
-        if ($archive->answer) {
-            $archive->answer->status = !$archive->answer->status;
-            $archive->answer->save();
-        }
-
-        return redirect()->back()->with('success', 'Status alterado com sucesso!');
+        return redirect()->back()->with('success', 'Alterado com sucesso!');
     }
 }

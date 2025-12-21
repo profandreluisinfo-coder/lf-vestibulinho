@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\IsAdmin;
-use App\Http\Controllers\User\{
+use App\Http\Controllers\Dash\{
     AdminController
 };
 

@@ -1,5 +1,5 @@
 @if ($calendar->isInscriptionOpen())
-    <section id="contagem" class="py-5">
+    <section id="contagem" class="py-3">
         <div class="container">
             <h2 class="section-title text-center">
                 <i class="bi bi-clock-history me-2"></i> Contagem Regressiva para o Fim das Inscrições
@@ -46,10 +46,10 @@
                                     {{ \Carbon\Carbon::parse($calendar?->inscription_end)->translatedFormat('d \d\e F \d\e Y') }}
                                     às 23:59</strong>
                             </p>
-                            <a href="{{ route('register') }}" class="btn btn-success btn-lg px-4"
+                            {{-- <a href="{{ route('register') }}" class="btn btn-success btn-lg px-4"
                                 title="Inscrever-se Agora">
                                 <i class="bi bi-pencil-square me-2"></i> Inscrever-se Agora
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>

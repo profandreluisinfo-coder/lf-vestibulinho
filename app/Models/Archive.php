@@ -14,37 +14,47 @@ class Archive extends Model
         'user_id',
     ];
 
-    /**
-     * Obter o usuário que realizou o upload do arquivo.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $casts = [
+        'status' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Retorna o gabarito ("Answer") vinculado a este aviso, se houver
-     */
     public function answer()
     {
         return $this->hasOne(Answer::class);
     }
 
-    /**
-     * Retorna o gabarito ("Answer") vinculado a este aviso, se houver
-     */
-    public function answers()
+    public static function getActiveArchives()
     {
-        return $this->hasMany(Answer::class);
+        return Cache::remember('archives_active_list', 3600, function () {
+            return self::where('status', true)->orderBy('year', 'desc')->get();
+        });
     }
 
-    // Cache::remember('global_archive', 60, fn() => Archive::latest()->first() ?? new Archive());
-    // Limpa o cache automaticamente quando salvar ou excluir
+    public static function hasActiveArchives()
+    {
+        return Cache::remember('archives_has_active', 3600, function () {
+            return self::where('status', true)->exists();
+        });
+    }
+
+    // Limpar cache ao salvar/excluir - CORRIGIDO
     protected static function booted()
     {
-        static::saved(fn() => Cache::forget('global_archive'));
-        static::deleted(fn() => Cache::forget('global_archive'));
+        static::saved(function () {
+            Cache::forget('archives_active_list');
+            Cache::forget('archives_has_active');
+        });
+        
+        static::deleted(function () {
+            Cache::forget('archives_active_list');
+            Cache::forget('archives_has_active');
+        });
     }
 }

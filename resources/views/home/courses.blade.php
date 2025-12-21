@@ -1,4 +1,8 @@
-@if (\App\Models\Course::getVacancies() > 0)
+@php
+    $vacancies = \App\Models\Course::getVacancies();
+@endphp
+
+
     <section id="courses">
 
         <div class="container">
@@ -14,7 +18,9 @@
                         <p>Forme-se para atuar em empresas de diversos segmentos, desenvolvendo competências em
                             gestão, planejamento e organização empresarial.</p>
                         <div class="d-flex justify-content-between align-items-center">
+                            @if ($vacancies)
                             <span class="badge bg-primary">{{ $courses[0]->vacancies ?? 0 }} vagas</span>
+                            @endif
                             <small class="text-muted">Duração: 4 anos</small>
                         </div>
                     </div>
@@ -67,4 +73,3 @@
         </div>
 
     </section>
-@endif

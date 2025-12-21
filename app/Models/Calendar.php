@@ -46,6 +46,17 @@ class Calendar extends Model
         'is_active' => 'boolean'
     ];
 
+    /**
+     * Retorna um array com os eventos do calendário.
+     *
+     * @return array Contendo os eventos do calendário com as seguintes informações:
+     *   - label: Nome do evento
+     *   - icon: Ícon do evento
+     *   - type: Tipo do evento (date ou period)
+     *   - date: Data do evento (caso tipo date)
+     *   - start: Data de início do evento (caso tipo period)
+     *   - end: Data de término do evento (caso tipo period)
+     */
     public function events(): array
     {
         return [
@@ -102,11 +113,26 @@ class Calendar extends Model
         ];
     }
 
+    /**
+     * Formata uma data no formato 'd/m/Y' ou retorna '—' se a data for nula.
+     *
+     * @param \Carbon\Carbon|null $date Data a ser formatada.
+     *
+     * @return string Data formatada ou '—' se a data for nula.
+     */
     public function formatDate($date): string
     {
         return $date ? $date->format('d/m/Y') : '—';
     }
 
+    /**
+     * Formata um período de tempo com as datas de início e término no formato 'd/m/Y' e retorna como string.
+     *
+     * @param \Carbon\Carbon|null $start Data de início do período.
+     * @param \Carbon\Carbon|null $end Data de término do período.
+     *
+     * @return string Período formatado como string.
+     */
     public function formatPeriod($start, $end): string
     {
         return $this->formatDate($start) . ' até ' . $this->formatDate($end);

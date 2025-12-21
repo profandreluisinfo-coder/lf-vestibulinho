@@ -5,15 +5,8 @@ namespace App\Providers;
 use Carbon\Carbon;
 use App\Models\Faq;
 use App\Models\User;
-use App\Models\Notice;
-use App\Models\Setting;
-use App\Models\Calendar;
 use App\Helpers\GlobalDataHelper;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,7 +37,5 @@ class AppServiceProvider extends ServiceProvider
 
         // Torna variáveis globais acessíveis em todas as views
         GlobalDataHelper::share();
-
-        Paginator::useBootstrapFive();
     }
 }

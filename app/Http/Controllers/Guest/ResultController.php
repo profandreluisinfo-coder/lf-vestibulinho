@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Guest;
 
 use App\Models\Course;
 use App\Models\Notice;
-use App\Models\Setting;
+// use App\Models\Setting;
 use App\Models\ExamResult;
 use App\Http\Controllers\Controller;
 
@@ -22,9 +22,9 @@ class ResultController extends Controller
     public function index()
     {
         // se o acesso ao resultado nao foi liberado, redireciona para a home
-        if (!Setting::first()->result) {
-            return redirect()->route('home');
-        }
+        // if (!Setting::first()->result) {
+        //     return redirect()->route('home');
+        // }
 
         // Busca pelo arquivo do edital em 'notices'
         $notice = Notice::all()->first();
