@@ -1,4 +1,4 @@
-@extends('layouts.dash.user')
+@extends('layouts.user.master')
 {{-- ESTE É O LAYOUT PADRÃO DOS FORMULÁRIOS. ELE EXTENDE O LAYOUT DO USUÁRIO --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard/user/inscription.css') }}">

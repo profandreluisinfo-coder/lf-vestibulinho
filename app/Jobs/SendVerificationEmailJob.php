@@ -26,7 +26,7 @@ class SendVerificationEmailJob implements ShouldQueue
             subject: 'Verificação de e-mail',
             // content: ['name' => $this->name, 'link' => $this->link],
             content: ['link' => $this->link],
-            view: 'mail.verify-email'
+            view: 'mail.verify'
         );
     }
 }

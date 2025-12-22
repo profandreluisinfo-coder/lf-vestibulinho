@@ -17,7 +17,7 @@ class WithInscription
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->user()->inscription()->exists()) {
-            return redirect()->route('dashboard.index');
+            return redirect()->route('user.profile');
         }
 
         return $next($request);

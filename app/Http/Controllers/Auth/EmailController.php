@@ -6,7 +6,7 @@ use Illuminate\View\View;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 
-class EmailVerificationController extends Controller
+class EmailController extends Controller
 {
     /**
      * Verifica se o token informado é válido e, se for, redireciona o usuário para a página de confirmação de e-mail.
@@ -47,6 +47,6 @@ class EmailVerificationController extends Controller
      */
     public function resendEmail(): View
     {
-        return view('auth.user.resend-email-verification');
+        return view('auth.user.resend-email');
     }
 }

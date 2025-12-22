@@ -1,4 +1,4 @@
-@extends('layouts.dash.user')
+@extends('layouts.user.master')
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Área do Candidato')
 

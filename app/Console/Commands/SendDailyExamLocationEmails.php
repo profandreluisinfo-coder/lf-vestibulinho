@@ -62,7 +62,7 @@ class SendDailyExamLocationEmails extends Command
                     'address' => $result->examLocation->address,
                     'room_number' => $result->room_number,
                 ],
-                view: 'mail.exam_location_info'
+                view: 'mail.location'
             );
 
             $result->update(['email_sent_at' => now()]);

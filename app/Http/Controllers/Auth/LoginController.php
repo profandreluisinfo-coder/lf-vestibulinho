@@ -38,7 +38,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('admin.login');
+        return view('auth.admin');
     }
 
     /**
@@ -111,7 +111,7 @@ class LoginController extends Controller
             $hasInscription = $user->inscription()->exists();
 
             return $hasInscription
-                ? redirect()->route('profile.user') // Vai para o início da inscrição
+                ? redirect()->route('user.profile') // Vai para o início da inscrição
                 : redirect()->route('candidate.profile'); // Vai para o dashboard de inscrição
         }
 

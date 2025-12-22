@@ -41,7 +41,7 @@ class UserService
             $user->email,
             'Confirme seu e-mail',
             ['link' => $link],
-            'mail.verify-email'
+            'mail.verify'
         );
 
         if (!$emailEnviado) {
@@ -80,7 +80,7 @@ class UserService
                 $user->email,
                 'E-mail confirmado',
                 ['name' => $user->name],
-                'mail.confirmed'
+                'mail.confirmation'
             );
 
             return ['success' => true, 'user' => $user];
@@ -110,7 +110,7 @@ class UserService
             $user->email,
             'Redefinir senha',
             ['name' => $user->social_name ?? $user->name, 'link' => $link],
-            'mail.reset-password'
+            'mail.reset'
         );
 
         if (!$emailEnviado) {

@@ -278,7 +278,7 @@ class CallController extends Controller
                 $user->email,
                 $subject,
                 $content,
-                'mail.call_notification'
+                'mail.call'
             );
         }
 

@@ -1,14 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
+use App\Http\Controllers\App\{
     InscriptionController,
-};
-
-use App\Http\Middleware\{
-    WithInscription,
-    isLocationEnabled,
-    isResultEnabled
 };
 
 use App\Http\Middleware\{NotAdmin, IsAdmin, NoInscription};
@@ -71,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('inscricoes') // OK
             ->name('inscriptions.')
             ->group(function () {
+
                 // Lista de inscrições
                 Route::get('/', [InscriptionController::class, 'index'])->name('index');
                 // Lista de pessoas com deficiência
@@ -79,8 +74,6 @@ Route::middleware(['auth'])->group(function () {
                 // Candidatos com nome social
                 Route::get('/nome-social', [InscriptionController::class, 'socialName'])
                     ->name('social.name');
-
-
 
                 Route::post('/inscriptions/data', [InscriptionController::class, 'getInscriptionsData'])
                     ->name('getInscriptionsData');
@@ -94,35 +87,7 @@ Route::middleware(['auth'])->group(function () {
                     ->name('general-list');
 
                 Route::get('/detalhes-do-candidato/{id}', [InscriptionController::class, 'getDetailsOfUser'])
-                    ->name('details');                
+                    ->name('details');
             });
     });
-
-    // 📝 Processo de inscrição
-    Route::middleware([NotAdmin::class])->group(function () {
-
-        // Area do candidato: exibe dashboard com as informações de como fazer a inscrição
-        Route::get('/inscricao', [ProfileController::class, 'profile'])->name('profile.user')->middleware([NoInscription::class]);
-
-        // 📄 Área do candidato (inscrição concluída)
-        Route::prefix('candidato')
-            ->name('candidate.')
-            ->middleware([WithInscription::class])
-            ->group(function () {
-                // Área do candidato: exibe o perfil da inscrição existente
-                Route::get('/area-restrita', [ProfileController::class, 'inscription'])->name('profile');
-
-                Route::get('/meu-local/pdf', [ProfileController::class, 'examCardPdf'])
-                    ->name('card.pdf')
-                    ->middleware([isLocationEnabled::class]);
-
-                Route::get('/meu-resultado/pdf', [ProfileController::class, 'resultCardPdf'])
-                    ->name('result.pdf')
-                    ->middleware([isResultEnabled::class]);
-
-                Route::get('/chamada/pdf', [ProfileController::class, 'generateCallPdf'])->name('call.pdf');
-            });
-    });
-    // PDF genérico
-    Route::post('/comprovante-de-inscricao', [InscriptionController::class, 'pdf'])->name('pdf');
 });

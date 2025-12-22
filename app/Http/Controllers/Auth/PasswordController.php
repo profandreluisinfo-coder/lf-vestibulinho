@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordResetController extends Controller
+class PasswordController extends Controller
 {
      /**
      * Reenvia um e-mail para o usuário com um link para redefinição de senha.
@@ -84,7 +84,7 @@ class PasswordResetController extends Controller
             return redirect()->route('login');
         }
 
-        return view('auth.reset-password', ['token' => $token]);
+        return view('auth.reset', ['token' => $token]);
     }
 
     /**
@@ -147,17 +147,15 @@ class PasswordResetController extends Controller
             'password_confirmation.same' => 'As senhas devem ser iguais',
         ]);
 
-        $user = Auth::user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
             return back()->with('error', 'Senha atual incorreta!');
         }
 
-        $user->update([
+        Auth::user()->update([
             'password' => Hash::make($request->new_password)
         ]);
 
-        $response = $userService->passwordChanged($user);
+        $response = $userService->passwordChanged(Auth::user());
 
         return back()->with(
             $response['success'] ? 'success' : 'warning',

@@ -1,4 +1,4 @@
-@extends('layouts.dash.admin')
+@extends('layouts.admin.master')
 
 @section('page-title', config('app.name') . ' | Calendário ' . $calendar->year)
 
