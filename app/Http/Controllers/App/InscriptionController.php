@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\App;
 
 use App\Models\User;
 use App\Models\Course;
@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Http\Requests\AcademicRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\CertificateRequest;
+use App\Http\Controllers\Controller;
 
 class InscriptionController extends Controller
 {
@@ -34,9 +35,36 @@ class InscriptionController extends Controller
     public function index(): View
     {
         // Agora apenas retorna a view, os dados virão via AJAX
-        return view('inscriptions.private.index');
+        return view('inscriptions.admin.index');
     }
 
+    /**
+     * Exibe a lista de candidatos com deficiência.
+     *
+     * @return View
+     */
+    public function pcd(): View
+    {
+        // Não carrega mais os dados aqui, apenas retorna a view vazia
+        return view('inscriptions.admin.pcd');
+    }
+
+    /**
+     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
+     *
+     * @return View
+     */
+    public function socialName(): View
+    {
+        $users = User::whereNotNull('social_name')
+            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
+            ->with('inscription')     // dados da inscrição na view
+            ->get();
+
+        view()->share('users', $users);
+
+        return view('inscriptions.admin.social-name');
+    }
     /**
      * Retorna os dados paginados para o DataTables via AJAX
      *
@@ -103,16 +131,7 @@ class InscriptionController extends Controller
         ]);
     }
 
-    /**
-     * Exibe a lista de candidatos com deficiência.
-     *
-     * @return View
-     */
-    public function getListOfPCD(): View
-    {
-        // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('inscriptions.private.pcd');
-    }
+
 
     /**
      * Retorna os dados paginados para o DataTables via AJAX
@@ -181,22 +200,7 @@ class InscriptionController extends Controller
         ]);
     }
 
-    /**
-     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
-     *
-     * @return View
-     */
-    public function getListOfSocialName(): View
-    {
-        $users = User::whereNotNull('social_name')
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // dados da inscrição na view
-            ->get();
 
-        view()->share('users', $users);
-
-        return view('inscriptions.private.social-name');
-    }
 
     /**
      * Exibe a ficha de inscrição de um candidato especificado.
@@ -639,5 +643,5 @@ class InscriptionController extends Controller
     public function create()
     {   // resources\views\inscriptions\create.blade.php
         return view('inscriptions.create');
-    }   
+    }
 }

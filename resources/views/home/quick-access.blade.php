@@ -69,9 +69,17 @@
                                     <strong>{!! $event['icon'] !!} {{ $event['label'] }}</strong><br>
 
                                     @if ($event['type'] === 'period')
+                                        @if ($event['start'] && $event['end'])
                                         {{ $calendar->formatPeriod($event['start'], $event['end']) }}
+                                        @else
+                                        <span class="text-muted">A definir</span>
+                                        @endif
                                     @else
+                                        @if ($event['date'])
                                         {{ $calendar->formatDate($event['date']) }}
+                                        @else
+                                        <span class="text-muted">A definir</span>
+                                        @endif
                                     @endif
                                 </li>
                             @endforeach

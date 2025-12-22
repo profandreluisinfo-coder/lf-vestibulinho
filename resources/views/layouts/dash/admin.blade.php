@@ -94,9 +94,8 @@
                     </button>
                     <div class="dropdown-menu-custom {{ request()->routeIs('users.*') ? 'show' : '' }}"
                         id="menuUsuarios">
-                        {{-- <a href="{{ route('users.index') }}" --}}
-                        <a href="#"
-                            class="dropdown-item-custom {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                        <a href="{{ route('users.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('users.index') ? 'active' : '' }}">
                             Lista de Usuários
                         </a>
                     </div>
@@ -118,8 +117,8 @@
                             class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
                             Pessoas com Deficiência
                         </a>
-                        <a href="{{ route('inscriptions.social-name') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social-name') ? 'active' : '' }}">
+                        <a href="{{ route('inscriptions.social.name') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social.name') ? 'active' : '' }}">
                             Nome Social
                         </a>
                     </div>

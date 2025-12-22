@@ -2,7 +2,7 @@
 
     <div class="container">
         
-        <h3 class="simple-title">Cursos</h3>
+        <h3 class="simple-title">Cursos Técnicos</h3>
 
         <div class="row g-4">
 

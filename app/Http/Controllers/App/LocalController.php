@@ -20,9 +20,9 @@ class LocalController extends Controller
     public function index()
     {
         // Obter todos as locais de prova
-        $examLocations = ExamLocation::all();
+        $locations = ExamLocation::all();
 
-        return view('local.admin.index', compact('examLocations'));
+        return view('local.admin.index', compact('locations'));
     }
 
     /**

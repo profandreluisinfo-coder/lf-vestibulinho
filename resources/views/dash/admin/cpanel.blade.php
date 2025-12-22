@@ -28,59 +28,54 @@
                 <div class="accordion-body">
                     <div class="stepper-container mb-5">
                         <!-- Etapa 1 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('calendar.index') }}" class="step-item text-secondary text-center" title="Definir Calendário">
                             <i
                                 class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
-                        </div>
+                        </a>
                         <!-- Divider -->
                         <div class="step-divider"></div>
                         <!-- Etapa 2 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('notice.index') }}" class="step-item text-secondary text-center" title="Publicar Edital">
                             <i
                                 class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
-                        </div>
-                        <!-- Divider -->
+                        </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 3 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('exam.create') }}" class="step-item text-secondary text-center" title="Agendar Prova">
                             <i
                                 class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
-                        </div>
-                        <!-- Divider -->
+                        </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 4 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('archive.index') }}" class="step-item text-secondary text-center" title="Publicar Prova">
                             <i
                                 class="bi {{ App\Models\Archive::latest('id')->first()->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
-                        </div>
-                        <!-- Divider -->
+                        </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 5 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('import.results') }}" class="step-item text-secondary text-center" title="Importar Notas">
                             <i
                                 class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
-                        </div>
-                        <!-- Divider -->
+                        </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 6 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('system.publish.result') }}" class="step-item text-secondary text-center">
                             <i
                                 class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>
-                        </div>
-                        <!-- Divider -->
+                        </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 7 -->
-                        <div class="step-item text-center">
+                        <a href="{{ route('callings.create') }}" class="step-item text-secondary text-center" title="Definir Chamadas">
                             <i
                                 class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -129,8 +124,8 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <canvas id="chartCursos" data-labels='@json($cursos->pluck('curso'))'
-                                        data-values='@json($cursos->pluck('total'))'>
+                                    <canvas id="chartCursos" data-labels='@json($cursos->pluck('name'))'
+                                        data-values='@json($cursos->pluck('inscriptions_count'))'>
                                     </canvas>
                                 </div>
                             </div>

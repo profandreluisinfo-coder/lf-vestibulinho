@@ -15,11 +15,37 @@ use App\Http\Controllers\App\{
     LocalController,
     NoticeController,
     ReportController,
-    ResultController
+    ResultController,
+    SettingController
 };
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
+    // ==========================
+    // ❓ Perguntas Frequentes (FAQ)
+    // ==========================
+    Route::prefix('faq') // OK
+        ->name('faq.')
+        ->group(function () {
+            Route::get('/', [FaqController::class, 'index'])->name('index');
+            Route::post('/gravar', [FaqController::class, 'store'])->name('store');
+            Route::get('/editar/{faq}', [FaqController::class, 'edit'])->name('edit');
+            Route::post('/editar/{faq}', [FaqController::class, 'update']);
+            Route::delete('/excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
+            Route::put('/publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
+            Route::put('/update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
+        });
+
+    // ==========================
+    // 🗓️ Calendário
+    // ==========================
+    Route::prefix('calendario') // OK
+        ->name('calendar.')
+        ->group(function () {
+            Route::get('/', [CalendarController::class, 'index'])->name('index');
+            Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
+            Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
+        });
 
     // ==========================
     // 📄 Editais
@@ -37,6 +63,17 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
+    // 🧾 Provas
+    // ==========================
+    Route::prefix('prova') // OK
+        ->name('exam.')
+        ->group(function () {
+            Route::get('/salas', [ExamController::class, 'index'])->name('index');
+            Route::get('/agendar', [ExamController::class, 'create'])->name('create');
+            Route::post('/salvar', [ExamController::class, 'store'])->name('store');
+        });
+
+    // ==========================
     // 🎓 Cursos
     // ==========================
     Route::prefix('cursos') // OK
@@ -49,7 +86,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/editar/{course}', [CourseController::class, 'update']);
             Route::delete('/excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
         });
-
 
     // ==========================
     // 📚 Arquivos (Provas anteriores)
@@ -86,32 +122,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // ❓ Perguntas Frequentes (FAQ)
-    // ==========================
-    Route::prefix('faq') // OK
-        ->name('faq.')
-        ->group(function () {
-            Route::get('/', [FaqController::class, 'index'])->name('index');
-            Route::post('/gravar', [FaqController::class, 'store'])->name('store');
-            Route::get('/editar/{faq}', [FaqController::class, 'edit'])->name('edit');
-            Route::post('/editar/{faq}', [FaqController::class, 'update']);
-            Route::delete('/excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
-            Route::put('/publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
-            Route::put('/update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
-        });
-
-    // ==========================
-    // 🗓️ Calendário
-    // ==========================
-    Route::prefix('calendario') // OK
-        ->name('calendar.')
-        ->group(function () {
-            Route::get('/', [CalendarController::class, 'index'])->name('index');
-            Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
-            Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
-        });
-
-    // ==========================
     // 📊 Relatórios
     // ==========================
     Route::prefix('relatorios') // OK
@@ -129,10 +139,10 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::prefix('chamadas') // OK
         ->name('callings.')
         ->group(function () {
-            Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('show');
             Route::get('/criar', [CallController::class, 'create'])->name('create');
             Route::post('/criar', [CallController::class, 'store'])->name('store');
             Route::delete('/apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
+            Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('show');
             Route::patch('/{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
             Route::get('/calls/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
             Route::get('/calls/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
@@ -151,16 +161,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/editar/{location}', [LocalController::class, 'update']);
             Route::delete('/excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
         });
-    // ==========================
-    // 🧾 Provas
-    // ==========================
-    Route::prefix('prova') // OK
-        ->name('exam.')
-        ->group(function () {
-            Route::get('/salas', [ExamController::class, 'index'])->name('index');
-            Route::get('/agendar', [ExamController::class, 'create'])->name('create');
-            Route::post('/salvar', [ExamController::class, 'store'])->name('store');
-        });
 
     // ==========================
     // 🏆 Resultados
@@ -169,5 +169,17 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('result.')
         ->group(function () {
             Route::get('/notas-e-classificacao', [ResultController::class, 'index'])->name('index');
+        });
+
+    // ==========================
+    // ⚙️ Configurações do Sistema
+    // ==========================
+    Route::prefix('sistema') // OK
+        ->name('system.')
+        ->group(function () {
+            Route::get('/redefinir-dados', [SettingController::class, 'index'])->name('index');
+            Route::get('/apagar-dados', [SettingController::class, 'reset'])->name('reset');
+            Route::post('/liberar-acesso-local', [SettingController::class, 'location'])->name('location');
+            Route::post('/liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
         });
 });

@@ -30,7 +30,6 @@
                         <th scope="col">Prova</th>
                         <th scope="col">Gabarito</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Usuário</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
@@ -52,13 +51,12 @@
                                     Gabarito
                                 </a>
                                 @else
-                                    <span class="text-danger">Não possui</span>
+                                    <span class="text-danger">-</span>
                                 @endif
                             </td>
                             <td><span
                                     class="badge bg-{{ $file->status ? 'success' : 'warning' }}">{{ $file->status ? 'publicado' : 'não publicado' }}</span>
                             </td>
-                            <td>{{ $file->user->name }}</td>
                             <td class="d-flex align-items-center justify-content-center gap-2">
 
                                 {{-- Botão de publicar (alterar status) --}}

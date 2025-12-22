@@ -1,14 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Guest;
+namespace App\Http\Controllers\Dash;
 
-use App\Http\Controllers\Controller;
-use App\Models\ExamResult;
 use App\Models\User;
+use App\Models\ExamResult;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    
+    public function index()
+    {
+        $users = User::getWithoutInscription();
+
+        return view('users.admin.index', compact('users'));
+    }
 
     public function clearSocialName(User $user)
     {
