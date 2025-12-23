@@ -1,29 +1,74 @@
 /* =========================================================
 SIDEBAR & DROPDOWNS - VESTIBULINHO LF
-Controla o comportamento da sidebar responsiva e
-os menus dropdown internos.
+Controla o comportamento completo da sidebar:
+- Mobile: abrir/fechar com hambúrguer
+- Desktop: recolher/expandir com logo
+- Dropdowns: gerenciar menus internos
 ========================================================= */
 
-// Funções globais para toggle
+// ==================== FUNÇÕES GLOBAIS ====================
+
+/**
+ * Toggle da sidebar no MOBILE (abrir/fechar)
+ * Acionado pelo botão hambúrguer
+ */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-    if (sidebar && overlay) {
-        sidebar.classList.toggle('show');
-        overlay.classList.toggle('show');
+
+    if (!sidebar || !overlay) return;
+
+    // 🔴 MOBILE: remove collapsed antes de abrir
+    if (window.innerWidth < 992) {
+        sidebar.classList.remove('collapsed');
     }
+
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
 }
 
+// function toggleSidebar() {
+//     const sidebar = document.getElementById('sidebar');
+//     const overlay = document.getElementById('sidebarOverlay');
+    
+//     if (sidebar && overlay) {
+//         sidebar.classList.toggle('show');
+//         overlay.classList.toggle('show');
+//     }
+// }
+
+/**
+ * Fecha a sidebar no MOBILE
+ * Acionado ao clicar no overlay ou em links
+ */
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
+    
     if (sidebar && overlay) {
         sidebar.classList.remove('show');
         overlay.classList.remove('show');
     }
 }
 
-// Função global para toggleDropdown
+/**
+ * Toggle da sidebar no DESKTOP (recolher/expandir)
+ * Acionado ao clicar na logo
+ * Salva o estado no localStorage para persistir entre páginas
+ */
+function toggleSidebarCollapse() {
+    const sidebar = document.getElementById('sidebar');
+    
+    if (!sidebar) return;
+    
+    const isCollapsed = sidebar.classList.toggle('collapsed');
+    localStorage.setItem('sidebarCollapsed', isCollapsed);
+}
+
+/**
+ * Toggle de dropdowns internos da sidebar
+ * Acionado ao clicar nos botões dropdown
+ */
 function toggleDropdown(id) {
     const dropdown = document.getElementById(id);
     if (!dropdown) return;
@@ -57,10 +102,36 @@ function toggleDropdown(id) {
     }
 }
 
-// Quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function () {
+// ==================== INICIALIZAÇÃO ====================
 
-    // Fechar sidebar ao clicar em links (mobile)
+document.addEventListener('DOMContentLoaded', function () {
+    
+    // ========== RESTAURA ESTADO COLLAPSED (DESKTOP) ==========
+    const sidebar = document.getElementById('sidebar');
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    
+    if (isCollapsed && sidebar) {
+        sidebar.classList.add('collapsed');
+    }
+    
+    // ========== EVENTOS MOBILE ==========
+    
+    // Botão hambúrguer
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleSidebar();
+        });
+    }
+
+    // Overlay (fundo escuro)
+    const overlay = document.getElementById('sidebarOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+
+    // Fechar ao clicar em links (apenas mobile)
     const menuLinks = document.querySelectorAll('.menu-link, .dropdown-item-custom');
     menuLinks.forEach(link => {
         link.addEventListener('click', function () {
@@ -70,35 +141,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Fechar sidebar ao redimensionar para desktop
+    // Fechar ao redimensionar para desktop
     window.addEventListener('resize', function () {
         if (window.innerWidth >= 992) {
             closeSidebar();
         }
     });
 
-    // Listener para overlay
-    const overlay = document.getElementById('sidebarOverlay');
-    if (overlay) {
-        overlay.addEventListener('click', closeSidebar);
-    }
-
-    // Listener para botão toggle
-    const toggleBtn = document.querySelector('.menu-toggle');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', toggleSidebar);
-    }
-
+    // ========== OFFCANVAS ==========
+    
     // Fechar offcanvas ao clicar em links internos
     const offcanvasLinks = document.querySelectorAll('#offcanvasMenu a');
     const offcanvasElement = document.getElementById('offcanvasMenu');
 
-    offcanvasLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-            if (bsOffcanvas) {
-                bsOffcanvas.hide();
-            }
+    if (offcanvasElement) {
+        offcanvasLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                if (bsOffcanvas) {
+                    bsOffcanvas.hide();
+                }
+            });
         });
-    });
+    }
 });

@@ -2,10 +2,8 @@
 :root {
     --sidebar-width: 270px;
     --topbar-height: 60px;
-    /* --primary-color: #2563eb; */
     --primary-color: #000080;
     --primary-hover: #1d4ed8;
-    /* --sidebar-bg: #0f172a; */
     --sidebar-bg: #08193E;
     --sidebar-hover: #1e293b;
     --sidebar-text: #cbd5e1;
@@ -75,6 +73,16 @@ a {
     width: 36px;
     height: 36px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-brand img:hover {
+    transform: scale(1.1);
+}
+
+.sidebar-brand img:active {
+    transform: scale(0.95);
 }
 
 .sidebar-brand h4 {
@@ -90,32 +98,71 @@ a {
     padding: 20px 0;
 }
 
-/* Adicione ao seu arquivo admin.css */
+/* ==================== SIDEBAR COLLAPSE (DESKTOP) ==================== */
 
-/* Item de menu ativo */
-.menu-link.active {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    font-weight: 600;
+/* Sidebar recolhida */
+.sidebar.collapsed {
+    width: 80px !important;
 }
 
-.menu-link.active i {
-    color: #fff;
+/* Esconde textos quando recolhida */
+.sidebar.collapsed .sidebar-brand h4,
+.sidebar.collapsed .menu-section-title,
+.sidebar.collapsed .menu-link span,
+.sidebar.collapsed .dropdown-toggle-custom span,
+.sidebar.collapsed .sidebar form button span {
+    display: none;
 }
 
-/* Item de dropdown ativo */
-.dropdown-item-custom.active {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    font-weight: 600;
-    border-left: 3px solid #3b82f6;
-    padding-left: calc(1rem - 3px);
+/* Centraliza logo quando recolhida */
+.sidebar.collapsed .sidebar-brand {
+    justify-content: center;
+    padding: 20px 10px;
 }
 
-/* Dropdown aberto por padrão */
-.dropdown-menu-custom.show {
-    display: block;
-    max-height: 500px;
+.sidebar.collapsed .sidebar-brand img {
+    margin: 0;
+}
+
+/* Ajusta itens de menu quando recolhida */
+.sidebar.collapsed .menu-item,
+.sidebar.collapsed .menu-dropdown,
+.sidebar.collapsed .sidebar form {
+    padding: 0 10px;
+}
+
+.sidebar.collapsed .menu-link,
+.sidebar.collapsed .dropdown-toggle-custom,
+.sidebar.collapsed .sidebar form button {
+    justify-content: center;
+    padding: 12px 10px;
+    gap: 0;
+}
+
+.sidebar.collapsed .menu-link i,
+.sidebar.collapsed .dropdown-toggle-custom i:first-child,
+.sidebar.collapsed .sidebar form button i {
+    margin-right: 0;
+    width: auto;
+}
+
+/* Esconde seta do dropdown quando recolhida */
+.sidebar.collapsed .dropdown-toggle-custom i.bi-chevron-down {
+    display: none;
+}
+
+/* Esconde dropdown quando recolhida */
+.sidebar.collapsed .dropdown-menu-custom {
+    display: none !important;
+}
+
+/* Ajuste do conteúdo principal e topbar quando sidebar recolhe */
+.sidebar.collapsed + .sidebar-overlay + .topbar {
+    left: 80px;
+}
+
+.sidebar.collapsed ~ .main-content {
+    margin-left: 80px;
 }
 
 /* ====== Seções ====== */
@@ -193,6 +240,17 @@ a {
     color: #fff;
 }
 
+/* Item de menu ativo */
+.menu-link.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.menu-link.active i {
+    color: #fff;
+}
+
 /* ====== Dropdown interno ====== */
 .dropdown-toggle-custom .bi-chevron-down {
     margin-left: auto;
@@ -214,6 +272,7 @@ a {
 }
 
 .dropdown-menu-custom.show {
+    display: block;
     max-height: 500px;
     padding-top: 4px;
     padding-bottom: 8px;
@@ -232,6 +291,15 @@ a {
 .dropdown-item-custom:hover {
     background: var(--sidebar-hover);
     color: #fff;
+}
+
+/* Item de dropdown ativo */
+.dropdown-item-custom.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    font-weight: 600;
+    border-left: 3px solid #3b82f6;
+    padding-left: calc(1rem - 3px);
 }
 
 /* ====== Botão de sair dentro do form ====== */
@@ -525,29 +593,87 @@ i {
 }
 
 /* ==================== RESPONSIVIDADE ==================== */
+
 @media (max-width: 991px) {
+    
+    /* SIDEBAR - Esconde completamente por padrão */
     .sidebar {
-        transform: translateX(-100%);
+        transform: translateX(-100%) !important;
     }
 
-    .sidebar.show {
-        transform: translateX(0);
+    /* SIDEBAR ABERTA - Tanto com .show quanto com .collapsed.show */
+    .sidebar.show,
+    .sidebar.collapsed.show {
+        transform: translateX(0) !important;
     }
-
+    
+    /* TOPBAR - Ocupa toda largura */
     .topbar {
-        left: 0;
+        left: 0 !important;
     }
 
+    /* MAIN CONTENT - Ocupa toda largura */
     .main-content {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
 
+    /* BOTÃO HAMBÚRGUER - Torna visível */
     .menu-toggle {
         display: block;
     }
 
+    /* USER INFO - Esconde no mobile */
     .user-info {
         display: none;
+    }
+    
+    /* SIDEBAR COM COLLAPSED - Mantém largura normal no mobile */
+    .sidebar.collapsed {
+        width: var(--sidebar-width) !important;
+    }
+    
+    /* SIDEBAR COLLAPSED - Mostra textos normalmente no mobile */
+    .sidebar.collapsed .sidebar-brand h4,
+    .sidebar.collapsed .menu-section-title,
+    .sidebar.collapsed .menu-link span,
+    .sidebar.collapsed .dropdown-toggle-custom span,
+    .sidebar.collapsed .sidebar form button span {
+        display: block;
+    }
+    
+    /* SIDEBAR COLLAPSED - Restaura alinhamento normal */
+    .sidebar.collapsed .sidebar-brand {
+        justify-content: flex-start;
+        padding: 20px;
+    }
+    
+    /* SIDEBAR COLLAPSED - Restaura padding normal dos itens */
+    .sidebar.collapsed .menu-item,
+    .sidebar.collapsed .menu-dropdown,
+    .sidebar.collapsed .sidebar form {
+        padding: 0 16px;
+    }
+    
+    /* SIDEBAR COLLAPSED - Restaura layout normal dos links */
+    .sidebar.collapsed .menu-link,
+    .sidebar.collapsed .dropdown-toggle-custom,
+    .sidebar.collapsed .sidebar form button {
+        gap: 12px;
+        justify-content: flex-start;
+        padding: 12px 16px;
+    }
+    
+    /* SIDEBAR COLLAPSED - Restaura ícones */
+    .sidebar.collapsed .menu-link i,
+    .sidebar.collapsed .dropdown-toggle-custom i:first-child,
+    .sidebar.collapsed .sidebar form button i {
+        margin-right: 0;
+        width: 20px;
+    }
+    
+    /* SIDEBAR COLLAPSED - Mostra seta dropdown no mobile */
+    .sidebar.collapsed .dropdown-toggle-custom i.bi-chevron-down {
+        display: block;
     }
 }
 

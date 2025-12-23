@@ -68,26 +68,24 @@ Route::middleware(['auth'])->group(function () {
 
                 // Lista de inscrições
                 Route::get('/', [InscriptionController::class, 'index'])->name('index');
+                Route::post('/inscriptions/data', [InscriptionController::class, 'getInscriptionsData'])
+                    ->name('get.data');
+
                 // Lista de pessoas com deficiência
                 Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
                     ->name('pcd');
+                Route::post('/pcd-data', [InscriptionController::class, 'getPCDData'])
+                    ->name('pcd.data');
+                    
                 // Candidatos com nome social
                 Route::get('/nome-social', [InscriptionController::class, 'socialName'])
                     ->name('social.name');
 
-                Route::post('/inscriptions/data', [InscriptionController::class, 'getInscriptionsData'])
-                    ->name('getInscriptionsData');
-                Route::post('/pcd-data', [InscriptionController::class, 'getPCDData'])
-                    ->name('getPCDData');
-
                 Route::get('/inscricao/pdf', [InscriptionController::class, 'exportPdf'])
                     ->name('pdf');
 
-                Route::get('/lista-geral', [InscriptionController::class, 'getListOfInscriptions'])
-                    ->name('general-list');
-
-                Route::get('/detalhes-do-candidato/{id}', [InscriptionController::class, 'getDetailsOfUser'])
-                    ->name('details');
+                Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+                    ->name('show');
             });
     });
 });

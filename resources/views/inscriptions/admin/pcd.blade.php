@@ -64,7 +64,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('inscriptions.getPCDData') }}", // Defina essa rota
+                    url: "{{ route('inscriptions.pcd.data') }}", // Defina essa rota
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

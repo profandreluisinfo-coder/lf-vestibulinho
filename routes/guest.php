@@ -6,8 +6,7 @@ use App\Http\Controllers\Guest\{
     ArchiveController,
     FaqController,
     HomeController,
-    ResultController,
-    CalendarController
+    ResultController
 };
 
 use App\Http\Controllers\App\{

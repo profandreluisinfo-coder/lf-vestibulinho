@@ -39,35 +39,9 @@ class InscriptionController extends Controller
     }
 
     /**
-     * Exibe a lista de candidatos com deficiência.
-     *
-     * @return View
-     */
-    public function pcd(): View
-    {
-        // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('inscriptions.admin.pcd');
-    }
-
-    /**
-     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
-     *
-     * @return View
-     */
-    public function socialName(): View
-    {
-        $users = User::whereNotNull('social_name')
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // dados da inscrição na view
-            ->get();
-
-        view()->share('users', $users);
-
-        return view('inscriptions.admin.social-name');
-    }
-    /**
      * Retorna os dados paginados para o DataTables via AJAX
      *
+     * Os dados serão exibidos na tabela de inscrições ativas no dashboard, na view "inscriptions.admin.index".
      * @param Request $request
      * @return JsonResponse
      */
@@ -119,7 +93,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'cpf' => $user->cpf,
                 'user_id' => $user->id,
-                'actions' => view('inscriptions.private.partials.inscription-actions', compact('user'))->render()
+                'actions' => view('inscriptions.admin.inscription-actions', compact('user'))->render()
             ];
         });
 
@@ -131,7 +105,33 @@ class InscriptionController extends Controller
         ]);
     }
 
+    /**
+     * Exibe a lista de candidatos com deficiência.
+     *
+     * @return View
+     */
+    public function pcd(): View
+    {
+        // Não carrega mais os dados aqui, apenas retorna a view vazia
+        return view('inscriptions.admin.pcd');
+    }
 
+    /**
+     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
+     *
+     * @return View
+     */
+    public function socialName(): View
+    {
+        $users = User::whereNotNull('social_name')
+            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
+            ->with('inscription')     // dados da inscrição na view
+            ->get();
+
+        view()->share('users', $users);
+
+        return view('inscriptions.admin.social-name');
+    }
 
     /**
      * Retorna os dados paginados para o DataTables via AJAX
@@ -188,7 +188,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'accessibility' => $user->user_detail?->accessibility ?? '-',
                 'user_id' => $user->id,
-                'actions' => view('inscriptions.private.partials.pcd-actions', compact('user'))->render()
+                'actions' => view('inscriptions.admin.pcd-actions', compact('user'))->render()
             ];
         });
 
@@ -200,8 +200,6 @@ class InscriptionController extends Controller
         ]);
     }
 
-
-
     /**
      * Exibe a ficha de inscrição de um candidato especificado.
      *
@@ -209,13 +207,13 @@ class InscriptionController extends Controller
      *
      * @return View A view com a ficha de inscri o do candidato.
      */
-    public function getDetailsOfUser($id): View
+    public function show($id): View
     {
         $id = Crypt::decrypt($id);
 
         $user = User::find($id);
 
-        return view('inscriptions.private.details')->with('user', $user);
+        return view('inscriptions.admin.show')->with('user', $user);
     }
 
     // Passo 1: Dados pessoais
@@ -468,6 +466,7 @@ class InscriptionController extends Controller
             ]
         );
     }
+
     // Gravar Dados de Passo 6
     public function otherStore(OtherRequest $request): Response|RedirectResponse
     {
@@ -488,6 +487,7 @@ class InscriptionController extends Controller
 
         return redirect()->route('step.course');
     }
+
     // Passo 7: Curso Pretendido
     public function course(): View|RedirectResponse
     {
@@ -498,6 +498,7 @@ class InscriptionController extends Controller
             'courses' => Course::all()
         ]);
     }
+
     // Gravar Dados de Passo 7
     public function courseStore(CourseRequest $request)
     {
@@ -506,6 +507,7 @@ class InscriptionController extends Controller
 
         return redirect()->route('step.confirm');
     }
+
     // Passo 8: Confirmar Dados
     public function confirm(): View|RedirectResponse
     {
@@ -534,6 +536,7 @@ class InscriptionController extends Controller
             $steps->all()
         ));
     }
+
     // Gravar Dados de Passo 8
     public function inscriptionStore(InscriptionService $inscriptionService)
     {
@@ -640,6 +643,11 @@ class InscriptionController extends Controller
         return $pdf->download('inscricoes.pdf');
     }
 
+    /**
+     * Renderiza a view para o formulário de inscrição.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {   // resources\views\inscriptions\create.blade.php
         return view('inscriptions.create');
