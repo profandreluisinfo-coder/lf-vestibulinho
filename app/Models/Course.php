@@ -14,7 +14,7 @@ class Course extends Model
         'description',
         'duration',
         'info',
-        'vacancies',
+        'vacancies'
     ];
 
     public $timestamps = false;

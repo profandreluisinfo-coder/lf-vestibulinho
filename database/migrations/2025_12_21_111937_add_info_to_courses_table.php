@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->longText('info')->nullable()->after('description');
+            $table->unsignedTinyInteger('duration')->default(0)->after('description');
+            $table->longText('info')->nullable()->after('duration');
         });
     }
 
@@ -22,6 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn('duration');
             $table->dropColumn('info');
         });
     }
