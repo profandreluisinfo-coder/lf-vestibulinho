@@ -45,7 +45,7 @@ class InscriptionController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function getInscriptionsData(Request $request): JsonResponse
+    public function getData(Request $request): JsonResponse
     {
         // Captura os parâmetros do DataTables
         $draw = $request->input('draw');
@@ -117,29 +117,12 @@ class InscriptionController extends Controller
     }
 
     /**
-     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
-     *
-     * @return View
-     */
-    public function socialName(): View
-    {
-        $users = User::whereNotNull('social_name')
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // dados da inscrição na view
-            ->get();
-
-        view()->share('users', $users);
-
-        return view('inscriptions.admin.social-name');
-    }
-
-    /**
      * Retorna os dados paginados para o DataTables via AJAX
      *
      * @param Request $request
      * @return JsonResponse
      */
-    public function getPCDData(Request $request): JsonResponse
+    public function getPcd(Request $request): JsonResponse
     {
         // Captura os parâmetros do DataTables
         $draw = $request->input('draw');
@@ -198,6 +181,23 @@ class InscriptionController extends Controller
             'recordsFiltered' => $totalFiltered,
             'data' => $data
         ]);
+    }
+
+    /**
+     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
+     *
+     * @return View
+     */
+    public function socialName(): View
+    {
+        $users = User::whereNotNull('social_name')
+            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
+            ->with('inscription')     // dados da inscrição na view
+            ->get();
+
+        view()->share('users', $users);
+
+        return view('inscriptions.admin.social-name');
     }
 
     /**
@@ -580,67 +580,6 @@ class InscriptionController extends Controller
                     : 'Erro inesperado. Por favor, tente novamente.' . $e->getMessage(),
             );
         }
-    }
-
-    /**
-     * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.
-     *
-     * @return Response O PDF gerado com a ficha de inscri o do candidato.
-     */
-    public function pdf()
-    {
-        $user = Auth::user();
-
-        if ($user) {
-            // Gera o PDF com a view
-            $pdf = Pdf::loadView('pdf.comprovante', [
-                'user' => $user
-            ]);
-
-            // Sanitiza o CPF (remove espaços, pontos, traços etc.)
-            $cpfSanitizado = preg_replace('/[^0-9]/', '', $user->cpf);
-
-            // Monta o nome do arquivo
-            $filename = 'comprovante_' . $cpfSanitizado . '.pdf';
-
-            // Retorna o PDF diretamente como download
-            return $pdf->download($filename);
-        }
-
-        return redirect()->route('errors.404');
-    }
-
-    /**
-     * Exporta a lista de inscrições em formato PDF.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function exportPdf(Request $request)
-    {
-        $search = $request->get('search');
-
-        $users = User::whereHas('inscription')
-            ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
-            ->select('users.*')
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('users.name', 'like', "%{$search}%")
-                        ->orWhere('users.cpf', 'like', "%{$search}%")
-                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy('inscriptions.id', 'asc')
-            ->get();
-
-        // código de geração de PDF...
-        $pdf = Pdf::loadView('pdf.inscriptions-list', [
-            'users' => $users,
-            'search' => $search,
-        ]);
-
-        return $pdf->download('inscricoes.pdf');
     }
 
     /**

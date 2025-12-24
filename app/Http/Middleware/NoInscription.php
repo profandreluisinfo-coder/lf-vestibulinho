@@ -17,7 +17,7 @@ class NoInscription
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->user()->inscription()->exists()) {
-            return redirect()->route('candidate.profile');
+            return redirect()->route('dash.user.inscription');
         }
 
         return $next($request);

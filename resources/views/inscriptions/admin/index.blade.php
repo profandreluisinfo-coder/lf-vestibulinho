@@ -25,7 +25,7 @@
 
         <div class="d-flex gap-2 mb-4">
             <button id="pdfButton" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
-                <i class="bi bi-filetype-pdf me-1"></i>
+                <i class="bi bi-filetype-pdf me-2"></i>
                 <span>Gerar PDF (Todos)</span>
             </button>
         </div>
@@ -162,7 +162,7 @@
                 `);
 
                 // Monta a URL com o filtro de busca (se houver)
-                let pdfUrl = "{{ route('inscriptions.pdf') }}";
+                let pdfUrl = "{{ route('pdf.inscriptions') }}";
                 if (searchValue) {
                     pdfUrl += '?search=' + encodeURIComponent(searchValue);
                 }

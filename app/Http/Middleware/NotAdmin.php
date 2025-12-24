@@ -16,8 +16,7 @@ class NotAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //dd(auth()->user()); // Ver o usuário autenticado
-
+        // Para rotas que o 'admin' não pode acessar
         if (Gate::allows('admin')) {
             abort(403);
         }

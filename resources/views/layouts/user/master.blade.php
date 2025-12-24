@@ -111,7 +111,7 @@
                             </h5>
                         </div>
                         <div class="modal-body">
-                            <form id="change-password" method="POST" action="{{ route('alterar.senha') }}">
+                            <form id="change-password" method="POST" action="{{ route('update.password') }}">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="currentPassword" class="form-label">Senha atual</label>

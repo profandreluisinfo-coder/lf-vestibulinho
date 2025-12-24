@@ -67,11 +67,6 @@ class LoginController extends Controller
             /** @var \App\Models\User $user */
             $user = Auth::user();
 
-            // if (! $user instanceof User) {
-            //     Auth::logout();
-            //     return redirect()->back()->with('error', 'Usuário inválido.');
-            // }
-
             if (!$user->email_verified_at) {
                 Auth::logout();
                 return redirect()
@@ -93,7 +88,7 @@ class LoginController extends Controller
 
     /**
      * Redireciona o usuário para a rota baseada no seu papel.
-     * Se o papel do usuário for 'admin', ele será redirecionado para a rota 'control.panel'.
+     * Se o papel do usuário for 'admin', ele será redirecionado para a rota 'dash.admin.home'.
      * Se o papel do usuário for 'user', ele será redirecionado para a rota 'dashboard'.
      * Caso contrário, ele será redirecionado para a rota 'login' com um erro.
      *
@@ -103,7 +98,7 @@ class LoginController extends Controller
     protected function redirectUserBasedOnRole(User $user): RedirectResponse
     {
         if ($user->role === 'admin') {
-            return redirect()->route('control.panel');
+            return redirect()->route('dash.admin.home');
         }
 
         if ($user->role === 'user') {
@@ -111,8 +106,8 @@ class LoginController extends Controller
             $hasInscription = $user->inscription()->exists();
 
             return $hasInscription
-                ? redirect()->route('user.profile') // Vai para o início da inscrição
-                : redirect()->route('candidate.profile'); // Vai para o dashboard de inscrição
+                ? redirect()->route('dash.user.home') // Vai para o início da inscrição
+                : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
         }
 
         return redirect()->route('login')->with([

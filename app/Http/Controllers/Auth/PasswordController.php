@@ -13,30 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends Controller
 {
-     /**
-     * Reenvia um e-mail para o usuário com um link para redefinição de senha.
-     * Valida os campos 'email' e tenta reenviar um e-mail para o usuário com base no token informado.
-     * Se o token for inválido, o usuário será redirecionado para a página de início.
-     * Se o token for válido, o endereço de e-mail armazenado no token será exibido na página de redefinição de senha.
-     *
-     * @param Request $request
-     * @param UserService $userService
-     * @return RedirectResponse
-     */
-    public function resendEmailAction(Request $request, UserService $userService): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-        ], [
-            'email.required' => 'O campo e-mail é obrigatório',
-            'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
-        ]);
-
-        $response = $userService->resendEmail($credentials['email']);
-
-        return redirect()->route('resend.email')->with($response['success'] ? 'success' : 'warning', $response['message']);
-    }
-
     /**
      * Exibe a página de redefinição de senha.
      *
@@ -122,7 +98,6 @@ class PasswordController extends Controller
         return redirect()->route('login')->with('success', $result['message']);
     }
 
-    
     /**
      * Atualiza a senha do usuário autenticado
      *

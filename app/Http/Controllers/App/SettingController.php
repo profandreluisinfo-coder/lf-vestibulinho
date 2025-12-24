@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\User;
 use App\Models\Course;
@@ -9,13 +10,11 @@ use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\CallList;
-use Illuminate\View\View;
 use App\Models\ExamResult;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
 
 class SettingController extends Controller
 {
@@ -51,7 +50,7 @@ class SettingController extends Controller
     {
         try {
             // Garante que só admin possa resetar o sistema
-            if (!auth()->user() || (!(Gate::allows('admin')))) {
+            if (!auth()->user()->role === 'admin') {
                 return response()->json([
                     'success' => false,
                     'message' => 'Acesso negado. Somente administradores podem redefinir o sistema.'
@@ -68,11 +67,13 @@ class SettingController extends Controller
             // Ajusta AUTO_INCREMENT dos users
             $maxUserId = User::max('id');
             $nextUserId = $maxUserId ? $maxUserId + 1 : 1;
+
             DB::statement("ALTER TABLE users AUTO_INCREMENT = " . (int) $nextUserId);
 
             // Ajusta AUTO_INCREMENT das inscriptions
             $maxInscriptionId = DB::table('inscriptions')->max('id');
             $nextInscriptionId = $maxInscriptionId ? $maxInscriptionId + 1 : 1;
+
             DB::statement("ALTER TABLE inscriptions AUTO_INCREMENT = " . (int) $nextInscriptionId);
 
             // Zera vagas dos cursos
@@ -93,8 +94,12 @@ class SettingController extends Controller
             // Apaga todos os registros da tabela de chamadas
             Call::truncate();
 
-            // Apaga todos os registros da tabela de settings
-            Setting::truncate();
+            // Alterar para 'false' campos 'calendar', 'result' e 'location' da tabela de settings
+            Setting::query()->update([
+                'calendar' => false,
+                'result' => false,
+                'location' => false,
+            ]);
 
             // Apagar os dados de autenticação
             session()->flush();
@@ -118,6 +123,24 @@ class SettingController extends Controller
             ], 500);
         }
     }
+
+    public function calendar(Request $request)
+    {
+        $settings = [
+            'calendar' => $request->filled('calendar')
+        ];
+
+        Setting::updateOrCreate(
+            ['id' => 1], 
+            ['calendar' => $settings['calendar']
+        ]);
+
+        if (Setting::first()->calendar) {
+            return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
+        }
+
+        return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
+    }   
 
     /**
      * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
@@ -166,8 +189,9 @@ class SettingController extends Controller
             'result' => $request->filled('result')
         ];
 
-        Setting::updateOrCreate(['id' => 1], [
-            'result' => $settings['result']
+        Setting::updateOrCreate(
+            ['id' => 1], 
+            ['result' => $settings['result']
         ]);
 
         if (Setting::first()->result) {

@@ -14,16 +14,16 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
+    
     // Login de admins
-    Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('auth.login');
+    Route::get('/auth/admin', [LoginController::class, 'loginForAdmin'])->name('auth.admin')->middleware('throttle:3,1'); // pasta.view
 
     Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
     Route::post('/registrar', [RegisterController::class, 'store']);
 
-    // ====================
     // VERIFICAÇÃO DE EMAIL
-    // ====================
     Route::get('/validate/{token}', [EmailController::class, 'verify'])->name('verify');
+    
     // Reenvio de verificação de e-mail
     Route::get('/reenviar-email', [EmailController::class, 'resendEmail'])->name('resend.email');
     Route::post('/reenviar-email', [EmailController::class, 'resendEmailAction']);
@@ -38,6 +38,6 @@ Route::middleware(['guest'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/alterar-senha', [PasswordController::class, 'updatePassword'])->name('alterar.senha');
+    Route::post('/alterar-senha', [PasswordController::class, 'updatePassword'])->name('update.password');
     Route::post('/logout', LogoutController::class)->name('logout');
 });

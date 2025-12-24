@@ -4,6 +4,11 @@
 
 @section('dash-content')
 
+@php
+    $notice   = \App\Models\Notice::first();
+    //$calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();
+@endphp
+
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -12,17 +17,28 @@
             <i class="bi bi-calendar4-week me-2"></i>Calendário
         </h5>
 
-        @php
-            $notice   = \App\Models\Notice::first();
-            //$calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();
-        @endphp
-
         <a href="{{ route('calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar->exists() ? 'Editar' : 'Novo' }}
         </a>
 
+        
+
     </div>
+
+    <form id="calendar-access-form" class="mb-5" action="{{ route('system.publish.calendar') }}" method="POST">
+        @csrf
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
+                onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
+            <label class="form-check-label" for="calendar">
+                Acesso ao calendário:
+                <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
+                    {{ $settings->calendar != 0 ? 'Liberado' : 'Bloqueado' }}
+                </span>
+            </label>
+        </div>
+    </form>
 
     @if (session('success'))
 
@@ -158,3 +174,7 @@
 </div>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/swa/calendar/publish.js') }}"></script>
+@endpush

@@ -19,7 +19,7 @@
     <main class="auth mt-5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-5">
                     <div class="card shadow">
                         <header
                             class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
@@ -36,7 +36,7 @@
                         @include('components.alerts')
                             <div>
                                 <p class="text-muted text-center">
-                                    Para registrar seus dados de acesso, preencha o formulário abaixo:
+                                    Para participar do Vestibulinho LF {{ $calendar->year }}, você precisa registrar e validar seus dados de acesso, preenchendo o formulário abaixo. Você receberá um e-mail contendo um <i>link</i>, o qual devererá ser clicado, para confirmar o endereço de e-mail cadastrado.
                                 </p>
                             </div>
 
@@ -77,8 +77,7 @@
                                 <div class="mb-3">
                                     <div class="form-group col-md-12">
                                         <small class="text-muted">
-                                            ATENÇÃO: Sua senha deve conter no mínimo 6 caracteres e no máximo 8 caracteres,
-                                            incluindo pelo menos uma letra maiúscula, uma letra minúscula e um número.
+                                            <b>ATENÇÃO:</b> Sua senha deve conter no <b>mínimo</b> 6 caracteres e no <b>máximo</b> 8 caracteres, incluindo, <b>pelo menos</b>, uma letra maiúscula, uma letra minúscula <b>e</b> um número.
                                         </small>
                                     </div>
                                 </div>

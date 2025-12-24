@@ -47,7 +47,7 @@
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>
                 <div class="menu-item">
-                    <a href="{{ route('control.panel') }}"
+                    <a href="{{ route('dash.admin.home') }}"
                         class="menu-link {{ request()->routeIs('painel') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
@@ -389,7 +389,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="change-password" method="POST" action="{{ route('alterar.senha') }}">
+                    <form id="change-password" method="POST" action="{{ route('update.password') }}">
                         @csrf
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Senha atual</label>

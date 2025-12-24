@@ -14,7 +14,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function dashboard()
+    public function home()
     {
         // Candidatos por bairro
         $bairros = DB::table('user_details')
@@ -38,7 +38,7 @@ class AdminController extends Controller
 
         $sexoPorCurso = Course::getGendersByCourses();
 
-        return view('dash.admin.cpanel', [
+        return view('dash.admin.home', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,

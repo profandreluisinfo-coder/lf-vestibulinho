@@ -16,6 +16,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Para rotas que só o 'admin' pode acessar        
         if (!Gate::allows('admin')) {
             abort(403);
         }

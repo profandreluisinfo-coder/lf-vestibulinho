@@ -60,7 +60,7 @@
                     </div>
                     <div class="card-body events pt-3 pb-5 overflow-y-scroll hide-scrollbar" style="max-height: 320px;" id="autoScrollEvents">
 
-                        @if (App\Models\Calendar::getActive())
+                        @if ($settings->calendar)
                         
                         <ul class="list-group list-group-flush">
 

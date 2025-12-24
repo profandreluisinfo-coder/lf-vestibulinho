@@ -1,7 +1,7 @@
 <ul class="nav nav-pills flex-column mb-auto">
     {{-- Início --}}
     <li class="nav-item mb-1">
-        <a href="{{ route('control.panel') }}" class="nav-link text-light">
+        <a href="{{ route('dash.admin.home') }}" class="nav-link text-light">
             <i class="bi bi-house-door me-2"></i> Início
         </a>
     </li>

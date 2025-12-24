@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     protected $attributes = [
+        'claendar' => false,
         'location' => false,
         'result' => false,
     ];
 
     protected $fillable = [
+        'calendar',
         'location',
         'result',
     ];

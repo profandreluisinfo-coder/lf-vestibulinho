@@ -73,19 +73,19 @@
 
                                 <ul class="list-unstyled mb-0">
                                     <li class="mb-2">
-                                        <a href="{{ route('report.allocation') }}" target="_blank"
+                                        <a href="{{ route('pdf.allocation') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a href="{{ route('report.rooms') }}" target="_blank"
+                                        <a href="{{ route('pdf.rooms') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('report.signs') }}" target="_blank"
+                                        <a href="{{ route('pdf.signs') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
                                         </a>
@@ -108,7 +108,7 @@
                                 <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                             </h5>
 
-                            <form id="location-access-form" action="{{ route('system.location') }}" method="POST">
+                            <form id="location-access-form" action="{{ route('system.publish.location') }}" method="POST">
                                 @csrf
 
                                 <div class="form-check form-switch mb-3">

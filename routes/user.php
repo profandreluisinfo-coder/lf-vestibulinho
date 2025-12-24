@@ -6,12 +6,13 @@ use App\Http\Controllers\Dash\{
     UserController
 };
 
-use App\Http\Middleware\{IsAdmin, NotAdmin, WithInscription, NoInscription, isLocationEnabled, isResultEnabled};
+use App\Http\Middleware\{IsAdmin, NotAdmin, WithInscription, NoInscription};
+use Mockery\Matcher\Not;
 
 // 🔒 Rotas que exigem login
 Route::middleware('auth')->group(function () {
 
-    // 📝 Area do admin para visualização dos dados dos usuários
+    // Area do 'admin' para visualização dos dados dos usuários
     Route::prefix('usuarios')
         ->name('users.')
         ->middleware([IsAdmin::class])
@@ -32,40 +33,19 @@ Route::middleware('auth')->group(function () {
                 ->name('clear.pne.condition');
         });
 
-    // 📝 Area do admin para visualização dos dados dos usuários
-    Route::prefix('usuario')
-        ->name('user.')
-        ->middleware([NotAdmin::class, NoInscription::class])
+    // Area do 'admin' para visualização dos dados dos usuários
+    Route::prefix('dash') // pasta
+        ->name('dash.') // pasta
         ->group(function () {
+            Route::middleware([NotAdmin::class, NoInscription::class])->group(function () {
+                // Area do candidato: exibe a página cominformações sobre como fazer a inscrição
+                Route::get('/usuario', [UserController::class, 'home'])->name('user.home'); // pasta e view
+            });
 
-            // Area do candidato: exibe a página cominformações sobre como fazer a inscrição
-            Route::get('/informacoes', [UserController::class, 'profile'])->name('profile');
+            // Área do candidato (com inscrição concluída)
+            Route::middleware([NotAdmin::class, WithInscription::class])->group(function () {
+                // Área do candidato: exibe o perfil da inscrição existente
+                Route::get('/candidato', [UserController::class, 'inscription'])->name('user.inscription');
+            });
         });
 });
-
-
-// 📝 Processo de inscrição
-Route::middleware([NotAdmin::class, WithInscription::class])->group(function () {
-
-    // 📄 Área do candidato (inscrição concluída)
-    Route::prefix('candidato')
-        ->name('candidate.')
-        ->middleware([WithInscription::class])
-        ->group(function () {
-            // Área do candidato: exibe o perfil da inscrição existente
-            Route::get('/area-restrita', [UserController::class, 'inscription'])->name('profile');
-
-            Route::get('/meu-local/pdf', [UserController::class, 'examCardToPdf'])
-                ->name('card.pdf')
-                ->middleware([isLocationEnabled::class]);
-
-            Route::get('/meu-resultado/pdf', [UserController::class, 'resultCardToPdf'])
-                ->name('result.pdf')
-                ->middleware([isResultEnabled::class]);
-
-            Route::get('/chamada/pdf', [UserController::class, 'callCardToPdf'])->name('call.pdf');
-        });
-});
-
-// PDF genérico
-Route::post('/comprovante-de-inscricao', [UserController::class, 'pdf'])->name('pdf');

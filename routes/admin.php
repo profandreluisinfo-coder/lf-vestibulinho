@@ -13,10 +13,10 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 🛠️ Área administrativa
 
     // Painel principal
-    Route::prefix('painel')
-        ->name('control.')
+    Route::prefix('dash') // pasta
+        ->name('dash.') // pasta
         ->group(function () {
-            Route::get('/administrativo', [AdminController::class, 'dashboard'])->name('panel');
+            Route::get('/administrativo', [AdminController::class, 'home'])->name('admin.home'); // pasta e view
         }); // Fim Painel do admin
         
 }); // Fim Middleware de autenticado
