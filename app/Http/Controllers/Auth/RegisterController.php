@@ -25,7 +25,7 @@ class RegisterController extends Controller
             return redirect()->route('home');
         }
 
-        return view('register.create');
+        return view('auth.register');
     }
 
     /**

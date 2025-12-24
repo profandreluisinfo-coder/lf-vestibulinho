@@ -49,7 +49,7 @@ class ExamController extends Controller
             'candidates' => $candidates,
         ]);
 
-        return view('exam.admin.index');
+        return view('app.exam.index');
     }
 
     /**
@@ -88,7 +88,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('exam.admin.create');
+        return view('app.exam.create');
     }
 
     /**
@@ -172,7 +172,7 @@ class ExamController extends Controller
 
         $service->allocate($data);
 
-        return redirect()->route('exam.admin.index')->with(
+        return redirect()->route('app.exam.index')->with(
             'success',
             'Prova agendada com sucesso!'
         );

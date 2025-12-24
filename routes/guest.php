@@ -36,5 +36,5 @@ Route::middleware(['guest'])->group(function () {
 
     // Chamadas
     Route::get('/chamadas', [CallController::class, 'index'])
-    ->name('calls.public.index');
+    ->name('guest.calls.index');
 });

@@ -35,13 +35,13 @@ class InscriptionController extends Controller
     public function index(): View
     {
         // Agora apenas retorna a view, os dados virão via AJAX
-        return view('inscriptions.admin.index');
+        return view('app.inscriptions.index');
     }
 
     /**
      * Retorna os dados paginados para o DataTables via AJAX
      *
-     * Os dados serão exibidos na tabela de inscrições ativas no dashboard, na view "inscriptions.admin.index".
+     * Os dados serão exibidos na tabela de inscrições ativas no dashboard, na view "app.inscriptions.index".
      * @param Request $request
      * @return JsonResponse
      */
@@ -93,7 +93,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'cpf' => $user->cpf,
                 'user_id' => $user->id,
-                'actions' => view('inscriptions.admin.inscription-actions', compact('user'))->render()
+                'actions' => view('app.inscriptions.inscription-actions', compact('user'))->render()
             ];
         });
 
@@ -113,7 +113,7 @@ class InscriptionController extends Controller
     public function pcd(): View
     {
         // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('inscriptions.admin.pcd');
+        return view('app.inscriptions.pcd');
     }
 
     /**
@@ -171,7 +171,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'accessibility' => $user->user_detail?->accessibility ?? '-',
                 'user_id' => $user->id,
-                'actions' => view('inscriptions.admin.pcd-actions', compact('user'))->render()
+                'actions' => view('app.inscriptions.pcd-actions', compact('user'))->render()
             ];
         });
 
@@ -197,7 +197,7 @@ class InscriptionController extends Controller
 
         view()->share('users', $users);
 
-        return view('inscriptions.admin.social-name');
+        return view('app.inscriptions.social-name');
     }
 
     /**
@@ -213,7 +213,7 @@ class InscriptionController extends Controller
 
         $user = User::find($id);
 
-        return view('inscriptions.admin.show')->with('user', $user);
+        return view('app.inscriptions.show')->with('user', $user);
     }
 
     // Passo 1: Dados pessoais
@@ -543,7 +543,7 @@ class InscriptionController extends Controller
         try {
             $inscriptionService->store();
 
-            return redirect()->route('candidate.profile')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('dash.user.inscription')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
             Log::error('Erro no banco: ' . $e->getMessage());
 
@@ -589,6 +589,6 @@ class InscriptionController extends Controller
      */
     public function create()
     {   // resources\views\inscriptions\create.blade.php
-        return view('inscriptions.create');
+        return view('app.inscriptions.create');
     }
 }

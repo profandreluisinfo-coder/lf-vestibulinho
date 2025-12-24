@@ -50,7 +50,7 @@
     @endphp
 
 
-    @include('home.navbar')
+    @include('guest.home.navbar')
 
     <section id="faq" class="my-5 py-5">
 
@@ -169,7 +169,7 @@
 
     </section>
 
-    @include('home.footer')
+    @include('guest.home.footer')
 
 @endsection
 

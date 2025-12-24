@@ -44,9 +44,9 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuInscricoes">
-            <a href="{{ route('inscriptions.index') }}" class="nav-link text-light">Lista Geral</a>
-            <a href="{{ route('inscriptions.pcd') }}" class="nav-link text-light">Pessoas com Deficiência</a>
-            <a href="{{ route('inscriptions.social.name') }}" class="nav-link text-light">Nome Social</a>
+            <a href="{{ route('app.inscriptions.index') }}" class="nav-link text-light">Lista Geral</a>
+            <a href="{{ route('app.inscriptions.pcd') }}" class="nav-link text-light">Pessoas com Deficiência</a>
+            <a href="{{ route('app.inscriptions.social.name') }}" class="nav-link text-light">Nome Social</a>
         </div>
     </li>
 
@@ -58,8 +58,8 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuProvas">
-            <a href="{{ route('exam.admin.index') }}" class="nav-link text-light">Locais de Prova</a>
-            <a href="{{ route('exam.admin.index') }}" class="nav-link text-light">Agendar Prova</a>
+            <a href="{{ route('app.exam.index') }}" class="nav-link text-light">Locais de Prova</a>
+            <a href="{{ route('app.exam.index') }}" class="nav-link text-light">Agendar Prova</a>
             <a href="{{ route('export.users') }}" class="nav-link text-light">Gerar Planilha de Notas</a>
         </div>
     </li>
@@ -72,9 +72,9 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuResultados">
-            <a href="{{ route('import.admin.home') }}" class="nav-link text-light">Importar Notas</a>
-            <a href="{{ route('result.index') }}" class="nav-link text-light">Classificação Geral</a>
-            <a href="{{ route('calls.admin.create') }}" class="nav-link text-light">Chamadas</a>
+            <a href="{{ route('app.import.home') }}" class="nav-link text-light">Importar Notas</a>
+            <a href="{{ route('app.results.index') }}" class="nav-link text-light">Classificação Geral</a>
+            <a href="{{ route('app.calls.create') }}" class="nav-link text-light">Chamadas</a>
         </div>
     </li>
 

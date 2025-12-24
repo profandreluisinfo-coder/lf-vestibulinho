@@ -15,6 +15,7 @@ use App\Http\Controllers\App\{
     ExamController,
     ExportController,
     ImportController,
+    InscriptionController,
     LocalController,
     NoticeController,
     PdfController,
@@ -64,14 +65,14 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // 🧾 Alocação para Provas
+    // 🧾 Alocação para Provas OK
     // ==========================
     Route::prefix('prova')
-        ->name('exam.')
+        ->name('app.exam.')
         ->group(function () {
-            Route::get('/salas', [ExamController::class, 'index'])->name('admin.index');
-            Route::get('/agendar', [ExamController::class, 'create'])->name('admin.create');
-            Route::post('/salvar', [ExamController::class, 'store'])->name('admin.store');
+            Route::get('/salas', [ExamController::class, 'index'])->name('index');
+            Route::get('/agendar', [ExamController::class, 'create'])->name('create');
+            Route::post('/salvar', [ExamController::class, 'store'])->name('store');
         });
 
     // ==========================
@@ -115,12 +116,23 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // 📥 Importar Dados
     // ==========================
     Route::prefix('importar')
-        ->name('import.')
+        ->name('app.import.')
         ->group(function () {
-            Route::get('/notas', [ImportController::class, 'home'])->name('admin.home');
+            Route::get('/notas', [ImportController::class, 'home'])->name('home');
             Route::post('/notas', [ImportController::class, 'import']);
         });
 
+    // ==========================
+    // 📊 Alocações
+    // ==========================
+    Route::prefix('alocacoes')
+        ->name('app.allocations.')
+        ->group(function () {
+            // PDFs
+            Route::get('/alocacao', [PdfController::class, 'allocationsToPdf'])->name('allocation');
+            Route::get('/salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
+            Route::get('/assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
+        });
     // ==========================
     // 📊 PDFs
     // ==========================
@@ -128,25 +140,22 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('pdf.')
         ->group(function () {
             // PDFs
-            Route::get('/alocacao', [PdfController::class, 'allocationsToPdf'])->name('allocation');
-            Route::get('/salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
-            Route::get('/assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
             Route::get('/inscricoes', [PdfController::class, 'allInscriptionsToPdf'])->name('inscriptions');
         });
 
     // ==========================
-    // 📞 Chamadas
+    // 📞 Chamadas OK
     // ==========================
-    Route::prefix('chamadas') // OK
-        ->name('calls.')
+    Route::prefix('chamadas')
+        ->name('app.calls.')
         ->group(function () {
-            Route::get('/criar', [CallController::class, 'create'])->name('admin.create');
-            Route::post('/criar', [CallController::class, 'store'])->name('admin.store');
-            Route::delete('/apagar/{callList}', [CallController::class, 'destroy'])->name('admin.destroy');
-            Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('admin.show');
-            Route::patch('/{callList}/finalizar', [CallController::class, 'finalize'])->name('admin.finalize');
-            Route::get('/calls/{call_number}/excel', [CallController::class, 'excel'])->name('admin.excel');
-            Route::get('/calls/{call_number}/pdf', [CallController::class, 'pdf'])->name('admin.pdf');
+            Route::get('/criar', [CallController::class, 'create'])->name('create');
+            Route::post('/criar', [CallController::class, 'store'])->name('store');
+            Route::delete('/apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
+            Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('show');
+            Route::patch('/{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
+            Route::get('/calls/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
+            Route::get('/calls/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
         });
 
     // ==========================
@@ -180,9 +189,35 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->group(function () {
             Route::get('/redefinir-dados', [SettingController::class, 'index'])->name('index');
             Route::get('/apagar-dados', [SettingController::class, 'reset'])->name('reset');
-            
+
             Route::post('/liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
             Route::post('/liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
             Route::post('/liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
+        });
+
+    // ==========================
+    // 📋 Inscrições (Visualização de inscrições por Admin)
+    // ==========================
+    Route::prefix('inscricoes')
+        ->name('app.inscriptions.')
+        ->group(function () {
+
+            // Lista de inscrições
+            Route::get('/', [InscriptionController::class, 'index'])->name('index');
+            Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
+                ->name('get.data');
+
+            // Lista de pessoas com deficiência
+            Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
+                ->name('pcd');
+            Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
+                ->name('pcd.data');
+
+            // Candidatos com nome social
+            Route::get('/nome-social', [InscriptionController::class, 'socialName'])
+                ->name('social.name');
+
+            Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+                ->name('show');
         });
 });

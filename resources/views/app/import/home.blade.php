@@ -28,7 +28,7 @@
         <div class="d-flex flex-row align-items-center mb-3">
             <small class="text-success fw-semibold">
                 <i class="bi bi-check-circle me-2"></i>
-                {{ $count }} notas importadas com sucesso! Clique no <a href="{{ route('result.index') }}">
+                {{ $count }} notas importadas com sucesso! Clique no <a href="{{ route('app.results.index') }}">
                 aqui
             </a> para ver os resultados.
             </small>
@@ -96,7 +96,7 @@
                 </div>
 
                 <form id="import-results" class="mb-3"
-                    action="{{ route('import.admin.home') }}"
+                    action="{{ route('app.import.home') }}"
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf

@@ -16,7 +16,7 @@
 
 @section('content')
 
-    @include('home.navbar')
+    @include('guest.home.navbar')
 
     @php
         $recenteId = $archives->first()->id;
@@ -85,6 +85,6 @@
 
     </section>
 
-    @include('home.footer')
+    @include('guest.home.footer')
 
 @endsection

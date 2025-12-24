@@ -453,7 +453,7 @@
                                 @endif
                             </tbody>
                         </table>
-                        <form action="{{ route('inscriptions.pdf') }}" method="post">
+                        <form action="{{ route('user.inscription.to.pdf') }}" method="post">
                             @csrf
                             @method('post')
                             <button type="submit" class="btn btn-danger btn-sm"><i

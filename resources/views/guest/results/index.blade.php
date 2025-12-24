@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('home.navbar')
+    @include('guest.home.navbar')
 
     <section id="results-wrapper">
 

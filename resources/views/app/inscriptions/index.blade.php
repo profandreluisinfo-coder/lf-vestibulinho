@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Pessoas com Deficiência')
+@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Inscrições')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -11,26 +11,34 @@
 @section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-universal-access me-2"></i>Pessoas com Deficiência</h5>
+            <h5 class="mb-0"><i class="bi bi-people me-2"></i>Candidatos Inscritos</h5>
         </div>
 
         <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <div class="d-flex align-items-center fw-semibold">
                 <i class="bi bi-info-circle fs-5 me-2"></i>
-                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do candidato ou do CPF.
+                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do
+                candidato ou do CPF.
             </div>
+        </div>
+
+        <div class="d-flex gap-2 mb-4">
+            <button id="pdfButton" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
+                <i class="bi bi-filetype-pdf me-2"></i>
+                <span>Gerar PDF (Todos)</span>
+            </button>
         </div>
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
-                <caption>Pessoas com Deficiência</caption>
+                <caption>Lista Geral de Inscritos</caption>
                 <thead class="table-success text-center">
                     <tr>
-                        <th scope="col">Inscrição</th>
-                        <th scope="col">Candidato</th>
-                        <th scope="col">Necessidade Especial</th>
-                        <th scope="col">Ações</th>
+                        <th>Inscrição</th>
+                        <th>Candidato</th>
+                        <th>CPF</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -64,20 +72,28 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('inscriptions.pcd.data') }}", // Defina essa rota
+                    url: "{{ route('app.inscriptions.get.data') }}",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 },
-                columns: [
-                    { data: 'inscription_id', name: 'inscription_id' },
-                    { data: 'name', name: 'name' },
-                    { data: 'accessibility', name: 'accessibility' },
-                    { 
-                        data: 'actions', 
-                        name: 'actions', 
-                        orderable: false, 
+                columns: [{
+                        data: 'inscription_id',
+                        name: 'inscription_id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'cpf',
+                        name: 'cpf'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
                         searchable: false,
                         className: 'text-center no-export'
                     }
@@ -95,10 +111,12 @@
                     [10, 25, 50, 100, 500]
                 ],
                 ordering: true,
+                order: [
+                    [0, 'asc']
+                ], // Ordena por inscrição (primeira coluna)
                 info: true,
                 dom: 'lBfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel me-1 text-white"></i> Excel',
                         className: 'btn btn-sm btn-success',
@@ -132,43 +150,34 @@
 
             table.buttons().container().appendTo('#subscribers_wrapper .col-md-6:eq(0)');
 
-            // Event handler para remover candidato
-            $('#subscribers').on('click', '.clear-pne', function() {
-                let btn = $(this);
-                let userId = btn.data('id');
-                let url = "{{ route('users.clear.pne.condition', ['user' => ':id']) }}".replace(':id', userId);
+            // Botão de gerar PDF com todos os registros
+            $('#pdfButton').on('click', function() {
+                const btn = $(this);
+                const searchValue = table.search(); // Pega o filtro atual do DataTables
 
-                Swal.fire({
-                    title: 'Tem certeza?',
-                    text: "O candidato será removido desta lista!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sim, remover!',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'PATCH',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    Swal.fire('Removido!', response.message, 'success');
-                                    table.ajax.reload(null, false); // Recarrega sem resetar a paginação
-                                } else {
-                                    Swal.fire('Atenção!', response.message, 'warning');
-                                }
-                            },
-                            error: function() {
-                                Swal.fire('Erro!', 'Não foi possível executar a operação.', 'error');
-                            }
-                        });
-                    }
-                });
+                btn.addClass('disabled').css('pointer-events', 'none');
+                btn.html(`
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Gerando PDF, aguarde...
+                `);
+
+                // Monta a URL com o filtro de busca (se houver)
+                let pdfUrl = "{{ route('pdf.inscriptions') }}";
+                if (searchValue) {
+                    pdfUrl += '?search=' + encodeURIComponent(searchValue);
+                }
+
+                // Abre o PDF em nova aba
+                window.open(pdfUrl, '_blank');
+
+                // Volta ao estado normal após 3 segundos
+                setTimeout(() => {
+                    btn.removeClass('disabled').css('pointer-events', 'auto');
+                    btn.html(`
+                        <i class="bi bi-filetype-pdf me-1"></i>
+                        <span>Gerar PDF (Todos)</span>
+                    `);
+                }, 3000);
             });
         });
     </script>

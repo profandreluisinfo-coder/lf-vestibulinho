@@ -4,17 +4,12 @@ namespace App\Http\Controllers\App;
 
 use App\Models\Call;
 use App\Models\User;
-use App\Models\Answer;
-use App\Models\Archive;
 use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\ExamReportService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
 class PdfController extends Controller
@@ -24,7 +19,7 @@ class PdfController extends Controller
     {
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('reports.pdf.allocation', compact('allocations'))
+        $pdf = Pdf::loadView('app.allocations.allocation', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('relatorio-alocacao.pdf');
@@ -35,7 +30,7 @@ class PdfController extends Controller
     {
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('reports.pdf.rooms', compact('allocations'))
+        $pdf = Pdf::loadView('app.allocations.rooms', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('relatorio-salas.pdf');
@@ -63,7 +58,7 @@ class PdfController extends Controller
             ->get()
             ->groupBy(['location_name', 'room_number']);
 
-        $pdf = Pdf::loadView('reports.pdf.signatures', compact('allocations'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('app.allocations.signatures', compact('allocations'))->setPaper('a4', 'portrait');
 
         return $pdf->stream('relatorio-alocacao-horizontal.pdf');
     }
@@ -75,25 +70,19 @@ class PdfController extends Controller
      */
     public function inscriptionToPdf()
     {
-        $user = auth()->user();
+        // Gera o PDF com a view
+        $pdf = Pdf::loadView('pdf.comprovante', [
+            'user' =>  Auth::user()
+        ]);
 
-        if ($user) {
-            // Gera o PDF com a view
-            $pdf = Pdf::loadView('pdf.comprovante', [
-                'user' => $user
-            ]);
+        // Sanitiza o CPF (remove espaços, pontos, traços etc.)
+        $cpfSanitizado = preg_replace('/[^0-9]/', '',  Auth::user()->cpf);
 
-            // Sanitiza o CPF (remove espaços, pontos, traços etc.)
-            $cpfSanitizado = preg_replace('/[^0-9]/', '', $user->cpf);
+        // Monta o nome do arquivo
+        $filename = 'comprovante_' . $cpfSanitizado . '.pdf';
 
-            // Monta o nome do arquivo
-            $filename = 'comprovante_' . $cpfSanitizado . '.pdf';
-
-            // Retorna o PDF diretamente como download
-            return $pdf->download($filename);
-        }
-
-        return redirect()->route('errors.404');
+        // Retorna o PDF diretamente como download
+        return $pdf->download($filename);
     }
 
     /**
@@ -141,13 +130,10 @@ class PdfController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    /*******  9001dad2-15e4-45d3-b558-ce0dedfb9900  *******/
     public function testLocationCardToPdf()
     {
-        $user = Auth::user();
-
         $exam = ExamResult::with('location')
-            ->whereHas('inscription', fn($q) => $q->where('user_id', $user->id))
+            ->whereHas('inscription', fn($q) => $q->where('user_id',  Auth::user()->id))
             ->first();
 
         if (!$exam) {
@@ -159,7 +145,6 @@ class PdfController extends Controller
         return $pdf->stream('cartao-local-prova.pdf');
     }
 
-
     /**
      * Gera um PDF com o cartão do resultado da prova do candidato.
      * 
@@ -170,21 +155,21 @@ class PdfController extends Controller
      */
     public function testResultCardToPdf()
     {
-        $user = auth()->user();
-
+        $user = Auth::user();
+        // Verifica se o usuário logado possui resultado de exame
         $examResult = ExamResult::with(['inscription.user'])
             ->whereHas('inscription', fn($q) => $q->where('user_id', $user->id))
             ->first();
 
         if (!$examResult) {
-            return redirect()->route('user.results')->withErrors(['error' => 'Resultado ainda não disponível.']);
+            return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
         return Pdf::loadView('pdf.result-card', compact('examResult', 'user'))
             ->setPaper('a4', 'portrait')
             ->download('resultado-prova.pdf');
     }
-    
+
     /**
      * Gera um PDF com a ficha de convocação do candidato atual com base na lista de chamada finalizada.
      * 
@@ -196,8 +181,7 @@ class PdfController extends Controller
      */
     public function callCardToPdf()
     {
-        /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Acessar a inscrição e o resultado do exame do usuário autenticado
         $examResult = $user->inscription->exam_result ?? null;
@@ -217,7 +201,7 @@ class PdfController extends Controller
         }
 
         $pdf = Pdf::loadView('pdf.generate-call-pdf', [
-            'user' => $user,
+            'user' =>  $user,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
             'phone' => '(19) 3873-2605',

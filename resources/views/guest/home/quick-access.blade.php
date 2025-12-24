@@ -41,7 +41,7 @@
                             @endif
 
                             @if ($calls)
-                                <a href="{{ route('calls.public.index') }}">
+                                <a href="{{ route('guest.calls.index') }}">
                                     <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
                                 </a>
                             @endif

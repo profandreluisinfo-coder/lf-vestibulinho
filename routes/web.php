@@ -5,9 +5,8 @@ use Illuminate\Support\Facades\Route;
 require 'app.php';
 require 'guest.php';
 require 'auth.php';
-require 'user.php';
+require 'dash.php';
 require 'inscription.php';
-require 'admin.php';
 
 // ==============
 // ROTA FALLBACK

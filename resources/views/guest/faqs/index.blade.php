@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('home.navbar')
+    @include('guest.home.navbar')
 
     <section id="faqs" class="bg-light py-5">
         <div class="container">

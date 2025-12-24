@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <title>
-    {{ config('app.name') . ' ' . $calendar->year . ' | Comprovante de Inscrição - ' . ($user->social_name ?: $user->name) . ' - ' . $user->cpf }}
-  </title>
-
-  <style>
+<style>
     @media print {
       @page {
         size: A4;
@@ -303,5 +294,3 @@
     </div>
   </div>
 </body>
-
-</html>

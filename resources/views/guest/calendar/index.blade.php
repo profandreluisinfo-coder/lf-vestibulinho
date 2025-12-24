@@ -16,7 +16,7 @@
 
 @section('content')
 
-    @include('home.navbar')
+    @include('guest.home.navbar')
 
     <section id="calendar">
         <div class="container">
@@ -48,6 +48,6 @@
         </div>
     </section>
 
-    @include('home.footer')
+    @include('guest.home.footer')
 
 @endsection

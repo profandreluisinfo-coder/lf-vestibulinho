@@ -41,7 +41,7 @@
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-location-form-{{ $local->id }}"
-                                        action="{{ route('local.destroy', $local->id) }}" method="POST"
+                                        action="{{ route('app.local.destroy', $local->id) }}" method="POST"
                                         style="display:none;">
                                         @csrf
                                         @method('DELETE')
@@ -91,7 +91,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <form id="exam-location" action="{{ route('local.store') }}" method="POST" novalidate>
+                                <form id="exam-location" action="{{ route('app.local.store') }}" method="POST" novalidate>
                                     @csrf
 
                                     {{-- Nome do Local --}}

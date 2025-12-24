@@ -48,7 +48,7 @@
 
                             <ul class="list-unstyled mt-3 mb-0">
                                 <li class="mb-2">
-                                    <a href="{{ route('exam.admin.index') }}" class="text-decoration-none">
+                                    <a href="{{ route('app.exam.index') }}" class="text-decoration-none">
                                         <i class="bi bi-search me-2"></i>Detalhes
                                     </a>
                                 </li>
@@ -73,19 +73,19 @@
 
                                 <ul class="list-unstyled mb-0">
                                     <li class="mb-2">
-                                        <a href="{{ route('pdf.allocation') }}" target="_blank"
+                                        <a href="{{ route('app.allocations.allocation') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a href="{{ route('pdf.rooms') }}" target="_blank"
+                                        <a href="{{ route('app.allocations.rooms') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('pdf.signs') }}" target="_blank"
+                                        <a href="{{ route('app.allocations.signs') }}" target="_blank"
                                             class="text-decoration-none">
                                             <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
                                         </a>
@@ -204,7 +204,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form id="exam-schedule" method="POST" action="{{ route('exam.admin.store') }}">
+                        <form id="exam-schedule" method="POST" action="{{ route('app.exam.store') }}">
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label required" for="candidates_per_room">Nº de candidatos por

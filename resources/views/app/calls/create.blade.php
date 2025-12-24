@@ -91,7 +91,7 @@
 
                                         <!-- Botão de excluir -->
                                         <form id="delete-form-{{ $callList->id }}"
-                                            action="{{ route('calls.admin.destroy', $callList->id) }}" method="POST"
+                                            action="{{ route('app.calls.destroy', $callList->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
@@ -108,7 +108,7 @@
                                             <i class="bi bi-info-circle"></i> Detalhes
                                         </button>
 
-                                        <a href="{{ route('calls.admin.pdf', $callList->number) }}"
+                                        <a href="{{ route('app.calls.pdf', $callList->number) }}"
                                             class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
                                             <i class="bi bi-file-earmark-pdf"></i> Formulários
                                         </a>
@@ -116,7 +116,7 @@
                                         <!-- Botão de finalizar -->
                                         @if ($callList->status === 'pending')
                                             <form id="finalize-form-{{ $callList->id }}"
-                                                action="{{ route('calls.admin.finalize', $callList->id) }}" method="POST"
+                                                action="{{ route('app.calls.finalize', $callList->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
@@ -129,7 +129,7 @@
                                         @endif
 
                                         {{-- @if ($callList->status === 'completed') --}}
-                                        {{-- <a href="{{ route('calls.admin.excel', $callList->number) }}"
+                                        {{-- <a href="{{ route('app.calls.excel', $callList->number) }}"
                                             class="btn btn-sm btn-success text-white">
                                             <i class="bi bi-file-earmark-excel"></i> Excel
                                         </a> --}}
@@ -229,7 +229,7 @@
 
                             @endphp
 
-                            <form action="{{ route('calls.admin.store') }}" method="POST" class="p-3"
+                            <form action="{{ route('app.calls.store') }}" method="POST" class="p-3"
                                 id="setNewCallForm">
                                 @csrf
 

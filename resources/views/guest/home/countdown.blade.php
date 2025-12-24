@@ -46,10 +46,6 @@
                                     {{ \Carbon\Carbon::parse($calendar?->inscription_end)->translatedFormat('d \d\e F \d\e Y') }}
                                     às 23:59</strong>
                             </p>
-                            {{-- <a href="{{ route('register') }}" class="btn btn-success btn-lg px-4"
-                                title="Inscrever-se Agora">
-                                <i class="bi bi-pencil-square me-2"></i> Inscrever-se Agora
-                            </a> --}}
                         </div>
                     </div>
                 </div>

@@ -72,35 +72,4 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/chamada', [PdfController::class, 'callCardToPdf'])->name('call');
             });
     });
-
-    // Area do admin para visualização dos dados das Inscrições
-    Route::middleware([IsAdmin::class])->group(function () {
-
-        Route::prefix('inscricoes') // OK
-            ->name('inscriptions.')
-            ->group(function () {
-
-                // Lista de inscrições
-                Route::get('/', [InscriptionController::class, 'index'])->name('index');
-                Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
-                    ->name('get.data');
-
-                // Lista de pessoas com deficiência
-                Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
-                    ->name('pcd');
-                Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
-                    ->name('pcd.data');
-
-                // Candidatos com nome social
-                Route::get('/nome-social', [InscriptionController::class, 'socialName'])
-                    ->name('social.name');
-
-                Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
-                    ->name('show');
-
-                // PDF Ficha de Inscrição do Candidato
-                Route::post('/ficha-em-pdf', [PdfController::class, 'inscriptionToPdf'])
-                    ->name('pdf');
-            });
-    });
 });

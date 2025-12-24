@@ -22,7 +22,7 @@ class ImportController extends Controller
     // Exibe o formulário de importação
     public function home()
     {
-        return view('import.admin.home');
+        return view('app.import.home');
     }
 
     /**

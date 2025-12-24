@@ -44,7 +44,7 @@ class CallController extends Controller
             return redirect()->route('home');
         }
 
-        return view('calls.public.index', compact('calls'));
+        return view('guest.calls.index', compact('calls'));
     }
 
     /**
@@ -99,7 +99,7 @@ class CallController extends Controller
 
         view()->share(compact('callLists', 'pneCandidates', 'chartData', 'countResults'));
 
-        return view('calls.admin.create');
+        return view('app.calls.create');
     }
 
     /**
@@ -193,7 +193,7 @@ class CallController extends Controller
             });
 
             return redirect()
-                ->route('calls.admin.create')
+                ->route('app.calls.create')
                 ->with('success', 'Chamada registrada com sucesso!');
         } catch (\Exception $e) {
             report($e);
@@ -215,7 +215,7 @@ class CallController extends Controller
             ->where('call_number', $call_number)
             ->get();
 
-        return view('calls.admin.show', compact('convocados', 'call_number'));
+        return view('app.calls.show', compact('convocados', 'call_number'));
     }
 
     /**
@@ -229,7 +229,7 @@ class CallController extends Controller
     {
         $callList->delete();
 
-        return redirect()->route('calls.admin.create')->with('success', 'Chamada excluída com sucesso!');
+        return redirect()->route('app.calls.create')->with('success', 'Chamada excluída com sucesso!');
     }
 
     /**
@@ -349,7 +349,7 @@ class CallController extends Controller
             ->select('calls.*')
             ->get();
 
-        $pdf = Pdf::loadView('calls.admin.pdf', compact('callListMembers'))
+        $pdf = Pdf::loadView('app.calls.pdf', compact('callListMembers'))
             ->setPaper('a4', 'portrait');
 
         // return $pdf->download("chamada_{$call_number}.pdf"); // faz download

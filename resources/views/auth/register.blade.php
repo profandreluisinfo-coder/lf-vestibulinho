@@ -114,7 +114,7 @@
     </main>
 
     <footer class="mini-footer">
-        @include('home.mini-footer')
+        @include('guest.home.mini-footer')
     </footer>
 
 @endsection

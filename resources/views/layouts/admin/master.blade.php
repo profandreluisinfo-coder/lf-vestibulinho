@@ -63,7 +63,7 @@
                         <span>Gerenciar</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.calendar.*', 'app.courses.*', 'app.notice.*', 'app.faqs.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.calendar.*', 'app.courses.*', 'app.notices.*', 'app.faqs.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
                         <a href="{{ route('app.calendar.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.calendar.*') ? 'active' : '' }}">
@@ -110,18 +110,18 @@
                         <span>Inscrições</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('inscriptions.*') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('app.inscriptions.*') ? 'show' : '' }}"
                         id="menuInscricoes">
-                        <a href="{{ route('inscriptions.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
+                        <a href="{{ route('app.inscriptions.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.index') ? 'active' : '' }}">
                             Lista Geral
                         </a>
-                        <a href="{{ route('inscriptions.pcd') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
+                        <a href="{{ route('app.inscriptions.pcd') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.pcd') ? 'active' : '' }}">
                             Pessoas com Deficiência
                         </a>
-                        <a href="{{ route('inscriptions.social.name') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social.name') ? 'active' : '' }}">
+                        <a href="{{ route('app.inscriptions.social.name') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.social.name') ? 'active' : '' }}">
                             Nome Social
                         </a>
                     </div>
@@ -140,14 +140,14 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.local.*', 'exam.admin.*', 'export.users', 'archives.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.local.*', 'app.exam.*', 'export.users', 'app.archives.*']) ? 'show' : '' }}"
                         id="menuProvas">
                         <a href="{{ route('app.local.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.local.index') ? 'active' : '' }}">
                             Locais
                         </a>
-                        <a href="{{ route('exam.admin.create') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('exam.admin.create') ? 'active' : '' }}">
+                        <a href="{{ route('app.exam.create') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('app.exam.create') ? 'active' : '' }}">
                             Agendar
                         </a>
                         <a href="#" id="exportLink"
@@ -156,7 +156,7 @@
                             Planilha de Notas
                         </a>
                         <a href="{{ route('app.archives.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('archives.*') ? 'active' : '' }}">
+                            class="dropdown-item-custom {{ request()->routeIs('app.archives.*') ? 'active' : '' }}">
                             Arquivos
                         </a>
                     </div>
@@ -168,10 +168,10 @@
                         <span>Resultados</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['import.admin.home', 'app.results.index']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.import.*', 'app.results.*']) ? 'show' : '' }}"
                         id="menuResultados">
-                        <a href="{{ route('import.admin.home') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('import.admin.home') ? 'active' : '' }}">
+                        <a href="{{ route('app.import.home') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('app.import.home') ? 'active' : '' }}">
                             Importar Notas
                         </a>
                         <a href="{{ route('app.results.index') }}"
@@ -185,8 +185,8 @@
             <div class="menu-section">
                 <div class="menu-section-title">Matrícula</div>
                 <div class="menu-item">
-                    <a href="{{ route('calls.admin.create') }}"
-                        class="menu-link {{ request()->routeIs('calls.admin.*') ? 'active' : '' }}">
+                    <a href="{{ route('app.calls.create') }}"
+                        class="menu-link {{ request()->routeIs('app.calls.*') ? 'active' : '' }}">
                         <i class="bi bi-broadcast-pin"></i>
                         <span>Chamadas</span>
                     </a>
@@ -308,7 +308,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('inscriptions.index') }}" class="offcanvas-card">
+                        <a href="{{ route('app.inscriptions.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #d1fae5; color: #10b981;">
                                 <i class="bi bi-file-earmark-text"></i>
                             </div>
@@ -339,7 +339,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
-                    <a href="{{ route('exam.admin.index') }}"
+                    <a href="{{ route('app.exam.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
@@ -347,7 +347,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
-                    <a href="{{ route('calls.admin.create') }}"
+                    <a href="{{ route('app.calls.create') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula
                     </a>

@@ -10,12 +10,12 @@
 
 @section('content')
 
-    @include('home.navbar')
-    @include('home.hero-banner')
-    @include('home.quick-access')
-    @include('home.courses')
-    @include('home.countdown')
-    @include('home.footer')
+    @include('guest.home.navbar')
+    @include('guest.home.hero-banner')
+    @include('guest.home.quick-access')
+    @include('guest.home.courses')
+    @include('guest.home.countdown')
+    @include('guest.home.footer')
 
 @endsection
 

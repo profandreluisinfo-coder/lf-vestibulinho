@@ -126,27 +126,4 @@ class UserController extends Controller
             'message' => 'Candidato removido da list com sucesso!'
         ]);
     }
-
-    // Método para obtenção dos dados do local de realização de prova do candidato (DÚVIDA SE SERÁ USADO NO FUTURO)
-    public function showExamLocation(): View
-    {
-        $user = Auth::user();
-
-        $exam = DB::table('exam_results')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
-            ->where('inscriptions.user_id', $user->id)
-            ->select(
-                'exam_locations.name as location_name',
-                'exam_results.room_number',
-                'exam_results.exam_date',
-                'exam_results.exam_time',
-                'user_id',
-                'users.pne'
-            )
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->first();
-
-        return view('user.exam-location', compact('exam'));
-    }
 }
