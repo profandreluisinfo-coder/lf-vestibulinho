@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Models\Call;
 use App\Models\User;
 use Illuminate\View\View;
 use App\Models\ExamResult;
-use Illuminate\Http\Response;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -37,7 +34,7 @@ class UserController extends Controller
      */
     public function home(): View
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         return view('dash.user.home', compact('user'));
     }
@@ -54,7 +51,7 @@ class UserController extends Controller
      */
     public function inscription(): View | RedirectResponse
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Segurança extra caso acessem direto sem ter inscrição
         if (!$user->inscription()->exists()) {
@@ -133,7 +130,7 @@ class UserController extends Controller
     // Método para obtenção dos dados do local de realização de prova do candidato (DÚVIDA SE SERÁ USADO NO FUTURO)
     public function showExamLocation(): View
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $exam = DB::table('exam_results')
             ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')

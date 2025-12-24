@@ -99,7 +99,7 @@
                                     {{-- Botão de publicar (alterar status) --}}
                                     @can('manage-faq', $faq)
                                         <form id="publish-faq-form-{{ $faq->id }}"
-                                            action="{{ route('faq.publish', $faq->id) }}" method="POST" class="d-none">
+                                            action="{{ route('faqs.publish', $faq->id) }}" method="POST" class="d-none">
                                             @csrf
                                             @method('PUT')
                                         </form>
@@ -111,13 +111,13 @@
                                         </button>
 
                                         {{-- Botão de editar --}}
-                                        <a href="{{ route('faq.edit', $faq->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('faqs.admin.edit', $faq->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil-square" title="Editar"></i>
                                         </a>
 
                                         {{-- Botão de excluir --}}
                                         <form id="delete-faq-form-{{ $faq->id }}"
-                                            action="{{ route('faq.destroy', $faq->id) }}" method="POST" class="d-none">
+                                            action="{{ route('faqs.admin.destroy', $faq->id) }}" method="POST" class="d-none">
                                             @csrf
                                             @method('DELETE')
                                         </form>
@@ -163,7 +163,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 
-                                <form action="{{ route('faq.store') }}" method="POST" id="faqForm">
+                                <form action="{{ route('faqs.admin.store') }}" method="POST" id="faqForm">
                                     @csrf
                                     <div class="form-group">
                                         <label for="question" class="form-label required">Pergunta:</label>

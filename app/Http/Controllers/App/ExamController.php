@@ -172,7 +172,7 @@ class ExamController extends Controller
 
         $service->allocate($data);
 
-        return redirect()->route('exam.index')->with(
+        return redirect()->route('exam.admin.index')->with(
             'success',
             'Prova agendada com sucesso!'
         );

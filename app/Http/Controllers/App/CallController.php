@@ -12,6 +12,7 @@ use App\Services\MailService;
 use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendCallNotificationJob;
 use App\Models\Calendar;
@@ -192,7 +193,7 @@ class CallController extends Controller
             });
 
             return redirect()
-                ->route('callings.create')
+                ->route('calls.admin.create')
                 ->with('success', 'Chamada registrada com sucesso!');
         } catch (\Exception $e) {
             report($e);
@@ -228,7 +229,7 @@ class CallController extends Controller
     {
         $callList->delete();
 
-        return redirect()->route('callings.create')->with('success', 'Chamada excluída com sucesso!');
+        return redirect()->route('calls.admin.create')->with('success', 'Chamada excluída com sucesso!');
     }
 
     /**
@@ -294,7 +295,7 @@ class CallController extends Controller
      */
     public function getUserCall()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Acessar a inscrição e o resultado do exame do usuário autenticado
         $examResult = $user->inscription->exam_result ?? null;

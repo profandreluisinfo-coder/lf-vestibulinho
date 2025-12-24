@@ -48,7 +48,7 @@
 
                             <ul class="list-unstyled mt-3 mb-0">
                                 <li class="mb-2">
-                                    <a href="{{ route('exam.index') }}" class="text-decoration-none">
+                                    <a href="{{ route('exam.admin.index') }}" class="text-decoration-none">
                                         <i class="bi bi-search me-2"></i>Detalhes
                                     </a>
                                 </li>
@@ -204,7 +204,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form id="exam-schedule" method="POST" action="{{ route('exam.store') }}">
+                        <form id="exam-schedule" method="POST" action="{{ route('exam.admin.store') }}">
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label required" for="candidates_per_room">Nº de candidatos por

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 class FaqController extends Controller
 {
     /**
-     * Mostra a lista de perguntas frequentes do sistema.
+     * Mostra a lista de perguntas frequentes do sistema publicamente.
      *
      * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema.
      *
@@ -18,11 +18,10 @@ class FaqController extends Controller
      */
     public function index()
     {
-        if (!Faq::hasActiveFaqs()) {
-            return redirect()->route('home');
-        }
+        $faqs = Faq::where('status', true)
+                   ->orderBy('order', 'asc')
+                   ->get();
 
-        $faqs = Faq::getActiveFaqs();
         return view('faqs.public.index', compact('faqs'));
     }
 }

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->tinyInteger('duration')->after('description')->default(4);
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     $table->tinyInteger('duration')->after('description')->default(4);
+        // });
     }
 
     /**
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->dropColumn('duration');
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     $table->dropColumn('duration');
+        // });
     }
 };

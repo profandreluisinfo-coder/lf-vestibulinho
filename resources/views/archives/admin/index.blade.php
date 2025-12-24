@@ -61,7 +61,7 @@
 
                                 {{-- Botão de publicar (alterar status) --}}
                                 <form id="archive-form-{{ $file->id }}"
-                                    action="{{ route('archive.publish', $file->id) }}" method="POST" class="d-none">
+                                    action="{{ route('archives.admin.publish', $file->id) }}" method="POST" class="d-none">
                                     @csrf
                                     @method('PUT')
                                 </form>
@@ -72,12 +72,12 @@
                                     <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                 </button>
 
-                                <a href="{{ route('archive.edit', $file->id) }}"
+                                <a href="{{ route('archives.admin.edit', $file->id) }}"
                                     class="btn btn-sm btn-primary l" title="Editar">
                                     <i class="bi bi-pencil-square me-1"></i>
                                 </a>
 
-                                <form action="{{ route('archive.destroy', $file->id) }}" method="post">
+                                <form action="{{ route('archives.admin.destroy', $file->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger l"
@@ -118,7 +118,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <form id="form-file" action="{{ route('archive.store') }}" method="POST"
+                                <form id="form-file" action="{{ route('archives.admin.store') }}" method="POST"
                                     enctype="multipart/form-data" novalidate>
                                     @csrf
 

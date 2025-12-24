@@ -13,7 +13,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form id="form-file-edit" action="{{ route('archive.edit', $archive) }}" method="POST"
+                <form id="form-file-edit" action="{{ route('archives.admin.edit', $archive) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
 
@@ -61,7 +61,7 @@
                         <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
                         {{-- prettier-ignore --}}
-                    <a href="{{ route('archive.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                    <a href="{{ route('archives.admin.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
                 </form>
 
             </div>

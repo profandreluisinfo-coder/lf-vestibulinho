@@ -5,7 +5,6 @@ namespace App\Helpers;
 use App\Models\Call;
 use App\Models\User;
 use App\Models\Notice;
-use App\Models\Archive;
 use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\Inscription;

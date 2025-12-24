@@ -93,7 +93,7 @@ class CalendarController extends Controller
             $message = 'Calendário criado com sucesso!';
         }
 
-        return redirect()->route('calendar.index')->with('success', $message);
+        return redirect()->route('calendar.admin.index')->with('success', $message);
     }
 
     /**

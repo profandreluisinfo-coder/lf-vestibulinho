@@ -5,11 +5,12 @@ namespace App\Http\Controllers\App;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
     /**
-     * Mostra as perguntas frequentes do sistema.
+     * Mostra as perguntas frequentes do sistema para o administrador.
      *
      * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema
      *
@@ -50,11 +51,11 @@ class FaqController extends Controller
         Faq::create([
             'question' => $request->question,
             'answer' => $request->answer,
-            'user_id' => auth()->user()->id,
+            'user_id' => Auth::user()->id,
             'order' => $maxOrder + 1,  // Nova FAQ vai para o final
         ]);
 
-        return redirect()->route('faq.index')->with('success', 'FAQ criada com sucesso!');
+        return redirect()->route('faqs.admin.index')->with('success', 'FAQ criada com sucesso!');
     }
 
     /**
@@ -99,7 +100,7 @@ class FaqController extends Controller
     public function update(Request $request, Faq $faq)
     {
         // $this->authorize('update-faq', $faq);
-        if (!auth()->user()->can('manage-faq', $faq)) {
+        if (!Auth::user()->can('manage-faq', $faq)) {
             // abort(403);
             return redirect()->back()->with('error', 'Acesso negado! Voce não tem permissão para editar essa FAQ porque ela pertence a outro usuário.');
         }
@@ -118,32 +119,32 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return redirect()->route('faq.index')->with('success', 'FAQ atualizada com sucesso!');
+        return redirect()->route('faqs.admin.index')->with('success', 'FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
     {
         // $this->authorize('delete-faq', $faq);
-        if (!auth()->user()->can('manage-faq', $faq)) {
+        if (!Auth::user()->can('manage-faq', $faq)) {
             abort(403);
         }
 
         $faq->delete();
         // $faq->forceDelete();
 
-        return redirect()->route('faq.index')->with('success', 'FAQ excluida com sucesso!');
+        return redirect()->route('faqs.admin.index')->with('success', 'FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
     {
         // $this->authorize('manage-faq', $faq);
-        if (!auth()->user()->can('manage-faq', $faq)) {
+        if (!Auth::user()->can('manage-faq', $faq)) {
             abort(403);
         }
 
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return redirect()->route('faq.index')->with('success', 'Status da FAQ atualizado com sucesso!');
+        return redirect()->route('faqs.admin.index')->with('success', 'Status da FAQ atualizado com sucesso!');
     }
 }

@@ -14,7 +14,7 @@
 
             <div class="card-body">
 
-                <form id="courseForm" action="{{ route('courses.edit', $course->id) }}" method="POST">
+                <form id="courseForm" action="{{ route('courses.admin.edit', $course->id) }}" method="POST">
                     @csrf
 
                     <div class="form-group mb-3">
@@ -77,7 +77,7 @@
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
                     {{-- prettier-ignore --}}
-                    <a href="{{ route('courses.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                    <a href="{{ route('courses.admin.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
 
                 </form>
 

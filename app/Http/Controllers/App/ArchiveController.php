@@ -171,7 +171,7 @@ class ArchiveController extends Controller
             $answerModel->save();
         }
 
-        return redirect()->route('archive.index')
+        return redirect()->route('archives.admin.index')
             ->with('success', 'Arquivo atualizado com sucesso!');
     }
 

@@ -106,7 +106,7 @@ class LocalController extends Controller
         $location->rooms_available = $request->rooms_available;
         $location->save();
 
-        return redirect()->route('local.index')->with(
+        return redirect()->route('local.admin.index')->with(
             'success',
             'Local atualizado com sucesso!'
         );

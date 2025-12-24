@@ -96,7 +96,7 @@
                 </div>
 
                 <form id="import-results" class="mb-3"
-                    action="{{ route('import.results') }}"
+                    action="{{ route('import.admin.home') }}"
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf

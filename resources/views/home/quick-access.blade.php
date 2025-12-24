@@ -8,7 +8,7 @@
 
                         <div class="links">
 
-                            <a href="{{ route('faq.public.index') }}">
+                            <a href="{{ route('faqs.public.index') }}">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
 
@@ -41,7 +41,7 @@
                             @endif
 
                             @if ($calls)
-                                <a href="{{ route('callings.index') }}">
+                                <a href="{{ route('calls.public.index') }}">
                                     <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
                                 </a>
                             @endif

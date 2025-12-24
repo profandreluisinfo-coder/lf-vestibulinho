@@ -31,8 +31,8 @@
                             </div>
                         @endif --}}
 
-                        {{-- <form method="post" action="{{ route('calendar.index') }}"> --}}
-                        <form id="form-calendar" action="{{ route('calendar.save') }}" method="POST">
+                        {{-- <form method="post" action="{{ route('calendar.admin.index') }}"> --}}
+                        <form id="form-calendar" action="{{ route('calendar.admin.save') }}" method="POST">
                             @csrf
 
                             {{-- Seção: Informações Básicas --}}
@@ -241,7 +241,7 @@
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                 </button>
 
-                                <a href="{{ route('calendar.index') }}" class="btn btn-secondary btn-sm">
+                                <a href="{{ route('calendar.admin.index') }}" class="btn btn-secondary btn-sm">
                                     <i class="bi bi-x-circle me-1"></i>Cancelar
                                 </a>
 

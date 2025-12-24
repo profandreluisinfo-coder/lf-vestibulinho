@@ -17,7 +17,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form action="{{ route('faq.edit', $faq->id) }}" class="edit-form" method="POST"
+                <form action="{{ route('faqs.admin.edit', $faq->id) }}" class="edit-form" method="POST"
                     id="edit-faq-form-{{ $faq->id }}">
                     @csrf
                     <div class="mb-3">
@@ -34,7 +34,7 @@
                         <button type="submit" class="btn btn-success btn-sm">
                             <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
-                        <a href="{{ route('faq.index') }}" class="btn btn-secondary btn-sm">
+                        <a href="{{ route('faqs.admin.index') }}" class="btn btn-secondary btn-sm">
                             <i class="bi bi-x-circle me-1"></i> Cancelar
                         </a>
                     </div>

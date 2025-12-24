@@ -36,7 +36,7 @@
                                 </a>
                             </td>
                             <td><span
-                                    class="badge bg-{{ $notice->status == '1' ? 'success' : 'secondary' }}">{{ $notice->status == '1' ? 'Publicado' : 'Publicar' }}</span>
+                                    class="badge bg-{{ $notice->status == '1' ? 'success' : 'warning' }}">{{ $notice->status == '1' ? 'Publicado' : 'Publicar' }}</span>
                             </td>
                             <td>
                                 

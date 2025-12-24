@@ -54,7 +54,7 @@
                                     </button>
                                     <!-- Editar -->
                                     <button type="button" class="btn btn-sm btn-primary" title="Editar">
-                                        <a href="{{ route('local.edit', $local->id) }}"
+                                        <a href="{{ route('local.admin.edit', $local->id) }}"
                                             class="text-white text-decoration-none">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>

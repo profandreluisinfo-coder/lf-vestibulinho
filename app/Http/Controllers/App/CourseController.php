@@ -21,30 +21,14 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(CourseRequest $request)
     {
         Course::create($request->validated());
 
-        return redirect()->route('courses.index')->with('success', 'Curso registrado com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso registrado com sucesso!');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    // public function show(string $id)
-    // {
-        
-    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -61,7 +45,7 @@ class CourseController extends Controller
     {
         Course::where('id', $id)->update($request->only(['name', 'description', 'duration', 'info', 'vacancies']));
 
-        return redirect()->route('courses.index')->with('success', 'Curso editado com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso editado com sucesso!');
     }
 
     /**
@@ -72,6 +56,6 @@ class CourseController extends Controller
         // Excluir o curso com uma consulta única
         Course::where('id', $id)->delete();
 
-        return redirect()->route('courses.index')->with('success', 'Curso excluido com sucesso!');
+        return redirect()->route('courses.admin.index')->with('success', 'Curso excluido com sucesso!');
     }
 }

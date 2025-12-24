@@ -17,7 +17,7 @@
             <i class="bi bi-calendar4-week me-2"></i>Calendário
         </h5>
 
-        <a href="{{ route('calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('calendar.admin.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar->exists() ? 'Editar' : 'Novo' }}
         </a>
