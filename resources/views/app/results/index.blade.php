@@ -15,15 +15,15 @@
         @if ($results?->isNotEmpty())
             <div class="row">
                 <div class="col mx-auto">
-                    <form id="result-access-form" class="mb-3" action="{{ route('system.publish.result') }}" method="POST">
+                    <form id="result-access-form" class="mb-3" action="{{ route('app.system.publish.result') }}" method="POST">
                         @csrf
                         <div class="form-check form-switch mt-3">
                             <input class="form-check-input" type="checkbox" id="result" name="result"
-                                onchange="confirmResultAccess(this)" {{ $status->result != 0 ? 'checked' : '' }}>
+                                onchange="confirmResultAccess(this)" {{ $settings->result != 0 ? 'checked' : '' }}>
                             <label class="form-check-label" for="result">
                                 Acesso ao resultado:
-                                <span class="badge bg-{{ $status->result != 0 ? 'success' : 'danger' }} ms-2">
-                                    {{ $status->result != 0 ? 'Liberado' : 'Bloqueado' }}
+                                <span class="badge bg-{{ $settings->result != 0 ? 'success' : 'danger' }} ms-2">
+                                    {{ $settings->result != 0 ? 'Liberado' : 'Bloqueado' }}
                                 </span>
                             </label>
                         </div>

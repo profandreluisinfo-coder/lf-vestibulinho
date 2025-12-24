@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\App;
 
 use App\Models\Course;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
 
@@ -17,7 +16,7 @@ class CourseController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        return view('courses.admin.index', compact('courses'));
+        return view('app.courses.index', compact('courses'));
     }
 
     /**
@@ -27,7 +26,7 @@ class CourseController extends Controller
     {
         Course::create($request->validated());
 
-        return redirect()->route('courses.admin.index')->with('success', 'Curso registrado com sucesso!');
+        return redirect()->route('app.courses.index')->with('success', 'Curso registrado com sucesso!');
     }
 
     /**
@@ -35,7 +34,7 @@ class CourseController extends Controller
      */
     public function edit(string $id)
     {
-        return view('courses.admin.edit', ['course' => Course::findOrFail($id)]);
+        return view('app.courses.edit', ['course' => Course::findOrFail($id)]);
     }
 
     /**
@@ -45,7 +44,7 @@ class CourseController extends Controller
     {
         Course::where('id', $id)->update($request->only(['name', 'description', 'duration', 'info', 'vacancies']));
 
-        return redirect()->route('courses.admin.index')->with('success', 'Curso editado com sucesso!');
+        return redirect()->route('app.courses.index')->with('success', 'Curso editado com sucesso!');
     }
 
     /**
@@ -56,6 +55,6 @@ class CourseController extends Controller
         // Excluir o curso com uma consulta única
         Course::where('id', $id)->delete();
 
-        return redirect()->route('courses.admin.index')->with('success', 'Curso excluido com sucesso!');
+        return redirect()->route('app.courses.index')->with('success', 'Curso excluido com sucesso!');
     }
 }

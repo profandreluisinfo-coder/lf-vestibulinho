@@ -22,6 +22,6 @@ class FaqController extends Controller
                    ->orderBy('order', 'asc')
                    ->get();
 
-        return view('faqs.public.index', compact('faqs'));
+        return view('guest.faqs.index', compact('faqs'));
     }
 }

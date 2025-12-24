@@ -16,7 +16,8 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        return view('calendar.admin.index');
+        return view(
+'app.calendar.index');
     }
   
     /**
@@ -93,7 +94,8 @@ class CalendarController extends Controller
             $message = 'Calendário criado com sucesso!';
         }
 
-        return redirect()->route('calendar.admin.index')->with('success', $message);
+        return redirect()->route(
+'app.calendar.index')->with('success', $message);
     }
 
     /**
@@ -107,6 +109,7 @@ class CalendarController extends Controller
         // Busca o único registro ou cria um objeto vazio
         //$calendar = Calendar::first() ?? new Calendar();
         
-        return view('calendar.admin.edit');
+        return view(
+'app.calendar.edit');
     }
 }

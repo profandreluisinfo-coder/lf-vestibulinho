@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Guest;
 
 use App\Models\Course;
-use App\Models\Notice;
-// use App\Models\Setting;
 use App\Models\ExamResult;
 use App\Http\Controllers\Controller;
 
@@ -21,14 +19,6 @@ class ResultController extends Controller
      */
     public function index()
     {
-        // se o acesso ao resultado nao foi liberado, redireciona para a home
-        // if (!Setting::first()->result) {
-        //     return redirect()->route('home');
-        // }
-
-        // Busca pelo arquivo do edital em 'notices'
-        $notice = Notice::all()->first();
-
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
 
@@ -56,12 +46,11 @@ class ResultController extends Controller
 
         // envia pra view
         view()->share([
-            'notice' => $notice,
             'results' => $results,
             'limit' => $limit,
             'cutoffScore' => $cutoffScore,
         ]);
 
-        return view('results.public.index');
+        return view('guest.results.index');
     }
 }

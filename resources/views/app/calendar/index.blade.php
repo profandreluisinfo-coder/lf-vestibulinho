@@ -17,7 +17,8 @@
             <i class="bi bi-calendar4-week me-2"></i>Calendário
         </h5>
 
-        <a href="{{ route('calendar.admin.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
+        <a href="{{ route(
+'app.calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil-square me-1"></i>
             {{ $calendar->exists() ? 'Editar' : 'Novo' }}
         </a>
@@ -26,7 +27,7 @@
 
     </div>
 
-    <form id="calendar-access-form" class="mb-5" action="{{ route('system.publish.calendar') }}" method="POST">
+    <form id="calendar-access-form" class="mb-5" action="{{ route('app.system.publish.calendar') }}" method="POST">
         @csrf
         <div class="form-check form-switch mt-3">
             <input class="form-check-input" type="checkbox" id="calendar" name="calendar"

@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\ArchiveFileService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,7 +30,7 @@ class ArchiveController extends Controller
         // Obter todos os arquivos de prova
         $files = Archive::orderBy('year', 'desc')->get();
 
-        return view('archives.admin.index', compact('files'));
+        return view('app.archives.index', compact('files'));
     }
 
     /**
@@ -78,7 +79,7 @@ class ArchiveController extends Controller
             'file' => $pathForArchive, // ex: archives/2025_prova_1691778382.pdf
             'year' => $request->year,
             'status' => false,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::user()->id(),
         ]);
 
         // Verificar se o gabarito foi enviado
@@ -116,7 +117,7 @@ class ArchiveController extends Controller
      */
     public function edit(Archive $archive): View
     {
-        return view('archives.admin.edit', compact('archive'));
+        return view('app.archives.edit', compact('archive'));
     }
 
     /**
@@ -151,7 +152,7 @@ class ArchiveController extends Controller
 
         // Atualiza dados gerais
         $archive->year = $request->year;
-        $archive->user_id = auth()->id();
+        $archive->user_id = Auth::user()->id();
         $archive->save();
 
 
@@ -171,7 +172,7 @@ class ArchiveController extends Controller
             $answerModel->save();
         }
 
-        return redirect()->route('archives.admin.index')
+        return redirect()->route('app.archives.index')
             ->with('success', 'Arquivo atualizado com sucesso!');
     }
 

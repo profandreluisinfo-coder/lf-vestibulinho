@@ -18,12 +18,12 @@ class NoticeController extends Controller
         view()->share('notices', $notices);
 
         // Renderizar a view com a lista de arquivos
-        return view('notice.admin.index');
+        return view('app.notices.index');
     }
 
     // public function create()
     // {
-    //     return view('notice.admin.create');
+    //     return view('app.notices.create');
     // }
 
     public function store(Request $request)
@@ -60,7 +60,7 @@ class NoticeController extends Controller
 
     // public function edit(Notice $notice)
     // {
-    //     return view('notice.admin.edit', compact('notice'));
+    //     return view('app.notices.edit', compact('notice'));
     // }
 
     public function update(Request $request, Notice $notice)

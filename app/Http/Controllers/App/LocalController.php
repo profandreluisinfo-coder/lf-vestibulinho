@@ -22,7 +22,7 @@ class LocalController extends Controller
         // Obter todos as locais de prova
         $locations = ExamLocation::all();
 
-        return view('local.admin.index', compact('locations'));
+        return view('app.local.index', compact('locations'));
     }
 
     /**
@@ -87,7 +87,7 @@ class LocalController extends Controller
             'location' => $location,
         ]);
 
-        return view('local.admin.edit');
+        return view('app.local.edit');
     }
 
     /**
@@ -106,7 +106,7 @@ class LocalController extends Controller
         $location->rooms_available = $request->rooms_available;
         $location->save();
 
-        return redirect()->route('local.admin.index')->with(
+        return redirect()->route('app.local.index')->with(
             'success',
             'Local atualizado com sucesso!'
         );

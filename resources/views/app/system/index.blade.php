@@ -34,7 +34,7 @@
 
 @push('scripts')
     <script>
-        const resetUrl = "{{ route('system.reset') }}";
+        const resetUrl = "{{ route('app.system.reset') }}";
     </script>
     <script src="{{ asset('assets/swa/system/reset.js') }}"></script>
 @endpush

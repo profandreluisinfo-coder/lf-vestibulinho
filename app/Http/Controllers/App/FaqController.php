@@ -20,7 +20,7 @@ class FaqController extends Controller
     {
         $faqs = Faq::orderBy('order', 'asc')->get();  // Ordenar por 'order'
 
-        return view('faqs.admin.index', compact('faqs'));
+        return view('app.faqs.index', compact('faqs'));
     }
 
     /**
@@ -55,7 +55,7 @@ class FaqController extends Controller
             'order' => $maxOrder + 1,  // Nova FAQ vai para o final
         ]);
 
-        return redirect()->route('faqs.admin.index')->with('success', 'FAQ criada com sucesso!');
+        return redirect()->route('app.faqs.index')->with('success', 'FAQ criada com sucesso!');
     }
 
     /**
@@ -83,7 +83,7 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        return view('faqs.admin.edit', compact('faq'));
+        return view('app.faqs.edit', compact('faq'));
     }
 
     /**
@@ -119,7 +119,7 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return redirect()->route('faqs.admin.index')->with('success', 'FAQ atualizada com sucesso!');
+        return redirect()->route('app.faqs.index')->with('success', 'FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
@@ -132,7 +132,7 @@ class FaqController extends Controller
         $faq->delete();
         // $faq->forceDelete();
 
-        return redirect()->route('faqs.admin.index')->with('success', 'FAQ excluida com sucesso!');
+        return redirect()->route('app.faqs.index')->with('success', 'FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
@@ -145,6 +145,6 @@ class FaqController extends Controller
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return redirect()->route('faqs.admin.index')->with('success', 'Status da FAQ atualizado com sucesso!');
+        return redirect()->route('app.faqs.index')->with('success', 'Status da FAQ atualizado com sucesso!');
     }
 }

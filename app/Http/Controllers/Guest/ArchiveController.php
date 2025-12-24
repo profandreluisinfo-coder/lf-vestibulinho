@@ -28,6 +28,6 @@ class ArchiveController extends Controller
 
         $archives = Archive::getActiveArchives();
 
-        return view('archives.public.index', compact('archives'));
+        return view('guest.archives.index', compact('archives'));
     }
 }

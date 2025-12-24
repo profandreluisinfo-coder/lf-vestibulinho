@@ -23,16 +23,8 @@
 
                     <div class="card-body p-4">
 
-                        {{-- @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif --}}
-
-                        {{-- <form method="post" action="{{ route('calendar.admin.index') }}"> --}}
-                        <form id="form-calendar" action="{{ route('calendar.admin.save') }}" method="POST">
+                        <form id="form-calendar" action="{{ route(
+'app.calendar.save') }}" method="POST">
                             @csrf
 
                             {{-- Seção: Informações Básicas --}}
@@ -241,7 +233,8 @@
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                 </button>
 
-                                <a href="{{ route('calendar.admin.index') }}" class="btn btn-secondary btn-sm">
+                                <a href="{{ route(
+'app.calendar.index') }}" class="btn btn-secondary btn-sm">
                                     <i class="bi bi-x-circle me-1"></i>Cancelar
                                 </a>
 

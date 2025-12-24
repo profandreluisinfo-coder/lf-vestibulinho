@@ -108,7 +108,7 @@
                                 <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                             </h5>
 
-                            <form id="location-access-form" action="{{ route('system.publish.location') }}" method="POST">
+                            <form id="location-access-form" action="{{ route('app.system.publish.location') }}" method="POST">
                                 @csrf
 
                                 <div class="form-check form-switch mb-3">

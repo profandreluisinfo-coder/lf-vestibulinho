@@ -8,11 +8,11 @@
 
                         <div class="links">
 
-                            <a href="{{ route('faqs.public.index') }}">
+                            <a href="{{ route('guest.faqs.index') }}">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
 
-                            <a href="{{ route('archives.public.index') }}">
+                            <a href="{{ route('guest.archives.index') }}">
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
 
@@ -35,7 +35,7 @@
                             @endif
 
                             @if ($settings->result)
-                                <a href="{{ route('results.public.index') }}">
+                                <a href="{{ route('guest.results.index') }}">
                                     <i class="bi bi-trophy fs-1"></i> Classificação
                                 </a>
                             @endif

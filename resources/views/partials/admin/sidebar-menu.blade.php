@@ -14,12 +14,13 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuVestibulinho">
-            <a href="{{ route('calendar.admin.index') }}" class="nav-link text-light">Calendário</a>
-            <a href="{{ route('courses.admin.index') }}" class="nav-link text-light">Cursos</a>
-            <a href="{{ route('notice.admin.index') }}" class="nav-link text-light">Edital</a>
-            <a href="{{ route('faqs.admin.index') }}" class="nav-link text-light">Registrar FAQ</a>
-            <a href="{{ route('archives.admin.index') }}" class="nav-link text-light">Acervo de Provas</a>
-            <a href="{{ route('system.index') }}" class="nav-link text-light">Redefinir Dados</a>
+            <a href="{{ route(
+'app.calendar.index') }}" class="nav-link text-light">Calendário</a>
+            <a href="{{ route('app.courses.index') }}" class="nav-link text-light">Cursos</a>
+            <a href="{{ route('app.notices.index') }}" class="nav-link text-light">Edital</a>
+            <a href="{{ route('app.faqs.index') }}" class="nav-link text-light">Registrar FAQ</a>
+            <a href="{{ route('app.archives.index') }}" class="nav-link text-light">Acervo de Provas</a>
+            <a href="{{ route('app.system.index') }}" class="nav-link text-light">Redefinir Dados</a>
         </div>
     </li>
 

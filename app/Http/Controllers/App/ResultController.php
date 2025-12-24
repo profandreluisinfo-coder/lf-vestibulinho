@@ -3,23 +3,18 @@
 namespace App\Http\Controllers\App;
 
 use App\Models\Course;
-use App\Models\Setting;
 use App\Models\ExamResult;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ResultController extends Controller
 {
-/**
+    /**
      * Mostra a lista de resultados na página de classificação do painel administrativo com base na nota de corte
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        // verifica se o  acesso ao resultado foi liberado
-        $status = Setting::first() ?? new Setting();
-
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
 
@@ -46,15 +41,13 @@ class ResultController extends Controller
         // ✅ 2️⃣ Descobre a nota de corte
         $cutoffScore = $lastInLimit ? $lastInLimit->score : 0;
 
-         // envia pra view
+        // envia pra view
         view()->share([
             'results' => $results,
-            'status' => $status,
             'limit' => $limit,
             'cutoffScore' => $cutoffScore,
         ]);
 
-        return view('results.admin.index');
+        return view('app.results.index');
     }
-    
 }

@@ -28,7 +28,8 @@
                 <div class="accordion-body">
                     <div class="stepper-container mb-5">
                         <!-- Etapa 1 -->
-                        <a href="{{ route('calendar.admin.index') }}" class="step-item text-secondary text-center" title="Definir Calendário">
+                        <a href="{{ route(
+'app.calendar.index') }}" class="step-item text-secondary text-center" title="Definir Calendário">
                             <i
                                 class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
@@ -36,7 +37,7 @@
                         <!-- Divider -->
                         <div class="step-divider"></div>
                         <!-- Etapa 2 -->
-                        <a href="{{ route('notice.admin.index') }}" class="step-item text-secondary text-center" title="Publicar Edital">
+                        <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center" title="Publicar Edital">
                             <i
                                 class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
@@ -50,7 +51,7 @@
                         </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 4 -->
-                        <a href="{{ route('archives.admin.index') }}" class="step-item text-secondary text-center" title="Publicar Prova">
+                        <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center" title="Publicar Prova">
                             <i
                                 class="bi {{ App\Models\Archive::latest('id')->first()->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
@@ -64,7 +65,7 @@
                         </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 6 -->
-                        <a href="{{ route('system.publish.result') }}" class="step-item text-secondary text-center">
+                        <a href="{{ route('app.system.publish.result') }}" class="step-item text-secondary text-center">
                             <i
                                 class="bi {{ $settings->result ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>

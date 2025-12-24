@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\User;
 use App\Models\Course;
@@ -10,11 +9,14 @@ use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\CallList;
-use App\Models\ExamResult;
+use Mockery\Matcher\Any;
 use Illuminate\View\View;
+use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -25,7 +27,7 @@ class SettingController extends Controller
      */
     public function index(): View
     {
-        return view('system.admin.index');
+        return view('app.system.index');
     }
 
     /**
@@ -50,7 +52,7 @@ class SettingController extends Controller
     {
         try {
             // Garante que só admin possa resetar o sistema
-            if (!auth()->user()->role === 'admin') {
+            if (!Auth::user()->role === 'admin') {
                 return response()->json([
                     'success' => false,
                     'message' => 'Acesso negado. Somente administradores podem redefinir o sistema.'

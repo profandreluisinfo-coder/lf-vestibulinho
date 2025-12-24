@@ -25,48 +25,46 @@ use App\Http\Controllers\App\{
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     // ==========================
-    // ❓ Perguntas Frequentes (FAQ)
+    // ❓ Perguntas Frequentes (FAQ) (OK)
     // ==========================
     Route::prefix('faq')
-        ->name('faqs.')
+        ->name('app.faqs.')
         ->group(function () {
-            Route::get('/', [FaqController::class, 'index'])->name('admin.index');
-            Route::post('/gravar', [FaqController::class, 'store'])->name('admin.store');
-            Route::get('/editar/{faq}', [FaqController::class, 'edit'])->name('admin.edit');
+            Route::get('/', [FaqController::class, 'index'])->name('index');
+            Route::post('/gravar', [FaqController::class, 'store'])->name('store');
+            Route::get('/editar/{faq}', [FaqController::class, 'edit'])->name('edit');
             Route::post('/editar/{faq}', [FaqController::class, 'update']);
-            Route::delete('/excluir/{faq}', [FaqController::class, 'destroy'])->name('admin.destroy');
+            Route::delete('/excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
             Route::put('/publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
             Route::put('/update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
         });
 
     // ==========================
-    // 🗓️ Calendário
+    // 🗓️ Calendário (OK)
     // ==========================
     Route::prefix('calendario')
-        ->name('calendar.')
+        ->name('app.calendar.')
         ->group(function () {
-            Route::get('/', [CalendarController::class, 'index'])->name('admin.index');
-            Route::get('/editar', [CalendarController::class, 'edit'])->name('admin.edit');
-            Route::post('/salvar', [CalendarController::class, 'save'])->name('admin.save');
+            Route::get('/', [CalendarController::class, 'index'])->name('index');
+            Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
+            Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
         });
 
     // ==========================
-    // 📄 Editais
+    // 📄 Editais (OK)
     // ==========================
     Route::prefix('edital')
-        ->name('notice.')
+        ->name('app.notices.')
         ->group(function () {
-            Route::get('/', [NoticeController::class, 'index'])->name('admin.index');
-            // Route::get('/criar', [NoticeController::class, 'create'])->name('create');
+            Route::get('/', [NoticeController::class, 'index'])->name('index');
             Route::post('/salvar', [NoticeController::class, 'store'])->name('store');
-            // Route::get('/editar/{notice}', [NoticeController::class, 'edit'])->name('edit');admin.
             Route::post('/editar/{notice}', [NoticeController::class, 'update']);
             Route::delete('/excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
             Route::put('/publicar/{notice}', [NoticeController::class, 'publish'])->name('publish');
         });
 
     // ==========================
-    // 🧾 Provas
+    // 🧾 Alocação para Provas
     // ==========================
     Route::prefix('prova')
         ->name('exam.')
@@ -77,31 +75,31 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // 🎓 Cursos
+    // 🎓 Cursos (OK)
     // ==========================
     Route::prefix('cursos')
-        ->name('courses.')
+        ->name('app.courses.')
         ->group(function () {
-            Route::get('/', [CourseController::class, 'index'])->name('admin.index');
-            Route::post('/salvar', [CourseController::class, 'store'])->name('admin.store');
-            Route::get('/editar/{course}', [CourseController::class, 'edit'])->name('admin.edit');
+            Route::get('/', [CourseController::class, 'index'])->name('index');
+            Route::post('/salvar', [CourseController::class, 'store'])->name('store');
+            Route::get('/editar/{course}', [CourseController::class, 'edit'])->name('edit');
             Route::post('/editar/{course}', [CourseController::class, 'update']);
-            Route::delete('/excluir/{course}', [CourseController::class, 'destroy'])->name('admin.destroy');
+            Route::delete('/excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
         });
 
     // ==========================
-    // 📚 Arquivos (Provas anteriores)
+    // 📚 Arquivos (Provas anteriores) OK
     // ==========================
     Route::prefix('arquivos')
-        ->name('archives.') // pasta
+        ->name('app.archives.') // pasta
         ->group(function () {
-            Route::get('/', [ArchiveController::class, 'index'])->name('admin.index'); // pasta.view
-            // Route::get('/criar', [ArchiveController::class, 'create'])->name('admin.create');
-            Route::post('/salvar', [ArchiveController::class, 'store'])->name('admin.store');
-            Route::get('/editar/{archive}', [ArchiveController::class, 'edit'])->name('admin.edit');
+            Route::get('/', [ArchiveController::class, 'index'])->name('index'); // pasta.view
+            // Route::get('/criar', [ArchiveController::class, 'create'])->name('create');
+            Route::post('/salvar', [ArchiveController::class, 'store'])->name('store');
+            Route::get('/editar/{archive}', [ArchiveController::class, 'edit'])->name('edit');
             Route::post('/editar/{archive}', [ArchiveController::class, 'update']);
-            Route::delete('/excluir/{archive}', [ArchiveController::class, 'destroy'])->name('admin.destroy');
-            Route::put('/publicar/{archive}', [ArchiveController::class, 'publish'])->name('admin.publish');
+            Route::delete('/excluir/{archive}', [ArchiveController::class, 'destroy'])->name('destroy');
+            Route::put('/publicar/{archive}', [ArchiveController::class, 'publish'])->name('publish');
         });
 
     // ==========================
@@ -152,33 +150,33 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         });
 
     // ==========================
-    // 🧾 Local
+    // 🧾 Local de Prova OK
     // ==========================
     Route::prefix('local')
-        ->name('local.')
+        ->name('app.local.')
         ->group(function () {
-            Route::get('/', [LocalController::class, 'index'])->name('admin.index');
+            Route::get('/', [LocalController::class, 'index'])->name('index');
             // Route::get('/criar', [LocalController::class, 'create'])->name('create');
             Route::post('/salvar', [LocalController::class, 'store'])->name('store');
-            Route::get('/editar/{location}', [LocalController::class, 'edit'])->name('admin.edit');
+            Route::get('/editar/{location}', [LocalController::class, 'edit'])->name('edit');
             Route::post('/editar/{location}', [LocalController::class, 'update']);
             Route::delete('/excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
         });
 
     // ==========================
-    // 🏆 Resultados
+    // 🏆 Resultados OK
     // ==========================
-    Route::prefix('resultados') // OK
-        ->name('result.')
+    Route::prefix('resultados')
+        ->name('app.results.')
         ->group(function () {
             Route::get('/notas-e-classificacao', [ResultController::class, 'index'])->name('index');
         });
 
     // ==========================
-    // ⚙️ Configurações do Sistema
+    // ⚙️ Configurações do Sistema OK
     // ==========================
-    Route::prefix('sistema') // OK
-        ->name('system.')
+    Route::prefix('sistema')
+        ->name('app.system.')
         ->group(function () {
             Route::get('/redefinir-dados', [SettingController::class, 'index'])->name('index');
             Route::get('/apagar-dados', [SettingController::class, 'reset'])->name('reset');
