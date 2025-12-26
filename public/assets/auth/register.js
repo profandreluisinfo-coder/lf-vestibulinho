@@ -1,7 +1,3 @@
-if (typeof $.fn.validate !== "function") {
-    alert("jQuery Validate não está carregado corretamente!");
-}
-
 $(document).ready(function () {
 
     const invalidDomains = [
@@ -69,7 +65,6 @@ $(document).ready(function () {
             $(element).removeClass('is-invalid').addClass('is-valid');
         },
         submitHandler: function (form) {
-            // Isso só é executado se o formulário for válido
             $('.btn[type="submit"]').prop('disabled', true).html('Enviando...');
             form.submit();
         }
@@ -78,11 +73,7 @@ $(document).ready(function () {
     // Proteção extra
     $('#form-register').on('submit', function (e) {
         if (!$(this).valid()) {
-            console.warn("❌ Form inválido: submissão bloqueada");
             e.preventDefault(); // Garante que nunca envie com erros
         }
     });
-
-    
-
 });

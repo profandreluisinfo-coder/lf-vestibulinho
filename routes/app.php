@@ -149,8 +149,8 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::prefix('chamadas')
         ->name('app.calls.')
         ->group(function () {
-            Route::get('/criar', [CallController::class, 'create'])->name('create');
-            Route::post('/criar', [CallController::class, 'store'])->name('store');
+            Route::get('/registros', [CallController::class, 'index'])->name('index');
+            Route::post('/salvar', [CallController::class, 'store'])->name('store');
             Route::delete('/apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
             Route::get('/numero/{call_number}', [CallController::class, 'show'])->name('show');
             Route::patch('/{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');

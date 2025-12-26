@@ -27,7 +27,7 @@
     @stack('styles')
 
     {{-- SweetAlert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     @stack('head-scripts')
 </head>
@@ -185,7 +185,7 @@
             <div class="menu-section">
                 <div class="menu-section-title">Matrícula</div>
                 <div class="menu-item">
-                    <a href="{{ route('app.calls.create') }}"
+                    <a href="{{ route('app.calls.index') }}"
                         class="menu-link {{ request()->routeIs('app.calls.*') ? 'active' : '' }}">
                         <i class="bi bi-broadcast-pin"></i>
                         <span>Chamadas</span>
@@ -272,6 +272,8 @@
     <!-- Conteúdo -->
     <main class="main-content py-5">
 
+        @include('partials.toasts')
+
         @yield('dash-content')
 
     </main>
@@ -347,7 +349,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
-                    <a href="{{ route('app.calls.create') }}"
+                    <a href="{{ route('app.calls.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula
                     </a>
@@ -432,7 +434,7 @@
 
     @stack('plugins')
 
-    @include('partials.alerts.admins')
+    <script src="{{ asset('assets/js/alerts.js') }}"></script>
 
     @stack('scripts')
 

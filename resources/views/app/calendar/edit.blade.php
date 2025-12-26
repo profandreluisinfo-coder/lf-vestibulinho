@@ -4,10 +4,6 @@
 
 @section('dash-content')
 
-    {{-- @php
-    $calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();    
-    @endphp --}}
-    
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -23,8 +19,7 @@
 
                     <div class="card-body p-4">
 
-                        <form id="form-calendar" action="{{ route(
-'app.calendar.save') }}" method="POST">
+                        <form id="form-calendar" action="{{ route('app.calendar.save') }}" method="POST">
                             @csrf
 
                             {{-- Seção: Informações Básicas --}}
@@ -161,8 +156,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="exam_revision_end"
-                                            class="form-label fw-semibold text-secondary small">
+                                        <label for="exam_revision_end" class="form-label fw-semibold text-secondary small">
                                             <i class="bi bi-calendar-x me-1"></i>Término do Prazo para Revisão
                                         </label>
                                         <input type="date"
@@ -233,8 +227,7 @@
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                 </button>
 
-                                <a href="{{ route(
-'app.calendar.index') }}" class="btn btn-secondary btn-sm">
+                                <a href="{{ route('app.calendar.index') }}" class="btn btn-secondary btn-sm">
                                     <i class="bi bi-x-circle me-1"></i>Cancelar
                                 </a>
 

@@ -9,7 +9,6 @@ use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Calendar;
 use App\Models\CallList;
-use Mockery\Matcher\Any;
 use Illuminate\View\View;
 use App\Models\ExamResult;
 use Illuminate\Http\Request;
@@ -17,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SettingController extends Controller
 {
@@ -44,7 +44,7 @@ class SettingController extends Controller
      * Apaga todos os registros da tabela de resultados de exames.
      * Apaga todos os registros da tabela de chamadas.
      * Apaga todos os registros da tabela de chamadas.
-     * Apaga todos os registros da tabela de settings.
+     * Atualiza todos os registros da tabela de settings.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -126,7 +126,7 @@ class SettingController extends Controller
         }
     }
 
-    public function calendar(Request $request)
+    public function calendar(Request $request): RedirectResponse
     {
         $settings = [
             'calendar' => $request->filled('calendar')
@@ -150,7 +150,7 @@ class SettingController extends Controller
      * Caso o acesso seja liberado (location = true),
      * cria um Job para cada candidato com local de prova definido.
      */
-    public function location(Request $request)
+    public function location(Request $request): RedirectResponse
     {
         // Define se acesso foi liberado
         $status = $request->filled('location');
@@ -185,7 +185,7 @@ class SettingController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function result(Request $request)
+    public function result(Request $request): RedirectResponse
     {
         $settings = [
             'result' => $request->filled('result')

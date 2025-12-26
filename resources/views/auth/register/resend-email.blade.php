@@ -6,17 +6,16 @@
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
     @endif
-    <meta name="description"
-        content="Reenvio de e-mail de verificação para candidatos do {{ config('app.name') }} {{ $calendar->year }}">
+    <meta name="description" content="Reenvio de e-mail de verificação.">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Reenviar E-mail de Verificação')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Reenviar e-mail de Verificação')
 
 @section('content')
 
     @include('partials.videos.back-login')
 
-    <main class="auth mt-5">
+    <main class="auth">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
@@ -33,17 +32,13 @@
                                     Reenviar E-mail de Verificação
                                 </span>
                             </h1>
-
-                            @include('components.alerts')
-
-                            <form id="resend-email" method="POST" action="{{ route('resend.email') }}" autocomplete="off">
+                            <form id="resend-email" method="POST" action="{{ route('resend.email') }}">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="myEmail" class="form-label">Informe seu endereço de e-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="myEmail"
-                                        value="{{ old('email') }}" placeholder="exemplo@email.com" required
-                                        autocomplete="email" aria-describedby="@error('email') emailError @enderror">
+                                        value="{{ old('email') }}" aria-describedby="@error('email') emailError @enderror">
                                     @error('email')
                                         <div id="emailError" class="invalid-feedback">
                                             {{ $message }}

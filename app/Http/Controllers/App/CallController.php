@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\App;
 
 use App\Models\Call;
+use App\Models\Calendar;
 use App\Models\CallList;
 use Illuminate\View\View;
 use App\Models\ExamResult;
 use App\Exports\CallExport;
 use Illuminate\Http\Request;
 use App\Services\MailService;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendCallNotificationJob;
-use App\Models\Calendar;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Class CallController
@@ -27,32 +28,13 @@ use App\Http\Controllers\Controller;
  * @package App\Http\Controllers
  */
 class CallController extends Controller
-{
-    /**
-     * Obter todas as chamadas e seus respectivos dados: nº da chamada, data e hora, além do, nome do usuário e 
-     * o nº da sua inscrição.
-     * As informações são exibdas na página pública de chamadas do site.
-     * $calls é uma coleção agrupada
-     */
-    public function index()
-    {
-        // Obter todas as chamadas e seus respectivos dados
-        $calls = Call::callsCompleted();
-
-        // verificar se 'calls' é uma coleção vazia
-        if ($calls->isEmpty()) {
-            return redirect()->route('home');
-        }
-
-        return view('guest.calls.index', compact('calls'));
-    }
-
+ {
     /**
      * Renderiza a view para criar uma nova chamada
      *
      * @return \Illuminate\View\View
      */
-    public function create(): View
+    public function index(): View
     {
         // Este trecho de código recupera todos os registros de `CallList` do banco de dados, faz o carregamento previsorio das associações relacionadas `calls` e `examResult.inscription.user`, conta o número de `calls` para cada `CallList` e ordena os resultados pela coluna `number`. Os dados resultantes são armazenados na variável `$callLists`.
         $callLists = CallList::withCount('calls')
@@ -99,7 +81,7 @@ class CallController extends Controller
 
         view()->share(compact('callLists', 'pneCandidates', 'chartData', 'countResults'));
 
-        return view('app.calls.create');
+        return view('app.calls.index');
     }
 
     /**
@@ -108,7 +90,7 @@ class CallController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response | RedirectResponse
     {
         $request->validate([
             'number' => 'required|integer|min:1',
@@ -193,7 +175,7 @@ class CallController extends Controller
             });
 
             return redirect()
-                ->route('app.calls.create')
+                ->route('app.calls.index')
                 ->with('success', 'Chamada registrada com sucesso!');
         } catch (\Exception $e) {
             report($e);
@@ -208,7 +190,7 @@ class CallController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($call_number)
+    public function show($call_number): View
     {
         // Busca as chamadas com todos os dados do usuário carregados via relacionamento
         $convocados = Call::with('examResult.inscription.user')
@@ -225,11 +207,11 @@ class CallController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(CallList $callList)
+    public function destroy(CallList $callList): RedirectResponse
     {
         $callList->delete();
 
-        return redirect()->route('app.calls.create')->with('success', 'Chamada excluída com sucesso!');
+        return redirect()->route('app.calls.index')->with('success', 'Chamada excluída com sucesso!');
     }
 
     /**
@@ -241,7 +223,7 @@ class CallController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function finalize(CallList $callList, MailService $mailService)
+    public function finalize(CallList $callList): RedirectResponse
     {
         // Obtém o ano do calendário atual
         $actual_calendar = Calendar::getYear();
@@ -293,7 +275,7 @@ class CallController extends Controller
      *
      * @return array|null Os dados da chamada ou null se o usuário não tiver resultado de exame ou não tiver sido convocado.
      */
-    public function getUserCall()
+    public function getUserCall(): ?array
     {
         $user = Auth::user();
 
@@ -339,7 +321,7 @@ class CallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pdf($call_number)
+    public function pdf($call_number): Response
     {
         $callListMembers = Call::with('examResult.inscription.user.user_detail')
             ->where('call_number', $call_number)

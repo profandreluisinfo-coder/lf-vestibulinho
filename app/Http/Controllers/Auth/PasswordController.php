@@ -20,7 +20,7 @@ class PasswordController extends Controller
      */
     public function forgotPassword(): View
     {
-        return view('auth.forgot-password');
+        return view('auth.password.forgot-password');
     }
 
     /**
@@ -40,7 +40,7 @@ class PasswordController extends Controller
 
         $result = app(UserService::class)->forgotPassword($credentials['email']);
 
-        return redirect()->back()->with('success', $result['message']);
+        return alertSuccess($result['message'], 'forgot.password');
     }
 
     /**
@@ -60,12 +60,10 @@ class PasswordController extends Controller
             return redirect()->route('login');
         }
 
-        return view('auth.reset', ['token' => $token]);
+        return view('auth.password.reset-password', ['token' => $token]);
     }
 
     /**
-     * Reenvia um e-mail para o usuário com um link para redefinição de senha com base no token informado.
-     *
      * Valida os campos 'token', 'password' e 'password_confirmation' e
      * tenta redefinir a senha do usuário com base nas credenciais informadas.
      * Se a redefinição for bem sucedida, o usuário receberá um e-mail para confirmar o endereço de e-mail.

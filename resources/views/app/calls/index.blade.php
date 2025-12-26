@@ -10,7 +10,7 @@
 
 @section('dash-content')
 
-    @php 
+    @php
         $countUsers = 0;
     @endphp
 
@@ -29,178 +29,179 @@
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
 
-            @if ($callLists->isNotEmpty())
+            <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
+                <i class="bi bi-bar-chart-fill me-2"></i> Convocados por Curso
+            </button>
 
-                <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
-                    <i class="bi bi-bar-chart-fill me-2"></i> Convocados por Curso
-                </button>
+            <!-- The Modal -->
+            <div class="modal" id="myModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
-                <!-- The Modal -->
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Convocados por Curso
-                                </h5>
-                            </div>
-
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <canvas id="convocadosChart" height="100"></canvas>
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                        class="bi bi-x-circle me-2"></i>Fechar</button>
-                            </div>
-
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="bi bi-bar-chart-fill me-2"></i>Convocados por Curso
+                            </h5>
                         </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <canvas id="convocadosChart" height="100"></canvas>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                                    class="bi bi-x-circle me-2"></i>Fechar</button>
+                        </div>
+
                     </div>
                 </div>
+            </div>
 
-                <table class="table table-striped freezed-table align-middle">
-                    <thead>
-                        <tr class="table-success">
-                            <th scope="col">Chamada</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Hora</th>
-                            <th scope="col">Candidatos</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        @foreach ($callLists as $callList)
-                            <tr>
-                                <th>{{ $callList->number }}</th> <!-- Número da chamada -->
-                                <td>{{ \Carbon\Carbon::parse($callList->date)->format('d/m/Y') }}</td>
-                                <!-- Data da chamada -->
-                                <td>{{ \Carbon\Carbon::parse($callList->time)->format('H:i') }}</td>
-                                <!-- Hora da chamada -->
-                                <th>{{ $callList->calls_count }}</th> <!-- Quantidade de convocados -->
-                                <td>
-                                    <span class="badge bg-{{ $callList->status == 'pending' ? 'warning' : 'success' }}">
-                                        {{ $callList->status == 'pending' ? 'Pendente' : 'Finalizada' }}
-                                    </span>
-                                </td> <!-- Status da chamada -->
-                                <td>
-                                    <div class="d-flex flex-wrap justify-content-center gap-2">
+            <table class="table table-striped freezed-table align-middle">
+                <thead>
+                    <tr class="table-success">
+                        <th scope="col">Chamada</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Candidatos</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
 
-                                        <!-- Botão de excluir -->
-                                        <form id="delete-form-{{ $callList->id }}"
-                                            action="{{ route('app.calls.destroy', $callList->id) }}" method="POST"
+                    @forelse ($callLists as $callList)
+
+                        <tr>
+                            <th>{{ $callList->number }}</th> <!-- Número da chamada -->
+                            <td>{{ \Carbon\Carbon::parse($callList->date)->format('d/m/Y') }}</td>
+                            <!-- Data da chamada -->
+                            <td>{{ \Carbon\Carbon::parse($callList->time)->format('H:i') }}</td>
+                            <!-- Hora da chamada -->
+                            <th>{{ $callList->calls_count }}</th> <!-- Quantidade de convocados -->
+                            <td>
+                                <span class="badge bg-{{ $callList->status == 'pending' ? 'warning' : 'success' }}">
+                                    {{ $callList->status == 'pending' ? 'Pendente' : 'Finalizada' }}
+                                </span>
+                            </td> <!-- Status da chamada -->
+                            <td>
+                                <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                                    <!-- Botão de excluir -->
+                                    <form id="delete-form-{{ $callList->id }}"
+                                        action="{{ route('app.calls.destroy', $callList->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                            onclick="confirmDelete({{ $callList->id }})">
+                                            <i class="bi bi-trash"></i> Excluir
+                                        </button>
+                                    </form>
+
+                                    <!-- Botão de detalhes -->
+                                    <button class="btn btn-sm btn-secondary text-white" title="Detalhes"
+                                        data-bs-toggle="collapse" data-bs-target="#details-{{ $callList->id }}"
+                                        aria-expanded="false" aria-controls="details-{{ $callList->id }}">
+                                        <i class="bi bi-info-circle"></i> Detalhes
+                                    </button>
+
+                                    <a href="{{ route('app.calls.pdf', $callList->number) }}"
+                                        class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
+                                        <i class="bi bi-file-earmark-pdf"></i> Formulários
+                                    </a>
+
+                                    <!-- Botão de finalizar -->
+                                    @if ($callList->status === 'pending')
+                                        <form id="finalize-form-{{ $callList->id }}"
+                                            action="{{ route('app.calls.finalize', $callList->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                                onclick="confirmDelete({{ $callList->id }})">
-                                                <i class="bi bi-trash"></i> Excluir
+                                            @method('PATCH')
+                                            <button type="button" class="btn btn-sm btn-success" title="Finalizar chamada"
+                                                onclick="confirmFinalize({{ $callList->id }})">
+                                                <i class="bi bi-check-circle"></i> Finalizar
                                             </button>
                                         </form>
+                                    @endif
 
-                                        <!-- Botão de detalhes -->
-                                        <button class="btn btn-sm btn-secondary text-white" title="Detalhes"
-                                            data-bs-toggle="collapse" data-bs-target="#details-{{ $callList->id }}"
-                                            aria-expanded="false" aria-controls="details-{{ $callList->id }}">
-                                            <i class="bi bi-info-circle"></i> Detalhes
-                                        </button>
-
-                                        <a href="{{ route('app.calls.pdf', $callList->number) }}"
-                                            class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
-                                            <i class="bi bi-file-earmark-pdf"></i> Formulários
-                                        </a>
-
-                                        <!-- Botão de finalizar -->
-                                        @if ($callList->status === 'pending')
-                                            <form id="finalize-form-{{ $callList->id }}"
-                                                action="{{ route('app.calls.finalize', $callList->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="button" class="btn btn-sm btn-success"
-                                                    title="Finalizar chamada"
-                                                    onclick="confirmFinalize({{ $callList->id }})">
-                                                    <i class="bi bi-check-circle"></i> Finalizar
-                                                </button>
-                                            </form>
-                                        @endif
-
-                                        {{-- @if ($callList->status === 'completed') --}}
-                                        {{-- <a href="{{ route('app.calls.excel', $callList->number) }}"
-                                            class="btn btn-sm btn-success text-white">
-                                            <i class="bi bi-file-earmark-excel"></i> Excel
-                                        </a> --}}
-                                        {{-- @endif --}}
-
-                                    </div>
-                                </td> <!-- Ações -->
-                            </tr>
-                            <tr class="collapse" id="details-{{ $callList->id }}">
-                                <td colspan="6" class="p-0">
-                                    <div class="my-3 px-2">
-                                        <table class="table table-bordered w-100 datatable mb-0 table align-middle">
-                                            <thead>
-                                                <tr class="table-warning">
-                                                    <th scope="col">Classificação</th>
-                                                    <th scope="col">Inscrição</th>
-                                                    <th scope="col">Nome</th>
-                                                    <th scope="col">CPF</th>
-                                                    <th scope="col">PCD</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-group-divider">
-                                                @foreach ($callList->calls as $call)
-                                                    @php
-                                                        $user = $call->examResult->inscription->user;
-                                                    @endphp
-                                                    <tr>
-                                                        <td>{{ $call->examResult->ranking }}</td>
-                                                        <td>{{ $call->examResult->inscription_id }}</td>
-                                                        <td>{{ $user->social_name ?? $user->name }}</td>
-                                                        <td>{{ $user->cpf }}</td>
-                                                        <td>
-                                                            @if ($user->pne)
-                                                                <span class="badge bg-success" title="Candidato PCD"><i
-                                                                        class="bi bi-universal-access"></i></span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                            @php 
-                                $countUsers += $callList->calls_count;
-                            @endphp
-                        @endforeach
-                    </tbody>
-                    <tfooter>
-                        <tr class="table-success">
-                            <th scope="col">Total: {{ $callList->count() }}</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col">Total: {{ $countUsers }}</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                                </div>
+                            </td> <!-- Ações -->
                         </tr>
-                    </tfooter>
-                </table>
-            @else
-                @include('components.no-records', [
-                    'message' => 'Causas de problemas com as chamadas:',
-                    'submessage' => 'Provavelmente nenhuma chamada ainda foi regisstrada.',
-                    'action' => true,
-                    'actionMessage' =>
-                        'Solução: Tente cadastrar uma nova chamada. Se o problema persistir, entre em contato com o suporte.',
-                ])
+                        <tr class="collapse" id="details-{{ $callList->id }}">
+                            
+                            <td colspan="6" class="p-0">
+                                
+                                <div class="my-3 px-2">
 
-            @endif
+                                    <table class="table table-bordered w-100 datatable mb-0 table align-middle">
+                                        
+                                        <thead>
+                                            <tr class="table-warning">
+                                                <th scope="col">Classificação</th>
+                                                <th scope="col">Inscrição</th>
+                                                <th scope="col">Nome</th>
+                                                <th scope="col">CPF</th>
+                                                <th scope="col">PCD</th>
+                                            </tr>
+                                        </thead>
 
+                                        <tbody class="table-group-divider">
+                                            @foreach ($callList->calls as $call)
+                                                @php
+                                                    $user = $call->examResult->inscription->user;
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $call->examResult->ranking }}</td>
+                                                    <td>{{ $call->examResult->inscription_id }}</td>
+                                                    <td>{{ $user->social_name ?? $user->name }}</td>
+                                                    <td>{{ $user->cpf }}</td>
+                                                    <td>
+                                                        @if ($user->pne)
+                                                            <span class="badge bg-success" title="Candidato PCD"><i
+                                                                    class="bi bi-universal-access"></i></span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        @php
+                            $countUsers += $callList->calls_count;
+                        @endphp
+
+                    @empty
+
+                        <tr>
+                            <td colspan="6" class="text-center">Nenhuma chamada registrada.</td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+                <tfooter>
+                    <tr class="table-success">
+                        <th scope="col">Total: {{ $callLists->count() }}</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Total: {{ $countUsers }}</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </tfooter>
+
+            </table>
         </div>
 
         {{-- Modal para criar uma chamada --}}
@@ -225,8 +226,7 @@
                                 // $soma = 0;
                                 // foreach ($total as $key => $value) {
                                 //     $soma += $value;
-                                // } 
-
+                                // }
                             @endphp
 
                             <form action="{{ route('app.calls.store') }}" method="POST" class="p-3"
@@ -311,8 +311,6 @@
                 </div>
             </div>
         </div>
-
-
 
     </div>
 

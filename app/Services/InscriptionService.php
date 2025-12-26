@@ -84,7 +84,7 @@ class InscriptionService
                 'course_id' => $data['course_id'],
             ]);
 
-            $pdf = Pdf::loadView('pdf.inscricao', compact('user', 'inscription'));
+            $pdf = Pdf::loadView('app.pdf.inscription', compact('user', 'inscription'));
             $filename = 'Inscricao_' . preg_replace('/[^0-9]/', '', $user->cpf) . '.pdf';
             $path = storage_path('app/public/' . $filename);
             $pdf->save($path);

@@ -9,7 +9,7 @@ use App\Http\Controllers\Guest\{
     ResultController
 };
 
-use App\Http\Controllers\App\{
+use App\Http\Controllers\Guest\{
     CallController
 };
 
@@ -35,6 +35,5 @@ Route::middleware(['guest'])->group(function () {
     ->middleware([isResultEnabled::class]);
 
     // Chamadas
-    Route::get('/chamadas', [CallController::class, 'index'])
-    ->name('guest.calls.index');
+    Route::get('/chamadas', [CallController::class, 'index'])->name('guest.calls.index');
 });

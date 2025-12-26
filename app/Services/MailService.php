@@ -27,11 +27,11 @@ class MailService
             }
 
             // Log::info("E-mail enviado para: {$to} - Assunto: {$subject}");
-            Log::info("E-mail enviado para: {$to} - Assunto: {$subject} - Conteúdo: " . json_encode($content, JSON_UNESCAPED_UNICODE));
+            //Log::info("E-mail enviado para: {$to} - Assunto: {$subject} - Conteúdo: " . json_encode($content, JSON_UNESCAPED_UNICODE));
 
             return true;
         } catch (\Exception $e) {
-            Log::error("Erro ao enviar e-mail para {$to}: {$e->getMessage()}");
+            // Log::error("Erro ao enviar e-mail para {$to}: {$e->getMessage()}");
             return false;
         }
     }
@@ -64,7 +64,7 @@ class MailService
             }
         }
 
-        Log::info("Envio em massa concluído. Sucesso: " . count($success) . ", Falha: " . count($failures));
+        // Log::info("Envio em massa concluído. Sucesso: " . count($success) . ", Falha: " . count($failures));
         return [
             'success' => $success,
             'failures' => $failures,

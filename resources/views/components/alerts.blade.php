@@ -27,8 +27,8 @@
     @if (session($key))
 
         <div class="alert alert-{{ $alert['class'] }} border-0 shadow-sm py-3 fade show 
-                    rounded-3 animate__animated animate__fadeIn">
-            
+                    rounded-3 animate__animated animate__fadeIn alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <div class="fw-bold text-center mb-1">
                 <i class="bi bi-{{ $alert['icon'] }} me-1"></i>
                 {{ $alert['title'] }}

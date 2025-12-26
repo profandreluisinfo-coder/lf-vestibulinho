@@ -13,16 +13,13 @@ class LogoutController extends Controller
     {
         $user = Auth::user();
 
-        $redirectRoute = $user && $user->role === 'admin'
-            ? 'auth.admin'
-            : 'login';
+        $redirectRoute = $user && $user->role === 'admin' ? 'auth.admin' : 'login';
 
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route($redirectRoute)
-            ->with('success', 'Logout efetuado com sucesso!');
+        return redirect()->route($redirectRoute)->with('success', 'Logout efetuado com sucesso!');
     }
 }

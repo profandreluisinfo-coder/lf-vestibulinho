@@ -72,7 +72,7 @@
                         </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 7 -->
-                        <a href="{{ route('app.calls.create') }}" class="step-item text-secondary text-center" title="Definir Chamadas">
+                        <a href="{{ route('app.calls.index') }}" class="step-item text-secondary text-center" title="Definir Chamadas">
                             <i
                                 class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>

@@ -22,7 +22,7 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('app.allocations.allocation', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('relatorio-alocacao.pdf');
+        return $pdf->stream('relatorio-de-alocacao.pdf');
     }
 
     // Lista para Salas
@@ -33,7 +33,7 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('app.allocations.rooms', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('relatorio-salas.pdf');
+        return $pdf->stream('lista-para-salas.pdf');
     }
 
     // Lista de Assinaturas
@@ -60,7 +60,7 @@ class PdfController extends Controller
 
         $pdf = Pdf::loadView('app.allocations.signatures', compact('allocations'))->setPaper('a4', 'portrait');
 
-        return $pdf->stream('relatorio-alocacao-horizontal.pdf');
+        return $pdf->stream('lista-de-assinaturas.pdf');
     }
 
     /**
@@ -68,10 +68,10 @@ class PdfController extends Controller
      *
      * @return Response O PDF gerado com a ficha de inscri o do candidato.
      */
-    public function inscriptionToPdf()
+    public function proofOfRegistrationToPdf()
     {
         // Gera o PDF com a view
-        $pdf = Pdf::loadView('pdf.comprovante', [
+        $pdf = Pdf::loadView('app.pdf.proof-of-registration', [
             'user' =>  Auth::user()
         ]);
 
@@ -114,7 +114,7 @@ class PdfController extends Controller
         }
 
         // código de geração de PDF...
-        $pdf = Pdf::loadView('pdf.inscriptions-list', [
+        $pdf = Pdf::loadView('app.pdf.all-inscriptions', [
             'users' => $users,
             'search' => $search,
         ]);
@@ -140,7 +140,7 @@ class PdfController extends Controller
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
-        $pdf = Pdf::loadView('pdf.exam-card', compact('exam'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('app.pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
 
         return $pdf->stream('cartao-local-prova.pdf');
     }
@@ -165,9 +165,9 @@ class PdfController extends Controller
             return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
-        return Pdf::loadView('pdf.result-card', compact('examResult', 'user'))
+        return Pdf::loadView('app.pdf.test-result-card', compact('examResult', 'user'))
             ->setPaper('a4', 'portrait')
-            ->download('resultado-prova.pdf');
+            ->download('resultado-da-prova.pdf');
     }
 
     /**
@@ -200,7 +200,7 @@ class PdfController extends Controller
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
-        $pdf = Pdf::loadView('pdf.generate-call-pdf', [
+        $pdf = Pdf::loadView('app.pdf.call-card', [
             'user' =>  $user,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
@@ -217,6 +217,6 @@ class PdfController extends Controller
             ],
         ]);
 
-        return $pdf->download('convocacao-matricula.pdf');
+        return $pdf->download('convocacao-para-matricula.pdf');
     }
 }

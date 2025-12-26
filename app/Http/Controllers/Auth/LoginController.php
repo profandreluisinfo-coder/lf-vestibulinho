@@ -64,14 +64,13 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
 
-            /** @var \App\Models\User $user */
             $user = Auth::user();
 
             if (!$user->email_verified_at) {
                 Auth::logout();
                 return redirect()
                     ->back()
-                    ->with('warning', 'Para acessar a Área do Candidato, você precisa validar o endereço de e-mail vinculado ao seu registro.');
+                    ->with('warning', 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.');
             }
 
             $request->session()->regenerate();
@@ -83,7 +82,7 @@ class LoginController extends Controller
             return $this->redirectUserBasedOnRole($user);
         }
 
-        return redirect()->back()->with('error', 'Dados inválidos.');
+        return alertError('Dados inválidos.');
     }
 
     /**

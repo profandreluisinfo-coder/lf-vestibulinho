@@ -74,7 +74,7 @@
         <div class="collapse ps-3" id="menuResultados">
             <a href="{{ route('app.import.home') }}" class="nav-link text-light">Importar Notas</a>
             <a href="{{ route('app.results.index') }}" class="nav-link text-light">Classificação Geral</a>
-            <a href="{{ route('app.calls.create') }}" class="nav-link text-light">Chamadas</a>
+            <a href="{{ route('app.calls.index') }}" class="nav-link text-light">Chamadas</a>
         </div>
     </li>
 

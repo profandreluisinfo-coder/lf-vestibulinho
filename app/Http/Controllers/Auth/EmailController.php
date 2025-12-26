@@ -39,7 +39,7 @@ class EmailController extends Controller
 
         session()->flash('email', $result['user']->email);
 
-        return view('messages.email-confirmed');
+        return view('auth.register.email-confirmed');
     }
 
     /**
@@ -49,14 +49,12 @@ class EmailController extends Controller
      */
     public function resendEmail(): View
     {
-        return view('auth.resend-email');
+        return view('auth.register.resend-email');
     }
 
     /**
-     * Reenvia um e-mail para o usuário com um link para redefinição de senha.
-     * Valida os campos 'email' e tenta reenviar um e-mail para o usuário com base no token informado.
-     * Se o token for inválido, o usuário será redirecionado para a página de início.
-     * Se o token for válido, o endereço de e-mail armazenado no token será exibido na página de redefinição de senha.
+     * Reenvia um e-mail para o usuário com um link para confirmação de e-mail.
+     * Valida o campo 'email' e tenta reenviar uma mensagem para o usuário contendo um token.
      *
      * @param Request $request
      * @param UserService $userService
@@ -67,12 +65,16 @@ class EmailController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
         ], [
-            'email.required' => 'O campo e-mail é obrigatório',
+            'email.required' => 'O campo e-mail é obrigatório',
             'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
         ]);
 
         $response = $userService->resendEmail($credentials['email']);
 
-        return redirect()->route('resend.email')->with($response['success'] ? 'success' : 'warning', $response['message']);
+        if ($response['success']) {
+            return alertSuccess($response['message'], 'resend.email');
+        }
+
+        return alertWarning($response['message'], 'resend.email');
     }
 }

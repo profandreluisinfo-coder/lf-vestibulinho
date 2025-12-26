@@ -6,8 +6,7 @@
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
     @endif
-    <meta name="description"
-        content="Área de acesso exclusivo para administradores do {{ config('app.name') }} {{ $calendar->year }}">
+    <meta name="description" content="Área de acesso exclusivo para administradores">
 @endpush
 
 @section('page-title', config('app.name') . ' ' . $calendar->year . ' | Painel Administrativo')
@@ -39,16 +38,13 @@
                                 <p class="text-center">Informe seus dados de acesso:</p>
                             </div>
 
-                            @include('components.alerts')
-
-                            <form id="form-login" method="POST" action="{{ route('login') }}" autocomplete="off">
+                            <form id="form-login" method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">E-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="loginEmail"
-                                        value="{{ old('email') }}" required
-                                        autocomplete="username" aria-describedby="@error('email') emailError @enderror">
+                                        value="{{ old('email') }}" aria-describedby="@error('email') emailError @enderror">
                                     @error('email')
                                         <div id="emailError" class="invalid-feedback">
                                             {{ $message }}
@@ -60,7 +56,6 @@
                                     <label for="loginPassword" class="form-label">Senha</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="loginPassword"
-                                        required autocomplete="current-password"
                                         aria-describedby="@error('password') passwordError @enderror">
                                     @error('password')
                                         <div id="passwordError" class="invalid-feedback">

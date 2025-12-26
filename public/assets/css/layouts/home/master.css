@@ -114,12 +114,16 @@ body.has-footer .footer {
             rgba(30, 58, 95, 0.6));
 }
 
+/* MAIN CONTENT */
+.main-content {
+    margin: 5rem 0 0 0 !important;
+}
+
 /* HERO BANNER */
-/* BANNER */
 .hero-banner {
     position: relative;
     color: white;
-    margin-top: 2rem;
+    margin-top: -25px;
     padding: 4rem 0;
     overflow: hidden;
 

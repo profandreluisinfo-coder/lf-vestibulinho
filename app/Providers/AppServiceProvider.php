@@ -37,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Torna variáveis globais acessíveis em todas as views
         GlobalDataHelper::share();
+        
     }
 }

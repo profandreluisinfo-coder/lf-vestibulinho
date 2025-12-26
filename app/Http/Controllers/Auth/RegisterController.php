@@ -25,7 +25,7 @@ class RegisterController extends Controller
             return redirect()->route('home');
         }
 
-        return view('auth.register');
+        return view('auth.register.create');
     }
 
     /**
@@ -60,11 +60,9 @@ class RegisterController extends Controller
         $result = $userService->register($credentials);
 
         if (!$result['success']) {
-            return redirect()->route('register')->with('error', $result['message']);
+            return alertError($result['message']);
         }
 
-        return view('messages.email-sent', [
-            'email' => $result['user']->email
-        ]);
+        return view('auth.register.email-sent', ['email' => $result['user']->email]);
     }
 }

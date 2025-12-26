@@ -25,7 +25,6 @@
 
                 <thead class="table-success text-center">
                     <tr>
-                        {{-- <th scope="col">#</th> --}}
                         <th scope="col">Ano</th>
                         <th scope="col">Prova</th>
                         <th scope="col">Gabarito</th>
@@ -90,13 +89,9 @@
 
                     @empty
 
-                        @include('components.no-records', [
-                            'message' => 'Causas de problemas com arquivos:',
-                            'submessage' => 'Provavelmente nenhuma arquivo de prova foi cadastrado no sistema.',
-                            'action' => true,
-                            'actionMessage' =>
-                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
-                        ])
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhuma prova cadastrada</td>
+                        </tr>
 
                     @endforelse
 
@@ -106,6 +101,7 @@
 
         </div>
 
+        {{-- Modal para arquivar prova --}}
         <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="createArchiveModalLabel" aria-hidden="true">
             <div class="modal-dialog">
