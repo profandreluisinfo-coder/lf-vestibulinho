@@ -94,7 +94,3 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
 @endpush
-
-@push('scripts')
-    <script src="{{ asset('assets/auth/login.js') }}"></script>
-@endpush

@@ -26,9 +26,6 @@
 
     @stack('styles')
 
-    {{-- SweetAlert --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
-
     @stack('head-scripts')
 </head>
 
@@ -393,7 +390,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="change-password" method="POST" action="{{ route('update.password') }}">
+                    <form id="change-password" action="{{ route('update.password') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Senha atual</label>
@@ -425,16 +422,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
 
     {{-- Scripts --}}
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
-    <script src="{{ asset('assets/auth/change-password.js') }}"></script>
-    <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
 
     @stack('plugins')
-
-    <script src="{{ asset('assets/js/alerts.js') }}"></script>
 
     @stack('scripts')
 

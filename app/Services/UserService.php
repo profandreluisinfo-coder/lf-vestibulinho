@@ -245,8 +245,7 @@ class UserService
 
         return [
             'success' => true,
-            'message' => 'Senha alterada.',
-            'user' => $user,
+            'message' => 'Senha alterada com sucesso.'
         ];
     }
 

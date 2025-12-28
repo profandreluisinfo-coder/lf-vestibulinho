@@ -105,7 +105,7 @@ class PasswordController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function updatePassword(Request $request, UserService $userService): RedirectResponse
+    public function updatePassword(Request $request)
     {
         $request->validate([
             'current_password' => 'required',
@@ -120,19 +120,24 @@ class PasswordController extends Controller
             'password_confirmation.same' => 'As senhas devem ser iguais',
         ]);
 
-        if (!Hash::check($request->current_password, Auth::user()->password)) {
-            return back()->with('error', 'Senha atual incorreta!');
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password))
+        {
+            // return back()->with('error', 'Senha atual incorreta!');
+            return alertError('Senha atual incorreta!');
         }
 
         Auth::user()->update([
             'password' => Hash::make($request->new_password)
         ]);
 
-        $response = $userService->passwordChanged(Auth::user());
+        $response = app(UserService::class)->passwordChanged($user);
 
-        return back()->with(
-            $response['success'] ? 'success' : 'warning',
-            $response['message']
-        );
+        if ($response['success']) {
+            return alertSuccess($response['message'], 'dash.admin.home');
+        }
+
+        return alertWarning($response['message'], 'dash.admin.home');
     }
 }

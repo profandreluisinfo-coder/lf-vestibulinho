@@ -6,7 +6,7 @@
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
     @endif
-    <meta name="description" content="Registro de dados de acesso para vistantes.">
+    <meta name="description" content="Registro de dados de acesso para vistantes">
 @endpush
 
 @section('page-title', config('app.name') . ' ' . $calendar->year . ' | Registrar Dados de Acesso')
@@ -108,8 +108,4 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-@endpush
-
-@push('scripts')
-    <script src="{{ asset('assets/auth/register.js') }}"></script>
 @endpush
