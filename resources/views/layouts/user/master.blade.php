@@ -26,7 +26,6 @@
 
     @stack('head-scripts')
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -98,71 +97,15 @@
         {{-- Conteúdo da Dashboard --}}
         <section>
             <article>
-        @auth
+            @include('partials.toasts')
+
             @yield('dash-content')
-            {{-- Modal Alterar Senha --}}
-            <div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="changePasswordModalLabel">
-                                <i class="bi bi-lock me-2"></i>Alterar Senha
-                            </h5>
-                        </div>
-                        <div class="modal-body">
-                            <form id="change-password" method="POST" action="{{ route('update.password') }}">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="currentPassword" class="form-label">Senha atual</label>
-                                    <input type="password" name="current_password"
-                                        class="form-control @error('current_password') is-invalid @enderror"
-                                        id="currentPassword">
-                                    @error('current_password')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="newPassword" class="form-label">Nova senha</label>
-                                    <input type="password" name="new_password"
-                                        class="form-control @error('new_password') is-invalid @enderror" id="newPassword"
-                                    >
-                                    @error('new_password')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="repeatPassword" class="form-label">Repetir senha</label>
-                                    <input type="password" name="password_confirmation"
-                                        class="form-control @error('password_confirmation') is-invalid @enderror"
-                                        id="repeatPassword">
-                                    @error('password_confirmation')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-secondary btn-sm">
-                                        <i class="bi bi-check-circle me-2"></i> Alterar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endauth
             </article>
         </section>
     </div>
+
+    {{-- Modal Alterar Senha --}}
+    @include('partials.forms.change-password')
 
     <div class="container small text-muted mt-3 py-2">
         &copy; {{ $currentYear }} ala
@@ -173,11 +116,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-    <script src="{{ asset('assets/auth/change-password.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
 
     @stack('plugins')
-
-    @include('partials.alerts.users')
 
     @stack('scripts')
 </body>

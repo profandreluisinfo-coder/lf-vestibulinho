@@ -105,7 +105,7 @@ class PasswordController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         $request->validate([
             'current_password' => 'required',
@@ -122,22 +122,25 @@ class PasswordController extends Controller
 
         $user = Auth::user();
 
-        if (!Hash::check($request->current_password, $user->password))
-        {
-            // return back()->with('error', 'Senha atual incorreta!');
+        if (!Hash::check($request->current_password, $user->password)) {
             return alertError('Senha atual incorreta!');
         }
 
-        Auth::user()->update([
+        $user->update([
             'password' => Hash::make($request->new_password)
         ]);
 
         $response = app(UserService::class)->passwordChanged($user);
 
         if ($response['success']) {
-            return alertSuccess($response['message'], 'dash.admin.home');
+            $route = match ($user->role) {
+            'admin' => 'dash.admin.home',
+            default => $user->inscription()->exists() ? 'dash.user.inscription' : 'dash.user.home',
+            };
+
+            return alertSuccess($response['message'], $route);
         }
 
-        return alertWarning($response['message'], 'dash.admin.home');
+        return alertWarning($response['message'], url()->previous());
     }
 }
