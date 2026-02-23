@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreignId('exam_location_id')->constrained('exam_locations')->onDelete('restrict');
             $table->unsignedInteger('room_number')->nullable(); // Ex: sala 1, 2, 3...
 
+            $table->timestamp('email_sent_at')->nullable();
+
             $table->timestamps();
 
             // Garante que a inscrição tenha apenas uma alocação de prova

@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('description', 100);
+            $table->unsignedTinyInteger('duration')->default(0);
+            $table->longText('info')->nullable();
             $table->integer('vacancies');
+            
             $table->timestamps();
         });
     }

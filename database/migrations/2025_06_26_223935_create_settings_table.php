@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->boolean('calendar')->default(false);
             $table->boolean('location')->default(false);
             $table->boolean('result')->default(false);
             $table->timestamps();

@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->boolean('status')->default(false);
             $table->string('question', 200);
             $table->text('answer');
+            $table->integer('order')->default(0);
+
             $table->timestamps();
         });
     }
