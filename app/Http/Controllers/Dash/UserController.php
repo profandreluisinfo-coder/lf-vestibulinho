@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $users = User::getWithoutInscription();
 
-        return view('users.admin.index', compact('users'));
+        return view('dash.user.index', compact('users'));
     }
 
     /**

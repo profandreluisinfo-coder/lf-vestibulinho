@@ -390,6 +390,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    
     <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
 
     {{-- Scripts --}}
@@ -397,7 +398,7 @@
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
 
     {{-- Sweet Alerts --}}
-    <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/swa/alerts-admin.js') }}"></script> --}}
 
     @stack('plugins')
 

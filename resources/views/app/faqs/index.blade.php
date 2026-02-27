@@ -38,7 +38,7 @@
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" id="search" name="search"
-                            placeholder="Pesquisar por.." autocomplete="off">
+                            placeholder="Pesquisar por..." autocomplete="off">
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-center gap-3">
@@ -61,7 +61,8 @@
 
                 @foreach ($faqs as $faq)
 
-                    <div class="accordion-item" data-faq-id="{{ $faq->id }}">
+                    {{-- <div class="accordion-item" data-faq-id="{{ $faq->id }}"> --}}
+                    <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
@@ -141,13 +142,9 @@
 
         @else
 
-            @include('components.no-records', [
-                        'message' => 'Causas de problemas com as perguntas e respostas:',
-                        'submessage' => 'Provavelmente nenhuma pergunta ainda foi cadastrada.',
-                        'action' => true,
-                        'actionMessage' =>
-                            'Solução: Clique no botão "Novo" e tente cadastrar uma nova pergunta. Se o problema persistir, entre em contato com o suporte.',
-                    ])
+            <p class="text-danger">
+                <i class="bi bi-info-circle me-1"></i> Nenhuma FaQ cadastrada.
+            </p>
 
         @endif
 
@@ -173,7 +170,6 @@
                                         <label for="answer" class="form-label required">Resposta:</label>
                                         <textarea class="form-control summernote" id="answer" name="answer" rows="6"></textarea>
                                     </div>
-                                    {{-- prettier-ignore --}}
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class="bi bi-check-circle me-1"></i>Salvar
                                     </button>
@@ -203,8 +199,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/faqs/index.js') }}"></script>
-    <script src="{{ asset('assets/swa/faqs/publish.js') }}"></script>
-    <script src="{{ asset('assets/swa/faqs/delete.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>
     <script src="{{ asset('assets/js/faqs/sortable.js') }}"></script>
 @endpush

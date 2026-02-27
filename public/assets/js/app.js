@@ -14,6 +14,13 @@ import { confirmNoticePublish } from './swa/notice/publish.js'; // Importação 
 // Cursos
 import { confirmCourseDelete } from './swa/courses/delete.js'; // Importação da função de confirmação de exclusão de curso
 
+// FAQ
+import { confirmFaqPublish } from './swa/faqs/publish.js'; // Importação da função de confirmação de publicação de pergunta de faq
+import { confirmFaqDelete } from './swa/faqs/delete.js'; // Importação da função de confirmação de exclusão de pergunta de faq
+
+window.confirmFaqPublish = confirmFaqPublish; // Tornar a função de confirmação de publicação de pergunta de faq acessível globalmente
+window.confirmFaqDelete = confirmFaqDelete; // Tornar a função de confirmação de exclusão de pergunta de faq acessível globalmente
+
 window.confirmCourseDelete = confirmCourseDelete; // Tornar a função de confirmação de exclusão de curso acessível globalmente
 
 window.confirmNoticeDelete = confirmNoticeDelete; // Tornar a função de confirmação de exclusão de edital acessível globalmente
