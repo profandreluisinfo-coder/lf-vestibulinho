@@ -15,7 +15,7 @@
                         <div>Totalmente Gratuito!</div>
                         @if ($calendar)
                             @if (!$calendar?->hasInscriptionStarted())
-                                <div>Em breve.</div>
+                                <div>Em breve</div>
                             @elseif ($calendar?->isInscriptionOpen())
                                 <div class="text-success-alt">Inscrições Abertas</div>
                             @else

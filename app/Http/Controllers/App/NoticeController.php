@@ -6,26 +6,34 @@ use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 
 class NoticeController extends Controller
 {
+    /**
+     * Obter todos os arquivos de edital
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         // Obter todos os arquivos de edital
         $notices = Notice::all();
 
-        // Passar para a view
-        view()->share('notices', $notices);
-
         // Renderizar a view com a lista de arquivos
-        return view('app.notices.index');
+        return view('app.notices.index', compact('notices'));
     }
 
-    // public function create()
-    // {
-    //     return view('app.notices.create');
-    // }
-
+    /**
+     * Salva um novo arquivo de edital.
+     *
+     * Valida as informações enviadas pelo formulário e salva o arquivo no
+     * disco 'public' na pasta 'notices'. Além disso, salva as informações do
+     * arquivo no banco de dados.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -51,18 +59,23 @@ class NoticeController extends Controller
 
         // Salva no banco apenas o caminho relativo
         Notice::create([
-            'file' => $path, // ex: archives/2025_prova_1691778382.pdf
-            'user_id' => auth()->id(),
+            'file' => $path // ex: archives/2025_prova_1691778382.pdf
         ]);
 
-        return redirect()->back()->with('success', 'Edital cadastrado com sucesso!');
+        return alertSuccess('Edital cadastrado com sucesso!', 'app.notices.index');
     }
 
-    // public function edit(Notice $notice)
-    // {
-    //     return view('app.notices.edit', compact('notice'));
-    // }
-
+    /**
+     * Atualiza um arquivo de edital.
+     *
+     * Valida as informações enviadas pelo formulário e salva o arquivo no
+     * disco 'public' na pasta 'notices'. Além disso, salva as informações do
+     * arquivo no banco de dados.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Notice $notice
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Notice $notice)
     {
         $request->validate([
@@ -91,22 +104,28 @@ class NoticeController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->back()->with('success', 'Edital atualizado com sucesso!');
+        return alertSuccess('Edital atualizado com sucesso!', 'app.notices.index');
     }
 
+    /**
+     * Exclui um arquivo de edital.
+     *
+     * Este método exclui um arquivo de edital da pasta 'notices' no disco
+     * 'public' e, em seguida, remove as informações do banco de dados.
+     *
+     * @param \App\Models\Notice $notice
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Notice $notice)
     {
         Storage::disk('public')->delete($notice->file);
+
         $notice->delete();
 
-        return redirect()->back()->with('success', 'Edital excluido com sucesso!');
+        Setting::where('notice', true)->update(['notice' => false]);
+
+        return alertSuccess('Edital excluido com sucesso!', 'app.notices.index');
     }
 
-    public function publish(Notice $notice)
-    {
-        $notice->status = !$notice->status;
-        $notice->save();
-
-        return redirect()->back()->with('success', 'Status alterado com sucesso!');
-    }
+    
 }

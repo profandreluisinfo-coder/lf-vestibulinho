@@ -16,8 +16,8 @@
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
 
-                            @if ($notice->status)
-                                <a href="{{ asset('storage/' . $notice->file) }}">
+                            @if ($settings->isNoticeEnabled() && $notice->file)
+                                <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
                                     <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
                                 </a>
                             @endif
@@ -86,7 +86,7 @@
                         </ul>
 
                         @else
-                            <p class="text-center">Nenhuma informação disponível.</p>
+                            <p class="text-center">Nenhuma informação disponível no momento.</p>
                         @endif
                     </div>
                 </div>

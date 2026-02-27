@@ -1,8 +1,8 @@
-// alerta de exclusão de curso
-function confirmCourseDelete(id, name) {
+// alerta de exclusão de arquivo de edital do processo seletivo
+export function confirmNoticeDelete(id, title) {
     Swal.fire({
         title: 'Tem certeza?',
-        text: ` Você realmente deseja excluir o curso "${name}"? Essa ação não poderá ser desfeita.`,
+        text: `Você deseja realmente excluir este arquivo? A ação não poderá ser desfeita.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -11,7 +11,7 @@ function confirmCourseDelete(id, name) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById(`delete-course-form-${id}`).submit();
+            document.getElementById(`delete-notice-form-${id}`).submit();
         }
     });
 }

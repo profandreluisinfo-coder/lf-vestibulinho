@@ -10,9 +10,9 @@
 
     @php
         $calendar_active = App\Models\Calendar::first();
-        $notice_active = App\Models\Notice::hasActive();
-        $local_status = App\Models\ExamResult::hasRecords();
-        $ranking_active = App\Models\ExamResult::hasScores();
+        // $notice_active   = App\Models\Setting;
+        $local_status    = App\Models\ExamResult::hasRecords();
+        $ranking_active  = App\Models\ExamResult::hasScores();
     @endphp
 
     <div class="accordion accordion-flush shadow-lg bg-light mb-5" id="accordionFlushExample">
@@ -34,29 +34,37 @@
                                 class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
                         </a>
+                        
                         <!-- Divider -->
                         <div class="step-divider"></div>
+
                         <!-- Etapa 2 -->
                         <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center" title="Publicar Edital">
                             <i
-                                class="bi {{ $notice_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                                class="bi {{ $settings->isNoticeEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
                         </a>
+
                         <div class="step-divider"></div>
+
                         <!-- Etapa 3 -->
                         <a href="{{ route('app.exam.create') }}" class="step-item text-secondary text-center" title="Agendar Prova">
                             <i
                                 class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
                         </a>
+
                         <div class="step-divider"></div>
+
                         <!-- Etapa 4 -->
                         <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center" title="Publicar Prova">
                             <i
-                                class="bi {{ App\Models\Archive::latest('id')->first()->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                                class="bi {{ App\Models\Archive::latest('id')->first()?->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
                         </a>
+
                         <div class="step-divider"></div>
+
                         <!-- Etapa 5 -->
                         <a href="{{ route('app.import.home') }}" class="step-item text-secondary text-center" title="Importar Notas">
                             <i

@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function home()
     {
         // Candidatos por bairro
-        $bairros = DB::table('user_details')
+        $bairros = DB::table('users')
             ->select('burgh', DB::raw('COUNT(*) as total'))
             ->groupBy('burgh')
             ->orderByDesc('total')
@@ -27,7 +27,7 @@ class AdminController extends Controller
         $cursos = Course::getInscriptionsCount();
         
         // Escolas de origem (top 10)
-        $escolas = DB::table('user_details')
+        $escolas = DB::table('users')
             ->select('school_name', DB::raw('COUNT(*) as total'))
             ->groupBy('school_name')
             ->orderByDesc('total')
@@ -39,11 +39,11 @@ class AdminController extends Controller
         $sexoPorCurso = Course::getGendersByCourses();
 
         return view('dash.admin.home', [
-            'bairros' => $bairros,
-            'cursos' => $cursos,
-            'escolas' => $escolas,
-            'sexos' => $sexos,
-            'sexoPorCurso' => $sexoPorCurso
+            'bairros'       => $bairros,
+            'cursos'        => $cursos,
+            'escolas'       => $escolas,
+            'sexos'         => $sexos,
+            'sexoPorCurso'  => $sexoPorCurso
         ]);
     }
 }

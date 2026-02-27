@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\Controller;
+use App\Models\Calendar;
 use App\Models\Call;
-use App\Models\User;
+use App\Models\CallList;
 use App\Models\Course;
+use App\Models\ExamResult;
 use App\Models\Notice;
 use App\Models\Setting;
-use App\Models\Calendar;
-use App\Models\CallList;
-use Illuminate\View\View;
-use App\Models\ExamResult;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SettingController extends Controller
@@ -133,16 +134,43 @@ class SettingController extends Controller
         ];
 
         Setting::updateOrCreate(
-            ['id' => 1], 
-            ['calendar' => $settings['calendar']
-        ]);
+            ['id' => 1],
+            [
+                'calendar' => $settings['calendar']
+            ]
+        );
+
+        Cache::forget('global_settings'); // MUITO IMPORTANTE!
 
         if (Setting::first()->calendar) {
-            return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
+            // return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
+            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'app.calendar.index');
         }
 
-        return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
-    }   
+        // return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
+        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'app.calendar.index');
+    }
+
+    /**
+     * Altera o status de um arquivo de edital.
+     *
+     * Este método alterna o status de um arquivo de edital da pasta 'notices' no banco de dados.
+     * Se o arquivo estiver publicado, ele será despublicado e vice-versa.
+     *
+     * @param \App\Models\Notice $notice Arquivo de edital a ser publicado/despublicado.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function notice(): RedirectResponse
+    {
+        $setting = Setting::firstOrCreate(['id' => 1]);
+
+        $setting->notice = !$setting->notice; // alterna o valor
+        $setting->save();
+
+        Cache::forget('global_settings'); // MUITO IMPORTANTE!
+
+        return alertSuccess('Status alterado com sucesso!', 'app.notices.index');
+    }
 
     /**
      * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
@@ -160,6 +188,8 @@ class SettingController extends Controller
             ['id' => 1],
             ['location' => $status]
         );
+
+        Cache::forget('global_settings'); // MUITO IMPORTANTE!
 
         // Se bloqueou, simplesmente retorna
         if (!$status) {
@@ -192,9 +222,13 @@ class SettingController extends Controller
         ];
 
         Setting::updateOrCreate(
-            ['id' => 1], 
-            ['result' => $settings['result']
-        ]);
+            ['id' => 1],
+            [
+                'result' => $settings['result']
+            ]
+        );
+
+        Cache::forget('global_settings'); // MUITO IMPORTANTE!
 
         if (Setting::first()->result) {
             return redirect()->back()->with('success', 'Acesso ao resultado liberado com sucesso!');

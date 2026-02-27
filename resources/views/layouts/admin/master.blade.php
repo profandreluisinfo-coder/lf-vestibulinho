@@ -18,6 +18,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+    {{-- SweetAlert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {{-- Estilos adicionais --}}
     @stack('datatable-styles')
 
@@ -393,7 +396,12 @@
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
 
+    {{-- Sweet Alerts --}}
+    <script src="{{ asset('assets/swa/alerts-admin.js') }}"></script>
+
     @stack('plugins')
+
+    {{-- @include('partials.alerts.admins') --}}
 
     @stack('scripts')
 

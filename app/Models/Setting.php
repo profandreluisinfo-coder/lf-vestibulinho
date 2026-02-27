@@ -8,16 +8,32 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     protected $attributes = [
-        'claendar' => false,
+        'calendar' => false,
+        'notice' => false,
         'location' => false,
         'result' => false,
     ];
 
     protected $fillable = [
         'calendar',
+        'notice',
         'location',
         'result',
     ];
+
+    // Retornar o valor de 'calendar'
+    public static function isCalendarEnabled()
+    {
+        $setting = self::first();
+        return $setting ? (bool) $setting->calendar : false;
+    }
+
+    // Retornar o valor de 'notice'
+    public static function isNoticeEnabled()
+    {
+        $setting = self::first();
+        return $setting ? (bool) $setting->notice : false;
+    }
 
     // Retornar o valor de 'location'
     public static function isLocationEnabled()

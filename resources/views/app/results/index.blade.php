@@ -15,6 +15,7 @@
         @if ($results?->isNotEmpty())
             <div class="row">
                 <div class="col mx-auto">
+                    
                     <form id="result-access-form" class="mb-3" action="{{ route('app.system.publish.result') }}" method="POST">
                         @csrf
                         <div class="form-check form-switch mt-3">

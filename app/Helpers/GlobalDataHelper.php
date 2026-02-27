@@ -18,6 +18,9 @@ class GlobalDataHelper
     {
         View::composer('*', function ($view) {
 
+            // Edital: Se não houver registros, retorna uma instância vazia
+             $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
+
             // Configurações gerais
             $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
             
@@ -36,7 +39,7 @@ class GlobalDataHelper
             );
 
             // Edital
-            $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
+            // $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
 
             // Calendário: Se não houver registros, retorna uma instância vazia
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());

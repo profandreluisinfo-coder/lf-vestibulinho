@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->boolean('calendar')->default(false);
-            $table->boolean('location')->default(false);
-            $table->boolean('result')->default(false);
+            $table->boolean('calendar')->default(false); // Adiciona a coluna 'calendar' para controlar a exibição do calendário
+            $table->boolean('notice')->default(false); // Adiciona a coluna 'notice' para controlar a exibição dos editais
+            $table->boolean('location')->default(false); // Adiciona a coluna 'location' para controlar a exibição do local do vestibular
+            $table->boolean('result')->default(false); // Adiciona a coluna 'result' para controlar a exibição dos resultados do vestibular
             $table->timestamps();
         });
     }

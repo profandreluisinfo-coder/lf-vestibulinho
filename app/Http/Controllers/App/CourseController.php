@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
+use App\Models\Course;
+use Illuminate\Http\RedirectResponse;
 
 class CourseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe a lista de cursos cadastrados.
      */
     public function index()
     {
@@ -20,13 +21,16 @@ class CourseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Exibe o formulário para criar um novo curso.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(CourseRequest $request)
+    public function store(CourseRequest $request): RedirectResponse
     {
         Course::create($request->validated());
 
-        return redirect()->route('app.courses.index')->with('success', 'Curso registrado com sucesso!');
+        // return redirect()->route('app.courses.index')->with('success', 'Curso registrado com sucesso!');
+        return alertSuccess('Curso registrado com sucesso!', 'app.courses.index');
     }
 
     /**
@@ -44,7 +48,8 @@ class CourseController extends Controller
     {
         Course::where('id', $id)->update($request->only(['name', 'description', 'duration', 'info', 'vacancies']));
 
-        return redirect()->route('app.courses.index')->with('success', 'Curso editado com sucesso!');
+        // return redirect()->route('app.courses.index')->with('success', 'Curso editado com sucesso!');
+        return alertSuccess('Curso editado com sucesso!', 'app.courses.index');
     }
 
     /**
@@ -55,6 +60,7 @@ class CourseController extends Controller
         // Excluir o curso com uma consulta única
         Course::where('id', $id)->delete();
 
-        return redirect()->route('app.courses.index')->with('success', 'Curso excluido com sucesso!');
+        // return redirect()->route('app.courses.index')->with('success', 'Curso excluido com sucesso!');
+        return alertSuccess('Curso excluído com sucesso!', 'app.courses.index');
     }
 }

@@ -15,74 +15,69 @@
 
         @if ($notices->isNotEmpty())
 
-        <div class="table-responsive">
+            <div class="table-responsive">
 
-            <table class="table align-middle">
-                <thead class="table-success">
-                    <tr>
-                        <th scope="col">Arquivo</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach ($notices as $notice)
-                        
+                <table class="table align-middle">
+                    <thead class="table-success">
                         <tr>
-                            <td>
-                                <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
-                                    Edital {{ $calendar->year }}.pdf
-                                </a>
-                            </td>
-                            <td><span
-                                    class="badge bg-{{ $notice->status == '1' ? 'success' : 'warning' }}">{{ $notice->status == '1' ? 'Publicado' : 'Publicar' }}</span>
-                            </td>
-                            <td>
-                                
-                                {{-- Botão de publicar (alterar status) --}}
-                                <form id="publish-notice-form-{{ $notice->id }}"
-                                    action="{{ route('app.notices.publish', $notice->id) }}" method="POST" class="d-none">
-                                    @csrf
-                                    @method('PUT')
-                                </form>
-                                <button type="button"
-                                    class="btn btn-sm btn-{{ $notice->status ? 'secondary' : 'success' }}"
-                                    title="{{ $notice->status ? 'Ocultar' : 'Publicar' }}"
-                                    onclick="confirmNoticePublish({{ $notice->id }}, 'Edital {{ $notice->year }}')">
-                                    <i class="bi bi-{{ $notice->status ? 'eye-slash' : 'eye' }}"></i>
-                                </button>
-
-                                {{-- Botão de excluir --}}
-                                <form id="delete-notice-form-{{ $notice->id }}"
-                                    action="{{ route('app.notices.destroy', $notice->id) }}" method="POST" class="d-none">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                    onclick="confirmNoticeDelete({{ $notice->id }}, 'Edital {{ $notice->year }}')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                            </td>
+                            <th scope="col">Arquivo</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Opções</th>
                         </tr>
+                    </thead>
+                    <tbody>
 
-                    @endforeach
+                        @foreach ($notices as $notice)
+                            <tr>
+                                <td>
+                                    <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
+                                        Edital.pdf
+                                    </a>
+                                </td>
+                                <td><span
+                                        class="badge bg-{{ $settings->isNoticeEnabled() == '1' ? 'success' : 'warning' }}">{{ $settings->isNoticeEnabled() == '1' ? 'Publicado' : 'Publicar' }}</span>
+                                </td>
+                                <td>
 
-                </tbody>
-            </table>
+                                    {{-- Botão de publicar (alterar status) --}}
+                                    <form id="publish-notice-form-{{ $settings->id }}"
+                                        action="{{ route('app.system.publish.notice') }}" method="POST" class="d-none">
+                                        @csrf
+                                        @method('PUT')
+                                    </form>
+                                    <button type="button"
+                                        class="btn btn-sm btn-{{ $settings->isNoticeEnabled() ? 'secondary' : 'success' }}"
+                                        title="{{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}"
+                                        onclick="confirmNoticePublish({{ $settings->id }}, 'Edital')">
+                                        <i class="bi bi-{{ $settings->isNoticeEnabled() ? 'eye-slash' : 'eye' }}"></i>
+                                    </button>
 
-        </div>
+                                    {{-- Botão de excluir --}}
+                                    <form id="delete-notice-form-{{ $notice->id }}"
+                                        action="{{ route('app.notices.destroy', $notice->id) }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                        onclick="confirmNoticeDelete({{ $notice->id }}, 'Edital')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+
+            </div>
 
         @else
-
-            @include('components.no-records', [
-                        'message' => 'Causas de problemas com editais:',
-                        'submessage' => 'Provavelmente nenhum edital foi cadastrado até o momento.',
-                        'action' => true,
-                        'actionMessage' =>
-                            'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
-                    ])
+        
+            <p class="text-danger">
+                <i class="bi bi-info-circle me-1"></i> Nenhum edital cadastrado.
+            </p>
 
         @endif
 
@@ -117,7 +112,7 @@
 
                                     {{-- prettier-ignore --}}
                                     <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="bi bi-check-circle me-1"></i>Salvar
+                                    <i class="bi bi-check-circle me-1"></i>Salvar
                                     </button>
                                 </form>
 
@@ -140,6 +135,4 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/notice/index.js') }}"></script>
-    <script src="{{ asset('assets/swa/notice/delete.js') }}"></script>
-    <script src="{{ asset('assets/swa/notice/publish.js') }}"></script>
 @endpush

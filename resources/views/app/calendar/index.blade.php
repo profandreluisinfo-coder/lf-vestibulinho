@@ -24,25 +24,8 @@
         </div>
 
         @if ($calendar->exists())
-        <form id="calendar-access-form" class="mb-5" action="{{ route('app.system.publish.calendar') }}" method="POST">
-            @csrf
-            <div class="form-check form-switch mt-3">
-                <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
-                    onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
-                <label class="form-check-label" for="calendar">
-                    Acesso ao calendário:
-                    <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
-                        {{ $settings->calendar != 0 ? 'Liberado' : 'Bloqueado' }}
-                    </span>
-                </label>
-            </div>
-        </form>
-        @endif
 
-        @include('components.alerts')
-
-        @if ($calendar->exists())
-            <div class="row g-4">
+            <div class="row g-4 mb-4">
 
                 {{-- Card de Período de Inscrições --}}
                 <div class="col-md-6 col-lg-4">
@@ -152,16 +135,44 @@
                 </div>
 
             </div>
-        @else
-            <div class="col-md-6 col-lg-4">
-                <img class="img-fluid" src="{{ asset('assets/img/no_results_found.webp') }}" alt="Nenhum resultado encontrado">
-            </div>
-        @endif
 
+            @if ($calendar->exists())
+
+            <form id="calendar-access-form" action="{{ route('app.system.publish.calendar') }}" method="POST">
+                @csrf
+                <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
+                        onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="calendar">                        
+                        <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
+                            {!! $settings->calendar != 0 ? '<i class="bi bi-unlock"></i> Calendário Liberado' : '<i class="bi bi-lock"></i> Calendário Bloqueado' !!}
+                        </span>
+                    </label>
+                </div>
+            </form>
+
+            <p class="text-muted mt-3">
+                @if ($settings->calendar != 0)
+                <span class="text-success">Os candidatos podem visualizar o calendário do vestibulinho.</span>
+                @else
+                <span class="text-danger">Os candidatos não podem visualizar o calendário do vestibulinho.</span>
+                @endif
+            </p>
+            
+            @endif
+
+        @else
+
+            <p class="text-danger">
+                <i class="bi bi-info-circle me-1"></i> Nenhum calendário cadastrado.
+            </p>
+
+        @endif
+        
     </div>
 
 @endsection
 
 @push('scripts')
-    {{-- <script src="{{ asset('assets/swa/calendar/publish.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/swa/calendar/publish.js') }}"></script>
 @endpush

@@ -22,6 +22,7 @@ use App\Http\Controllers\App\{
     ResultController,
     SettingController
 };
+use Ramsey\Collection\Set;
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
@@ -61,7 +62,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/salvar', [NoticeController::class, 'store'])->name('store');
             Route::post('/editar/{notice}', [NoticeController::class, 'update']);
             Route::delete('/excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
-            Route::put('/publicar/{notice}', [NoticeController::class, 'publish'])->name('publish');
+            // Route::put('/publicar/{notice}', [NoticeController::class, 'publish'])->name('publish');
         });
 
     // ==========================
@@ -193,6 +194,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
             Route::post('/liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
             Route::post('/liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
+            Route::put('/liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
         });
 
     // ==========================

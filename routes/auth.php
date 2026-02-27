@@ -16,7 +16,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
     
     // Login de admins
-    Route::get('/auth/admin', [LoginController::class, 'loginForAdmin'])->name('auth.admin')->middleware('throttle:3,1'); // pasta.view
+    Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('auth.admin')->middleware('throttle:3,1'); // pasta.view
 
     Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
     Route::post('/registrar', [RegisterController::class, 'store']);

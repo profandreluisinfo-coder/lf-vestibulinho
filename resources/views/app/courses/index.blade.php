@@ -56,13 +56,10 @@
 
                     @empty
 
-                        @include('components.no-records', [
-                            'message' => 'Causas de problemas com cursos:',
-                            'submessage' => 'Provavelmente nenhum curso foi cadastrado até o momento.',
-                            'action' => true,
-                            'actionMessage' =>
-                                'Solução: Clique no botão "Novo" para iniciar o cadastro. Se o problema persistir, entre em contato com o suporte.',
-                        ])
+                        <tr>
+                            <td colspan="3" class="text-center">Nenhum curso cadastrado.</td>
+                        </tr>
+
                     @endforelse
 
                 </tbody>
@@ -194,14 +191,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/courses/create.js') }}"></script>
-    <script src="{{ asset('assets/swa/courses/delete.js') }}"></script>
-    <script>
-        function showCourseDetails(id, name, description, duration, info, vacancies) {
-            document.getElementById('view-name').textContent = name;
-            document.getElementById('view-description').textContent = description;
-            document.getElementById('view-duration').textContent = duration;
-            document.getElementById('view-info').textContent = info;
-            document.getElementById('view-vacancies').textContent = vacancies;
-        }
-    </script>
+    <script src="{{ asset('assets/js/courses/showCourseDetails.js') }}"></script>
 @endpush
