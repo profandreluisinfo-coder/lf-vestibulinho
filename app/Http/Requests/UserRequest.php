@@ -38,7 +38,7 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $socialNameRequired = $this->input('socialNameOption') == 1;
+        $socialNameRequired = $this->input('social_name_option') == 1;
 
         return [
             'cpf' => ['required', new CpfRule(), 'unique:users,cpf'],
@@ -47,7 +47,7 @@ class UserRequest extends FormRequest
 
             'gender' => ['required', Rule::in([1, 2, 3, 4])],
 
-            'socialNameOption' => ['required'],
+            // 'social_name_option' => ['required'],
 
             'social_name' => [
                 Rule::requiredIf($socialNameRequired),
@@ -55,6 +55,14 @@ class UserRequest extends FormRequest
                 'nullable',
                 'max:100',
                 'regex:/^[\p{L}\s]+$/u',
+            ],
+
+            'authorization' => [
+                Rule::requiredIf($socialNameRequired),
+                'nullable',
+                'file',
+                'mimes:pdf',
+                'max:2048', // limite de 2MB
             ],
 
             'phone' => ['required', 'min:14', 'max:15'],
@@ -91,7 +99,7 @@ class UserRequest extends FormRequest
             'name.max' => 'O campo nome deve conter no máximo :max caracteres.',
 
             // Nome Social
-            'socialNameOption.required' => 'Informe se deseja usar o nome social/afetivo.',
+            'social_name_option.required' => 'Informe se deseja usar o nome social/afetivo.',
             'social_name.required' => 'O campo nome social/afetivo é obrigatório.',
             'social_name.regex' => 'O campo nome social/afetivo deve conter apenas letras.',
             'social_name.max' => 'O campo nome social/afetivo deve conter no máximo :max caracteres.',

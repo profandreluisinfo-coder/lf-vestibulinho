@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.auth.master')
 
 @push('metas')
     @if (app()->environment('local'))
@@ -33,7 +33,7 @@
                             </h1>
                             <form id="forgot-password" action="{{ route('forgot.password') }}" method="POST">
                                 @csrf
-                                <div class="mb-3">
+                                <div class="text-center mb-3">
                                     <label for="loginEmail" class="form-label">Informe seu endereço de e-mail:</label>
                                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="loginEmail"
                                         value="{{ old('email') }}" aria-describedby="@error('email') emailError @enderror">
@@ -61,7 +61,7 @@
     </main>
 
     <footer class="mini-footer mt-auto">
-        @include('guest.home.mini-footer')
+        @include('components.guest.mini-footer')
     </footer>
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.guest.master')
 
 @push('metas')
     <meta name="description" content="Área de perguntas frequentes sobre o {{ config('app.name') }} {{ $calendar?->year }}">
@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('guest.home.navbar')
+    @include('components.guest.navbar')
 
     <section id="faqs" class="bg-light py-5">
         <div class="container">

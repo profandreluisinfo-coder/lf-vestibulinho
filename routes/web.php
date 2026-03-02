@@ -6,6 +6,7 @@ require 'app.php';
 require 'guest.php';
 require 'auth.php';
 require 'dash.php';
+require 'registration.php';
 require 'inscription.php';
 
 // ==============

@@ -25,7 +25,8 @@
     @stack('styles')
 
     @stack('head-scripts')
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -116,7 +117,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-    <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
+    
+    <script src="{{ asset('assets/js/user.js') }}" type="module"></script>
 
     @stack('plugins')
 

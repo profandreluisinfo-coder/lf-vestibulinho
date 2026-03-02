@@ -1,6 +1,6 @@
 @extends('layouts.forms.master')
 
-@section('page-title', 'Inscrição | Confirmar Dados')
+@section('page-title', 'Inscrição - Passo ' . $step . ' - Confirmar Dados')
 
 @php
   $etapas = collect(range(1, 7))->every(fn($i) => session("step{$i}") === null);
@@ -30,11 +30,27 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><i class="bi bi-credit-card"></i> <strong>CPF:</strong> {{ $step1['cpf'] }}</li>
       <li class="list-group-item"><i class="bi bi-person"></i> <strong>Nome:</strong> {{ $step1['name'] }}</li>
-      @if ($step1['socialNameOption'] == 1)
+      @if ($step1['social_name_option'] == 1)
         <li class="list-group-item"><i class="bi bi-person-bounding-box"></i> <strong>Nome social:</strong>
           {{ $step1['social_name'] }}</li>
       @endif
     </ul>
+
+    @if(session('step1.authorization'))
+          <div class="alert alert-info">
+              <p>
+                  <strong>Autorização:</strong>
+                  <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank">
+                      Visualizar PDF
+                  </a>
+              </p>
+
+              <p class="mb-0">
+                  Caso deseje substituir o arquivo, selecione um novo PDF em "Dados Pessoais (Passo 1)".
+              </p>
+          </div>
+      @endif
+
   </fieldset>
 
   <fieldset class="mb-2 rounded border p-2">
@@ -146,11 +162,25 @@
   <fieldset class="mb-2 rounded border p-2">
     <legend class="border-bottom pb-1"><i class="bi bi-universal-access"></i> Educação Especial</legend>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Elegível?</strong> {{ $step6['accessibility'] == 1 ? 'SIM' : 'NÃO' }}</li>
-      @if ($step6['accessibility'] == '1')
+      <li class="list-group-item"><strong>Elegível?</strong> {{ $step6['pne'] == 1 ? 'SIM' : 'NÃO' }}</li>
+      @if ($step6['pne'] == '1')
         <li class="list-group-item"><strong>Descrição:</strong> {{ $step6['accessibility_description'] }}</li>
       @endif
     </ul>
+  @if(session('step1.authorization'))
+        <div class="alert alert-info">
+            <p>
+                <strong>Laudo/Relatório Médico:</strong>
+                <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank">
+                    Visualizar PDF
+                </a>
+            </p>
+
+            <p class="mb-0">
+                Caso deseje substituir o arquivo, selecione um novo PDF em "Outras Informações (Passo 6)".
+            </p>
+        </div>
+    @endif
   </fieldset>
 
   <fieldset class="mb-2 rounded border p-2">
@@ -198,5 +228,5 @@
 @endsection
 
 @push('scripts')
-  <script src="{{ asset('assets/swa/finalize.js') }}"></script>
+  <script src="{{ asset('assets/js/swa/registration/confirm.js') }}"></script>
 @endpush

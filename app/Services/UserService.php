@@ -163,7 +163,7 @@ class UserService
             'message' => 'Senha alterada.'
         ];
     }
-    
+
     /**
      * Reenvia um e-mail para o usuário com um link para redefinição de senha com base no token informado.
      *
@@ -249,16 +249,34 @@ class UserService
         ];
     }
 
-    /**
-     * Envia um e-mail para o usuário informando sobre uma ação específica.
-     *
-     * @param string $to Endereço de e-mail do destinatário
-     * @param string $subject Assunto do e-mail
-     * @param array $data Dados a serem enviados para a view
-     * @param string $view Nome da view a ser utilizada
-     */
-    private function sendEmail(string $to, string $subject, array $data, string $view)
+    public function confirmInscription(User $user, $path)
     {
-        dispatch(new SendTransactionalEmailJob($to, $subject, $data, $view))->delay(now()->addSeconds(10));
+        $this->sendEmail(
+            to: $user->email,
+            subject: 'Inscrição confirmada',
+            data: ['name' => $user->name],
+            view: 'mail.register',
+            attachment: $path
+        );
+
+        return true;
+    }
+
+    private function sendEmail(
+        string $to,
+        string $subject,
+        array $data,
+        string $view,
+        ?string $attachment = null // 👈 ADICIONE ISSO
+    ) {
+        dispatch(
+            new SendTransactionalEmailJob(
+                $to,
+                $subject,
+                $data,
+                $view,
+                $attachment // 👈 PASSE AQUI
+            )
+        )->delay(now()->addSeconds(10));
     }
 }

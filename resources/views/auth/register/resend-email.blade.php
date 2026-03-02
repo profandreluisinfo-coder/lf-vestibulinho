@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.auth.master')
 
 @push('metas')
     @if (app()->environment('local'))
@@ -34,7 +34,7 @@
                             </h1>
                             <form id="resend-email" method="POST" action="{{ route('resend.email') }}">
                                 @csrf
-                                <div class="mb-3">
+                                <div class="text-center mb-3">
                                     <label for="myEmail" class="form-label">Informe seu endereço de e-mail</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="myEmail"
@@ -63,7 +63,7 @@
     </main>
 
     <footer class="mini-footer mt-auto">
-        @include('guest.home.mini-footer')
+        @include('components.guest.mini-footer')
     </footer>
 
 @endsection

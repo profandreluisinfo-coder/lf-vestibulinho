@@ -41,6 +41,8 @@ class OtherRequest extends FormRequest
      */
     public function rules(): array
     {
+        $pneRequired = $this->input('pne') == 1;
+        
         return [
             // outras informações
             'health' => ['required', 'in:1,2'],
@@ -62,20 +64,29 @@ class OtherRequest extends FormRequest
             ],
             
             // acessibilidade ou educação especial
-            'accessibility' => ['required', 'in:1,2'],
+            'pne' => ['required', 'in:1,2'],
             // descrição da acessibilidade
             'accessibility_description' => [
                 'nullable',
-                Rule::requiredIf(fn() => $this->input('accessibility') == 1),
+                // Rule::requiredIf(fn() => $this->input('pne') == 1),
+                Rule::requiredIf($pneRequired),
                 'max:60',
                 function ($attribute, $value, $fail) {
-                    if ($this->input('accessibility') == 1) {
+                    if ($this->input('pne') == 1) {
                         $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
                         if (!preg_match($regex, $value)) {
                             $fail("O campo {$attribute} contém caracteres inválidos.");
                         }
                     }
                 }
+            ],
+
+            'pne_report' => [
+                Rule::requiredIf($pneRequired),
+                'nullable',
+                'file',
+                'mimes:pdf',
+                'max:2048', // limite de 2MB
             ],
 
             // programas sociais
@@ -103,8 +114,8 @@ class OtherRequest extends FormRequest
             'nis.unique' => 'Número de Identificação Social já cadastrado',
 
             // educação especial
-            'accessibility.required' => 'O campo Acessibilidade é obrigatório',
-            'accessibility.in' => 'O campo Acessibilidade apresenta uma opção inválida',
+            'pne.required' => 'Informe se possui alguma necessidades especiais',
+            'pne.in' => 'O campo Acessibilidade apresenta uma opção inválida',
 
             'accessibility_description.required' => 'O campo de descrição de acessibilidade é obrigatório',
             'accessibility_description.max' => 'O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',

@@ -1,10 +1,10 @@
 @extends('layouts.forms.master')
 
-@section('page-title', 'Inscrição | Outras Informações')
+@section('page-title', 'Inscrição - Passo ' . $step . ' - Outras Informações')
 
 @section('forms')
 
-    <form id="inscription" class="row g-4" action="{{ route('step.other') }}" method="POST">
+    <form id="inscription" class="row g-4" action="{{ route('step.other') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <h5 class="fw-semibold border-bottom pb-1">Informações Complementares</h5>
         <div class="form-group col-md-6">
@@ -52,25 +52,25 @@
             <label for="acessibilidade" class="form-label required">
                 Elegível aos serviços da educação especial?
             </label>
-            <select class="form-select @error('accessibility') is-invalid @enderror" id="accessibility" name="accessibility">
+            <select name="pne" class="form-select @error('pne') is-invalid @enderror" id="accessibility">
                 <option value="" selected>...</option>
                 @php
-                    $selectedAccessibility = old('accessibility', session('step6.accessibility'));
+                    $selectedPne = old('pne', session('step6.pne'));
                 @endphp
                 @foreach ($options as $option => $value)
-                    <option value="{{ $option }}" {{ $selectedAccessibility == $option ? 'selected' : '' }}>
+                    <option value="{{ $option }}" {{ $selectedPne == $option ? 'selected' : '' }}>
                         {{ $value }}
                     </option>
                 @endforeach
             </select>
-            @error('accessibility')
+            @error('pne')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
             @enderror
         </div>
 
-        <div class="form-group col-md-6 mt-3 mb-3 {{ $selectedAccessibility == 1 ? '' : 'd-none' }}">
+        <div class="form-group col-md-6 mt-3 mb-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
             <label for="descrricaoAcessibilidade" class="form-label required">Especifique</label>
             <input list="disabilities" class="form-control @error('accessibility_description') is-invalid @enderror"
                 id="accessibility_description" name="accessibility_description"
@@ -88,6 +88,22 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+
+        <!-- Área para anexar autorização do responsável legal -->
+        <div id="reportDiv" class="form-group col-md-12">
+
+            <p>
+                O(a) candidato(a) que declarou possuir necessidades especiais neste Processo Seletivo deve apresentar o laudo/relatório de avaliação médico, contendo BLA BLA BLA.... A autorização deverá ser enviada em anexo ao formulário de inscrição.
+            </p>
+
+            <label for="report" class="form-label required">Anexe o laudo/relatório de avaliação médico</label>
+            <input type="file" name="pne_report" id="pne_report" class="form-control @error('pne_report') is-invalid @enderror">
+
+            @error('pne_report')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+
         </div>
 
         <h6 class="fw-semibold border-bottom pb-1 mt-4">Programas Sociais</h6>

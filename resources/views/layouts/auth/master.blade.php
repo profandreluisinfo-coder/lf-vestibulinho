@@ -34,7 +34,7 @@
 
     @stack('plugins')
 
-    <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
+    <script src="{{ asset('assets/js/auth.js') }}" type="module"></script>
 
     @stack('scripts')
 </body>

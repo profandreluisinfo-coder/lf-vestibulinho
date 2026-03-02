@@ -1,6 +1,6 @@
 @extends('layouts.forms.master')
 
-@section('page-title', 'Inscrição | Filiação')
+@section('page-title', 'Inscrição - Passo ' . $step . ' - Filiação')
 
 @section('forms')
 

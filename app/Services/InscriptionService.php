@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Mail\SendMail;
+use App\Models\Calendar;
 use App\Models\Inscription;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class InscriptionService
 {
+    public function __construct(
+        private UserService $userService
+    ) {}
     /**
      * Armazenar dados de inscrição de um determinado usuário no banco de dados.
 
@@ -27,14 +27,15 @@ class InscriptionService
         $data = array_merge(...$steps->values()->toArray());
 
         DB::transaction(function () use ($user, $data, $steps) {
+
             $user->update([
                 'cpf' => $data['cpf'],
                 'name' => $data['name'],
+                'social_name_option' => $data['social_name_option'],
                 'social_name' => $data['social_name'],
+                'authorization' => data_get($data, 'authorization'),
                 'birth' => $data['birth'],
-                'gender' => $data['gender'],
-                'pne' => ($data['accessibility'] == '1' && !empty($data['accessibility_description']))
-                    ? 1 : 0,
+                'gender' => $data['gender']
             ]);
 
             if (Inscription::where('user_id', $user->id)->where('course_id', $data['course_id'])->exists()) {
@@ -45,7 +46,18 @@ class InscriptionService
                 'nationality' => $data['nationality'],
                 'doc_type' => $data['doc_type'],
                 'doc_number' => $data['doc_number'],
+
                 'phone' => $data['phone'],
+
+                'certificate' => $data['certificateModel'],
+
+                'new_number' => data_get($data, 'new_number'),
+
+                'fls' => data_get($data, 'fls'),
+                'book' => data_get($data, 'book'),
+                'old_number' => data_get($data, 'old_number'),
+                'municipality' => data_get($data, 'municipality'),
+
                 'zip' => $data['zip'],
                 'street' => $data['street'],
                 'number' => $data['number'],
@@ -53,16 +65,13 @@ class InscriptionService
                 'burgh' => $data['burgh'],
                 'city' => $data['city'],
                 'state' => $data['state'],
+
                 'school_name' => $data['school_name'],
                 'school_city' => $data['school_city'],
                 'school_state' => $data['school_state'],
                 'school_year' => $data['school_year'],
                 'school_ra' => $data['school_ra'],
-                'new_number' => data_get($data, 'new_number'),
-                'fls' => data_get($data, 'fls'),
-                'book' => data_get($data, 'book'),
-                'old_number' => data_get($data, 'old_number'),
-                'municipality' => data_get($data, 'municipality'),
+
                 'mother' => $data['mother'],
                 'mother_phone' => data_get($data, 'mother_phone'),
                 'father' => data_get($data, 'father'),
@@ -73,10 +82,15 @@ class InscriptionService
                     ? $data['kinship'] : '',
                 'responsible_phone' => data_get($data, 'responsible_phone'),
                 'parents_email' => $data['parents_email'],
-                'accessibility' => ($data['accessibility'] == '1' && !empty($data['accessibility_description']))
-                    ? $data['accessibility_description'] : '',
-                'nis' => (data_get($data, 'social_program') == '1') ? data_get($data, 'nis') : '',
+
                 'health' => (data_get($data, 'health') == '1') ? data_get($data, 'health_issue') : '',
+
+                'pne' => $data['pne'],
+                'accessibility' => ($data['pne'] == '1') ? $data['accessibility_description'] : '',
+                'pne_report' => (data_get($data, 'pne') == '1') ? data_get($data, 'pne_report') : '',
+
+                'nis' => (data_get($data, 'social_program') == '1') ? data_get($data, 'nis') : '',
+
             ]);
 
             $inscription = Inscription::create([
@@ -84,20 +98,16 @@ class InscriptionService
                 'course_id' => $data['course_id'],
             ]);
 
-            $pdf = Pdf::loadView('app.pdf.inscription', compact('user', 'inscription'));
+            $calendar = Calendar::first() ?? throw new \Exception('Calendário não encontrado.');
+
+            $pdf = Pdf::loadView('app.pdf.inscription', compact('user', 'inscription', 'calendar'));
+
             $filename = 'Inscricao_' . preg_replace('/[^0-9]/', '', $user->cpf) . '.pdf';
             $path = storage_path('app/public/' . $filename);
             $pdf->save($path);
 
-            Mail::to($user->email)->send(new SendMail(
-                subject: 'Confirmação de Inscrição',
-                content: ['name' => $user->social_name ?: $user->name],
-                view: 'mail.register',
-                attachment: $path
-            ));
+            $this->userService->confirmInscription($user, $path);
 
-            Storage::disk('public')->delete($filename);
-            
             // Limpa a sessão no final da transação
             session()->forget($steps->keys()->toArray());
         });

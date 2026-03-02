@@ -46,19 +46,19 @@ Route::middleware('auth')->group(function () {
         });
 
     // Area do 'admin' para visualização dos dados dos usuários
-    Route::prefix('dash') // pasta
+    Route::prefix('candidato') // pasta
         ->name('dash.') // pasta
         ->group(function () {
             Route::middleware([NotAdmin::class, NoInscription::class])
                 ->group(function () {
-                    // Area do candidato: exibe a página cominformações sobre como fazer a inscrição
-                    Route::get('/usuario', [UserController::class, 'home'])->name('user.home'); // pasta e view
+                    // Area do candidato: exibe a página com informações sobre como fazer a inscrição
+                    Route::get('/', [UserController::class, 'home'])->name('user.home'); // pasta e view
                 });
 
             // Área do candidato (com inscrição concluída)
             Route::middleware([NotAdmin::class, WithInscription::class])->group(function () {
                 // Área do candidato: exibe o perfil da inscrição existente
-                Route::get('/candidato', [UserController::class, 'inscription'])->name('user.inscription');
+                Route::get('/inscricao', [UserController::class, 'inscription'])->name('user.inscription');
             });
 
             Route::middleware([IsAdmin::class])

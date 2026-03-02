@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.auth.master')
 
 @push('metas')
     @if (app()->environment('local'))
@@ -72,7 +72,7 @@
     </main>
 
     <footer class="mini-footer mt-auto">
-        @include('guest.home.mini-footer')
+        @include('components.guest.mini-footer')
     </footer>
 
 @endsection

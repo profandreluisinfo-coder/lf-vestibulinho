@@ -1,21 +1,21 @@
 $(function () {
     const $form = $("#inscription");
-    const $radio1 = $('#radio1');
+    const $radioYes = $('#radioYes');
 
     // Métodos de validação personalizados
-    $.validator.addMethod("noSequences", value => 
+    $.validator.addMethod("noSequences", value =>
         !value.trim().split(/\s+/).some(word => /^(\S)\1+$/.test(word)),
-        "Sequência de palavras inválida"
+        "* Sequência de palavras inválida"
     );
 
-    $.validator.addMethod("wordLength", value => 
+    $.validator.addMethod("wordLength", value =>
         value.trim().split(/\s+/).every(word => word.length >= 2),
-        "Use pelo menos de 2 letras"
+        "* Use pelo menos de 2 letras"
     );
 
-    $.validator.addMethod("minWords", value => 
+    $.validator.addMethod("minWords", value =>
         value.trim().split(/\s+/).length >= 2,
-        "Use pelo menos de 2 palavras"
+        "* Use pelo menos de 2 palavras"
     );
 
     $.validator.addMethod("noSimplePatterns", value => {
@@ -25,7 +25,7 @@ $(function () {
 
         return !Array.from({ length: Math.floor(value.length / 2) }, (_, i) => i + 1)
             .some(i => value === value.slice(0, i).repeat(value.length / i));
-    }, "Padrão numérico inválido para o documento");
+    }, "* Padrão numérico inválido para o documento");
 
     const validateIfFilled = param => ({
         depends: el => $(el).val().trim() !== "",
@@ -39,7 +39,7 @@ $(function () {
         }
     });
 
-    const isRadio1Checked = () => $radio1.is(':checked');
+    const isRadioYesChecked = () => $radioYes.is(':checked');
 
     const validator = $form.validate({
         ignore: ":hidden",
@@ -54,12 +54,16 @@ $(function () {
                 minWords: true
             },
             social_name: {
-                ...ruleIf(isRadio1Checked, 'required'),
-                ...ruleIf(isRadio1Checked, 'maxlength', 60),
-                ...ruleIf(isRadio1Checked, 'pattern', /^[a-zA-ZÀ-ÿ ()]*$/),
-                ...ruleIf(isRadio1Checked, 'noSequences'),
+                ...ruleIf(isRadioYesChecked, 'required'),
+                ...ruleIf(isRadioYesChecked, 'maxlength', 60),
+                ...ruleIf(isRadioYesChecked, 'pattern', /^[a-zA-ZÀ-ÿ ()]*$/),
+                ...ruleIf(isRadioYesChecked, 'noSequences'),
                 wordLength: validateIfFilled(),
                 minWords: validateIfFilled()
+            },
+            authorization: {
+                required: isRadioYesChecked,
+                extension: "pdf"
             },
             nationality: { required: true, range: [1, 2] },
             doc_type: { required: true, range: [1, 3] },
@@ -80,55 +84,58 @@ $(function () {
         },
         messages: {
             cpf: {
-                required: "Obrigatório.",
-                cpfBR: "CPF inválido."
+                required: "* Obrigatório.",
+                cpfBR: "* CPF inválido."
             },
             name: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
             },
             social_name: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
+            },
+            authorization: {
+                required: "* Obrigatório.",
+                extension: "* Apenas arquivos PDF são permitidos."
             },
             nationality: {
-                required: "Obrigatório.",
-                range: "Selecione uma nacionalidade válida."
+                required: "* Obrigatório.",
+                range: "* Selecione uma nacionalidade válida."
             },
             doc_type: {
-                required: "Obrigatório.",
-                range: "Selecione um tipo de documento válido."
+                required: "* Obrigatório.",
+                range: "* Selecione um tipo de documento válido."
             },
             doc_number: {
-                required: "Obrigatório.",
-                minlength: "Use no mínimo 7 caracteres.",
-                maxlength: "Use no máximo 11 caracteres.",
-                pattern: "Formato inválido. Use apenas letras e números."
+                required: "* Obrigatório.",
+                minlength: "* Use no mínimo 7 caracteres.",
+                maxlength: "* Use no máximo 11 caracteres.",
+                pattern: "* Formato inválido. Use apenas letras e números."
             },
             gender: {
-                required: "Obrigatório.",
-                range: "Selecione um gênero válido."
+                required: "* Obrigatório.",
+                range: "* Selecione um gênero válido."
             },
             birth: {
-                required: "Obrigatório.",
-                date: "Data inválida."
+                required: "* Obrigatório.",
+                date: "* Data inválida."
             },
             phone: {
-                required: "Obrigatório.",
-                minlength: "Deve conter 14 ou 15 caracteres.",
-                maxlength: "Máximo de 15 caracteres."
+                required: "* Obrigatório.",
+                minlength: "* Deve conter 14 ou 15 caracteres.",
+                maxlength: "* Máximo de 15 caracteres."
             }
         },
         submitHandler: form => form.submit(),
-        errorPlacement: (error, element) => 
+        errorPlacement: (error, element) =>
             error.addClass('invalid-feedback').appendTo(element.closest('.form-group')),
         highlight: element => $(element).addClass('is-invalid'),
         unhighlight: element => $(element).removeClass('is-invalid')
     });
 
-    // ✅ Validação em tempo real
     $form.find("input, select, textarea").on("input change", function () {
         $(this).valid();
     });

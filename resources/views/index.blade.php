@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.guest.master')
 
 @section('page-title', 'Vestibulinho LF ' . $calendar?->year)
 
@@ -10,18 +10,18 @@
 
 @section('content')
 
-    @include('guest.home.navbar')
-    @include('guest.home.hero-banner')
-    @include('guest.home.quick-access')
-    @include('guest.home.courses')
-    @include('guest.home.countdown')
-    @include('guest.home.footer')
+    @include('components.guest.navbar')
+    @include('components.guest.hero-banner')
+    @include('components.guest.quick-access')
+    @include('components.guest.courses')
+    @include('components.guest.countdown')
+    @include('components.guest.footer')
 
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/home/navbar-scrolled.js') }}"></script>
-    <script src="{{ asset('assets/home/navbar-scroll-effect.js') }}"></script>
-    <script src="{{ asset('assets/home/scrolling.js') }}"></script>
-    <script src="{{ asset('assets/components/countdown.js') }}"></script>
+    <script src="{{ asset('assets/js/guest/navbar-scrolled.js') }}"></script>
+    <script src="{{ asset('assets/js/guest/navbar-scroll-effect.js') }}"></script>
+    <script src="{{ asset('assets/js/guest/scrolling.js') }}"></script>
+    <script src="{{ asset('assets/js/guest/countdown.js') }}"></script>
 @endpush

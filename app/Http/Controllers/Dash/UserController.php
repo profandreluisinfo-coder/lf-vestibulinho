@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Models\User;
-use Illuminate\View\View;
-use App\Models\ExamResult;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Calendar;
+use App\Models\ExamResult;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -26,19 +26,25 @@ class UserController extends Controller
     }
 
     /**
-     * Página principal do painel de administração do candidato
-     * 
-     * Exibe as informações do usuário logado, bem como as informações de como fazer a inscrição.
-     * 
+     * Exibe a página inicial do painel de administração do usuário.
+     *
+     * Verifica se o período de inscrição está aberto e exibe a página correspondente.
+     *
      * @return \Illuminate\View\View
      */
     public function home(): View
     {
         $user = Auth::user();
 
-        return view('dash.user.home', compact('user'));
+        $calendar = Calendar::first() ?? new Calendar();
+
+        if ($calendar?->isInscriptionOpen()) {
+            return view('dash.user.home', compact('user'));
+        }
+
+        return view('dash.user.end-period-of-inscription', compact('user'));
     }
-    
+
     /**
      * Exibe a página com os dados da inscrição do usuário atual.
      *

@@ -112,7 +112,7 @@ class CertificateRequest extends FormRequest
     {
         return [
             // Certidão de nascimento (seleção de modelo)
-            'certificateModel' => 'O modelo de certidão de nascimento é obrigatório',
+            'certificateModel.required' => 'O modelo de certidão de nascimento é obrigatório',
             'certificateModel.in' => 'O modelo de certidão de nascimento selecionado é uma opção inválida',
 
             // certidão de nascimento modelo novo
@@ -151,6 +151,6 @@ class CertificateRequest extends FormRequest
 
     protected function requiredIfOldCert()
     {
-        return Rule::requiredIf(fn() => $this->input('certificateModel') == 2);
+        return Rule::requiredIf(fn() => $this->input('certificate') == 2);
     }
 }

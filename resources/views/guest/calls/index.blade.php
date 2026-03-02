@@ -1,4 +1,4 @@
-@extends('layouts.home.master')
+@extends('layouts.guest.master')
 
 @push('metas')
     <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $calendar?->year }}">
