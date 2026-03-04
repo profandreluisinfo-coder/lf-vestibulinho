@@ -76,7 +76,7 @@ $(document).ready(function () {
             },
 
             // Acessibilidade
-            accessibility: {
+            pne: {
                 required: true,
                 range: [1, 2]
             },
@@ -101,6 +101,14 @@ $(document).ready(function () {
                 },
 
             },
+            pne_report: {
+                required: {
+                    depends: function () {
+                        return $("#accessibility").val() == 1;
+                    }
+                },
+                extension: "pdf"
+            },
 
             // Programas sociais
             social_program: {
@@ -124,31 +132,35 @@ $(document).ready(function () {
         messages: {
             // Alergias
             health: {
-                required: "Obrigatório.",
-                range: "Selecione uma opção válida."
+                required: "* Obrigatório.",
+                range: "* Selecione uma opção válida."
             },
             health_issue: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres."
             },
             // Acessibilidade
-            accessibility: {
-                required: "Obrigatório.",
-                range: "Selecione uma opção válida."
+            pne: {
+                required: "* Obrigatório.",
+                range: "* Selecione uma opção válida."
             },
             accessibility_description: {
-                required: "Informe o serviço de educação especial necessário.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, números e espaços.",
+                required: "* Informe o serviço de educação especial necessário.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços.",
+            },
+            pne_report: {
+                required: "* O campo de relatório de educação especial é obrigatório",
+                extension: "* Apenas arquivos PDF são permitidos."
             },
             // Programas sociais
             social_program: {
-                required: "Obrigatório.",
-                range: "Selecione um programa social válido."
+                required: "* Obrigatório.",
+                range: "* Selecione um programa social válido."
             },
             nis: {
-                required: "Obrigatório.",
-                nis: "NIS/PIS inválido.",
+                required: "* Obrigatório.",
+                nis: "* NIS/PIS inválido.",
             }
         },
 

@@ -1,5 +1,16 @@
-// finalizar inscrição
 function confirmFinalize() {
+
+  const agree = document.getElementById('agree_terms');
+
+  if (!agree.checked) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Atenção',
+      text: 'Você precisa concordar com os termos do edital para finalizar.'
+    });
+    return; // PARA A EXECUÇÃO AQUI
+  }
+
   Swal.fire({
     title: 'Confirmação Final',
     text: 'Você confirma que todos os dados foram preenchidos corretamente? Após finalizar a inscrição, nenhuma alteração será permitida.',
@@ -11,7 +22,7 @@ function confirmFinalize() {
     cancelButtonText: 'Cancelar'
   }).then((result) => {
     if (result.isConfirmed) {
-      // Exibe o alerta de carregamento
+
       Swal.fire({
         title: 'Processando sua inscrição...',
         text: 'Por favor, aguarde alguns instantes.',
@@ -22,7 +33,6 @@ function confirmFinalize() {
         }
       });
 
-      // Envia o formulário
       document.getElementById('finalize-inscription').submit();
     }
   });

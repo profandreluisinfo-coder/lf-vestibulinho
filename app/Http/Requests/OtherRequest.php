@@ -117,6 +117,11 @@ class OtherRequest extends FormRequest
             'pne.required' => 'Informe se possui alguma necessidades especiais',
             'pne.in' => 'O campo Acessibilidade apresenta uma opção inválida',
 
+            'pne_report.required' => 'O campo de relatório de educação especial é obrigatório',
+            'pne_report.file' => 'O campo de relatório de educação especial deve ser um arquivo PDF',
+            'pne_report.max' => 'O campo de relatório de educação especial deve conter, no máximo, :max KB',
+            'pne_report.mimes' => 'O campo de relatório de educação especial deve ser um arquivo do tipo: :values',
+
             'accessibility_description.required' => 'O campo de descrição de acessibilidade é obrigatório',
             'accessibility_description.max' => 'O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',
             'accessibility_description.regex' => 'O campo de descrição de acessibilidade deve conter apenas letras, números e espaços.',

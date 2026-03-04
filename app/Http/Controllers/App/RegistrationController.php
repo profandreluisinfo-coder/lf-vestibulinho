@@ -194,7 +194,7 @@ class RegistrationController extends Controller
     // Gravar Dados de Passo 5
     public function familyStore(FamilyRequest $request): Response|RedirectResponse
     {
-        $data = $request->except(['_token', 'parents_email_confirmation']);
+        $data = $request->except(['_token']);
 
         if ($data['degree'] < 8) {
             $data['kinship'] = null;
@@ -364,15 +364,13 @@ class RegistrationController extends Controller
     }
 
     // Gravar Dados de Passo 8
-    public function inscriptionStore(InscriptionService $inscriptionService)
+    public function inscriptionStore(Request $request, InscriptionService $inscriptionService)
     {
         try {
-            // $steps = collect(range(1, 7))
-            // ->mapWithKeys(fn($step) => ["step{$step}" => session()->get("step{$step}", [])]); // remover depois
-            // $data = array_merge(...$steps->values()->toArray());
-            // print_r($data);
 
-            // exit();
+            $request->validate([
+                'agree_terms' => 'accepted'
+            ]);
 
             $inscriptionService->store(); // Grava os dados através do service
 
