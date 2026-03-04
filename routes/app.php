@@ -22,10 +22,10 @@ use App\Http\Controllers\App\{
     ResultController,
     SettingController
 };
-use Ramsey\Collection\Set;
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
+
     // ==========================
     // ❓ Perguntas Frequentes (FAQ) (OK)
     // ==========================
@@ -134,6 +134,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::get('/salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
             Route::get('/assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
         });
+        
     // ==========================
     // 📊 PDFs
     // ==========================

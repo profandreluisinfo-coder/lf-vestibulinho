@@ -155,27 +155,35 @@
   <div class="watermark">{{ config('app.name') }} {{ $calendar->year }}</div>
 
   <div class="card">
-    <div class="header-info">
-      <span style="font-size: 16px; text-transform:uppercase; font-weight: 600">{{ config('app.name') }} {{ $calendar->year }} - Comprovante de Inscrição
-    </div>
-
-    <div class="header-info">
-      <div>Nº da Inscrição: <strong>{{ $user->inscription->id }}</strong></div>
-      <div>Data: <strong>{{ \Carbon\Carbon::parse($user->inscription->created_at)->format('d/m/Y') }}</strong></div>
+    <div class="header-info" style="text-align: center;">
+      <span style="font-size: 16px; text-transform:uppercase; font-weight: 600;">{{ config('app.name') }} {{ $calendar->year }} - Comprovante de Inscrição
     </div>
 
     <div class="card-body">
 
       <!-- DADOS DO CANDIDATO -->
       <div class="no-break">
+        <div class="section-title">Inscrição</div>
+        
+        <table>
+          <thead><tr><th colspan="2">Inscrição</th></tr></thead>
+          <tbody>
+            <tr><th>Número:</th><td>{{ $user->inscription->id }}</td></tr>
+            <tr><th>Data/Hora:</th><td>{{ \Carbon\Carbon::parse($user->inscription->created_at)->format('d/m/Y H:i:s') }}</td></tr>
+          </tbody>
+        </table>
+
         <div class="section-title">Dados do Candidato</div>
 
         <table>
           <thead><tr><th colspan="2">Identificação</th></tr></thead>
           <tbody>
-            <tr><th>Nome completo:</th><td>{{ $user->social_name ?: $user->name }}</td></tr>
+            <tr><th>Nome completo:</th><td>{{ $user->name }}</td></tr>
+            <tr><th>Nome social:</th><td>{{ $user->social_name }}</td></tr>
+            <tr><th>Apresentou autorização dos pais/responsáveis para uso do nome social/afetivo?</th><td>{{ $user->authorization ? 'Sim' : 'Não' }}</td></tr>
+            <tr><th>Situação:</th><td>{!! $user->authorization_accepted !!}</td></tr>
             <tr><th>CPF:</th><td>{{ $user->cpf }}</td></tr>
-            <tr><th>Data de nascimento:</th><td>{{ $user->user_detail->birth }}</td></tr>
+            <tr><th>Data de nascimento:</th><td>{{ $user->birth }}</td></tr>
             <tr><th>Gênero:</th><td>{{ $user->gender }}</td></tr>
           </tbody>
         </table>
@@ -184,12 +192,12 @@
           <thead><tr><th colspan="2">Documentos</th></tr></thead>
           <tbody>
             <tr><th>Nacionalidade:</th><td>{{ $user->user_detail->nationality }}</td></tr>
-            <tr><th>Documento:</th><td>{{ $user->user_detail->doc_type }} | Nº {{ $user->user_detail->doc_number }}</td></tr>
+            <tr><th>Documento:</th><td>{{ $user->user_detail->doc_type }} <br> Nº {{ $user->user_detail->doc_number }}</td></tr>
             <tr>
               <th>Certidão:</th>
               <td>
                 @if ($user->user_detail->new_number)
-                  Novo modelo - Nº {{ $user->user_detail->new_number }}
+                  Nº {{ $user->user_detail->new_number }}
                 @else
                   Folha {{ $user->user_detail->fls }}, Livro {{ $user->user_detail->book }}, Nº {{ $user->user_detail->old_number }}, {{ $user->user_detail->municipality }}
                 @endif
@@ -206,21 +214,22 @@
           </tbody>
         </table>
 
-        <table>
-          <thead><tr><th colspan="2">Endereço</th></tr></thead>
-          <tbody>
-            <tr><th>CEP:</th><td>{{ $user->user_detail->zip }}</td></tr>
-            <tr><th>Endereço:</th>
-              <td>{{ $user->user_detail->street }}, {{ $user->user_detail->number }}@if($user->user_detail->complement) ({{ $user->user_detail->complement }})@endif</td>
-            </tr>
-            <tr><th>Bairro:</th><td>{{ $user->user_detail->burgh }}</td></tr>
-            <tr><th>Cidade/Estado:</th><td>{{ $user->user_detail->city }}/{{ $user->user_detail->state }}</td></tr>
-          </tbody>
-        </table>
-      </div>
+      </div>      
 
       <!-- INFORMAÇÕES ACADÊMICAS -->
       <div class="no-break">
+        <div class="section-title">Endereço</div>
+        <table>
+        <tbody>
+          <tr><th>CEP:</th><td>{{ $user->user_detail->zip }}</td></tr>
+          <tr><th>Endereço:</th>
+            <td>{{ $user->user_detail->street }}, {{ $user->user_detail->number }}@if($user->user_detail->complement) ({{ $user->user_detail->complement }})@endif</td>
+          </tr>
+          <tr><th>Bairro:</th><td>{{ $user->user_detail->burgh }}</td></tr>
+          <tr><th>Cidade/Estado:</th><td>{{ $user->user_detail->city }}/{{ $user->user_detail->state }}</td></tr>
+        </tbody>
+      </table>
+
         <div class="section-title">Informações Acadêmicas</div>
 
         <table>
@@ -264,10 +273,12 @@
             <tr>
               <th>Necessita de atendimento especial?</th>
               <td>
-                {{ $user->user_detail->accessibility ? 'Sim - ' . $user->user_detail->accessibility : 'Não' }}
-                <div class="alert-danger">
-                  <strong>Atenção:</strong> O(a) candidato(a) portador(a) de necessidades especiais deverá informar durante o período de inscrição qual a sua necessidade específica, enviando e-mail com atestado médico anexo para: <strong>emdrleandrofranceschini@educacaosumare.com.br</strong>, conforme o item 4.8 do edital.
-                </div>
+                {{ $user->user_detail->pne ? 'Sim - ' . $user->user_detail->accessibility : 'Não' }}
+                <br>
+                Anexou relatório/laudo médico?
+                {{ !empty($user->user_detail->pne_report) ? 'Sim' : 'Não' }}
+                <br>
+                Situação: {!! $user->user_detail->pne_report_accepted !!}
               </td>
             </tr>
           </tbody>

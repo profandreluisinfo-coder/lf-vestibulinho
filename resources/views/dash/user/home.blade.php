@@ -104,7 +104,7 @@
         </h6>
         <div class="small text-muted">
             <p class="mb-2"><strong>Nome Social:</strong> Candidatos transgêneros podem informar o nome social/afetivo no
-                campo específico durante a inscrição desde que tenha autorização dos pais ou responsáveis.</p>
+                campo específico durante a inscrição desde que tenham autorização dos pais ou responsáveis legais.</p>
             <p class="mb-2">Este Processo Seletivo é <strong>exclusivo</strong> para candidatos residentes no Município de
                 Sumaré - SP.</p>
             <p class="mb-0">É de inteira responsabilidade do candidato e de seu responsável legal

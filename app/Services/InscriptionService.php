@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Mail\SendMail;
 use App\Models\Calendar;
 use App\Models\Inscription;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class InscriptionService
 {
@@ -106,9 +109,15 @@ class InscriptionService
             $path = storage_path('app/public/' . $filename);
             $pdf->save($path);
 
-            $this->userService->confirmInscription($user, $path);
+            Mail::to($user->email)->send(new SendMail(
+                subject: 'Confirmação de Inscrição',
+                content: ['name' => $user->social_name ?: $user->name],
+                view: 'mail.register',
+                attachment: $path
+            ));
 
-            // Limpa a sessão no final da transação
+            Storage::disk('public')->delete($filename);
+
             session()->forget($steps->keys()->toArray());
         });
     }

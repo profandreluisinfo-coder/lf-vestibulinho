@@ -1,5 +1,4 @@
-// alerta de alteração de status de publicação de arquivo de edital do processo seletivo
-export function confirmNoticePublish(id, title) {
+function confirmNoticePublish(id) {
     Swal.fire({
         title: 'Confirmar publicação',
         text: `Alternar status do arquivo?`,

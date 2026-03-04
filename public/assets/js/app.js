@@ -7,10 +7,6 @@ import { initResetPasswordValidation } from './forms/password/reset-password.js'
 import { initForgotPasswordValidation } from './forms/password/forgot-password.js';
 import { initChangePasswordValidation } from './forms/password/change-password.js';
 
-// Edital
-import { confirmNoticeDelete } from './swa/notice/delete.js'; // Importação da função de confirmação de exclusão de edital
-import { confirmNoticePublish } from './swa/notice/publish.js'; // Importação da função de confirmação de publicação de edital
-
 // Cursos
 import { confirmCourseDelete } from './swa/courses/delete.js'; // Importação da função de confirmação de exclusão de curso
 
@@ -22,9 +18,6 @@ window.confirmFaqPublish = confirmFaqPublish; // Tornar a função de confirmaç
 window.confirmFaqDelete = confirmFaqDelete; // Tornar a função de confirmação de exclusão de pergunta de faq acessível globalmente
 
 window.confirmCourseDelete = confirmCourseDelete; // Tornar a função de confirmação de exclusão de curso acessível globalmente
-
-window.confirmNoticeDelete = confirmNoticeDelete; // Tornar a função de confirmação de exclusão de edital acessível globalmente
-window.confirmNoticePublish = confirmNoticePublish; // Tornar a função de confirmação de publicação de edital acessível globalmente
 
 showToasts();
 

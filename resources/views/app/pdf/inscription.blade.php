@@ -185,18 +185,23 @@
                         <th>Nome completo</th>
                         <td>{{ $user->name }}</td>
                     </tr>
+
                     @if ($user->social_name_option)
+
                         <tr>
                             <th>Nome Social</th>
                             <td>{{ $user->name }}</td>
                         </tr>
+                    
+                        <tr>
+                            <th>Anexou autorização dos pais/responsáveis?</th>
+                            <td>
+                                {{ !empty($user->authorization) ? 'Sim' : 'Não' }}
+                            </td>
+                        </tr>
+
                     @endif
-                    <tr>
-                        <th>Anexou autorização dos pais/responsáveis?</th>
-                        <td>
-                            {{ !empty($user->authorization) ? 'Sim' : 'Não' }}
-                        </td>
-                    </tr>
+
                     <tr>
                         <th>Data de nascimento</th>
                         <td>{{ $user->birth }}</td>
@@ -247,7 +252,7 @@
                             <td>
                                 Folha {{ $user->user_detail->fls }},
                                 Livro {{ $user->user_detail->book }},
-                                Nº {{ $user->user_detail->old_number }}, {{ $user->user_detail->municipality }}
+                                Nº {{ $user->user_detail->old_number }} - {{ $user->user_detail->municipality }}
                             </td>
                         </tr>
                     @endif

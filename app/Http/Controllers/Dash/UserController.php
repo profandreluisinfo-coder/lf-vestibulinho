@@ -116,7 +116,7 @@ class UserController extends Controller
      * @param User $user O usuário a ser removido da lista de PNE.
      * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
      */
-    public function clearPneFromListFromList(User $user): JsonResponse
+    public function clearPneFromList(User $user): JsonResponse
     {
         if (ExamResult::exists()) {
             return response()->json([

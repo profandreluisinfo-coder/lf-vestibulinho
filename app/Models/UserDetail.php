@@ -79,12 +79,18 @@ class UserDetail extends Model
         // Deficiência
         'pne',
         'accessibility',
-        'pne_report' // caminho do arquivo do laudo (se necessário)
+        'pne_report', // caminho do arquivo do laudo (se necessário)
+        'pne_report_accepted'
     ];
 
     protected $casts = [
         'pne' => 'boolean',
     ];
+
+    public function getPneReportAcceptedAttribute($value)
+    {
+        return $value ? '<span class="text-success fw-bold">Deferido</span>' : '<span class="text-danger fw-bold">Em análise</span>';
+    }
 
     /**
      * Defina o valor de um determinado atributo no modelo.

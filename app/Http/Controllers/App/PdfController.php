@@ -219,4 +219,30 @@ class PdfController extends Controller
 
         return $pdf->download('convocacao-para-matricula.pdf');
     }
+
+    /**
+     * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.
+     *
+     * @return Response O PDF gerado com a ficha de inscri o do candidato.
+     */
+    public function inscriptionReceiptToPdf()
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            // Gera o PDF com a view
+            $pdf = Pdf::loadView('app.pdf.proof-of-registration', [
+                'user' => $user
+            ]);
+
+            // Sanitiza o CPF (remove espaços, pontos, traços etc.)
+            $cpfSanitizado = preg_replace('/[^0-9]/', '', $user->cpf);
+
+            // Monta o nome do arquivo
+            $filename = 'Inscricao_' . $cpfSanitizado . '.pdf';
+
+            // Retorna o PDF diretamente como download
+            return $pdf->download($filename);
+        }
+    }
 }

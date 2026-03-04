@@ -48,7 +48,7 @@
                                     <button type="button"
                                         class="btn btn-sm btn-{{ $settings->isNoticeEnabled() ? 'secondary' : 'success' }}"
                                         title="{{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}"
-                                        onclick="confirmNoticePublish({{ $settings->id }}, 'Edital')">
+                                        onclick="confirmNoticePublish({{ $settings->id }} )">
                                         <i class="bi bi-{{ $settings->isNoticeEnabled() ? 'eye-slash' : 'eye' }}"></i>
                                     </button>
 
@@ -60,7 +60,7 @@
                                         @method('DELETE')
                                     </form>
                                     <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                        onclick="confirmNoticeDelete({{ $notice->id }}, 'Edital')">
+                                        onclick="confirmNoticeDelete({{ $notice->id }} )">
                                         <i class="bi bi-trash"></i>
                                     </button>
 
@@ -135,4 +135,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/rules/admin/notice/index.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/notice/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/notice/publish.js') }}"></script>
+
 @endpush

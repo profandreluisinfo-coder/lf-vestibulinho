@@ -249,19 +249,6 @@ class UserService
         ];
     }
 
-    public function confirmInscription(User $user, $path)
-    {
-        $this->sendEmail(
-            to: $user->email,
-            subject: 'Inscrição confirmada',
-            data: ['name' => $user->name],
-            view: 'mail.register',
-            attachment: $path
-        );
-
-        return true;
-    }
-
     private function sendEmail(
         string $to,
         string $subject,

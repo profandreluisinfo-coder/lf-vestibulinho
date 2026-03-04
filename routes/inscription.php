@@ -25,5 +25,13 @@ Route::middleware(['auth'])->group(function () {
                 // PDF Cartão de chamada
                 Route::get('/chamada', [PdfController::class, 'callCardToPdf'])->name('call');
             });
+        
+        Route::prefix('comprovante')
+            ->name('receipt.')
+            ->middleware([WithInscription::class])
+            ->group(function () {
+                // PDF Comprovante de inscrição
+                Route::post('/inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('inscription');
+            });
     });
 });

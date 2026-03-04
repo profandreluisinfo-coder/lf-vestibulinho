@@ -1,5 +1,4 @@
-// alerta de exclusão de arquivo de edital do processo seletivo
-export function confirmNoticeDelete(id, title) {
+function confirmNoticeDelete(id) {
     Swal.fire({
         title: 'Tem certeza?',
         text: `Você deseja realmente excluir este arquivo? A ação não poderá ser desfeita.`,

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
+// use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,7 +45,8 @@ class User extends Authenticatable
         'name',
         'social_name_option',
         'social_name',
-        'authorization', // caminho do arquivo de autorização dos pais (se necessário)        
+        'authorization', // caminho do arquivo de autorização dos pais (se necessário)
+        'authorization_accepted',
     ];
 
     /**
@@ -63,12 +64,18 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'birth' => 'date',
+            // 'birth' => 'date',
+            'social_name_option' => 'boolean',
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    public function getBirthAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 
     /**
@@ -141,6 +148,20 @@ class User extends Authenticatable
             ->exists();
     }
 
+    /**
+     * Verifica se o usuário possui uma inscrição.
+     *
+     * @return bool
+     */
+    public function hasInscription(): bool
+    {
+        return $this->inscription()->exists();
+    }
+
+    public function getAuthorizationAcceptedAttribute($value)
+    {
+        return $value ? '<span class="text-success fw-bold">Deferido</span>' : '<span class="text-danger fw-bold">Em análise</span>';
+    }
 
     /**
      * Remove todos os caracteres não numéricos do CPF.

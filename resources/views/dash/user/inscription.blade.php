@@ -77,6 +77,31 @@
                     <th>Nome Completo</td>
                     <td>{{ auth()->user()->name }}</td>
                 </tr>
+                @if (auth()->user()->social_name_option)
+                    <tr>
+                        <th>Nome Social/Afetivo</td>
+                        <td>{{ auth()->user()->social_name }}</td>
+                    </tr>
+                    <tr>
+                        <th style="width: 35%;">Apresentou autorização dos pais/responsáveis para uso do nome social/afetivo?</td>
+                        <td>
+                            {{ auth()->user()->authorization ? 'Sim' : 'Não' }}
+                            <a class="btn btn-link text-decoration-none p-0 ms-3"
+                            href="{{ asset('storage/' . auth()->user()->authorization) }}"
+                            target="_blank">
+                                <i class="bi bi-file-earmark-pdf"></i> Visualizar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                    <th>Situação</th>
+                        <td>{!! auth()->user()->authorization_accepted !!}</td>
+                    </tr>
+                @endif
+                <tr>
+                    <th>Sexo</td>
+                    <td>{{ auth()->user()->gender }}</td>
+                </tr>
                 <tr>
                     <th>CPF</td>
                     <td>{{ auth()->user()->cpf }}</td>
@@ -84,43 +109,61 @@
             </tbody>
         </table>
     </div>
-    @if (auth()->user()->user_detail?->accessibility)
+    @if (auth()->user()->user_detail?->pne)
         <div class="table-responsive mt-4 mt-lg-1">
-            <table class="table table-bordered table-sm align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Necessidade de acessibilidade indicada pelo candidato:</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{ auth()->user()->user_detail?->accessibility }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="alert alert-warning border-0 mt-3 text-muted small text-break">
-                <i class="bi bi-exclamation-triangle me-0 me-md-1"></i>
-                <strong>Atenção!</strong>
-                O(a) candidato(a) portador de necessidades especiais deverá informar no período
-                de
-                inscrição
-                qual a
-                sua necessidade específica,
-                enviando e-mail com atestado médico anexo para
-                <a href="mailto:emdrleandrofranceschini@educacaosumare.com.br" class="text-decoration-none fw-semibold">
-                    emdrleandrofranceschini@educacaosumare.com.br
-                </a>,
-                <strong>conforme o item 4.8 do edital</strong>.
-            </div>
-        </div>
+    <table class="table table-bordered table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th colspan="2">
+                    Necessidade de acessibilidade indicada pelo candidato
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <th style="width: 35%;">Descrição</th>
+                <td>
+                    {{ auth()->user()->user_detail?->accessibility }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>Anexou laudo/relatório médico?</th>
+                <td>
+                    <div class="d-flex">
+                    {{ !empty(auth()->user()->user_detail?->pne_report) ? 'Sim' : 'Não' }}
+
+                    @if(!empty(auth()->user()->user_detail?->pne_report))
+                        
+                        <a class="btn btn-link text-decoration-none p-0 ms-3"
+                           href="{{ asset('storage/' . auth()->user()->user_detail?->pne_report) }}"
+                           target="_blank">
+                            <i class="bi bi-file-earmark-pdf"></i> Visualizar
+                        </a>
+
+                    @endif
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Situação</th>
+                <td>{!! auth()->user()->user_detail?->pne_report_accepted !!}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
     @endif
 
     <div class="d-flex flex-column flex-sm-row gap-2">
-        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#fichaDeInscricao">
-            <i class="bi bi-search"></i> Inscrição
-        </a>
+        
+        <form action="{{ route('receipt.inscription') }}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-outline-primary btn-sm"><i
+                    class="bi bi-filetype-pdf me-2"></i>Gerar PDF</button>
+        </form>
 
         @if ($settings->location)
             <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
@@ -133,343 +176,11 @@
                 data-bs-target="#resultadoDeProva">
                 <i class="bi bi-search"></i> Classificação
             </a>
-        @endif        
+        @endif
     </div>
 
     <!-- Modal com todos os dados da inscrição do candidato -->
-    <div class="modal fade" id="fichaDeInscricao">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header text-white">
-                    <h5 class="modal-title"><i class="bi bi-person-vcard me-2"></i> Ficha de Inscrição do Candidato</h5>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    {{-- Dados da Inscrição --}}
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">📄 Dados da Inscrição</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Inscrição Nº</th>
-                                    <td>{{ $user->inscription->id }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Data</th>
-                                    <td>{{ \Carbon\Carbon::parse($user->inscription->created_at)->format('d/m/Y') }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Identificação do Candidato --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">🧑‍💼 Identificação do Candidato</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>CPF</th>
-                                    <td>{{ $user->cpf }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nome Completo</th>
-                                    <td>{{ $user->social_name ?? $user->name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Gênero</th>
-                                    <td>{{ $user->gender }}</td>
-                                </tr>
-                                <tr>
-                                    <th>E-mail</th>
-                                    <td>{{ $user->email }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Telefone</th>
-                                    <td>{{ $user->user_detail->phone }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Documentos Pessoais + Certidão --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">📑 Documentos Pessoais e Certidão</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Nacionalidade</th>
-                                    <td>{{ $user->user_detail->nationality }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tipo de Documento</th>
-                                    <td>{{ $user->user_detail->doc_type }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Número</th>
-                                    <td>{{ $user->user_detail->doc_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Data de Nascimento</th>
-                                    <td>{{ \Carbon\Carbon::parse($user->birth)->format('d/m/Y') }}</td>
-                                </tr>
-
-                                @if (!empty($user->user_detail->new_number))
-                                    <tr>
-                                        <th>Nº Certidão</th>
-                                        <td>{{ $user->user_detail->new_number }}</td>
-                                    </tr>
-                                @else
-                                    <tr>
-                                        <th>Folhas</th>
-                                        <td>{{ $user->user_detail->fls }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Livro</th>
-                                        <td>{{ $user->user_detail->book }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Nº Certidão</th>
-                                        <td>{{ $user->user_detail->old_number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Município</th>
-                                        <td>{{ $user->user_detail->municipality }}</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Filiação / Responsável Legal --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">👨‍👩‍👧‍👦 Filiação / Responsável Legal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Mãe</th>
-                                    <td>{{ $user->user_detail->mother }}</td>
-                                </tr>
-                                @if ($user->user_detail->mother_phone)
-                                    <tr>
-                                        <th>Telefone da Mãe</th>
-                                        <td>{{ $user->user_detail->mother_phone }}</td>
-                                    </tr>
-                                @endif
-
-                                @if ($user->user_detail->father)
-                                    <tr>
-                                        <th>Pai</th>
-                                        <td>{{ $user->user_detail->father }}</td>
-                                    </tr>
-                                    @if ($user->user_detail->father_phone)
-                                        <tr>
-                                            <th>Telefone do Pai</th>
-                                            <td>{{ $user->user_detail->father_phone }}</td>
-                                        </tr>
-                                    @endif
-                                @endif
-
-                                @if ($user->user_detail->responsible)
-                                    <tr>
-                                        <th>Responsável Legal</th>
-                                        <td>{{ $user->user_detail->responsible }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Parentesco</th>
-                                        <td>{{ $user->user_detail->degree }}</td>
-                                    </tr>
-                                    @if ($user->user_detail->kinship)
-                                        <tr>
-                                            <th>Descrição</th>
-                                            <td>{{ $user->user_detail->kinship }}</td>
-                                        </tr>
-                                    @endif
-                                    <tr>
-                                        <th>Telefone do Responsável</th>
-                                        <td>{{ $user->user_detail->responsible_phone }}</td>
-                                    </tr>
-                                @endif
-
-                                <tr>
-                                    <th>E-mail de Contato</th>
-                                    <td>{{ $user->user_detail->parents_email }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Escolaridade --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">🎓 Escolaridade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Escola</th>
-                                    <td>{{ $user->user_detail->school_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>RA</th>
-                                    <td>{{ $user->user_detail->school_ra }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Cidade</th>
-                                    <td>{{ $user->user_detail->school_city }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Estado</th>
-                                    <td>{{ $user->user_detail->school_state }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Ano de Conclusão</th>
-                                    <td>{{ $user->user_detail->school_year }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Endereço --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">🏠 Endereço</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>CEP</th>
-                                    <td>{{ $user->user_detail->zip }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Rua</th>
-                                    <td>{{ $user->user_detail->street }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Número</th>
-                                    <td>{{ $user->user_detail->number }}</td>
-                                </tr>
-                                @if ($user->user_detail->complement)
-                                    <tr>
-                                        <th>Complemento</th>
-                                        <td>{{ $user->user_detail->complement }}</td>
-                                    </tr>
-                                @endif
-                                <tr>
-                                    <th>Bairro</th>
-                                    <td>{{ $user->user_detail->burgh }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Cidade</th>
-                                    <td>{{ $user->user_detail->city }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Estado</th>
-                                    <td>{{ $user->user_detail->state }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Educação Especial --}}
-                    @if ($user->user_detail?->accessibility)
-                        <div class="table-responsive mb-4">
-                            <table class="table table-bordered table-sm align-middle">
-                                <thead class="table-info">
-                                    <tr>
-                                        <th colspan="2" class="fw-semibold">♿ Educação Especial</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>Elegível</th>
-                                        <td>{{ $user->user_detail?->accessibility ? 'SIM' : 'NÃO' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Necessidade</th>
-                                        <td>{{ $user->user_detail->accessibility }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="alert alert-danger mt-2 text-muted small">
-                                <span class="fw-bold">Atenção!</span> O(a) candidato(a) com necessidades especiais
-                                deverá enviar
-                                atestado médico durante o periodo de inscrição conforme o item 4.8 do edital.
-                            </div>
-                        </div>
-                    @endif
-
-                    {{-- Programas Sociais + Outras Informações --}}
-                    <div class="table-responsive mb-4">
-                        <table class="table table-bordered table-sm align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th colspan="2" class="fw-semibold">🤝 Programas Sociais e Outras Informações
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Beneficiário Bolsa-Família</th>
-                                    <td>{{ $user->user_detail?->nis ? 'SIM' : 'NÃO' }}</td>
-                                </tr>
-                                @if ($user->user_detail?->nis)
-                                    <tr>
-                                        <th>NIS</th>
-                                        <td>{{ $user->user_detail->nis }}</td>
-                                    </tr>
-                                @endif
-                                <tr>
-                                    <th>Problema de Saúde / Alergia</th>
-                                    <td>{{ $user->user_detail?->health ? 'SIM' : 'NÃO' }}</td>
-                                </tr>
-                                @if ($user->user_detail->health)
-                                    <tr>
-                                        <th>Descrição</th>
-                                        <td>{{ $user->user_detail->health }}</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                        <form action="{{ route('user.inscription.to.pdf') }}" method="post">
-                            @csrf
-                            @method('post')
-                            <button type="submit" class="btn btn-danger btn-sm"><i
-                                    class="bi bi-filetype-pdf me-2"></i>Gerar PDF</button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Modal de exibição de local de prova -->
     @if ($settings->location && $exam)

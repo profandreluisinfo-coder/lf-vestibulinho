@@ -3,12 +3,12 @@ $(document).ready(function () {
         rules: {
             file: {
                 required: true
-            }
+            },
         },
         messages: {
             file: {
                 required: 'Selecione um arquivo'
-            }
+            },
         },
         submitHandler: function (form) {
             const $btn = $(form).find('button[type="submit"]');
@@ -39,4 +39,4 @@ $(document).ready(function () {
     $("#form-file").on("invalid-form.validate", function () {
         alert("Existem campos inválidos. Por favor, revise o formulário.");
     });
-})
+});
