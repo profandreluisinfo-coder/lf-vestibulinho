@@ -248,5 +248,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/calendar/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/calendar/edit.js') }}"></script>
 @endpush

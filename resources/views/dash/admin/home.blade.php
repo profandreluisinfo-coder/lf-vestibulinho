@@ -10,7 +10,6 @@
 
     @php
         $calendar_active = App\Models\Calendar::first();
-        // $notice_active   = App\Models\Setting;
         $local_status    = App\Models\ExamResult::hasRecords();
         $ranking_active  = App\Models\ExamResult::hasScores();
     @endphp

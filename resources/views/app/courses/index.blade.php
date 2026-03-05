@@ -190,6 +190,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/courses/create.js') }}"></script>
-    <script src="{{ asset('assets/js/courses/showCourseDetails.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/courses/create.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/courses/details.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/courses/delete.js') }}"></script>
 @endpush

@@ -1,5 +1,10 @@
-// alerta de exclusão de pergunta de faq
-export function confirmFaqDelete(id, question) {
+/**
+ * Mostra uma alerta de confirmação para exclusão de uma FAQ.
+ * 
+ * @param {number} id - ID da FAQ a ser excluida
+ * @param {string} question - Pergunta da FAQ a ser excluida
+ */
+function confirmFaqDelete(id, question) {
     Swal.fire({
         title: 'Tem certeza?',
         text: ` Você realmente deseja excluir a pergunta "${question}"? Essa ação não poderá ser desfeita.`,

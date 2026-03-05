@@ -1,5 +1,11 @@
-// alerta de alteração de status de publicação de pergunta de faq
-export function confirmFaqPublish(id, question) {
+/**
+ * Mostra uma alerta de confirmação para alterar o status da publicação de uma FAQ.
+ * Se a opção for confirmada, o formulário de publicação será submetido.
+ * 
+ * @param {number} id - ID da FAQ a ser publicada.
+ * @param {string} question - Pergunta da FAQ a ser publicada.
+ */
+function confirmFaqPublish(id, question) {
     Swal.fire({
         title: 'Confirmar publicação',
         text: `Você deseja alterar o status da publicação da pergunta: "${question}"?`,

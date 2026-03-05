@@ -288,8 +288,8 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/interactions/name.js') }}"></script>
-    <script src="{{ asset('assets/interactions/popover.js') }}"></script>
-    <script src="{{ asset('assets/rules/user/personal.js') }}"></script>
+    <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/name.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/popover.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/registration/personal.js') }}"></script>
 @endpush

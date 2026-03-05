@@ -129,7 +129,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/cleave/masks.js') }}"></script>
-<script src="{{ asset('assets/services/cep.js') }}"></script>
-<script src="{{ asset('assets/rules/user/address.js') }}"></script>
+<script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
+<script src="{{ asset('assets/js/services/cep.js') }}"></script>
+<script src="{{ asset('assets/js/rules/registration/address.js') }}"></script>g
 @endpush

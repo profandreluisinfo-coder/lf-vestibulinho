@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('social_name_option')->default(false); // 0 = Não, 1 = Sim
             $table->string('social_name', 100)->nullable();
             $table->string('authorization')->nullable();
-            $table->boolean('authorization_accepted')->default(false); // 0 = Não, 1 = Sim
+            $table->unsignedTinyInteger('authorization_accepted')->nullable();
 
             $table->date('birth')->nullable();
 

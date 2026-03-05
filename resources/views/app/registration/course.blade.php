@@ -48,5 +48,5 @@
 @endsection
 
 @push('scripts')
-  <script src="{{ asset('assets/rules/user/course.js') }}"></script>
+  <script src="{{ asset('assets/js/rules/registration/course.js') }}"></script>
 @endpush

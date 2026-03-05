@@ -7,5 +7,5 @@
 @section('error_message', 'Você não tem permissão para acessar esta página.')
 
 @push('scripts')
-    <script src="{{ asset('assets/js/403.js') }}"></script>
+    <script src="{{ asset('assets/js/errors/403.js') }}"></script>
 @endpush

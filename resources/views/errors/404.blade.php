@@ -7,5 +7,5 @@
 @section('error_message', 'Desculpe, a página que você está procurando não existe.')
 
 @push('scripts')
-    <script src="{{ asset('assets/js/404.js') }}"></script>
+    <script src="{{ asset('assets/js/errors/404.js') }}"></script>
 @endpush

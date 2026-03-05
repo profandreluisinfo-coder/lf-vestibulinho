@@ -90,6 +90,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/courses/edit.js') }}"></script>
-    {{-- <script src="{{ asset('assets/swa/courses/delete.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/rules/courses/edit.js') }}"></script>
 @endpush

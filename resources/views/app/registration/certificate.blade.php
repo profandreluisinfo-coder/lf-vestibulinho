@@ -151,6 +151,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/interactions/certificates.js') }}"></script>
-    <script src="{{ asset('assets/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/rules/user/certificate.js') }}"></script>
+    <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/registration/certificate.js') }}"></script>
 @endpush

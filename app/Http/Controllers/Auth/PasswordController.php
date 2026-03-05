@@ -134,7 +134,7 @@ class PasswordController extends Controller
 
         if ($response['success']) {
             $route = match ($user->role) {
-            'admin' => 'dash.admin.home',
+            'admin' => 'admin.dashboard',
             default => $user->inscription()->exists() ? 'dash.user.inscription' : 'dash.user.home',
             };
 

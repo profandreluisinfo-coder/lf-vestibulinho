@@ -60,12 +60,14 @@ Route::middleware('auth')->group(function () {
                 // Área do candidato: exibe o perfil da inscrição existente
                 Route::get('/inscricao', [UserController::class, 'inscription'])->name('user.inscription');
             });
-
-            Route::middleware([IsAdmin::class])
-                ->group(function () {
-                    // 🛠️ Área administrativa
-                    Route::get('/admin', [AdminController::class, 'home'])->name('admin.home'); // pasta e view
-
-                }); // Fim Middleware de autenticado
+            
         });
+
+        Route::prefix('admin')
+            ->name('admin.')
+            ->middleware([IsAdmin::class])
+            ->group(function () {
+                // Rota para exibir o dashboard do admin (🛠️ Área administrativa)
+                Route::get('/dashboard', [AdminController::class, 'home'])->name('dashboard');
+            });
 });

@@ -6,7 +6,6 @@
 
     @php
         $notice = \App\Models\Notice::first();
-        //$calendar = \App\Models\Calendar::first() ?? new \App\Models\Calendar();
     @endphp
 
     <div class="container">

@@ -158,7 +158,8 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/others.js') }}"></script>
-    <script src="{{ asset('assets/rules/user/others.js') }}"></script>
+    <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/kinship.js') }}">
+    <script src="{{ asset('assets/js/ui/registration/others.js') }}">
+    <script src="{{ asset('assets/js/rules/registration/others.js') }}"></script>
 @endpush

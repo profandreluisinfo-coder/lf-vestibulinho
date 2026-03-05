@@ -185,6 +185,6 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/archives/index.js') }}"></script>
-    <script src="{{ asset('assets/swa/archives/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/archives/index.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/archives/publish.js') }}"></script>
 @endpush

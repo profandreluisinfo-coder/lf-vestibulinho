@@ -87,7 +87,7 @@ class LoginController extends Controller
 
     /**
      * Redireciona o usuário para a rota baseada no seu papel.
-     * Se o papel do usuário for 'admin', ele será redirecionado para a rota 'dash.admin.home'.
+     * Se o papel do usuário for 'admin', ele será redirecionado para a rota 'admin.dashboard'.
      * Se o papel do usuário for 'user', ele será redirecionado para a rota 'dashboard'.
      * Caso contrário, ele será redirecionado para a rota 'login' com um erro.
      *
@@ -97,7 +97,7 @@ class LoginController extends Controller
     protected function redirectUserBasedOnRole(User $user): RedirectResponse
     {
         if ($user->role === 'admin') {
-            return redirect()->route('dash.admin.home');
+            return redirect()->route('admin.dashboard');
         }
 
         if ($user->role === 'user') {

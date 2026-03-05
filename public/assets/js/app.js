@@ -1,29 +1,5 @@
 import { showToasts } from './ui/toasts.js';
-
-import { initLoginValidation } from './forms/auth/login.js';
-import { initRegisterValidation } from './forms/register/create.js';
-import { initResendEmailValidation } from './forms/register/resend-email.js';
-import { initResetPasswordValidation } from './forms/password/reset-password.js';
-import { initForgotPasswordValidation } from './forms/password/forgot-password.js';
 import { initChangePasswordValidation } from './forms/password/change-password.js';
 
-// Cursos
-import { confirmCourseDelete } from './swa/courses/delete.js'; // Importação da função de confirmação de exclusão de curso
-
-// FAQ
-import { confirmFaqPublish } from './swa/faqs/publish.js'; // Importação da função de confirmação de publicação de pergunta de faq
-import { confirmFaqDelete } from './swa/faqs/delete.js'; // Importação da função de confirmação de exclusão de pergunta de faq
-
-window.confirmFaqPublish = confirmFaqPublish; // Tornar a função de confirmação de publicação de pergunta de faq acessível globalmente
-window.confirmFaqDelete = confirmFaqDelete; // Tornar a função de confirmação de exclusão de pergunta de faq acessível globalmente
-
-window.confirmCourseDelete = confirmCourseDelete; // Tornar a função de confirmação de exclusão de curso acessível globalmente
-
-showToasts();
-
-initLoginValidation();
-initRegisterValidation();
-initResendEmailValidation();
-initResetPasswordValidation();
-initForgotPasswordValidation();
 initChangePasswordValidation();
+showToasts();

@@ -198,7 +198,10 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/faqs/index.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/faqs/index.js') }}"></script>
     <script src="{{ asset('assets/filters/faqs.js') }}"></script>
     <script src="{{ asset('assets/js/faqs/sortable.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/faqs/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/faqs/delete.js') }}"></script>
+
 @endpush

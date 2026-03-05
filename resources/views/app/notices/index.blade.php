@@ -134,8 +134,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/notice/index.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/notice/index.js') }}"></script>
     <script src="{{ asset('assets/js/swa/notice/delete.js') }}"></script>
     <script src="{{ asset('assets/js/swa/notice/publish.js') }}"></script>
-
 @endpush

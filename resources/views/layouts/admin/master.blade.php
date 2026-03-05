@@ -10,7 +10,6 @@
 
     <title>@yield('page-title', 'Painel Administrativo - Vestibulinho LF')</title>
 
-    {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     {{-- Bootstrap & Ícones --}}
@@ -47,7 +46,7 @@
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>
                 <div class="menu-item">
-                    <a href="{{ route('dash.admin.home') }}"
+                    <a href="{{ route('admin.dashboard') }}"
                         class="menu-link {{ request()->routeIs('painel') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
@@ -213,6 +212,7 @@
                 </div>
             </div>
         </nav>
+
     </aside>
 
     <!-- Overlay para mobile -->
@@ -391,18 +391,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
     
-    <script src="{{ asset('assets/js/app.js') }}" type="module"></script>
+    <script src="{{ asset('assets/js/app.js') }}" type="module"></script> {{-- scripts --}}
 
     {{-- Scripts --}}
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>
     <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
 
-    {{-- Sweet Alerts --}}
-    {{-- <script src="{{ asset('assets/js/swa/alerts-admin.js') }}"></script> --}}
-
     @stack('plugins')
-
-    {{-- @include('partials.alerts.admins') --}}
 
     @stack('scripts')
 

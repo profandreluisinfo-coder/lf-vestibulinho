@@ -129,7 +129,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/cleave/masks.js') }}"></script>
-<script src="{{ asset('assets/interactions/popover.js') }}"></script>
-<script src="{{ asset('assets/rules/user/academic.js') }}"></script>
+<script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
+<script src="{{ asset('assets/js/ui/registration/popover.js') }}"></script>
+<script src="{{ asset('assets/js/rules/registration/academic.js') }}"></script>
 @endpush

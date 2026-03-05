@@ -67,11 +67,12 @@ return new class extends Migration
             $table->boolean('pne')->default(false); // PNE: 0 = Não, 1 = Sim
             $table->string('accessibility', 60)->nullable();
             $table->string('pne_report')->nullable();
-            $table->boolean('pne_report_accepted')->default(false); // 0 = Não, 1 = Sim
+            $table->unsignedTinyInteger('pne_report_accepted')->nullable(); // 0 = Não, 1 = Sim
 
             // Programas sociais
             $table->string('nis', 11)->nullable();
 
+            // Relacionamento com a tabela users
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
