@@ -2,19 +2,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const select = document.getElementById('degree');
     const otherDiv = document.getElementById('other_relationship');
 
+    if (!select || !otherDiv) return;
+
     function toggleOtherField(value) {
-        if (value == '8') { // '8' é o valor do parentesco "outro"
+        if (value == '8') {
             otherDiv.classList.remove('d-none');
         } else {
             otherDiv.classList.add('d-none');
-            document.getElementById('kinship').value = '';
+
+            const kinshipInput = document.getElementById('kinship');
+            if (kinshipInput) {
+                kinshipInput.value = '';
+            }
         }
     }
 
-    // Ativa ao carregar a página
+    // Ao carregar
     toggleOtherField(select.value);
 
-    // Ativa ao mudar o valor do select
+    // Ao mudar
     select.addEventListener('change', function () {
         toggleOtherField(this.value);
     });

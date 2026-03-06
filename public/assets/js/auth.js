@@ -1,4 +1,4 @@
-import { showToasts } from './ui/toasts.js';
+import { showToasts } from './ui/alerts/toasts.js';
 
 import { initLoginValidation } from './forms/auth/login.js';
 import { initRegisterValidation } from './forms/register/create.js';

@@ -24,7 +24,7 @@
 
 <body class="@yield('body-class') @yield('has-footer', '')">
     <main class="main-content">
-        @include('partials.toasts')
+        @include('alerts.toasts')
 
         @yield('content')
     </main>

@@ -72,7 +72,7 @@
     </main>
 
     <footer class="mini-footer mt-auto">
-        @include('components.guest.mini-footer')
+        @include('guest.home.mini-footer')
     </footer>
 
 @endsection

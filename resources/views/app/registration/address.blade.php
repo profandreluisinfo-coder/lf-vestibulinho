@@ -1,4 +1,4 @@
-@extends('layouts.forms.master')
+@extends('app.registration.master')
 
 @section('page-title', 'Inscrição - Passo ' . $step . ' - Endereço')
 
@@ -10,7 +10,7 @@
         <h5 class="fw-semibold border-bottom pb-1">Endereço</h5>
 
         <div class="form-group col-md-4">
-            <label for="cep" class="form-label required">CEP</label> <a
+            <label for="cep" class="form-label required">CEP</label> <a class="btn btn-link btn-sm"
                 href="https://buscacepinter.correios.com.br/app/endereco/index.php"
                 title="Consultar CEP através do Correios" tabindex="-1" target="_blank">Não sei meu CEP</a>
             <input type="text" class="form-control @error('zip') is-invalid @enderror" id="zip" name="zip"

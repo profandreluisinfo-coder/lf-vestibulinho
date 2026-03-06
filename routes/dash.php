@@ -13,7 +13,6 @@ use App\Http\Controllers\App\{
 
 use App\Http\Middleware\{IsAdmin, NotAdmin, WithInscription, NoInscription};
 
-// 🔒 Rotas que exigem login
 Route::middleware('auth')->group(function () {
 
     Route::prefix('usuarios')
@@ -25,7 +24,6 @@ Route::middleware('auth')->group(function () {
                 ->name('inscription.to.pdf');
         });
 
-    // Area do 'admin' para visualização dos dados dos usuários
     Route::prefix('usuarios')
         ->name('users.')
         ->middleware([IsAdmin::class])
@@ -45,14 +43,13 @@ Route::middleware('auth')->group(function () {
                 ->name('clear.pne.condition');
         });
 
-    // Area do 'admin' para visualização dos dados dos usuários
     Route::prefix('candidato') // pasta
         ->name('dash.') // pasta
         ->group(function () {
             Route::middleware([NotAdmin::class, NoInscription::class])
                 ->group(function () {
                     // Area do candidato: exibe a página com informações sobre como fazer a inscrição
-                    Route::get('/', [UserController::class, 'home'])->name('user.home'); // pasta e view
+                    Route::get('/', [UserController::class, 'start'])->name('user.start'); // pasta e view
                 });
 
             // Área do candidato (com inscrição concluída)

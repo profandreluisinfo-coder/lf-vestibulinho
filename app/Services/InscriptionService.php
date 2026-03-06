@@ -16,9 +16,9 @@ class InscriptionService
     public function __construct(
         private UserService $userService
     ) {}
+
     /**
      * Armazenar dados de inscrição de um determinado usuário no banco de dados.
-
      */
     public function store(): void
     {

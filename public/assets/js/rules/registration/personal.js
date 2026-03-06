@@ -62,7 +62,7 @@ $(function () {
                 minWords: validateIfFilled()
             },
             authorization: {
-                required: isRadioYesChecked,
+                ...ruleIf(isRadioYesChecked, 'required'),
                 extension: "pdf"
             },
             nationality: { required: true, range: [1, 2] },

@@ -1,9 +1,6 @@
+@extends('dash.master')
 
-
-
-@extends('layouts.user.master')
-
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Meus Dados')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Área do Candidato')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard/user/perfil.css') }}">
@@ -13,6 +10,7 @@
 
     {{-- CONVOCADO PARA MATRÍCULA --}}
     @if (auth()->user()->hasConfirmedCall())
+
         <div class="d-flex align-items-center mb-3">
             <i class="bi bi-clipboard-check text-primary fs-4 me-2 animate__animated animate__fadeIn"></i>
             <h5 class="m-0 fw-semibold">Convocação para Matrícula</h5>
@@ -51,6 +49,7 @@
                 <i class="bi bi-search animate__animated animate__fadeIn"></i> Detalhes da convocação
             </a>
         </div>
+
     @endif
     
     {{-- RESUMO DA INSCRIÇÃO --}}
@@ -109,52 +108,55 @@
             </tbody>
         </table>
     </div>
+
     @if (auth()->user()->user_detail?->pne)
+
         <div class="table-responsive mt-4 mt-lg-1">
-    <table class="table table-bordered table-sm align-middle">
-        <thead class="table-light">
-            <tr>
-                <th colspan="2">
-                    Necessidade de acessibilidade indicada pelo candidato
-                </th>
-            </tr>
-        </thead>
+            <table class="table table-bordered table-sm align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th colspan="2">
+                            Necessidade de acessibilidade indicada pelo candidato
+                        </th>
+                    </tr>
+                </thead>
 
-        <tbody>
-            <tr>
-                <th style="width: 35%;">Descrição</th>
-                <td>
-                    {{ auth()->user()->user_detail?->accessibility }}
-                </td>
-            </tr>
+                <tbody>
+                    <tr>
+                        <th style="width: 35%;">Descrição</th>
+                        <td>
+                            {{ auth()->user()->user_detail?->accessibility }}
+                        </td>
+                    </tr>
 
-            <tr>
-                <th>Anexou laudo/relatório médico?</th>
-                <td>
-                    <div class="d-flex">
-                    {{ !empty(auth()->user()->user_detail?->pne_report) ? 'Sim' : 'Não' }}
+                    <tr>
+                        <th>Anexou laudo/relatório médico?</th>
+                        <td>
+                            <div class="d-flex">
+                            {{ !empty(auth()->user()->user_detail?->pne_report) ? 'Sim' : 'Não' }}
 
-                    @if(!empty(auth()->user()->user_detail?->pne_report))
-                        
-                        <a class="btn btn-link text-decoration-none p-0 ms-3"
-                           href="{{ asset('storage/' . auth()->user()->user_detail?->pne_report) }}"
-                           target="_blank">
-                            <i class="bi bi-file-earmark-pdf"></i> Visualizar
-                        </a>
+                            @if(!empty(auth()->user()->user_detail?->pne_report))
+                                
+                                <a class="btn btn-link text-decoration-none p-0 ms-3"
+                                href="{{ asset('storage/' . auth()->user()->user_detail?->pne_report) }}"
+                                target="_blank">
+                                    <i class="bi bi-file-earmark-pdf"></i> Visualizar
+                                </a>
 
-                    @endif
-                    </div>
-                </td>
-            </tr>
+                            @endif
+                            </div>
+                        </td>
+                    </tr>
 
-            <tr>
-                <th>Situação</th>
-                <td>{!! auth()->user()->user_detail?->pne_report_accepted !!}</td>
-            </tr>
+                    <tr>
+                        <th>Situação</th>
+                        <td>{!! auth()->user()->user_detail?->pne_report_accepted !!}</td>
+                    </tr>
 
-        </tbody>
-    </table>
-</div>
+                </tbody>
+            </table>
+        </div>
+
     @endif
 
     <div class="d-flex flex-column flex-sm-row gap-2">
@@ -177,10 +179,7 @@
                 <i class="bi bi-search"></i> Classificação
             </a>
         @endif
-    </div>
-
-    <!-- Modal com todos os dados da inscrição do candidato -->
-    
+    </div> 
 
     <!-- Modal de exibição de local de prova -->
     @if ($settings->location && $exam)
@@ -289,6 +288,7 @@
 
     <!-- Modal de exibição de classificação na prova-->
     @if ($settings->result)
+
         <div class="modal fade" id="resultadoDeProva">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -338,10 +338,12 @@
                 </div>
             </div>
         </div>
+
     @endif
 
     <!-- Modal de exibição de detalhes da convocação -->
     @if ($call && auth()->user()->hasConfirmedCall())
+
         <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
             aria-labelledby="callDetailModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -397,6 +399,7 @@
                 </div>
             </div>
         </div>
+        
     @endif
 
 @endsection

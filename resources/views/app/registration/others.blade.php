@@ -1,4 +1,4 @@
-@extends('layouts.forms.master')
+@extends('app.registration.master')
 
 @section('page-title', 'Inscrição - Passo ' . $step . ' - Outras Informações')
 
@@ -159,7 +159,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/registration/kinship.js') }}">
-    <script src="{{ asset('assets/js/ui/registration/others.js') }}">
+    <script src="{{ asset('assets/js/ui/registration/kinship.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/others.js') }}"></script>
     <script src="{{ asset('assets/js/rules/registration/others.js') }}"></script>
 @endpush

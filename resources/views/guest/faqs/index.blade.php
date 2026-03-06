@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('components.guest.navbar')
+    @include('guest.home.navbar')
 
     <section id="faqs" class="bg-light py-5">
         <div class="container">
@@ -43,7 +43,6 @@
                                         {!! $faq->question !!}
                                     </button>
                                 </h2>
-
                                 <div id="collapse{{ $faq->id }}"
                                     class="accordion-collapse collapse"
                                     aria-labelledby="heading{{ $faq->id }}"
@@ -73,6 +72,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/filters/faqs.js') }}"></script>
-    <script src="{{ asset('assets/interactions/infinite-scroll.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/faqs.js') }}"></script>    
+    <script src="{{ asset('assets/js/ui/guest/infinite-scroll.js') }}"></script>
 @endpush

@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('components.guest.navbar')
+    @include('guest.home.navbar')
 
     <section id="results-wrapper">
 
@@ -130,5 +130,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/filters/results/public.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/results/public.js') }}"></script>
 @endpush

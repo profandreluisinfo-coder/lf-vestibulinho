@@ -1,4 +1,4 @@
-@extends('layouts.forms.master')
+@extends('app.registration.master')
 
 @section('page-title', 'Inscrição - Passo ' . $step . ' - Confirmar Dados')
 

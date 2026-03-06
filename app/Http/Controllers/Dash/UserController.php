@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $users = User::getWithoutInscription();
 
-        return view('dash.user.index', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -32,17 +32,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function home(): View
+    public function start(): View
     {
         $user = Auth::user();
 
         $calendar = Calendar::first() ?? new Calendar();
 
         if ($calendar?->isInscriptionOpen()) {
-            return view('dash.user.home', compact('user'));
+            return view('dash.start', compact('user'));
         }
 
-        return view('dash.user.end-period-of-inscription', compact('user'));
+        return view('dash.end-period-of-inscription', compact('user'));
     }
 
     /**
@@ -62,7 +62,7 @@ class UserController extends Controller
         // Segurança extra caso acessem direto sem ter inscrição
         if (!$user->inscription()->exists()) {
             return redirect()
-                ->route('dash.user.home')
+                ->route('dash.user.start')
                 ->with('warning', 'Você ainda não possui inscrição ativa.');
         }
 
@@ -80,7 +80,7 @@ class UserController extends Controller
 
         $call = $examResult?->completedCall;
 
-        return view('dash.user.inscription', compact('user', 'exam', 'examResult', 'call'));
+        return view('dash.inscription', compact('user', 'exam', 'examResult', 'call'));
     }
 
     /**

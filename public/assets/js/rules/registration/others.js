@@ -70,7 +70,7 @@ $(document).ready(function () {
                     depends: function () {
                         return $("#health").val() == 1;
                     },
-                    param: /^[a-zA-ZÀ-ÿ0-9 ()]*$/
+                    param: /^[\p{L}0-9 ().,-]+$/u
                 },
 
             },
@@ -86,20 +86,18 @@ $(document).ready(function () {
                         return $("#accessibility").val() == 1;
                     }
                 },
-                // maxlength: validateIfFilled(60),
                 maxlength: {
                     depends: function () {
                         return $("#accessibility").val() == 1;
                     },
                     param: 60
                 },
-                // pattern: validateIfFilled(/^[a-zA-ZÀ-ÿ0-9 ()]*$/),
                 pattern: {
                     depends: function () {
                         return $("#accessibility").val() == 1;
-                    }
+                    },
+                    param: /^[\p{L}0-9 ().,-]+$/u
                 },
-
             },
             pne_report: {
                 required: {
@@ -160,11 +158,12 @@ $(document).ready(function () {
             },
             nis: {
                 required: "* Obrigatório.",
-                nis: "* NIS/PIS inválido.",
+                validateNis: "* NIS/PIS inválido.",
             }
         },
 
         submitHandler: function (form) {
+            console.log("Formulário válido, enviando...");
             form.submit();
         },
         errorPlacement: function (error, element) {

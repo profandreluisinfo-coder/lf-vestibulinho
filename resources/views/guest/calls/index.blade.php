@@ -50,7 +50,7 @@
     @endphp
 
 
-    @include('guest.home.navbar')
+    @include('components.guest.navbar')
 
     <section id="faq" class="my-5 py-5">
 
@@ -169,10 +169,10 @@
 
     </section>
 
-    @include('guest.home.footer')
+    @include('components.guest.footer')
 
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/filters/calls.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/calls.js') }}"></script>
 @endpush

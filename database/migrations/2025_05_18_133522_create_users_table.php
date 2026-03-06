@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('social_name', 100)->nullable();
             $table->string('authorization')->nullable();
             $table->unsignedTinyInteger('authorization_accepted')->nullable();
+            $table->string('authorization_rejection_reason')->nullable();
 
             $table->date('birth')->nullable();
 

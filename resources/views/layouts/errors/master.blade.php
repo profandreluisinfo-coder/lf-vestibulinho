@@ -18,16 +18,9 @@
 <body class="bg-light d-flex align-items-center" style="min-height: 100vh;">
 
     <div class="container text-center">
-        {{-- Área Lottie --}}
         <div id="lottie" class="mb-4"></div>
-
-        {{-- Título do Erro --}}
         <h1 class="display-4">@yield('error_title', 'Erro')</h1>
-
-        {{-- Mensagem do Erro --}}
         <p class="lead text-muted">@yield('error_message')</p>
-
-        {{-- Link de Voltar --}}
         <a href="{{ route('home') }}" class="btn btn-outline-primary mt-3">
             <i class="bi bi-house-door"></i> Voltar à Página Inicial
         </a>

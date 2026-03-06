@@ -92,8 +92,7 @@ $(function () {
             }
         },
         submitHandler: form => form.submit(),
-        errorPlacement: (error, element) => 
-            error.addClass('invalid-feedback').appendTo(element.closest('.form-group')),
+        errorPlacement: (error, element) => error.addClass('invalid-feedback').appendTo(element.closest('.form-group')),
         highlight: element => $(element).addClass('is-invalid'),
         unhighlight: element => $(element).removeClass('is-invalid')
     });

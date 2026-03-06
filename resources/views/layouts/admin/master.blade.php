@@ -272,7 +272,7 @@
     <!-- Conteúdo -->
     <main class="main-content py-5">
 
-        @include('partials.toasts')
+        @include('alerts.toasts')
 
         @yield('dash-content')
 

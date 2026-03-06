@@ -94,10 +94,8 @@
 
         </div>
     </div>
-
-    </div>
 </section>
 
 @push('scripts')
-<script src="{{ asset('assets/home/autoScrollEvents.js') }}"></script>
+<script src="{{ asset('assets/js/ui/guest/autoScrollEvents.js') }}"></script>
 @endpush

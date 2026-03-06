@@ -68,6 +68,7 @@ return new class extends Migration
             $table->string('accessibility', 60)->nullable();
             $table->string('pne_report')->nullable();
             $table->unsignedTinyInteger('pne_report_accepted')->nullable(); // 0 = Não, 1 = Sim
+            $table->string('pne_report_rejection_reason')->nullable();
 
             // Programas sociais
             $table->string('nis', 11)->nullable();

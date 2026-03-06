@@ -1,4 +1,4 @@
-@extends('layouts.forms.master')
+@extends('app.registration.master')
 
 @section('page-title', 'Inscrição - Passo ' . $step . ' - Filiação')
 
@@ -98,7 +98,7 @@
             @enderror
         </div>
         
-        <div class="form-group respLegal d-none" id="other_relationship"> <!-- Agora com respLegal -->
+        <div class="form-group respLegal d-none" id="other_relationship"> 
             <label for="especifique" class="form-label required">Se OUTRO, especifique</label>
             <input type="text" class="form-control @error('kinship') is-invalid @enderror" id="kinship" name="kinship"
                 value="{{ old('kinship', session('step5.kinship')) }}">
@@ -107,7 +107,7 @@
             @enderror
         </div>
         
-        <div class="form-group col-sm-4 respLegal d-none"> <!-- Adicionei respLegal e d-none -->
+        <div class="form-group col-sm-4 respLegal d-none"> 
             <label for="telefoneDoResponsavel" class="form-label required">Telefone do Responsável</label>
             <input type="text" class="form-control phone-mask @error('responsible_phone') is-invalid @enderror"
                 id="responsible_phone" name="responsible_phone"

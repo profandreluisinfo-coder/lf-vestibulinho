@@ -108,7 +108,7 @@
 
           <!-- Action Buttons -->
           <div class="d-grid d-md-flex justify-content-md-center gap-2">
-            <a href="{{ route('dash.user.home') }}" class="btn btn-primary px-4">
+            <a href="{{ route('dash.user.start') }}" class="btn btn-primary px-4">
               <i class="bi bi-arrow-left me-2"></i>
               Voltar ao Início
             </a>

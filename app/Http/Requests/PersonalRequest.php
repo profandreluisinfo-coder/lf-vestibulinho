@@ -7,7 +7,7 @@ use App\Rules\NameRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class PersonalRequest extends FormRequest
 {
     /**
      * Autoriza todos os usuários a fazer esta requisição.
@@ -90,48 +90,54 @@ class UserRequest extends FormRequest
     {
         return [
             // CPF
-            'cpf.required' => 'O campo CPF é obrigatório.',
-            'cpf.unique' => 'CPF já cadastrado.',
+            'cpf.required' => '* O campo CPF é obrigatório.',
+            'cpf.unique' => '* CPF já cadastrado.',
 
             // Nome
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.regex' => 'O campo nome deve conter apenas letras.',
-            'name.max' => 'O campo nome deve conter no máximo :max caracteres.',
+            'name.required' => '* O campo nome é obrigatório.',
+            'name.regex' => '* O campo nome deve conter apenas letras.',
+            'name.max' => '* O campo nome deve conter no máximo :max caracteres.',
 
             // Nome Social
-            'social_name_option.required' => 'Informe se deseja usar o nome social/afetivo.',
-            'social_name.required' => 'O campo nome social/afetivo é obrigatório.',
-            'social_name.regex' => 'O campo nome social/afetivo deve conter apenas letras.',
-            'social_name.max' => 'O campo nome social/afetivo deve conter no máximo :max caracteres.',
+            'social_name_option.required' => '* Informe se deseja usar o nome social/afetivo.',
+            'social_name.required' => '* O campo nome social/afetivo é obrigatório.',
+            'social_name.regex' => '* O campo nome social/afetivo deve conter apenas letras.',
+            'social_name.max' => '* O campo nome social/afetivo deve conter no máximo :max caracteres.',
+
+            // Autorização
+            'authorization.required' => '* O campo autorização é obrigatório.',
+            'authorization.file' => '* O campo autorização deve ser um arquivo PDF.',
+            'authorization.mimes' => '* O campo autorização deve ser um arquivo PDF.',
+            'authorization.max' => '* O campo autorização deve ter no máximo 2MB.',
 
             // Nacionalidade
-            'nationality.required' => 'O campo nacionalidade é obrigatório.',
-            'nationality.in' => 'Nacionalidade inválida.',
+            'nationality.required' => '* O campo nacionalidade é obrigatório.',
+            'nationality.in' => '* Nacionalidade inválida.',
 
             // Tipo de Documento
-            'doc_type.required' => 'O tipo de documento é obrigatório.',
-            'doc_type.in' => 'Tipo de documento inválido.',
+            'doc_type.required' => '* O tipo de documento é obrigatório.',
+            'doc_type.in' => '* Tipo de documento inválido.',
 
             // Número do Documento
-            'doc_number.required' => 'O número do documento é obrigatório.',
-            'doc_number.regex' => 'O campo nº do documento deve conter de 7 a 11 caracteres (números e/ou letras).',
-            'doc_number.min' => 'O campo nº do documento deve conter no mínimo :min caracteres.',
-            'doc_number.max' => 'O campo nº do documento deve conter no máximo :max caracteres.',
-            'doc_number.unique' => 'Documento já cadastrado.',
+            'doc_number.required' => '* O número do documento é obrigatório.',
+            'doc_number.regex' => '* O campo nº do documento deve conter de 7 a 11 caracteres (números e/ou letras).',
+            'doc_number.min' => '* O campo nº do documento deve conter no mínimo :min caracteres.',
+            'doc_number.max' => '* O campo nº do documento deve conter no máximo :max caracteres.',
+            'doc_number.unique' => '* Documento já cadastrado.',
 
             // Data de Nascimento
-            'birth.required' => 'O campo data de nascimento é obrigatório.',
-            'birth.date' => 'Data de nascimento inválida.',
-            'birth.before' => 'Data de nascimento inválida. Não pode ser maior que a data atual.',
+            'birth.required' => '* O campo data de nascimento é obrigatório.',
+            'birth.date' => '* Data de nascimento inválida.',
+            'birth.before' => '* Data de nascimento inválida. Não pode ser maior que a data atual.',
 
             // Gênero
-            'gender.required' => 'O campo gênero é obrigatório.',
-            'gender.in' => 'O gênero selecionado não é válido. Por favor, escolha uma opção válida.',
+            'gender.required' => '* O campo gênero é obrigatório.',
+            'gender.in' => '* O gênero selecionado não é válido. Por favor, escolha uma opção válida.',
 
             // Telefone
-            'phone.required' => 'O campo telefone é obrigatório.',
-            'phone.min' => 'O campo telefone deve conter no mínimo :min caracteres.',
-            'phone.max' => 'O campo telefone deve conter no máximo :max caracteres.',
+            'phone.required' => '* O campo telefone é obrigatório.',
+            'phone.min' => '* O campo telefone deve conter no mínimo :min caracteres.',
+            'phone.max' => '* O campo telefone deve conter no máximo :max caracteres.',
         ];
     }
 }

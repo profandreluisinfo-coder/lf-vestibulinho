@@ -105,7 +105,7 @@ class LoginController extends Controller
             $hasInscription = $user->inscription()->exists();
 
             return $hasInscription
-                ? redirect()->route('dash.user.home') // Vai para o início da inscrição
+                ? redirect()->route('dash.user.start') // Vai para o início da inscrição
                 : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
         }
 

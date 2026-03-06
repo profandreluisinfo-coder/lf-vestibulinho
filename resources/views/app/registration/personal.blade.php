@@ -1,15 +1,12 @@
-@extends('layouts.forms.master')
+@extends('app.registration.master')
 
 @section('page-title', 'Inscrição - Passo ' . $step . ' - Dados Pessoais')
 
 @section('forms')
 
     <form id="inscription" class="row g-4" action="{{ route('step.personal') }}" method="POST" enctype="multipart/form-data">
-
         @csrf
-
         <h5 class="fw-semibold border-bottom pb-1">Dados Pessoais</h5>
-
         <div class="form-group col-md-3">
 
             <label for="cpf" class="form-label required">CPF do candidato:</label>
@@ -23,7 +20,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-6">
 
             <label for="name" class="form-label required">Nome completo:</label>
@@ -36,7 +32,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-3">
 
             <label for="birth" class="form-label required">Nascimento:</label>
@@ -49,7 +44,6 @@
             @enderror
         
         </div>
-
         <div class="form-group col-md-3">
 
             <label for="gender" class="form-label required">Gênero:</label>
@@ -70,7 +64,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-12">
 
             <label class="form-label required">
@@ -231,7 +224,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-4">
             <label for="doc_type" class="form-label required">Tipo de documento:</label>
             <select class="form-select @error('doc_type') is-invalid @enderror" id="doc_type" name="doc_type">
@@ -253,7 +245,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-4">
             <label for="doc_number" class="form-label required">Número do documento:</label>
             <input type="text" class="form-control @error('doc_number') is-invalid @enderror" id="doc_number" name="doc_number" minlength="7" maxlength="11"
@@ -266,7 +257,6 @@
             @enderror
 
         </div>
-
         <div class="form-group col-md-3">
             <label for="phone" class="form-label required">Telefone do candidato:</label>
             <input type="text" class="form-control phone-mask @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', session('step1.phone')) }}">
@@ -278,11 +268,9 @@
             @enderror
 
         </div>
-
         <div class="col-12">
             <button type="submit" class="btn btn-primary btn-sm w-auto">Avançar <i class="bi bi-arrow-right-circle ms-2"></i></button>
         </div>
-
     </form>
 
 @endsection

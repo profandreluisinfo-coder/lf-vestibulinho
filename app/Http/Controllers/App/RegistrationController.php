@@ -8,7 +8,7 @@ use App\Http\Requests\AddressRequest;
 use App\Http\Requests\CertificateRequest;
 use App\Http\Requests\FamilyRequest;
 use App\Http\Requests\OtherRequest;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\PersonalRequest;
 use App\Models\Course;
 use App\Models\Notice;
 use App\Services\InscriptionService;
@@ -16,7 +16,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class RegistrationController extends Controller
@@ -51,7 +50,7 @@ class RegistrationController extends Controller
         ]);
     }
     // Gravar Dados de Passo 1
-    public function personalStore(UserRequest $request): RedirectResponse
+    public function personalStore(PersonalRequest $request): RedirectResponse
     {
         $data = $request->except(['_token', 'authorization']);
 
@@ -327,7 +326,6 @@ class RegistrationController extends Controller
     // Gravar Dados de Passo 7
     public function courseStore(Request $request)
     {
-
         session()->put('step7', $request->except(['_token']));
         session()->put('step7_done', true);
 
@@ -346,7 +344,7 @@ class RegistrationController extends Controller
 
         // Se não houver dados, redireciona para o dashboard
         if (empty($data)) {
-            return redirect()->route('dash.user.home'); // <= CORRIGIR ROTA
+            return redirect()->route('dash.user.start'); // <= CORRIGIR ROTA
         }
 
         // Define o título da etapa
@@ -376,7 +374,6 @@ class RegistrationController extends Controller
 
             return redirect()->route('dash.user.inscription')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
-            // Log::error('Erro no banco: ' . $e->getMessage());
 
             if (str_contains($e->getMessage(), 'SQLSTATE[22001]')) {
                 return redirect()->route('step.failed')
@@ -402,7 +399,6 @@ class RegistrationController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
-            Log::error('Erro geral: ' . $e->getMessage());
 
             return redirect()->route('step.failed')->with(
                 'danger',

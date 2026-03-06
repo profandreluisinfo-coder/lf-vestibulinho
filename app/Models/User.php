@@ -157,12 +157,7 @@ class User extends Authenticatable
     {
         return $this->inscription()->exists();
     }
-
-    public function getAuthorizationAcceptedAttribute($value)
-    {
-        return $value ? '<span class="text-success fw-bold">Deferido</span>' : '<span class="text-danger fw-bold">Em análise</span>';
-    }
-
+   
     /**
      * Remove todos os caracteres não numéricos do CPF.
      *
