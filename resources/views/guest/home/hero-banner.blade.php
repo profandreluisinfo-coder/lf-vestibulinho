@@ -4,7 +4,7 @@
             <div class="col-lg-8">
                 <div class="hero-content">
                     <div class="d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start">
-                        <a href="https://leandrofranceschini.com.br/" class="nav-link">
+                        <a href="https://leandrofranceschini.com.br/" class="nav-link" target="_blank" title="Site principal da Escola Leandro Franceschini">
                             <img src="{{ asset('assets/img/logo.webp') }}" class="img-fluid" alt="Avatar Logo" width="75">
                         </a>
                         <h1 class="display-4 fw-bold mb-3 mb-md-0">
@@ -14,6 +14,7 @@
                     <h2 class="h3 mb-4">
                         <div>Totalmente Gratuito!</div>
                         @if ($calendar)
+
                             @if (!$calendar?->hasInscriptionStarted())
                                 <div>Em breve</div>
                             @elseif ($calendar?->isInscriptionOpen())
@@ -21,6 +22,7 @@
                             @else
                                 <div class="text-danger-alt">Inscrições Encerradas</div>
                             @endif
+
                         @endif
                     </h2>
                     <p class="lead mb-4">
@@ -41,6 +43,7 @@
             </div>
             <div class="col-lg-4">
                 @if ($calendar?->isInscriptionOpen())
+
                     <div class="highlight-box">
                         <h3 class="h4 mb-3">
                             <i class="bi bi-calendar-check me-2"></i>Prazo Final
@@ -50,6 +53,7 @@
                         </h4>
                         <p class="mb-0">Não perca esta oportunidade!</p>
                     </div>
+                    
                 @endif
             </div>
         </div>

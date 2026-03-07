@@ -21,7 +21,9 @@ class RegisterController extends Controller
      */
     public function register(): View | RedirectResponse
     {
-        if (!Calendar::first()->isInscriptionOpen()) {
+        $calendar = Calendar::first() ?? new Calendar();
+        
+        if (!$calendar->isInscriptionOpen()) {
             return redirect()->route('home');
         }
 

@@ -7,87 +7,77 @@
                     <div class="card-body pt-3 pb-5">
 
                         <div class="links">
-
                             <a href="{{ route('guest.faqs.index') }}">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
-
                             <a href="{{ route('guest.archives.index') }}">
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
-
-                            @if ($settings->isNoticeEnabled() && $notice->file)
-                                <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
-                                    <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
-                                </a>
-                            @endif
-
-                            @if ($calendar->isInscriptionOpen())
-                                <a href="{{ route('register') }}">
-                                    <i class="bi bi-person-plus fs-1"></i> Registrar-se
-                                </a>
-                            @endif
-
-                            @if ($calendar->hasInscriptionStarted())
-                                <a href="{{ route('login') }}">
-                                    <i class="bi bi-person-lock fs-1"></i> Área do Candidato
-                                </a>
-                            @endif
-
-                            @if ($settings->result)
-                                <a href="{{ route('guest.results.index') }}">
-                                    <i class="bi bi-trophy fs-1"></i> Classificação
-                                </a>
-                            @endif
-
-                            @if ($calls)
-                                <a href="{{ route('guest.calls.index') }}">
-                                    <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
-                                </a>
-                            @endif
-
+                        @if ($settings->isNoticeEnabled() && $notice->file)
+                            <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
+                                <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
+                            </a>
+                        @endif
+                        @if ($calendar->isInscriptionOpen())
+                            <a href="{{ route('register') }}">
+                                <i class="bi bi-person-plus fs-1"></i> Registrar-se
+                            </a>
+                        @endif
+                        @if ($calendar->hasInscriptionStarted())
+                            <a href="{{ route('login') }}">
+                                <i class="bi bi-person-lock fs-1"></i> Área do Candidato
+                            </a>
+                        @endif
+                        @if ($settings->isResultEnabled())
+                            <a href="{{ route('guest.results.index') }}">
+                                <i class="bi bi-trophy fs-1"></i> Classificação
+                            </a>
+                        @endif
+                        @if ($calls)
+                            <a href="{{ route('guest.calls.index') }}">
+                                <i class="bi bi-megaphone fs-1"></i> Convocação para Matrícula
+                            </a>
+                        @endif
                         </div>
 
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-4">
-
                 <div class="card h-100 shadow border border-0">
                     <div class="card-header">
                         <i class="bi bi-exclamation-circle"></i> Informações do {{ config('app.name') }}
                         {{ $calendar?->year }}
                     </div>
                     <div class="card-body events pt-3 pb-5 overflow-y-scroll hide-scrollbar" style="max-height: 320px;" id="autoScrollEvents">
+                @if ($settings->isCalendarEnabled())
+                    
+                    <ul class="list-group list-group-flush">
 
-                        @if ($settings->calendar)
-                        
-                        <ul class="list-group list-group-flush">
+                        @foreach ($calendar->events() as $event)
+                            <li class="list-group-item">
+                                <strong>{!! $event['icon'] !!} {{ $event['label'] }}</strong><br>
 
-                            @foreach ($calendar->events() as $event)
-                                <li class="list-group-item">
-                                    <strong>{!! $event['icon'] !!} {{ $event['label'] }}</strong><br>
-
-                                    @if ($event['type'] === 'period')
-                                        @if ($event['start'] && $event['end'])
-                                        {{ $calendar->formatPeriod($event['start'], $event['end']) }}
-                                        @else
-                                        <span class="text-muted">A definir</span>
-                                        @endif
+                                @if ($event['type'] === 'period')
+                                    @if ($event['start'] && $event['end'])
+                                    {{ $calendar->formatPeriod($event['start'], $event['end']) }}
                                     @else
-                                        @if ($event['date'])
-                                        {{ $calendar->formatDate($event['date']) }}
-                                        @else
-                                        <span class="text-muted">A definir</span>
-                                        @endif
+                                    <span class="text-muted">A definir</span>
                                     @endif
-                                </li>
-                            @endforeach
-                        </ul>
+                                @else
+                                    @if ($event['date'])
+                                    {{ $calendar->formatDate($event['date']) }}
+                                    @else
+                                    <span class="text-muted">A definir</span>
+                                    @endif
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
 
-                        @else
-                            <p class="text-center">Nenhuma informação disponível no momento.</p>
-                        @endif
+                @else
+                    <p class="text-center">Nenhuma informação disponível no momento.</p>
+                @endif
                     </div>
                 </div>
             </div>
@@ -95,7 +85,6 @@
         </div>
     </div>
 </section>
-
 @push('scripts')
 <script src="{{ asset('assets/js/ui/guest/autoScrollEvents.js') }}"></script>
 @endpush

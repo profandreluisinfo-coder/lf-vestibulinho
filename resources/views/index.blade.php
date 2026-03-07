@@ -13,6 +13,7 @@
     @include('guest.home.navbar')
     @include('guest.home.hero-banner')
     @include('guest.home.quick-access')
+    @include('guest.home.guidelines')
     @include('guest.home.courses')
     @include('guest.home.countdown')
     @include('guest.home.footer')
