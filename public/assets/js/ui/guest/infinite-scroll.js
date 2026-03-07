@@ -33,7 +33,7 @@
         const end = document.createElement('div');
         end.id = 'end-indicator';
         end.className = 'text-center py-4 text-muted';
-        end.innerHTML = '<p class="text-success">Você visualizou todas as perguntas disponíveis.</p>';
+        end.innerHTML = '<div class="alert alert-success"><i class="bi bi-info-circle me-2"></i>Você visualizou todas as perguntas disponíveis.</div>';
         return end;
     }
 

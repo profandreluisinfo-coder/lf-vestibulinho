@@ -13,6 +13,10 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $faqs = Faq::where('status', true)
+                   ->orderBy('order', 'asc')
+                   ->get();
+
         // Busca o registro (ou cria um objeto vazio caso não exista)
         $calendar = Calendar::first() ?? new Calendar();
 
@@ -32,14 +36,6 @@ class HomeController extends Controller
         // Verifica quantos registros de chamada existem
         $calls = Call::all()->count();
 
-        view()->share(
-            ['deadline' => $deadline, 
-            'files'     => $files, 
-            'courses'   => $courses, 
-            'faqs'      => $faqs, 
-            'calls'     => $calls
-        ]);
-
-        return view('index');
+        return view('index', compact('deadline', 'files', 'courses', 'calls', 'faqs'));
     }
 }
