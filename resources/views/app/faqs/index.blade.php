@@ -61,7 +61,6 @@
 
                 @foreach ($faqs as $faq)
 
-                    {{-- <div class="accordion-item" data-faq-id="{{ $faq->id }}"> --}}
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
@@ -97,7 +96,6 @@
 
                                 <div class="d-flex justify-content-end gap-2">
 
-                                    {{-- Botão de publicar (alterar status) --}}
                                     @can('manage-faq', $faq)
                                         <form id="publish-faq-form-{{ $faq->id }}"
                                             action="{{ route('app.faqs.publish', $faq->id) }}" method="POST" class="d-none">
@@ -111,12 +109,10 @@
                                             <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i>
                                         </button>
 
-                                        {{-- Botão de editar --}}
                                         <a href="{{ route('app.faqs.edit', $faq->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil-square" title="Editar"></i>
                                         </a>
 
-                                        {{-- Botão de excluir --}}
                                         <form id="delete-faq-form-{{ $faq->id }}"
                                             action="{{ route('app.faqs.destroy', $faq->id) }}" method="POST" class="d-none">
                                             @csrf
@@ -129,11 +125,8 @@
                                     @endcan
 
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
 
                 @endforeach
@@ -199,9 +192,8 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/rules/faqs/index.js') }}"></script>
-    <script src="{{ asset('assets/filters/faqs.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/faqs/private.js') }}"></script>
     <script src="{{ asset('assets/js/faqs/sortable.js') }}"></script>
     <script src="{{ asset('assets/js/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/js/swa/faqs/delete.js') }}"></script>
-
 @endpush

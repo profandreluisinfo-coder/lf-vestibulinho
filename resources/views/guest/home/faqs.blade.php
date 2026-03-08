@@ -1,8 +1,8 @@
-<section id="faqs">
+<section class="faqs">
     <div class="container">
         <h2 class="simple-title">Dúvidas Frequentes</h2>
         <div class="row rounded-3 shadow p-4">
-            <div class="col-md-12 mx-auto">
+            <div class="col-lg-12 mx-auto">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" id="search" name="search"

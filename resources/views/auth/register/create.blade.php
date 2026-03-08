@@ -32,15 +32,6 @@
                                     de Acesso
                                 </span>
                             </h1>
-                            <div>
-                                <p class="text-muted text-center">
-                                    Para participar, é necessário cadastrar e validar seus dados de acesso.
-                                    Preencha o formulário abaixo e, em seguida, verifique seu e-mail.
-                                    Você receberá uma mensagem com um <i>link</i> de confirmação. Clique nesse <i>link</i> para
-                                    validar o endereço de e-mail informado.
-                                    Sem essa confirmação, não será possível participar do Vestibulinho.
-                                </p>
-                            </div>
                             <form id="form-register" action="{{ route('register') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">

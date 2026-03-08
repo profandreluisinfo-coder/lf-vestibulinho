@@ -15,7 +15,6 @@ use App\Http\Controllers\App\{
     ExamController,
     ExportController,
     ImportController,
-    InscriptionController,
     LocalController,
     NoticeController,
     PdfController,
@@ -62,7 +61,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/salvar', [NoticeController::class, 'store'])->name('store');
             Route::post('/editar/{notice}', [NoticeController::class, 'update']);
             Route::delete('/excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
-            // Route::put('/publicar/{notice}', [NoticeController::class, 'publish'])->name('publish');
         });
 
     // ==========================
@@ -190,37 +188,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->name('app.system.')
         ->group(function () {
             Route::get('/redefinir-dados', [SettingController::class, 'index'])->name('index');
-            Route::get('/apagar-dados', [SettingController::class, 'reset'])->name('reset');
+            Route::get('/resetar', [SettingController::class, 'reset'])->name('reset');
 
             Route::post('/liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
             Route::post('/liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
             Route::post('/liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
             Route::put('/liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
-        });
-
-    // ==========================
-    // 📋 Inscrições (Visualização de inscrições por Admin)
-    // ==========================
-    Route::prefix('inscricoes')
-        ->name('app.inscriptions.')
-        ->group(function () {
-
-            // Lista de inscrições
-            Route::get('/', [InscriptionController::class, 'index'])->name('index');
-            Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
-                ->name('get.data');
-
-            // Lista de pessoas com deficiência
-            Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
-                ->name('pcd');
-            Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
-                ->name('pcd.data');
-
-            // Candidatos com nome social
-            Route::get('/nome-social', [InscriptionController::class, 'socialName'])
-                ->name('social.name');
-
-            Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
-                ->name('show');
         });
 });

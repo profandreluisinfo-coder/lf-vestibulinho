@@ -60,7 +60,7 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('dash.admin.home', [
+        return view('admin.home', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,

@@ -30,7 +30,6 @@
                         <textarea class="form-control summernote" id="answer" name="answer" rows="6" required>{{ $faq->answer }}</textarea>
                     </div>
                     <div class="d-flex gap-2">
-                        {{-- prettier-ignore --}}
                         <button type="submit" class="btn btn-success btn-sm">
                             <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
@@ -55,5 +54,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/faqs/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/faqs/edit.js') }}"></script>
 @endpush

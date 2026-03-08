@@ -1,5 +1,5 @@
-@if ($calendar->isInscriptionOpen())
-    <section id="contagem" class="py-3">
+@if (!$calendar->isInscriptionOpen())
+    <section id="contagem" class="countdown">
         <div class="container">
             <h2 class="section-title text-center">
                 <i class="bi bi-clock-history me-2"></i> Contagem Regressiva para o Fim das Inscrições

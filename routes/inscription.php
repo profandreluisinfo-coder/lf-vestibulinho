@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Middleware\{
+    IsAdmin, isLocationEnabled, isResultEnabled, NotAdmin, WithInscription
+};
 use App\Http\Controllers\App\{PdfController};
-use App\Http\Middleware\{isLocationEnabled, isResultEnabled, NotAdmin, WithInscription};
+use App\Http\Controllers\App\InscriptionController;
 use Illuminate\Support\Facades\Route;
 
 // 🔒 Rotas que exigem login
@@ -34,4 +37,27 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('inscription');
             });
     });
+
+    // ==========================
+    // 📋 Inscrições (Visualização de inscrições por Admin)
+    // ==========================
+    Route::prefix('inscricoes')
+        ->name('inscriptions.')
+        ->middleware([IsAdmin::class])
+        ->group(function () {
+            // Lista de inscrições
+            Route::get('/', [InscriptionController::class, 'index'])->name('index');
+            Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
+                ->name('get.data');
+            // Lista de pessoas com deficiência
+            Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
+                ->name('pcd');
+            Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
+                ->name('pcd.data');
+            // Candidatos com nome social
+            Route::get('/nome-social', [InscriptionController::class, 'socialName'])
+                ->name('social.name');
+            Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+                ->name('show');
+        });
 });

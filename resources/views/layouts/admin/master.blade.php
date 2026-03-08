@@ -109,18 +109,18 @@
                         <span>Inscrições</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('app.inscriptions.*') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('inscriptions.*') ? 'show' : '' }}"
                         id="menuInscricoes">
-                        <a href="{{ route('app.inscriptions.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.index') ? 'active' : '' }}">
+                        <a href="{{ route('inscriptions.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
                             Lista Geral
                         </a>
-                        <a href="{{ route('app.inscriptions.pcd') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.pcd') ? 'active' : '' }}">
+                        <a href="{{ route('inscriptions.pcd') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
                             Pessoas com Deficiência
                         </a>
-                        <a href="{{ route('app.inscriptions.social.name') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.inscriptions.social.name') ? 'active' : '' }}">
+                        <a href="{{ route('inscriptions.social.name') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social.name') ? 'active' : '' }}">
                             Nome Social
                         </a>
                     </div>
@@ -310,7 +310,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('app.inscriptions.index') }}" class="offcanvas-card">
+                        <a href="{{ route('inscriptions.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #d1fae5; color: #10b981;">
                                 <i class="bi bi-file-earmark-text"></i>
                             </div>
@@ -391,7 +391,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
     
-    <script src="{{ asset('assets/js/app.js') }}" type="module"></script> {{-- scripts --}}
+    <script src="{{ asset('assets/js/admin.js') }}" type="module"></script> {{-- scripts --}}
 
     {{-- Scripts --}}
     <script src="{{ asset('assets/components/sidebar.js') }}"></script>

@@ -17,7 +17,7 @@
                     Esta operação irá <strong>apagar todos os dados dos usuários e de suas inscrições, além do calendário
                         atual do processo seletivo e os eventos relacionados a ele.</strong><br>As FAQs, o edital e os
                     arquivos das provas anteriores serão mantidos.
-                    <br>Os dados não poderão ser recuperados após a exclusão.
+                    <br><span class="fw-bold">Importante:</span> <span class="text-danger fw-bold">Os dados não poderão ser recuperados após a exclusão.</span>
                 </p>
 
                 <div class="d-flex gap-2">
@@ -36,5 +36,5 @@
     <script>
         const resetUrl = "{{ route('app.system.reset') }}";
     </script>
-    <script src="{{ asset('assets/swa/system/reset.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/system/reset.js') }}"></script>
 @endpush

@@ -28,11 +28,12 @@ Route::middleware('auth')->group(function () {
         ->name('users.')
         ->middleware([IsAdmin::class])
         ->group(function () {
+
+        // Lista de usuários sem inscrição
+            Route::get('/', [UserController::class, 'index'])->name('index');
+
             // Area do candidato: exibe dashboard com as informações de como fazer a inscrição
             Route::get('/informacoes', [UserController::class, 'profile'])->name('profile')->middleware([NoInscription::class]);
-
-            // Lista de usuários sem inscrição
-            Route::get('/usuarios', [UserController::class, 'index'])->name('index');
 
             // Rota para apagar o nome social dos candidatos que não possuem autorização dos pais
             Route::patch('/users/{user}/clear-social-name', [UserController::class, 'clearSocialNameFromList'])

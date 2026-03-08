@@ -27,6 +27,8 @@ body {
     min-height: 100vh; /* Permite que o body cresça além da viewport */
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Aplica flexbox apenas em páginas com footer */
@@ -128,8 +130,7 @@ body.has-footer .footer {
     overflow: hidden;
 
     /* Aplica a imagem e o degradê junto */
-    background: linear-gradient(135deg, rgba(0, 32, 96, 0.6), rgba(30, 58, 95, 0.6)),
-        url("/assets/img/hero.webp");
+    background: linear-gradient(135deg, rgba(0, 32, 96, 0.6), rgba(30, 58, 95, 0.6)), url("/assets/img/hero.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -165,7 +166,7 @@ body.has-footer .footer {
 }
 
 /* CURSOS */
-#courses {
+.courses {
     margin-bottom: 4rem;
 }
 
@@ -419,6 +420,23 @@ body.has-footer .footer {
     margin-left: 4px;
 }
 
+.guidelines {
+    margin: 3rem 0 !important;
+}
+
+.courses {
+    margin: 3rem 0 !important;
+}
+
+.countdown {
+    margin: 5rem 0 3rem 0 !important;
+}
+
+.faqs {    
+    margin: 3rem 0 6rem 0 !important;
+    
+}
+
 @media (max-width: 576px) {
     
     .countdown-number {
@@ -428,6 +446,7 @@ body.has-footer .footer {
     .countdown-label {
         font-size: 0.8rem;
     }
+
 }
 
 /* Mobile First - Padrão para telas pequenas */
@@ -474,10 +493,11 @@ body.has-footer .footer {
         margin-bottom: 0;
     }
 
+    .guidelines h5,
     .simple-title {
         text-align: center;
     }
-
+    
     .footer {
         text-align: center !important;
     }

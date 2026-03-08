@@ -12,11 +12,13 @@
                     <a class="nav-link" href="{{ route('home') }}" title="Página principal do Vestibulinho"><i
                             class="bi bi-house-door"></i> Início</a>
                 </li>
+            @if ($calendar->hasInscriptionStarted())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}" title="Acesso para candidatos">
                         <i class="bi bi-person-lock"></i> Área do Candidato
                     </a>
                 </li>
+            @endif
                 <a class="nav-link js-confirm-external"
                     href="https://leandrofranceschini.com.br/#form-contato"
                     title="Entre em contato conosco"

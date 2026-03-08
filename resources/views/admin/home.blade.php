@@ -10,8 +10,9 @@
 
     @php
         $calendar_active = App\Models\Calendar::first();
-        $local_status    = App\Models\ExamResult::hasRecords();
-        $ranking_active  = App\Models\ExamResult::hasScores();
+        $local_status = App\Models\ExamResult::hasRecords();
+        $ranking_active = App\Models\ExamResult::hasScores();
+        $inscriptions_count = App\Models\Inscription::count();
     @endphp
 
     <div class="accordion accordion-flush shadow-lg bg-light mb-5" id="accordionFlushExample">
@@ -27,18 +28,19 @@
                 <div class="accordion-body">
                     <div class="stepper-container mb-5">
                         <!-- Etapa 1 -->
-                        <a href="{{ route(
-'app.calendar.index') }}" class="step-item text-secondary text-center" title="Definir Calendário">
+                        <a href="{{ route('app.calendar.index') }}" class="step-item text-secondary text-center"
+                            title="Definir Calendário">
                             <i
                                 class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
                         </a>
-                        
+
                         <!-- Divider -->
                         <div class="step-divider"></div>
 
                         <!-- Etapa 2 -->
-                        <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center" title="Publicar Edital">
+                        <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center"
+                            title="Publicar Edital">
                             <i
                                 class="bi {{ $settings->isNoticeEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
@@ -47,7 +49,8 @@
                         <div class="step-divider"></div>
 
                         <!-- Etapa 3 -->
-                        <a href="{{ route('app.exam.create') }}" class="step-item text-secondary text-center" title="Agendar Prova">
+                        <a href="{{ route('app.exam.create') }}" class="step-item text-secondary text-center"
+                            title="Agendar Prova">
                             <i
                                 class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
@@ -56,7 +59,8 @@
                         <div class="step-divider"></div>
 
                         <!-- Etapa 4 -->
-                        <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center" title="Publicar Prova">
+                        <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center"
+                            title="Publicar Prova">
                             <i
                                 class="bi {{ App\Models\Archive::latest('id')->first()?->status && App\Models\Archive::latest('id')->first()->answer?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
@@ -65,7 +69,8 @@
                         <div class="step-divider"></div>
 
                         <!-- Etapa 5 -->
-                        <a href="{{ route('app.import.home') }}" class="step-item text-secondary text-center" title="Importar Notas">
+                        <a href="{{ route('app.import.home') }}" class="step-item text-secondary text-center"
+                            title="Importar Notas">
                             <i
                                 class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
@@ -79,7 +84,8 @@
                         </a>
                         <div class="step-divider"></div>
                         <!-- Etapa 7 -->
-                        <a href="{{ route('app.calls.index') }}" class="step-item text-secondary text-center" title="Definir Chamadas">
+                        <a href="{{ route('app.calls.index') }}" class="step-item text-secondary text-center"
+                            title="Definir Chamadas">
                             <i
                                 class="bi {{ $calls_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir chamadas</p>
@@ -90,168 +96,167 @@
         </div>
     </div>
 
-@if ($calendar_active?->hasInscriptionStarted())
+    @if ($calendar_active?->hasInscriptionStarted())
 
+        @if ($inscriptions_count > 0)
 
-    <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#statistics" style="width: 18rem;">
-        <div class="card-body">
-            📊 Estatísticas
+        <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#statistics" style="width: 18rem;">
+            <div class="card-body">
+                📊 Estatísticas
+            </div>
         </div>
-    </div>
-    
-    <!-- The Modal -->
-    <div class="modal fade" data-bs-backdrop="static" id="statistics">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">📊 Dados estatísticos</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+        <!-- The Modal -->
+        <div class="modal fade" data-bs-backdrop="static" id="statistics">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
 
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="row g-4">
-                        <!-- Inscritos por Curso -->
-                        <div class="col-md-12">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">Inscritos por Curso</h5>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="baixarImagem('chartCursos')"
-                                                title="Baixar gráfico como imagem PNG">
-                                                🖼️
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="imprimirGrafico('chartCursos')"
-                                                title="Imprimir gráfico">
-                                                🖨️
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <canvas id="chartCursos" data-labels='@json($cursos->pluck('name'))'
-                                        data-values='@json($cursos->pluck('inscriptions_count'))'>
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Inscritos por Sexo -->
-                        <div class="col-md-6">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">Inscritos por Sexo</h5>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="baixarImagem('chartSexos')"
-                                                title="Baixar gráfico como imagem PNG">
-                                                🖼️
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="imprimirGrafico('chartSexos')"
-                                                title="Imprimir gráfico">
-                                                🖨️
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <canvas id="chartSexos" data-labels='@json($sexos->pluck('gender'))'
-                                        data-values='@json($sexos->pluck('total'))'>
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Distribuição de Gêneros por Curso -->
-                        <div class="col-md-6">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">Inscritos por Curso e Sexo</h5>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="baixarImagem('chartSexoPorCurso')"
-                                                title="Baixar gráfico como imagem PNG">
-                                                🖼️
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="imprimirGrafico('chartSexoPorCurso')"
-                                                title="Imprimir gráfico">
-                                                🖨️
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <canvas id="chartSexoPorCurso" data-cursos='@json($sexoPorCurso->pluck('course'))'
-                                        data-masculino='@json($sexoPorCurso->pluck('masculino'))'
-                                        data-feminino='@json($sexoPorCurso->pluck('feminino'))'>
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 10 Bairros com Mais Candidatos -->
-                        <div class="col-md-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">10 Bairros com Mais Candidatos</h5>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="baixarImagem('chartBairros')"
-                                                title="Baixar gráfico como imagem PNG">
-                                                🖼️
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="imprimirGrafico('chartBairros')"
-                                                title="Imprimir gráfico">
-                                                🖨️
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <canvas id="chartBairros" data-labels='@json($bairros->pluck('burgh'))'
-                                        data-values='@json($bairros->pluck('total'))'>
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 10 Escolas de Origem -->
-                        <div class="col-md-6">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5 class="mb-0">10 Escolas de Origem com Mais Candidatos</h5>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="baixarImagem('chartEscolas')"
-                                                title="Baixar gráfico como imagem PNG">
-                                                🖼️
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-secondary"
-                                                onclick="imprimirGrafico('chartEscolas')"
-                                                title="Imprimir gráfico">
-                                                🖨️
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <canvas id="chartEscolas" data-labels='@json($escolas->pluck('school_name'))'
-                                        data-values='@json($escolas->pluck('total'))'>
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">📊 Dados estatísticos</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row g-4">
+                            <!-- Inscritos por Curso -->
+                            <div class="col-md-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Inscritos por Curso</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="baixarImagem('chartCursos')"
+                                                    title="Baixar gráfico como imagem PNG">
+                                                    🖼️
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="imprimirGrafico('chartCursos')" title="Imprimir gráfico">
+                                                    🖨️
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <canvas id="chartCursos" data-labels='@json($cursos->pluck('name'))'
+                                            data-values='@json($cursos->pluck('inscriptions_count'))'>
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Inscritos por Sexo -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Inscritos por Sexo</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="baixarImagem('chartSexos')"
+                                                    title="Baixar gráfico como imagem PNG">
+                                                    🖼️
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="imprimirGrafico('chartSexos')" title="Imprimir gráfico">
+                                                    🖨️
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <canvas id="chartSexos" data-labels='@json($sexos->pluck('gender'))'
+                                            data-values='@json($sexos->pluck('total'))'>
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Distribuição de Gêneros por Curso -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Inscritos por Curso e Sexo</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="baixarImagem('chartSexoPorCurso')"
+                                                    title="Baixar gráfico como imagem PNG">
+                                                    🖼️
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="imprimirGrafico('chartSexoPorCurso')"
+                                                    title="Imprimir gráfico">
+                                                    🖨️
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <canvas id="chartSexoPorCurso" data-cursos='@json($sexoPorCurso->pluck('course'))'
+                                            data-masculino='@json($sexoPorCurso->pluck('masculino'))'
+                                            data-feminino='@json($sexoPorCurso->pluck('feminino'))'>
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 10 Bairros com Mais Candidatos -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">10 Bairros com Mais Candidatos</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="baixarImagem('chartBairros')"
+                                                    title="Baixar gráfico como imagem PNG">
+                                                    🖼️
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="imprimirGrafico('chartBairros')" title="Imprimir gráfico">
+                                                    🖨️
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <canvas id="chartBairros" data-labels='@json($bairros->pluck('burgh'))'
+                                            data-values='@json($bairros->pluck('total'))'>
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 10 Escolas de Origem -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">10 Escolas de Origem com Mais Candidatos</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="baixarImagem('chartEscolas')"
+                                                    title="Baixar gráfico como imagem PNG">
+                                                    🖼️
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                    onclick="imprimirGrafico('chartEscolas')" title="Imprimir gráfico">
+                                                    🖨️
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <canvas id="chartEscolas" data-labels='@json($escolas->pluck('school_name'))'
+                                            data-values='@json($escolas->pluck('total'))'>
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-@endif
+        @endif
+
+    @endif
 
 @endsection
 

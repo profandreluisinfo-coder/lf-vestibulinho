@@ -64,13 +64,9 @@
                             </td>
                         </tr>
                     @empty
-                        @include('components.no-records', [
-                            'message' => 'Causas de problemas com os locais de prova:',
-                            'submessage' => 'Provavelmente nenhum local foi cadastrado no sistema.',
-                            'action' => true,
-                            'actionMessage' =>
-                                'Solução: Clique no botão "Novo" e tente cadastrar um local. Se o problema persistir, entre em contato com o suporte.',
-                        ])
+                        <tr class="text-center">
+                            <td colspan="3">Nenhum local cadastrado</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -191,13 +187,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/exam.js') }}"></script>
-    <script src="{{ asset('assets/swa/locations/delete.js') }}"></script>
-    <script>
-        function showLocalDetails(id, name, address, rooms) {
-            document.getElementById('view-name').textContent = name;
-            document.getElementById('view-address').textContent = address;
-            document.getElementById('view-rooms').textContent = rooms;
-        }
-    </script>
+    <script src="{{ asset('assets/js/rules/exam/create.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/exam/details.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/locations/delete.js') }}"></script>
 @endpush

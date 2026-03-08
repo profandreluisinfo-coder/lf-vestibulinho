@@ -1,13 +1,15 @@
 $(document).ready(function () {
     $('#form-file').validate({
         rules: {
-            file: {
-                required: true
+            path: {
+                required: true,
+                extension: "pdf"
             },
         },
         messages: {
-            file: {
-                required: 'Selecione um arquivo'
+            path: {
+                required: '* Selecione um arquivo',
+                extension: '* Formato de arquivo inválido. Apenas arquivos PDF.'
             },
         },
         submitHandler: function (form) {

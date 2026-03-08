@@ -7,7 +7,7 @@
                     <div class="card-body pt-3 pb-5">
 
                         <div class="links">
-                            <a href="{{ route('guest.faqs.index') }}">
+                            <a href="#faqs">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
                             <a href="{{ route('guest.archives.index') }}">
@@ -18,6 +18,9 @@
                                 <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
                             </a>
                         @endif
+                            <a href="#courses" target="_blank">
+                                <i class="bi bi-mortarboard fs-1"></i> Cursos
+                            </a>
                         @if ($calendar->isInscriptionOpen())
                             <a href="{{ route('register') }}">
                                 <i class="bi bi-person-plus fs-1"></i> Registrar-se
@@ -81,10 +84,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-@push('scripts')
-<script src="{{ asset('assets/js/ui/guest/autoScrollEvents.js') }}"></script>
-@endpush

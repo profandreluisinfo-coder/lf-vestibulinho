@@ -72,7 +72,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('app.inscriptions.get.data') }}",
+                    url: "{{ route('inscriptions.get.data') }}",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

@@ -68,9 +68,11 @@ class LoginController extends Controller
 
             if (!$user->email_verified_at) {
                 Auth::logout();
-                return redirect()
-                    ->back()
-                    ->with('warning', 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.');
+                // return redirect()
+                //     ->back()
+                //     ->with('warning', 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.');
+
+                return alertWarning('Para acessar a Área do Candidato, vocé precisa validar seu endereço de e-mail.');
             }
 
             $request->session()->regenerate();
@@ -109,11 +111,13 @@ class LoginController extends Controller
                 : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
         }
 
-        return redirect()->route('login')->with([
-            'status' => [
-                'alert-type' => 'danger',
-                'message' => 'Perfil de usuário desconhecido.',
-            ]
-        ]);
+        // return redirect()->route('login')->with([
+        //     'status' => [
+        //         'alert-type' => 'danger',
+        //         'message' => 'Perfil de usuário desconhecido.',
+        //     ]
+        // ]);
+
+        return alertError('Perfil de usuário desconhecido.');
     }
 }

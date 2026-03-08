@@ -19,13 +19,13 @@ class InscriptionController extends Controller
     public function index(): View
     {
         // Agora apenas retorna a view, os dados virão via AJAX
-        return view('app.inscriptions.index');
+        return view('inscriptions.index');
     }
 
     /**
      * Retorna os dados paginados para o DataTables via AJAX
      *
-     * Os dados serão exibidos na tabela de inscrições ativas no dashboard, na view "app.inscriptions.index".
+     * Os dados serão exibidos na tabela de inscrições ativas no dashboard, na view "inscriptions.index".
      * @param Request $request
      * @return JsonResponse
      */
@@ -77,7 +77,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'cpf' => $user->cpf,
                 'user_id' => $user->id,
-                'actions' => view('app.inscriptions.inscription-actions', compact('user'))->render()
+                'actions' => view('inscriptions.inscription-actions', compact('user'))->render()
             ];
         });
 
@@ -97,7 +97,7 @@ class InscriptionController extends Controller
     public function pcd(): View
     {
         // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('app.inscriptions.pcd');
+        return view('inscriptions.pcd');
     }
 
     /**
@@ -155,7 +155,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'accessibility' => $user->user_detail?->accessibility ?? '-',
                 'user_id' => $user->id,
-                'actions' => view('app.inscriptions.pcd-actions', compact('user'))->render()
+                'actions' => view('inscriptions.pcd-actions', compact('user'))->render()
             ];
         });
 
@@ -181,7 +181,7 @@ class InscriptionController extends Controller
 
         view()->share('users', $users);
 
-        return view('app.inscriptions.social-name');
+        return view('inscriptions.social-name');
     }
 
     /**
@@ -197,6 +197,6 @@ class InscriptionController extends Controller
 
         $user = User::find($id);
 
-        return view('app.inscriptions.show')->with('user', $user);
+        return view('inscriptions.show')->with('user', $user);
     }
 }

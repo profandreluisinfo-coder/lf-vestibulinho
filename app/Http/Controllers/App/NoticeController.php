@@ -37,29 +37,30 @@ class NoticeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimetypes:application/pdf'
+            'path' => 'required|file|mimes:pdf'
         ], [
-            'file.required' => 'Carregue um arquivo.',
-            'file.file' => 'O arquivo de está corrompido.',
-            'file.mimetypes' => 'O arquivo deve ser um PDF.',
+            'path.required' => 'Carregue um arquivo.',
+            'path.file' => 'O arquivo de está corrompido.',
+            'path.mimes' => 'O arquivo deve ser um PDF.',
         ]);
 
-        $file = $request->file('file');
+        $file = $request->file('path');
+        // dd($request->all(), $request->file('path'));
 
-        // Pega o nome original do arquivo (sem espaços)
+        if (!$file) {
+            return alertError('Envie um arquivo válido.');
+        }
+
         $originalName = str_replace(' ', '_', $file->getClientOriginalName());
 
-        // Gera o nome final: ano_nomeoriginal_timestamp.pdf
-        $fileName = $request->year . '_' . pathinfo($originalName, PATHINFO_FILENAME)
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME)
             . '_' . time()
             . '.' . $file->getClientOriginalExtension();
 
-        // Salva no disco 'public' na pasta archives
         $path = $file->storeAs('notices', $fileName, 'public');
 
-        // Salva no banco apenas o caminho relativo
         Notice::create([
-            'file' => $path // ex: archives/2025_prova_1691778382.pdf
+            'file' => $path
         ]);
 
         return alertSuccess('Edital cadastrado com sucesso!', 'app.notices.index');
@@ -100,8 +101,7 @@ class NoticeController extends Controller
 
         // Salva no banco apenas o caminho relativo
         Notice::where('id', $notice->id)->update([
-            'file' => $path, // ex: archives/2025_prova_1691778382.pdf
-            'user_id' => auth()->id(),
+            'file' => $path, // ex: notices/prova_1691778382.pdf
         ]);
 
         return alertSuccess('Edital atualizado com sucesso!', 'app.notices.index');
@@ -126,6 +126,4 @@ class NoticeController extends Controller
 
         return alertSuccess('Edital excluido com sucesso!', 'app.notices.index');
     }
-
-    
 }

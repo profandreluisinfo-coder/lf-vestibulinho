@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Calendário do Processo Seletivo')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Edital do Processo Seletivo')
 
 @section('dash-content')
 
@@ -31,7 +31,7 @@
                             <tr>
                                 <td>
                                     <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
-                                        Edital.pdf
+                                        Edital {{ config('app.year') }}.pdf
                                     </a>
                                 </td>
                                 <td><span
@@ -99,18 +99,16 @@
 
                                     {{-- Arquivo relacionado --}}
                                     <div class="form-floating mb-3">
-                                        <input type="file" name="file"
-                                            class="form-control @error('file') is-invalid @enderror" id="file"
-                                            placeholder="Endereço" value="{{ old('file') }}">
-                                        <label for="file" class="form-label required">Arquivo relacionado</label>
-                                        @error('file')
+                                        <input type="file" name="path"
+                                            class="form-control @error('path') is-invalid @enderror" id="path"
+                                            placeholder="Endereço">
+                                        <label for="path" class="form-label required">Arquivo relacionado</label>
+                                        @error('path')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
-
-                                    {{-- prettier-ignore --}}
                                     <button type="submit" class="btn btn-success btn-sm">
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                     </button>
