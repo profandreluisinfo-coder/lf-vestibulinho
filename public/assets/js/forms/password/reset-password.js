@@ -36,12 +36,12 @@ import { lockSubmitButton } from '../../ui/spinner.js';
     
     const messages = {
         password: {
-            required: "Obrigatório",
-            strongPassword: "Senha fraca"
+            required: "* Obrigatório",
+            strongPassword: "* Senha fraca"
         },
         password_confirmation: {
-            required: "Obrigatório",
-            equalTo: "As senhas devem ser iguais"
+            required: "* Obrigatório",
+            equalTo: "* As senhas devem ser iguais"
         }
     };
 

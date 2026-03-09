@@ -41,18 +41,19 @@
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $token }}">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Nova Senha</label>
+                                    <label for="password" class="form-label required">Nova Senha</label>
                                     <input type="password" name="password" class="form-control" id="password">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Repetir Senha</label>
+                                    <label for="password_confirmation" class="form-label required">Repetir Senha</label>
                                     <input type="password" name="password_confirmation" class="form-control"
                                         id="password_confirmation">
                                 </div>
                                 <div class="mb-3">
-                                    <small class="form-text text-muted">
-                                        A senha deve conter no mínimo 6 caracteres, incluindo letras maiúsculas, minúsculas
-                                        e números.
+                                    <small class="text-muted">
+                                        <b>ATENÇÃO:</b> Sua senha deve conter no <b>mínimo</b> 6 caracteres e no
+                                        <b>máximo</b> 8 caracteres, incluindo, <b>pelo menos</b>, uma letra maiúscula,
+                                        uma letra minúscula <b>e</b> um número.
                                     </small>
                                 </div>
                                 <div class="d-grid">

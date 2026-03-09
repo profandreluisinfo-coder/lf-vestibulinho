@@ -29,6 +29,6 @@
     <script src="{{ asset('assets/js/ui/guest/autoScrollEvents.js') }}"></script>
     <script src="{{ asset('assets/js/ui/guest/scrolling.js') }}"></script>
     <script src="{{ asset('assets/js/ui/guest/countdown.js') }}"></script>
-    <script src="{{ asset('assets/js/filters/faqs/public.js') }}"></script>    
+    <script src="{{ asset('assets/js/filters/faqs/public.js') }}"></script>
     <script src="{{ asset('assets/js/ui/guest/infinite-scroll.js') }}"></script>
 @endpush

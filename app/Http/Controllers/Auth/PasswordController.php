@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\View\View;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
+
+use function Laravel\Prompts\alert;
 
 class PasswordController extends Controller
 {
@@ -107,24 +110,32 @@ class PasswordController extends Controller
      */
     public function updatePassword(Request $request): RedirectResponse
     {
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{6,8}$/|different:current_password',
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|current_password',
+            'new_password' => [
+                'required',
+                'different:current_password',
+                'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]{6,8}$/'
+            ],
             'password_confirmation' => 'required|same:new_password',
         ], [
-            'current_password.required' => 'O campo senha atual é obrigatório',
-            'new_password.required' => 'O campo nova senha é obrigatório',
-            'new_password.regex' => 'A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.',
-            'new_password.different' => 'A nova senha deve ser diferente da senha atual.',
-            'password_confirmation.required' => 'O campo confirmação de senha é obrigatório',
-            'password_confirmation.same' => 'As senhas devem ser iguais',
+            'current_password.required' => '* O campo senha atual é obrigatório',
+            'current_password.current_password' => '* Senha atual incorreta',
+            'new_password.required' => '* O campo nova senha é obrigatório',
+            'new_password.regex' => '* A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.',
+            'new_password.different' => '* A nova senha deve ser diferente da senha atual.',
+            'password_confirmation.required' => '* O campo confirmação de senha é obrigatório',
+            'password_confirmation.same' => '* As senhas devem ser iguais',
         ]);
 
-        $user = Auth::user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return alertError('Senha atual incorreta!');
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('open_modal', 'password');
         }
+
+        $user = Auth::user();
 
         $user->update([
             'password' => Hash::make($request->new_password)
@@ -134,13 +145,15 @@ class PasswordController extends Controller
 
         if ($response['success']) {
             $route = match ($user->role) {
-            'admin' => 'admin.dashboard',
-            default => $user->inscription()->exists() ? 'dash.user.inscription' : 'dash.user.start',
+                'admin' => 'admin.dashboard',
+                default => $user->inscription()->exists() ? 'dash.user.inscription' : 'dash.user.start',
             };
 
             return alertSuccess($response['message'], $route);
         }
 
-        return alertWarning($response['message'], url()->previous());
+        return back()
+            ->with('error', $response['message'])
+            ->with('open_modal', 'password');
     }
 }

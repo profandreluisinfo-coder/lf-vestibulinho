@@ -1,18 +1,24 @@
-// Script de Infinite Scroll para FAQs
-(function() {
+// Script de Infinite Scroll para FAQs dentro do Modal
+(function () {
     'use strict';
 
     // Configurações
     const ITEMS_PER_PAGE = 10;
+
     let currentPage = 1;
     let isLoading = false;
     let hasMoreItems = true;
     let allFaqs = [];
     let filteredFaqs = [];
+    let initialized = false;
 
     // Elementos DOM
+    const modal = document.getElementById('staticBackdrop');
+    const modalBody = document.querySelector('#staticBackdrop .modal-body');
     const accordion = document.getElementById('faqAccordion');
     const searchInput = document.getElementById('search');
+
+    if (!modal || !modalBody || !accordion || !searchInput) return;
 
     // Função para criar elemento de loading
     function createLoadingElement() {
@@ -33,13 +39,15 @@
         const end = document.createElement('div');
         end.id = 'end-indicator';
         end.className = 'text-center py-4 text-muted';
-        end.innerHTML = '<div class="alert alert-success"><i class="bi bi-info-circle me-2"></i>Você visualizou todas as perguntas disponíveis.</div>';
+        end.innerHTML =
+            '<div class="alert alert-success"><i class="bi bi-info-circle me-2"></i>Você visualizou todas as perguntas disponíveis. Caso ainda tenha  duvidas, entre em contato conosco.</div>';
         return end;
     }
 
     // Captura todos os FAQs existentes no carregamento inicial
     function captureInitialFaqs() {
         const items = accordion.querySelectorAll('.accordion-item');
+
         items.forEach((item, index) => {
             allFaqs.push({
                 element: item.cloneNode(true),
@@ -47,95 +55,101 @@
                 index: index
             });
         });
+
         filteredFaqs = [...allFaqs];
     }
 
     // Inicializa mostrando apenas os primeiros itens
     function initializeView() {
         accordion.innerHTML = '';
+
         const itemsToShow = filteredFaqs.slice(0, ITEMS_PER_PAGE);
+
         itemsToShow.forEach(faq => {
             accordion.appendChild(faq.element.cloneNode(true));
         });
-        
+
         hasMoreItems = filteredFaqs.length > ITEMS_PER_PAGE;
     }
 
     // Carrega mais itens
     function loadMoreItems() {
+
         if (isLoading || !hasMoreItems) return;
 
         isLoading = true;
-        
-        // Adiciona indicador de loading
+
         const loadingEl = createLoadingElement();
         accordion.parentElement.appendChild(loadingEl);
 
-        // Simula delay de carregamento (remova em produção se não necessário)
         setTimeout(() => {
+
             currentPage++;
+
             const start = (currentPage - 1) * ITEMS_PER_PAGE;
             const end = start + ITEMS_PER_PAGE;
+
             const itemsToShow = filteredFaqs.slice(start, end);
 
-            // Remove loading
             loadingEl.remove();
 
-            // Adiciona novos itens
             itemsToShow.forEach(faq => {
                 accordion.appendChild(faq.element.cloneNode(true));
             });
 
-            // Verifica se há mais itens
             hasMoreItems = end < filteredFaqs.length;
-            
-            // Se não houver mais itens, mostra mensagem
+
             if (!hasMoreItems && filteredFaqs.length > 0) {
                 const endEl = createEndElement();
                 accordion.parentElement.appendChild(endEl);
             }
 
             isLoading = false;
+
         }, 300);
     }
 
-    // Detecta quando usuário chega perto do final da página
+    // Detecta scroll dentro do modal
     function handleScroll() {
-        const scrollPosition = window.innerHeight + window.scrollY;
-        const pageHeight = document.documentElement.scrollHeight;
-        const threshold = 300; // pixels antes do fim
+
+        const scrollPosition = modalBody.scrollTop + modalBody.clientHeight;
+        const pageHeight = modalBody.scrollHeight;
+        const threshold = 150;
 
         if (scrollPosition >= pageHeight - threshold) {
             loadMoreItems();
         }
     }
 
-    // Função de busca/filtro
+    // Função de busca
     function handleSearch() {
+
         const searchTerm = searchInput.value.toLowerCase().trim();
-        
-        // Remove indicadores existentes
+
         document.getElementById('loading-indicator')?.remove();
         document.getElementById('end-indicator')?.remove();
 
-        // Filtra FAQs
         if (searchTerm === '') {
+
             filteredFaqs = [...allFaqs];
+
         } else {
-            filteredFaqs = allFaqs.filter(faq => 
+
+            filteredFaqs = allFaqs.filter(faq =>
                 faq.question.includes(searchTerm)
             );
         }
 
-        // Reseta paginação
         currentPage = 1;
         hasMoreItems = true;
 
-        // Reinicializa view
         initializeView();
 
-        // Mostra mensagem se não houver resultados
+        // volta scroll para o topo do modal
+        modalBody.scrollTop = 0;
+
         if (filteredFaqs.length === 0) {
+
             accordion.innerHTML = `
                 <div class="alert alert-info text-center">
                     <i class="bi bi-info-circle me-2"></i>
@@ -145,14 +159,18 @@
         }
     }
 
-    // Debounce para otimizar a busca
+    // Debounce
     function debounce(func, wait) {
+
         let timeout;
-        return function executedFunction(...args) {
+
+        return function (...args) {
+
             const later = () => {
                 clearTimeout(timeout);
                 func(...args);
             };
+
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
@@ -160,18 +178,20 @@
 
     // Inicialização
     function init() {
+
+        if (initialized) return;
+        initialized = true;
+
         captureInitialFaqs();
         initializeView();
 
-        // Event listeners
-        window.addEventListener('scroll', debounce(handleScroll, 100));
+        modalBody.addEventListener('scroll', debounce(handleScroll, 100));
         searchInput.addEventListener('input', debounce(handleSearch, 300));
     }
 
-    // Inicia quando o DOM estiver pronto
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
+    // Inicia quando o modal abrir
+    modal.addEventListener('shown.bs.modal', function () {
         init();
-    }
+    });
+
 })();

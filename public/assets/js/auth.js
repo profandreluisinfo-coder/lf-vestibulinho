@@ -1,5 +1,6 @@
 import { showToasts } from './ui/alerts/toasts.js';
 
+import { initPasswordStrength } from './ui/auth/passwordStrength.js';
 import { initLoginValidation } from './forms/auth/login.js';
 import { initRegisterValidation } from './forms/register/create.js';
 import { initResendEmailValidation } from './forms/register/resend-email.js';
@@ -9,6 +10,7 @@ import { initChangePasswordValidation } from './forms/password/change-password.j
 
 showToasts();
 
+initPasswordStrength();
 initLoginValidation();
 initRegisterValidation();
 initResendEmailValidation();

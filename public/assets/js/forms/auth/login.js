@@ -9,10 +9,10 @@ export function initLoginValidation() {
         },
         messages: {
             email: {
-                required: "Obrigatório",
-                email: "Por favor, insira um e-mail válido"
+                required: "* Obrigatório",
+                email: "* Por favor, insira um e-mail válido"
             },
-            password: "Obrigatório"
+            password: "* Obrigatório"
         },
         errorClass: "invalid-feedback",
         validClass: "is-valid",

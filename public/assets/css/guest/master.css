@@ -420,6 +420,10 @@ body.has-footer .footer {
     margin-left: 4px;
 }
 
+.password-rules li{
+    transition: all .2s;
+}
+
 .guidelines {
     margin: 3rem 0 !important;
 }

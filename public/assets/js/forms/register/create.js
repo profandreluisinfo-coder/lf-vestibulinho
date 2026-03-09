@@ -50,26 +50,20 @@ export function initRegisterValidation() {
             password_confirmation: {
                 required: true,
                 equalTo: "#registerPassword"
-            },
-            terms: {
-                required: true
             }
         },
         messages: {
             email: {
-                required: "Obrigatório",
-                email: "Insira um e-mail válido"
+                required: "* Obrigatório",
+                email: "* Insira um e-mail válido"
             },
             password: {
-                required: "Obrigatório",
-                strongPassword: "Senha fraca",
+                required: "* Obrigatório",
+                strongPassword: "* Senha fraca",
             },
             password_confirmation: {
-                required: "Obrigatório",
-                equalTo: "As senhas devem ser iguais"
-            },
-            terms: {
-                required: "Aceite os termos"
+                required: "* Obrigatório",
+                equalTo: "* As senhas devem ser iguais"
             }
         },
         /**

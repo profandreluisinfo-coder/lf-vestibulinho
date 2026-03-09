@@ -37,15 +37,15 @@ export function initChangePasswordValidation() {
 
     const messages = {
         current_password: {
-            required: "Obrigatório"
+            required: "* Obrigatório"
         },
         new_password: {
-            required: "Obrigatório",
-            strongPassword: "A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.",
+            required: "* Obrigatório",
+            strongPassword: "* A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.",
         },
         password_confirmation: {
-            required: "Obrigatório",                
-            equalTo: "As senhas devem ser iguais"
+            required: "* Obrigatório",
+            equalTo: "* As senhas devem ser iguais"
         }
     };
 

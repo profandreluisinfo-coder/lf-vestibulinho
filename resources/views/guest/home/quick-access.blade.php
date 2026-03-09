@@ -7,7 +7,7 @@
                     <div class="card-body pt-3 pb-5">
 
                         <div class="links">
-                            <a href="#faqs">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
                             <a href="{{ route('guest.archives.index') }}">

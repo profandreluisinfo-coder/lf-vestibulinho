@@ -1,14 +1,18 @@
-<section class="faqs">
-    <div class="container">
-        <h2 class="simple-title">Dúvidas Frequentes</h2>
-        <div class="row rounded-3 shadow p-4">
-            <div class="col-lg-12 mx-auto">
-                <div class="input-group input-group-sm">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group input-group-sm my-3">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control" id="search" name="search"
                         placeholder="Pesquisar por..." autocomplete="off">
                 </div>
-                <div class="accordion accordion-flush mt-3" id="faqAccordion">
+                <div class="accordion accordion-flush mt-3 mb-5" id="faqAccordion">
                     @foreach ($faqs as $faq)
                         <div class="accordion-item shadow mb-2">
                             <h2 class="accordion-header" id="heading{{ $faq->id }}">
@@ -28,6 +32,9 @@
                     @endforeach
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
         </div>
     </div>
-</section>
+</div>

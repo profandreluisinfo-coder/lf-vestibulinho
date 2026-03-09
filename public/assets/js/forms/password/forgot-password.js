@@ -25,8 +25,8 @@ export function initForgotPasswordValidation() {
 
     const messages = {
         email: {
-            required: "Obrigatório",
-            email: "Por favor, insira um e-mail válido"
+            required: "* Obrigatório",
+            email: "* Por favor, insira um e-mail válido"
         }
     };
 

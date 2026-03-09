@@ -47,16 +47,14 @@ class RegisterController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|confirmed|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,8}$/',
-            'password_confirmation' => 'required',
-            'terms' => 'required'
+            'password_confirmation' => 'required'
         ], [
             'email.required' => 'O campo email é obrigatório',
             'email.email' => 'O campo email deve ser um email válido',
             'password.required' => 'O campo senha é obrigatório',
             'password.confirmed' => 'As senhas devem ser iguais',
             'password.regex' => 'A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.',
-            'password_confirmation.required' => 'O campo repetir senha é obrigatório',
-            'terms.required' => 'É necessário aceitar os termos do edital.'
+            'password_confirmation.required' => 'O campo repetir senha é obrigatório'
         ]);
 
         $result = $userService->register($credentials);

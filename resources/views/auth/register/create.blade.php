@@ -32,10 +32,15 @@
                                     de Acesso
                                 </span>
                             </h1>
+                            <div class="mb-3 text-end">
+                                <button type="button" id="toggleAllPasswords" class="btn btn-sm btn-link text-decoration-none">
+                                    <i class="bi bi-eye"></i> Mostrar senhas
+                                </button>
+                            </div>
                             <form id="form-register" action="{{ route('register') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="registerEmail" class="form-label">E-mail:</label>
+                                    <label for="registerEmail" class="form-label required">E-mail:</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror" id="registerEmail"
                                         value="{{ old('email') }}">
@@ -46,19 +51,25 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="registerPassword" class="form-label">Senha:</label>
+                                    <label for="registerPassword" class="form-label required">Senha:</label>
                                     <input type="password" name="password"
-                                        class="form-control @error('password') is-invalid @enderror" id="registerPassword">
+                                        class="form-control password-field password-strength-field @error('password') is-invalid @enderror"
+                                        id="registerPassword">
                                     @error('password')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
+                                    <div class="progress mt-2" style="height:6px;">
+                                        <div class="progress-bar passwordStrength"></div>
+                                    </div>
+
+                                    <small class="text-muted passwordStrengthText"></small>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="registerRepeatPassword" class="form-label">Repetir senha:</label>
+                                    <label for="registerRepeatPassword" class="form-label required">Repetir senha:</label>
                                     <input type="password" name="password_confirmation" id="registerRepeatPassword"
-                                        class="form-control @error('password_confirmation') is-invalid @enderror">
+                                        class="form-control password-field @error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -74,26 +85,15 @@
                                         </small>
                                     </div>
                                 </div>
-                                <div class="form-check mb-3">
-                                    <input type="checkbox" name="terms"
-                                        class="form-check-input @error('terms') is-invalid @enderror" id="agreeTerms">
-                                    <label class="form-check-label" for="agreeTerms">Li e concordo com os termos do <a
-                                            href="{{ asset('storage/' . $notice->file) }}" class="text-decoration-none" target='_blank'>edital</a></label>
-                                    @error('terms')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-success submit-password" disabled>
                                         <i class="bi bi-person-plus animate__animated animate__fadeIn me-1"></i> Cadastrar
                                     </button>
                                 </div>
                                 <div class="d-flex flex-column align-items-center justify-content-center mt-3 gap-2">
                                     <a href="{{ route('login') }}" class="text-decoration-none">Já tenho registro</a>
                                     <a href="{{ route('resend.email') }}" class="text-decoration-none">Não recebeu o e-mail
-                                        de: confirmação?</a>
+                                        de confirmação?</a>
                                 </div>
                             </form>
 
@@ -113,4 +113,8 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/js/ui/auth/toggleAllPasswords.js') }}"></script>
 @endpush

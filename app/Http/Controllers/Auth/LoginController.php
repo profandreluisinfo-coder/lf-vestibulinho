@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Calendar;
 use Illuminate\View\View;
 use App\Models\User;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -68,16 +69,13 @@ class LoginController extends Controller
 
             if (!$user->email_verified_at) {
                 Auth::logout();
-                // return redirect()
-                //     ->back()
-                //     ->with('warning', 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.');
 
                 return alertWarning('Para acessar a Área do Candidato, vocé precisa validar seu endereço de e-mail.');
             }
 
             $request->session()->regenerate();
 
-            $user->last_login_at = now();
+            $user->last_login_at = Carbon::now();
 
             $user->save();
 
@@ -110,13 +108,6 @@ class LoginController extends Controller
                 ? redirect()->route('dash.user.start') // Vai para o início da inscrição
                 : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
         }
-
-        // return redirect()->route('login')->with([
-        //     'status' => [
-        //         'alert-type' => 'danger',
-        //         'message' => 'Perfil de usuário desconhecido.',
-        //     ]
-        // ]);
 
         return alertError('Perfil de usuário desconhecido.');
     }
