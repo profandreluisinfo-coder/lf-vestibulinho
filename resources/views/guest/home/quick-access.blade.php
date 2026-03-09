@@ -22,7 +22,7 @@
                                 <i class="bi bi-mortarboard fs-1"></i> Cursos
                             </a>
                         @if ($calendar->isInscriptionOpen())
-                            <a href="{{ route('register') }}">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#register">
                                 <i class="bi bi-person-plus fs-1"></i> Registrar-se
                             </a>
                         @endif
