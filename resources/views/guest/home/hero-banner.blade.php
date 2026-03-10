@@ -31,7 +31,7 @@
                     </p>
                     <div class="d-flex hero-buttons">
                         @if ($calendar->isInscriptionOpen())
-                            <a href="{{ route('register') }}" class="btn btn-success btn-lg" title="Inscrever-se Agora">
+                            <a href="{{ route('login') }}" class="btn btn-success btn-lg" title="Inscrever-se Agora">
                                 <i class="bi bi-pencil-square me-2"></i>Inscrever-se Agora
                             </a>
                         @endif

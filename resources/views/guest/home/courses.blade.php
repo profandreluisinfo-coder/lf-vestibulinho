@@ -1,4 +1,4 @@
-<section class="courses">
+<section id="courses" class="courses">
     <div class="container">
         <h3 class="simple-title">Cursos Técnicos</h3>
         <div class="row g-4">

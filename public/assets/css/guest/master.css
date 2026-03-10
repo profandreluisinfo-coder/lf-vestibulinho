@@ -167,7 +167,7 @@ body.has-footer .footer {
 
 /* CURSOS */
 .courses {
-    margin-bottom: 4rem;
+    margin-bottom: 6rem;
 }
 
 .course-card {
@@ -428,9 +428,9 @@ body.has-footer .footer {
     margin: 3rem 0 !important;
 }
 
-.courses {
+/* .courses {
     margin: 3rem 0 !important;
-}
+} */
 
 .countdown {
     margin: 5rem 0 3rem 0 !important;
@@ -564,3 +564,5 @@ body.has-footer .footer {
         margin-top: 0;
     }
 }
+
+

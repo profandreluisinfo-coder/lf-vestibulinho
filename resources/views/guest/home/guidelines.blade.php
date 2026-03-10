@@ -14,7 +14,7 @@
                                 <h6 class="card-title">1. Criar sua conta</h6>
                                 <p class="card-text small">
                                     Preencha o
-                                    <a href="{{ route('register') }}" class="text-decoration-none">formulário de
+                                    <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#register">formulário de
                                         registro</a>
                                     informando seus dados básicos e criando sua senha de acesso.
                                 </p>
