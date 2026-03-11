@@ -33,18 +33,18 @@ class CourseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.max' => 'O campo nome deve ter no máximo :max caracteres.',
-            'description.required' => 'O campo descrição é obrigatório.',
+            'name.required' => '* O campo nome é obrigatório.',
+            'name.max' => '* O campo nome deve ter no máximo :max caracteres.',
+            'description.required' => '* O campo descrição é obrigatório.',
             // 'description.max' => 'O campo descrição deve ter no máximo :max caracteres.',
-            'duration.required' => 'O campo duração é obrigatório.',
-            'duration.numeric' => 'O campo duração deve ser numérico.',
-            'duration.min' => 'O campo duração deve ser no mínimo :min.',
-            'info.required' => 'O campo informações é obrigatório.',
+            'duration.required' => '* O campo duração é obrigatório.',
+            'duration.numeric' => '* O campo duração deve ser numérico.',
+            'duration.min' => '* O campo duração deve ser no mínimo :min.',
+            'info.required' => '* O campo informações é obrigatório.',
             // 'info.max' => 'O campo informações deve ter no máximo :max caracteres.',
-            'vacancies.required' => 'O campo vagas é obrigatório.',
-            'vacancies.numeric' => 'O campo vagas deve ser numérico.',
-            'vacancies.min' => 'O campo vagas deve ter no mínimo :min vaga.',
+            'vacancies.required' => '* O campo vagas é obrigatório.',
+            'vacancies.numeric' => '* O campo vagas deve ser numérico.',
+            'vacancies.min' => '* O campo vagas deve ter no mínimo :min vaga.',
         ];
     }
 }

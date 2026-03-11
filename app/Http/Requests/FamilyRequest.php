@@ -96,27 +96,27 @@ class FamilyRequest extends FormRequest
     {
         return [
             // filiação e responsável legal
-            'mother.required' => 'MÃE: Obrigatório',
-            'mother.max' => 'MÃE: No máximo :max caracteres',
+            'mother.required' => '* Obrigatório',
+            'mother.max' => '* No máximo :max caracteres',
 
-            'father.max' => 'PAI: No máximo :max caracteres',
+            'father.max' => '* No máximo :max caracteres',
 
-            'respLegalOption.required' => 'INFORMAR RESPONSAVEL LEGAL: Obrigatório',
-            'respLegalOption.in' => 'INFORMAR RESPONSAVEL LEGAL: Opção inválida',
-            'responsible.max' => 'INFORMAR RESPONSAVEL LEGAL: No máximo :max caracteres',
-            'responsible.required' => 'INFORMAR RESPONSAVEL LEGAL: Obrigatório',
+            'respLegalOption.required' => '* Obrigatório',
+            'respLegalOption.in' => '* Opção inválida',
+            'responsible.max' => '* No máximo :max caracteres',
+            'responsible.required' => '* Obrigatório',
 
-            'degree.required' => 'GRAU DE PARENTESCO: Obrigatório',
-            'degree.in' => 'GRAU DE PARENTESCO: Opção inválida',
+            'degree.required' => '* Obrigatório',
+            'degree.in' => '* Opção inválida',
 
-            'kinship.required' => 'DESCRIÇÃO DO PARENTESCO: Obrigatório',
+            'kinship.required' => '* Obrigatório',
 
-            'responsible_phone.required' => 'RESPONSÁVEL LEGAL: Obrigatório',
-            'responsible_phone.min' => 'RESPONSÁVEL LEGAL (TELEFONE): No mínimo :min caracteres',
-            'responsible_phone.max' => 'RESPONSÁVEL LEGAL (TELEFONE): No máximo :max caracteres',
+            'responsible_phone.required' => '* Obrigatório',
+            'responsible_phone.min' => '* No mínimo :min caracteres',
+            'responsible_phone.max' => '* No máximo :max caracteres',
 
-            'parents_email.required' => 'E-MAIL DOS PAIS/RESPONÁVEL: Obrigatório',
-            'parents_email.email' => 'E-MAIL DOS PAIS/RESPONÁVEL: E-mail inválido',
+            'parents_email.required' => '* Obrigatório',
+            'parents_email.email' => '* E-mail inválido',
         ];
     }
 }

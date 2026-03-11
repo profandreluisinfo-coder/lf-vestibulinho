@@ -8,7 +8,7 @@ $(document).ready(function () {
         },
         messages: {
             course_id: {
-                required: 'Obrigatório',
+                required: '* Obrigatório',
             }
         },
         submitHandler: function (form) {

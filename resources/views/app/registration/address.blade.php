@@ -10,7 +10,7 @@
         <h5 class="fw-semibold border-bottom pb-1">Endereço</h5>
 
         <div class="form-group col-md-4">
-            <label for="cep" class="form-label required">CEP</label> <a class="btn btn-link btn-sm"
+            <label for="cep" class="form-label required">CEP</label> <a class="btn btn-link btn-sm text-decoration-none"
                 href="https://buscacepinter.correios.com.br/app/endereco/index.php"
                 title="Consultar CEP através do Correios" tabindex="-1" target="_blank">Não sei meu CEP</a>
             <input type="text" class="form-control @error('zip') is-invalid @enderror" id="zip" name="zip"
@@ -116,7 +116,7 @@
             @enderror
         </div>
 
-        <div class="col-12">
+        <div class="col-12 border-top pt-3">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.certificate') }}" class="text-decoration-none">Voltar</a>                 

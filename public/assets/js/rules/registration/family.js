@@ -8,22 +8,22 @@ $(document).ready(function () {
             '@educacaosumare.com', '@hotmail.com.br', '@outlook.com.br'
         ];
         return !invalidDomains.some(domain => value.endsWith(domain));
-    }, "O domínio de e-mail informado é inválido.");
+    }, "* O domínio de e-mail informado é inválido.");
 
     // Validação de cada palavra ter ao menos 2 letras
     $.validator.addMethod("wordLength", function (value, element) {
         return value.trim().split(/\s+/).every(word => word.length >= 2);
-    }, "Use pelo menos de 2 letras");
+    }, "* Use pelo menos de 2 letras");
 
     // Validação de ao menos 2 palavras
     $.validator.addMethod("minWords", function (value, element) {
         return value.trim().split(/\s+/).length >= 2;
-    }, "Use pelo menos de 2 palavras");
+    }, "* Use pelo menos de 2 palavras");
 
     // Não permitir sequências como 'aaaa'
     $.validator.addMethod("noSequences", function (value, element) {
         return value.trim().split(/\s+/).every(word => !/^(\S)\1+$/.test(word));
-    }, "Sequência de palavras inválida");
+    }, "* Sequência de palavras inválida");
 
     // Função de validação condicional para campos opcionais
     function validateIfFilled(rules) {
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
     // Mensagens padrão
     $.extend($.validator.messages, {
-        pattern: "Apenas letras, acentos e espaços."
+        pattern: "* Apenas letras, acentos e espaços."
     });
 
     // Dependências das opções de responsável
@@ -120,45 +120,45 @@ $(document).ready(function () {
         },
         messages: {
             mother: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
             },
             father: {
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
             },
             respLegalOption: {
-                required: "Por favor, selecione uma opção.",
-                range: "Selecione uma opção válida."
+                required: "* Por favor, selecione uma opção.",
+                range: "* Selecione uma opção válida."
             },
             responsible: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Use apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Use apenas letras, acentos e espaços."
             },
             degree: {
-                required: "Obrigatório.",
-                range: "Selecione um grau de parentesco válido."
+                required: "* Obrigatório.",
+                range: "* Selecione um grau de parentesco válido."
             },
             kinship: {
-                required: "Obrigatório.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                pattern: "* Apenas letras, acentos e espaços."
             },
             mother_phone: {
-                required: "Obrigatório."
+                required: "* Obrigatório."
             },
             responsible_phone: {
-                required: "Obrigatório."
+                required: "* Obrigatório."
             },
             parents_email: {
-                required: "Obrigatório.",
-                email: "E-mail inválido."
+                required: "* Obrigatório.",
+                email: "* E-mail inválido."
             },
             parents_email_confirmation: {
-                required: "Obrigatório.",
-                email: "E-mail inválido.",
-                equalTo: "Os emails não coincidem."
+                required: "* Obrigatório.",
+                email: "* E-mail inválido.",
+                equalTo: "* Os emails não coincidem."
             }
         },
         submitHandler: function (form) {

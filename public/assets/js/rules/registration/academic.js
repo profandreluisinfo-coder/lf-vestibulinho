@@ -33,7 +33,7 @@ $(document).ready(function () {
         }
 
         return true; // Passou em todas as verificações
-    }, "Padrão numérico inválido para o documento");
+    }, "* Padrão numérico inválido para o documento");
 
     $.validator.addMethod("noSequences", function (value, element) {
         var words = value.trim().split(/\s+/);
@@ -45,7 +45,7 @@ $(document).ready(function () {
         }
 
         return true;
-    }, "Sequência inválida");
+    }, "* Sequência inválida");
 
     $("#inscription").validate({
         rules: {
@@ -75,25 +75,25 @@ $(document).ready(function () {
         },
         messages: {
             school_name: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, números e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços."
             },
             school_ra: {
-                required: "Obrigatório.",
-                pattern: "Formato inválido.",
+                required: "* Obrigatório.",
+                pattern: "* Formato inválido.",
             },
             school_city: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 30 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 30 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
             },
             school_state: {
-                required: "Obrigatório."
+                required: "* Obrigatório."
             },
             school_year: {
-                required: "Obrigatório.",
-                pattern: "O ano deve conter 4 dígitos."
+                required: "* Obrigatório.",
+                pattern: "* O ano deve conter 4 dígitos."
             },
         },
         submitHandler: function (form) {

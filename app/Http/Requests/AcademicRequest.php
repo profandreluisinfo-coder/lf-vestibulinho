@@ -62,25 +62,25 @@ class AcademicRequest extends FormRequest
     {
         return [
             // escola
-            'school_name.required' => 'Você deve informar o nome da escola',
-            'school_name.max' => 'Para o nome da escola, use, no máximo, :max caracteres',
-            'school_name.regex' => 'Para o nome da escola, use apenas letras, números e espaços',
+            'school_name.required' => '* Você deve informar o nome da escola',
+            'school_name.max' => '* Para o nome da escola, use, no máximo, :max caracteres',
+            'school_name.regex' => '* Para o nome da escola, use apenas letras, números e espaços',
 
-            'school_ra.required' => 'O RA é obrigatório',
-            'school_ra.regex' => 'O RA deve estar no formato 000.000.000-A.',
-            'school_ra.unique' => 'O número de RA fornecido já foi cadastrado',
+            'school_ra.required' => '* O RA é obrigatório',
+            'school_ra.regex' => '* O RA deve estar no formato 000.000.000-A.',
+            'school_ra.unique' => '* O número de RA fornecido já foi cadastrado',
 
-            'school_city.required' => 'Informe a cidade da escola.',
-            'school_city.max' => 'Para a cidade da escola, use, no máximo :max caracteres',
-            'school_city.regex' => 'Para a cidade da escola, use apenas letras, números e espaços',
+            'school_city.required' => '* Informe a cidade da escola.',
+            'school_city.max' => '* Para a cidade da escola, use, no máximo :max caracteres',
+            'school_city.regex' => '* Para a cidade da escola, use apenas letras, números e espaços',
 
-            'school_state.required' => 'O estado é obrigatório',
-            'school_state.max' => 'Para o nome do estado, use, no máximo, :max caracteres',
-            'school_state.regex' => 'Para o nome do estado, use, apenas letras, números e espaços',
+            'school_state.required' => '* O estado é obrigatório',
+            'school_state.max' => '* Para o nome do estado, use, no máximo, :max caracteres',
+            'school_state.regex' => '* Para o nome do estado, use, apenas letras, números e espaços',
 
-            'school_year.required' => 'O campo ano de conclusão é obrigatório',
-            'school_year.date_format' => 'O ano de conclusão deve estar no formato AAAA. Ex: 2023',
-            'school_year.before' => 'O ano de conclusão deve ser anterior ao ano atual',
+            'school_year.required' => '* O campo ano de conclusão é obrigatório',
+            'school_year.date_format' => '* O ano de conclusão deve estar no formato AAAA. Ex: 2023',
+            'school_year.before' => '* O ano de conclusão deve ser anterior ao ano atual',
         ];
     }
 }

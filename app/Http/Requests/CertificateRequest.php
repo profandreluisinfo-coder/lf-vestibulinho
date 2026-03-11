@@ -63,7 +63,7 @@ class CertificateRequest extends FormRequest
                 // 'unique:user_details,new_number',
                 function ($attribute, $value, $fail) {
                     if ($value && UserDetail::where('new_number', $value)->exists()) {
-                        $fail('Este número de certidão já foi cadastrado.');
+                        $fail('* Este número de certidão já foi cadastrado.');
                     }
                 },
                 'digits:32',
@@ -92,7 +92,7 @@ class CertificateRequest extends FormRequest
                 // 'unique:user_details,old_number',
                 function ($attribute, $value, $fail) {
                     if ($value && UserDetail::where('old_number', $value)->exists()) {
-                        $fail('Este número de certidão já foi cadastrado.');
+                        $fail('* * Este número de certidão já foi cadastrado.');
                     }
                 },
                 'string',
@@ -112,32 +112,32 @@ class CertificateRequest extends FormRequest
     {
         return [
             // Certidão de nascimento (seleção de modelo)
-            'certificateModel.required' => 'O modelo de certidão de nascimento é obrigatório',
-            'certificateModel.in' => 'O modelo de certidão de nascimento selecionado é uma opção inválida',
+            'certificateModel.required' => '* O modelo de certidão de nascimento é obrigatório',
+            'certificateModel.in' => '* O modelo de certidão de nascimento selecionado é uma opção inválida',
 
             // certidão de nascimento modelo novo
-            'new_number.required' => 'O número de certidão de nascimento é obrigatório',
-            'new_number.unique' => 'O número de certidão de nascimento informado já foi cadastrado',
-            'new_number.digits' => 'O número de certidão de nascimento deve conter 32 caracteres',
+            'new_number.required' => '* O número de certidão de nascimento é obrigatório',
+            'new_number.unique' => '* O número de certidão de nascimento informado já foi cadastrado',
+            'new_number.digits' => '* O número de certidão de nascimento deve conter 32 caracteres',
 
             // certidão de nascimento modelo antigo
-            'fls.required' => 'Você deve informar o número da(s) folha(s) da sua certidão de nascimento',
-            'fls.min' => 'Para o número da(s) folha(s) da sua certidão de nascimento, use, no mínimo, :min caracteres',
-            'fls.max' => 'Para o número da(s) folha(s) da sua certidão de nascimento, use, no máximo, :max caracteres',
+            'fls.required' => '* Você deve informar o número da(s) folha(s) da sua certidão de nascimento',
+            'fls.min' => '* Para o número da(s) folha(s) da sua certidão de nascimento, use, no mínimo, :min caracteres',
+            'fls.max' => '* Para o número da(s) folha(s) da sua certidão de nascimento, use, no máximo, :max caracteres',
 
-            'book.required' => 'O número do livro de registro da sua certidão de nascimento é obrigatório',
-            'book.min' => 'Para o número do livro de registro da sua certidão de nascimento, use, no mínimo, :min caracteres',
-            'book.max' => 'Para o número do livro de registro da sua certidão de nascimento, use, no máximo, :max caracteres',
-            'book.regex' => 'O número do livro de registro da sua certidão de nascimento deve conter apenas letras e números',
+            'book.required' => '* O número do livro de registro da sua certidão de nascimento é obrigatório',
+            'book.min' => '* Para o número do livro de registro da sua certidão de nascimento, use, no mínimo, :min caracteres',
+            'book.max' => '* Para o número do livro de registro da sua certidão de nascimento, use, no máximo, :max caracteres',
+            'book.regex' => '* O número do livro de registro da sua certidão de nascimento deve conter apenas letras e números',
 
-            'old_number.required' => 'É obrigatório informar o número/termo da sua certidão de nascimento',
-            'old_number.unique' => 'O número/termo da certidão de nascimento informado já foi cadastrado',
-            'old_number.min' => 'Para o número/termo da sua certidão de nascimento, use, no mínimo, :min caracteres',
-            'old_number.max' => 'Para o número/termo da sua certidão de nascimento, use, no máximo, :max caracteres',
+            'old_number.required' => '* É obrigatório informar o número/termo da sua certidão de nascimento',
+            'old_number.unique' => '* O número/termo da certidão de nascimento informado já foi cadastrado',
+            'old_number.min' => '* Para o número/termo da sua certidão de nascimento, use, no mínimo, :min caracteres',
+            'old_number.max' => '* Para o número/termo da sua certidão de nascimento, use, no máximo, :max caracteres',
 
-            'municipality.required' => 'É obrigatório informar o municipio de nascimento',
-            'municipality.max' => 'Para o municipio de nascimento, use, no máximo, :max caracteres',
-            'municipality.regex' => 'O municipio de nascimento deve conter apenas letras',
+            'municipality.required' => '* É obrigatório informar o municipio de nascimento',
+            'municipality.max' => '* Para o municipio de nascimento, use, no máximo, :max caracteres',
+            'municipality.regex' => '* O municipio de nascimento deve conter apenas letras',
         ];
     }
 

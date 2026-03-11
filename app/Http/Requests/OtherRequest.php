@@ -57,7 +57,7 @@ class OtherRequest extends FormRequest
                     if ($this->input('health') == 1) {
                         $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
                         if (!preg_match($regex, $value)) {
-                            $fail("O campo {$attribute} contém caracteres inválidos.");
+                            $fail("* O campo {$attribute} contém caracteres inválidos.");
                         }
                     }
                 }
@@ -75,7 +75,7 @@ class OtherRequest extends FormRequest
                     if ($this->input('pne') == 1) {
                         $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
                         if (!preg_match($regex, $value)) {
-                            $fail("O campo {$attribute} contém caracteres inválidos.");
+                            $fail("* O campo {$attribute} contém caracteres inválidos.");
                         }
                     }
                 }
@@ -105,33 +105,33 @@ class OtherRequest extends FormRequest
     {
         return [
             // programas sociais
-            'social_program.required' => 'O campo Programas Sociais é obrigatório',
-            'social_program.in' => 'O campo Programas Sociais apresenta uma opção inválida',
+            'social_program.required' => '* O campo Programas Sociais é obrigatório',
+            'social_program.in' => '* O campo Programas Sociais apresenta uma opção inválida',
 
-            'nis.required' => 'O Número de Identificação Social é obrigatório',
-            'nis.min' => 'Número de Identificação Social deve conter, no mínimo, :min caracteres',
-            'nis.max' => 'Número de Identificação Social deve conter, no máximo, :max caracteres',
-            'nis.unique' => 'Número de Identificação Social já cadastrado',
+            'nis.required' => '* O Número de Identificação Social é obrigatório',
+            'nis.min' => '* Número de Identificação Social deve conter, no mínimo, :min caracteres',
+            'nis.max' => '* Número de Identificação Social deve conter, no máximo, :max caracteres',
+            'nis.unique' => '* Número de Identificação Social já cadastrado',
 
             // educação especial
-            'pne.required' => 'Informe se possui alguma necessidades especiais',
-            'pne.in' => 'O campo Acessibilidade apresenta uma opção inválida',
+            'pne.required' => '* Informe se possui alguma necessidades especiais',
+            'pne.in' => '* O campo Acessibilidade apresenta uma opção inválida',
 
-            'pne_report.required' => 'O campo de relatório de educação especial é obrigatório',
-            'pne_report.file' => 'O campo de relatório de educação especial deve ser um arquivo PDF',
-            'pne_report.max' => 'O campo de relatório de educação especial deve conter, no máximo, :max KB',
-            'pne_report.mimes' => 'O campo de relatório de educação especial deve ser um arquivo do tipo: :values',
+            'pne_report.required' => '* O campo de relatório de educação especial é obrigatório',
+            'pne_report.file' => '* O campo de relatório de educação especial deve ser um arquivo PDF',
+            'pne_report.max' => '* O campo de relatório de educação especial deve conter, no máximo, :max KB',
+            'pne_report.mimes' => '* O campo de relatório de educação especial deve ser um arquivo do tipo: :values',
 
-            'accessibility_description.required' => 'O campo de descrição de acessibilidade é obrigatório',
-            'accessibility_description.max' => 'O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',
-            'accessibility_description.regex' => 'O campo de descrição de acessibilidade deve conter apenas letras, números e espaços.',
+            'accessibility_description.required' => '* O campo de descrição de acessibilidade é obrigatório',
+            'accessibility_description.max' => '* O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',
+            'accessibility_description.regex' => '* O campo de descrição de acessibilidade deve conter apenas letras, números e espaços.',
 
             // outras informações
-            'health.required' => 'Você deve informar se tem algum problema de saúde ou alergia.',
-            'health.in' => 'Você selecionou uma opção inválida ao informar se tem algum problema de saúde ou alergia',
+            'health.required' => '* Você deve informar se tem algum problema de saúde ou alergia.',
+            'health.in' => '* Você selecionou uma opção inválida ao informar se tem algum problema de saúde ou alergia',
 
-            'health_issue.required' => 'Você deve descrever qual problema de saúde ou alergia possui.',
-            'health_issue.max' => 'Ao descrever seu problema de saúde ou alergia, use, no máximo, :max caracteres',
+            'health_issue.required' => '* Você deve descrever qual problema de saúde ou alergia possui.',
+            'health_issue.max' => '* Ao descrever seu problema de saúde ou alergia, use, no máximo, :max caracteres',
         ];
     }
 }

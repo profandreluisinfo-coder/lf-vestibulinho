@@ -8,7 +8,7 @@ $(document).ready(function () {
             }
         }
         return true;
-    }, "Sequência de palavras inválida");
+    }, "* Sequência de palavras inválida");
 
     $.validator.addMethod("wordLength", function (value, element) {
         var words = value.trim().split(/\s+/);
@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
 
         return true;
-    }, "Use pelo menos de 2 letras");
+    }, "* Use pelo menos de 2 letras");
 
     // Adiciona o método 'nis' ao jQuery Validator
     $.validator.addMethod("validateNis", function (value, element) {
@@ -43,7 +43,7 @@ $(document).ready(function () {
 
         // Retorna true se o DV for válido
         return dv === parseInt(nis.charAt(10));
-    }, "Por favor, insira um NIS/PIS válido."); // Mensagem de erro padrão
+    }, "* Por favor, insira um NIS/PIS válido."); // Mensagem de erro padrão
 
     $("#inscription").validate({
         rules: {

@@ -138,7 +138,7 @@
             @enderror
         </div>
         
-        <div class="col-12">
+        <div class="col-12 border-top pt-3">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.academic') }}" class="text-decoration-none">Voltar</a>

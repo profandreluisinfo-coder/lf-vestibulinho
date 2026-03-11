@@ -10,7 +10,7 @@ $(document).ready(function () {
         }
 
         return true;
-    }, "Sequência de palavras inválida");
+    }, "* Sequência de palavras inválida");
 
     $.validator.addMethod("wordLength", function (value, element) {
         var words = value.trim().split(/\s+/);
@@ -22,7 +22,7 @@ $(document).ready(function () {
         }
 
         return true;
-    }, "Use pelo menos de 2 letras");
+    }, "* Use pelo menos de 2 letras");
 
     function optionalFieldRules(rules) {
         const result = {
@@ -95,38 +95,38 @@ $(document).ready(function () {
         },
         messages: {
             zip: {
-                required: "Obrigatório.",
-                minlength: "Mínimo de 10 caracteres.",
-                maxlength: "Máximo de 10 caracteres.",
+                required: "* Obrigatório.",
+                minlength: "* Mínimo de 10 caracteres.",
+                maxlength: "* Máximo de 10 caracteres.",
             },
             street: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 60 caracteres.",
-                pattern: "Apenas letras, números e espaços.",
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços.",
             },
             number: {
-                required: "Obrigatório. Caso não tenha, digite S/N.",
-                maxlength: "Máximo de 10 caracteres.",
-                pattern: "Apenas letras, números e espaços.",
+                required: "* Obrigatório. Caso não tenha, digite S/N.",
+                maxlength: "* Máximo de 10 caracteres.",
+                pattern: "* Apenas letras, números e espaços.",
             },
             complement: {
                 maxlength: "Máximo de 20 caracteres.",
                 pattern: "Apenas letras, números e espaços.",
             },
             burgh: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 30 caracteres.",
-                pattern: "Apenas letras, números e espaços.",
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 30 caracteres.",
+                pattern: "* Apenas letras, números e espaços.",
             },
             city: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 30 caracteres.",
-                pattern: "Apenas letras, acentos e espaços.",
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 30 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços.",
             },
             state: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 32 caracteres.",
-                pattern: "Apenas letras, acentos e espaços.",
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 32 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços.",
             },
         },
         submitHandler: function (form) {

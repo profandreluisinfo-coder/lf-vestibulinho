@@ -16,7 +16,7 @@
                 <label class="form-check-label" for="certificateModel">
                     Novo (Matrícula de Registro Civil com 32 dígitos)
                 </label>
-                <button type="button" class="btn btn-sm btn-link" data-bs-toggle="modal"
+                <button type="button" class="btn btn-sm btn-link text-decoration-none" data-bs-toggle="modal"
                     data-bs-target="#newCertificateModal">
                     Ver Modelo <i class="bi bi-search"></i>
                 </button>
@@ -28,7 +28,7 @@
                 <label class="form-check-label" for="certificateModel">
                     Antigo (Folhas, Livro, Número e Município de Nascimento)
                 </label>
-                <button type="button" class="btn btn-sm btn-link" data-bs-toggle="modal"
+                <button type="button" class="btn btn-sm btn-link text-decoration-none" data-bs-toggle="modal"
                     data-bs-target="#oldCertificateModal">
                     Ver Modelo <i class="bi bi-search"></i>
                 </button>
@@ -89,7 +89,7 @@
                 </div>
             @enderror
         </div>
-        <div class="col-12">
+        <div class="col-12 border-top pt-3">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle"></i>
                 <a href="{{ route('step.personal') }}" class="text-decoration-none ms-2">Voltar</a>

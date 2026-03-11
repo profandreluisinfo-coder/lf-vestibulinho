@@ -54,32 +54,32 @@ class AddressRequest extends FormRequest
     {
         return [
             // endereço
-            'zip.required' => 'CEP: Obrigatório',
-            'zip.min' => 'CEP: No mínimo :min caracteres',
-            'zip.max' => 'CEP: No máximo :max caracteres',
+            'zip.required' => '* Obrigatório',
+            'zip.min' => '* No mínimo :min caracteres',
+            'zip.max' => '* No máximo :max caracteres',
 
-            'street.required' => 'RUA: Obrigatório',
-            'street.max' => 'RUA: No máximo :max caracteres',
-            'street.regex' => 'RUA: Apenas letras, números e espaços',
+            'street.required' => '* Obrigatório',
+            'street.max' => '* No máximo :max caracteres',
+            'street.regex' => '* Apenas letras, números e espaços',
 
-            'number.required' => 'NÚMERO: Obrigatório. Caso não tenha, digite S/N.',
-            'number.max' => 'NÚMERO: No máximo :max caracteres',
-            'number.regex' => 'NÚMERO: Apenas letras, números e espaços',
+            'number.required' => '* Obrigatório. Caso não tenha, digite S/N.',
+            'number.max' => '* No máximo :max caracteres',
+            'number.regex' => '* Apenas letras, números e espaços',
 
-            'complement.max' => 'COMPLEMENTO: No máximo :max caracteres',
-            'complement.regex' => 'COMPLEMENTO: Apenas letras, números e espaços',
+            'complement.max' => '* No máximo :max caracteres',
+            'complement.regex' => '* Apenas letras, números e espaços',
 
-            'burgh.required' => 'BAIRRO: Obrigatório',
-            'burgh.max' => 'BAIRRO: No máximo :max caracteres',
-            'burgh.regex' => 'BAIRRO: Apenas letras, números e espaços',
+            'burgh.required' => '* Obrigatório',
+            'burgh.max' => '* No máximo :max caracteres',
+            'burgh.regex' => '* Apenas letras, números e espaços',
 
-            'city.required' => 'CIDADE: Obrigatório',
-            'city.max' => 'CIDADE: No máximo :max caracteres',
-            'city.regex' => 'CIDADE: Apenas letras, números e espaços',
+            'city.required' => '* Obrigatório',
+            'city.max' => '* No máximo :max caracteres',
+            'city.regex' => '* Apenas letras, números e espaços',
 
-            'state.required' => 'ESTADO: Obrigatório',
-            'state.max' => 'ESTADO: No máximo :max caracteres',
-            'state.regex' => 'ESTADO: Apenas letras, números e espaços',
+            'state.required' => '* Obrigatório',
+            'state.max' => '* No máximo :max caracteres',
+            'state.regex' => '* Apenas letras, números e espaços',
         ];
     }
 }

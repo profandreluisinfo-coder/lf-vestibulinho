@@ -8,7 +8,7 @@ $(function () {
     // Método: Sequência de caracteres iguais
     $.validator.addMethod("noSequences", value => 
         !value.trim().split(/\s+/).some(word => /^(\S)\1+$/.test(word)),
-        "Sequência de palavras inválida"
+        "* Sequência de palavras inválida"
     );
 
     // Método: Padrões numéricos simples
@@ -19,7 +19,7 @@ $(function () {
 
         return !Array.from({ length: Math.floor(value.length / 2) }, (_, i) => i + 1)
             .some(i => value === value.slice(0, i).repeat(value.length / i));
-    }, "Padrão numérico inválido para o documento");
+    }, "* Padrão numérico inválido para o documento");
 
     // Função: criar regra condicional
     const ruleIf = ($radio, rule, param = true) => ({
@@ -66,29 +66,29 @@ $(function () {
         },
         messages: {
             certificateModel: {
-                required: "Informe um dos modelos da sua certidão de nascimento.",
-                range: "Selecione um modelo de certidão de nascimento válido."
+                required: "* Informe um dos modelos da sua certidão de nascimento.",
+                range: "* Selecione um modelo de certidão de nascimento válido."
             },
             new_number: {
-                required: "Obrigatório.",
-                pattern: "A certidão precisa conter exatamente 32 dígitos."
+                required: "* Obrigatório.",
+                pattern: "* A certidão precisa conter exatamente 32 dígitos."
             },
             fls: {
-                required: "Obrigatório.",
-                pattern: "Formato inválido. Apenas números, de 1 a 4 dígitos."
+                required: "* Obrigatório.",
+                pattern: "* Formato inválido. Apenas números, de 1 a 4 dígitos."
             },
             book: {
-                required: "Obrigatório.",
-                pattern: "Formato inválido. Apenas letras e/ou números, de 1 a 10 caracteres."
+                required: "* Obrigatório.",
+                pattern: "* Formato inválido. Apenas letras e/ou números, de 1 a 10 caracteres."
             },
             old_number: {
-                required: "Obrigatório.",
-                pattern: "Formato inválido. Apenas números, de 1 a 6 dígitos."
+                required: "* Obrigatório.",
+                pattern: "* Formato inválido. Apenas números, de 1 a 6 dígitos."
             },
             municipality: {
-                required: "Obrigatório.",
-                maxlength: "Máximo de 45 caracteres.",
-                pattern: "Apenas letras, acentos e espaços."
+                required: "* Obrigatório.",
+                maxlength: "* Máximo de 45 caracteres.",
+                pattern: "* Apenas letras, acentos e espaços."
             }
         },
         submitHandler: form => form.submit(),

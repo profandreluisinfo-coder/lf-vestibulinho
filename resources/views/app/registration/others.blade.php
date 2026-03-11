@@ -104,6 +104,21 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
 
+            @if(session('step6.pne_report'))
+                <div class="alert alert-info mt-3">
+                    <p>
+                        <strong>Arquivo já enviado.</strong>
+                        <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank">
+                            Visualizar PDF
+                        </a>
+                    </p>
+
+                    <p class="mb-0">
+                        Caso deseje avançar e substituir o arquivo, selecione um novo PDF abaixo.
+                    </p>
+                </div>
+            @endif
+
         </div>
 
         <h6 class="fw-semibold border-bottom pb-1 mt-4">Programas Sociais</h6>
@@ -144,7 +159,7 @@
             @enderror
         </div>
 
-        <div class="col-12">
+        <div class="col-12 border-top pt-3">
             <button type="button" class="btn btn-sm btn-secondary">
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('step.family') }}" class="text-decoration-none">Voltar</a>

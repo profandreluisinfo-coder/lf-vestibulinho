@@ -181,7 +181,7 @@
             </p>
 
             @if(session('step1.authorization'))
-                <div class="alert alert-info">
+                <div class="alert alert-info mt-3">
                     <p>
                         <strong>Arquivo já enviado.</strong>
                         <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank">
@@ -268,7 +268,7 @@
             @enderror
 
         </div>
-        <div class="col-12">
+        <div class="col-12 border-top pt-3">
             <button type="submit" class="btn btn-primary btn-sm w-auto">Avançar <i class="bi bi-arrow-right-circle ms-2"></i></button>
         </div>
     </form>
