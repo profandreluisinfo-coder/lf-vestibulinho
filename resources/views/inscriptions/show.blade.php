@@ -24,14 +24,14 @@
                 </div>
 
                 {{-- Identificação do Candidato --}}
-                <div class="col">
+                <div class="col bg-warning">
                     <fieldset class="h-100 border rounded p-3 bg-light-subtle shadow">
                         <legend class="fw-semibold">🧑‍💼 Identificação do Candidato</legend>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><strong>CPF:</strong> {{ $user->cpf }}</li>
                             <li class="list-group-item"><strong>Nome de Registro:</strong> {{ $user->name }}</li>
                             @if ($user->social_name)
-                            <li class="list-group-item bg-success text-light"><strong>Nome Social/Afetivo:</strong> {{ $user->social_name }}</li>
+                            <li class="list-group-item"><strong>Nome Social/Afetivo:</strong> {{ $user->social_name }}</li>
                             @endif
                             <li class="list-group-item"><strong>Gênero:</strong> {{ $user->gender }}</li>
                             <li class="list-group-item">
@@ -52,7 +52,7 @@
                                 <strong>Tipo:</strong> {{ $user->user_detail->doc_type }}
                                 <strong class="ms-3">Número:</strong> {{ $user->user_detail->doc_number }}
                             </li>
-                            <li class="list-group-item"><strong>Data de Nascimento:</strong> {{ \Carbon\Carbon::parse($user->birth)->format('d/m/Y') }}</li>
+                            <li class="list-group-item"><strong>Data de Nascimento:</strong> {{ $user->birth }}</li>
 
                         </ul>
                     </fieldset>

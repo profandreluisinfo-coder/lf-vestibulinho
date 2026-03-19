@@ -6,25 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Calendar;
 use App\Models\ExamResult;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    /**
-     * Página principal do painel de administração contendo a lista de usuários sem inscrição.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index(): View
-    {
-        $users = User::getWithoutInscription();
-
-        return view('users.index', compact('users'));
-    }
-
     /**
      * Exibe a página inicial do painel de administração do usuário.
      *
@@ -83,53 +70,4 @@ class UserController extends Controller
         return view('dash.inscription', compact('user', 'exam', 'examResult', 'call'));
     }
 
-    /**
-     * Apaga o nome social do candidato.
-     * 
-     * Verifica se o candidato não tem prova agendada e, se for verdadeiro, remove-o da lista de PNE.
-     * 
-     * @param User $user O usuário a ter o nome social apagado.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
-     */
-    public function clearSocialNameFromList(User $user): JsonResponse
-    {
-        if (ExamResult::exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível apagar o nome social, pois existe prova agendada!'
-            ]);
-        }
-
-        $user->update(['social_name' => null]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Nome social apagado com sucesso!'
-        ]);
-    }
-
-    /**
-     * Remove um candidato da lista de PNE.
-     *
-     * Verifica se o candidato não tem prova agendada e, se for verdadeiro, remove-o da lista de PNE.
-     *
-     * @param User $user O usuário a ser removido da lista de PNE.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
-     */
-    public function clearPneFromList(User $user): JsonResponse
-    {
-        if (ExamResult::exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível remover este candidato desta lista, pois existe prova agendada!'
-            ]);
-        }
-
-        $user->update(['pne' => 0]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Candidato removido da list com sucesso!'
-        ]);
-    }
 }

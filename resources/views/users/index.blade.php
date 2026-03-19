@@ -37,7 +37,6 @@
                     <tr>
                         <th>E-mail</th>
                         <th>E-mail Verificado?</th>
-                        {{-- <th>Último Acesso</th> --}}
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -49,7 +48,6 @@
                             <td><span
                                     class="badge bg-{{ $user->email_verified_at ? 'success' : 'danger' }}">{{ $user->email_verified_at ? 'SIM' : 'NÃO' }}
                                 </span></td>
-                            {{-- <td>{{ \Carbon\Carbon::parse($user->last_login_at)->format('d/m/Y H:i:s') }}</td> --}}
                         </tr>
                     @empty
                         <tr>
@@ -80,34 +78,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#subscribers').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
-                },
-                buttons: ["excel", "pdf", "print", "colvis"],
-                responsive: true,
-                autoWidth: true,
-                lengthChange: true,
-                pageLength: 25,
-                lengthMenu: [
-                    [10, 25, 50, 100, 500],
-                    [10, 25, 50, 100, 500]
-                ],
-                ordering: true,
-                info: true,
-                dom: 'lBfrtip'
-            });
-
-            // Filtro personalizado
-            $('#filterVerified').on('change', function() {
-                if (this.checked) {
-                    table.column(1).search('SIM').draw();
-                } else {
-                    table.column(1).search('').draw();
-                }
-            });
-        });
-    </script>
+    <script src="{{ asset('assets/js/datatables/users.js') }}"></script>
 @endpush

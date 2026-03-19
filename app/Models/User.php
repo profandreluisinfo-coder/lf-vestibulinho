@@ -47,6 +47,7 @@ class User extends Authenticatable
         'social_name',
         'authorization', // caminho do arquivo de autorização dos pais (se necessário)
         'authorization_accepted',
+        'authorization_rejection_reason',
     ];
 
     /**

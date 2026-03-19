@@ -94,7 +94,18 @@
                     </tr>
                     <tr>
                     <th>Situação</th>
-                        <td>{!! auth()->user()->authorization_accepted !!}</td>
+                        <td>
+                            @if (auth()->user()->authorization_accepted == 1)
+                                <span class="text-success">Deferido</span>
+                            @elseif (auth()->user()->authorization_accepted == 2)
+                                <span class="text-danger">Indeferido.</span>
+                                @if (auth()->user()->authorization_rejection_reason)
+                                    <span class="text-danger">Motivo: {{ auth()->user()->authorization_rejection_reason }}</span>
+                                @endif
+                            @else
+                                <span class="text-danger">Em análise</span>
+                            @endif
+                        </td>
                     </tr>
                 @endif
                 <tr>
@@ -150,7 +161,18 @@
 
                     <tr>
                         <th>Situação</th>
-                        <td>{!! auth()->user()->user_detail?->pne_report_accepted !!}</td>
+                        <td>
+                            @if (auth()->user()->user_detail?->pne_report_accepted == 1)
+                                <span class="text-success">Deferido</span>
+                            @elseif (auth()->user()->user_detail?->pne_report_accepted == 2)
+                                <span class="text-danger">Indeferido.</span>
+                                @if (auth()->user()->user_detail?->pne_report_rejection_reason)
+                                    <span class="text-danger">Motivo: {{ auth()->user()->user_detail?->pne_report_rejection_reason }}</span>
+                                @endif
+                            @else
+                                <span class="text-danger">Em análise</span>
+                            @endif
+                        </td>
                     </tr>
 
                 </tbody>

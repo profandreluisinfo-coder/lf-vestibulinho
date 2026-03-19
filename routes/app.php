@@ -1,26 +1,9 @@
 <?php
 
+use App\Http\Controllers\App\{ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, LocalController, NoticeController, PdfController, ResultController, SettingController};
+use App\Http\Controllers\App\UserController;
+use App\Http\Middleware\{IsAdmin};
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Middleware\{
-    IsAdmin
-};
-
-use App\Http\Controllers\App\{
-    ArchiveController,
-    FaqController,
-    CalendarController,
-    CourseController,
-    CallController,
-    ExamController,
-    ExportController,
-    ImportController,
-    LocalController,
-    NoticeController,
-    PdfController,
-    ResultController,
-    SettingController
-};
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
@@ -132,7 +115,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::get('/salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
             Route::get('/assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
         });
-        
+
     // ==========================
     // 📊 PDFs
     // ==========================
@@ -194,5 +177,27 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
             Route::post('/liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
             Route::post('/liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
             Route::put('/liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
+        });
+
+    Route::prefix('deferimentos') // pasta
+        ->name('deferrals.')
+        ->group(function () {
+            Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
+                ->name('accept.authorization');
+            // Lista de usuários sem inscrição
+            // Route::get('/', [UserController::class, 'index'])->name('index'); // ALTERAR ESTA ROTA!!!
+
+            // Rota para apagar o nome social dos candidatos que não possuem autorização dos pais
+            Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
+                ->name('accept.authorization');
+
+            Route::patch('/def/{user}/reject-authorization', [DeferralController::class, 'rejectAuthorization'])
+                ->name('reject.authorization');
+        });
+
+    Route::prefix('usuarios')
+        ->name('users.')
+        ->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
         });
 });

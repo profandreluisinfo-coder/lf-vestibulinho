@@ -181,7 +181,20 @@
             <tr><th>Nome completo:</th><td>{{ $user->name }}</td></tr>
             <tr><th>Nome social:</th><td>{{ $user->social_name }}</td></tr>
             <tr><th>Apresentou autorização dos pais/responsáveis para uso do nome social/afetivo?</th><td>{{ $user->authorization ? 'Sim' : 'Não' }}</td></tr>
-            <tr><th>Situação:</th><td>{{ $user->authorization_accepted }}</td></tr>
+            <tr><th>Situação:</th>
+              <td>
+                  @if ($user->authorization_accepted == 1) 
+                  <span class="badge bg-success">Aprovado</span> 
+                  @elseif ($user->authorization_accepted == 2) 
+                    <span class="badge bg-danger">Indeferido</span> 
+                    @if ($user->authorization_rejection_reason)
+                      <span class="text-danger">Motivo: {{ $user->authorization_rejection_reason }}</span>
+                    @endif
+                  @else
+                    <span class="badge bg-danger">Em análise</span>
+                  @endif
+              </td>
+            </tr>
             <tr><th>CPF:</th><td>{{ $user->cpf }}</td></tr>
             <tr><th>Data de nascimento:</th><td>{{ $user->birth }}</td></tr>
             <tr><th>Gênero:</th><td>{{ $user->gender }}</td></tr>
@@ -278,7 +291,17 @@
                 Anexou relatório/laudo médico?
                 {{ !empty($user->user_detail->pne_report) ? 'Sim' : 'Não' }}
                 <br>
-                Situação: {!! $user->user_detail->pne_report_accepted !!}
+                Situação:
+                @if ($user->user_detail->pne_report_accepted == 1) 
+                  <span class="badge bg-success">Aprovado</span> 
+                @elseif ($user->user_detail->pne_report_accepted == 2) 
+                  <span class="badge bg-danger">Indeferido</span> 
+                  @if ($user->user_detail->pne_report_rejection_reason)
+                    <span class="text-danger">Motivo: {{ $user->user_detail->pne_report_rejection_reason }}</span>
+                  @endif
+                @else
+                  <span class="badge bg-danger">Em análise</span>
+                @endif
               </td>
             </tr>
           </tbody>

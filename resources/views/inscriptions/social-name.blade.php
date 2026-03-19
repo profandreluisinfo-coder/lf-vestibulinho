@@ -15,14 +15,15 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-person me-2"></i>Candidatos com Nome Social</h5>
         </div>
-        @if (!($users->isEmpty()))
-        <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <div class="d-flex align-items-center fw-semibold">
-                <i class="bi bi-info-circle fs-5 me-2"></i>
-                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do candidato ou do CPF.
+        @if (!$users->isEmpty())
+            <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="d-flex align-items-center fw-semibold">
+                    <i class="bi bi-info-circle fs-5 me-2"></i>
+                    Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome
+                    do candidato ou do CPF.
+                </div>
             </div>
-        </div>
         @endif
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
@@ -32,6 +33,8 @@
                         <th scope="col">Inscrição</th>
                         <th scope="col">Candidato</th>
                         <th scope="col">Nome Social</th>
+                        <th scope="col">Autorização</th>
+                        <th scope="col">Situação</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
@@ -41,11 +44,44 @@
                             <th scope="row">{{ $user->inscription?->id }}</th>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->social_name }}</td>
+                            <td>
+                                @if ($user->authorization)
+                                    <a href="{{ asset('storage/' . $user->authorization) }}"
+                                        class="btn btn-sm btn-link text-decoration-none" target="_blank">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </a>
+                                @else
+                                    <span class="badge bg-danger">Não apresentou</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if (!$user->authorization)
+                                    <span class="badge bg-danger">Não apresentou</span>
+                                @elseif ($user->authorization_accepted === null)
+                                    <span class="badge bg-warning">Pendente de análise</span>
+                                @elseif ($user->authorization_accepted == 1)
+                                    <span class="badge bg-success">Deferido</span>
+                                @elseif ($user->authorization_accepted == 2)
+                                    <span class="badge bg-danger">Indeferido</span>
+                                @endif
+                            </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-outline-danger clear-social-name"
-                                    data-id="{{ $user->id }}" title="Apagar nome social">
-                                    <i class="bi bi-eraser"></i>
-                                </button>
+
+                                @if ($user->authorization && $user->authorization_accepted === null)
+                                    <button class="btn btn-sm btn-success accept-social-name"
+                                        data-url="{{ route('deferrals.accept.authorization', $user->id) }}" title="Deferir">
+
+                                        <i class="bi bi-check me-1"></i> Deferir
+                                    </button>
+
+                                    <button class="btn btn-sm btn-danger reject-social-name"
+                                        data-url="{{ route('deferrals.reject.authorization', $user->id) }}"
+                                        title="Indeferir">
+
+                                        <i class="bi bi-x me-1"></i> Indeferir
+                                    </button>
+                                @endif
+
                             </td>
                         </tr>
                     @empty
@@ -80,92 +116,5 @@
 @endpush
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-
-            var table = $('#subscribers').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
-                },
-                buttons: ["excel", "pdf", "print", "colvis"],
-                responsive: true,
-                autoWidth: true,
-                lengthChange: true,
-                pageLength: 25,
-                lengthMenu: [
-                    [10, 25, 50, 100, 500],
-                    [10, 25, 50, 100, 500]
-                ],
-                ordering: true,
-                info: true,
-                dom: 'lBfrtip'
-            });
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
-
-            $('#subscribers').on('click', '.clear-social-name', function() {
-                let btn = $(this);
-                let userId = btn.data('id');
-
-                let url = "{{ route('users.clear.social.name', ['user' => ':id']) }}";
-                url = url.replace(':id', userId);
-
-                Swal.fire({
-                    title: 'Tem certeza?',
-                    text: "O nome social será apagado!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sim, apagar!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'PATCH',
-                            success: function(response) {
-                                // console.log('Resposta:', response);
-
-                                if (response.success) {
-                                    Swal.fire('Candidato removido com sucesso!',
-                                        response.message, 'success');
-
-                                    let row = table.row(btn.closest('tr'));
-                                    let rowNode = $(row.node());
-                                    let cell = rowNode.find('td').eq(2);
-
-                                    // Fade na célula do nome social
-                                    cell.fadeOut(200, function() {
-                                        $(this).text('').fadeIn(200);
-                                    });
-
-                                    // Remove o botão completamente
-                                    btn.fadeOut(200, function() {
-                                        $(this).remove();
-                                    });
-
-                                    // Atualiza DataTables mantendo paginação e filtros
-                                    row.invalidate().draw(false);
-
-                                } else {
-                                    Swal.fire('Atenção!', response.message, 'warning');
-                                }
-                            },
-                            error: function() {
-                                Swal.fire('Erro!',
-                                    'Não foi possível executar a operação.', 'error'
-                                );
-                            }
-
-                        });
-                    }
-                });
-            });
-
-        });
-    </script>
+    <script src="{{ asset('assets/js/datatables/social-name.js') }}"></script>
 @endpush
