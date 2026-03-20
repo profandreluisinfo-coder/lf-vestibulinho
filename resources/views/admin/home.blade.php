@@ -15,7 +15,7 @@
         $inscriptions_count = App\Models\Inscription::count();
     @endphp
 
-    <div class="accordion accordion-flush shadow-lg bg-light mb-5" id="accordionFlushExample">
+    <div class="accordion accordion-flush shadow-lg bg-light mb-5" id="accordionFlush">
         <div class="accordion-item" id="flush-headingOne">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -100,11 +100,7 @@
 
         @if ($inscriptions_count > 0)
 
-        <div class="card shadow-sm" data-bs-toggle="modal" data-bs-target="#statistics" style="width: 18rem;">
-            <div class="card-body">
-                📊 Estatísticas
-            </div>
-        </div>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#statistics">📊 Estatísticas</button>
 
         <!-- The Modal -->
         <div class="modal fade" data-bs-backdrop="static" id="statistics">
@@ -263,10 +259,10 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <script src="{{ asset('assets/charts/burghs.js') }}"></script>
-    <script src="{{ asset('assets/charts/courses.js') }}"></script>
-    <script src="{{ asset('assets/charts/schools.js') }}"></script>
-    <script src="{{ asset('assets/charts/genders.js') }}"></script>
-    <script src="{{ asset('assets/charts/gender-per-course.js') }}"></script>
-    <script src="{{ asset('assets/charts/chart-actions.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/burghs.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/courses.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/schools.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/genders.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/gender-per-course.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/chart-actions.js') }}"></script>
 @endpush

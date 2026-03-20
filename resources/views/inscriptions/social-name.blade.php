@@ -35,7 +35,8 @@
                         <th scope="col">Nome Social</th>
                         <th scope="col">Autorização</th>
                         <th scope="col">Situação</th>
-                        <th scope="col">Ações</th>
+                        <th scope="col">Observações</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -62,14 +63,21 @@
                                 @elseif ($user->authorization_accepted == 1)
                                     <span class="badge bg-success">Deferido</span>
                                 @elseif ($user->authorization_accepted == 2)
-                                    <span class="badge bg-danger">Indeferido</span>
+                                    <span class="badge bg-danger" title="Motivo">
+                                        Indeferido
+                                    </span>
                                 @endif
                             </td>
-                            <td class="text-center">
-
+                            <td>
+                                @if ($user->authorization_rejection_reason)
+                                    {{ $user->authorization_rejection_reason }}
+                                @endif
+                            </td>
+                            <td>
                                 @if ($user->authorization && $user->authorization_accepted === null)
                                     <button class="btn btn-sm btn-success accept-social-name"
-                                        data-url="{{ route('deferrals.accept.authorization', $user->id) }}" title="Deferir">
+                                        data-url="{{ route('deferrals.accept.authorization', $user->id) }}"
+                                        title="Deferir">
 
                                         <i class="bi bi-check me-1"></i> Deferir
                                     </button>
@@ -117,4 +125,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/datatables/social-name.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/popover.js') }}"></script>
 @endpush

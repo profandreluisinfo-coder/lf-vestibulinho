@@ -3,14 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return;
 
     const labels = JSON.parse(el.dataset.labels);
-    const values = JSON.parse(el.dataset.values);
+    // const values = JSON.parse(el.dataset.values);
+    const values = JSON.parse(el.dataset.values).map(v => Number(v) || 0);
 
     // Define as cores
     const colorMap = {
-        'ADMINISTRAÇÃO': '#007BFF',   // preto
-        'CONTABILIDADE': '#FF0000',   // vermelho
-        'INFORMÁTICA': '#000000',     // azul
-        'SEGURANÇA DO TRABALHO': '#008000' // verde
+        'Administração': '#007BFF',   // preto
+        'Contabiliidade': '#FF0000',   // vermelho
+        'Informática': '#000000',     // azul
+        'Segurança do Trabalho': '#008000' // verde
     };
 
     const backgroundColors = labels.map(label => colorMap[label] || '#888888');
@@ -49,7 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         weight: 'bold',
                         size: 12
                     },
-                    formatter: (value) => value.toLocaleString('pt-BR')
+                    // formatter: (value) => value.toLocaleString('pt-BR')
+                    formatter: (value) => {
+                        if (value == null || isNaN(value)) return '0';
+                        return Number(value).toLocaleString('pt-BR');
+                    }
+                    // formatter: (value) => {
+                    //     return Number(value || 0).toLocaleString('pt-BR');
+                    // }
                 }
             },
             scales: {
@@ -59,6 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         },
-        plugins: [ChartDataLabels] // 👉 ativa o plugin
+        plugins: [ChartDataLabels] // ativa o plugin
     });
 });

@@ -184,9 +184,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
         ->group(function () {
             Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
                 ->name('accept.authorization');
-            // Lista de usuários sem inscrição
-            // Route::get('/', [UserController::class, 'index'])->name('index'); // ALTERAR ESTA ROTA!!!
-
+            
             // Rota para apagar o nome social dos candidatos que não possuem autorização dos pais
             Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
                 ->name('accept.authorization');

@@ -53,6 +53,18 @@
                         </h4>
                         <p class="mb-0">Não perca esta oportunidade!</p>
                     </div>
+
+                @else
+
+                    <div class="highlight-box-alt">
+                        <h3 class="h4 mb-3">
+                            <i class="bi bi-calendar-check me-2"></i>Prazo Final
+                        </h3>
+                        <h4 class="fw-bold">
+                            {{ $calendar?->inscription_end?->translatedFormat('d \d\e F') ?? 'Aguardando Informações' }}
+                        </h4>
+                        <p class="mb-0">Inscrições Encerradas!</p>
+                    </div>
                     
                 @endif
             </div>

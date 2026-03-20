@@ -96,14 +96,14 @@
                     <th>Situação</th>
                         <td>
                             @if (auth()->user()->authorization_accepted == 1)
-                                <span class="text-success">Deferido</span>
+                                <span class="text-success fw-semibold"><i class="bi bi-info-circle me-1"></i>Deferido</span>
                             @elseif (auth()->user()->authorization_accepted == 2)
-                                <span class="text-danger">Indeferido.</span>
+                                <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Indeferido.</span>
                                 @if (auth()->user()->authorization_rejection_reason)
-                                    <span class="text-danger">Motivo: {{ auth()->user()->authorization_rejection_reason }}</span>
+                                    <span class="text-danger">{{ auth()->user()->authorization_rejection_reason }}</span>
                                 @endif
                             @else
-                                <span class="text-danger">Em análise</span>
+                                <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Em análise</span>
                             @endif
                         </td>
                     </tr>
@@ -163,14 +163,14 @@
                         <th>Situação</th>
                         <td>
                             @if (auth()->user()->user_detail?->pne_report_accepted == 1)
-                                <span class="text-success">Deferido</span>
+                                <span class="text-success fw-semibold"><i class="bi bi-info-circle me-1"></i>Deferido</span>
                             @elseif (auth()->user()->user_detail?->pne_report_accepted == 2)
-                                <span class="text-danger">Indeferido.</span>
+                                <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Indeferido.</span>
                                 @if (auth()->user()->user_detail?->pne_report_rejection_reason)
-                                    <span class="text-danger">Motivo: {{ auth()->user()->user_detail?->pne_report_rejection_reason }}</span>
+                                    <span class="text-danger fw-semibold">{{ auth()->user()->user_detail?->pne_report_rejection_reason }}</span>
                                 @endif
                             @else
-                                <span class="text-danger">Em análise</span>
+                                <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Em análise</span>
                             @endif
                         </td>
                     </tr>

@@ -48,12 +48,13 @@
 /* Layout mobile */
 @media (max-width: 768px) {
     
-    #flush-headingOne {
-        display: none;
+    .accordion {
+        width: 100% !important;
+        margin-top: -25px !important;
     }
 
-    .step-title,
+    /* .step-title,
     .stepper-container {
         display: none;
-    }
+    } */
 }

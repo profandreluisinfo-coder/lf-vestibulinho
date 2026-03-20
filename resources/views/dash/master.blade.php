@@ -57,7 +57,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
                                 role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle fs-5"></i>
-                                <span class="text-light">{{ auth()->user()->social_name ?? auth()->user()->name }}</span>
+                                <span class="text-light">{{ auth()->user()->authorization_accepted ? auth()->user()->social_name : auth()->user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
                                 <li>
