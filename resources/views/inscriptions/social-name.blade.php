@@ -36,7 +36,7 @@
                         <th scope="col">Autorização</th>
                         <th scope="col">Situação</th>
                         <th scope="col">Observações</th>
-                        <th scope="col"></th>
+                        <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -52,20 +52,18 @@
                                         <i class="bi bi-eye"></i> Visualizar
                                     </a>
                                 @else
-                                    <span class="badge bg-danger">Não apresentou</span>
+                                    Não apresentou
                                 @endif
                             </td>
                             <td>
                                 @if (!$user->authorization)
-                                    <span class="badge bg-danger">Não apresentou</span>
+                                    Não apresentou
                                 @elseif ($user->authorization_accepted === null)
-                                    <span class="badge bg-warning">Pendente de análise</span>
+                                    Pendente de análise
                                 @elseif ($user->authorization_accepted == 1)
-                                    <span class="badge bg-success">Deferido</span>
+                                    Deferido
                                 @elseif ($user->authorization_accepted == 2)
-                                    <span class="badge bg-danger" title="Motivo">
-                                        Indeferido
-                                    </span>
+                                    Indeferido                                    
                                 @endif
                             </td>
                             <td>

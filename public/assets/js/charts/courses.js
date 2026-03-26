@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Define as cores
     const colorMap = {
         'Administração': '#007BFF',   // preto
-        'Contabiliidade': '#FF0000',   // vermelho
+        'Contabilidade': '#FF0000',   // vermelho
         'Informática': '#000000',     // azul
         'Segurança do Trabalho': '#008000' // verde
     };
@@ -51,13 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         size: 12
                     },
                     // formatter: (value) => value.toLocaleString('pt-BR')
-                    formatter: (value) => {
-                        if (value == null || isNaN(value)) return '0';
-                        return Number(value).toLocaleString('pt-BR');
-                    }
                     // formatter: (value) => {
-                    //     return Number(value || 0).toLocaleString('pt-BR');
+                    //     if (value == null || isNaN(value)) return '0';
+                    //     return Number(value).toLocaleString('pt-BR');
                     // }
+                    formatter: (value) => {
+                        return Number(value || 0).toLocaleString('pt-BR');
+                    }
                 }
             },
             scales: {

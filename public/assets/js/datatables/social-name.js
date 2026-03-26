@@ -46,6 +46,9 @@ $(document).ready(function () {
 
             if (!result.isConfirmed) return;
 
+            const row = table.row(btn.closest('tr'));
+            const rowNode = $(row.node());
+
             btn.prop('disabled', true);
 
             const originalHtml = btn.html();
@@ -59,18 +62,23 @@ $(document).ready(function () {
 
                     if (response.success) {
 
+                        const row = table.row(btn.closest('tr'));
+                        const rowNode = $(row.node());
+
+                        // remove o botão clicado (resolve o spinner travado)
+                        btn.remove();
+
+                        // limpa a célula de ações (remove outros botões)
+                        rowNode.find('td').eq(6).html('');
+
+                        // atualiza status
+                        rowNode.find('td').eq(4).html(response.data.status);
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Sucesso',
                             text: response.message
                         });
-                        const row = table.row(btn.closest('tr'));
-                        let data = row.data();
-
-                        data[4] = response.data.status;
-                        data[5] = response.data.actions;
-
-                        row.data(data).draw(false);
 
                     } else {
 
@@ -126,6 +134,9 @@ $(document).ready(function () {
 
             const reason = result.value;
 
+            const row = table.row(btn.closest('tr'));
+            const rowNode = $(row.node());
+
             btn.prop('disabled', true);
 
             const originalHtml = btn.html();
@@ -140,19 +151,20 @@ $(document).ready(function () {
 
                     if (response.success) {
 
+                        // limpa ações (remove botões e spinner)
+                        rowNode.find('td').eq(6).html('');
+
+                        // atualiza status
+                        rowNode.find('td').eq(4).html(response.data.status);
+
+                        // atualiza observação (coluna 5)
+                        rowNode.find('td').eq(5).text(reason || '');
+
                         Swal.fire({
                             icon: 'success',
-                            title: 'Operação realizada',
+                            title: 'Sucesso',
                             text: response.message
                         });
-
-                        const row = table.row(btn.closest('tr'));
-                        let data = row.data();
-
-                        data[4] = response.data.status;
-                        data[5] = response.data.actions;
-
-                        row.data(data).draw(false);
 
                     } else {
 

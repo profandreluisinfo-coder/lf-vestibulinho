@@ -134,8 +134,8 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <canvas id="chartCursos" data-labels='@json($cursos->pluck('name'))'
-                                            data-values='@json($cursos->pluck('inscriptions_count'))'>
+                                        <canvas id="chartCursos" data-labels='@json($cursos->pluck('curso'))'
+                                            data-values='@json($cursos->pluck('total'))'>
                                         </canvas>
                                     </div>
                                 </div>
