@@ -167,7 +167,7 @@
                             @elseif (auth()->user()->user_detail?->pne_report_accepted == 2)
                                 <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Indeferido.</span>
                                 @if (auth()->user()->user_detail?->pne_report_rejection_reason)
-                                    <span class="text-danger fw-semibold">{{ auth()->user()->user_detail?->pne_report_rejection_reason }}</span>
+                                    <span class="text-danger">{{ auth()->user()->user_detail?->pne_report_rejection_reason }}</span>
                                 @endif
                             @else
                                 <span class="text-danger fw-semibold"><i class="bi bi-info-circle me-1"></i>Em análise</span>

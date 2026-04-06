@@ -181,16 +181,18 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 
     Route::prefix('deferimentos') // pasta
         ->name('deferrals.')
-        ->group(function () {
-            Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
-                ->name('accept.authorization');
-            
+        ->group(function () {            
             // Rota para apagar o nome social dos candidatos que não possuem autorização dos pais
             Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
                 ->name('accept.authorization');
-
             Route::patch('/def/{user}/reject-authorization', [DeferralController::class, 'rejectAuthorization'])
                 ->name('reject.authorization');
+
+            Route::patch('/def/{user}/accept-report', [DeferralController::class, 'acceptReport'])
+                ->name('accept.report');
+            Route::patch('/def/{user}/reject-report', [DeferralController::class, 'rejectReport'])
+                ->name('reject.report');
+
         });
 
     Route::prefix('usuarios')

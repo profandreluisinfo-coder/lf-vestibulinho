@@ -96,82 +96,15 @@ class InscriptionController extends Controller
      */
     public function pcd(): View
     {
-        // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('inscriptions.pcd');
-    }
-
-    /**
-     * Retorna os dados paginados para o DataTables via AJAX
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getPcd(Request $request): JsonResponse
-    {
-        // Captura os parâmetros do DataTables
-        $draw = $request->input('draw');
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $searchValue = $request->input('search.value');
-        $orderColumnIndex = $request->input('order.0.column');
-        $orderDir = $request->input('order.0.dir', 'asc');
-
-        // Mapeamento de colunas para ordenação
-        $columns = ['id', 'name', 'accessibility'];
-        $orderColumn = $columns[$orderColumnIndex] ?? 'id';
-
         // Query base
-        $query = User::where('pne', true)
+        $users = User::whereHas('user_detail', fn($q) => $q->where('pne', true))
             ->whereHas('inscription')
-            ->with(['inscription', 'user_detail']);
-
-        // Aplicar busca se houver
-        if (!empty($searchValue)) {
-            $query->where(function ($q) use ($searchValue) {
-                $q->where('name', 'like', "%{$searchValue}%")
-                    ->orWhere('cpf', 'like', "%{$searchValue}%")
-                    ->orWhereHas('inscription', function ($subQ) use ($searchValue) {
-                        $subQ->where('id', 'like', "%{$searchValue}%");
-                    });
-            });
-        }
-
-        // Total de registros (sem filtro)
-        $totalRecords = User::where('pne', true)->whereHas('inscription')->count();
-
-        // Total de registros filtrados
-        $totalFiltered = $query->count();
-
-        // Aplicar ordenação e paginação
-        $users = $query->orderBy($orderColumn, $orderDir)
-            ->skip($start)
-            ->take($length)
+            ->with(['inscription', 'user_detail'])
             ->get();
-
-        // Formatar dados para o DataTables
-        $data = $users->map(function ($user) {
-            return [
-                'inscription_id' => $user->inscription?->id,
-                'name' => $user->name,
-                'accessibility' => $user->user_detail?->accessibility ?? '-',
-                'user_id' => $user->id,
-                'actions' => view('inscriptions.pcd-actions', compact('user'))->render()
-            ];
-        });
-
-        return response()->json([
-            'draw' => intval($draw),
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $totalFiltered,
-            'data' => $data
-        ]);
+        // Não carrega mais os dados aqui, apenas retorna a view vazia
+        return view('inscriptions.pcd', compact('users'));
     }
 
-    /**
-     * Exibe uma lista de candidatos que utilizaram nome social ('social_name').
-     *
-     * @return View
-     */
     public function socialName(): View
     {
         $users = User::whereNotNull('social_name')

@@ -1,32 +1,12 @@
 $(document).ready(function () {
-    var table = $('#subscribers').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "{{ route('inscriptions.pcd.data') }}",
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        },
-        columns: [
-            { data: 'inscription_id', name: 'inscription_id' },
-            { data: 'name', name: 'name' },
-            { data: 'accessibility', name: 'accessibility' },
-            {
-                data: 'actions',
-                name: 'actions',
-                orderable: false,
-                searchable: false,
-                className: 'text-center no-export'
-            }
-        ],
+
+    const table = $('#subscribers').DataTable({
         language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
-            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Carregando...</span>'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
         },
+        buttons: ["excel", "pdf", "print", "colvis"],
         responsive: true,
-        autoWidth: false,
+        autoWidth: true,
         lengthChange: true,
         pageLength: 25,
         lengthMenu: [
@@ -35,39 +15,175 @@ $(document).ready(function () {
         ],
         ordering: true,
         info: true,
-        dom: 'lBfrtip',
-        buttons: [
-            {
-                extend: 'excel',
-                text: '<i class="bi bi-file-earmark-excel me-1 text-white"></i> Excel',
-                className: 'btn btn-sm btn-success',
-                exportOptions: {
-                    columns: ':visible:not(.no-export)'
-                }
-            },
-            {
-                extend: 'pdf',
-                text: '<i class="bi bi-file-earmark-pdf me-1 text-white"></i> PDF',
-                className: 'btn btn-sm btn-danger',
-                exportOptions: {
-                    columns: ':visible:not(.no-export)'
-                }
-            },
-            {
-                extend: 'print',
-                text: '<i class="bi bi-printer me-1 text-white"></i> Imprimir',
-                className: 'btn btn-sm btn-primary',
-                exportOptions: {
-                    columns: ':visible:not(.no-export)'
-                }
-            },
-            {
-                extend: 'colvis',
-                text: '<i class="bi bi-eye me-1"></i> Colunas',
-                className: 'btn btn-sm btn-secondary'
-            }
-        ]
+        dom: 'lBfrtip'
     });
 
-    table.buttons().container().appendTo('#subscribers_wrapper .col-md-6:eq(0)');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    /*
+    ============================
+    DEFERIR
+    ============================
+    */
+
+    $('#subscribers').on('click', '.accept-report', function () {
+
+        const btn = $(this);
+        const url = btn.data('url');
+
+        Swal.fire({
+            title: 'Confirmar deferimento?',
+            text: "O relatório/laudo será deferido.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, deferir',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (!result.isConfirmed) return;
+
+            const row = table.row(btn.closest('tr'));
+
+            btn.prop('disabled', true);
+
+            const originalHtml = btn.html();
+            btn.html('<span class="spinner-border spinner-border-sm"></span>');
+
+            $.ajax({
+                url: url,
+                type: 'PATCH',
+
+                success: function (response) {
+
+                    if (response.success) {
+
+                        // coluna 5 = ações
+                        table.cell(row.index(), 5).data('').draw(false);
+
+                        // coluna 3 = status
+                        table.cell(row.index(), 3).data(response.data.status).draw(false);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: response.message
+                        });
+
+                    } else {
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Atenção',
+                            text: response.message
+                        });
+
+                        btn.prop('disabled', false).html(originalHtml);
+                    }
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Não foi possível executar a operação.'
+                    });
+
+                    btn.prop('disabled', false).html(originalHtml);
+                }
+            });
+
+        });
+
+    });
+
+    /*
+    ============================
+    INDEFERIR
+    ============================
+    */
+
+    $('#subscribers').on('click', '.reject-report', function () {
+
+        const btn = $(this);
+        const url = btn.data('url');
+
+        Swal.fire({
+            title: 'Indeferir relatório/laudo?',
+            input: 'textarea',
+            inputLabel: 'Razão do indeferimento (opcional)',
+            inputPlaceholder: 'Digite aqui a razão...',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Indeferir',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (!result.isConfirmed) return;
+
+            const reason = result.value;
+
+            const row = table.row(btn.closest('tr'));
+
+            btn.prop('disabled', true);
+
+            const originalHtml = btn.html();
+            btn.html('<span class="spinner-border spinner-border-sm"></span>');
+
+            $.ajax({
+                url: url,
+                type: 'PATCH',
+                data: { reason: reason },
+
+                success: function (response) {
+
+                    if (response.success) {
+
+                        // coluna 5 = ações
+                        table.cell(row.index(), 5).data('').draw(false);
+
+                        // coluna 3 = status
+                        table.cell(row.index(), 3).data(response.data.status).draw(false);
+
+                        // coluna 4 = observações
+                        table.cell(row.index(), 4).data(reason || '').draw(false);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: response.message
+                        });
+
+                    } else {
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Atenção',
+                            text: response.message
+                        });
+
+                        btn.prop('disabled', false).html(originalHtml);
+                    }
+                },
+
+                error: function () {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Não foi possível executar a operação.'
+                    });
+
+                    btn.prop('disabled', false).html(originalHtml);
+                }
+            });
+
+        });
+
+    });
+
 });
