@@ -1,3 +1,4 @@
+@if ($calendar->isInscriptionOpen())
 <section class="guidelines">
     <div class="container">
         <h3 class="simple-title">Orientações</h3>
@@ -76,3 +77,4 @@
         </div>
     </div>
 </section>
+@endif

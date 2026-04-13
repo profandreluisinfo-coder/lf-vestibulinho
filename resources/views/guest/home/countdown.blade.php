@@ -1,4 +1,4 @@
-@if (!$calendar->isInscriptionOpen())
+@if ($calendar->isInscriptionOpen())
     <section id="contagem" class="countdown">
         <div class="container">
             <h2 class="section-title text-center">
