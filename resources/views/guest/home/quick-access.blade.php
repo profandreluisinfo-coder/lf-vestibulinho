@@ -19,7 +19,7 @@
                             </a>
                         @endif
                             <a href="#courses" target="_blank">
-                                <i class="bi bi-mortarboard fs-1"></i> Cursos
+                                <i class="bi bi-mortarboard fs-1"></i> Cursos EITAAAA
                             </a>
                         @if ($calendar->isInscriptionOpen())
                             <a href="#" data-bs-toggle="modal" data-bs-target="#register">
