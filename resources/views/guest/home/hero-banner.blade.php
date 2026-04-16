@@ -1,7 +1,10 @@
+@php
+    $cols = $calendar?->isInscriptionOpen() ? '8' : '12';
+@endphp
 <section class="hero-banner">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-{{ $cols }}">
                 <div class="hero-content">
                     <div class="d-flex flex-column flex-md-row align-items-center gap-3 text-center text-md-start">
                         <a href="https://leandrofranceschini.com.br/" class="nav-link" target="_blank" title="Site principal da Escola Leandro Franceschini">
@@ -41,8 +44,9 @@
                     </div>
                 </div>
             </div>
+            @if ($calendar?->isInscriptionOpen())
             <div class="col-lg-4">
-                @if ($calendar?->isInscriptionOpen())
+                
 
                     <div class="highlight-box">
                         <h3 class="h4 mb-3">
@@ -54,7 +58,7 @@
                         <p class="mb-0">Não perca esta oportunidade!</p>
                     </div>
 
-                @else
+                {{-- @else
 
                     <div class="highlight-box-alt">
                         <h3 class="h4 mb-3">
@@ -64,10 +68,9 @@
                             {{ $calendar?->inscription_end?->translatedFormat('d \d\e F') ?? 'Aguardando Informações' }}
                         </h4>
                         <p class="mb-0">Inscrições Encerradas!</p>
-                    </div>
-                    
-                @endif
+                    </div> --}}
             </div>
+            @endif
         </div>
     </div>
 </section>
