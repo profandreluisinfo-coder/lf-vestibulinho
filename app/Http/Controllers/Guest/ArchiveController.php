@@ -22,10 +22,6 @@ class ArchiveController extends Controller
      */
     public function index()
     {
-        if (!Archive::hasActiveArchives()) {
-            return redirect()->route('home');
-        }
-
         $archives = Archive::getActiveArchives();
 
         return view('guest.archives.index', compact('archives'));
