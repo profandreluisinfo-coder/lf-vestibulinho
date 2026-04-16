@@ -30,6 +30,16 @@ class Archive extends Model
         return $this->hasOne(Answer::class);
     }
 
+    /**
+     * Retorna a lista de arquivos de prova ativos.
+     *
+     * Este método retorna uma lista de arquivos de prova cujo status seja true.
+     * A lista é ordenada por ano em ordem decrescente.
+     *
+     * O resultado é armazenado em cache por 1 hora.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public static function getActiveArchives()
     {
         return Cache::remember('archives_active_list', 3600, function () {
@@ -37,6 +47,14 @@ class Archive extends Model
         });
     }
 
+    /**
+     * Verifica se há arquivos de prova ativos.
+     *
+     * Este método verifica se há arquivos de prova cujo status seja true.
+     * O resultado é armazenado em cache por 1 hora.
+     *
+     * @return bool
+     */
     public static function hasActiveArchives()
     {
         return Cache::remember('archives_has_active', 3600, function () {
