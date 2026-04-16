@@ -1,11 +1,210 @@
-#previous-exams {
-    margin: 6rem 0;
+.pa-section {
+    padding: 4rem 0 5rem;
+    min-height: 60vh;
 }
 
-/* ==================== TABLES ==================== */
-.freezed-table thead th {
-    position: sticky !important;
-    top: 0;
-    z-index: 5;
-    /* background-color: var(--bs-table-bg, #d1e7dd); */
+.pa-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.pa-header h2 {
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c5aa0;
+    margin: 0 0 4px;
+}
+
+.pa-header p {
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 14px;
+    color: #6b6b6b;
+    margin: 0;
+    font-weight: 300;
+}
+
+.pa-count-badge {
+    /* font-family: 'DM Sans', sans-serif; */
+    background: #f5f5f3;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #6b6b6b;
+    white-space: nowrap;
+}
+
+.pa-count-badge strong {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.pa-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pa-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 16px 20px;
+    transition: border-color 0.15s, background 0.15s;
+    /* font-family: 'DM Sans', sans-serif; */
+}
+
+.pa-item:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background: #fafaf9;
+}
+
+.pa-item.recent {
+    border: 2px solid #1D9E75;
+}
+
+.pa-year {
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.pa-recent-tag {
+    display: block;
+    margin-top: 4px;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    background: #E1F5EE;
+    color: #0F6E56;
+    border-radius: 99px;
+    padding: 2px 8px;
+    text-align: center;
+}
+
+.pa-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.pa-info span {
+    font-size: 13px;
+    color: #6b6b6b;
+    font-weight: 300;
+}
+
+.pa-btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.pa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    /* font-family: 'DM Sans', sans-serif; */
+    color: #1a1a1a;
+    background: #f5f5f3;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 0.15s, background 0.15s;
+    min-width: 110px;
+    justify-content: center;
+}
+
+.pa-btn:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #eeeee9;
+    color: #1a1a1a;
+    text-decoration: none;
+}
+
+.pa-btn.unavailable {
+    color: #aaa;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.pa-btn i {
+    font-size: 14px;
+}
+
+.pa-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 0;
+}
+
+.pa-divider::before,
+.pa-divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.pa-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b6b6b;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 14px;
+}
+
+.pa-footer-note {
+    margin-top: 1.5rem;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 12px;
+    color: #aaa;
+    text-align: right;
+}
+
+@media (max-width: 600px) {
+
+    .pa-section {
+        margin-top: -25px;
+    }
+
+    .pa-item {
+        grid-template-columns: 56px 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .pa-btn-group {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
 }

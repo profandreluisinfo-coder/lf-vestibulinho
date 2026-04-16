@@ -19,70 +19,85 @@
     @include('guest.home.navbar')
 
     @php
-        $recenteId = $archives->first()->id;
+        $recenteId = $archives->first()?->id;
     @endphp
 
-    <section id="previous-exams" class="bg-light my-5 py-5">
+    <section class="pa-section">
+        <div class="container" style="max-width: 860px;">
 
-        <div class="container">
-            <h2 class="section-title text-center">Provas Anteriores</h2>
-            
-            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-
-                <table class="table table-hover freezed-table align-middle text-center">
-                    <caption class="text-muted text-end border-top pt-2">(*) A prova não possui gabarito associado.
-                    </caption>
-                    <thead class="table-success">
-                        <th>#</th>
-                        <th>Ano</th>
-                        <th>Prova</th>
-                        <th>Gabarito</th>
-                    </thead>
-
-                    <tbody class="table-group-divider">
-
-                        @forelse ($archives as $archive)
-                            <tr class="{{ $archive->id === $recenteId ? 'table-active fw-bold' : '' }}">
-                                <td><i class="bi bi-file-earmark-pdf fs-5 text-danger"></i></td>
-                                <th scope="row">
-                                    @if ($archive->id === $recenteId)
-                                        <i class="bi bi-star-fill text-warning me-1" title="Prova mais recente"></i>
-                                    @endif
-                                    {{ $archive->year }}
-                                    @if ($archive->id === $recenteId)
-                                        <span class="badge bg-success ms-2">Mais recente</span>
-                                    @endif
-                                </th>
-                                <td>
-                                    <a href="{{ asset('storage/' . $archive->file) }}" target="_blank">
-                                        <i class="bi bi-download me-2"></i> Download
-                                    </a>
-                                </td>
-                                <td>
-                                    @if ($archive->answer?->file)
-                                        <a href="{{ asset('storage/' . $archive->answer?->file) }}" target="_blank">
-                                            <i class="bi bi-download me-2"></i> Download
-                                        </a>
-                                    @else
-                                        <span class="text-muted">*</span>
-                                    @endif
-                                </td>
-                            </tr>
-
-                        @empty
-                            <tr>
-                                <td colspan="4">Nenhuma prova encontrada</td>
-                            </tr>
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
+            <div class="pa-header">
+                <div>
+                    <h2>Provas Anteriores</h2>
+                    <p>Faça o download das provas e gabaritos disponíveis</p>
+                </div>
+                <div class="pa-count-badge">
+                    <strong>{{ $archives->count() }}</strong>
+                    {{ Str::plural('prova', $archives->count()) }} disponíve{{ $archives->count() === 1 ? 'l' : 'is' }}
+                </div>
             </div>
 
-        </div>
+            @if ($archives->isEmpty())
+                <div class="pa-empty">
+                    <i class="bi bi-folder2-open fs-2 d-block mb-2 text-muted"></i>
+                    Nenhuma prova encontrada.
+                </div>
+            @else
 
+                <div class="pa-list">
+
+                    @foreach ($archives as $index => $archive)
+
+                        @if ($index === 1)
+                            <div class="pa-divider">Edições anteriores</div>
+                        @endif
+
+                        <div class="pa-item {{ $archive->id === $recenteId ? 'recent' : '' }}">
+
+                            <div>
+                                <div class="pa-year">{{ $archive->year }}</div>
+                                @if ($archive->id === $recenteId)
+                                    <span class="pa-recent-tag">Recente</span>
+                                @endif
+                            </div>
+
+                            <div class="pa-info">
+                                <strong>Edição {{ $archive->year }}</strong>
+                                <span>
+                                    @if ($archive->answer?->file)
+                                        Prova e gabarito disponíveis
+                                    @else
+                                        Prova disponível — gabarito não associado
+                                    @endif
+                                </span>
+                            </div>
+
+                            <div class="pa-btn-group">
+                                <a class="pa-btn" href="{{ asset('storage/' . $archive->file) }}" target="_blank">
+                                    <i class="bi bi-download"></i> Prova
+                                </a>
+
+                                @if ($archive->answer?->file)
+                                    <a class="pa-btn" href="{{ asset('storage/' . $archive->answer->file) }}" target="_blank">
+                                        <i class="bi bi-download"></i> Gabarito
+                                    </a>
+                                @else
+                                    <span class="pa-btn unavailable">
+                                        <i class="bi bi-dash-circle"></i> Sem gabarito
+                                    </span>
+                                @endif
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+                <p class="pa-footer-note">(*) Provas sem gabarito associado exibem o aviso "Sem gabarito".</p>
+
+            @endif
+
+        </div>
     </section>
 
     @include('guest.home.footer')
