@@ -20,7 +20,7 @@
                 </li>
             @endif
                 <a class="nav-link js-confirm-external"
-                    href="https://leandrofranceschini.com.br/#form-contato"
+                    href="https://leandrofranceschini.com.br/contato"
                     title="Entre em contato conosco"
                     target="_blank">
                     <i class="bi bi-telephone"></i> Contato

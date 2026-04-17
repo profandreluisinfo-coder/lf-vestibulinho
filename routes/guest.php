@@ -24,9 +24,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('guest.archives.index');
 
     // Resultados
-    Route::get('/resultado-final', [ResultController::class, 'index'])
-    ->name('guest.results.index')
-    ->middleware(isResultEnabled::class);
+    Route::get('/resultado-final', [ResultController::class, 'index'])->name('guest.results.index')->middleware(isResultEnabled::class);
 
     // Chamadas
     Route::get('/chamadas', [CallController::class, 'index'])->name('guest.calls.index');

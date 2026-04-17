@@ -34,7 +34,7 @@ class RegistrationController extends Controller
             'documents' => [
                 '1' => 'RG - REGISTRO GERAL',
                 '2' => 'CIN - CARTEIRA DE IDENTIDADE NACIONAL',
-                '3' => 'RNE - REGISTRO NACIONAL DE ESTRANGEIRO'
+                '3' => 'RNM - REGISTRO NACIONAL DE MIGRATÓRIO'
             ],
             'genders' => [
                 '1' => 'Masculino',

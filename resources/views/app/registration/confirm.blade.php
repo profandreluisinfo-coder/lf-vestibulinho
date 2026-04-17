@@ -219,7 +219,7 @@
       <h5 class="mb-3 required">Termos e condições</h5>
       <div class="form-check mb-3">
           <input class="form-check-input" type="checkbox" value="1" id="agree_terms" name="agree_terms">
-          <label class="form-check-label" for="agree_terms">
+          <label class="form-check-label" for="agree_terms" style="text-align: justify;">
               Estou ciente de que a formalização da inscrição implica a aceitação de todas as regras e condições estabelecidas no edital de abertura de inscrições. Estou ciente, ainda, que, caso venha a ser aprovado e convocado, deverei entregar os documentos comprobatórios dos requisitos exigidos para a matrícula por ocasião da aprovação. Concordo com os termos que constam no edital, bem como aceito que os meus dados pessoais, sensíveis ou não, sejam tratados e processados de forma a possibilitar a efetiva execução do Processo Seletivo, com a aplicação dos critérios de avaliação e seleção, autorizando expressamente a divulgação de meu nome, número de inscrição e notas, em observância aos princípios da publicidade e da transparência que regem a Administração Pública e nos termos da Lei Federal nº 13.709, de 14 de agosto de 2018. Ciente de que não caberão reclamações posteriores neste sentido, ficando ciente também de que possivelmente tais informações poderão ser encontradas na rede mundial de computadores por meio dos mecanismos de busca atualmente existentes.
           </label>
       </div>

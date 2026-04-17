@@ -144,7 +144,7 @@ class UserDetail extends Model
         $types = [
             '1' => 'RG - REGISTRO GERAL',
             '2' => 'CIN - CARTEIRA DE IDENTIDADE NACIONAL',
-            '3' => 'RNE - REGISTRO NACIONAL DE ESTRANGEIRO'
+            '3' => 'RNE - REGISTRO NACIONAL MIGRATÓRIO'
         ];
 
         return $types[$value] ?? $value;  // Se não encontrar, retorna o valor original
