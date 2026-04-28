@@ -10,7 +10,7 @@
     content="Confirmação de e-mail para candidatos do {{ config('app.name') }} {{ $calendar->year }}">
 @endpush
 
-@section('title', config('app.name') . ' ' . $calendar->year . ' | Registro Confirmado')
+@section('title', config('app.name') . ' ' . ($calendar->year ?? '') . ' | Registro Confirmado')
 
 @section('body-class', 'bg-light')
 
