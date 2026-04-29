@@ -154,6 +154,13 @@
 </head>
 
 <body>
+    @php
+        $displayName = (auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1)
+            ? auth()->user()->social_name
+            : auth()->user()->name;
+        // $nameParts = explode(' ', trim($displayName));
+        // $initials  = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
+    @endphp
     <div class="watermark">{{ config('app.name') }} {{ $calendar?->year }}</div>
 
     <div class="card">
@@ -183,25 +190,8 @@
                     </tr>
                     <tr>
                         <th>Nome completo</th>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ $displayName }}</td>
                     </tr>
-
-                    @if ($user->social_name_option)
-
-                        <tr>
-                            <th>Nome Social</th>
-                            <td>{{ $user->name }}</td>
-                        </tr>
-                    
-                        <tr>
-                            <th>Anexou autorização dos pais/responsáveis?</th>
-                            <td>
-                                {{ !empty($user->authorization) ? 'Sim' : 'Não' }}
-                            </td>
-                        </tr>
-
-                    @endif
-
                     <tr>
                         <th>Data de nascimento</th>
                         <td>{{ $user->birth }}</td>
@@ -396,10 +386,7 @@
                     <tr>
                         <th>Necessita de atendimento especial?</th>
                         <td>
-                            {{ $user->user_detail->pne ? 'Sim - ' . $user->user_detail->accessibility : 'Não' }}
-                            <br>
-                            Anexou relatório/laudo médico?
-                            {{ !empty($user->user_detail->pne_report) ? 'Sim' : 'Não' }}
+                            {{ $user->user_detail->pne ? 'SIM - ' . $user->user_detail->accessibility : 'NÃO' }}
                         </td>
                     </tr>
                 </tbody>
@@ -415,7 +402,7 @@
                 <tbody>
                     <tr>
                         <th>Bolsa Família?</th>
-                        <td>{{ $user->user_detail->nis ? 'Sim - NIS: ' . $user->user_detail->nis : 'Não' }}</td>
+                        <td>{{ $user->user_detail->nis ? 'SIM - NIS: ' . $user->user_detail->nis : 'NÃO' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -430,7 +417,7 @@
                 <tbody>
                     <tr>
                         <th>Problemas de saúde/alergias?</th>
-                        <td>{{ $user->user_detail->health ? 'Sim - ' . $user->user_detail->health : 'Não' }}</td>
+                        <td>{{ $user->user_detail->health ? 'SIM - ' . $user->user_detail->health : 'NÃO' }}</td>
                     </tr>
                 </tbody>
             </table>

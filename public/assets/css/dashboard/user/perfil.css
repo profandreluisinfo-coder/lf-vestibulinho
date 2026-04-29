@@ -1,80 +1,343 @@
-/* Estilo geral das tabelas */
-.table th {
-    width: 180px;
-    /* largura fixa para os rótulos */
-    background-color: #f8f9fa;
-    text-align: left;
-    vertical-align: middle;
-    font-weight: 600;
-    color: #343a40;
+/* ── Reset e base ─────────────────────────────────────── */
+.candidato-wrap * {
+    box-sizing: border-box;
 }
 
-.table td {
-    text-align: left !important;
-    /* garante alinhamento à esquerda */
-    vertical-align: middle;
+.candidato-wrap {
+    /* max-width: 860px; */
+    /* max-width: 860px; */
 }
 
-/* Cabeçalhos das seções */
-.table thead th {
-    background: linear-gradient(90deg, #e8f1ff, #f8fbff);
-    color: #0d6efd;
-    font-weight: 600;
-    border-bottom: 2px solid #cfe2ff;
-    font-size: 0.95rem;
+/* ── Seção: título com ícone ──────────────────────────── */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
 }
 
-/* Efeito de destaque sutil nos blocos */
-.table {
+.section-icon {
+    width: 34px;
+    height: 34px;
     border-radius: 8px;
-    overflow: hidden;
+    background-color: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-/* Margem entre as tabelas */
-.table-responsive {
+.section-icon i {
+    font-size: 16px;
+    color: #1a56db;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ── Card padrão ──────────────────────────────────────── */
+.card-modern {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Card de convocação (alerta) ─────────────────────── */
+.card-call {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-call-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 1rem;
 }
 
-/* Ajuste na tabela */
-.table th,
-.table td {
-    padding: 0.75rem 1rem;
-    /* 12px vertical, 16px horizontal */
+.card-call-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #92400e;
+    margin: 0;
 }
 
-/* Suaviza visual em PDF e tela */
-.table td,
-.table th {
-    border-color: #dee2e6 !important;
+/* ── Avatar com iniciais ─────────────────────────────── */
+.candidate-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a56db;
+    flex-shrink: 0;
 }
 
-/* Deixa a tabela de Educação Especial com cor diferente */
-.table-info thead th {
-    background: linear-gradient(90deg, #eaf7ff, #f4fbff);
-    color: #055160;
-    border-bottom: 2px solid #b6effb;
+.candidate-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f3f5;
+    margin-bottom: 1.25rem;
 }
 
-/* Ajuste no cabeçalho do card */
-.card-header {
-    background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+.candidate-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
 }
 
-@media (max-width: 768px) {
+.candidate-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 2px;
+}
 
-    .table th,
-    .table td {
-        padding: 0.4rem !important;
-        /* menor espaçamento em dispositivos móveis */
+/* ── Inscrição badge ─────────────────────────────────── */
+.inscription-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #f1f3f5;
+    border: 1px solid #dee2e6;
+    border-radius: 99px;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+    color: #495057;
+}
+
+.inscription-badge strong {
+    color: #212529;
+}
+
+/* ── Grid de dados do candidato ──────────────────────── */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.data-item .data-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.data-item .data-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ── Bloco de nome social e PNE ──────────────────────── */
+.info-block {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+}
+
+.info-block-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.info-block-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ── Badges de status ─────────────────────────────────── */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 99px;
+    white-space: nowrap;
+}
+
+.status-badge.deferido {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.indeferido {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-badge.analise {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* ── Link de arquivo PDF ─────────────────────────────── */
+.file-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #1a56db;
+    text-decoration: none;
+    margin-top: 6px;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Ações (botões) ───────────────────────────────────── */
+.actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f3f5;
+}
+
+/* ── Grid de dados da chamada ────────────────────────── */
+.call-data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.call-data-item {
+    background: #fff;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+}
+
+.call-data-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #92400e;
+    margin-bottom: 2px;
+}
+
+.call-data-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #78350f;
+}
+
+/* ── Modal melhorado ─────────────────────────────────── */
+.modal-section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1a56db;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.docs-list-modern {
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
+    color: #495057;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* ── Resultado da prova ──────────────────────────────── */
+.result-card-modern {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.result-card-header {
+    background: #1a56db;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.result-card-header h5 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.result-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.result-score {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1a56db;
+    line-height: 1;
+    margin: 0.5rem 0 0.25rem;
+}
+
+.result-ranking {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 1rem 0 0.25rem;
+}
+
+/* ── Responsividade ───────────────────────────────────── */
+@media (max-width: 576px) {
+
+    .card-modern,
+    .card-call {
+        padding: 1rem;
     }
 
-    .table th,
-    .table td {
-        font-size: 0.7rem;
+    .data-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .table th {
-        width: 110px;
-        /* menor largura em dispositivos móveis */
+    .call-data-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 400px) {
+    .data-grid {
+        grid-template-columns: 1fr;
     }
 }

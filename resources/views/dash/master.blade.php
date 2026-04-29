@@ -33,6 +33,13 @@
 </head>
 
 <body>
+    @php
+        $displayName = (auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1)
+            ? auth()->user()->social_name
+            : auth()->user()->name;
+        // $nameParts = explode(' ', trim($displayName));
+        // $initials  = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
+    @endphp
     <nav class="navbar navbar-expand-lg shadow-sm fixed-top navbar-dark">
         <div class="container-fluid px-3">
             {{-- Logo/Brand --}}
@@ -57,7 +64,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
                                 role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle fs-5"></i>
-                                <span class="text-light">{{ auth()->user()->authorization_accepted ? auth()->user()->social_name : auth()->user()->name }}</span>
+                                <span class="text-light">{{ $displayName }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
                                 <li>
