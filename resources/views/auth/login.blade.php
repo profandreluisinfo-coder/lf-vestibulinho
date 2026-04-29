@@ -73,8 +73,7 @@
                                         senha?</a>
                                     <span aria-hidden="true">
                                         @if ($calendar?->isInscriptionOpen())
-                                            <a href="{{ route('register') }}" class="text-decoration-none">Registrar
-                                                e-mail</a>
+                                            <a href="{{ route('register') }}" class="text-decoration-none">Registrar-se</a>
                                         @endif
                                     </span>
                                 </div>

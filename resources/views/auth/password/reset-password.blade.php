@@ -37,16 +37,21 @@
                                     Para redefinir sua senha, preencha o formulário abaixo:
                                 </p>
                             </div>
+                            <div class="mb-3 text-end">
+                                <button type="button" id="toggleAllPasswords" class="btn btn-sm btn-link text-decoration-none">
+                                    <i class="bi bi-eye"></i> Mostrar senhas
+                                </button>
+                            </div>
                             <form id="reset-password" action="{{ route('reset.password.action') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="token" value="{{ $token }}">
                                 <div class="mb-3">
                                     <label for="password" class="form-label required">Nova Senha</label>
-                                    <input type="password" name="password" class="form-control" id="password">
+                                    <input type="password" name="password" class="form-control password-field" id="password">
                                 </div>
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label required">Repetir Senha</label>
-                                    <input type="password" name="password_confirmation" class="form-control"
+                                    <input type="password" name="password_confirmation" class="form-control password-field"
                                         id="password_confirmation">
                                 </div>
                                 <div class="mb-3">
@@ -81,4 +86,8 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/js/ui/auth/toggleAllPasswords.js') }}"></script>
 @endpush

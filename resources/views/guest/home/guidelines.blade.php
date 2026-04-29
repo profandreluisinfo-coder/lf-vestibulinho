@@ -12,12 +12,12 @@
                         <div class="card h-100 border-0 shadow-sm">
                             <div class="card-body text-center">
                                 <i class="bi bi-person-plus fs-1 text-primary mb-2"></i>
-                                <h6 class="card-title">1. Criar sua conta</h6>
+                                <h6 class="card-title">1. Registre-se</h6>
                                 <p class="card-text small">
                                     Preencha o
                                     <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#register">formulário de
                                         registro</a>
-                                    informando seus dados básicos e criando sua senha de acesso.
+                                    informando seu e-mail e criando sua senha de acesso.
                                 </p>
                             </div>
                         </div>
