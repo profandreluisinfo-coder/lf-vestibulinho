@@ -70,7 +70,7 @@
             @enderror
         </div>
 
-        <div class="form-group col-md-6 mt-3 mb-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
+        <div class="form-group col-md-6 mt-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
             <label for="descricaoAcessibilidade" class="form-label required">Especifique</label>
             <input list="disabilities" class="form-control @error('accessibility_description') is-invalid @enderror"
                 id="accessibility_description" name="accessibility_description"
@@ -93,9 +93,9 @@
         <!-- Área para anexar autorização do responsável legal -->
         <div class="form-group col-md-12" {{ $selectedPne == 1 ? '' : 'd-none' }}>
 
-            <p>
+            <div class="alert alert-warning text-justify">
                 O(a) candidato(a) que declarou possuir necessidades especiais neste Processo Seletivo deve apresentar o laudo/relatório de avaliação médico, contendo BLA BLA BLA.... A autorização deverá ser enviada em anexo ao formulário de inscrição.
-            </p>
+            </div>
 
             <label for="report" class="form-label required">Anexe o laudo/relatório de avaliação médico</label>
             <input type="file" name="pne_report" id="pne_report" class="form-control @error('pne_report') is-invalid @enderror">

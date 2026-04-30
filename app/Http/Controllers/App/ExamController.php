@@ -25,6 +25,7 @@ class ExamController extends Controller
         $candidates = DB::table('exam_results')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
+            ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
             ->select(
                 'exam_results.room_number',
@@ -32,7 +33,7 @@ class ExamController extends Controller
                 'users.cpf as candidate_cpf',
                 'users.name as candidate_name',
                 'users.social_name as candidate_social_name',
-                'users.pne as candidate_pne',
+                'user_details.pne as candidate_pne',
                 'exam_results.exam_date as date',
                 'exam_results.exam_time as time',
                 'inscriptions.id as inscription_id' // 👈 aqui entra o número de inscrição

@@ -18,7 +18,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <div class="d-flex align-items-center fw-semibold">
                 <i class="bi bi-info-circle fs-5 me-2"></i>
-                Para encontrar um registro específico, digite na caixa de pesquisa qualquer parte da inscrição, do nome do
+                Para encontrar um registro específico, digite na caixa de pesquisa o número da inscrição, qualquer parte do nome do
                 candidato ou do CPF.
             </div>
         </div>

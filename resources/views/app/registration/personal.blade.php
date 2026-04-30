@@ -1,6 +1,6 @@
 @extends('app.registration.master')
 
-@section('page-title', 'Inscrição - Passo ' . $step . ' - Dados Pessoais')
+@section('page-title', config('app.name') . ' ' . $calendar->year)
 
 @section('forms')
 
@@ -106,7 +106,6 @@
                         <h5 class="modal-title" id="modalNomeSocialLabel">
                             <i class="bi bi-info-circle me-2"></i> O que é nome social e nome afetivo
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
 
                     <div class="modal-body">
@@ -130,19 +129,6 @@
                                 target="_blank" title="LEI Nº 16.785, DE 03 DE JULHO DE 2018">
                                 LEI Nº 16.785, DE 03 DE JULHO DE 2018
                             </a>)
-                        </p>
-
-                        <p>
-                            O(a) candidato(a) que desejar utilizar nome social/afetivo neste Processo Seletivo
-                            poderá fazê-lo,
-                            desde que obtenha <u>autorização expressa dos responsáveis legais</u>.
-                            <strong>
-                                A autorização deverá ser enviada em anexo, por meio de e-mail, para o seguinte
-                                endereço eletrônico
-                            </strong>
-                            <a href="mailto:emdrleandrofranceschini@educacaosumare.com.br">
-                                emdrleandrofranceschini@educacaosumare.com.br
-                            </a>.
                         </p>
                     </div>
 

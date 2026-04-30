@@ -9,10 +9,15 @@
 @section('dash-content')
 
     <div class="mb-4">
-        <h5 class="fw-semibold mb-4">
-            <i class="bi bi-list-check text-primary me-2"></i>
-            Como fazer sua inscrição
-        </h5>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-semibold">
+                <i class="bi bi-list-check text-primary me-2"></i>
+                Como fazer sua inscrição
+            </h5>
+
+            <span class="badge bg-danger"><i class="bi bi-exclamation-diamond me-2"></i>Você não possui uma inscrição</span>
+        </div>
 
         <div class="row g-3 mb-4">
             <div class="col-md-6">

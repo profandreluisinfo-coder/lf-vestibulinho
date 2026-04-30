@@ -20,7 +20,7 @@
 
                 {{-- Card: Informações da Prova --}}
                 <div class="col-12 col-md-4">
-                    
+
                     <div class="card shadow h-100" style="background-color: #ffffe6">
                         <div class="card-body">
 
@@ -61,10 +61,10 @@
 
                 {{-- Card: Relatórios & Detalhes --}}
                 <div class="col-12 col-md-4">
-                    
-                    <div class="card shadow h-100" style="background-color: #ffffe6">                       
+
+                    <div class="card shadow h-100" style="background-color: #ffffe6">
                         <div class="card-body">
-                            
+
                             <h5 class="card-title mb-3">
                                 <i class="bi bi-file-earmark-text me-2"></i>Relatórios
                             </h5>
@@ -108,7 +108,8 @@
                                 <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                             </h5>
 
-                            <form id="location-access-form" action="{{ route('app.system.publish.location') }}" method="POST">
+                            <form id="location-access-form" action="{{ route('app.system.publish.location') }}"
+                                method="POST">
                                 @csrf
 
                                 <div class="form-check form-switch mb-3">
@@ -143,54 +144,41 @@
 
             </div>
 
-            {{-- Exibição dos dados cadastrados --}}
-            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-
-                <table class="table table-striped freezed-table mb-0 caption-top">
-                    <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Alocação de Candidatos</caption>
-                    <thead class="table-success text-center">
-                        <tr>
-                            <th scope="col">Local</th>
-                            <th scope="col">Sala</th>
-                            <th scope="col">Candidatos</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-
-                        @forelse($rooms as $room)
-
-                            <tr>
-                                <td>{{ $room->location_name }}</td>
-                                <td>{{ $room->room_number }}</td>
-                                <th>{{ $room->qtd }}</th>
-                            </tr>
-
-                        @empty
-
-                            <tr>
-                                <td colspan="3" class="text-center">Nenhum agendamento encontrado.</td>
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
-            </div>
-            
-        @else
-
-            @include('components.no-records', [
-                'message' => 'Causas de problemas com agendamento de prova:',
-                'submessage' =>
-                    'Provavelmente nenhum agendamento ainda foi realizado, ou o calendário ainda não foi definido.',
-                'action' => true,
-                'actionMessage' =>
-                    'Solução: Verifique se o calendário foi definido. Tente agendar uma nova prova. Se o problema persistir, entre em contato com o suporte.',
-            ])
-
         @endif
+
+        {{-- Exibição dos dados cadastrados --}}
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+
+            <table class="table table-striped freezed-table mb-0 caption-top">
+                <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Alocação de Candidatos</caption>
+                <thead class="table-success text-center">
+                    <tr>
+                        <th scope="col">Local</th>
+                        <th scope="col">Sala</th>
+                        <th scope="col">Candidatos</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+
+                    @forelse($rooms as $room)
+                        <tr>
+                            <td>{{ $room->location_name }}</td>
+                            <td>{{ $room->room_number }}</td>
+                            <th>{{ $room->qtd }}</th>
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="3" class="text-center">Nenhum agendamento encontrado.</td>
+                        </tr>
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
 
         {{-- Modal de definição de local --}}
         <div class="modal fade" id="setLocalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -242,7 +230,7 @@
 
                             {{-- prettier-ignore --}}
                             <button type="submit" class="btn btn-success btn-sm">
-                                <i class="bi bi-check-circle me-1"></i>Salvar
+                            <i class="bi bi-check-circle me-1"></i>Salvar
                             </button>
                         </form>
 

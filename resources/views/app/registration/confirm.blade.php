@@ -22,35 +22,22 @@
   @endphp
 
   <div class="mb-4 text-center">
-    <p class="fw-bold">Por favor, confirme os dados abaixo antes de finalizar sua inscrição.</p>
+    <p class="fw-bold">Por favor, confirme todos os dados abaixo antes de finalizar sua inscrição.</p>
   </div>
 
   <fieldset class="mb-2 rounded border p-2">
     <legend class="border-bottom pb-1"><i class="bi bi-person-vcard"></i> Identificação do Candidato</legend>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><i class="bi bi-credit-card"></i> <strong>CPF:</strong> {{ $step1['cpf'] }}</li>
-      <li class="list-group-item"><i class="bi bi-person"></i> <strong>Nome:</strong> {{ $step1['name'] }}</li>
+      <li class="list-group-item"><strong>CPF:</strong> {{ $step1['cpf'] }}</li>
+      <li class="list-group-item"><strong>Nome:</strong> {{ $step1['name'] }}</li>
       @if ($step1['social_name_option'] == 1)
-        <li class="list-group-item"><i class="bi bi-person-bounding-box"></i> <strong>Nome social:</strong>
-          {{ $step1['social_name'] }}</li>
+      <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
+          <div><strong>Nome social:</strong> {{ $step1['social_name'] }}</div>
+          <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" class="text-decoration-none" target="_blank">
+                      Autorização <i class="bi bi-box-arrow-up-right"></i></a>
+      </li>
       @endif
     </ul>
-
-    @if(session('step1.authorization'))
-          <div class="alert alert-info">
-              <p>
-                  <strong>Autorização:</strong>
-                  <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank">
-                      Visualizar PDF
-                  </a>
-              </p>
-
-              <p class="mb-0">
-                  Caso deseje substituir o arquivo, selecione um novo PDF em "Dados Pessoais (Passo 1)".
-              </p>
-          </div>
-      @endif
-
   </fieldset>
 
   <fieldset class="mb-2 rounded border p-2">
@@ -163,24 +150,15 @@
     <legend class="border-bottom pb-1"><i class="bi bi-universal-access"></i> Educação Especial</legend>
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><strong>Elegível?</strong> {{ $step6['pne'] == 1 ? 'SIM' : 'NÃO' }}</li>
-      @if ($step6['pne'] == '1')
-        <li class="list-group-item"><strong>Descrição:</strong> {{ $step6['accessibility_description'] }}</li>
-      @endif
-    </ul>
-  @if(session('step1.authorization'))
-        <div class="alert alert-info">
-            <p>
-                <strong>Laudo/Relatório Médico:</strong>
-                <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank">
-                    Visualizar PDF
-                </a>
-            </p>
-
-            <p class="mb-0">
-                Caso deseje substituir o arquivo, selecione um novo PDF em "Outras Informações (Passo 6)".
-            </p>
+    @if ($step6['pne'] == '1')
+      <li class="list-group-item d-flex align-items-center justify-content-between">
+        <div>
+        <strong>Descrição:</strong> {{ $step6['accessibility_description'] }}
         </div>
+        <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" class="text-decoration-none" target="_blank"> Laudo/Relatório Médico <i class="bi bi-box-arrow-up-right"></i></a>
+      </li>
     @endif
+    </ul>
   </fieldset>
 
   <fieldset class="mb-2 rounded border p-2">

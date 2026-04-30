@@ -26,7 +26,6 @@
       @enderror
     </div>
     <div class="alert alert-warning d-flex flex-column flex-md-row align-items-center" role="alert">
-      <i class="bi bi-exclamation-triangle-fill fs-4 me-4"></i>
       <div class="text-justify">
         <strong>Atenção:</strong> A escolha do curso realizada nesta etapa tem caráter indicativo, sendo utilizada apenas
         para fins estatísticos e de planejamento interno. A matrícula dos candidatos aprovados será realizada conforme
