@@ -139,7 +139,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.local.*', 'app.exam.*', 'export.users', 'app.archives.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.local.*', 'app.exam.*', 'app.archives.*', 'export.*']) ? 'show' : '' }}"
                         id="menuProvas">
                         <a href="{{ route('app.local.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.local.index') ? 'active' : '' }}">
@@ -149,9 +149,9 @@
                             class="dropdown-item-custom {{ request()->routeIs('app.exam.create') ? 'active' : '' }}">
                             Agendar
                         </a>
-                        <a href="#" id="exportLink"
-                            class="dropdown-item-custom {{ request()->routeIs('export.users') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('export.users') }}')">
+                        <a href="javascript:void(0)" id="exportLink"
+                            class="dropdown-item-custom {{ request()->routeIs('export.excel') ? 'active' : '' }}"
+                            onclick="handleExport(event, '{{ route('export.excel') }}')">
                             Planilha de Notas
                         </a>
                         <a href="{{ route('app.archives.index') }}"

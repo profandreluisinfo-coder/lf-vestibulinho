@@ -117,18 +117,16 @@
                 </div>
             </div>
         @else
-            @include('components.no-records', [
-                'message' => 'Causas de problemas com as classificações:',
-                'submessage' => 'Provavelmente nenhuma nota foi importada da planilha de classificação.',
-                'action' => true,
-                'actionMessage' =>
-                    'Solução: Tente imporrtar uma nova planilha de classificação. Se o problema persistir, entre em contato com o suporte.',
-            ])
+        
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Nenhum resultado encontrado. A tabela de classificação geral ainda está vazia.
+            </div>
+
         @endif
     </div>
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/filters/results/private.js') }}"></script>x
-    <script src="{{ asset('assets/swa/ranking/results.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/results/private.js') }}"></script>x
+    <script src="{{ asset('assets/js/swa/ranking/results.js') }}"></script>
 @endpush

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 class ExportController extends Controller
 {
-    public function exportUsers()
+    public function exporToExcel()
     {
         // Verificar se existem inscrições antes de exportar
         if (!Inscription::exists()) {
@@ -18,9 +18,9 @@ class ExportController extends Controller
         }
 
         // Verificar se existe prova agendada
-        if (!ExamResult::exists()) {
-            return redirect()->route('admin.dashboard')->with('error', 'Não é possível exportar os candidatos, pois não existe uma prova agendada.');
-        }
+        // if (ExamResult::exists()) {
+        //     return redirect()->route('admin.dashboard')->with('error', 'Não é possível exportar os candidatos, pois não existe uma prova agendada.');
+        // }
         
         return Excel::download(new UsersWithInscriptionsExport, 'candidatos.xlsx');
     }

@@ -7,11 +7,8 @@
     <div class="container">
 
         {{-- Título da Página --}}
-        <div class="mb-4 pb-2 border-bottom">
-            <h4 class="mb-0 d-flex align-items-center">
-                <i class="bi bi-upload me-2 text-primary"></i>
-                Importar Notas
-            </h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0"><i class="bi bi-upload me-2"></i>Importar Notas</h5>
         </div>
 
         <div class="progress mb-3 d-none" id="progress-wrapper">
@@ -24,6 +21,7 @@
         @php
             $count = \App\Models\ExamResult::count('ranking');
         @endphp
+        
         @if ($count > 0)
         <div class="d-flex flex-row align-items-center mb-3">
             <small class="text-success fw-semibold">

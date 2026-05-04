@@ -7,7 +7,7 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar</h5>
+            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar Arquivos</h5>
         </div>
 
         <div class="card shadow-sm">
@@ -48,7 +48,7 @@
                         <input type="file" name="answer"
                             class="form-control @error('answer') is-invalid @enderror" id="answer"
                             value="{{ old('answer') }}">
-                        <label for="answer" class="form-label required">Gabarito relacionado (Se houver)</label></label>
+                        <label for="answer" class="form-label required">Gabarito relacionado à prova (Se houver)</label></label>
                         @error('answer')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -56,11 +56,9 @@
                         @enderror
                     </div>
 
-                        {{-- prettier-ignore --}}
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
-                        {{-- prettier-ignore --}}
                     <a href="{{ route('app.archives.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
                 </form>
 
@@ -74,5 +72,5 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-    <script src="{{ asset('assets/rules/admin/archives/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/archives/edit.js') }}"></script>
 @endpush

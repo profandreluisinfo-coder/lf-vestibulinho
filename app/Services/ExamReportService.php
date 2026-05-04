@@ -15,6 +15,7 @@ class ExamReportService
         return DB::table('exam_results')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
+            ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
             ->select(
                 'exam_locations.name as location_name',
@@ -23,7 +24,7 @@ class ExamReportService
                 'users.social_name',
                 'users.cpf',
                 'users.birth',
-                'users.pne',
+                'user_details.pne',
                 'inscriptions.id as inscription_id' // 👈 aqui
             )
             ->orderBy('exam_results.exam_location_id')

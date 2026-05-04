@@ -28,7 +28,7 @@ class ResultController extends Controller
                 'users.name',
                 'users.social_name',
                 'users.birth',
-                'users.pne',
+                'user_details.pne',
                 'exam_results.score',
                 'exam_results.ranking'
             )

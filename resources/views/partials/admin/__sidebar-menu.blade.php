@@ -16,7 +16,7 @@
         <div class="collapse ps-3" id="menuVestibulinho">
             <a href="{{ route(
 'app.calendar.index') }}" class="nav-link text-light">Calendário</a>
-            <a href="{{ route('app.courses.index') }}" class="nav-link text-light">Cursos</a>
+            <a href="{{ route('app.courses.index') }}" class="nav-link text-light">Cursos TESTE</a>
             <a href="{{ route('app.notices.index') }}" class="nav-link text-light">Edital</a>
             <a href="{{ route('app.faqs.index') }}" class="nav-link text-light">Registrar FAQ</a>
             <a href="{{ route('app.archives.index') }}" class="nav-link text-light">Acervo de Provas</a>
@@ -72,7 +72,7 @@
             <i class="bi bi-chevron-down small"></i>
         </button>
         <div class="collapse ps-3" id="menuResultados">
-            <a href="{{ route('app.import.home') }}" class="nav-link text-light">Importar Notas</a>
+            <a href="{{ route('import.home') }}" class="nav-link text-light">Importar Notas</a>
             <a href="{{ route('app.results.index') }}" class="nav-link text-light">Classificação Geral</a>
             <a href="{{ route('app.calls.index') }}" class="nav-link text-light">Chamadas</a>
         </div>

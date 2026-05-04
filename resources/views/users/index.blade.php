@@ -36,7 +36,7 @@
                 <thead class="table-success text-center">
                     <tr>
                         <th>E-mail</th>
-                        <th>E-mail Verificado?</th>
+                        <th>Situação</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">

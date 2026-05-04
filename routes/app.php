@@ -91,7 +91,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::prefix('exportar')
         ->name('export.')
         ->group(function () {
-            Route::get('/candidatos', [ExportController::class, 'exportUsers'])->name('users');
+            Route::get('/candidatos', [ExportController::class, 'exporToExcel'])->name('excel');
         });
 
     // ==========================

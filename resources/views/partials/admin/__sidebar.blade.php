@@ -6,11 +6,11 @@
             <h5 class="m-0 fw-semibold text-white">{{ config('app.name') }} {{ $calendar?->year }}</h5>
         </a>
     </div>
-    @include('partials.admin.sidebar-menu')
+    {{-- @include('partials.admin.sidebar-menu') --}}
 </nav>
 
 {{-- === SIDEBAR (OFFCANVAS MOBILE) === --}}
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
+{{-- <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">{{ config('app.name') }}</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
@@ -18,4 +18,4 @@
     <div class="offcanvas-body">
         @include('partials.admin.sidebar-menu')
     </div>
-</div>
+</div> --}}

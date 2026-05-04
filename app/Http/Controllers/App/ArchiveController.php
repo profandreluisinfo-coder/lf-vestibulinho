@@ -152,7 +152,7 @@ class ArchiveController extends Controller
 
         // Atualiza dados gerais
         $archive->year = $request->year;
-        $archive->user_id = Auth::user()->id();
+        $archive->user_id = Auth::user()->id;
         $archive->save();
 
 
@@ -172,8 +172,7 @@ class ArchiveController extends Controller
             $answerModel->save();
         }
 
-        return redirect()->route('app.archives.index')
-            ->with('success', 'Arquivo atualizado com sucesso!');
+        return redirect()->route('app.archives.index')->with('success', 'Arquivo atualizado com sucesso!');
     }
 
     /**
