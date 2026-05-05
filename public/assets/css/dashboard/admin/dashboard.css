@@ -20,6 +20,7 @@
     margin: 0 auto;
 }
 
+
 /* Layout desktop */
 @media (min-width: 768px) {
 
@@ -36,6 +37,8 @@
         height: 3px;
     }
 }
+
+.cursor-pointer { cursor: pointer; }
 
 /* Layout tablet */
 @media (min-width: 768px) and (max-width: 1024px) {
