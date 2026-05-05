@@ -49,7 +49,8 @@
   <h1>Processo Seletivo {{ $calendar?->year }} - Convocação para Matrícula</h1>
 
   <div class="info">
-    <p><strong>Nome:</strong> {{ $user->social_name ?? $user->name }}</p>
+    {{-- <p><strong>Nome:</strong> {{ $user->social_name ?? $user->name }}</p> --}}
+    <p><strong>Inscrição:</strong> {{ $user->inscription->id }}</p>
     <p><strong>CPF:</strong> {{ $user->cpf }}</p>
     {{-- <p><strong>Curso Pretendido:</strong> {{ $user->inscription->course->description }}</p> --}}
   </div>

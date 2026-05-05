@@ -98,7 +98,7 @@
         </div>
 
         {{-- Nome Social --}}
-        @if (auth()->user()->social_name_option)
+        @if (auth()->user()->social_name_option == 1)
             <div class="info-block">
                 <div class="info-block-label">
                     <i class="bi bi-person-badge"></i> Nome Social / Afetivo
@@ -201,13 +201,13 @@
             </form>
 
             @if ($settings->location)
-                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
+                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
                     <i class="bi bi-geo-alt me-1"></i> Local de Prova
                 </button>
             @endif
 
             @if ($settings->result)
-                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#resultadoDeProva">
+                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resultadoDeProva">
                     <i class="bi bi-list-ol me-1"></i> Classificação
                 </button>
             @endif
@@ -234,12 +234,12 @@
                     <div class="modal-body p-4">
 
                         {{-- Candidato --}}
-                        <div class="info-block mb-3">
+                        {{-- <div class="info-block mb-3">
                             <div class="info-block-label"><i class="bi bi-person"></i> Candidato</div>
                             <div style="font-size:0.95rem; font-weight:600;">
                                 {{ auth()->user()->social_name ?: auth()->user()->name }}
                             </div>
-                        </div>
+                        </div> --}}
 
                         {{-- Local --}}
                         <div class="info-block mb-3">
@@ -325,7 +325,7 @@
 
                             <div class="result-body">
                                 <p class="text-muted mb-1" style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em;">Candidato(a)</p>
-                                <h5 class="fw-bold mb-1">{{ $user->name }}</h5>
+                                <h5 class="fw-bold mb-1">{{ $displayName }}</h5>
                                 <p style="font-size:0.82rem; color:#6c757d;">CPF: {{ $user->cpf }}</p>
 
                                 <hr class="my-3">
@@ -376,12 +376,12 @@
 
                         {{-- Dados da chamada --}}
                         <div class="call-data-grid mb-3" style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
-                            <div class="call-data-item">
+                            {{-- <div class="call-data-item">
                                 <div class="call-data-label">Candidato</div>
                                 <div class="call-data-value" style="font-size:0.85rem;">
                                     {{ auth()->user()->social_name ?? auth()->user()->name }}
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="call-data-item">
                                 <div class="call-data-label">Chamada nº</div>
                                 <div class="call-data-value">{{ $call?->call_number }}</div>
