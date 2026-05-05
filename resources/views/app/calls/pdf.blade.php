@@ -117,6 +117,9 @@
             $detail = $user->user_detail;
             $call_date = $call->date->format('d/m/Y');
             $doc = trim(explode(' ', $detail?->doc_type)[0]); // pega a primeira palavra do tipo de documento
+            $displayName = ($user->social_name_option && $user->authorization_accepted == 1)
+                ? $user->social_name    
+                : '';
         @endphp
 
         <div class="header">
@@ -135,7 +138,7 @@
 
             <tr>
                 <td class="header-cell">NOME SOCIAL/AFETIVO<br>(DECR. 55588/10)<br>(LEI N° 16.785/18)</td>
-                <td colspan="8" class="tc">{{ $user->social_name ? $user->social_name : "---" }}</td>
+                <td colspan="8" class="tc">{{ $displayName ? $displayName : "---" }}</td>
             </tr>
 
             <tr>
@@ -157,7 +160,7 @@
                 <td colspan="4" class="tc fs">{{ $detail?->new_number }}</td>
                 <td class="header-cell tc">DATA NASC.</td>
                 <td colspan="2" class="tc fs">
-                    {{ $user->birth ? \Carbon\Carbon::parse($user->birth)->format('d/m/Y') : '' }}
+                    {{ $user->birth }}
                 </td>
             </tr>
 
@@ -209,9 +212,9 @@
             <!-- EDUCAÇÃO ESPECIAL -->
             <tr>
                 <td class="header-cell" style="width: 32%">ELEGÍVEL AOS SERVIÇOS DA EDUCAÇÃO ESPECIAL</td>
-                <td class="tc fs">{{ $detail?->accessibility ? 'Sim' : 'Não' }}</td>
+                <td class="tc fs">{{ (  $detail?->pne_report_accepted == 1) ? 'Sim' : 'Não' }}</td>
                 <td class="header-cell tc">QUAL?</td>
-                <td colspan="5" class="tc fs">{{ $detail?->accessibility }}</td>
+                <td colspan="5" class="tc fs">{{ (  $detail?->pne_report_accepted == 1) ? $detail?->accessibility : '---' }}</td>
             </tr>
 
             <!-- SAÚDE / ALERGIA -->
@@ -350,20 +353,11 @@
                 <td class="header-cell" style="width: 15%; text-align: center;">DIRETOR</td>
             </tr>
             <tr>
-                <td>2026</td>
+                <td>2027</td>
                 <td></td>
                 <td></td>
                 <td class="tc fs">{{ $user->getAgeAttribute() }}</td>
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2027</td>
-                <td></td>
-                <td></td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -379,6 +373,15 @@
             </tr>
             <tr>
                 <td>2029</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2030</td>
                 <td></td>
                 <td></td>
                 <td></td>

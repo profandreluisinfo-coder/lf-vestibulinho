@@ -142,7 +142,7 @@
                                             <tr class="table-warning">
                                                 <th scope="col">Classificação</th>
                                                 <th scope="col">Inscrição</th>
-                                                <th scope="col">Nome</th>
+                                                <th scope="col">Candidato</th>
                                                 <th scope="col">CPF</th>
                                                 <th scope="col">PCD</th>
                                             </tr>
@@ -156,10 +156,10 @@
                                                 <tr>
                                                     <td>{{ $call->examResult->ranking }}</td>
                                                     <td>{{ $call->examResult->inscription_id }}</td>
-                                                    <td>{{ $user->social_name ?? $user->name }}</td>
+                                                    <td>{{ ($user->authorization_accepted == 1) ?$user->social_name : $user->name }}</td>
                                                     <td>{{ $user->cpf }}</td>
                                                     <td>
-                                                        @if ($user->pne)
+                                                        @if ($user->user_detail->pne_report_accepted == 1)
                                                             <span class="badge bg-success" title="Candidato PCD"><i
                                                                     class="bi bi-universal-access"></i></span>
                                                         @endif

@@ -42,7 +42,7 @@
                     @forelse ($users as $user)
                         <tr>
                             <th scope="row">{{ $user->inscription?->id }}</th>
-                            <td>{{ $user->authorization_accepted ? $user->social_name : $user->name }}</td>
+                            <td>{{ ($user->authorization_accepted == 1) ? $user->social_name : $user->name }}</td>
                             <td>
                                 @if ($user->user_detail?->pne_report)
                                     <a href="{{ asset('storage/' . $user->user_detail->pne_report) }}"

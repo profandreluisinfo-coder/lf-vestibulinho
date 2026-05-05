@@ -28,7 +28,7 @@ use Illuminate\Http\RedirectResponse;
  * @package App\Http\Controllers
  */
 class CallController extends Controller
- {
+{
     /**
      * Renderiza a view para criar uma nova chamada
      *
@@ -48,8 +48,11 @@ class CallController extends Controller
         // Filtra os PCDs que ainda não foram convocados
         $pneCandidates = ExamResult::whereNotNull('ranking')
             ->whereNotIn('id', $alreadyCalledIds)
-            ->whereHas('inscription.user', fn($query) => $query->where('pne', true))
-            ->with(['inscription.user'])
+            ->whereHas('inscription.user.user_detail', function ($query) {
+                $query->where('pne', true)
+                    ->where('pne_report_accepted', true);
+            })
+            ->with(['inscription.user.user_detail'])
             ->orderBy('ranking')
             ->get();
 

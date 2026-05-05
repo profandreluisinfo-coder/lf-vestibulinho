@@ -79,6 +79,12 @@ class User extends Authenticatable
         return Carbon::parse($value)->format('d/m/Y');
     }
 
+    public function getAgeAttribute(): ?int
+    {
+        $birth = $this->getRawOriginal('birth');
+        return $birth ? Carbon::parse($birth)->age : null;
+    }
+
     /**
      * Obter o detalhe do usuário.
      *
@@ -158,7 +164,7 @@ class User extends Authenticatable
     {
         return $this->inscription()->exists();
     }
-   
+
     /**
      * Remove todos os caracteres não numéricos do CPF.
      *
@@ -204,15 +210,15 @@ class User extends Authenticatable
         return $this->birth ? $this->birth->format('d/m/Y') : null;
     }
 
-    /**
-     * Retorna a idade do usuário, baseada na data de nascimento, ou null se a data de nascimento for nula.
-     *
-     * @return int|null
-     */
-    public function getAgeAttribute(): ?int
-    {
-        return $this->birth ? $this->birth->age : null;
-    }
+    // /**
+    //  * Retorna a idade do usuário, baseada na data de nascimento, ou null se a data de nascimento for nula.
+    //  *
+    //  * @return int|null
+    //  */
+    // public function getAgeAttribute(): ?int
+    // {
+    //     return $this->birth ? $this->birth->age : null;
+    // }
 
     protected static function booted()
     {

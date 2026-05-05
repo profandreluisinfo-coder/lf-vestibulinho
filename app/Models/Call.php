@@ -129,7 +129,6 @@ class Call extends Model
     */
     public static function countPcdInLastCall()
     {
-        // Pega o ID da última call_list
         $lastCallListId = CallList::orderByDesc('number')
             ->value('id');
 
@@ -137,13 +136,11 @@ class Call extends Model
             return 0;
         }
 
-        // Conta quantos chamados são PCD na última call_list
         return self::where('call_list_id', $lastCallListId)
-            ->whereHas(
-                'examResult.inscription.user',
-                fn($q) =>
+            ->whereHas('examResult.inscription.user.user_detail', function ($q) {
                 $q->where('pne', true)
-            )
+                    ->where('pne_report_accepted', true);
+            })
             ->count();
     }
 
@@ -169,13 +166,12 @@ class Call extends Model
     {
         $lastCallListId = CallList::orderByDesc('number')->value('id');
 
-        return self::with('examResult.inscription.user')
+        return self::with('examResult.inscription.user.user_detail')
             ->where('call_list_id', $lastCallListId)
-            ->whereHas(
-                'examResult.inscription.user',
-                fn($q) =>
+            ->whereHas('examResult.inscription.user.user_detail', function ($q) {
                 $q->where('pne', true)
-            )
+                    ->where('pne_report_accepted', true);
+            })
             ->get();
     }
 }
