@@ -31,14 +31,14 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
                                         data-bs-target="#viewCourse"
                                         onclick="showCourseDetails({{ $course->id }}, '{{ addslashes($course->name) }}', '{{ addslashes($course->description) }}', '{{ $course->duration }}', '{{ addslashes($course->info) }}', {{ $course->vacancies }})">
-                                        <i class="bi bi-eye" title="Ver Detalhes"></i>
+                                        <i class="bi bi-eye" title="Ver Detalhes"></i> Detalhes
                                     </a>
                                     <!-- Editar -->
                                     <a href="{{ route('app.courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-pencil-square" title="Editar"></i>
+                                        <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-course-form-{{ $course->id }}"
@@ -48,7 +48,7 @@
                                     </form>
                                     <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i> Excluir
                                     </button>
                                 </div>
                             </td>

@@ -13,7 +13,7 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-person me-2"></i>Pessoas com Deficiência</h5>
+            <h5 class="mb-0"><i class="bi bi-universal-access me-2"></i>Pessoas com Deficiência</h5>
         </div>
         @if (!$users->isEmpty())
             <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">

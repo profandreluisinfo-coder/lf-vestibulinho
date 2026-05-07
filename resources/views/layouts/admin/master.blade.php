@@ -58,7 +58,7 @@
                 <div class="menu-section-title">Vestibulinho</div>
                 <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuVestibulinho')">
-                        <i class="bi bi-calendar-event"></i>
+                        <i class="bi bi-wrench"></i>
                         <span>Gerenciar</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
@@ -66,19 +66,19 @@
                         id="menuVestibulinho">
                         <a href="{{ route('app.calendar.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.calendar.*') ? 'active' : '' }}">
-                            Calendário
+                            <i class="bi bi-calendar-event me-1"></i> Calendário
                         </a>
                         <a href="{{ route('app.courses.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.courses.*') ? 'active' : '' }}">
-                            Cursos
+                            <i class="bi bi-book me-1"></i> Cursos
                         </a>
                         <a href="{{ route('app.notices.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.notices.*') ? 'active' : '' }}">
-                            Edital
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Edital
                         </a>
                         <a href="{{ route('app.faqs.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.faqs.*') ? 'active' : '' }}">
-                            Registrar FAQ
+                            <i class="bi bi-question-circle me-1"></i> Registrar FAQ
                         </a>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         id="menuUsuarios">
                         <a href="{{ route('users.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('users.index') ? 'active' : '' }}">
-                            Lista de Usuários
+                            <i class="bi bi-people me-1"></i> Lista de Usuários
                         </a>
                     </div>
                 </div>
@@ -113,15 +113,15 @@
                         id="menuInscricoes">
                         <a href="{{ route('inscriptions.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
-                            Lista Geral
+                            <i class="bi bi-people me-1"></i> Candidatos
                         </a>
                         <a href="{{ route('inscriptions.pcd') }}"
                             class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
-                            Pessoas com Deficiência
+                            <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>
                         <a href="{{ route('inscriptions.social.name') }}"
                             class="dropdown-item-custom {{ request()->routeIs('inscriptions.social.name') ? 'active' : '' }}">
-                            Nome Social
+                            <i class="bi bi-gender-trans me-1"></i> Nome Social
                         </a>
                     </div>
                 </div>
@@ -143,20 +143,20 @@
                         id="menuProvas">
                         <a href="{{ route('app.local.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.local.index') ? 'active' : '' }}">
-                            Locais
+                            <i class="bi bi-geo me-1"></i> Locais
                         </a>
                         <a href="{{ route('app.exam.create') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.exam.create') ? 'active' : '' }}">
-                            Agendar
+                            <i class="bi bi-calendar2-week me-1"></i> Agendar
                         </a>
                         <a href="javascript:void(0)" id="exportLink"
                             class="dropdown-item-custom {{ request()->routeIs('export.excel') ? 'active' : '' }}"
                             onclick="handleExport(event, '{{ route('export.excel') }}')">
-                            Planilha de Notas
+                            <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                         </a>
                         <a href="{{ route('app.archives.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.archives.*') ? 'active' : '' }}">
-                            Arquivos
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Arquivos
                         </a>
                     </div>
                 </div>
@@ -171,11 +171,11 @@
                         id="menuResultados">
                         <a href="{{ route('app.import.home') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.import.home') ? 'active' : '' }}">
-                            Importar Notas
+                            <i class="bi bi-upload me-1"></i> Importar Notas
                         </a>
                         <a href="{{ route('app.results.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.results.index') ? 'active' : '' }}">
-                            Classificação Geral
+                            <i class="bi bi-list-ol me-1"></i> Classificação
                         </a>
                     </div>
                 </div>
