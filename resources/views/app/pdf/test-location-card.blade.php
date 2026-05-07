@@ -61,7 +61,7 @@
     </div>
 
     <div class="section">
-        <p><strong>Nome:</strong> {{ $exam->inscription->user->social_name ?? $exam->inscription->user->name }}</p>
+        <p><strong>Nome:</strong> {{ ($exam->inscription->user->authorization_accepted == 1) ? $exam->inscription->user->social_name : $exam->inscription->user->name }}</p>
         <p><strong>CPF:</strong> {{ $exam->inscription->user->cpf }}</p>
         <p><strong>Local:</strong> {{ $exam->location->name }}</p>
         <p><strong>Endereço:</strong> {{ $exam->location->address }}</p>
