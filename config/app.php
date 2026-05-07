@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Vestibulinho'),
     'version' => env('APP_VERSION', '1.0.0'),
+    'year' => env('APP_YEAR', date('Y')),
 
     /*
     |--------------------------------------------------------------------------
