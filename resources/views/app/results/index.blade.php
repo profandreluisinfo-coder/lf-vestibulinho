@@ -96,7 +96,7 @@
                                         data-pcd="{{ $result->pne ? 'pcd' : 'nao' }}">
                                         <th scope="col">{{ $result->ranking }}º</th>
                                         <td>{{ $result->id }}</td>
-                                        <th>{{ $result->social_name ? $result->social_name : $result->name }}</th>
+                                        <th>{{ ($result->authorization_accepted == 1) ? $result->social_name : $result->name }}</th>
                                         <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
                                         <td>{{ $result->score }}</td>
                                         <td>

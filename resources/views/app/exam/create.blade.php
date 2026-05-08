@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-calendar2-week me-2"></i>Agendamento de Prova</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
-                <i class="bi bi-plus-circle me-1"></i> Novo
+                <i class="bi bi-calendar2-week me-2"></i>Agendar Prova
             </a>
         </div>
 
@@ -177,6 +177,30 @@
                 </tbody>
 
             </table>
+
+            @if ($examInfo)
+
+            <div class="alert alert-info d-flex align-items-start border-0 rounded-3 mt-5 p-3" role="alert">
+
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div>
+                    <h5 class="alert-heading mb-2">
+                        Informação Importante
+                    </h5>
+                    <p class="mb-0">
+                        Para agendar uma nova prova, clique no botão <i class="bi bi-calendar2-week me-1"></i>Agendar Prova. Este procedimento irá substituir o agendamento anterior.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+
+            </div>
+
+            @endif
 
         </div>
 

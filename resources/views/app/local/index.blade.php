@@ -34,10 +34,10 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center">
                                     <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
                                         data-bs-target="#viewLocal"
                                         onclick="showLocalDetails({{ $local->id }}, '{{ addslashes($local->name) }}', '{{ addslashes($local->address) }}', '{{ $local->rooms_available }}')">
-                                        <i class="bi bi-eye" title="Ver Detalhes"></i>
+                                        <i class="bi bi-eye me-1" title="Ver Detalhes"></i> Detalhes
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-location-form-{{ $local->id }}"
@@ -50,13 +50,13 @@
                                     <button type="button" title="Excluir"
                                         onclick="confirmLocationDelete({{ $local->id }}, '{{ addslashes($local->name) }}')"
                                         class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
                                     <!-- Editar -->
                                     <button type="button" class="btn btn-sm btn-primary" title="Editar">
                                         <a href="{{ route('app.local.edit', $local->id) }}"
                                             class="text-white text-decoration-none">
-                                            <i class="bi bi-pencil-square"></i>
+                                            <i class="bi bi-pencil-square me-1"></i> Editar
                                         </a>
                                     </button>
 

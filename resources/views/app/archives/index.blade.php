@@ -66,14 +66,14 @@
                                 </form>
                                 <button type="button"
                                     class="btn btn-sm btn-{{ $file->status ? 'secondary' : 'success' }} l"
-                                    title="{{ $file->status ? 'Não Publicar' : 'Publicar' }}"
+                                    title="{{ $file->status ? 'Ocultar' : 'Publicar' }}"
                                     onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
-                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
+                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i> {{ $file->status ? 'Ocultar' : 'Publicar' }}
                                 </button>
 
                                 <a href="{{ route('app.archives.edit', $file->id) }}"
                                     class="btn btn-sm btn-primary l" title="Editar">
-                                    <i class="bi bi-pencil-square me-1"></i>
+                                    <i class="bi bi-pencil-square me-1"></i> Editar
                                 </a>
 
                                 <form action="{{ route('app.archives.destroy', $file->id) }}" method="post">
@@ -81,7 +81,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger l"
                                         title="Excluir">
-                                        <i class="bi bi-trash me-1"></i>
+                                        <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
                                 </form>
                             </td>

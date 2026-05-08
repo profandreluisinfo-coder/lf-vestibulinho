@@ -16,8 +16,8 @@
             <h5 class="mb-0"><i class="bi bi-people me-2"></i>Usuários Cadastrados</h5>
         </div>
         <div class="mb-3">
-            <label class="me-2">
-                <input type="checkbox" id="filterVerified" class="form-check-input"> Mostrar apenas e-mails verificados
+            <label class="text-muted me-2">
+                <input type="checkbox" id="filterVerified" class="form-check-input me-2"> Mostrar apenas e-mails verificados
             </label>
         </div>
         @if (!($users->isEmpty()))

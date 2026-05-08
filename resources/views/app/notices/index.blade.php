@@ -50,6 +50,7 @@
                                         title="{{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}"
                                         onclick="confirmNoticePublish({{ $settings->id }} )">
                                         <i class="bi bi-{{ $settings->isNoticeEnabled() ? 'eye-slash' : 'eye' }}"></i>
+                                        {{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}
                                     </button>
 
                                     {{-- Botão de excluir --}}
@@ -61,7 +62,7 @@
                                     </form>
                                     <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                         onclick="confirmNoticeDelete({{ $notice->id }} )">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i> Excluir
                                     </button>
 
                                 </td>
