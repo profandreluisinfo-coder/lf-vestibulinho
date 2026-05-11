@@ -10,7 +10,7 @@
                             <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 <i class="bi bi-question-circle fs-1"></i> Dúvidas Frequentes
                             </a>
-                            <a href="{{ route('guest.archives.index') }}">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#archivesModal">
                                 <i class="bi bi-file-text fs-1"></i> Provas e Gabaritos
                             </a>
                         @if ($settings->isNoticeEnabled() && $notice->file)

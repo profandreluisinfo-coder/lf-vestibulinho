@@ -19,6 +19,7 @@
     @include('guest.home.guidelines')
     @include('guest.home.courses')
     @include('guest.home.countdown')
+    @include('guest.home.archives')
     @include('guest.home.faqs')
     @include('guest.home.footer')
 

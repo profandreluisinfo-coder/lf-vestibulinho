@@ -13,6 +13,8 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $archives = Archive::getActiveArchives();
+
         $faqs = Faq::where('status', true)
                    ->orderBy('order', 'asc')
                    ->get();
@@ -36,6 +38,6 @@ class HomeController extends Controller
         // Verifica quantos registros de chamada existem
         $calls = Call::all()->count();
 
-        return view('index', compact('deadline', 'files', 'courses', 'calls', 'faqs'));
+        return view('index', compact('deadline', 'files', 'courses', 'calls', 'faqs', 'archives'));
     }
 }
