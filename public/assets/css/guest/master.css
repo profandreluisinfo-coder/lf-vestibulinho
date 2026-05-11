@@ -194,16 +194,23 @@ body.has-footer .footer {
 }
 
 /* Linha decorativa abaixo do título hero */
-.hero-content h1::after,
+.hero-content h1,
+.hero-content .display-4 {
+    padding-bottom: 0.75rem;
+    position: relative;
+}
+
+/* .hero-content h1::after,
 .hero-content .display-4::after {
     content: '';
-    display: block;
-    margin-top: 0.6rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 56px;
     height: 4px;
     background: var(--accent-warm);
     border-radius: 4px;
-}
+} */
 
 .hero-buttons {
     gap: 1rem;
