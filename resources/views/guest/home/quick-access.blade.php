@@ -18,9 +18,7 @@
                                 <i class="bi bi-file-earmark-pdf fs-1"></i> Edital
                             </a>
                         @endif
-                            <a href="#courses" target="_blank">
-                                <i class="bi bi-mortarboard fs-1"></i> Cursos
-                            </a>
+                            
                         @if ($calendar->isInscriptionOpen())
                             <a href="#" data-bs-toggle="modal" data-bs-target="#register">
                                 <i class="bi bi-person-plus fs-1"></i> Registrar-se

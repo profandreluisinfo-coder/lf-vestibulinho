@@ -3,10 +3,10 @@
 @endpush
 
 @php
-    $recenteId = $archives->first()?->id;
+    $recenteId = $archives?->first()?->id;
 @endphp
 
-<div class="modal fade" id="archivesModal" tabindex="-1" aria-hidden="true"
+<div class="modal fade" id="archivesModal" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="archivesModalLabel" tabindex="-1">
 
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
