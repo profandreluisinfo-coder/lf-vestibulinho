@@ -1,9 +1,20 @@
 // Smooth scrolling para links âncora
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+
+        const href = this.getAttribute('href');
+
+        // Evita erro com href="#"
+        if (href === '#' || href.length <= 1) {
+            return;
+        }
+
+        const target = document.querySelector(href);
+
         if (target) {
+            e.preventDefault();
+
             target.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
