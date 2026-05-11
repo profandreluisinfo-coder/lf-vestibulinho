@@ -52,12 +52,12 @@
 
     @include('guest.home.navbar')
 
-    <section id="faq" class="my-5 py-5">
+    <section class="calls-wrapper">
 
         <div class="container">
 
             <h2 class="section-title text-center">
-                {{ config('app.name') }} {{ $calendar->year }} | Convocação para Matrícula
+                Convocação para Matrícula
             </h2>
 
             <div class="row">

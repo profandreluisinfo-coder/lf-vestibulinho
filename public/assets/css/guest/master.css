@@ -1,37 +1,34 @@
-/* Estabelece as cores principais do sistema */
 :root {
     --card-link-bg: #3166b4;
     --card-header-bg: #3166b4;
-    /* Cor principal (usada em botões e etc.) */
     --primary-color: #2c5aa0;
-    /* Cor secundária (usada em backgrounds e etc.) */
     --secondary-color: #f8f9fa;
-    /* Cor de destaque (usada em elementos de destaque) */
     --accent-color: #28a745;
-    /* Cor de texto escuro */
     --text-dark: #333;
-    /* Cor de texto de alerta */
     --text-warning: #f5d02d;
-    /* Cor de texto cinza */
     --text-gray: #424242;
-    /* Cor de texto verde */
     --text-green: #6da17d;
-    /* Cor de texto azul */
     --text-blue: #2fa1e0;
-    /* Cor de texto para títulos */
     --text-title: #1e3a5f;
 
 }
 
+html {
+    scrollbar-gutter: stable;
+}
+
+body.modal-open {
+    overflow-y: scroll;
+}
+
 body {
-    min-height: 100vh; /* Permite que o body cresça além da viewport */
+    min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Aplica flexbox apenas em páginas com footer */
 body.has-footer {
     display: flex;
     flex-direction: column;
@@ -60,26 +57,10 @@ body.has-footer .footer {
     font-weight: 400;
 }
 
-/**
- * Estiliza o para a navbar quando ela com scrolling
- * Adiciona uma sombra de translucidez e um efeito de blur para a navbar
- * Altera a cor de fundo da navbar para branco com opacidade de 0.75
- */
 .navbar-scrolled {
-    /**
-     * Translada a navbar para cima 2 pixels para cima
-     * Adiciona uma sombra de translucidez para a navbar
-     * Adiciona um efeito de blur para a navbar
-     */
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-    /**
-     * Altera a cor de fundo da navbar para branco com opacidade de 0.75
-     */
     background-color: rgba(255, 255, 255, 0.75) !important;
-    /**
-     * Adiciona um efeito de blur para a navbar
-     */
     backdrop-filter: blur(8px) !important;
 }
 
@@ -292,9 +273,7 @@ body.has-footer .footer {
 /* CONTADOR */
 .countdown-container {
     background: white;
-    /* border-radius: 15px; */
     padding: 2rem;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     position: relative;
     overflow: hidden;
 }
@@ -383,9 +362,7 @@ body.has-footer .footer {
 .auth {
     display: flex;
     justify-content: center;
-    /* Centraliza horizontalmente */
     align-items: center;
-    /* Centraliza verticalmente */
     padding: 2rem 0;
 }
 
@@ -419,9 +396,7 @@ body.has-footer .footer {
 .form-group.col-md-12 small.text-muted {
     text-align: justify;
     display: inline-block;
-    /* Isso ajuda no alinhamento justify */
     width: 100%;
-    /* Necessário para o justify funcionar */
 }
 
 .required::after {
@@ -438,10 +413,6 @@ body.has-footer .footer {
     margin: 3rem 0 !important;
 }
 
-/* .courses {
-    margin: 3rem 0 !important;
-} */
-
 .countdown {
     margin: 5rem 0 3rem 0 !important;
 }
@@ -449,6 +420,10 @@ body.has-footer .footer {
 .faqs {    
     margin: 3rem 0 6rem 0 !important;
     
+}
+
+.calls-wrapper {
+    margin: 1rem 0 6rem 0 !important;
 }
 
 @media (max-width: 576px) {
@@ -463,20 +438,16 @@ body.has-footer .footer {
 
 }
 
-/* Mobile First - Padrão para telas pequenas */
 @media (max-width: 767px) {
     
     .hero-banner {
         padding: 4rem 0 2.5rem 0 !important;
-        /* top | right | bottom | left */
     }
 
-    /* Centralizar conteúdo no mobile */
     .hero-content {
         text-align: center;
     }
 
-    /* Botões empilhados e centralizados */
     .hero-buttons {
         flex-direction: column;
         align-items: center;
@@ -488,7 +459,6 @@ body.has-footer .footer {
         max-width: 280px;
     }
 
-    /* Ajustar tamanhos de texto */
     .hero-banner .display-4 {
         font-size: 2.5rem;
     }
@@ -501,7 +471,6 @@ body.has-footer .footer {
         font-size: 1rem;
     }
 
-    /* Melhor espaçamento no highlight-box */
     .highlight-box {
         margin-top: 2rem;
         margin-bottom: 0;
@@ -517,7 +486,6 @@ body.has-footer .footer {
     }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 991px) {
     .hero-banner {
         padding: 3rem 0;
@@ -558,7 +526,6 @@ body.has-footer .footer {
 
 }
 
-/* Desktop */
 @media (min-width: 992px) {
     .hero-content {
         text-align: left;
@@ -574,5 +541,3 @@ body.has-footer .footer {
         margin-top: 0;
     }
 }
-
-
