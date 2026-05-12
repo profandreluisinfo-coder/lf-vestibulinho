@@ -76,9 +76,25 @@
 
         @else
         
-            <p class="text-danger">
-                <i class="bi bi-info-circle me-1"></i> Nenhum edital cadastrado.
-            </p>
+            <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+            <div class="me-3 fs-3" aria-hidden="true">
+                <i class="bi bi-info-circle-fill"></i>
+            </div>
+
+            <div class="flex-grow-1">
+                <h5 class="alert-heading mb-2">Informação Importante</h5>
+                <p class="mb-0">
+                    Voce ainda nao possui nenhum edital cadastrado.
+                </p>
+                <p class="mb-0 mt-2 small opacity-75">
+                    Em caso de dúvidas, entre em contato com o suporte técnico.
+                </p>
+            </div>
+
+            <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
+
+        </div>
 
         @endif
 

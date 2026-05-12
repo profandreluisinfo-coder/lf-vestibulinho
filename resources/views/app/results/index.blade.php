@@ -15,8 +15,9 @@
         @if ($results?->isNotEmpty())
             <div class="row">
                 <div class="col mx-auto">
-                    
-                    <form id="result-access-form" class="mb-3" action="{{ route('app.system.publish.result') }}" method="POST">
+
+                    <form id="result-access-form" class="mb-3" action="{{ route('app.system.publish.result') }}"
+                        method="POST">
                         @csrf
                         <div class="form-check form-switch mt-3">
                             <input class="form-check-input" type="checkbox" id="result" name="result"
@@ -67,7 +68,7 @@
                         <input type="text" class="form-control" id="search" name="search"
                             placeholder="Pesquisar por nome ou inscrição" autocomplete="off">
                     </div>
-                    
+
                     {{-- Tabela de resultados --}}
                     <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                         <table id="classification" class="table table-striped mb-0 caption-top">
@@ -91,12 +92,12 @@
                                         $isClassified = $isDirectClassified || $isTieClassified;
 
                                     @endphp
-                                    <tr
-                                        data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}"
+                                    <tr data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}"
                                         data-pcd="{{ $result->pne ? 'pcd' : 'nao' }}">
                                         <th scope="col">{{ $result->ranking }}º</th>
                                         <td>{{ $result->id }}</td>
-                                        <th>{{ ($result->authorization_accepted == 1) ? $result->social_name : $result->name }}</th>
+                                        <th>{{ $result->authorization_accepted == 1 ? $result->social_name : $result->name }}
+                                        </th>
                                         <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
                                         <td>{{ $result->score }}</td>
                                         <td>
@@ -117,9 +118,24 @@
                 </div>
             </div>
         @else
-        
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle"></i> Nenhum resultado encontrado. A tabela de classificação geral ainda está vazia.
+            <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-2">Informação Importante</h5>
+                    <p class="mb-0">
+                        A tabela de classificação geral está vazia.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
+
             </div>
 
         @endif

@@ -24,6 +24,28 @@
 
         @if ($calendar->exists())
 
+            {{-- @if ($settings->calendar != 0)
+                <span class="text-success">Os candidatos podem visualizar o calendário do vestibulinho.</span> --}}
+            @if ($settings->calendar == 0)
+                <div id="meu-alert" class="alert alert-danger d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+                    <div class="me-3 fs-3" aria-hidden="true">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading mb-2">Informação Importante</h5>
+                        <p class="mb-0">
+                            Os candidatos não podem visualizar o calendário do vestibulinho porque o acesso está bloqueado.
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close ms-3" aria-label="Fechar alerta"
+                        data-bs-dismiss="alert"></button>
+
+                </div>
+            @endif
+
             <div class="row g-4 mb-4">
 
                 {{-- Card de Período de Inscrições --}}
@@ -136,38 +158,44 @@
             </div>
 
             @if ($calendar->exists())
-
-            <form id="calendar-access-form" action="{{ route('app.system.publish.calendar') }}" method="POST">
-                @csrf
-                <div class="form-check form-switch mt-3">
-                    <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
-                        onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
-                    <label class="form-check-label" for="calendar">                        
-                        <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
-                            {!! $settings->calendar != 0 ? '<i class="bi bi-unlock"></i> Calendário Liberado' : '<i class="bi bi-lock"></i> Calendário Bloqueado' !!}
-                        </span>
-                    </label>
-                </div>
-            </form>
-
-            <p class="text-muted mt-3">
-                @if ($settings->calendar != 0)
-                <span class="text-success">Os candidatos podem visualizar o calendário do vestibulinho.</span>
-                @else
-                <span class="text-danger">Os candidatos não podem visualizar o calendário do vestibulinho.</span>
-                @endif
-            </p>
-            
+                <form id="calendar-access-form" action="{{ route('app.system.publish.calendar') }}" method="POST">
+                    @csrf
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
+                            onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
+                        <label class="form-check-label" for="calendar">
+                            <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
+                                {!! $settings->calendar != 0
+                                    ? '<i class="bi bi-unlock"></i> Acesso ao Calendário Liberado'
+                                    : '<i class="bi bi-lock"></i> Acesso ao Calendário Bloqueado' !!}
+                            </span>
+                        </label>
+                    </div>
+                </form>
             @endif
-
         @else
+            <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
 
-            <p class="text-danger">
-                <i class="bi bi-info-circle me-1"></i> Nenhum calendário cadastrado.
-            </p>
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-2">Informação Importante</h5>
+                    <p class="mb-0">
+                        Você ainda não definiu o calendário do vestibulinho.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
+
+            </div>
 
         @endif
-        
+
     </div>
 
 @endsection

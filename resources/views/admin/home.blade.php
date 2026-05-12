@@ -20,7 +20,7 @@
             $calendar_active,
             $settings->isNoticeEnabled(),
             $local_status,
-            App\Models\Archive::latest('id')->first()?->status == 1,
+            // App\Models\Archive::latest('id')->first()?->status == 1,
             $ranking_active,
             $settings->result,
             $calls_exists,
@@ -49,7 +49,7 @@
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    📝 Tarefas
+                    📝 Principais Tarefas
                 </button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse show bg-light"
@@ -88,14 +88,14 @@
                         <div class="step-divider"></div>
 
                         <!-- Etapa 4 -->
-                        <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center"
+                        {{-- <a href="{{ route('app.archives.index') }}" class="step-item text-secondary text-center"
                             title="Publicar Prova">
                             <i
                                 class="bi {{ App\Models\Archive::latest('id')->first()?->status == 1 ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar prova</p>
                         </a>
 
-                        <div class="step-divider"></div>
+                        <div class="step-divider"></div> --}}
 
                         <!-- Etapa 5 -->
                         <a href="{{ route('app.import.home') }}" class="step-item text-secondary text-center"

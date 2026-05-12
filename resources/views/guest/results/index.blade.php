@@ -27,7 +27,8 @@
             <div class="row">
 
                 <div id="results-disclaimer" class="col-lg-8 mx-auto mb-3 border-bottom">
-                    <p>A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a classificação geral dos candidatos na prova
+                    <p>A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a classificação geral dos
+                        candidatos na prova
                         objetiva, adotando como critério de desempate a menor idade.
                     </p>
                 </div>
@@ -94,7 +95,8 @@
                                         data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}">
                                         <th scope="col">{{ $result->ranking }}º</th>
                                         <td>{{ $result->id }}</td>
-                                        <td>{{ ($result->authorization_accepted == 1) ? $result->social_name : $result->name }}</td>
+                                        <td>{{ $result->authorization_accepted == 1 ? $result->social_name : $result->name }}
+                                        </td>
                                         <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
                                         <td>{{ $result->score }}</td>
                                         <td>
@@ -109,9 +111,28 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">Nenhum resultado encontrado.</td>
-                                    </tr>
+                                    <div id="meu-alert"
+                                        class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3"
+                                        role="alert">
+
+                                        <div class="me-3 fs-3" aria-hidden="true">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        </div>
+
+                                        <div class="flex-grow-1">
+                                            <h5 class="alert-heading mb-2">Informação Importante</h5>
+                                            <p class="mb-0">
+                                                A tabela de classificação geral ainda está vazia.
+                                            </p>
+                                            <p class="mb-0 mt-2 small opacity-75">
+                                                Em caso de dúvidas, entre em contato com o suporte técnico.
+                                            </p>
+                                        </div>
+
+                                        <button type="button" class="btn-close ms-3" aria-label="Fechar alerta"
+                                            data-bs-dismiss="alert"></button>
+
+                                    </div>
                                 @endforelse
                             </tbody>
                         </table>

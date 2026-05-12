@@ -1,6 +1,6 @@
-@push('styles')
+{{-- @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/exam/public/styles.css') }}">
-@endpush
+@endpush --}}
 
 @php
     $recenteId = $archives?->first()?->id;

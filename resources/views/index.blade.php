@@ -1,12 +1,6 @@
 @extends('layouts.guest.master')
 
 @section('page-title', 'Vestibulinho LF ' . $calendar?->year)
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/quick-access.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/faqs.css') }}">
-@endpush
-
 @section('body-class', 'bg-light')
 @section('has-footer', 'has-footer')
 

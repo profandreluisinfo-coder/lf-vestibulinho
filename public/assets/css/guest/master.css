@@ -1,5 +1,5 @@
 /* ============================================================
-   VESTIBULINHO LF — master.css (versão aprimorada)
+   VESTIBULINHO LF — master.css
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
@@ -200,18 +200,6 @@ body.has-footer .footer {
     position: relative;
 }
 
-/* .hero-content h1::after,
-.hero-content .display-4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 56px;
-    height: 4px;
-    background: var(--accent-warm);
-    border-radius: 4px;
-} */
-
 .hero-buttons {
     gap: 1rem;
 }
@@ -222,6 +210,108 @@ body.has-footer .footer {
 
 .hero-banner .col-lg-4 {
     margin-top: 2rem;
+}
+
+/* ============================================================
+   ACESSO RÁPIDO
+   ============================================================ */
+#quick-access {
+    margin: 4rem 0
+}
+
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: start;
+    align-items: center;
+    /* flex-wrap: wrap; */
+}
+
+.links a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    word-wrap: break-word !important;
+    /* justify-content: center; */
+    padding: 7px;
+    gap: 3px;
+    width: 125px;
+    height: 132px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    background-color: #fff;
+    color: var(--primary-color);
+    box-shadow: 0 .5rem 0.8rem rgba(0, 0, 0, .15);
+    transition: all 0.3s ease;
+}
+
+.links a:hover {
+    background-color: var(--card-link-bg);
+}
+
+.links a:hover i,
+.links a:hover {
+    color: #E6E6E6 !important;
+}
+
+.links i {
+    margin-top: 0.5rem !important;
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE / Edge antigo */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari, Edge */
+}
+
+/* ============================================================
+   PERGUNTAS FREQUENTES
+   ============================================================ */
+#search {
+    background-color: #ccccce !important;
+}
+
+/* Container do input group */
+.input-group {
+    transition: all 0.4s ease-in-out;
+    width: 220px !important;
+}
+
+/* Estilização adicional para melhor aparÃªncia */
+.input-group-text {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border: none;
+    color: white;
+}
+
+.input-group:focus-within {
+    width: 100% !important;
+}
+
+.form-control {
+    border: none;
+    background: #f8f9fa;
+    padding-left: 5px;
+}
+
+.form-control:focus {
+    background: white;
+    box-shadow: none;
+}
+
+.accordion-button {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
 }
 
 /* ============================================================
@@ -402,6 +492,204 @@ body.has-footer .footer {
     text-align: center;
     margin-bottom: 2rem;
     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.25);
+}
+
+/* ============================================================
+   PROVAS ANTERIORES
+   ============================================================ */
+
+.pa-section {
+    padding: 4rem 0 5rem;
+    min-height: 60vh;
+}
+
+.pa-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.pa-header h2 {
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c5aa0;
+    margin: 0 0 4px;
+}
+
+.pa-header p {
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 14px;
+    color: #6b6b6b;
+    margin: 0;
+    font-weight: 300;
+}
+
+.pa-count-badge {
+    /* font-family: 'DM Sans', sans-serif; */
+    background: #f5f5f3;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #6b6b6b;
+    white-space: nowrap;
+}
+
+.pa-count-badge strong {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.pa-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pa-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 16px 20px;
+    transition: border-color 0.15s, background 0.15s;
+    /* font-family: 'DM Sans', sans-serif; */
+}
+
+.pa-item:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    background: #fafaf9;
+}
+
+.pa-item.recent {
+    border: 2px solid #1D9E75;
+}
+
+.pa-year {
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.pa-recent-tag {
+    display: block;
+    margin-top: 4px;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    background: #E1F5EE;
+    color: #0F6E56;
+    border-radius: 99px;
+    padding: 2px 8px;
+    text-align: center;
+}
+
+.pa-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.pa-info span {
+    font-size: 13px;
+    color: #6b6b6b;
+    font-weight: 300;
+}
+
+.pa-btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.pa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    /* font-family: 'DM Sans', sans-serif; */
+    color: #1a1a1a;
+    background: #f5f5f3;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 0.15s, background 0.15s;
+    min-width: 110px;
+    justify-content: center;
+}
+
+.pa-btn:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #eeeee9;
+    color: #1a1a1a;
+    text-decoration: none;
+}
+
+.pa-btn.unavailable {
+    color: #aaa;
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.pa-btn i {
+    font-size: 14px;
+}
+
+.pa-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 0;
+}
+
+.pa-divider::before,
+.pa-divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.pa-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b6b6b;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 14px;
+}
+
+.pa-footer-note {
+    margin-top: 1.5rem;
+    /* font-family: 'DM Sans', sans-serif; */
+    font-size: 12px;
+    color: #aaa;
+    text-align: right;
 }
 
 /* ============================================================
@@ -595,6 +883,21 @@ body.has-footer .footer {
 
 /* Muito pequeno (< 576px) */
 @media (max-width: 575.98px) {
+
+    .pa-section {
+        margin-top: -25px;
+    }
+
+    .pa-item {
+        grid-template-columns: 56px 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .pa-btn-group {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+    
     .countdown-number {
         font-size: 1.9rem;
     }
@@ -638,6 +941,29 @@ body.has-footer .footer {
         margin-top: 2rem;
         margin-bottom: 0;
     }
+    #quick-access {
+        margin-top: 2rem
+    }
+
+    .links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+        justify-content: space-between;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .links a:link {
+        width: 162px;
+        height: 128px;
+        margin-bottom:0.2rem !important;
+    }
+
+    .links i {
+        margin-top: 1rem !important;
+    }
+
     .guidelines h5,
     .simple-title {
         text-align: center;

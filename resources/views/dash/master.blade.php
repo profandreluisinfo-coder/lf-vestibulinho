@@ -37,8 +37,6 @@
         $displayName = (auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1)
             ? auth()->user()->social_name
             : auth()->user()->name;
-        // $nameParts = explode(' ', trim($displayName));
-        // $initials  = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
     @endphp
     <nav class="navbar navbar-expand-lg shadow-sm fixed-top navbar-dark">
         <div class="container-fluid px-3">

@@ -97,9 +97,10 @@ class SettingController extends Controller
             // Apaga todos os registros da tabela de chamadas
             Call::truncate();
 
-            // Alterar para 'false' campos 'calendar', 'result' e 'location' da tabela de settings
+            // Alterar para 'false' campos 'calendar', 'notice', 'result' e 'location' da tabela de settings
             Setting::query()->update([
                 'calendar' => false,
+                'notice' => false,
                 'result' => false,
                 'location' => false,
             ]);
