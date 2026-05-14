@@ -1017,7 +1017,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Nova Inscrição</h5>
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Registre-se</h5>
           <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:0;">Vestibulinho {{ config('app.year') }} — EM Dr. Leandro Franceschini</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -1025,34 +1025,20 @@
       <div class="modal-body">
         <div class="row g-3">
           <div class="col-12">
-            <label>Nome Completo *</label>
-            <input type="text" class="form-control" placeholder="Seu nome completo" />
-          </div>
-          <div class="col-md-6">
-            <label>CPF *</label>
-            <input type="text" class="form-control" placeholder="000.000.000-00" />
-          </div>
-          <div class="col-md-6">
-            <label>Data de Nascimento *</label>
-            <input type="date" class="form-control" />
-          </div>
-          <div class="col-12">
             <label>E-mail *</label>
             <input type="email" class="form-control" placeholder="seu@email.com" />
           </div>
-          <div class="col-12">
-            <label>Telefone *</label>
-            <input type="tel" class="form-control" placeholder="(11) 00000-0000" />
-          </div>
-          <div class="col-12">
-            <label>Curso Desejado *</label>
-            <select class="form-select">
-              <option value="">Selecione o curso...</option>
-              <option>Administração</option>
-              <option>Contabilidade</option>
-              <option>Informática</option>
-              <option>Segurança do Trabalho</option>
-            </select>
+            <div class="col-12">
+              <label>Defina uma senha *</label>
+              <input type="password" class="form-control" name="password" id="password" placeholder="" />
+              <small class="text-muted">
+                      <b>ATENÇÃO:</b> Sua senha deve conter no <b>mínimo</b> 6 caracteres e no <b>máximo</b> 8 caracteres, incluindo, <b>pelo menos</b>, uma letra maiúscula, uma letra minúscula <b>e</b> um número.
+                  </small>
+            </div>
+            <div class="col-12">
+              <label>Repita sua senha *</label>
+              <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" />
+            </div>
           </div>
           <div class="col-12">
             <div class="form-check">
@@ -1066,7 +1052,13 @@
             <button class="btn-submit" onclick="submitForm(this)">
               <i class="bi bi-check2-circle me-2"></i>Confirmar Inscrição
             </button>
-          </div>
+            <div class="d-flex flex-column align-items-center justify-content-center mt-3 gap-2">
+                <div class="d-flex">
+                Já tem registro? <a href="{{ route('login') }}" class="text-decoration-none ms-2">Clique aqui!</a>
+                </div>
+                <a href="{{ route('resend.email') }}" class="text-decoration-none">Não recebeu o e-mail de confirmação?</a>
+            </div>
+          </div>          
         </div>
       </div>
     </div>
@@ -1114,15 +1106,64 @@
     if (!isOpen) item.classList.add('open');
   }
 
+  // ── Validar senha ──────────────────────────────────────────
+  function validatePassword(password) {
+    const rules = {
+      length: password.length >= 6 && password.length <= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password)
+    };
+    return Object.values(rules).every(r => r === true) ? true : rules;
+  }
+
   // ── Mock form submit ────────────────────────────────────────
   function submitForm(btn) {
     const modal = document.getElementById('regModal');
-    const inputs = modal.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="date"],select');
-    const check  = modal.querySelector('#termCheck');
+    const emailInput = modal.querySelector('input[type="email"]');
+    const passwordInput = modal.querySelector('#password');
+    const confirmInput = modal.querySelector('#password_confirmation');
+    const check = modal.querySelector('#termCheck');
     let ok = true;
-    inputs.forEach(i => { if(!i.value.trim()) { i.style.borderColor='#c0392b'; ok=false; } else i.style.borderColor=''; });
-    if (!check.checked) { check.closest('.form-check').style.outline='2px solid #c0392b'; ok=false; }
-    else check.closest('.form-check').style.outline='';
+
+    // Validar email
+    if (!emailInput.value.trim()) {
+      emailInput.style.borderColor = '#c0392b';
+      ok = false;
+    } else {
+      emailInput.style.borderColor = '';
+    }
+
+    // Validar senha
+    const passwordValidation = validatePassword(passwordInput.value);
+    if (passwordValidation !== true) {
+      passwordInput.style.borderColor = '#c0392b';
+      alert('Senha inválida:\n• 6-8 caracteres\n• Uma maiúscula\n• Uma minúscula\n• Um número');
+      ok = false;
+    } else {
+      passwordInput.style.borderColor = '';
+    }
+
+    // Validar confirmação de senha
+    if (!confirmInput.value.trim()) {
+      confirmInput.style.borderColor = '#c0392b';
+      ok = false;
+    } else if (passwordInput.value !== confirmInput.value) {
+      confirmInput.style.borderColor = '#c0392b';
+      alert('As senhas não correspondem');
+      ok = false;
+    } else {
+      confirmInput.style.borderColor = '';
+    }
+
+    // Validar termo
+    if (!check.checked) {
+      check.closest('.form-check').style.outline = '2px solid #c0392b';
+      ok = false;
+    } else {
+      check.closest('.form-check').style.outline = '';
+    }
+
     if (!ok) return;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processando...';
     btn.disabled = true;
