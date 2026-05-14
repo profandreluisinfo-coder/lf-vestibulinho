@@ -15,30 +15,42 @@ class CourseSeeder extends Seeder
         $courses = [
             [
                 'name' => 'Administração',
+                'delay' => 1,
+                'card' => 'cc-admin',
+                'icone' => 'briefcase-fill',
                 'description' => 'TÉCNICO EM ADMINISTRAÇÃO - NOTURNO - 4 ANOS',
                 'duration' => 4,
-                'info' => 'Forme-se para atuar em empresas de diversos segmentos, desenvolvendo competências em gestão, planejamento e organização empresarial.',
+                'info' => 'Gestão empresarial, finanças, recursos humanos e organização de processos corporativos.',
                 'vacancies' => 0
             ],
             [
                 'name' => 'Contabilidade',
+                'delay' => 2,
+                'card' => 'cc-cont',
+                'icone' => 'calculator-fill',
                 'description' => 'TÉCNICO EM CONTABILIDADE - NOTURNO - 4 ANOS',
                 'duration' => 4,
-                'info' => 'Capacite-se para trabalhar com controle financeiro, análise contábil e assessoria fiscal em empresas e escritórios contábeis.',
+                'info' => 'Escrituração contábil, tributos, balanços patrimoniais e análise financeira.',
                 'vacancies' => 0
             ],
             [
                 'name' => 'Informática',
+                'delay' => 3,
+                'card' => 'cc-info',
+                'icone' => 'laptop-fill',
                 'description' => 'TÉCNICO EM INFORMÁTICA (ÊNFASE EM PROGRAMAÇÃO PARA WEB) - NOTURNO - 4 ANOS',
                 'duration' => 4,
-                'info' => 'Desenvolva habilidades em programação, manutenção de computadores, redes e suporte técnico para o mercado de TI.',
+                'info' => 'Programação, redes, web design e desenvolvimento de sistemas computacionais.',
                 'vacancies' => 0
             ],
             [
                 'name' => 'Segurança do Trabalho',
+                'delay' => 4,
+                'card' => 'cc-seg',
+                'icone' => 'shield-fill-check',
                 'description' => 'TÉCNICO EM SEGURANÇA DO TRABALHO - NOTURNO - 4 ANOS',
                 'duration' => 4,
-                'info' => 'Torne-se especialista em prevenção de acidentes e promoção da saúde e segurança no ambiente de trabalho.',
+                'info' => 'Prevenção de acidentes, normas regulamentadoras (NRs) e saúde ocupacional.',
                 'vacancies' => 0
             ],
         ];
