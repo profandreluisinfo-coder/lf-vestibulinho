@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,8 +33,19 @@ class PasswordController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function forgotPasswordAction(Request $request): RedirectResponse
+    // public function forgotPasswordAction(Request $request): RedirectResponse
+    public function forgotPasswordAction(Request $request): JsonResponse
     {
+        // $credentials = $request->validate([
+        //     'email' => 'required|email',
+        // ], [
+        //     'email.required' => 'O campo e-mail é obrigatório',
+        //     'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
+        // ]);
+
+        // $result = app(UserService::class)->forgotPassword($credentials['email']);
+
+        // return alertSuccess($result['message'], 'forgot.password');
         $credentials = $request->validate([
             'email' => 'required|email',
         ], [
@@ -41,9 +53,13 @@ class PasswordController extends Controller
             'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
         ]);
 
-        $result = app(UserService::class)->forgotPassword($credentials['email']);
+        $result = app(UserService::class)
+            ->forgotPassword($credentials['email']);
 
-        return alertSuccess($result['message'], 'forgot.password');
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+        ]);
     }
 
     /**
@@ -73,9 +89,10 @@ class PasswordController extends Controller
      * Caso contrário, será exibido um erro.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function resetPasswordAction(Request $request): RedirectResponse
+    // public function resetPasswordAction(Request $request): RedirectResponse
+    public function resetPasswordAction(Request $request): JsonResponse
     {
         $credentials = $request->validate([
             'token' => 'required',
@@ -90,13 +107,25 @@ class PasswordController extends Controller
 
         $result = app(UserService::class)->resetPassword($credentials['token'], $credentials['password']);
 
+        // if (!$result['success']) {
+        //     return redirect()->route('login')->with('warning', $result['message']);
+        // }
+
         if (!$result['success']) {
-            return redirect()->route('login')->with('warning', $result['message']);
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 422);
         }
 
         session()->invalidate();
 
-        return redirect()->route('login')->with('success', $result['message']);
+        // return redirect()->route('login')->with('success', $result['message']);
+        return response()->json([
+            'success' => true,
+            'message' => $result['message']
+        ]);
     }
 
     /**

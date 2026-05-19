@@ -19,7 +19,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('auth.admin')->middleware('throttle:3,1');
 
     Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
-    Route::post('/registrar', [RegisterController::class, 'store']);
+    Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
 
     // VERIFICAÇÃO DE EMAIL
     Route::get('/validate/{token}', [EmailController::class, 'verify'])->name('verify');

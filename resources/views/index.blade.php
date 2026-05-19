@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Vestibulinho LF {{ config('app.year') }} — EM Dr. Leandro Franceschini</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
@@ -511,6 +512,8 @@
       transition:transform .25s, box-shadow .25s;
     }
     .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,168,150,.4); }
+    .required::after { content: "*"; color: var(--amber2); margin-left: 4px; font-style: italic;
+}
 
     /* ─── RESPONSIVE TWEAKS ──────────────────────────────────── */
     @media(max-width:991px) {
@@ -558,8 +561,8 @@
         <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
         <li class="nav-item"><a class="nav-link" href="#links-rapidos">Documentos</a></li>
         <li class="nav-item ms-lg-2">
-          <a class="nav-link btn-nav-cta" href="#" data-bs-toggle="modal" data-bs-target="#regModal">
-            <i class="bi bi-person-plus-fill me-1"></i>Inscrever-se
+          <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
+            <i class="bi bi-person-circle me-1"></i> Área do Candidato
           </a>
         </li>
       </ul>
@@ -589,7 +592,7 @@
           seu futuro. EM Dr. Leandro Franceschini — inscrição online e acessível.
         </p>
         <div class="hero-actions d-flex flex-wrap gap-3">
-          <a href="#" class="btn-hero-primary" data-bs-toggle="modal" data-bs-target="#regModal">
+          <a href="{{ route('login') }}" class="btn-hero-primary">
             <i class="bi bi-pencil-square"></i> Inscrever-se Agora
           </a>
           <a href="#cursos" class="btn-hero-outline">
@@ -634,6 +637,7 @@
     <div class="mouse"><div class="wheel"></div></div>
     <span>rolar</span>
   </div>
+
 </section>
 
 <!-- ═══════════════════════ CURSOS ═══════════════════════════ -->
@@ -675,7 +679,7 @@
         </p>
       </div>
       <div class="col-lg-6 reveal delay-2 text-lg-end">
-        <a href="#" class="btn-faq-more" data-bs-toggle="modal" data-bs-target="#regModal">
+        <a href="{{ route('login') }}" class="btn-faq-more">
           <i class="bi bi-pencil-fill"></i> Iniciar Inscrição
         </a>
       </div>
@@ -694,8 +698,8 @@
       <div class="tl-item reveal-right">
         <div class="tl-node amber-node">2</div>
         <div class="tl-content">
-          <h4><i class="bi bi-person-fill me-2 text-amber"></i>Crie sua Conta</h4>
-          <p>Acesse a Área do Candidato e registre-se com seus dados pessoais. Guarde seu login e senha em local seguro.</p>
+          <h4><i class="bi bi-person-fill me-2 text-amber"></i>Registre-se</h4>
+          Preencha o <a href="{{ route('register') }}" class="text-decoration-none text-amber">formulário de registro</a>, informe seu e-mail e crie uma senha de acesso. Você receberá um e-mail de confirmação. Clique no <i>link</i> recebido no e-mail para validar seu cadastro.  <strong class="text-danger">Sem essa confirmação não será possível realizar a inscrição.</strong>
         </div>
       </div>
       <!-- Step 3 -->
@@ -703,7 +707,7 @@
         <div class="tl-node">3</div>
         <div class="tl-content">
           <h4><i class="bi bi-clipboard-fill me-2 text-teal"></i>Faça sua Inscrição</h4>
-          <p>Escolha o curso desejado, preencha o formulário online e confirme os dados. Guarde o número de inscrição gerado.</p>
+          <p>Na <a href="{{ route('login') }}" class="text-decoration-none text-teal">Área do Candidato</a>, preencha o formulário de inscrição com suas informações pessoais, acadêmicas e demais dados solicitados. Confirme os dados e guarde o número de inscrição gerado.</p>
         </div>
       </div>
       <!-- Step 4 -->
@@ -711,7 +715,7 @@
         <div class="tl-node amber-node">4</div>
         <div class="tl-content">
           <h4><i class="bi bi-book-fill me-2 text-amber"></i>Estude e Prepare-se</h4>
-          <p>Acesse as provas anteriores disponíveis no site para se preparar. A prova aborda Português, Matemática e conhecimentos gerais.</p>
+          <p>Acesse as provas anteriores disponíveis aqui no site para se preparar. A prova aborda Português, Matemática e conhecimentos gerais.</p>
         </div>
       </div>
       <!-- Step 5 -->
@@ -727,7 +731,7 @@
         <div class="tl-node amber-node">6</div>
         <div class="tl-content">
           <h4><i class="bi bi-trophy-fill me-2 text-amber"></i>Acompanhe o Resultado</h4>
-          <p>Acesse a classificação e a convocação para matrícula no site. Se convocado, compareça no prazo indicado com os documentos exigidos.</p>
+          <p>Acesse a classificação e a convocação para matrícula aqui no site. Se convocado, compareça no prazo indicado com os documentos exigidos.</p>
         </div>
       </div>
     </div>
@@ -918,10 +922,10 @@
         </a>
       </div>
       <div class="col-6 col-md-4 col-lg-2 reveal delay-4">
-        <a href="#" class="quick-card d-block" data-bs-toggle="modal" data-bs-target="#regModal">
+        <a href="{{ route('register') }}" class="quick-card d-block">
           <div class="qc-icon"><i class="bi bi-person-plus-fill"></i></div>
           <h5>Registrar-se</h5>
-          <p>Crie sua conta agora</p>
+          <p>Cadastre seus dados de acesso agora</p>
         </a>
       </div>
     </div>
@@ -939,7 +943,7 @@
       <p class="section-lead mx-auto text-center mb-5">Inscrições encerram em <strong style="color:var(--amber);">{{ $calendar?->inscription_end?->translatedFormat('d \d\e F Y') }}</strong>. Comece agora mesmo — leva menos de 5 minutos.</p>
       <div class="d-flex flex-wrap justify-content-center gap-3">
         <div class="pulse-wrap">
-          <a href="#" class="btn-cta-main" data-bs-toggle="modal" data-bs-target="#regModal">
+          <a href="{{ route('register') }}" class="btn-cta-main">
             <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
           </a>
         </div>
@@ -988,8 +992,8 @@
       <div class="col-6 col-lg-2 foot-col">
         <h6>Candidato</h6>
         <ul class="list-unstyled d-flex flex-column gap-2">
-          <li><a href="#" data-bs-toggle="modal" data-bs-target="#regModal">Inscrever-se</a></li>
-          <li><a href="#">Área do Candidato</a></li>
+          <li><a href="{{ route('register') }}">Inscrever-se</a></li>
+          <li><a href="{{ route('login') }}">Área do Candidato</a></li>
           <li><a href="#">FAQ Completo</a></li>
           <li><a href="#como-participar">Como Participar</a></li>
         </ul>
@@ -1005,68 +1009,17 @@
     </div>
     <hr>
     <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-      <p class="mb-0">© {{ config('app.year') }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
+      <p class="mb-0">© {{ $currentYear }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
       <p class="mb-0"><a href="#">Política de Privacidade</a> · <a href="#">Acessibilidade</a></p>
     </div>
   </div>
 </footer>
 
 <!-- ═══════════════════════ MODAL INSCRIÇÃO ══════════════════ -->
-<div class="modal fade modal-reg" id="regModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div>
-          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Registre-se</h5>
-          <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:0;">Vestibulinho {{ config('app.year') }} — EM Dr. Leandro Franceschini</p>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row g-3">
-          <div class="col-12">
-            <label>E-mail *</label>
-            <input type="email" class="form-control" placeholder="seu@email.com" />
-          </div>
-            <div class="col-12">
-              <label>Defina uma senha *</label>
-              <input type="password" class="form-control" name="password" id="password" placeholder="" />
-              <small class="text-muted">
-                      <b>ATENÇÃO:</b> Sua senha deve conter no <b>mínimo</b> 6 caracteres e no <b>máximo</b> 8 caracteres, incluindo, <b>pelo menos</b>, uma letra maiúscula, uma letra minúscula <b>e</b> um número.
-                  </small>
-            </div>
-            <div class="col-12">
-              <label>Repita sua senha *</label>
-              <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" />
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="termCheck" />
-              <label class="form-check-label" for="termCheck" style="font-size:.83rem;font-weight:400;color:var(--muted);">
-                Li e aceito os termos do <a href="#" style="color:var(--teal);">edital do Vestibulinho {{ config('app.year') }}</a>.
-              </label>
-            </div>
-          </div>
-          <div class="col-12 mt-1">
-            <button class="btn-submit" onclick="submitForm(this)">
-              <i class="bi bi-check2-circle me-2"></i>Confirmar Inscrição
-            </button>
-            <div class="d-flex flex-column align-items-center justify-content-center mt-3 gap-2">
-                <div class="d-flex">
-                Já tem registro? <a href="{{ route('login') }}" class="text-decoration-none ms-2">Clique aqui!</a>
-                </div>
-                <a href="{{ route('resend.email') }}" class="text-decoration-none">Não recebeu o e-mail de confirmação?</a>
-            </div>
-          </div>          
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ═══════════════════════ SCRIPTS ══════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
   // ── Scroll reveal ──────────────────────────────────────────
   const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
@@ -1104,73 +1057,6 @@
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
-  }
-
-  // ── Validar senha ──────────────────────────────────────────
-  function validatePassword(password) {
-    const rules = {
-      length: password.length >= 6 && password.length <= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      number: /\d/.test(password)
-    };
-    return Object.values(rules).every(r => r === true) ? true : rules;
-  }
-
-  // ── Mock form submit ────────────────────────────────────────
-  function submitForm(btn) {
-    const modal = document.getElementById('regModal');
-    const emailInput = modal.querySelector('input[type="email"]');
-    const passwordInput = modal.querySelector('#password');
-    const confirmInput = modal.querySelector('#password_confirmation');
-    const check = modal.querySelector('#termCheck');
-    let ok = true;
-
-    // Validar email
-    if (!emailInput.value.trim()) {
-      emailInput.style.borderColor = '#c0392b';
-      ok = false;
-    } else {
-      emailInput.style.borderColor = '';
-    }
-
-    // Validar senha
-    const passwordValidation = validatePassword(passwordInput.value);
-    if (passwordValidation !== true) {
-      passwordInput.style.borderColor = '#c0392b';
-      alert('Senha inválida:\n• 6-8 caracteres\n• Uma maiúscula\n• Uma minúscula\n• Um número');
-      ok = false;
-    } else {
-      passwordInput.style.borderColor = '';
-    }
-
-    // Validar confirmação de senha
-    if (!confirmInput.value.trim()) {
-      confirmInput.style.borderColor = '#c0392b';
-      ok = false;
-    } else if (passwordInput.value !== confirmInput.value) {
-      confirmInput.style.borderColor = '#c0392b';
-      alert('As senhas não correspondem');
-      ok = false;
-    } else {
-      confirmInput.style.borderColor = '';
-    }
-
-    // Validar termo
-    if (!check.checked) {
-      check.closest('.form-check').style.outline = '2px solid #c0392b';
-      ok = false;
-    } else {
-      check.closest('.form-check').style.outline = '';
-    }
-
-    if (!ok) return;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processando...';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Inscrição Realizada!';
-      btn.style.background = 'linear-gradient(135deg,#27ae60,#1e8449)';
-    }, 1800);
   }
 </script>
 </body>

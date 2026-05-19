@@ -1,120 +1,1157 @@
-@extends('layouts.auth.master')
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-@push('metas')
-    @if (app()->environment('local'))
-        <meta http-equiv="Cache-Control" content="no-store" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-    @endif
-    <meta name="description" content="Registro de dados de acesso para vistantes">
-@endpush
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Acesso — Vestibulinho 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Registrar Dados de Acesso')
+    <style>
+        /* ─── TOKENS (espelhando o site principal) ────────────────── */
+        :root {
+            --navy: #0B1E3D;
+            --navy2: #132948;
+            --teal: #00A896;
+            --teal2: #007F72;
+            --amber: #F4A261;
+            --amber2: #E07A3A;
+            --light: #EEF3FA;
+            --muted: #6B7FA3;
+            --card-bg: #FFFFFF;
+            --shadow: 0 8px 32px rgba(11, 30, 61, .12);
+            --shadow-lg: 0 24px 64px rgba(11, 30, 61, .18);
+            --radius: 16px;
+            --grad-main: linear-gradient(135deg, #0B1E3D 0%, #1B3E72 60%, #0E4D6B 100%);
+            --grad-teal: linear-gradient(135deg, #00A896 0%, #007F72 100%);
+            --grad-amber: linear-gradient(135deg, #F4A261 0%, #E07A3A 100%);
+            --font-head: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
 
-@section('content')
+        /* ─── BASE ────────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    @include('partials.videos.back-login')
+        html,
+        body {
+            height: 100%;
+        }
 
-    <main class="auth">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-5">
-                    <div class="card shadow">
-                        <header
-                            class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
-                            <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem;" aria-hidden="true"></i>
-                            <h2 class="h3 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
-                        </header>
-                        <div class="card-body">
-                            <h1 class="h4 mb-4 text-center">
-                                <span class="d-inline-flex align-items-center title">
-                                    <i class="bi bi-person-plus animate__animated animate__fadeIn me-2"></i> Registrar Dados
-                                    de Acesso
-                                </span>
-                            </h1>
-                            <div class="mb-3 text-end">
-                                <button type="button" id="toggleAllPasswords" class="btn btn-sm btn-link text-decoration-none">
-                                    <i class="bi bi-eye"></i> Mostrar senhas
-                                </button>
-                            </div>
-                            <form id="form-register" action="{{ route('register') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="registerEmail" class="form-label required">E-mail:</label>
-                                    <input type="email" name="email"
-                                        class="form-control @error('email') is-invalid @enderror" id="registerEmail"
-                                        value="{{ old('email') }}">
-                                    @error('email')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label for="registerPassword" class="form-label required">Senha:</label>
-                                    <input type="password" name="password"
-                                        class="form-control password-field password-strength-field @error('password') is-invalid @enderror"
-                                        id="registerPassword">
-                                    @error('password')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                    <div class="progress mt-2" style="height:6px;">
-                                        <div class="progress-bar passwordStrength"></div>
-                                    </div>
+        body {
+            font-family: var(--font-body);
+            background: var(--light);
+            color: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-                                    <small class="text-muted passwordStrengthText"></small>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="registerRepeatPassword" class="form-label required">Repetir senha:</label>
-                                    <input type="password" name="password_confirmation" id="registerRepeatPassword"
-                                        class="form-control password-field @error('password_confirmation') is-invalid @enderror">
-                                    @error('password_confirmation')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-group col-md-12">
-                                        <small class="text-muted">
-                                            <b>ATENÇÃO:</b> Sua senha deve conter no <b>mínimo</b> 6 caracteres e no
-                                            <b>máximo</b> 8 caracteres, incluindo, <b>pelo menos</b>, uma letra maiúscula,
-                                            uma letra minúscula <b>e</b> um número.
-                                        </small>
-                                    </div>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-success submit-password" disabled>
-                                        <i class="bi bi-person-plus animate__animated animate__fadeIn me-1"></i> Cadastrar
-                                    </button>
-                                </div>
-                                <div class="d-flex flex-column align-items-center justify-content-center mt-3 gap-2">
-                                    <a href="{{ route('login') }}" class="text-decoration-none">Já tenho registro</a>
-                                    <a href="{{ route('resend.email') }}" class="text-decoration-none">Não recebeu o e-mail
-                                        de confirmação?</a>
-                                </div>
-                            </form>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-head);
+        }
 
-                        </div>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ─── KEYFRAMES ───────────────────────────────────────────── */
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-14px)
+            }
+        }
+
+        @keyframes gradShift {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(.92)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        @keyframes slideRule {
+            from {
+                opacity: 0;
+                transform: translateX(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        /* ─── LAYOUT WRAPPER ──────────────────────────────────────── */
+        .page-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        /* ─── PAINEL ESQUERDO (decorativo) ───────────────────────── */
+        .panel-left {
+            background: var(--grad-main);
+            background-size: 300% 300%;
+            animation: gradShift 14s ease infinite;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem;
+        }
+
+        /* Círculos decorativos */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .deco-c1 {
+            width: 420px;
+            height: 420px;
+            top: -100px;
+            right: -140px;
+            border: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .deco-c2 {
+            width: 260px;
+            height: 260px;
+            bottom: -60px;
+            left: -60px;
+            border: 1px solid rgba(0, 168, 150, .18);
+        }
+
+        .deco-c3 {
+            width: 150px;
+            height: 150px;
+            top: 42%;
+            right: 10%;
+            border: 1px solid rgba(244, 162, 97, .22);
+            animation: float 7s ease-in-out infinite;
+        }
+
+        .deco-blob {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 168, 150, .18) 0%, transparent 65%);
+            width: 500px;
+            height: 500px;
+            top: 10%;
+            right: -120px;
+            pointer-events: none;
+        }
+
+        /* Logo / Brand no painel */
+        .panel-brand {
+            position: relative;
+            z-index: 2;
+            animation: fadeDown .8s ease both;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--grad-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 168, 150, .4);
+            margin-bottom: 1.2rem;
+        }
+
+        .panel-brand h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .panel-brand p {
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .55);
+            margin-top: .2rem;
+        }
+
+        /* Ilustração central */
+        .panel-center {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 1s ease .3s both;
+        }
+
+        .panel-center .headline {
+            font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .panel-center .headline em {
+            color: var(--amber);
+            font-style: normal;
+        }
+
+        .panel-center .lead-text {
+            font-size: .9rem;
+            color: rgba(255, 255, 255, .65);
+            line-height: 1.7;
+            max-width: 380px;
+        }
+
+        /* Steps list no painel */
+        .panel-steps {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: .85rem;
+        }
+
+        .panel-step {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            animation: fadeUp .7s ease both;
+        }
+
+        .panel-step:nth-child(1) {
+            animation-delay: .5s;
+        }
+
+        .panel-step:nth-child(2) {
+            animation-delay: .65s;
+        }
+
+        .panel-step:nth-child(3) {
+            animation-delay: .8s;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            color: var(--amber);
+            font-weight: 700;
+            font-family: var(--font-head);
+        }
+
+        .step-dot.done {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: #fff;
+        }
+
+        .panel-step span {
+            font-size: .82rem;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .panel-step span strong {
+            color: #fff;
+        }
+
+        /* Rodapé do painel */
+        .panel-footer {
+            position: relative;
+            z-index: 2;
+            font-size: .73rem;
+            color: rgba(255, 255, 255, .35);
+            animation: fadeIn 1s ease .9s both;
+        }
+
+        /* ─── PAINEL DIREITO (formulário) ─────────────────────────── */
+        .panel-right {
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 420px;
+            animation: scaleIn .55s cubic-bezier(.22, .68, 0, 1.2) .1s both;
+        }
+
+        /* Topo do formulário */
+        .form-top {
+            margin-top: 16rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-top .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .8rem;
+            color: var(--muted);
+            font-weight: 500;
+            transition: color .2s, gap .2s;
+            margin-bottom: 1.6rem;
+        }
+
+        .form-top .back-link:hover {
+            color: var(--teal);
+            gap: .6rem;
+        }
+
+        .form-top h1 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        .form-top p {
+            font-size: .87rem;
+            color: var(--muted);
+            margin-top: .4rem;
+            line-height: 1.6;
+        }
+
+        /* Toggle senhas */
+        .toggle-pwd-btn {
+            background: rgba(0, 168, 150, .08);
+            border: 1px solid rgba(0, 168, 150, .2);
+            color: var(--teal);
+            font-size: .78rem;
+            font-weight: 600;
+            font-family: var(--font-head);
+            cursor: pointer;
+            border-radius: 50px;
+            padding: .3rem .9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            transition: background .2s, box-shadow .2s;
+        }
+
+        .toggle-pwd-btn:hover {
+            background: rgba(0, 168, 150, .15);
+            box-shadow: 0 2px 10px rgba(0, 168, 150, .2);
+        }
+
+        /* Labels */
+        .field-label {
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: .4rem;
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .field-label .req {
+            color: #e74c3c;
+            font-size: .7rem;
+        }
+
+        /* Inputs */
+        .field-wrap {
+            position: relative;
+        }
+
+        .field-icon {
+            position: absolute;
+            left: .9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: .95rem;
+            pointer-events: none;
+            transition: color .25s;
+        }
+
+        .form-input {
+            width: 100%;
+            border: 1.5px solid rgba(11, 30, 61, .14);
+            border-radius: 12px;
+            padding: .78rem .9rem .78rem 2.5rem;
+            font-family: var(--font-body);
+            font-size: .9rem;
+            color: var(--navy);
+            background: #fff;
+            outline: none;
+            transition: border-color .25s, box-shadow .25s;
+        }
+
+        .form-input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(0, 168, 150, .12);
+        }
+
+        .form-input.input-ok {
+            border-color: var(--teal);
+        }
+
+        .form-input.input-error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, .1);
+        }
+
+        .form-input:focus~.field-icon,
+        .form-input.input-ok~.field-icon {
+            color: var(--teal);
+        }
+
+        .form-input.input-error~.field-icon {
+            color: #e74c3c;
+        }
+
+        /* Eye button */
+        .eye-btn {
+            position: absolute;
+            right: .8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: .95rem;
+            cursor: pointer;
+            padding: .2rem;
+            line-height: 1;
+            transition: color .2s;
+        }
+
+        .eye-btn:hover {
+            color: var(--teal);
+        }
+
+        /* Inline feedback */
+        .field-msg {
+            font-size: .74rem;
+            margin-top: .35rem;
+            min-height: 1rem;
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+            animation: slideRule .25s ease;
+        }
+
+        .field-msg.ok {
+            color: var(--teal2);
+        }
+
+        .field-msg.error {
+            color: #e74c3c;
+        }
+
+        /* Strength bar */
+        .strength-wrap {
+            margin-top: .55rem;
+        }
+
+        .strength-track {
+            height: 5px;
+            background: rgba(11, 30, 61, .08);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 3px;
+            transition: width .4s ease, background .4s ease;
+        }
+
+        .strength-label {
+            font-size: .73rem;
+            color: var(--muted);
+            display: block;
+            margin-top: .3rem;
+            min-height: 1rem;
+            transition: color .3s;
+        }
+
+        /* Regras checklist */
+        .rules-box {
+            background: rgba(11, 30, 61, .03);
+            border-radius: 12px;
+            border: 1px solid rgba(11, 30, 61, .07);
+            padding: .85rem 1rem;
+        }
+
+        .rules-note {
+            font-size: .78rem;
+            color: var(--muted);
+            line-height: 1.65;
+            border-left: 3px solid var(--amber);
+            padding-left: .75rem;
+            margin-bottom: .85rem;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .35rem .6rem;
+        }
+
+        .rule-chip {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .77rem;
+            color: var(--muted);
+            font-weight: 500;
+            transition: color .3s;
+        }
+
+        .rule-chip .ri {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(11, 30, 61, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .6rem;
+            flex-shrink: 0;
+            transition: background .3s, border-color .3s, transform .3s;
+        }
+
+        .rule-chip.valid {
+            color: var(--teal2);
+        }
+
+        .rule-chip.valid .ri {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: #fff;
+            transform: scale(1.15);
+        }
+
+        /* Submit button */
+        .btn-register {
+            width: 100%;
+            padding: .9rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--grad-teal);
+            color: #fff;
+            font-family: var(--font-head);
+            font-weight: 700;
+            font-size: .95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
+            transition: transform .25s, box-shadow .25s, opacity .3s;
+        }
+
+        .btn-register:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none !important;
+        }
+
+        .btn-register:not(:disabled):hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
+        }
+
+        /* Links bottom */
+        .form-links {
+            border-top: 1px solid rgba(11, 30, 61, .07);
+            margin-top: 1.2rem;
+            padding-top: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .55rem;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-head);
+            font-size: .84rem;
+            font-weight: 700;
+            color: var(--teal);
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            transition: gap .2s, color .2s;
+            padding: 0;
+        }
+
+        .link-btn:hover {
+            gap: .6rem;
+            color: var(--teal2);
+        }
+
+        .link-muted {
+            font-size: .8rem;
+            color: var(--muted);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            transition: color .2s;
+        }
+
+        .link-muted:hover {
+            color: var(--navy);
+        }
+
+        /* Sucesso state */
+        .success-overlay {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 3rem;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .4s ease;
+            z-index: 10;
+        }
+
+        .success-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00A896, #007F72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(0, 168, 150, .35);
+            animation: scaleIn .5s cubic-bezier(.22, .68, 0, 1.2);
+        }
+
+        .success-overlay h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .success-overlay p {
+            font-size: .88rem;
+            color: var(--muted);
+            line-height: 1.65;
+            max-width: 300px;
+        }
+
+        /* ─── RESPONSIVO ─────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-left {
+                display: none;
+            }
+
+            .panel-right {
+                padding: 2.5rem 1.5rem;
+                min-height: 100vh;
+                align-items: flex-start;
+            }
+
+            .form-card {
+                padding-top: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel-right {
+                padding: 2rem 1.2rem;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <!-- ═══════════════════════ ALERTAS ══════════════════════════ -->
+        @include('alerts.toasts')
+        <!-- ══════════ PAINEL ESQUERDO ══════════ -->
+        <aside class="panel-left">
+            <div class="deco-circle deco-c1"></div>
+            <div class="deco-circle deco-c2"></div>
+            <div class="deco-circle deco-c3"></div>
+            <div class="deco-blob"></div>
+
+            <!-- Brand -->
+            <div class="panel-brand">
+                <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                <h2>EM Dr. Leandro Franceschini</h2>
+                <p>Vestibulinho {{ config('app.year') }} · Cursos Técnicos Gratuitos</p>
+            </div>
+
+            <!-- Conteúdo central -->
+            <div class="panel-center">
+                <p class="headline">
+                    Sua jornada<br>técnica começa<br>com um <em>cadastro</em>.
+                </p>
+                <p class="lead-text">
+                    Registre seus dados de acesso para acompanhar todas as etapas do processo seletivo em um só lugar.
+                </p>
+
+                <div class="panel-steps">
+                    <div class="panel-step">
+                        <div class="step-dot done"><i class="bi bi-check-lg"></i></div>
+                        <span><strong>Criando</strong> seus dados de acesso</span>
+                    </div>
+                    <div class="panel-step">
+                        <div class="step-dot" style="border-color:var(--amber);color:var(--amber);">2</div>
+                        <span>Acessar a <strong>Área do Candidato</strong> e preencher o formulário de inscrição</span>
+                    </div>
+                    <div class="panel-step">
+                        <div class="step-dot">3</div>
+                        <span>Confirmar inscrição e <strong>aguardar prova</strong></span>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <footer class="mini-footer">
-        @include('guest.home.mini-footer')
-    </footer>
+            <!-- Rodapé -->
+            <div class="panel-footer">
+                © {{ $currentYear }} EM Dr. Francisco de Souza · Todos os direitos reservados
+            </div>
+        </aside>
 
-@endsection
+        <!-- ══════════ PAINEL DIREITO (formulário) ══════════ -->
+        <main class="panel-right">
 
-@push('plugins')
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-@endpush
+            <!-- Overlay de sucesso -->
+            <div class="success-overlay" id="successOverlay">
+                <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+                <h3>Cadastro realizado!</h3>
+                <p>Verifique sua caixa de entrada — enviamos um e-mail de confirmação. Após confirmar, você poderá
+                    acessar sua Área do Candidato.</p>
+                <a href="vestibulinho.html"
+                    style="margin-top:.5rem;background:var(--grad-teal);color:#fff;font-family:var(--font-head);font-weight:700;font-size:.88rem;padding:.75rem 1.8rem;border-radius:50px;display:inline-flex;align-items:center;gap:.5rem;box-shadow:0 6px 20px rgba(0,168,150,.35);transition:transform .2s;"
+                    onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+                    <i class="bi bi-house-fill"></i> Voltar ao início
+                </a>
+            </div>
 
-@push('scripts')
-    <script src="{{ asset('assets/js/ui/auth/toggleAllPasswords.js') }}"></script>
-@endpush
+            <div class="form-card">
+
+                <!-- Topo -->
+                <div class="form-top">
+                    <a href="{{ route('home') }}" class="back-link">
+                        <i class="bi bi-arrow-left"></i> Voltar ao site
+                    </a>
+                    <h1>Registrar<br>Dados de Acesso</h1>
+                    <p>Crie seu acesso para acompanhar o Vestibulinho 2025 pela Área do Candidato.</p>
+                </div>
+
+                <!-- Toggle senhas -->
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1.2rem;">
+                    <button class="toggle-pwd-btn" id="toggleAllBtn" onclick="toggleAllPwd()">
+                        <i class="bi bi-eye" id="toggleAllIcon"></i>
+                        <span id="toggleAllLabel">Mostrar senhas</span>
+                    </button>
+                </div>
+
+                <!-- Formulário -->
+                {{-- <div style="display:flex;flex-direction:column;gap:1.1rem;"> --}}
+                <form method="POST" action="{{ route('register') }}"
+                    style="display:flex;flex-direction:column;gap:1.1rem;">
+
+                    @csrf
+                    <!-- E-mail -->
+                    <div>
+                        <div class="field-label">
+                            E-mail <span class="req">*</span>
+                        </div>
+                        <div class="field-wrap">
+                            <input type="email" name="email" id="regEmail"
+                                class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="seu@email.com" oninput="validateEmail()" />
+                            <i class="bi bi-envelope-fill field-icon"></i>
+                        </div>
+                        <div class="field-msg" id="msgEmail"></div>
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Senha -->
+                    <div>
+                        <div class="field-label">
+                            Senha <span class="req">*</span>
+                        </div>
+                        <div class="field-wrap">
+                            <input type="password" name="password" id="regPwd"
+                                class="form-input pwd-input @error('password') is-invalid @enderror"
+                                value="{{ old('password') }}" placeholder="Crie sua senha" style="padding-right:2.8rem;"
+                                oninput="onPwdInput()" />
+                            <i class="bi bi-lock-fill field-icon"></i>
+                            <button class="eye-btn" type="button" onclick="toggleEye('regPwd','eyePwd1')">
+                                <i class="bi bi-eye-fill" id="eyePwd1"></i>
+                            </button>
+                        </div>
+                        <!-- Barra de força -->
+                        <div class="strength-wrap">
+                            <div class="strength-track">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <span class="strength-label" id="strengthLabel"></span>
+                        </div>
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Repetir Senha -->
+                    <div>
+                        <div class="field-label">
+                            Repetir Senha <span class="req">*</span>
+                        </div>
+                        <div class="field-wrap">
+                            <input type="password" name="password_confirmation" id="regConfirm"
+                                class="form-input pwd-input @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation') }}"
+                                placeholder="Repita sua senha" style="padding-right:2.8rem;"
+                                oninput="validateConfirm()" />
+                            <i class="bi bi-shield-lock-fill field-icon"></i>
+                            <button class="eye-btn" type="button" onclick="toggleEye('regConfirm','eyePwd2')">
+                                <i class="bi bi-eye-fill" id="eyePwd2"></i>
+                            </button>
+                        </div>
+                        <div class="field-msg" id="msgConfirm"></div>
+                        @error('password_confirmation')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Regras + Checklist -->
+                    <div class="rules-box">
+                        <p class="rules-note">
+                            <strong style="color:var(--navy);">ATENÇÃO:</strong> Sua senha deve ter no
+                            <strong>mínimo 6</strong> e no <strong>máximo 8</strong> caracteres, contendo
+                            <strong>pelo menos</strong> uma letra maiúscula, uma minúscula <strong>e</strong> um número.
+                        </p>
+                        <div class="rules-grid">
+                            <div class="rule-chip" id="rule-len">
+                                <div class="ri" id="ri-len"><i class="bi bi-dash"></i></div>
+                                6 a 8 caracteres
+                            </div>
+                            <div class="rule-chip" id="rule-upper">
+                                <div class="ri" id="ri-upper"><i class="bi bi-dash"></i></div>
+                                Letra maiúscula
+                            </div>
+                            <div class="rule-chip" id="rule-lower">
+                                <div class="ri" id="ri-lower"><i class="bi bi-dash"></i></div>
+                                Letra minúscula
+                            </div>
+                            <div class="rule-chip" id="rule-num">
+                                <div class="ri" id="ri-num"><i class="bi bi-dash"></i></div>
+                                Número
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botão submit -->
+                    {{-- <button class="btn-register" id="btnSubmit" type="button" disabled onclick="doSubmit()"> --}}
+                    <button class="btn-register" id="btnSubmit" type="submit" disabled>
+                        <i class="bi bi-person-plus-fill"></i> Cadastrar
+                    </button>
+
+                    <!-- Links inferiores -->
+                    <div class="form-links">
+                        <a href="{{ route('login') }}" class="link-btn">
+                            <i class="bi bi-box-arrow-in-right"></i> Já tenho registro
+                        </a>
+                        <a href="{{ route('resend.email') }}" class="link-muted">
+                            <i class="bi bi-envelope"></i> Não recebeu o e-mail de confirmação?
+                        </a>
+                    </div>
+
+                    <!--  </div>/form fields -->
+                </form><!-- /form -->
+            </div><!-- /form-card -->
+        </main>
+
+    </div><!-- /page-wrapper -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ── Estado global ──────────────────────────────────────────
+        let pwdVisible = false;
+
+        const rules = {
+            len: v => v.length >= 6 && v.length <= 8,
+            upper: v => /[A-Z]/.test(v),
+            lower: v => /[a-z]/.test(v),
+            num: v => /[0-9]/.test(v),
+        };
+
+        // ── Toggle TODAS as senhas ─────────────────────────────────
+        function toggleAllPwd() {
+            pwdVisible = !pwdVisible;
+            document.querySelectorAll('.pwd-input').forEach(el => {
+                el.type = pwdVisible ? 'text' : 'password';
+            });
+            document.querySelectorAll('.eye-btn i').forEach(i => {
+                i.className = pwdVisible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill';
+            });
+            document.getElementById('toggleAllIcon').className = pwdVisible ? 'bi bi-eye-slash' : 'bi bi-eye';
+            document.getElementById('toggleAllLabel').textContent = pwdVisible ? 'Ocultar senhas' : 'Mostrar senhas';
+        }
+
+        // ── Toggle senha individual ────────────────────────────────
+        function toggleEye(inputId, iconId) {
+            const el = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            el.type = el.type === 'password' ? 'text' : 'password';
+            icon.className = el.type === 'text' ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill';
+        }
+
+        // ── Validar e-mail ─────────────────────────────────────────
+        function validateEmail() {
+            const el = document.getElementById('regEmail');
+            const msg = document.getElementById('msgEmail');
+            const v = el.value.trim();
+            if (!v) {
+                setFieldState(el, msg, '', '');
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+                setFieldState(el, msg, 'error', '<i class="bi bi-x-circle-fill"></i> E-mail inválido');
+            } else {
+                setFieldState(el, msg, 'ok', '<i class="bi bi-check-circle-fill"></i> E-mail válido');
+            }
+            checkSubmit();
+        }
+
+        // ── Checar força e regras da senha ─────────────────────────
+        function onPwdInput() {
+            const v = document.getElementById('regPwd').value;
+
+            // Atualiza chips de regras
+            setRule('len', rules.len(v));
+            setRule('upper', rules.upper(v));
+            setRule('lower', rules.lower(v));
+            setRule('num', rules.num(v));
+
+            // Calcula força (0-4)
+            let score = 0;
+            if (rules.len(v)) score++;
+            if (rules.upper(v)) score++;
+            if (rules.lower(v)) score++;
+            if (rules.num(v)) score++;
+
+            const fill = document.getElementById('strengthFill');
+            const label = document.getElementById('strengthLabel');
+            const map = [{
+                    w: '0%',
+                    bg: 'transparent',
+                    txt: ''
+                },
+                {
+                    w: '30%',
+                    bg: '#e74c3c',
+                    txt: 'Muito fraca'
+                },
+                {
+                    w: '55%',
+                    bg: 'var(--amber)',
+                    txt: 'Fraca'
+                },
+                {
+                    w: '78%',
+                    bg: '#f0c030',
+                    txt: 'Razoável'
+                },
+                {
+                    w: '100%',
+                    bg: 'var(--teal)',
+                    txt: 'Forte ✓'
+                },
+            ];
+            const s = v.length === 0 ? 0 : Math.max(1, score);
+            fill.style.width = map[s].w;
+            fill.style.background = map[s].bg;
+            label.textContent = map[s].txt;
+            label.style.color = map[s].bg === 'transparent' ? 'var(--muted)' : map[s].bg;
+
+            validateConfirm();
+            checkSubmit();
+        }
+
+        function setRule(key, valid) {
+            const chip = document.getElementById('rule-' + key);
+            const ri = document.getElementById('ri-' + key);
+            chip.classList.toggle('valid', valid);
+            ri.innerHTML = valid ? '<i class="bi bi-check-lg"></i>' : '<i class="bi bi-dash"></i>';
+        }
+
+        // ── Validar confirmação de senha ───────────────────────────
+        function validateConfirm() {
+            const pwd = document.getElementById('regPwd').value;
+            const conf = document.getElementById('regConfirm');
+            const msg = document.getElementById('msgConfirm');
+            const v = conf.value;
+            if (!v) {
+                setFieldState(conf, msg, '', '');
+            } else if (v !== pwd) {
+                setFieldState(conf, msg, 'error', '<i class="bi bi-x-circle-fill"></i> As senhas não coincidem');
+            } else {
+                setFieldState(conf, msg, 'ok', '<i class="bi bi-check-circle-fill"></i> Senhas conferem');
+            }
+            checkSubmit();
+        }
+
+        // ── Helper: aplica estado visual ao campo ──────────────────
+        function setFieldState(input, msgEl, state, html) {
+            input.classList.remove('input-ok', 'input-error');
+            if (state === 'ok') input.classList.add('input-ok');
+            if (state === 'error') input.classList.add('input-error');
+            msgEl.innerHTML = html;
+            msgEl.className = 'field-msg' + (state ? ' ' + state : '');
+        }
+
+        // ── Habilita/desabilita botão submit ───────────────────────
+        function checkSubmit() {
+            const email = document.getElementById('regEmail').value.trim();
+            const pwd = document.getElementById('regPwd').value;
+            const confirm = document.getElementById('regConfirm').value;
+            const btn = document.getElementById('btnSubmit');
+
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const pwdOk = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
+            const confirmOk = pwd === confirm && confirm.length > 0;
+
+            btn.disabled = !(emailOk && pwdOk && confirmOk);
+        }
+
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = document.getElementById('btnSubmit');
+
+            btn.disabled = true;
+
+            btn.innerHTML = `
+                <span class="spinner-border spinner-border-sm"
+                style="width:1rem;height:1rem;border-width:2px;">
+                </span>
+                Cadastrando...
+            `;
+        });
+    </script>
+    <script type="module" src="{{ asset('assets/js/app.js') }}"></script>
+</body>
+
+</html>
