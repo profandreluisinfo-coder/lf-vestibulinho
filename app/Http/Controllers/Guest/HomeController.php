@@ -34,9 +34,9 @@ class HomeController extends Controller
         // $faqs = Faq::where('status', true)->orderBy('order', 'asc')->get();
 
         // Verifica quantos registros de chamada existem
-        $calls = Call::all()->count();
+        // $calls = Call::all()->count();
 
         // return view('index', compact('deadline', 'files', 'courses', 'calls', 'faqs', 'archives'));
-        return view('index', compact('courses', 'calls', 'faqs'));
+        return view('guest.home.index', compact('courses', 'faqs'));
     }
 }

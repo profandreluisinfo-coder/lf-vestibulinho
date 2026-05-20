@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-file-earmark-pdf me-2"></i>Edital</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewNotice">
-                <i class="bi bi-plus-circle me-1"></i> Novo
+                <i class="bi bi-plus-circle me-1"></i> Cadastrar Edital
             </a>
         </div>
 
@@ -104,7 +104,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Edital</h5>
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Cadastrar Edital</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
