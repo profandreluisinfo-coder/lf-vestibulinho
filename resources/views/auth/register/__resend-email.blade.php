@@ -6,10 +6,10 @@
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
     @endif
-    <meta name="description" content="Recuperação de senha.">
+    <meta name="description" content="Reenvio de e-mail de verificação.">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Recuperar Senha')
+@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Reenviar e-mail de Verificação')
 
 @section('content')
 
@@ -20,22 +20,24 @@
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <article class="card shadow-sm">
-                        <header class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
+                        <header
+                            class="card-header d-flex flex-column justify-content-center align-items-center border-0 pt-4">
                             <i class="bi bi-mortarboard-fill" style="font-size: 2.5rem;" aria-hidden="true"></i>
                             <h2 class="h3 text-center">{{ config('app.name') }} {{ $calendar->year }}</h2>
                         </header>
                         <div class="card-body">
                             <h1 class="h4 mb-4 text-center">
                                 <span class="d-inline-flex align-items-center title">
-                                    <i class="bi bi-key me-2" aria-hidden="true"></i>
-                                    Recuperação de Senha
+                                    <i class="bi bi-envelope-check me-2" aria-hidden="true"></i>
+                                    Reenviar E-mail de Verificação
                                 </span>
                             </h1>
-                            <form id="forgot-password" action="{{ route('forgot.password') }}" method="POST">
+                            <form id="resend-email" method="POST" action="{{ route('resend.email') }}">
                                 @csrf
                                 <div class="text-center mb-3">
-                                    <label for="loginEmail" class="form-label">Informe seu endereço de e-mail:</label>
-                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="loginEmail"
+                                    <label for="myEmail" class="form-label required">Informe seu endereço de e-mail</label>
+                                    <input type="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror" id="myEmail"
                                         value="{{ old('email') }}" aria-describedby="@error('email') emailError @enderror">
                                     @error('email')
                                         <div id="emailError" class="invalid-feedback">
@@ -45,12 +47,12 @@
                                 </div>
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-key me-2" aria-hidden="true"></i>
-                                        Recuperar Senha
+                                        <i class="bi bi-envelope-check me-2" aria-hidden="true"></i>
+                                        Reenviar E-mail de Verificação
                                     </button>
                                 </div>
                                 <div class="mt-3 text-center">
-                                    <a href="{{ route('login') }}" class="text-decoration-none">Lembrei minha senha</a>
+                                    <a href="{{ route('login') }}" class="text-decoration-none">Já validei meu e-mail</a>
                                 </div>
                             </form>
                         </div>

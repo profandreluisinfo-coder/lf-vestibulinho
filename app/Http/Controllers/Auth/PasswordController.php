@@ -31,21 +31,11 @@ class PasswordController extends Controller
      * Reenvia um e-mail para o usuário com um link para redefinição de senha.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     // public function forgotPasswordAction(Request $request): RedirectResponse
     public function forgotPasswordAction(Request $request): JsonResponse
     {
-        // $credentials = $request->validate([
-        //     'email' => 'required|email',
-        // ], [
-        //     'email.required' => 'O campo e-mail é obrigatório',
-        //     'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
-        // ]);
-
-        // $result = app(UserService::class)->forgotPassword($credentials['email']);
-
-        // return alertSuccess($result['message'], 'forgot.password');
         $credentials = $request->validate([
             'email' => 'required|email',
         ], [
@@ -107,10 +97,6 @@ class PasswordController extends Controller
 
         $result = app(UserService::class)->resetPassword($credentials['token'], $credentials['password']);
 
-        // if (!$result['success']) {
-        //     return redirect()->route('login')->with('warning', $result['message']);
-        // }
-
         if (!$result['success']) {
 
             return response()->json([
@@ -121,7 +107,6 @@ class PasswordController extends Controller
 
         session()->invalidate();
 
-        // return redirect()->route('login')->with('success', $result['message']);
         return response()->json([
             'success' => true,
             'message' => $result['message']

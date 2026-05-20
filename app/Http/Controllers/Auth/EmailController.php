@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Services\UserService;
 use App\Http\Controllers\Controller;
+use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class EmailController extends Controller
 {
@@ -58,23 +59,22 @@ class EmailController extends Controller
      *
      * @param Request $request
      * @param UserService $userService
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function resendEmailAction(Request $request, UserService $userService): RedirectResponse
+    public function resendEmailAction(Request $request, UserService $userService): JsonResponse
     {
         $credentials = $request->validate([
             'email' => 'required|email',
         ], [
-            'email.required' => 'O campo e-mail é obrigatório',
-            'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
+            'email.required' => 'O campo e-mail é obrigatório.',
+            'email.email'    => 'O campo e-mail deve ser um endereço de e-mail válido.',
         ]);
 
         $response = $userService->resendEmail($credentials['email']);
 
-        if ($response['success']) {
-            return alertSuccess($response['message'], 'resend.email');
-        }
-
-        return alertWarning($response['message'], 'resend.email');
+        return response()->json(
+            ['message' => $response['message']],
+            $response['success'] ? 200 : 422
+        );
     }
 }

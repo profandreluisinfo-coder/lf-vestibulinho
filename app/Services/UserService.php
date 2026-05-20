@@ -165,15 +165,15 @@ class UserService
     }
 
     /**
-     * Reenvia um e-mail para o usuário com um link para redefinição de senha com base no token informado.
+     * Reenvia o link de verificação de e-mail para o usuário.
      *
-     * Valida os campos 'token' e 'new_password' e
-     * tenta redefinir a senha do usuário com base nas credenciais informadas.
-     * Se a redefinição for bem sucedida, o usuário receberá um e-mail para confirmar o endereço de e-mail.
-     * Caso contrário, será exibido um erro.
+     * Busca o usuário pelo e-mail informado e, caso exista e ainda não tenha
+     * verificado o endereço, gera um novo token e envia o link de confirmação.
+     * Retorna sucesso genérico quando o usuário não existe ou já está verificado,
+     * evitando enumeração de contas.
      *
      * @param string $email
-     * @return array
+     * @return array{success: bool, message: string}
      */
     public function resendEmail(string $email): array
     {
@@ -213,14 +213,24 @@ class UserService
         // define o link de verificação
         $link = route('verify', ['token' => $user->token]);
 
-        // envia o e-mail
-        $this->sendEmail(
-            to: $user->email,
-            subject: 'Confirme seu e-mail',
-            data: ['link' => $link],
-            view: 'mail.verify'
-        );
+        try {
+            $this->sendEmail(
+                to: $user->email,
+                subject: 'Confirme seu e-mail',
+                data: ['link' => $link],
+                view: 'mail.verify'
+            );
+        } catch (\Throwable $e) {
+            // Desfaz o token para permitir nova tentativa imediata
+            $user->token = null;
+            $user->token_expires_at = null;
+            $user->save();
 
+            return [
+                'success' => false,
+                'message' => 'Não foi possível enviar o e-mail. Tente novamente em instantes.',
+            ];
+        }
         // retorna sucesso
         return [
             'success' => true,
