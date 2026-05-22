@@ -38,7 +38,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('auth.register.admin');
+        return view('auth.admin');
     }
 
     /**
