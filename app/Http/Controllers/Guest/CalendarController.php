@@ -9,19 +9,18 @@ use App\Http\Controllers\Controller;
 class CalendarController extends Controller
 {
     /**
-     * Lista as datas do vestibulinho no site público.
+     * Exibe a página pública do calendário do processo seletivo.
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * O calendário é obtido via Calendar::getActive(), que já usa cache
+     * permanente (Cache::rememberForever). Não há consulta direta ao banco aqui.
+     * O cache é invalidado automaticamente pelo model (booted → saved/deleted).
      */
-    public function index()
+    public function show()
     {
-        $calendar = Calendar::first();
+        $calendar = Calendar::getActive();
 
-        if (!$calendar) {
-            return redirect()->route('home');
-        }
-
-        return view(
-'app.calendar.public.index', compact('calendar'));
+        return view('guest.calendar.index', compact(
+            'calendar',
+        ));
     }
 }

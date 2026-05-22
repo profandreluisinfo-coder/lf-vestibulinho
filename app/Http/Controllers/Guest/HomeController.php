@@ -26,7 +26,7 @@ class HomeController extends Controller
 
         // Busca todos os arquivos de prova ativos e apenas retorna os 3 primeiros ordenados por ano decrescente
         // $files = Archive::where('status', true)->orderBy('year', 'desc')->get();
-        
+
         // Obter todos os cursos
         $courses = Course::all();
 
@@ -38,5 +38,20 @@ class HomeController extends Controller
 
         // return view('index', compact('deadline', 'files', 'courses', 'calls', 'faqs', 'archives'));
         return view('guest.home.index', compact('courses', 'faqs'));
+    }
+
+    public function faqs()
+    {
+        $faqs = Faq::where('status', true)
+            ->orderBy('order', 'asc')
+            ->get()
+            ->map(fn($faq) => [
+                'id'  => $faq->id,
+                'cat' => $faq?->category,   // ajuste para o nome real da coluna
+                'q'   => $faq->question,   // ajuste para o nome real da coluna
+                'a'   => $faq->answer,     // ajuste para o nome real da coluna
+            ]);
+
+        return view('guest.home.faqs', compact('faqs'));
     }
 }

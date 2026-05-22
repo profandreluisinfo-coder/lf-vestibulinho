@@ -62,7 +62,7 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#"
                                 role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle fs-5"></i>
-                                <span class="text-light">{{ $displayName }}</span>
+                                <span class="text-light">{{ $displayName ? $displayName : 'Usuário sem inscrição' }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
                                 <li>

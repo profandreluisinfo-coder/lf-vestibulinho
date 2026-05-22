@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Área de acesso exclusivo para candidatos." />
-    <title>Área do Candidato — Vestibulinho 2025</title>
+    <title>Área do Administrador — Vestibulinho {{ $calendar?->year }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
@@ -764,10 +764,10 @@
             <!-- Centro -->
             <div class="panel-center">
                 <p class="headline">
-                    Bem-vindo de<br>volta à sua<br><em>Área do Candidato</em>.
+                    Bem-vindo de<br>volta à sua<br><em>Área Administrativa</em>.
                 </p>
                 <p class="lead-text">
-                    Acompanhe sua inscrição, consulte resultados, locais de prova e convocações — tudo em um só lugar.
+                    Gerencie inscrições, acompanhe indicadores, publique editais e organize convocações — o controle total do processo em um só lugar.
                 </p>
 
                 <!-- Card de segurança -->
@@ -778,12 +778,8 @@
                         <p>Sua conexão é protegida. Nunca compartilhe sua senha com terceiros.</p>
                     </div>
                     <div class="sec-item">
-                        <div class="sec-icon"><i class="bi bi-envelope-check-fill"></i></div>
-                        <p>Use o mesmo e-mail informado no momento do cadastro.</p>
-                    </div>
-                    <div class="sec-item">
                         <div class="sec-icon"><i class="bi bi-headset"></i></div>
-                        <p>Dificuldades de acesso? Contate a secretaria da escola.</p>
+                        <p>Dificuldades de acesso? Contate a desenvolvedor.</p>
                     </div>
                 </div>
             </div>
@@ -817,7 +813,7 @@
                             <i class="bi bi-arrow-left"></i> Voltar ao site
                         </a>
                         <div class="form-badge">
-                            <i class="bi bi-person-lock"></i> Área do Candidato
+                            <i class="bi bi-shield-fill-check"></i> Área Administrativa
                         </div>
                     </div>
 
@@ -836,8 +832,6 @@
                     style="display:flex;flex-direction:column;gap:1.1rem;">
 
                     @csrf
-                    <!-- Campos -->
-                    {{-- <div style="display:flex;flex-direction:column;gap:1.1rem;"> --}}
 
                     <!-- E-mail -->
                     <div>
@@ -887,21 +881,12 @@
                             <div class="check-box"><i class="bi bi-check-lg"></i></div>
                             <span class="check-label">Lembrar de mim</span>
                         </label>
-                        <a href="{{ route('forgot.password') }}" class="forgot-link">Esqueceu a senha?</a>
                     </div>
                     
                     <!-- Botão entrar -->
                     <button type="submit" class="btn-login">
                         <i class="bi bi-box-arrow-in-right"></i> Entrar
                     </button>
-
-                    <!-- Links -->
-                    <div class="form-links">
-                        <div class="divider-or">ou</div>
-                        <a href="{{ route('register') }}" class="link-register">
-                            <i class="bi bi-person-plus-fill"></i> Ainda não tem registro? Cadastre-se
-                        </a>
-                    </div>
 
                     <!--</div> /fields -->
                 </form>
@@ -966,12 +951,7 @@
 
             btn.disabled = true;
 
-            btn.innerHTML = `
-    <span class="spinner-border spinner-border-sm"
-      style="width:.95rem;height:.95rem;border-width:2px;">
-    </span>
-    Entrando...
-  `;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm" style="width:.95rem;height:.95rem;border-width:2px;"></span>Entrando...`;
         });
     </script>
 </body>

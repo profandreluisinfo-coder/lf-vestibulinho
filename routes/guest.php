@@ -1,20 +1,10 @@
 <?php
 
+use App\Http\Controllers\Guest\{ ArchiveController, HomeController, ResultController };
+use App\Http\Controllers\Guest\{ CallController };
+use App\Http\Controllers\Guest\CalendarController;
+use App\Http\Middleware\{ isResultEnabled };
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Middleware\{
-    isResultEnabled
-};
-
-use App\Http\Controllers\Guest\{
-    ArchiveController,
-    HomeController,
-    ResultController
-};
-
-use App\Http\Controllers\Guest\{
-    CallController
-};
 
 Route::middleware(['guest'])->group(function () {
 
@@ -28,4 +18,11 @@ Route::middleware(['guest'])->group(function () {
 
     // Chamadas
     Route::get('/chamadas', [CallController::class, 'index'])->name('guest.calls.index');
+
+    // Perguntas frequentes
+    Route::get('/perguntas-frequentes', [HomeController::class, 'faqs'])->name('guest.faqs.index');
+
+    // Calendário
+    Route::get('/calendario', [CalendarController::class, 'show'])
+    ->name('guest.calendar.show');
 });

@@ -322,7 +322,7 @@
                         <span class="cal-badge badge-open">Matrícula</span>
                     </div>
                     <div class="text-center mt-4 reveal delay-4">
-                        <a href="#" class="btn-faq-more">
+                        <a href="{{ route('guest.calendar.show') }}" class="btn-faq-more">
                             Ver todas as datas do Vestibulinho <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
@@ -358,7 +358,7 @@
                     @endforeach
 
                     <div class="text-center mt-4 reveal">
-                        <a href="#" class="btn-faq-more">
+                        <a href="{{ route('guest.faqs.index') }}" class="btn-faq-more">
                             Ver todas as perguntas frequentes <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
@@ -511,7 +511,7 @@
                 <div class="col-6 col-lg-2 foot-col">
                     <h6>Contato</h6>
                     <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="mailto:emdrleandrofranceschini@educacaosumare.com.br"><i class="bi bi-envelope me-1"></i><span style="font-size: 12px;">emdrleandrofranceschini@educacaosumare.com.br</span></a></li>
+                        <li><a href="mailto:emdrleandrofranceschini@educacaosumare.com.br" title="emdrleandrofranceschini@educacaosumare.com.br"><i class="bi bi-envelope me-1"></i>emdrleandrofranceschini@...</a></li>
                         <li><a href="#"><i class="bi bi-telephone me-1"></i>(19) 3873-2605</a></li>
                         <li><a href="#"><i class="bi bi-geo-alt me-1"></i>Ver endereço</a></li>
                     </ul>
@@ -521,8 +521,8 @@
             <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                 <p class="mb-0">© {{ $currentYear }} EM Dr. Leandro Franceschini · Todos os direitos reservados.
                 </p>
-                <p class="mb-0"><a href="#">Política de Privacidade</a> · <a
-                        href="#">Acessibilidade</a></p>
+                {{-- <p class="mb-0"><a href="#">Política de Privacidade</a> · <a
+                        href="#">Acessibilidade</a></p> --}}
             </div>
         </div>
     </footer>

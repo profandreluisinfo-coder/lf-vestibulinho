@@ -1,0 +1,544 @@
+/* ═══════════════════════════════════════════════════════════
+   calendar.css — Página dedicada do calendário
+   Depende dos tokens de index.css (:root com --navy, --teal, etc.)
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── HERO DA PÁGINA ────────────────────────────────────── */
+.cal-hero {
+    background: var(--grad-main);
+    background-size: 300% 300%;
+    animation: gradShift 14s ease infinite;
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cal-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55% 70% at 85% 40%, rgba(0, 168, 150, .22) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(244, 162, 97, .12) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cal-breadcrumb {
+    margin: 0;
+}
+
+.cal-breadcrumb .breadcrumb-item a {
+    color: rgba(255, 255, 255, .6);
+    font-size: .8rem;
+    transition: color .2s;
+}
+
+.cal-breadcrumb .breadcrumb-item a:hover {
+    color: var(--teal);
+}
+
+.cal-breadcrumb .breadcrumb-item.active {
+    color: rgba(255, 255, 255, .4);
+    font-size: .8rem;
+}
+
+.cal-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, .3);
+}
+
+.cal-hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    animation: fadeDown 1s ease .2s both;
+}
+
+.cal-hero-title em {
+    color: var(--amber);
+    font-style: normal;
+}
+
+.year-chip {
+    display: inline-block;
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(8px);
+    padding: .1rem .9rem;
+    border-radius: 50px;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: .04em;
+    vertical-align: middle;
+}
+
+/* ─── STATUS CARD (hero direita) ────────────────────────── */
+.status-card {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.4rem 1.8rem;
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+    animation: fadeUp 1s ease .5s both;
+    border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.status-open {
+    background: rgba(0, 168, 150, .2);
+    border-color: rgba(0, 168, 150, .4);
+}
+
+.status-closed {
+    background: rgba(192, 57, 43, .18);
+    border-color: rgba(192, 57, 43, .35);
+}
+
+.status-soon {
+    background: rgba(244, 162, 97, .18);
+    border-color: rgba(244, 162, 97, .35);
+}
+
+.status-pending {
+    background: rgba(255, 255, 255, .07);
+    border-color: rgba(255, 255, 255, .15);
+}
+
+.status-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.status-open .status-icon    { color: #5ef0e0; }
+.status-closed .status-icon  { color: #ff7675; }
+.status-soon .status-icon    { color: var(--amber); }
+.status-pending .status-icon { color: rgba(255,255,255,.5); }
+
+.status-label {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.status-detail {
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .65);
+    margin-top: .15rem;
+}
+
+/* ─── SEÇÃO PRINCIPAL ───────────────────────────────────── */
+#calendario-completo {
+    padding: 4rem 0 5rem;
+    background: var(--light);
+}
+
+/* ─── TIMELINE FLOW (linha do tempo visual) ─────────────── */
+.timeline-section {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+}
+
+.timeline-flow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: .5rem;
+}
+
+.tf-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+    min-width: 90px;
+    max-width: 140px;
+}
+
+/* Connector bar between steps */
+.tf-connector {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: rgba(11, 30, 61, .1);
+    z-index: 0;
+    transition: background .4s;
+}
+
+.tf-connector-done {
+    background: var(--teal);
+}
+
+/* Node circle */
+.tf-node {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    background: #f0f4f8;
+    color: var(--muted);
+    border: 3px solid #e0e8f0;
+    position: relative;
+    z-index: 1;
+    transition: all .35s cubic-bezier(.22,.68,0,1.2);
+    flex-shrink: 0;
+}
+
+/* Color variants */
+.tf-color-teal   .tf-node { background: rgba(0,168,150,.1);  border-color: rgba(0,168,150,.3);  color: var(--teal); }
+.tf-color-purple .tf-node { background: rgba(123,63,160,.1); border-color: rgba(123,63,160,.3); color: #7B3FA0; }
+.tf-color-red    .tf-node { background: rgba(192,57,43,.1);  border-color: rgba(192,57,43,.3);  color: #C0392B; }
+.tf-color-amber  .tf-node { background: rgba(244,162,97,.1); border-color: rgba(244,162,97,.3); color: var(--amber2); }
+.tf-color-orange .tf-node { background: rgba(224,122,58,.1); border-color: rgba(224,122,58,.3); color: var(--amber2); }
+
+/* Active state */
+.tf-active .tf-node {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 6px rgba(0,168,150,.15), 0 6px 20px rgba(0,168,150,.3);
+}
+.tf-color-teal.tf-active   .tf-node { background: var(--teal);  color: #fff; border-color: var(--teal); }
+.tf-color-purple.tf-active .tf-node { background: #7B3FA0; color: #fff; border-color: #7B3FA0; }
+.tf-color-red.tf-active    .tf-node { background: #C0392B; color: #fff; border-color: #C0392B; }
+.tf-color-amber.tf-active  .tf-node { background: var(--amber2); color: #fff; border-color: var(--amber2); }
+
+/* Done state */
+.tf-done .tf-node {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+}
+
+.tf-label {
+    font-family: var(--font-head);
+    font-size: .72rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--navy);
+    margin-top: .6rem;
+    letter-spacing: .02em;
+    line-height: 1.3;
+}
+
+.tf-date {
+    font-size: .67rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: .25rem;
+    line-height: 1.4;
+}
+
+/* ─── DETAIL CARDS ──────────────────────────────────────── */
+.detail-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(11, 30, 61, .06);
+    transition: box-shadow .3s, transform .3s;
+    height: 100%;
+}
+
+.detail-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+/* Active / done overlays */
+.detail-active {
+    border-color: rgba(0, 168, 150, .3);
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, .1), var(--shadow);
+}
+
+.detail-done {
+    opacity: .75;
+}
+
+.detail-done::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Phase header */
+.detail-phase {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.3rem 1.6rem;
+    border-bottom: 1px solid rgba(11, 30, 61, .06);
+}
+
+.detail-phase-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+/* Icon bg colors */
+.teal-bg   { background: var(--grad-teal); }
+.teal2-bg  { background: linear-gradient(135deg, var(--teal2), #005a52); }
+.purple-bg { background: linear-gradient(135deg, #7B3FA0, #5A2D77); }
+.red-bg    { background: linear-gradient(135deg, #C0392B, #922B21); }
+.amber-bg  { background: var(--grad-amber); }
+.orange-bg { background: linear-gradient(135deg, #E07A3A, #C0581A); }
+
+/* Left accent bar by color */
+.detail-teal   { border-left: 4px solid var(--teal); }
+.detail-teal2  { border-left: 4px solid var(--teal2); }
+.detail-purple { border-left: 4px solid #7B3FA0; }
+.detail-red    { border-left: 4px solid #C0392B; }
+.detail-amber  { border-left: 4px solid var(--amber2); }
+.detail-orange { border-left: 4px solid var(--amber2); }
+
+.detail-phase-info {
+    flex: 1;
+}
+
+.detail-phase-num {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--muted);
+}
+
+.detail-phase-info h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: .1rem 0 .3rem;
+    color: var(--navy);
+}
+
+/* Badges */
+.detail-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: .2rem .65rem;
+    border-radius: 50px;
+    letter-spacing: .04em;
+}
+
+.badge-open     { background: rgba(0,168,150,.12); color: var(--teal2); }
+.badge-done     { background: rgba(0,168,150,.1);  color: #00796B; }
+.badge-upcoming { background: rgba(11,30,61,.06);  color: var(--muted); }
+
+/* Body */
+.detail-body {
+    padding: 1.4rem 1.6rem;
+}
+
+/* Date boxes (period) */
+.date-box {
+    background: var(--light);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    text-align: center;
+    border: 1px solid rgba(11, 30, 61, .06);
+}
+
+.date-box-end {
+    background: rgba(0, 168, 150, .06);
+    border-color: rgba(0, 168, 150, .15);
+}
+
+.date-box-label {
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: .3rem;
+}
+
+.date-box-day {
+    font-family: var(--font-head);
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1;
+}
+
+.date-box-month {
+    font-size: .78rem;
+    color: var(--muted);
+    margin-top: .2rem;
+    font-weight: 500;
+}
+
+/* Date box (single date) */
+.date-box-single {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--light);
+    border-radius: var(--radius);
+    padding: 1rem 1.4rem;
+    border: 1px solid rgba(11, 30, 61, .06);
+    display: inline-flex;
+}
+
+.date-box-single-day {
+    font-family: var(--font-head);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1;
+    min-width: 3.5rem;
+    text-align: center;
+}
+
+.date-box-single-month {
+    font-family: var(--font-head);
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: capitalize;
+}
+
+.date-box-single-year {
+    font-size: .8rem;
+    color: var(--muted);
+    margin-top: .1rem;
+}
+
+/* Notes */
+.detail-note {
+    font-size: .82rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* CTA button inside card */
+.btn-detail-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    background: var(--grad-teal);
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: .88rem;
+    padding: .65rem 1.5rem;
+    border-radius: 50px;
+    transition: transform .25s, box-shadow .25s;
+    box-shadow: 0 4px 16px rgba(0, 168, 150, .35);
+}
+
+.btn-detail-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 168, 150, .45);
+    color: #fff;
+}
+
+/* ─── EMPTY STATE ───────────────────────────────────────── */
+.empty-state {
+    padding: 5rem 2rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--muted);
+    opacity: .4;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: .75rem;
+}
+
+.empty-state p {
+    color: var(--muted);
+    font-size: .95rem;
+}
+
+/* ─── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 991px) {
+    .timeline-flow {
+        gap: 0;
+        justify-content: flex-start;
+    }
+
+    .tf-step {
+        min-width: 72px;
+    }
+
+    .tf-node {
+        width: 46px;
+        height: 46px;
+        font-size: 1.05rem;
+    }
+
+    .tf-connector {
+        top: 22px;
+    }
+}
+
+@media (max-width: 575px) {
+    .cal-hero {
+        padding: 4rem 0 3rem;
+    }
+
+    .timeline-section {
+        padding: 1.5rem 1rem;
+    }
+
+    .tf-node {
+        width: 38px;
+        height: 38px;
+        font-size: .9rem;
+    }
+
+    .tf-connector {
+        top: 18px;
+    }
+
+    .tf-label {
+        font-size: .62rem;
+    }
+
+    .tf-date {
+        font-size: .58rem;
+    }
+
+    .detail-phase {
+        padding: 1rem 1.2rem;
+    }
+
+    .detail-body {
+        padding: 1rem 1.2rem;
+    }
+
+    .date-box-single-day {
+        font-size: 2.2rem;
+    }
+
+    .status-card {
+        padding: 1rem 1.2rem;
+    }
+}

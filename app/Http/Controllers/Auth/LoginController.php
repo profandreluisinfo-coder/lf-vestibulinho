@@ -17,9 +17,8 @@ class LoginController extends Controller
      * * Usuário que inicia sessão no sistema
      * 
      * @param Request $request
-     * @return View|The home view if 
-     * @throws \Illuminate\Auth\AccessDeniedException
-     * @throws \Illuminate\Http\Request\Exception
+     * @return View|RedirectResponse A view da página de login ou um redirecionamento para a página inicial se as inscrições ainda não 
+     * tiverem começado o período de inscrições.
      */
     public function login(): View | RedirectResponse
     {
@@ -39,7 +38,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('auth.admin');
+        return view('auth.register.admin');
     }
 
     /**
