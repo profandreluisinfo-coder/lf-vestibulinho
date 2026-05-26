@@ -29,7 +29,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::prefix('calendario')
         ->name('app.calendar.')
         ->group(function () {
-            Route::get('/', [CalendarController::class, 'index'])->name('index');
+            Route::get('/detalhes', [CalendarController::class, 'index'])->name('index');
             Route::get('/editar', [CalendarController::class, 'edit'])->name('edit');
             Route::post('/salvar', [CalendarController::class, 'save'])->name('save');
         });

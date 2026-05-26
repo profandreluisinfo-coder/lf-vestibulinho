@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Redefinição de senha." />
-    <title>Redefinir Senha — Vestibulinho {{ config('app.year') }}</title>
+    <title>Redefinir Senha — Vestibulinho {{ $calendar?->year }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
@@ -892,7 +892,7 @@
             <div class="panel-brand">
                 <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
                 <h2>EM Dr. Leandro Franceschini</h2>
-                <p>Vestibulinho {{ config('app.year') }} · Cursos Técnicos Gratuitos</p>
+                <p>Vestibulinho {{ $calendar?->year }} · Cursos Técnicos Gratuitos</p>
             </div>
 
             <!-- Centro -->

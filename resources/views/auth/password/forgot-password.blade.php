@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Recuperação de senha." />
-    <title>Recuperar Senha — Vestibulinho {{ config('app.year') }}</title>
+    <title>Recuperar Senha — Vestibulinho {{ $calendar?->year }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
@@ -30,7 +30,7 @@
             <div class="panel-brand">
                 <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
                 <h2>EM Dr. Leandro Franceschini</h2>
-                <p>Vestibulinho {{ config('app.year') }} · Cursos Técnicos Gratuitos</p>
+                <p>Vestibulinho {{ $calendar?->year }} · Cursos Técnicos Gratuitos</p>
             </div>
 
             <!-- Centro -->
@@ -102,7 +102,7 @@
                         <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                         <span>
                             Use o mesmo e-mail informado durante o seu registro no Vestibulinho
-                            {{ config('app.year') }}.
+                            {{ $calendar?->year }}.
                             Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
                         </span>
                     </div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Guest\{ ArchiveController, HomeController, ResultController };
 use App\Http\Controllers\Guest\{ CallController };
 use App\Http\Controllers\Guest\CalendarController;
+use App\Http\Controllers\Guest\FaqController;
 use App\Http\Middleware\{ isResultEnabled };
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/chamadas', [CallController::class, 'index'])->name('guest.calls.index');
 
     // Perguntas frequentes
-    Route::get('/perguntas-frequentes', [HomeController::class, 'faqs'])->name('guest.faqs.index');
+    Route::get('/perguntas-frequentes', [FaqController::class, 'index'])->name('guest.faqs.index');
 
     // Calendário
     Route::get('/calendario', [CalendarController::class, 'show'])

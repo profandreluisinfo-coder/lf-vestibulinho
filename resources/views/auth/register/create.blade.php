@@ -29,7 +29,7 @@
             <div class="panel-brand">
                 <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
                 <h2>EM Dr. Leandro Franceschini</h2>
-                <p>Vestibulinho {{ config('app.year') }} · Cursos Técnicos Gratuitos</p>
+                <p>Vestibulinho {{ $calendar?->year }} · Cursos Técnicos Gratuitos</p>
             </div>
 
             <!-- Conteúdo central -->

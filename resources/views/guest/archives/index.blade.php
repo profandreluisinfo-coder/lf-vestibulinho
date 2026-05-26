@@ -1,93 +1,28 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{{-- ═══════════════════════════════════════════════════════════════
+     Herança do layout master
+════════════════════════════════════════════════════════════════ --}}
+@extends('layouts.guest')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @if (app()->environment('local'))
-        <meta http-equiv="Cache-Control" content="no-store" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-    @endif
-    <meta name="description" content="Provas Anteriores — Vestibulinho {{ $calendar->year ?? config('app.year') }}">
-    <title>Provas Anteriores — Vestibulinho · EM Dr. Leandro Franceschini</title>
+{{-- ── Título da página ──────────────────────────────────────── --}}
+@section('title', 'Provas Anteriores — Vestibulinho · EM Dr. Leandro Franceschini')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+{{-- ── CSS específico desta página ──────────────────────────── --}}
+@push('styles')
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/archives.css') }}" />
-    
-</head>
+@endpush
 
-<body>
+{{-- ══════════════════════════════════════════════════════════════
+     CONTEÚDO PRINCIPAL
+══════════════════════════════════════════════════════════════ --}}
+@section('content')
 
-    <!-- ═══════════════════════ NAVBAR ══════════════════════════ -->
-    <nav class="navbar navbar-expand-lg navbar-custom" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-                <div style="width:38px;height:38px;border-radius:10px;background:var(--grad-teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="bi bi-mortarboard-fill text-white" style="font-size:1.1rem;"></i>
-                </div>
-                <div>
-                    <span class="school text-white">EM Dr. Leandro Franceschini</span>
-                    <span class="sub text-white">Vestibulinho {{ $calendar->year ?? config('app.year') }}</span>
-                </div>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <span class="navbar-toggler-icon" style="filter:invert(1);"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cursos">Cursos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#como-participar">Como Participar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('guest.calendar.show') }}">Calendário</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('guest.faqs.index') }}">FAQ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}/#links-rapidos">Documentos</a></li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
-                            <i class="bi bi-person-circle me-1"></i> Área do Candidato
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@php
+    $open = $calendar?->isInscriptionOpen() ? true : false;
+@endphp
 
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
-    <section class="pa-hero">
-        <div class="hero-circle hc1"></div>
-        <div class="hero-circle hc2"></div>
-        <div class="hero-circle hc3"></div>
-
-        <div class="container position-relative" style="z-index:1;">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-8">
-                    <div class="hero-badge">
-                        <span class="live-dot"></span>
-                        Material de Estudo · Processo Seletivo
-                    </div>
-                    <h1>Provas<br><em>Anteriores</em></h1>
-                    <p class="lead">
-                        Faça o download das provas e gabaritos de edições passadas e prepare-se com antecedência para o Vestibulinho.
-                    </p>
-                    <div class="hero-chips">
-                        <div class="hero-chip">
-                            <div class="num">{{ $archives->count() }}</div>
-                            <div class="lbl">{{ Str::plural('Prova', $archives->count()) }} disponíve{{ $archives->count() === 1 ? 'l' : 'is' }}</div>
-                        </div>
-                        <div class="hero-chip">
-                            <div class="num">{{ $archives->whereNotNull('answer')->count() }}</div>
-                            <div class="lbl">Com gabarito</div>
-                        </div>
-                        <div class="hero-chip">
-                            <div class="num">100%</div>
-                            <div class="lbl">Gratuito</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('partials.hero.archives')
 
     <!-- ═══════════════════════ CONTEÚDO PRINCIPAL ═══════════════ -->
     <div class="pa-main">
@@ -287,84 +222,10 @@
             </div>
         </div>
     </section>
+        
+@endsection
 
-    <!-- ═══════════════════════ FOOTER ══════════════════════════ -->
-    <footer>
-        <div class="container">
-            <div class="row g-4 mb-4">
-                <div class="col-lg-4">
-                    <div class="brand mb-2">EM Dr. Leandro Franceschini<small>Escola Municipal · Vestibulinho
-                            {{ config('app.year') }}</small></div>
-                    <p style="font-size:.82rem;line-height:1.7;" class="mb-3">
-                        Oferecendo educação técnica de qualidade e oportunidades reais de crescimento profissional para
-                        toda a comunidade.
-                    </p>
-                    <div class="d-flex gap-2">
-                        <a href="https://www.instagram.com/emdrleandrofranceschini/" class="d-flex align-items-center justify-content-center"
-                            style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);transition:background .2s;"
-                            onmouseover="this.style.background='rgba(0,168,150,.25)'"
-                            onmouseout="this.style.background='rgba(255,255,255,.07)'" target="_blank"><i
-                                class="bi bi-instagram"></i></a>
-                        <a href="https://www.facebook.com/emDrLeandroFranceschini/?locale=pt_BR" class="d-flex align-items-center justify-content-center"
-                            style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);transition:background .2s;"
-                            onmouseover="this.style.background='rgba(0,168,150,.25)'"
-                            onmouseout="this.style.background='rgba(255,255,255,.07)'" target="_blank"><i
-                                class="bi bi-facebook"></i></a>
-                        <a href="https://www.youtube.com/@emdrleandrofranceschini" class="d-flex align-items-center justify-content-center"
-                            style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);transition:background .2s;"
-                            onmouseover="this.style.background='rgba(0,168,150,.25)'"
-                            onmouseout="this.style.background='rgba(255,255,255,.07)'" target="_blank"><i
-                                class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Processo Seletivo</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="{{ asset('storage/' . $notice?->file) }}" target="_blank">Edital</a></li>
-                        <li><a href="{{ route('home') }}/#calendario">Calendário</a></li>
-                        <li><a href="{{ route('home') }}/#links-rapidos">Provas Anteriores</a></li>
-                        <li><a href="#">Classificação</a></li>
-                        <li><a href="#">Convocação</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Cursos</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="{{ route('home') }}/#cursos">Administração</a></li>
-                        <li><a href="{{ route('home') }}/#cursos">Contabilidade</a></li>
-                        <li><a href="{{ route('home') }}/#cursos">Informática</a></li>
-                        <li><a href="{{ route('home') }}/#cursos">Seg. do Trabalho</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Candidato</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="{{ route('register') }}">Inscrever-se</a></li>
-                        <li><a href="{{ route('login') }}">Área do Candidato</a></li>
-                        <li><a href="{{ route('guest.faqs.index') }}">FAQ Completo</a></li>
-                        <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Contato</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="mailto:emdrleandrofranceschini@educacaosumare.com.br" title="emdrleandrofranceschini@educacaosumare.com.br"><i class="bi bi-envelope me-1"></i>emdrleandrofranceschini@...</a></li>
-                        <li><a href="#"><i class="bi bi-telephone me-1"></i>(19) 3873-2605</a></li>
-                        <li><a href="#"><i class="bi bi-geo-alt me-1"></i>Ver endereço</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-            <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <p class="mb-0">© {{ $currentYear }} EM Dr. Leandro Franceschini · Todos os direitos reservados.
-                </p>
-                {{-- <p class="mb-0"><a href="#">Política de Privacidade</a> · <a
-                        href="#">Acessibilidade</a></p> --}}
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{{-- ── JS específico desta página ───────────────────────────── --}}
+@push('scripts')
     <script src="{{ asset('assets/js/guest/home/archives.js') }}"></script>
-</body>
-</html>
+@endpush

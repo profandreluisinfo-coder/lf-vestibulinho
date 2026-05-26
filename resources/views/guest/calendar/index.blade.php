@@ -1,123 +1,25 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{{-- ═══════════════════════════════════════════════════════════════
+     Herança do layout master
+════════════════════════════════════════════════════════════════ --}}
+@extends('layouts.guest')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Calendário {{ $calendar?->year ?? config('app.year') }} — Vestibulinho LF</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+{{-- ── Título da página ──────────────────────────────────────── --}}
+@section('title', 'Vestibulinho LF ' . ($calendar?->year) . ' · Calendário · EM Dr. Leandro Franceschini')
+
+{{-- ── CSS específico desta página ──────────────────────────── --}}
+@push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/calendar.css') }}" />
-</head>
+@endpush
 
-<body>
-
-    <!-- ═══════════════════════ NAVBAR ══════════════════════════ -->
-    <nav class="navbar navbar-expand-lg navbar-custom" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-                <div
-                    style="width:38px;height:38px;border-radius:10px;background:var(--grad-teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i class="bi bi-mortarboard-fill text-white" style="font-size:1.1rem;"></i>
-                </div>
-                <div>
-                    <span class="school text-white">EM Dr. Leandro Franceschini</span>
-                    <span class="sub text-white">Vestibulinho {{ $calendar?->year ?? config('app.year') }}</span>
-                </div>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <span class="navbar-toggler-icon" style="filter:invert(1);"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cursos">Cursos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#como-participar">Como Participar</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}#calendario">Calendário</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#faq">FAQ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#links-rapidos">Documentos</a></li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
-                            <i class="bi bi-person-circle me-1"></i> Área do Candidato
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{{-- ══════════════════════════════════════════════════════════════
+     CONTEÚDO PRINCIPAL
+══════════════════════════════════════════════════════════════ --}}
+@section('content')
 
     <!-- ═══════════════════════ PAGE HERO ════════════════════════ -->
-    <section class="cal-hero">
-        <div class="cal-hero-bg"></div>
-        <div class="container position-relative" style="z-index:1;">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-7">
-                    <nav aria-label="breadcrumb" class="mb-3">
-                        <ol class="breadcrumb cal-breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Calendário</li>
-                        </ol>
-                    </nav>
-                    <div class="hero-badge mb-3" style="animation:fadeDown .8s ease both;">
-                        <span class="live-dot"></span>
-                        Datas Importantes · Processo Seletivo
-                    </div>
-                    <h1 class="cal-hero-title mb-3">
-                        Calendário do<br><em>Processo Seletivo</em><br>
-                        <span class="year-chip">{{ $calendar?->year ?? config('app.year') }}</span>
-                    </h1>
-                    <p class="hero-sub mb-0">
-                        Todas as datas e prazos do Vestibulinho em um único lugar.<br class="d-none d-md-block">
-                        Salve as datas e não perca nenhum prazo.
-                    </p>
-                </div>
-                <div class="col-lg-5">
-                    @if($calendar?->isInscriptionOpen())
-                        <div class="status-card status-open">
-                            <div class="status-icon"><i class="bi bi-check-circle-fill"></i></div>
-                            <div>
-                                <div class="status-label">Inscrições Abertas</div>
-                                <div class="status-detail">
-                                    Encerram em <strong>{{ $calendar->formatDate($calendar->inscription_end) }}</strong>
-                                </div>
-                            </div>
-                        </div>
-                    @elseif($calendar?->hasInscriptionEnded())
-                        <div class="status-card status-closed">
-                            <div class="status-icon"><i class="bi bi-x-circle-fill"></i></div>
-                            <div>
-                                <div class="status-label">Inscrições Encerradas</div>
-                                <div class="status-detail">O período de inscrições foi concluído.</div>
-                            </div>
-                        </div>
-                    @elseif($calendar?->hasInscriptionStarted() === false && $calendar?->inscription_start)
-                        <div class="status-card status-soon">
-                            <div class="status-icon"><i class="bi bi-clock-fill"></i></div>
-                            <div>
-                                <div class="status-label">Inscrições em Breve</div>
-                                <div class="status-detail">
-                                    Abertura em <strong>{{ $calendar->formatDate($calendar->inscription_start) }}</strong>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <div class="status-card status-pending">
-                            <div class="status-icon"><i class="bi bi-calendar3"></i></div>
-                            <div>
-                                <div class="status-label">Calendário</div>
-                                <div class="status-detail">Confira todas as datas abaixo.</div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </section>
-
+    @include('partials.hero.calendar')
+    
     <!-- ═══════════════════════ CALENDÁRIO PRINCIPAL ══════════════ -->
     <section id="calendario-completo">
         <div class="container">
@@ -522,50 +424,9 @@
     </section>
     @endif
 
-    <!-- ═══════════════════════ FOOTER ═══════════════════════════ -->
-    <footer>
-        <div class="container">
-            <div class="row g-4 mb-4">
-                <div class="col-lg-4">
-                    <div class="brand mb-2">EM Dr. Leandro Franceschini<small>Escola Municipal · Vestibulinho {{ config('app.year') }}</small></div>
-                    <p style="font-size:.82rem;line-height:1.7;" class="mb-3">
-                        Oferecendo educação técnica de qualidade e oportunidades reais de crescimento profissional para toda a comunidade.
-                    </p>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Processo Seletivo</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="#">Edital</a></li>
-                        <li><a href="#" class="text-teal">Calendário</a></li>
-                        <li><a href="#">Provas Anteriores</a></li>
-                        <li><a href="#">Classificação</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Candidato</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="{{ route('register') }}">Inscrever-se</a></li>
-                        <li><a href="{{ route('login') }}">Área do Candidato</a></li>
-                        <li><a href="{{ route('home') }}#faq">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2 foot-col">
-                    <h6>Contato</h6>
-                    <ul class="list-unstyled d-flex flex-column gap-2">
-                        <li><a href="mailto:emdrleandrofranceschini@educacaosumare.com.br" title="emdrleandrofranceschini@educacaosumare.com.br"><i class="bi bi-envelope me-1"></i>emdrleandrofranceschini@...</a></li>
-                        <li><a href="#"><i class="bi bi-telephone me-1"></i>(19) 3873-2605</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-            <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <p class="mb-0">© {{ date('Y') }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+@endsection
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/guest/home/index.js') }}"></script>
-</body>
-
-</html>
+{{-- ── JS específico desta página ───────────────────────────── --}}
+@push('scripts')
+    <script src="{{ asset('assets/js/guest/home/app.js') }}"></script>
+@endpush
