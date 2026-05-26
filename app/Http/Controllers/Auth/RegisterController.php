@@ -28,7 +28,6 @@ class RegisterController extends Controller
         }
         
         if ($calendar && !$calendar->isInscriptionOpen()) {
-            // return redirect()->route('home');
              return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
         }
 

@@ -730,6 +730,16 @@ a {
     max-width: 300px;
 }
 
+/* Aviso de domínio suspeito */
+.input-warn {
+    border-color: var(--amber) !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+}
+
+.field-msg.warn {
+    color: var(--amber);
+}
+
 /* ─── RESPONSIVO ─────────────────────────────────────────── */
 @media (max-width: 900px) {
     .page-wrapper {

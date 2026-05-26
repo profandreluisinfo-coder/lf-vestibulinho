@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Área do Candidato — Vestibulinho {{ $calendar?->year }}')
+@section('title', 'Área do Candidato — Vestibulinho ' . $calendar?->year)
 
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 

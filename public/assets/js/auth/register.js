@@ -1,3 +1,90 @@
+// ── Validação de domínios de e-mail ───────────────────────
+const BLOCKED_DOMAINS = new Set([
+    // Domínios inexistentes ou inválidos para e-mail real
+    'email.com',
+    'email.com.br',
+    'mail.com.br',
+    'teste.com',
+    'teste.com.br',
+    'test.com',
+    'example.com',
+    'example.com.br',
+    'domain.com',
+    'dominio.com',
+    'dominio.com.br',
+    'seuemail.com',
+    'seuemail.com.br',
+    'seudominio.com',
+    'seudominio.com.br',
+    'nomedaempresa.com',
+    'empresa.com',
+    'invalid.com',
+    'fake.com',
+    'noemail.com',
+    'noreply.com',
+    'placeholder.com',
+    'email.net',
+    'email.org',
+]);
+
+const SUSPICIOUS_DOMAINS = new Set([
+    // Domínios legítimos, mas incomuns como entrada de cadastro
+    // (geram aviso, não bloqueio)
+    'google.com.br',
+    'google.com',
+    'apple.com',
+    'microsoft.com',
+    'amazon.com',
+    'facebook.com',
+    'instagram.com',
+    'twitter.com',
+    'x.com',
+    'linkedin.com',
+    'mercadolivre.com',
+    'mercadolivre.com.br',
+    'ifood.com.br',
+]);
+
+// TLDs que praticamente não existem como provedores de e-mail
+const BLOCKED_TLDS = new Set([
+    '.invalid',
+    '.test',
+    '.localhost',
+    '.local',
+    '.internal',
+    '.example',
+    '.lan',
+]);
+
+function getDomainWarning(email) {
+    const parts = email.split('@');
+    if (parts.length !== 2) return null;
+    const domain = parts[1].toLowerCase().trim();
+
+    // TLD bloqueado
+    for (const tld of BLOCKED_TLDS) {
+        if (domain.endsWith(tld)) {
+            return { type: 'error', msg: 'Domínio inválido para e-mail' };
+        }
+    }
+
+    // Domínio sem ponto (ex: "usuario@localserver")
+    if (!domain.includes('.')) {
+        return { type: 'error', msg: 'Domínio de e-mail inválido' };
+    }
+
+    // Domínio na blocklist
+    if (BLOCKED_DOMAINS.has(domain)) {
+        return { type: 'error', msg: 'Domínio não aceito como e-mail válido' };
+    }
+
+    // Domínio suspeito (aviso)
+    if (SUSPICIOUS_DOMAINS.has(domain)) {
+        return { type: 'warn', msg: 'Este domínio raramente é usado como e-mail pessoal. Tem certeza?' };
+    }
+
+    return null;
+}
 // ── Estado global ──────────────────────────────────────────
 let pwdVisible = false;
 
@@ -29,18 +116,51 @@ function toggleEye(inputId, iconId) {
     icon.className = el.type === 'text' ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill';
 }
 
-// ── Validar e-mail ─────────────────────────────────────────
+// ── Helper: aplica estado visual ao campo ─────────────────
+function setFieldState(input, msgEl, state, html) {
+    input.classList.remove('input-ok', 'input-error', 'input-warn');
+    if (state === 'ok')   input.classList.add('input-ok');
+    if (state === 'error') input.classList.add('input-error');
+    if (state === 'warn') input.classList.add('input-warn');  // ← novo
+    msgEl.innerHTML = html;
+    msgEl.className = 'field-msg' + (state ? ' ' + state : '');
+}
+
+// ── Validar e-mail (com checagem de domínio) ───────────────
 function validateEmail() {
     const el = document.getElementById('regEmail');
     const msg = document.getElementById('msgEmail');
     const v = el.value.trim();
+
     if (!v) {
         setFieldState(el, msg, '', '');
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+        checkSubmit();
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
         setFieldState(el, msg, 'error', '<i class="bi bi-x-circle-fill"></i> E-mail inválido');
+        checkSubmit();
+        return;
+    }
+
+    const domainCheck = getDomainWarning(v);
+
+    if (domainCheck?.type === 'error') {
+        setFieldState(
+            el, msg, 'error',
+            `<i class="bi bi-x-circle-fill"></i> ${domainCheck.msg}`
+        );
+    } else if (domainCheck?.type === 'warn') {
+        // Aviso: campo fica com borda amarela, mas NÃO bloqueia o submit
+        setFieldState(
+            el, msg, 'warn',
+            `<i class="bi bi-exclamation-triangle-fill"></i> ${domainCheck.msg}`
+        );
     } else {
         setFieldState(el, msg, 'ok', '<i class="bi bi-check-circle-fill"></i> E-mail válido');
     }
+
     checkSubmit();
 }
 
@@ -123,23 +243,27 @@ function validateConfirm() {
 }
 
 // ── Helper: aplica estado visual ao campo ──────────────────
-function setFieldState(input, msgEl, state, html) {
-    input.classList.remove('input-ok', 'input-error');
-    if (state === 'ok') input.classList.add('input-ok');
-    if (state === 'error') input.classList.add('input-error');
-    msgEl.innerHTML = html;
-    msgEl.className = 'field-msg' + (state ? ' ' + state : '');
-}
+// function setFieldState(input, msgEl, state, html) {
+//     input.classList.remove('input-ok', 'input-error');
+//     if (state === 'ok') input.classList.add('input-ok');
+//     if (state === 'error') input.classList.add('input-error');
+//     msgEl.innerHTML = html;
+//     msgEl.className = 'field-msg' + (state ? ' ' + state : '');
+// }
 
 // ── Habilita/desabilita botão submit ───────────────────────
 function checkSubmit() {
     const email = document.getElementById('regEmail').value.trim();
-    const pwd = document.getElementById('regPwd').value;
+    const pwd   = document.getElementById('regPwd').value;
     const confirm = document.getElementById('regConfirm').value;
-    const btn = document.getElementById('btnSubmit');
+    const btn   = document.getElementById('btnSubmit');
 
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const pwdOk = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
+    const emailFormatOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const domainCheck   = getDomainWarning(email);
+    // Bloqueia apenas erros; avisos (warn) permitem continuar
+    const emailOk = emailFormatOk && domainCheck?.type !== 'error';
+
+    const pwdOk     = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
     const confirmOk = pwd === confirm && confirm.length > 0;
 
     btn.disabled = !(emailOk && pwdOk && confirmOk);
