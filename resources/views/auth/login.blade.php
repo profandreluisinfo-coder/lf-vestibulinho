@@ -87,7 +87,7 @@
     <div class="form-card">
         <!-- Topo -->
         <div class="form-top">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-between">
                 <a href="{{ route('home') }}" class="back-link">
                     <i class="bi bi-arrow-left"></i> Voltar ao site
                 </a>
@@ -98,7 +98,7 @@
 
             <!-- Título -->
             <h1>Vestibulinho<br>{{ $calendar?->year }}</h1>
-            <p>Informe seus dados de acesso para continuar.</p>
+            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar.</p>
         </div>
 
         <!-- Alerta de erro (hidden por padrão) -->
@@ -172,7 +172,7 @@
             <div class="form-links">
                 <div class="divider-or">ou</div>
                 <a href="{{ route('register') }}" class="link-register">
-                    <i class="bi bi-person-plus-fill"></i> Ainda não tem registro? Cadastre-se
+                    <i class="bi bi-person-plus-fill"></i> Ainda não tem registro?
                 </a>
             </div>
             @endif

@@ -29,7 +29,7 @@
                     <div class="tl-node amber-node">2</div>
                     <div class="tl-content">
                         <h4><i class="bi bi-person-fill me-2 text-amber"></i>Registre-se</h4>
-                        Acesse o <a href="{{ route('register') }}" class="text-decoration-none text-amber">formulário de registro</a>, informe seu e-mail e crie uma senha de acesso. Você receberá um e-mail de confirmação. Clique no <i>link</i> recebido no e-mail para validar seu cadastro. <strong class="text-danger">Sem essa confirmação não será possível realizar a inscrição.</strong>
+                        <p>Acesse o <a href="{{ route('register') }}" class="text-amber">formulário de registro</a>, informe seu e-mail e crie uma senha de acesso. Você receberá um e-mail de confirmação. Clique no <i>link</i> recebido no e-mail para validar seu cadastro. <strong class="text-danger">Sem essa confirmação não será possível realizar a inscrição.</strong></p>
                     </div>
                 </div>
                 <div class="tl-item reveal-left">
