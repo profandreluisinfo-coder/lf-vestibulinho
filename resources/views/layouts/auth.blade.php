@@ -21,7 +21,9 @@
     @stack('styles')
 </head>
 
-<body>
+<body>    
+
+    @include('alerts.toasts')
 
     <div class="page-wrapper">
 

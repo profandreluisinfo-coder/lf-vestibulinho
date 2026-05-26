@@ -40,7 +40,7 @@ class EmailController extends Controller
 
         session()->flash('email', $result['user']->email);
 
-        return view('auth.register.email-confirmed');
+        return view('register.email-confirmed');
     }
 
     /**
@@ -50,7 +50,7 @@ class EmailController extends Controller
      */
     public function resendEmail(): View
     {
-        return view('auth.register.resend-email');
+        return view('register.resend-email');
     }
 
     /**

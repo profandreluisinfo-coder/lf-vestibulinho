@@ -66,7 +66,7 @@
 
 @section('right-panel')
 
-    @include('alerts.toasts')
+    {{-- @include('alerts.toasts') --}}
 
     <!-- Overlay de sucesso -->
     <div class="success-overlay" id="successOverlay">

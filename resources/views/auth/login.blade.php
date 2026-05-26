@@ -71,7 +71,10 @@
 
 @section('right-panel')
 
-    @include('alerts.toasts')
+    @php
+        $open = $calendar?->isInscriptionOpen() ? true : false;
+    @endphp
+    {{-- @include('alerts.toasts') --}}
 
     <!-- Overlay de sucesso -->
     <div class="success-overlay" id="successOverlay">
@@ -105,8 +108,7 @@
             <span id="alertMsg">E-mail ou senha incorretos. Verifique e tente novamente.</span>
         </div>
 
-        <form method="POST" action="{{ route('login') }}"
-                    style="display:flex;flex-direction:column;gap:1.1rem;">
+        <form method="POST" action="{{ route('login') }}" style="display:flex;flex-direction:column;gap:1.1rem;">
 
             @csrf
             <!-- Campos -->
@@ -167,13 +169,14 @@
             </button>
 
             <!-- Links -->
+            @if ($open)
             <div class="form-links">
                 <div class="divider-or">ou</div>
                 <a href="{{ route('register') }}" class="link-register">
                     <i class="bi bi-person-plus-fill"></i> Ainda não tem registro? Cadastre-se
                 </a>
             </div>
-
+            @endif
         </form>
 
     </div>

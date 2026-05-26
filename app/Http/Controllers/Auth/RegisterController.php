@@ -32,7 +32,7 @@ class RegisterController extends Controller
              return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
         }
 
-        return view('auth.register.create');
+        return view('register.create');
     }
 
     /**
@@ -68,6 +68,6 @@ class RegisterController extends Controller
             return alertError($result['message']);
         }
 
-        return view('auth.register.email-sent', ['email' => $result['user']->email]);
+        return view('register.email-sent', ['email' => $result['user']->email]);
     }
 }
