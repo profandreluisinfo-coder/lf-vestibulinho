@@ -74,7 +74,6 @@
     @php
         $open = $calendar?->isInscriptionOpen() ? true : false;
     @endphp
-    {{-- @include('alerts.toasts') --}}
 
     <!-- Overlay de sucesso -->
     <div class="success-overlay" id="successOverlay">
