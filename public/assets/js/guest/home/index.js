@@ -37,3 +37,14 @@ function toggleFaq(el) {
     document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
 }
+
+// ── Mostrar erro ───────────────────────────────────────────
+function showError(msg) {
+    const alert = document.getElementById('alertError');
+    document.getElementById('alertMsg').textContent = msg;
+    alert.classList.remove('hidden');
+    alert.style.animation = 'none';
+    requestAnimationFrame(() => {
+        alert.style.animation = 'shake .4s ease';
+    });
+}

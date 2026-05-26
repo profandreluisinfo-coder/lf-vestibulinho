@@ -22,9 +22,14 @@ class RegisterController extends Controller
     public function register(): View | RedirectResponse
     {
         $calendar = Calendar::first() ?? new Calendar();
+
+        if (!$calendar) {
+            return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde o início das inscrições para criar sua conta.');
+        }
         
-        if (!$calendar->isInscriptionOpen()) {
-            return redirect()->route('home');
+        if ($calendar && !$calendar->isInscriptionOpen()) {
+            // return redirect()->route('home');
+             return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
         }
 
         return view('auth.register.create');

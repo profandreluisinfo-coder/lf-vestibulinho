@@ -16,6 +16,10 @@
 
 <body>
 
+    @php
+        $open = $calendar?->isInscriptionOpen() ? true : false;
+    @endphp
+
     <!-- ═══════════════════════ NAVBAR ══════════════════════════ -->
     <nav class="navbar navbar-expand-lg navbar-custom" id="mainNav">
         <div class="container">
@@ -55,13 +59,17 @@
         <div class="hero-circle hero-circle-2"></div>
         <div class="hero-circle hero-circle-3"></div>
 
+        <!-- ═══════════════════════ ALERTAS ══════════════════════════ -->
+        @include('alerts.toasts')
+
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
                 <!-- Left text -->
                 <div class="col-lg-7">
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        Inscrições Abertas · 100% Online · Gratuito
+                        @if ($open) Inscrições Abertas · @else Inscrições Encerradas · @endif 
+                        100% Online · Gratuito
                     </div>
                     <h1 class="mb-3">
                         Sua carreira começa<br>aqui. No <em>Vestibulinho</em><br>{{ config('app.year') }}.
@@ -71,9 +79,15 @@
                         seu futuro. EM Dr. Leandro Franceschini — inscrição online e acessível.
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
+                        @if ($open) {{-- verifica se o período de inscrições ainda é válido --}}
                         <a href="{{ route('login') }}" class="btn-hero-primary">
                             <i class="bi bi-pencil-square"></i> Inscrever-se Agora
                         </a>
+                        @else
+                        <span class="btn-cta-main unavailable">
+                            <i class="bi bi-dash-circle"></i> Inscrições Encerradas
+                        </span>
+                        @endif
                         <a href="#cursos" class="btn-hero-outline">
                             <i class="bi bi-grid-3x3-gap"></i> Ver Cursos
                         </a>
@@ -102,7 +116,7 @@
                         </div>
                         <div class="col-6">
                             <div class="stat-chip delay-4">
-                                <div class="num">{{ config('app.year') }}</div>
+                                <div class="num">{{ $calendar->year ?? config('app.year') }}</div>
                                 <div class="lbl">Processo Seletivo</div>
                             </div>
                         </div>
@@ -163,9 +177,11 @@
                     </p>
                 </div>
                 <div class="col-lg-6 reveal delay-2 text-lg-end">
+                    @if ($open) {{-- verifica se o período de inscrições ainda é válido --}}
                     <a href="{{ route('login') }}" class="btn-faq-more">
                         <i class="bi bi-pencil-fill"></i> Iniciar Inscrição
                     </a>
+                    @endif
                 </div>
             </div>
 
@@ -390,7 +406,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 reveal delay-2">
-                    <a href="#" class="quick-card d-block">
+                    <a href="{{ route('guest.archives.index') }}" class="quick-card d-block">
                         <div class="qc-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
                         <h5>Provas Anteriores</h5>
                         <p>Treine com edições passadas</p>
@@ -442,9 +458,15 @@
                     Comece agora mesmo — leva menos de 5 minutos.</p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
                     <div class="pulse-wrap">
+                        @if ($open)
                         <a href="{{ route('register') }}" class="btn-cta-main">
                             <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                         </a>
+                        @else
+                        <span class="btn-cta-main unavailable">
+                            <i class="bi bi-dash-circle"></i> Inscrições Encerradas
+                        </span>
+                        @endif
                     </div>
                 </div>
             </div>

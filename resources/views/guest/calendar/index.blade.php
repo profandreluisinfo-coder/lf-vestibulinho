@@ -11,7 +11,6 @@
         href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    {{-- Reutiliza os tokens globais do site --}}
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/calendar.css') }}" />
 </head>
@@ -38,7 +37,7 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cursos">Cursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#como-participar">Como Participar</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Calendário</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ route('home') }}#calendario">Calendário</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#faq">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#links-rapidos">Documentos</a></li>
                     <li class="nav-item ms-lg-2">
