@@ -49,10 +49,6 @@
                 <div class="sec-icon"><i class="bi bi-lock-fill"></i></div>
                 <p>Sua conexão é protegida.</p>
             </div>
-            {{-- <div class="sec-item">
-                <div class="sec-icon"><i class="bi bi-envelope-check-fill"></i></div>
-                <p>Use o mesmo e-mail informado no momento do cadastro.</p>
-            </div> --}}
             <div class="sec-item">
                 <div class="sec-icon"><i class="bi bi-headset"></i></div>
                 <p>Dificuldades de acesso? Contate o administrador do sistema.</p>
@@ -76,7 +72,7 @@
     <div class="success-overlay" id="successOverlay">
         <div class="success-icon"><i class="bi bi-check-lg"></i></div>
         <h3>Acesso confirmado!</h3>
-        <p>Redirecionando para sua Área do Candidato…</p>
+        <p>Redirecionando para sua Área de Administrador…</p>
         <div class="spinner-border text-success mt-1" style="width:1.4rem;height:1.4rem;border-width:2px;"
             role="status"></div>
     </div>

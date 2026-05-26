@@ -174,7 +174,6 @@
                 </a>
             </div>
 
-            <!--</div> /fields -->
         </form>
 
     </div>

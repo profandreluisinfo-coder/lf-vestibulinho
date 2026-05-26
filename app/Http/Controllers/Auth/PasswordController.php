@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-use function Laravel\Prompts\alert;
-
 class PasswordController extends Controller
 {
     /**
@@ -24,7 +22,7 @@ class PasswordController extends Controller
      */
     public function forgotPassword(): View
     {
-        return view('auth.password.forgot-password');
+        return view('password.forgot');
     }
 
     /**
@@ -69,7 +67,7 @@ class PasswordController extends Controller
             return redirect()->route('login');
         }
 
-        return view('auth.password.reset-password', ['token' => $token]);
+        return view('password.reset', ['token' => $token]);
     }
 
     /**

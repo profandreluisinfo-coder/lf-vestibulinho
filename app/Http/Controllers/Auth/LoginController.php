@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Models\Calendar;
-use Illuminate\View\View;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -23,7 +24,7 @@ class LoginController extends Controller
     public function login(): View | RedirectResponse
     {
         $calendar = Calendar::first() ?? new Calendar();
-        
+
         if (!$calendar->hasInscriptionStarted()) {
             return redirect()->route('home');
         }
@@ -49,14 +50,14 @@ class LoginController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function authenticate(Request $request): RedirectResponse
+    public function authenticate(Request $request): RedirectResponse|JsonResponse
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ], [
-            'email.required' => 'O campo email é obrigatório',
-            'email.email' => 'O campo email deve ser um email válido',
+            'email.required'    => 'O campo email é obrigatório',
+            'email.email'       => 'O campo email deve ser um email válido',
             'password.required' => 'O campo senha é obrigatório',
         ]);
 
@@ -68,20 +69,44 @@ class LoginController extends Controller
 
             if (!$user->email_verified_at) {
                 Auth::logout();
+                $msg = 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.';
 
-                return alertWarning('Para acessar a Área do Candidato, vocé precisa validar seu endereço de e-mail.');
+                return $request->wantsJson()
+                    ? response()->json(['success' => false, 'message' => $msg], 422)
+                    : alertWarning($msg);
             }
 
             $request->session()->regenerate();
-
             $user->last_login_at = Carbon::now();
-
             $user->save();
 
-            return $this->redirectUserBasedOnRole($user);
+            $redirectUrl = $this->getRedirectUrl($user);
+
+            return $request->wantsJson()
+                ? response()->json(['success' => true, 'redirect' => $redirectUrl])
+                : redirect($redirectUrl);
         }
 
-        return alertError('Dados inválidos.');
+        $msg = 'Dados inválidos.';
+
+        return $request->wantsJson()
+            ? response()->json(['success' => false, 'message' => $msg], 422)
+            : alertError($msg);
+    }
+
+    protected function getRedirectUrl(User $user): string
+    {
+        if ($user->role === 'admin') {
+            return route('admin.dashboard');
+        }
+
+        if ($user->role === 'user') {
+            return $user->inscription()->exists()
+                ? route('dash.user.start')
+                : route('dash.user.inscription');
+        }
+
+        return route('login');
     }
 
     /**

@@ -40,22 +40,60 @@ function showError(msg) {
     });
 }
 
-document.querySelector('form').addEventListener('submit', function (event) {
+// ── Restaura botão ─────────────────────────────────────────
+function resetBtn(btn) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar';
+}
+
+// ── Submit via fetch ───────────────────────────────────────
+document.querySelector('form').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
     if (!validate()) {
         showError('Preencha todos os campos obrigatórios.');
-        event.preventDefault();
         return;
     }
 
     const btn = document.querySelector('.btn-login');
+    const form = event.target;
 
     btn.disabled = true;
-
     btn.innerHTML = `
-    <span class="spinner-border spinner-border-sm"
-      style="width:.95rem;height:.95rem;border-width:2px;">
-    </span>
-    Entrando...
-  `;
+        <span class="spinner-border spinner-border-sm"
+              style="width:.95rem;height:.95rem;border-width:2px;">
+        </span>
+        Entrando...
+    `;
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            credentials: 'same-origin',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',  // ← faz wantsJson() retornar true
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // ── Exibe overlay e redireciona ─────────────────
+            document.getElementById('successOverlay').classList.add('show');
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1800);
+            return;
+        }
+
+        showError(data.message ?? 'E-mail ou senha incorretos.');
+        resetBtn(btn);
+
+    } catch (err) {
+        console.error('Erro na requisição de login:', err);
+        showError('Erro de conexão. Tente novamente.');
+        resetBtn(btn);
+    }
 });
