@@ -40,7 +40,7 @@
     @yield('content')
 
     {{-- ── Footer ──────────────────────────────────────────────── --}}
-    @include('partials.guest.footer')
+    @include('partials.guest.footer', ['open' => $open])
 
     {{-- ── JS base (sempre carregados) ──────────────────────────── --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

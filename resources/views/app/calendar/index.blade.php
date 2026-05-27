@@ -18,7 +18,7 @@
 
             <a href="{{ route('app.calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-pencil-square me-1"></i>
-                {{ $calendar->exists() ? 'Editar' : 'Novo' }}
+                {{ $calendar?->exists() ? 'Editar' : 'Novo' }}
             </a>
         </div>
 
@@ -27,7 +27,7 @@
             {{-- @if ($settings->calendar != 0)
                 <span class="text-success">Os candidatos podem visualizar o calendário do vestibulinho.</span> --}}
             @if ($settings->calendar == 0)
-                <div id="meu-alert" class="alert alert-danger d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+                <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
 
                     <div class="me-3 fs-3" aria-hidden="true">
                         <i class="bi bi-info-circle-fill"></i>
@@ -36,7 +36,7 @@
                     <div class="flex-grow-1">
                         <h5 class="alert-heading mb-2">Informação Importante</h5>
                         <p class="mb-0">
-                            Os candidatos não podem visualizar o calendário do vestibulinho porque o acesso está bloqueado.
+                            Por padrão, o acesso ao calendário estará bloqueado no site até que você altere esta configuração.
                         </p>
                     </div>
 

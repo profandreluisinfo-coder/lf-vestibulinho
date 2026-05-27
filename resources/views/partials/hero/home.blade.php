@@ -9,24 +9,24 @@
                 <div class="col-lg-7">
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        @if ($open) Inscrições Abertas · @else Inscrições Encerradas · @endif
+                        @if ($show && $open) Inscrições Abertas · @else Inscrições (Aguardando Abertura) · @endif
                         100% Online · Gratuito
                     </div>
                     <h1 class="mb-3">
-                        Sua carreira começa<br>aqui. No <em>Vestibulinho</em><br>{{ $calendar?->year }}.
+                        Sua carreira começa<br>aqui. @if ($show && $open) No <em>Vestibulinho</em><br>{{ $calendar?->year }}. @endif
                     </h1>
                     <p class="hero-sub mb-4">
                         4 cursos técnicos gratuitos. Uma oportunidade real de transformar<br class="d-none d-md-block">
                         seu futuro. EM Dr. Leandro Franceschini — inscrição online e acessível.
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
-                        @if ($open)
+                        @if ($show && $open)
                             <a href="{{ route('login') }}" class="btn-hero-primary">
                                 <i class="bi bi-pencil-square"></i> Inscrever-se Agora
                             </a>
                         @else
                             <span class="btn-cta-main unavailable">
-                                <i class="bi bi-dash-circle"></i> Inscrições Encerradas
+                                <i class="bi bi-dash-circle"></i> Inscrições (Aguardando Abertura)
                             </span>
                         @endif
                         <a href="#cursos" class="btn-hero-outline">
@@ -55,12 +55,14 @@
                                 <div class="lbl">Inscrição Digital</div>
                             </div>
                         </div>
+                        @if ($show)
                         <div class="col-6">
                             <div class="stat-chip delay-4">
-                                <div class="num">{{ $calendar->year ?? config('app.year') }}</div>
+                                <div class="num">{{ $calendar?->year }}</div>
                                 <div class="lbl">Processo Seletivo</div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

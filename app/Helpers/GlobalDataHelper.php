@@ -44,6 +44,10 @@ class GlobalDataHelper
             // Calendário: Se não houver registros, retorna uma instância vazia
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
 
+            // Inscrição aberta e calendário visível
+            $open = $calendar?->isInscriptionOpen() ? true : false;
+            $show = $calendar?->exists && $settings?->calendar;
+
             // Usuário autenticado e ano atual
             $authUser = Auth::user();
             $currentYear = now()->year;
@@ -54,6 +58,8 @@ class GlobalDataHelper
                 'calls_exists',
                 'notice',
                 'calendar',
+                'open',
+                'show',
                 'authUser',
                 'currentYear',
                 'totalInscriptions',

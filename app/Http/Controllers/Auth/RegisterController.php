@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Calendar;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Services\UserService;
 use App\Http\Controllers\Controller;
+use App\Models\Calendar;
+use App\Models\Setting;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -21,13 +22,14 @@ class RegisterController extends Controller
      */
     public function register(): View | RedirectResponse
     {
+        $settings = Setting::first();
         $calendar = Calendar::first() ?? new Calendar();
 
-        if (!$calendar) {
+        if (!$settings?->calendar) {
             return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde o início das inscrições para criar sua conta.');
         }
         
-        if ($calendar && !$calendar->isInscriptionOpen()) {
+        if (!$calendar?->isInscriptionOpen()) {
              return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
         }
 

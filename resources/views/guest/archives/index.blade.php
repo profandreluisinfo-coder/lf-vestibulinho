@@ -17,9 +17,10 @@
 ══════════════════════════════════════════════════════════════ --}}
 @section('content')
 
-@php
+{{-- @php
     $open = $calendar?->isInscriptionOpen() ? true : false;
-@endphp
+    $show = $calendar?->exists && $settings?->calendar;
+@endphp --}}
 
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
     @include('partials.hero.archives')
@@ -193,6 +194,7 @@
     </div>
 
     <!-- ═══════════════════════ CTA ══════════════════════════════ -->
+    @if ($show && $open)
     <section id="pa-cta">
         <div class="container text-center position-relative" style="z-index:1;">
             <div class="reveal">
@@ -222,7 +224,8 @@
             </div>
         </div>
     </section>
-        
+    @endif
+
 @endsection
 
 {{-- ── JS específico desta página ───────────────────────────── --}}

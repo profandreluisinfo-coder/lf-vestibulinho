@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Calendar;
+use App\Models\Setting;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -48,8 +50,18 @@ class EmailController extends Controller
      *
      * @return View
      */
-    public function resendEmail(): View
+    public function resendEmail(): View | RedirectResponse
     {
+        $settings = Setting::first();
+        $calendar = Calendar::first() ?? new Calendar();
+
+        if (!$settings?->calendar) {
+            return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde o início das inscrições para criar sua conta.');
+        }
+        
+        if (!$calendar?->isInscriptionOpen()) {
+             return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
+        }
         return view('register.resend-email');
     }
 

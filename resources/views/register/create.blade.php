@@ -198,14 +198,19 @@
             </button>
 
             <!-- Links inferiores -->
-            <div class="form-links">
-                <a href="{{ route('login') }}" class="link-btn">
-                    <i class="bi bi-box-arrow-in-right"></i> Já tenho registro
-                </a>
-                <a href="{{ route('resend.email') }}" class="link-muted">
-                    <i class="bi bi-envelope"></i> Não recebeu o e-mail de verificação?
-                </a>
-            </div>
+            @if ($open && $show)
+
+                <div class="form-links">
+                    <a href="{{ route('login') }}" class="link-btn">
+                        <i class="bi bi-box-arrow-in-right"></i> Já tenho registro
+                    </a>
+                    <a href="{{ route('resend.email') }}" class="link-muted">
+                        <i class="bi bi-envelope"></i> Não recebeu o e-mail de verificação?
+                    </a>
+                </div>
+
+            @endif
+            
 
         </form><!-- /form -->
     </div><!-- /form-card -->

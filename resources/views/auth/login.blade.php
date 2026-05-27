@@ -71,11 +71,7 @@
 
 @section('right-panel')
 
-    @php
-        $open = $calendar?->isInscriptionOpen() ? true : false;
-    @endphp
-
-    <!-- Overlay de sucesso -->
+<!-- Overlay de sucesso -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-icon"><i class="bi bi-check-lg"></i></div>
         <h3>Acesso confirmado!</h3>
@@ -168,7 +164,7 @@
             </button>
 
             <!-- Links -->
-            @if ($open)
+            @if ($open && $show)
             <div class="form-links">
                 <div class="divider-or">ou</div>
                 <a href="{{ route('register') }}" class="link-register">

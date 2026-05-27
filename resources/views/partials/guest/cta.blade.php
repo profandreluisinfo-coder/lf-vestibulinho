@@ -11,7 +11,7 @@
                 <div class="d-flex flex-wrap justify-content-center gap-3">
                     <div class="pulse-wrap">
                         @if ($open)
-                            <a href="{{ route('register') }}" class="btn-cta-main">
+                            <a href="{{ route('login') }}" class="btn-cta-main">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
                         @else
