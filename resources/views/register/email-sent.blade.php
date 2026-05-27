@@ -89,9 +89,6 @@
         <i class="bi bi-envelope-check"></i> Verificação de E-mail
       </div>
       <h1 class="page-title">Verifique<br>sua caixa de entrada</h1>
-      <p class="page-sub">
-        Um link de verificação foi enviado para o<br>endereço cadastrado no Vestibulinho {{ $calendar?->year }}.
-      </p>
     </div>
 
     <!-- Mensagem principal (conteúdo do Blade) -->
@@ -123,7 +120,7 @@
     </div>
 
     <!-- Botão principal -->
-    <a href="login.html" class="btn-access">
+    <a href="{{ route('login') }}" class="btn-access">
       <i class="bi bi-box-arrow-in-right"></i> Acessar Área do Candidato
     </a>
 

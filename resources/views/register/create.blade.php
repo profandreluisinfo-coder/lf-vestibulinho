@@ -56,19 +56,6 @@
 
 @section('right-panel')
 
-    <!-- Overlay de sucesso -->
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-icon"><i class="bi bi-check-lg"></i></div>
-        <h3>Cadastro realizado!</h3>
-        <p>Verifique sua caixa de entrada — enviamos um e-mail de confirmação. Após confirmar, você poderá
-            acessar sua Área do Candidato.</p>
-        <a href="vestibulinho.html"
-            style="margin-top:.5rem;background:var(--grad-teal);color:#fff;font-family:var(--font-head);font-weight:700;font-size:.88rem;padding:.75rem 1.8rem;border-radius:50px;display:inline-flex;align-items:center;gap:.5rem;box-shadow:0 6px 20px rgba(0,168,150,.35);transition:transform .2s;"
-            onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-            <i class="bi bi-house-fill"></i> Voltar ao início
-        </a>
-    </div>
-
     <div class="form-card">
 
         <!-- Topo -->
@@ -89,7 +76,6 @@
         </div>
 
         <!-- Formulário -->
-        {{-- <div style="display:flex;flex-direction:column;gap:1.1rem;"> --}}
         <form method="POST" action="{{ route('register') }}"
             style="display:flex;flex-direction:column;gap:1.1rem;">
 
