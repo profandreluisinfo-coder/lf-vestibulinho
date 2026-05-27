@@ -113,7 +113,7 @@ class SettingController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Sistema redefinido com sucesso. Por favor, faça login novamente.'
+                'message' => 'Sistema redefinido com sucesso. Por favor, faça login novamente. Lembre-se de limpar o cache do navegador.'
             ]);
         } catch (\Throwable $e) {
 
