@@ -57,24 +57,24 @@
                 <div class="accordion-body">
                     <div class="stepper-container mb-5">
                         <!-- Etapa 1 -->
+                        <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center"
+                            title="Publicar Edital">
+                            <i
+                                class="bi {{ $settings->isNoticeEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                            <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
+                        </a>                       
+
+                        <!-- Divider -->
+                        <div class="step-divider"></div>
+
+                        <!-- Etapa 2 -->  
                         <a href="{{ route('app.calendar.index') }}" class="step-item text-secondary text-center"
                             title="Definir Calendário">
                             <i
                                 class="bi {{ $calendar_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
                         </a>
-
-                        <!-- Divider -->
-                        <div class="step-divider"></div>
-
-                        <!-- Etapa 2 -->
-                        <a href="{{ route('app.notices.index') }}" class="step-item text-secondary text-center"
-                            title="Publicar Edital">
-                            <i
-                                class="bi {{ $settings->isNoticeEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
-                            <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
-                        </a>
-
+                        
                         <div class="step-divider"></div>
 
                         <!-- Etapa 3 -->

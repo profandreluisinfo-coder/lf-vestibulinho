@@ -87,6 +87,7 @@
     </div>
 
     <!-- ═══════════════════════ CTA ══════════════════════════════ -->
+    @if ($open)
     <section id="faq-cta">
         <div class="container text-center position-relative" style="z-index:1;">
             <div class="reveal">
@@ -110,9 +111,11 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
 
-@endsection
+        @endif
+
+        @endsection
     
 @push('scripts')
     <script>

@@ -18,14 +18,12 @@
 
             <a href="{{ route('app.calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-pencil-square me-1"></i>
-                {{ $calendar?->exists() ? 'Editar' : 'Novo' }}
+                {{ $calendar?->exists() ? 'Editar Calendário' : 'Definir Calendário' }}
             </a>
         </div>
 
         @if ($calendar->exists())
 
-            {{-- @if ($settings->calendar != 0)
-                <span class="text-success">Os candidatos podem visualizar o calendário do vestibulinho.</span> --}}
             @if ($settings->calendar == 0)
                 <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
 
@@ -173,7 +171,9 @@
                     </div>
                 </form>
             @endif
+
         @else
+        
             <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
 
                 <div class="me-3 fs-3" aria-hidden="true">
@@ -183,7 +183,7 @@
                 <div class="flex-grow-1">
                     <h5 class="alert-heading mb-2">Informação Importante</h5>
                     <p class="mb-0">
-                        Você ainda não definiu o calendário do vestibulinho.
+                        Você ainda não definiu um calendário.
                     </p>
                     <p class="mb-0 mt-2 small opacity-75">
                         Em caso de dúvidas, entre em contato com o suporte técnico.

@@ -45,7 +45,7 @@ class GlobalDataHelper
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
 
             // Inscrição aberta e calendário visível
-            $open = $calendar?->isInscriptionOpen() ? true : false;
+            $open = $calendar?->isInscriptionOpen();
             $show = $calendar?->exists && $settings?->calendar;
 
             // Usuário autenticado e ano atual

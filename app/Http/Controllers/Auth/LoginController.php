@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Calendar;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -23,10 +23,10 @@ class LoginController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        $calendar = Calendar::first() ?? new Calendar();
+        $settings = Setting::first();
 
-        if (!$calendar->hasInscriptionStarted()) {
-            return redirect()->route('home');
+        if (!$settings?->calendar) {
+            return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde!');
         }
 
         return view('auth.login');

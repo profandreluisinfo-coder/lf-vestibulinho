@@ -36,7 +36,9 @@
             <div class="col-6 col-lg-2 foot-col">
                 <h6>Processo Seletivo</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
+                    @if ($settings?->notice)
                     <li><a href="{{ asset('storage/' . $notice?->file) }}" target="_blank">Edital</a></li>
+                    @endif
                     <li><a href="{{ route('home') }}/#calendario">Calendário</a></li>
                     <li><a href="{{ route('guest.archives.index') }}">Provas Anteriores</a></li>
                     <li><a href="#">Classificação</a></li>

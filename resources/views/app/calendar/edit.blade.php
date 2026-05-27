@@ -34,7 +34,7 @@
                                             <i class="bi bi-calendar3 me-1"></i>Ano do Processo Seletivo
                                         </label>
                                         <input type="number" class="form-control @error('year') is-invalid @enderror"
-                                            id="year" name="year" min="2026"
+                                            id="year" name="year" min="2027"
                                             value="{{ old('year', $calendar->year ?? '') }}">
                                         @error('year')
                                             <div class="invalid-feedback">{{ $message }}</div>
