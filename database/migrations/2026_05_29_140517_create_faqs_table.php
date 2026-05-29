@@ -18,6 +18,11 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
 
+            $table->foreignId('category_id')
+                ->nullable()  // ← Necessário para SET NULL funcionar
+                ->constrained()
+                ->onDelete('set null');
+
             $table->boolean('status')->default(false);
             $table->string('question', 200);
             $table->text('answer');

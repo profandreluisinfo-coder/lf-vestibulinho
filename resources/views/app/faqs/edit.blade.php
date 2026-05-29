@@ -20,6 +20,27 @@
                 <form action="{{ route('app.faqs.edit', $faq->id) }}" class="edit-form" method="POST"
                     id="edit-faq-form-{{ $faq->id }}">
                     @csrf
+
+                    <div class="form-group mb-3">
+
+                        <label for="category" class="form-label required">
+                            Categoria:
+                        </label>
+
+                        <input type="text" class="form-control" id="category" name="category"
+                            list="categoriesList" aria-describedby="categoryHelp">
+
+                        <datalist id="categoriesList">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->category }}">
+                            @endforeach
+                        </datalist>
+
+                        <small id="categoryHelp" class="text-primary fst-italic">
+                            <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já cadastrada ou digite uma nova.
+                        </small>
+
+                    </div>
                     <div class="mb-3">
                         <label for="question" class="form-label required">Pergunta:</label>
                         <input type="text" class="form-control" id="question" name="question"

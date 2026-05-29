@@ -89,10 +89,11 @@ function getDomainWarning(email) {
 let pwdVisible = false;
 
 const rules = {
-    len: v => v.length >= 6 && v.length <= 8,
-    upper: v => /[A-Z]/.test(v),
-    lower: v => /[a-z]/.test(v),
-    num: v => /[0-9]/.test(v),
+    len:       v => v.length >= 6 && v.length <= 8,
+    upper:     v => /[A-Z]/.test(v),
+    lower:     v => /[a-z]/.test(v),
+    num:       v => /[0-9]/.test(v),
+    noSpecial: v => /^[A-Za-z0-9]*$/.test(v),  // ← novo
 };
 
 // ── Toggle TODAS as senhas ─────────────────────────────────
@@ -173,6 +174,7 @@ function onPwdInput() {
     setRule('upper', rules.upper(v));
     setRule('lower', rules.lower(v));
     setRule('num', rules.num(v));
+    setRule('noSpecial', rules.noSpecial(v));  // ← novo
 
     // Calcula força (0-4)
     let score = 0;
@@ -180,6 +182,7 @@ function onPwdInput() {
     if (rules.upper(v)) score++;
     if (rules.lower(v)) score++;
     if (rules.num(v)) score++;
+    if (rules.noSpecial(v)) score++;  // ← novo
 
     const fill = document.getElementById('strengthFill');
     const label = document.getElementById('strengthLabel');
@@ -242,15 +245,6 @@ function validateConfirm() {
     checkSubmit();
 }
 
-// ── Helper: aplica estado visual ao campo ──────────────────
-// function setFieldState(input, msgEl, state, html) {
-//     input.classList.remove('input-ok', 'input-error');
-//     if (state === 'ok') input.classList.add('input-ok');
-//     if (state === 'error') input.classList.add('input-error');
-//     msgEl.innerHTML = html;
-//     msgEl.className = 'field-msg' + (state ? ' ' + state : '');
-// }
-
 // ── Habilita/desabilita botão submit ───────────────────────
 function checkSubmit() {
     const email = document.getElementById('regEmail').value.trim();
@@ -263,7 +257,8 @@ function checkSubmit() {
     // Bloqueia apenas erros; avisos (warn) permitem continuar
     const emailOk = emailFormatOk && domainCheck?.type !== 'error';
 
-    const pwdOk     = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
+    // const pwdOk     = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
+    const pwdOk = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd) && rules.noSpecial(pwd);  // ← atualizado para incluir nova regra
     const confirmOk = pwd === confirm && confirm.length > 0;
 
     btn.disabled = !(emailOk && pwdOk && confirmOk);

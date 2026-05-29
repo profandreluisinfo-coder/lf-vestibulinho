@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
+            $table->string('delay')->nullable();
+            $table->string('card')->nullable();
+            $table->string('icone')->nullable();
             $table->string('description', 100);
             $table->unsignedTinyInteger('duration')->default(0);
             $table->longText('info')->nullable();

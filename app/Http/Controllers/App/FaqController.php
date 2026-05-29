@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Faq;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
@@ -18,9 +19,10 @@ class FaqController extends Controller
      */
     public function index()
     {
+        $categories = Category::all();
         $faqs = Faq::orderBy('order', 'asc')->get();  // Ordenar por 'order'
 
-        return view('app.faqs.index', compact('faqs'));
+        return view('app.faqs.index', compact('categories', 'faqs'));
     }
 
     /**
@@ -37,25 +39,35 @@ class FaqController extends Controller
     {
         // Validar dados
         $request->validate([
+            'category' => 'required|string|max:255',
             'question' => 'required',
             'answer' => 'required',
         ], [
+            'category.required' => 'A categoria precisa ser preenchida.',
             'question.required' => 'A pergunta precisa ser preenchida.',
             'answer.required' => 'A resposta precisa ser preenchida.',
         ]);
 
-        // Buscar o maior número de ordem atual
-        $maxOrder = Faq::max('order') ?? 0;
-
-        // Gravar dados
-        Faq::create([
-            'question' => $request->question,
-            'answer' => $request->answer,
-            'user_id' => Auth::user()->id,
-            'order' => $maxOrder + 1,  // Nova FAQ vai para o final
+        // Buscar ou criar categoria
+        $category = Category::firstOrCreate([
+            'category' => $request->category
         ]);
 
-        return redirect()->route('app.faqs.index')->with('success', 'FAQ criada com sucesso!');
+        // Buscar maior ordem
+        $maxOrder = Faq::max('order') ?? 0;
+
+        // Criar FAQ
+        Faq::create([
+            'category_id' => $category->id,
+            'question' => $request->question,
+            'answer' => $request->answer,
+            'user_id' => Auth::id(),
+            'order' => $maxOrder + 1,
+        ]);
+
+        return redirect()
+            ->route('app.faqs.index')
+            ->with('success', 'FAQ criada com sucesso!');
     }
 
     /**
@@ -83,7 +95,8 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        return view('app.faqs.edit', compact('faq'));
+        $categories = Category::all();
+        return view('app.faqs.edit', compact('categories', 'faq'));
     }
 
     /**
@@ -106,15 +119,23 @@ class FaqController extends Controller
         }
         // Validar dados
         $request->validate([
+            'category' => 'required|string|max:255',
             'question' => 'required',
             'answer' => 'required',
         ], [
+            'category.required' => 'A categoria precisa ser preenchida.',
             'question.required' => 'A pergunta precisa ser preenchida.',
             'answer.required' => 'A resposta precisa ser preenchida.',
         ]);
 
+        // Buscar ou criar categoria
+        $category = Category::firstOrCreate([
+            'category' => $request->category
+        ]);
+
         // Gravar dados
         $faq->update([
+            'category_id' => $category->id,
             'question' => $request->question,
             'answer' => $request->answer
         ]);

@@ -65,6 +65,7 @@ return new class extends Migration
 
             // Educação Especial
             $table->boolean('pne')->default(false); // PNE: 0 = Não, 1 = Sim
+            $table->text('pne_description')->nullable();
             $table->string('accessibility', 60)->nullable();
             $table->string('pne_report')->nullable();
             $table->unsignedTinyInteger('pne_report_accepted')->nullable(); // 0 = Não, 1 = Sim

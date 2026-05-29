@@ -76,8 +76,7 @@
         </div>
 
         <!-- Formulário -->
-        <form method="POST" action="{{ route('register') }}"
-            style="display:flex;flex-direction:column;gap:1.1rem;">
+        <form method="POST" action="{{ route('register') }}" style="display:flex;flex-direction:column;gap:1.1rem;">
 
             @csrf
             <!-- E-mail -->
@@ -106,9 +105,8 @@
                 </div>
                 <div class="field-wrap">
                     <input type="password" name="password" id="regPwd"
-                        class="form-input pwd-input @error('password') is-invalid @enderror"
-                        value="{{ old('password') }}" placeholder="Crie sua senha" style="padding-right:2.8rem;"
-                        oninput="onPwdInput()" />
+                        class="form-input pwd-input @error('password') is-invalid @enderror" value="{{ old('password') }}"
+                        placeholder="Crie sua senha" style="padding-right:2.8rem;" oninput="onPwdInput()" />
                     <i class="bi bi-lock-fill field-icon"></i>
                     <button class="eye-btn" type="button" onclick="toggleEye('regPwd','eyePwd1')">
                         <i class="bi bi-eye-fill" id="eyePwd1"></i>
@@ -135,9 +133,9 @@
                 </div>
                 <div class="field-wrap">
                     <input type="password" name="password_confirmation" id="regConfirm"
-                        class="form-input pwd-input @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation') }}"
-                        placeholder="Repita sua senha" style="padding-right:2.8rem;"
-                        oninput="validateConfirm()" />
+                        class="form-input pwd-input @error('password_confirmation') is-invalid @enderror"
+                        value="{{ old('password_confirmation') }}" placeholder="Repita sua senha"
+                        style="padding-right:2.8rem;" oninput="validateConfirm()" />
                     <i class="bi bi-shield-lock-fill field-icon"></i>
                     <button class="eye-btn" type="button" onclick="toggleEye('regConfirm','eyePwd2')">
                         <i class="bi bi-eye-fill" id="eyePwd2"></i>
@@ -156,7 +154,8 @@
                 <p class="rules-note">
                     <strong style="color:var(--navy);">ATENÇÃO:</strong> Sua senha deve ter no
                     <strong>mínimo 6</strong> e no <strong>máximo 8</strong> caracteres, contendo
-                    <strong>pelo menos</strong> uma letra maiúscula, uma minúscula <strong>e</strong> um número. <strong>Não utilize caracteres especiais (@, #, $, *, etc)<strong>.
+                    <strong>pelo menos</strong> uma letra maiúscula, uma minúscula <strong>e</strong> um número. <strong>Não
+                        utilize caracteres especiais (@, #, $, *)<strong>
                 </p>
                 <div class="rules-grid">
                     <div class="rule-chip" id="rule-len">
@@ -175,6 +174,10 @@
                         <div class="ri" id="ri-num"><i class="bi bi-dash"></i></div>
                         Número
                     </div>
+                    <div class="rule-chip" id="rule-noSpecial">
+                        <div class="ri" id="ri-noSpecial"><i class="bi bi-dash"></i></div>
+                        Sem caracteres especiais
+                    </div>
                 </div>
             </div>
 
@@ -185,7 +188,6 @@
 
             <!-- Links inferiores -->
             @if ($open && $show)
-
                 <div class="form-links">
                     <a href="{{ route('login') }}" class="link-btn">
                         <i class="bi bi-box-arrow-in-right"></i> Já tenho registro
@@ -194,9 +196,8 @@
                         <i class="bi bi-envelope"></i> Não recebeu o e-mail de verificação?
                     </a>
                 </div>
-
             @endif
-            
+
 
         </form><!-- /form -->
     </div><!-- /form-card -->

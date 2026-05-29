@@ -4,7 +4,7 @@
 @extends('layouts.guest')
 
 {{-- ── Título da página ──────────────────────────────────────── --}}
-@section('title', 'Vestibulinho LF ' . ($calendar?->year) . ' · EM Dr. Leandro Franceschini')
+@section('title', 'Vestibulinho ' . ($calendar?->year) . ' · EM Dr. Leandro Franceschini')
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
@@ -15,11 +15,6 @@
      CONTEÚDO PRINCIPAL
 ══════════════════════════════════════════════════════════════ --}}
 @section('content')
-
-{{-- @php
-    $open = $calendar?->isInscriptionOpen() ? true : false;
-    $show = $calendar?->exists && $settings?->calendar;
-@endphp --}}
 
     {{-- ═══════════════════════ HERO ════════════════════════════ --}}
     @include('partials.hero.home')

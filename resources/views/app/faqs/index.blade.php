@@ -9,7 +9,6 @@
 @endpush
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/faqs/styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 @endpush
 
@@ -60,7 +59,6 @@
             <div class="accordion accordion-flush" id="faqAccordion">
 
                 @foreach ($faqs as $faq)
-
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
@@ -82,6 +80,7 @@
                                 <div
                                     class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1 bg-light">
                                     <span class="me-2"><i class="bi bi-person me-1"></i> {{ $faq->user->name }}</span>
+                                    <span class="mx-2"><i class="bi bi-tag me-1"></i> {{ $faq->category?->category }}</span>
                                     <span class="mx-2"><i class="bi bi-floppy me-1"></i>
                                         {{ $faq->created_at->format('d/m/Y H:i:s') }}</span>
                                     <span class="mx-2"><i class="bi bi-pencil-square me-1"></i>
@@ -128,13 +127,10 @@
                             </div>
                         </div>
                     </div>
-
                 @endforeach
 
             </div>
-
         @else
-
             <p class="text-danger">
                 <i class="bi bi-info-circle me-1"></i> Nenhuma FaQ cadastrada.
             </p>
@@ -152,9 +148,28 @@
                     <div class="modal-body">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                
                                 <form action="{{ route('app.faqs.store') }}" method="POST" id="faqForm">
                                     @csrf
+                                    <div class="form-group mb-3">
+
+                                        <label for="category" class="form-label required">
+                                            Categoria:
+                                        </label>
+
+                                        <input type="text" class="form-control" id="category" name="category"
+                                            list="categoriesList" aria-describedby="categoryHelp">
+
+                                        <datalist id="categoriesList">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->category }}">
+                                            @endforeach
+                                        </datalist>
+
+                                        <small id="categoryHelp" class="text-primary fst-italic">
+                                            <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já cadastrada ou digite uma nova.
+                                        </small>
+
+                                    </div>
                                     <div class="form-group">
                                         <label for="question" class="form-label required">Pergunta:</label>
                                         <input type="text" class="form-control" id="question" name="question">
@@ -192,7 +207,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/rules/faqs/index.js') }}"></script>
-    <script src="{{ asset('assets/js/filters/faqs/private.js') }}"></script>
+    <script src="{{ asset('assets/js/faqs/filters.js') }}"></script>
     <script src="{{ asset('assets/js/faqs/sortable.js') }}"></script>
     <script src="{{ asset('assets/js/swa/faqs/publish.js') }}"></script>
     <script src="{{ asset('assets/js/swa/faqs/delete.js') }}"></script>

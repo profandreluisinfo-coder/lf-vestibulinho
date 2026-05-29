@@ -11,6 +11,9 @@ class Course extends Model
 {
     protected $fillable = [
         'name',
+        'delay',
+        'card',
+        'icone',
         'description',
         'duration',
         'info',
