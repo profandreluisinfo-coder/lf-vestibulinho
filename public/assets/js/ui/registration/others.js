@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
         showOnValue: '1'
     },
     {
+        selectId: 'accessibility',
+        fieldId: 'pne_description',
+        showOnValue: '1'
+    },
+    {
         selectId: 'social_program',
         fieldId: 'nis',
         showOnValue: '1'

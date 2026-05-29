@@ -66,7 +66,6 @@ class User extends Authenticatable
     {
         return [
             // 'birth' => 'date',
-            'social_name_option' => 'boolean',
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'created_at' => 'datetime',

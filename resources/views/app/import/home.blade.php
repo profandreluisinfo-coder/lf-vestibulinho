@@ -1,6 +1,6 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Importar Notas')
+@section('page-title', 'Vestibulinho LF')
 
 @section('dash-content')
 

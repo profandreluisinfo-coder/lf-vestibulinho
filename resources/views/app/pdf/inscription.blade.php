@@ -386,7 +386,7 @@
                     <tr>
                         <th>Necessita de atendimento especial?</th>
                         <td>
-                            {{ $user->user_detail->pne ? 'SIM - ' . $user->user_detail->accessibility : 'NÃO' }}
+                            {{ ($user->user_detail->pne != 2) ? 'SIM - ' . $user->user_detail->accessibility : 'NÃO' }}
                         </td>
                     </tr>
                 </tbody>

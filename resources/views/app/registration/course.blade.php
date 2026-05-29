@@ -1,51 +1,77 @@
-@extends('app.registration.master')
+@extends('layouts.dash')
 
-@section('page-title', 'Inscrição - Passo ' . $step . ' - Curso')
+@section('page-title', 'Vestibulinho LF')
 
-@section('forms')
+@section('dash-content')
 
-  <form id="inscription" action="{{ route('step.course') }}" method="POST">
-    @csrf
-    <h6 class="fw-semibold border-bottom pb-1">Pesquisa de intenção de curso:</h6>    
-    <div class="form-group col-md-12 mb-4 mt-4">
-      <select class="form-select form-select-md @error('course_id') is-invalid @enderror" id="course_id" name="course_id">
-        <option value="" selected>...</option>
-        @forelse ($courses as $course)
-          <option value="{{ $course->id }}"
-            {{ old('course_id', session('step7.course_id')) == $course->id ? 'selected' : '' }}>
-            {{ $course->description }}
-          </option>
-        @empty
-          <option value="">Nenhum curso disponível</option>
-        @endforelse
-      </select>
-      @error('course_id')
-        <div class="invalid-feedback">
-          {{ $message }}
+    <div class="wrapper">
+        {{-- Titulo --}}
+        <div class="section-title mb-4">
+            <h4>
+                <i class="bi bi-list-check me-2"></i>
+                Formulário de Inscrição
+            </h4>
+
+            <div class="divider-teal"></div>
         </div>
-      @enderror
-    </div>
-    <div class="alert alert-warning d-flex flex-column flex-md-row align-items-center" role="alert">
-      <div class="text-justify">
-        <strong>Atenção:</strong> A escolha do curso realizada nesta etapa tem caráter indicativo, sendo utilizada apenas
-        para fins estatísticos e de planejamento interno. A matrícula dos candidatos aprovados será realizada conforme
-          a disponibilidade de vagas, podendo o candidato optar por qualquer curso que ainda possua vagas disponíveis,
-        independentemente da opção indicada na inscrição.
-      </div>
-    </div>
 
-    <div class="col-12 border-top pt-3">
-      <button type="button" class="btn btn-sm btn-secondary w-auto">
-        <i class="bi bi-arrow-left-circle me-2"></i>
-        <a href="{{ route('step.other') }}" class="text-decoration-none">Voltar</a>
-      </button>
-      <button type="submit" class="btn btn-sm btn-primary ms-2 w-auto">Avançar <i
-          class="bi bi-arrow-right-circle ms-2"></i></button>
+        @include('partials.forms.stepper')
+
+        <form id="inscription" action="{{ route('step.course') }}" method="POST">
+            @csrf
+            <h6 class="fw-semibold border-bottom pb-1">Pesquisa de intenção de curso:</h6>
+            <div class="form-group col-md-12 mb-4 mt-4">
+                <select class="form-select form-select-md @error('course_id') is-invalid @enderror" id="course_id"
+                    name="course_id">
+                    <option value="" selected>...</option>
+                    @forelse ($courses as $course)
+                        <option value="{{ $course->id }}"
+                            {{ old('course_id', session('step7.course_id')) == $course->id ? 'selected' : '' }}>
+                            {{ $course->description }}
+                        </option>
+                    @empty
+                        <option value="">Nenhum curso disponível</option>
+                    @endforelse
+                </select>
+                @error('course_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+            <div class="alert alert-warning d-flex flex-column flex-md-row align-items-center" role="alert">
+                <div class="text-justify">
+                    <strong>Atenção:</strong> A escolha do curso realizada nesta etapa tem caráter indicativo, sendo
+                    utilizada apenas
+                    para fins estatísticos e de planejamento interno. A matrícula dos candidatos aprovados será realizada
+                    conforme
+                    a disponibilidade de vagas, podendo o candidato optar por qualquer curso que ainda possua vagas
+                    disponíveis,
+                    independentemente da opção indicada na inscrição.
+                </div>
+            </div>
+
+            <div class="col-12 border-top pt-3">
+                <button type="button" class="btn btn-sm btn-secondary w-auto">
+                    <i class="bi bi-arrow-left-circle me-2"></i>
+                    <a href="{{ route('step.other') }}" class="text-decoration-none">Voltar</a>
+                </button>
+                <button type="submit" class="btn btn-sm btn-primary ms-2 w-auto">Avançar <i
+                        class="bi bi-arrow-right-circle ms-2"></i></button>
+            </div>
+        </form>
+
     </div>
-  </form>
 
 @endsection
 
+@push('plugins')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+@endpush
+
 @push('scripts')
-  <script src="{{ asset('assets/js/rules/registration/course.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/registration/course.js') }}"></script>
 @endpush

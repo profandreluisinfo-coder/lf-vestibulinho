@@ -682,6 +682,73 @@ i {
     }
 }
 
+/* ==================== NOVA PARTE ==================== */
+/* Contêiner principal */
+.stepper-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Itens */
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Divisor (linha vertical no mobile) */
+.step-divider {
+    width: 2px;
+    height: 30px;
+    background: #dee2e6;
+    margin: 0 auto;
+}
+
+
+/* Layout desktop */
+@media (min-width: 768px) {
+
+    .stepper-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    /* Linha horizontal */
+    .step-divider {
+        width: 100%;
+        height: 3px;
+    }
+}
+
+.cursor-pointer { cursor: pointer; }
+
+/* Layout tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .step-divider {
+        width: 2px;
+        height: 50px;
+    }
+}
+
+/* Layout mobile */
+@media (max-width: 768px) {
+    
+    .accordion {
+        width: 100% !important;
+        margin-top: -25px !important;
+    }
+
+    /* .step-title,
+    .stepper-container {
+        display: none;
+    } */
+}
+
+/* ==================== ENCERRA NOVA PARTE ==================== */
+
 @media (max-width: 576px) {
     .topbar {
         padding: 0 16px;

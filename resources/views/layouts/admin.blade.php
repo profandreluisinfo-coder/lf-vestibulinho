@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', 'Painel Administrativo - Vestibulinho LF')</title>
+    <title>@yield('page-title', 'Painel Administrativo')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -25,6 +25,7 @@
 
     {{-- Estilos --}}
     <link rel="stylesheet" href="{{ asset('assets/css/layouts/dash/admin.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dash/admin.css') }}"> --}}
 
     @stack('styles')
 

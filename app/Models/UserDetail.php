@@ -78,15 +78,16 @@ class UserDetail extends Model
 
         // Deficiência
         'pne',
+        'pne_description',
         'accessibility',
         'pne_report', // caminho do arquivo do laudo (se necessário)
         'pne_report_accepted',
         'pne_report_rejection_reason'
     ];
 
-    protected $casts = [
-        'pne' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'pne' => 'boolean',
+    // ];
 
     /**
      * Defina o valor de um determinado atributo no modelo.

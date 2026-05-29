@@ -4,7 +4,7 @@
     <meta name="description" content="Classificação geral do {{ config('app.name') }} {{ $calendar?->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Classificação Geral')
+@section('page-title', 'Vestibulinho LF . ' | Classificação Geral')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">

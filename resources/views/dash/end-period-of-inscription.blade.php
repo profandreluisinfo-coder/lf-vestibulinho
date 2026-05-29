@@ -1,10 +1,6 @@
-@extends('dash.master')
+@extends('layouts.dash')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Área do Candidato')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/dashboard/user/inscription.css') }}">
-@endpush
+@section('page-title', 'Vestibulinho LF')
 
 @section('dash-content')
 

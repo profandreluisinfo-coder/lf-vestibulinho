@@ -1,6 +1,6 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Classificação Geral')
+@section('page-title', 'Vestibulinho LF')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">

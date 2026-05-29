@@ -24,9 +24,6 @@ class RegistrationController extends Controller
     public function personal(): View|RedirectResponse
     {
         return view('app.registration.personal', [
-            'bg' =>  session()->has('step1_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 1,
-            'title' => "Dados Pessoais",
             'nationalities' => [
                 '1' => 'Brasileira',
                 '2' => 'Estrangeira'
@@ -55,7 +52,6 @@ class RegistrationController extends Controller
         $data = $request->except(['_token', 'authorization']);
 
         if ($request->hasFile('authorization')) {
-            // $path = $request->file('authorization')->store('authorizations');
             $path = $request->file('authorization')->store('authorizations', 'public');
             $data['authorization'] = $path; // salva só o caminho
         }
@@ -73,11 +69,11 @@ class RegistrationController extends Controller
     // Passo 2: Certidão de Nascimento
     public function certificate(): View|RedirectResponse
     {
-        return view('app.registration.certificate', [
-            'bg' =>  session()->has('step2_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 2,
-            'title' => 'Certidão de Nascimento'
-        ]);
+        if (!session('step1_done')) { // Verifica se o passo 1 foi concluído
+            return redirect()->route('step.personal');
+        }
+
+        return view('app.registration.certificate');
     }
     // Gravar Dados de Passo 2
     public function certificateStore(CertificateRequest $request): Response|RedirectResponse
@@ -91,11 +87,11 @@ class RegistrationController extends Controller
     // Passo 3: Endereço
     public function address(): View|RedirectResponse
     {
-        return view('app.registration.address', [
-            'bg' =>  session()->has('step3_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 3,
-            'title' => 'Endereço'
-        ]);
+        if (!session('step2_done')) { // Verifica se o passo 2 foi concluído
+            return redirect()->route('step.certificate');
+        }
+
+        return view('app.registration.address');
     }
     // Gravar Dados de Passo 3
     public function addressStore(AddressRequest $request): RedirectResponse
@@ -109,6 +105,10 @@ class RegistrationController extends Controller
     // Passo 4: Dados Acadêmicos
     public function academic(): View|RedirectResponse
     {
+        if (!session('step3_done')) { // Verifica se o passo 3 foi concluído
+            return redirect()->route('step.address');
+        }
+
         $schools = [
             "EM ALCIONE AP FERNANDES PEREIRA",
             "EM ALFREDO DONAIRE",
@@ -152,9 +152,6 @@ class RegistrationController extends Controller
         ];
 
         return view('app.registration.academic', [
-            'bg' =>  session()->has('step4_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 4,
-            'title' => "Dados Acadêmicos",
             'schools' => $schools
         ]);
     }
@@ -162,7 +159,7 @@ class RegistrationController extends Controller
     public function academicStore(AcademicRequest $request): Response|RedirectResponse
     {
         session()->put('step4', $request->except(['_token']));
-        session()->put('step4_done', true); // Marca como concluído
+        session()->put('step4_done', true);
 
         return redirect()->route('step.family');
     }
@@ -170,10 +167,11 @@ class RegistrationController extends Controller
     // Passo 5: Dados Familiares
     public function family(): View|RedirectResponse
     {
+        if (!session('step4_done')) { // Verifica se o passo 4 foi concluído
+            return redirect()->route('step.academic');
+        }
+
         return view('app.registration.family', [
-            'bg' =>  session()->has('step5_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 5,
-            'title' => "Filiação / Responsável Legal",
             'degrees' => [
                 '1' => 'Padrasto',
                 '2' => 'Madrasta',
@@ -215,8 +213,11 @@ class RegistrationController extends Controller
     // Passo 6: Outras Informações
     public function other(): View|RedirectResponse
     {
+        if (!session('step5_done')) { // Verifica se o passo 3 foi concluído
+            return redirect()->route('step.family');
+        }
         // Título do card-header
-        $title = "Informações Complementares";
+        // $title = "Informações Complementares";
 
         // Array de acessibilidade
         $options = [
@@ -256,6 +257,22 @@ class RegistrationController extends Controller
             31 => 'Visual /Cego - Surdocegueira'
         ];
 
+        $accessibilityResources = [
+            'Prova ampliada (fonte tamanho 20)',
+            'Prova em braile',
+            'Auxílio para leitura da prova',
+            'Auxílio para transcrição das respostas',
+            'Intérprete de Libras',
+            'Tempo adicional para realização da prova',
+            'Mesa adaptada para cadeira de rodas',
+            'Uso de equipamento médico',
+            'Permissão para uso de aparelho auditivo',
+            'Permissão para uso de medicação durante a prova',
+            'Acompanhamento de ledor',
+            'Apoio para mobilidade',
+            'Ambiente com menor estímulo sonoro'
+        ];
+
         $healthIssues = [
             1  => 'Hipertensão Arterial',
             2  => 'Diabetes Mellitus',
@@ -274,13 +291,7 @@ class RegistrationController extends Controller
             15 => 'Insuficiência Renal Crônica'
         ];
 
-        return view('app.registration.others', compact('options', 'disabilities', 'healthIssues'))->with(
-            [
-                'bg' =>  session()->has('step6_done') ? 'bg-success' : 'bg-secondary',  // Marca como concluído
-                'step' => 6,
-                'title' => $title
-            ]
-        );
+        return view('app.registration.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));
     }
 
     // Gravar Dados de Passo 6
@@ -293,13 +304,13 @@ class RegistrationController extends Controller
         }
 
         if ($request->hasFile('pne_report')) {
-            // $path = $request->file('pne_report')->store('reports');
             $path = $request->file('pne_report')->store('reports', 'public');
             $data['pne_report'] = $path; // salva só o caminho
         }
 
         if ($data['pne'] != 1) {
             $data['accessibility_description'] = null;
+            $data['pne_description'] = null;
         }
 
         if ($data['social_program'] != 1) {
@@ -315,10 +326,11 @@ class RegistrationController extends Controller
     // Passo 7: Curso Pretendido
     public function course(): View|RedirectResponse
     {
+        if (!session('step6_done')) { // Verifica se o passo 3 foi concluído
+            return redirect()->route('step.other');
+        }
+
         return view('app.registration.course', [
-            'bg' =>  session()->has('step7_done') ? 'bg-success' : 'bg-secondary',
-            'step' => 7,
-            'title' => "Curso",
             'courses' => Course::all()
         ]);
     }
@@ -347,16 +359,8 @@ class RegistrationController extends Controller
             return redirect()->route('dash.user.start'); // <= CORRIGIR ROTA
         }
 
-        // Define o título da etapa
-        $title = "Confirmar Dados";
-
         // Retorna a view com os dados necessários
         return view('app.registration.confirm', array_merge(
-            [
-                'bg' =>  session()->has('step8_done') ? 'bg-success' : 'bg-secondary',
-                'step' => 8,
-                'title' => $title,
-            ],
             $steps->all()
         ));
     }

@@ -108,6 +108,26 @@ $(document).ready(function () {
                 extension: "pdf"
             },
 
+            pne_description: {
+                required: {
+                    depends: function () {
+                        return $("#accessibility").val() == 1;
+                    }
+                },
+                maxlength: {
+                    depends: function () {
+                        return $("#accessibility").val() == 1;
+                    },
+                    param: 60
+                },
+                pattern: {
+                    depends: function () {
+                        return $("#accessibility").val() == 1;
+                    },
+                    param: /^[\p{L}0-9 ().,-]+$/u
+                }
+            },
+
             // Programas sociais
             social_program: {
                 required: true,
@@ -143,13 +163,18 @@ $(document).ready(function () {
                 range: "* Selecione uma opção válida."
             },
             accessibility_description: {
-                required: "* Informe o serviço de educação especial necessário.",
+                required: "* Descreva a necessidade de acessibilidade.",
                 maxlength: "* Máximo de 60 caracteres.",
                 pattern: "* Apenas letras, números e espaços.",
             },
             pne_report: {
                 required: "* O campo de relatório de educação especial é obrigatório",
                 extension: "* Apenas arquivos PDF são permitidos."
+            },
+            pne_description: {
+                required: "* Informe o serviço de educação especial necessário.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços."
             },
             // Programas sociais
             social_program: {

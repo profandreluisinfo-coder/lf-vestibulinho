@@ -81,6 +81,21 @@ class OtherRequest extends FormRequest
                 }
             ],
 
+            'pne_description' => [
+                'nullable',
+                // Rule::requiredIf(fn() => $this->input('pne') == 1),
+                Rule::requiredIf($pneRequired),
+                'max:60',
+                function ($attribute, $value, $fail) {
+                    if ($this->input('pne') == 1) {
+                        $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
+                        if (!preg_match($regex, $value)) {
+                            $fail("* O campo {$attribute} contém caracteres inválidos.");
+                        }
+                    }
+                }
+            ],
+
             'pne_report' => [
                 Rule::requiredIf($pneRequired),
                 'nullable',
@@ -125,6 +140,10 @@ class OtherRequest extends FormRequest
             'accessibility_description.required' => '* O campo de descrição de acessibilidade é obrigatório',
             'accessibility_description.max' => '* O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',
             'accessibility_description.regex' => '* O campo de descrição de acessibilidade deve conter apenas letras, números e espaços.',
+
+            'pne_description.required' => '* O campo de descrição de tipo de ajuda é obrigatório',
+            'pne_description.max' => '* O campo deve conter, no máximo, :max caracteres',
+            'pne_description.regex' => '* O campo de deve conter apenas letras, números e espaços.',
 
             // outras informações
             'health.required' => '* Você deve informar se tem algum problema de saúde ou alergia.',

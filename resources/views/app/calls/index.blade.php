@@ -1,6 +1,6 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Convocação para Matrícula')
+@section('page-title', 'Vestibulinho LF')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">

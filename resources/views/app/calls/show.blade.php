@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin')
 
 @section('page-title', 'Convocados da Chamada ' . $call_number)
 

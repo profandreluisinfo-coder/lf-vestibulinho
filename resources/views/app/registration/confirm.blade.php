@@ -1,222 +1,477 @@
-@extends('app.registration.master')
+@extends('layouts.dash')
 
-@section('page-title', 'Inscrição - Passo ' . $step . ' - Confirmar Dados')
+@section('page-title', 'Vestibulinho LF')
 
 @php
-  $etapas = collect(range(1, 7))->every(fn($i) => session("step{$i}") === null);
+    $degrees = [
+        1 => 'Padrasto', 2 => 'Madrasta', 3 => 'Avô(ó)', 4 => 'Tio(a)',
+        5 => 'Irmão(ã)', 6 => 'Primo(a)', 7 => 'Tio(a)', 8 => 'Outro',
+    ];
+
+    $doc = match ($step1['doc_type']) {
+        '1' => 'RG — Registro Geral',
+        '2' => 'CIN — Carteira de Identidade Nacional',
+        '3' => 'RNE — Registro Nacional de Estrangeiro',
+        default => $step1['doc_type'],
+    };
+
+    $gender = match ($step1['gender']) {
+        '1' => 'Masculino', '2' => 'Feminino', '3' => 'Outro',
+        default => 'Prefiro não informar',
+    };
 @endphp
 
-@section('forms')
+@push('styles')
+<style>
+    .review-section {
+        background: var(--color-white);
+        border: 1px solid var(--color-light-mid);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        margin-bottom: 1rem;
+    }
 
-  @php
-    $degrees = [
-        1 => 'PADRASTO',
-        2 => 'MADRASTA',
-        3 => 'AVÔ(Ó)',
-        4 => 'TIO(A)',
-        5 => 'IRMÃO(Ã)',
-        6 => 'PRIMO(A)',
-        7 => 'TIO(A)',
-        8 => 'OUTRO',
-    ];
-  @endphp
+    .review-section-header {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        padding: .75rem 1.1rem;
+        background: var(--color-light);
+        border-bottom: 1px solid var(--color-light-mid);
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: .85rem;
+        color: var(--color-navy);
+    }
 
-  <div class="mb-4 text-center">
-    <p class="fw-bold">Por favor, confirme todos os dados abaixo antes de finalizar sua inscrição.</p>
-  </div>
+    .review-section-header i {
+        color: var(--color-teal);
+        font-size: 1rem;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-person-vcard"></i> Identificação do Candidato</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>CPF:</strong> {{ $step1['cpf'] }}</li>
-      <li class="list-group-item"><strong>Nome:</strong> {{ $step1['name'] }}</li>
-      @if ($step1['social_name_option'] == 1)
-      <li class="list-group-item d-flex flex-row justify-content-between align-items-center">
-          <div><strong>Nome social:</strong> {{ $step1['social_name'] }}</div>
-          <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" class="text-decoration-none" target="_blank">
-                      Autorização <i class="bi bi-box-arrow-up-right"></i></a>
-      </li>
-      @endif
-    </ul>
-  </fieldset>
+    .review-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: .65rem 1.1rem;
+        font-size: var(--font-size-sm);
+        border-bottom: 1px solid var(--color-light-mid);
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-card-text"></i> Documentos Pessoais</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Nacionalidade:</strong>
-        {{ $step1['nationality'] == 1 ? 'BRASILEIRA' : 'ESTRANGEIRA' }}</li>
-      <li class="list-group-item">
-        <strong>Tipo de documento:</strong>
-        @php
-          $doc = match ($step1['doc_type']) {
-              '1' => 'RG - REGISTRO GERAL',
-              '2' => 'CIN - CARTEIRA DE IDENTIDADE NACIONAL',
-              '3' => 'RNE - REGISTRO NACIONAL DE ESTRANGEIRO',
-              default => $step1['doc_type'] . ' - ERRO AO IDENTIFICAR',
-          };
-        @endphp
-        {{ $doc }}
-      </li>
-      <li class="list-group-item"><strong>Nº Documento:</strong> {{ $step1['doc_number'] }}</li>
-      <li class="list-group-item"><strong>Nascimento:</strong>
-        {{ \Carbon\Carbon::parse($step1['birth'])->format('d/m/Y') }}</li>
-      <li class="list-group-item"><strong>Gênero: </strong>
-        {{ match ($step1['gender']) {
-            '1' => 'MASCULINO',
-            '2' => 'FEMININO',
-            '3' => 'OUTRO',
-            default => 'PREFIRO NÃO INFORMAR',
-        } }}
-      </li>
-    </ul>
-  </fieldset>
+    .review-row:last-child {
+        border-bottom: none;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-file-earmark-text"></i> Certidão de Nascimento</legend>
-    <ul class="list-group list-group-flush">
-      @if ($step2['certificateModel'] == '1')
-        <li class="list-group-item"><strong>Nº Certidão:</strong> {{ $step2['new_number'] }}</li>
-      @else
-        <li class="list-group-item"><strong>Folhas:</strong> {{ $step2['fls'] }}</li>
-        <li class="list-group-item"><strong>Livro:</strong> {{ $step2['book'] }}</li>
-        <li class="list-group-item"><strong>Nº Certidão:</strong> {{ $step2['old_number'] }}</li>
-        <li class="list-group-item"><strong>Município:</strong> {{ $step2['municipality'] }}</li>
-      @endif
-    </ul>
-  </fieldset>
+    .review-label {
+        color: var(--color-muted);
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-telephone"></i> Contato</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>E-mail:</strong> {{ Auth::user()->email }}</li>
-      <li class="list-group-item"><strong>Telefone:</strong> {{ $step1['phone'] }}</li>
-    </ul>
-  </fieldset>
+    .review-value {
+        color: var(--color-navy);
+        text-align: right;
+        word-break: break-word;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-geo-alt"></i> Endereço</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>CEP:</strong> {{ $step3['zip'] }}</li>
-      <li class="list-group-item"><strong>Rua:</strong> {{ $step3['street'] }}</li>
-      @if ($step3['number'])
-        <li class="list-group-item"><strong>Nº:</strong> {{ $step3['number'] }}</li>
-      @endif
-      @if ($step3['complement'])
-        <li class="list-group-item"><strong>Complemento:</strong> {{ $step3['complement'] }}</li>
-      @endif
-      <li class="list-group-item"><strong>Bairro:</strong> {{ $step3['burgh'] }}</li>
-      <li class="list-group-item"><strong>Cidade:</strong> {{ $step3['city'] }}</li>
-      <li class="list-group-item"><strong>Estado:</strong> {{ $step3['state'] }}</li>
-    </ul>
-  </fieldset>
+    /* Terms box */
+    .terms-box {
+        background: var(--color-white);
+        border: 1px solid var(--color-light-mid);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+        box-shadow: var(--shadow-sm);
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-book"></i> Escolaridade</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Escola:</strong> {{ $step4['school_name'] }}</li>
-      <li class="list-group-item"><strong>RA:</strong> {{ $step4['school_ra'] }}</li>
-      <li class="list-group-item"><strong>Cidade:</strong> {{ $step4['school_city'] }}</li>
-      <li class="list-group-item"><strong>Estado:</strong> {{ $step4['school_state'] }}</li>
-      <li class="list-group-item"><strong>Ano de conclusão:</strong> {{ $step4['school_year'] }}</li>
-    </ul>
-  </fieldset>
+    .terms-box .terms-text {
+        font-size: var(--font-size-xs);
+        color: var(--color-muted);
+        line-height: 1.6;
+        text-align: justify;
+        max-height: 120px;
+        overflow-y: auto;
+        padding-right: .5rem;
+        margin-bottom: 1rem;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-people"></i> Filiação / Responsável Legal</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Mãe:</strong> {{ $step5['mother'] }}</li>
-      @if ($step5['mother_phone'])
-        <li class="list-group-item"><strong>Telefone Mãe:</strong> {{ $step5['mother_phone'] }}</li>
-      @endif
-      @if ($step5['father'])
-        <li class="list-group-item"><strong>Pai:</strong> {{ $step5['father'] }}</li>
-      @endif
-      @if ($step5['father_phone'])
-        <li class="list-group-item"><strong>Telefone Pai:</strong> {{ $step5['father_phone'] }}</li>
-      @endif
-      @if ($step5['responsible'])
-        <li class="list-group-item"><strong>Responsável:</strong> {{ $step5['responsible'] }}</li>
-        <li class="list-group-item"><strong>Parentesco:</strong> {{ $degrees[$step5['degree']] ?? '' }}</li>
-        @if ($step5['kinship'])
-          <li class="list-group-item"><strong>Descrição:</strong> {{ $step5['kinship'] }}</li>
-        @endif
-        <li class="list-group-item"><strong>Telefone:</strong> {{ $step5['responsible_phone'] }}</li>
-      @endif
-      <li class="list-group-item"><strong>E-mail pais/responsável:</strong> {{ $step5['parents_email'] }}</li>
-    </ul>
-  </fieldset>
+    /* Alert de confirmação */
+    .confirm-banner {
+        background: var(--color-teal-light);
+        border: 1px solid rgba(0,168,150,.25);
+        border-radius: var(--radius-lg);
+        padding: .85rem 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        font-size: var(--font-size-sm);
+        color: var(--color-teal-dark);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
 
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-universal-access"></i> Educação Especial</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Elegível?</strong> {{ $step6['pne'] == 1 ? 'SIM' : 'NÃO' }}</li>
-    @if ($step6['pne'] == '1')
-      <li class="list-group-item d-flex align-items-center justify-content-between">
-        <div>
-        <strong>Descrição:</strong> {{ $step6['accessibility_description'] }}
+    .confirm-banner i {
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+</style>
+@endpush
+
+@section('dash-content')
+<div class="wrapper">
+
+    {{-- Título --}}
+    <div class="section-title mb-4">
+        <h4><i class="bi bi-check2-all me-2"></i>Revisão da Inscrição</h4>
+        <div class="divider-teal"></div>
+    </div>
+
+    @include('partials.forms.stepper')
+
+    {{-- Banner --}}
+    <div class="confirm-banner">
+        <i class="bi bi-info-circle-fill"></i>
+        Revise todos os dados antes de finalizar. Após a confirmação não será possível editar.
+    </div>
+
+    {{-- 1. Identificação --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-person-vcard"></i> Identificação do Candidato
         </div>
-        <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" class="text-decoration-none" target="_blank"> Laudo/Relatório Médico <i class="bi bi-box-arrow-up-right"></i></a>
-      </li>
-    @endif
-    </ul>
-  </fieldset>
-
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-award"></i> Programas Sociais</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Bolsa-Família?</strong> {{ $step6['social_program'] == 1 ? 'SIM' : 'NÃO' }}
-      </li>
-      @if ($step6['social_program'] == 1)
-        <li class="list-group-item"><strong>NIS:</strong> {{ $step6['nis'] }}</li>
-      @endif
-    </ul>
-  </fieldset>
-
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-heart-pulse"></i> Outras Informações</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Problema de saúde ou alergia?</strong>
-        {{ $step6['health'] == 1 ? 'SIM' : 'NÃO' }}</li>
-      @if ($step6['health'] == 1)
-        <li class="list-group-item"><strong>Descrição:</strong> {{ $step6['health_issue'] }}</li>
-      @endif
-    </ul>
-  </fieldset>
-
-  <fieldset class="mb-2 rounded border p-2">
-    <legend class="border-bottom pb-1"><i class="bi bi-journal-bookmark"></i> Pesquisa de intenção de curso</legend>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">{{ \App\Models\Course::getDescription($step7['course_id']) }}</li>
-    </ul>
-  </fieldset>
-
-  <form id="finalize-inscription" class="col-12 mt-3" action="{{ route('step.finalize') }}"
-    method="POST">
-    @csrf
-    <div class="bg-light p-3 rounded">
-      <h5 class="mb-3 required">Termos e condições</h5>
-      <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" value="1" id="agree_terms" name="agree_terms">
-          <label class="form-check-label" for="agree_terms" style="text-align: justify;">
-              Estou ciente de que a formalização da inscrição implica a aceitação de todas as regras e condições estabelecidas no edital de abertura de inscrições. Estou ciente, ainda, que, caso venha a ser aprovado e convocado, deverei entregar os documentos comprobatórios dos requisitos exigidos para a matrícula por ocasião da aprovação. Concordo com os termos que constam no edital, bem como aceito que os meus dados pessoais, sensíveis ou não, sejam tratados e processados de forma a possibilitar a efetiva execução do Processo Seletivo, com a aplicação dos critérios de avaliação e seleção, autorizando expressamente a divulgação de meu nome, número de inscrição e notas, em observância aos princípios da publicidade e da transparência que regem a Administração Pública e nos termos da Lei Federal nº 13.709, de 14 de agosto de 2018. Ciente de que não caberão reclamações posteriores neste sentido, ficando ciente também de que possivelmente tais informações poderão ser encontradas na rede mundial de computadores por meio dos mecanismos de busca atualmente existentes.
-          </label>
-      </div>
+        <div class="review-row">
+            <span class="review-label">CPF</span>
+            <span class="review-value">{{ $step1['cpf'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Nome</span>
+            <span class="review-value">{{ $step1['name'] }}</span>
+        </div>
+        @if ($step1['social_name_option'] == 1)
+        <div class="review-row">
+            <span class="review-label">Nome social</span>
+            <span class="review-value d-flex flex-column align-items-end gap-1">
+                {{ $step1['social_name'] }}
+                <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}"
+                   target="_blank" class="small text-decoration-none">
+                    <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
+                </a>
+            </span>
+        </div>
+        @endif
     </div>
 
-    <div class="border-top pt-3">
-      <button type="button" class="btn btn-sm btn-secondary me-2">
-        <i class="bi bi-arrow-left-circle me-2"></i>
-        <a href="{{ route('step.course') }}" class="text-decoration-none">Voltar</a>
-      </button>
-
-      <button type="button" class="btn btn-sm btn-success" onclick="confirmFinalize()">
-        Confirmar <i class="bi bi-check-circle ms-2"></i>
-      </button>
+    {{-- 2. Documentos --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-card-text"></i> Documentos Pessoais
+        </div>
+        <div class="review-row">
+            <span class="review-label">Nacionalidade</span>
+            <span class="review-value">{{ $step1['nationality'] == 1 ? 'Brasileira' : 'Estrangeira' }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Documento</span>
+            <span class="review-value">{{ $doc }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Nº Documento</span>
+            <span class="review-value">{{ $step1['doc_number'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Nascimento</span>
+            <span class="review-value">{{ \Carbon\Carbon::parse($step1['birth'])->format('d/m/Y') }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Gênero</span>
+            <span class="review-value">{{ $gender }}</span>
+        </div>
     </div>
-  </form>
 
+    {{-- 3. Certidão --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-file-earmark-text"></i> Certidão de Nascimento
+        </div>
+        @if ($step2['certificateModel'] == '1')
+        <div class="review-row">
+            <span class="review-label">Nº Certidão</span>
+            <span class="review-value">{{ $step2['new_number'] }}</span>
+        </div>
+        @else
+        <div class="review-row">
+            <span class="review-label">Folhas</span>
+            <span class="review-value">{{ $step2['fls'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Livro</span>
+            <span class="review-value">{{ $step2['book'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Nº Certidão</span>
+            <span class="review-value">{{ $step2['old_number'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Município</span>
+            <span class="review-value">{{ $step2['municipality'] }}</span>
+        </div>
+        @endif
+    </div>
+
+    {{-- 4. Contato --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-telephone"></i> Contato
+        </div>
+        <div class="review-row">
+            <span class="review-label">E-mail</span>
+            <span class="review-value">{{ Auth::user()->email }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Telefone</span>
+            <span class="review-value">{{ $step1['phone'] }}</span>
+        </div>
+    </div>
+
+    {{-- 5. Endereço --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-geo-alt"></i> Endereço
+        </div>
+        <div class="review-row">
+            <span class="review-label">CEP</span>
+            <span class="review-value">{{ $step3['zip'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Rua</span>
+            <span class="review-value">{{ $step3['street'] }}</span>
+        </div>
+        @if ($step3['number'])
+        <div class="review-row">
+            <span class="review-label">Número</span>
+            <span class="review-value">{{ $step3['number'] }}</span>
+        </div>
+        @endif
+        @if ($step3['complement'])
+        <div class="review-row">
+            <span class="review-label">Complemento</span>
+            <span class="review-value">{{ $step3['complement'] }}</span>
+        </div>
+        @endif
+        <div class="review-row">
+            <span class="review-label">Bairro</span>
+            <span class="review-value">{{ $step3['burgh'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Cidade / UF</span>
+            <span class="review-value">{{ $step3['city'] }} — {{ $step3['state'] }}</span>
+        </div>
+    </div>
+
+    {{-- 6. Escolaridade --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-book"></i> Escolaridade
+        </div>
+        <div class="review-row">
+            <span class="review-label">Escola</span>
+            <span class="review-value">{{ $step4['school_name'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">RA</span>
+            <span class="review-value">{{ $step4['school_ra'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Cidade / UF</span>
+            <span class="review-value">{{ $step4['school_city'] }} — {{ $step4['school_state'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Conclusão</span>
+            <span class="review-value">{{ $step4['school_year'] }}</span>
+        </div>
+    </div>
+
+    {{-- 7. Filiação --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-people"></i> Filiação / Responsável Legal
+        </div>
+        <div class="review-row">
+            <span class="review-label">Mãe</span>
+            <span class="review-value">{{ $step5['mother'] }}</span>
+        </div>
+        @if ($step5['mother_phone'])
+        <div class="review-row">
+            <span class="review-label">Tel. Mãe</span>
+            <span class="review-value">{{ $step5['mother_phone'] }}</span>
+        </div>
+        @endif
+        @if ($step5['father'])
+        <div class="review-row">
+            <span class="review-label">Pai</span>
+            <span class="review-value">{{ $step5['father'] }}</span>
+        </div>
+        @endif
+        @if ($step5['father_phone'])
+        <div class="review-row">
+            <span class="review-label">Tel. Pai</span>
+            <span class="review-value">{{ $step5['father_phone'] }}</span>
+        </div>
+        @endif
+        @if ($step5['responsible'])
+        <div class="review-row">
+            <span class="review-label">Responsável</span>
+            <span class="review-value">{{ $step5['responsible'] }}</span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Parentesco</span>
+            <span class="review-value">
+                {{ $degrees[$step5['degree']] ?? '' }}
+                @if ($step5['kinship']) — {{ $step5['kinship'] }} @endif
+            </span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Tel. Responsável</span>
+            <span class="review-value">{{ $step5['responsible_phone'] }}</span>
+        </div>
+        @endif
+        <div class="review-row">
+            <span class="review-label">E-mail responsável</span>
+            <span class="review-value">{{ $step5['parents_email'] }}</span>
+        </div>
+    </div>
+
+    {{-- 8. Educação Especial --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-universal-access"></i> Educação Especial
+        </div>
+        <div class="review-row">
+            <span class="review-label">Elegível</span>
+            <span class="review-value">
+                @if ($step6['pne'] == 1)
+                    <span class="badge bg-success">Sim</span>
+                @else
+                    <span class="badge bg-secondary">Não</span>
+                @endif
+            </span>
+        </div>
+        @if ($step6['pne'] == '1')
+        <div class="review-row">
+            <span class="review-label">Descrição</span>
+            <span class="review-value d-flex flex-column align-items-end gap-1">
+                {{ $step6['accessibility_description'] }}
+                <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}"
+                   target="_blank" class="small text-decoration-none">
+                    <i class="bi bi-file-earmark-medical me-1"></i>Ver laudo
+                </a>
+            </span>
+        </div>
+        <div class="review-row">
+            <span class="review-label">Recursos de acessibilidade</span>
+            <span class="review-value d-flex flex-column align-items-end gap-1">
+                {{ $step6['pne_description'] }}
+            </span>
+        </div>
+        @endif
+    </div>
+
+    {{-- 9. Programas Sociais + Saúde --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-award"></i> Programas Sociais e Saúde
+        </div>
+        <div class="review-row">
+            <span class="review-label">Bolsa-Família</span>
+            <span class="review-value">
+                @if ($step6['social_program'] == 1)
+                    <span class="badge bg-success">Sim</span>
+                @else
+                    <span class="badge bg-secondary">Não</span>
+                @endif
+            </span>
+        </div>
+        @if ($step6['social_program'] == 1)
+        <div class="review-row">
+            <span class="review-label">NIS</span>
+            <span class="review-value">{{ $step6['nis'] }}</span>
+        </div>
+        @endif
+        <div class="review-row">
+            <span class="review-label">Problema de saúde / alergia</span>
+            <span class="review-value">
+                @if ($step6['health'] == 1)
+                    <span class="badge bg-warning text-dark">Sim</span>
+                @else
+                    <span class="badge bg-secondary">Não</span>
+                @endif
+            </span>
+        </div>
+        @if ($step6['health'] == 1)
+        <div class="review-row">
+            <span class="review-label">Descrição</span>
+            <span class="review-value">{{ $step6['health_issue'] }}</span>
+        </div>
+        @endif
+    </div>
+
+    {{-- 10. Curso --}}
+    <div class="review-section">
+        <div class="review-section-header">
+            <i class="bi bi-journal-bookmark"></i> Intenção de Curso
+        </div>
+        <div class="review-row">
+            <span class="review-label">Curso</span>
+            <span class="review-value">{{ \App\Models\Course::getDescription($step7['course_id']) }}</span>
+        </div>
+    </div>
+
+    {{-- Termos + Finalizar --}}
+    <form id="finalize-inscription" action="{{ route('step.finalize') }}" method="POST" class="mt-4">
+        @csrf
+
+        <div class="terms-box mb-4">
+            <h5 class="fw-bold mb-2 required" style="font-size: .9rem;">Termos e condições</h5>
+            <div class="terms-text">
+                Estou ciente de que a formalização da inscrição implica a aceitação de todas as regras e condições
+                estabelecidas no edital de abertura de inscrições. Estou ciente, ainda, que, caso venha a ser
+                aprovado e convocado, deverei entregar os documentos comprobatórios dos requisitos exigidos para a
+                matrícula por ocasião da aprovação. Concordo com os termos que constam no edital, bem como aceito
+                que os meus dados pessoais, sensíveis ou não, sejam tratados e processados de forma a possibilitar a
+                efetiva execução do Processo Seletivo, com a aplicação dos critérios de avaliação e seleção,
+                autorizando expressamente a divulgação de meu nome, número de inscrição e notas, em observância aos
+                princípios da publicidade e da transparência que regem a Administração Pública e nos termos da Lei
+                Federal nº 13.709, de 14 de agosto de 2018.
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="agree_terms" name="agree_terms">
+                <label class="form-check-label" for="agree_terms" style="font-size: var(--font-size-sm);">
+                    Li e concordo com os termos acima.
+                </label>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 border-top pt-3">
+            <a href="{{ route('step.course') }}" class="btn btn-secondary btn-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i> Voltar
+            </a>
+            <button type="button" class="btn btn-success btn-sm" onclick="confirmFinalize()">
+                Confirmar inscrição <i class="bi bi-check-circle ms-1"></i>
+            </button>
+        </div>
+    </form>
+
+</div>
 @endsection
 
+@push('plugins')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
+@endpush
+
 @push('scripts')
-  <script src="{{ asset('assets/js/swa/registration/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/registration/confirm.js') }}"></script>
 @endpush

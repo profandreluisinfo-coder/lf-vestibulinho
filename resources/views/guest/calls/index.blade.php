@@ -4,7 +4,7 @@
     <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $calendar?->year }}">
 @endpush
 
-@section('page-title', config('app.name') . ' ' . $calendar->year . ' | Convocação para Matrícula')
+@section('page-title', 'Vestibulinho LF . ' | Convocação para Matrícula')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/calls/styles.css') }}">

@@ -156,7 +156,7 @@
                 <p class="rules-note">
                     <strong style="color:var(--navy);">ATENÇÃO:</strong> Sua senha deve ter no
                     <strong>mínimo 6</strong> e no <strong>máximo 8</strong> caracteres, contendo
-                    <strong>pelo menos</strong> uma letra maiúscula, uma minúscula <strong>e</strong> um número.
+                    <strong>pelo menos</strong> uma letra maiúscula, uma minúscula <strong>e</strong> um número. <strong>Não utilize caracteres especiais (@, #, $, *, etc)<strong>.
                 </p>
                 <div class="rules-grid">
                     <div class="rule-chip" id="rule-len">

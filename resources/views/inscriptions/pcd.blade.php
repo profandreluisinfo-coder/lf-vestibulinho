@@ -1,4 +1,4 @@
-@extends('layouts.admin.master')
+@extends('layouts.admin')
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Pessoas com Deficiência')
 
