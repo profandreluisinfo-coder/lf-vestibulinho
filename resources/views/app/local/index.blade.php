@@ -20,7 +20,8 @@
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Local</th>
-                        {{-- <th scope="col">Salas Disponíveis</th> --}}
+                        <th scope="col">Salas Disponíveis</th>
+                        {{-- <th scope="col">Endereço</th> --}}
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
@@ -30,7 +31,8 @@
                             <th scope="row">
                                 {{ $local->name }}
                             </th>
-                            {{-- <td>{{ $local->rooms_available }}</td> --}}
+                            <td>{{ $local->rooms_available }}</td>
+                            {{-- <td>{{ $local->address }}</td> --}}
                             <td>
                                 <div class="d-flex gap-2 justify-content-center">
                                     <!-- Detalhes -->
