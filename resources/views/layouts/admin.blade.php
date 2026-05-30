@@ -271,11 +271,14 @@
     </header>
 
     <!-- Conteúdo -->
-    <main class="main-content py-5">
+    <main class="main-content">
 
         @include('alerts.toasts')
 
         @yield('dash-content')
+
+        {{-- Modal Alterar Senha --}}
+        @include('partials.forms.change-password')
 
     </main>
 
@@ -383,15 +386,12 @@
         </div>
     </div>
 
-    {{-- Modal Alterar Senha --}}
-    @include('partials.forms.change-password')
-
     {{-- === JS === --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-    
+
     <script src="{{ asset('assets/js/dash.js') }}" type="module"></script>
 
     {{-- Scripts --}}

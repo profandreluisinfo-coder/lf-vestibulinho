@@ -1,5 +1,5 @@
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-bs-scroll="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

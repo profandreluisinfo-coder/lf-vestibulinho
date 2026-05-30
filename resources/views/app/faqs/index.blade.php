@@ -31,16 +31,27 @@
                 perguntas.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
+            {{-- Pesquisas... --}}
+            <div class="row mb-3">                
+                <div class="col-md-4">
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                         <input type="text" class="form-control" id="search" name="search"
                             placeholder="Pesquisar por..." autocomplete="off">
                     </div>
                 </div>
-                <div class="col-md-6 d-flex align-items-center gap-3">
+                <div class="col-md-3">
+                    <select class="form-select form-select-sm" id="filterCategory">
+                        <option value="">Todas as categorias</option>
+
+                        @foreach ($categories as $category)
+                            <option value="{{ Str::lower($category->category) }}">
+                                {{ $category->category }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-center gap-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" id="filterPublished" checked>
                         <label class="form-check-label" for="filterPublished">
@@ -53,13 +64,16 @@
                             Não Publicadas
                         </label>
                     </div>
-                </div>
+                </div>                
             </div>
+
 
             <div class="accordion accordion-flush" id="faqAccordion">
 
                 @foreach ($faqs as $faq)
-                    <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}">
+                    {{-- <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}"> --}}
+                    <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}"
+                        data-category="{{ Str::lower($faq->category?->category) }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
@@ -80,7 +94,8 @@
                                 <div
                                     class="d-flex justify-content-end border-bottom small text-muted mt-2 mb-2 p-2 border border-top-1 bg-light">
                                     <span class="me-2"><i class="bi bi-person me-1"></i> {{ $faq->user->name }}</span>
-                                    <span class="mx-2"><i class="bi bi-tag me-1"></i> {{ $faq->category?->category }}</span>
+                                    <span class="mx-2"><i class="bi bi-tag me-1"></i>
+                                        {{ $faq->category?->category }}</span>
                                     <span class="mx-2"><i class="bi bi-floppy me-1"></i>
                                         {{ $faq->created_at->format('d/m/Y H:i:s') }}</span>
                                     <span class="mx-2"><i class="bi bi-pencil-square me-1"></i>
@@ -113,7 +128,8 @@
                                         </a>
 
                                         <form id="delete-faq-form-{{ $faq->id }}"
-                                            action="{{ route('app.faqs.destroy', $faq->id) }}" method="POST" class="d-none">
+                                            action="{{ route('app.faqs.destroy', $faq->id) }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                             @method('DELETE')
                                         </form>
@@ -166,7 +182,8 @@
                                         </datalist>
 
                                         <small id="categoryHelp" class="text-primary fst-italic">
-                                            <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já cadastrada ou digite uma nova.
+                                            <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já
+                                            cadastrada ou digite uma nova.
                                         </small>
 
                                     </div>

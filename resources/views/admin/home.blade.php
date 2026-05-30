@@ -2,9 +2,9 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Painel Administrativo')
 
-@push('styles')
+{{-- @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dash/admin.css') }}">
-@endpush
+@endpush --}}
 
 @section('dash-content')
 

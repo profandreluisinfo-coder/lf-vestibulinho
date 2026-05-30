@@ -28,6 +28,7 @@
                     <tbody>
 
                         @foreach ($notices as $notice)
+
                             <tr>
                                 <td>
                                     <a href="{{ asset('storage/' . $notice->file) }}" target="_blank">
@@ -45,6 +46,8 @@
                                         @csrf
                                         @method('PUT')
                                     </form>
+
+                                    {{-- Botão de publicação --}}
                                     <button type="button"
                                         class="btn btn-sm btn-{{ $settings->isNoticeEnabled() ? 'secondary' : 'success' }}"
                                         title="{{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}"
@@ -67,6 +70,7 @@
 
                                 </td>
                             </tr>
+                            
                         @endforeach
 
                     </tbody>
@@ -75,36 +79,33 @@
             </div>
 
         @else
-        
+
             <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
-
-            <div class="me-3 fs-3" aria-hidden="true">
-                <i class="bi bi-info-circle-fill"></i>
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-2">Informação Importante</h5>
+                    <p class="mb-0">
+                        Voce ainda nao possui nenhum edital cadastrado.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+                <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
             </div>
-
-            <div class="flex-grow-1">
-                <h5 class="alert-heading mb-2">Informação Importante</h5>
-                <p class="mb-0">
-                    Voce ainda nao possui nenhum edital cadastrado.
-                </p>
-                <p class="mb-0 mt-2 small opacity-75">
-                    Em caso de dúvidas, entre em contato com o suporte técnico.
-                </p>
-            </div>
-
-            <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
-
-        </div>
 
         @endif
 
         {{-- Modal de definição de local --}}
         <div class="modal fade" id="setNewNotice" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="modalLabel" aria-hidden="true">
+            aria-labelledby="modalLabel" aria-hidden="true" data-bs-scroll="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Cadastrar Edital</h5>
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Cadastrar
+                            Edital</h5>
                     </div>
                     <div class="modal-body">
                         <div class="card shadow-sm">
@@ -127,7 +128,7 @@
                                         @enderror
                                     </div>
                                     <button type="submit" class="btn btn-success btn-sm">
-                                    <i class="bi bi-check-circle me-1"></i>Salvar
+                                        <i class="bi bi-check-circle me-1"></i>Salvar
                                     </button>
                                 </form>
 

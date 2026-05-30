@@ -21,7 +21,7 @@ class FaqController extends Controller
             ->get()
             ->map(fn($faq) => [
                 'id'  => $faq->id,
-                'cat' => $faq?->category,   // ajuste para o nome real da coluna
+                'cat' => $faq->category?->normalized_category,   // ajuste para o nome real da coluna
                 'q'   => $faq->question,   // ajuste para o nome real da coluna
                 'a'   => $faq->answer,     // ajuste para o nome real da coluna
             ]);

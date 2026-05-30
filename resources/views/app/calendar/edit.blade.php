@@ -29,7 +29,7 @@
 
                                 <div class="row g-3">
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="year" class="form-label fw-semibold text-secondary small">
                                             <i class="bi bi-calendar3 me-1"></i>Ano do Processo Seletivo
                                         </label>

@@ -4,6 +4,12 @@
 // Deriva as categorias únicas a partir dos dados,
 // mantendo a ordem de aparição e aplicando as configs visuais
 const CAT_CONFIG = {
+    _default: {
+        label: 'Outros',
+        icon: 'bi-tag-fill',
+        color: '#6C757D',
+        bg: 'rgba(108,117,125,.12)'
+    },
     geral: {
         label: 'Geral',
         icon: 'bi-question-circle-fill',
@@ -42,13 +48,17 @@ const CAT_CONFIG = {
     },
 };
 
-const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
-    .filter(cat => CAT_CONFIG[cat])
-    .map(cat => ({
-        id: cat,
-        ...CAT_CONFIG[cat]
-    }));
+function getCatConfig(cat) {
+    return CAT_CONFIG[cat] ?? {
+        ...CAT_CONFIG._default,
+        label: cat.charAt(0).toUpperCase() + cat.slice(1)
+    };
+}
 
+const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
+    .filter(cat => cat)
+    .map(cat => ({ id: cat, ...getCatConfig(cat) }));
+    
 /* ═══════════════════════════════════════════════════════════════
    ESTADO
    ═══════════════════════════════════════════════════════════════ */
