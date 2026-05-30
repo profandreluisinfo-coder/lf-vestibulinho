@@ -24,9 +24,9 @@
 
             <div class="form-group col-md-4">
                 <label for="cep" class="form-label required">CEP</label> <a
-                    class="btn btn-link btn-sm text-decoration-none"
+                    class="text-decoration-none text-primary float-end"
                     href="https://buscacepinter.correios.com.br/app/endereco/index.php"
-                    title="Consultar CEP através do Correios" tabindex="-1" target="_blank">Não sei meu CEP</a>
+                    title="Consulte seu CEP através do Correios" tabindex="-1" target="_blank" style="font-size: 12px;">Não sabe seu CEP?</a>
                 <input type="text" class="form-control @error('zip') is-invalid @enderror" id="zip" name="zip"
                     value="{{ old('zip', session('step3.zip')) }}">
                 @error('zip')

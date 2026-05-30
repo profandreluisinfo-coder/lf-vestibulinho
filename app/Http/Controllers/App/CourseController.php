@@ -23,13 +23,12 @@ class CourseController extends Controller
     /**
      * Exibe o formulário para criar um novo curso.
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CourseRequest $request): RedirectResponse
     {
         Course::create($request->validated());
 
-        // return redirect()->route('app.courses.index')->with('success', 'Curso registrado com sucesso!');
         return alertSuccess('Curso registrado com sucesso!', 'app.courses.index');
     }
 
@@ -46,9 +45,8 @@ class CourseController extends Controller
      */
     public function update(CourseRequest $request, string $id)
     {
-        Course::where('id', $id)->update($request->only(['name', 'description', 'duration', 'info', 'vacancies']));
+        Course::where('id', $id)->update($request->only(['vacancies']));
 
-        // return redirect()->route('app.courses.index')->with('success', 'Curso editado com sucesso!');
         return alertSuccess('Curso editado com sucesso!', 'app.courses.index');
     }
 

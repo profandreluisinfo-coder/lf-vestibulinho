@@ -89,6 +89,7 @@ class InscriptionService
                 'health' => (data_get($data, 'health') == '1') ? data_get($data, 'health_issue') : '',
 
                 'pne' => $data['pne'],
+                'pne_description' => ($data['pne'] == '1') ? $data['pne_description'] : '',
                 'accessibility' => ($data['pne'] == '1') ? $data['accessibility_description'] : '',
                 'pne_report' => (data_get($data, 'pne') == '1') ? data_get($data, 'pne_report') : '',
 

@@ -2,142 +2,6 @@
 
 @section('page-title', 'Vestibulinho LF ' . $calendar?->year . ' | Área do Candidato')
 
-@push('styles')
-    <style>
-        
-        /* ── Título de seção ── */
-        .section-title h4 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--color-navy);
-        }
-
-        /* ── Cards de passo ── */
-        .registration-step-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-light-mid);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            padding: 1.4rem 1.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1.1rem;
-            transition: box-shadow var(--transition-base), transform var(--transition-base);
-        }
-
-        .registration-step-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .registration-step-card.final-step {
-            border-left: 4px solid var(--color-teal);
-            background: var(--color-teal-light);
-        }
-
-        /* ── Número do passo ── */
-        .step-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-md);
-            background: var(--grad-teal);
-            color: var(--color-white);
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: var(--shadow-teal);
-        }
-
-        /* ── Conteúdo do passo ── */
-        .step-content h5 {
-            font-size: .95rem;
-            font-weight: 700;
-            margin-bottom: .3rem;
-            color: var(--color-navy);
-        }
-
-        .step-content p {
-            font-size: var(--font-size-sm);
-            color: var(--color-muted);
-            margin-bottom: 0;
-            line-height: 1.5;
-        }
-
-        /* ── Box de informações importantes ── */
-        .important-info-box {
-            border: 1px solid var(--color-light-mid);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .info-header {
-            background: var(--grad-navy);
-            color: var(--color-white);
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: .9rem;
-            padding: .85rem 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-        }
-
-        .info-content {
-            background: var(--color-white);
-            padding: 1.1rem 1.3rem;
-            display: flex;
-            flex-direction: column;
-            gap: .75rem;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: .6rem;
-            font-size: var(--font-size-sm);
-            color: var(--color-navy);
-        }
-
-        .info-item i {
-            color: var(--color-teal);
-            font-size: 1rem;
-            margin-top: .05rem;
-            flex-shrink: 0;
-        }
-
-        /* ── CTA ── */
-        .registration-cta {
-            padding: 1.5rem;
-            background: var(--color-white);
-            border: 1px solid var(--color-light-mid);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-
-        /* ── Footer da página ── */
-        .registration-footer {
-            font-size: var(--font-size-xs);
-            color: var(--color-muted);
-            display: flex;
-            flex-direction: column;
-            gap: .15rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--color-light-mid);
-        }
-
-        .registration-footer strong {
-            color: var(--color-navy);
-            font-size: var(--font-size-sm);
-        }
-    </style>
-@endpush
-
 @section('dash-content')
 
     <div class="wrapper">
@@ -279,10 +143,14 @@
             <div class="info-content">
 
                 <div class="info-item">
+                    <span class="fw-bold">Antes de inscrever-se, leia com muito atenção as informações abaixo:</span>
+                </div>
+
+                <div class="info-item">
                     <i class="bi bi-check2-circle"></i>
 
                     <span>
-                        Candidatos transgêneros podem utilizar nome social mediante autorização.
+                        Candidatos transgêneros menores de idade que desejarem utilizar o nome social deverão anexar, no ato da inscrição, autorização assinada por seu responsável legal, conforme modelo disponibilizado pela instituição.
                     </span>
                 </div>
 
@@ -290,7 +158,15 @@
                     <i class="bi bi-check2-circle"></i>
 
                     <span>
-                        Processo seletivo exclusivo para moradores de Sumaré - SP.
+                        Os candidatos que se enquadrarem na condição de Pessoa com Deficiência (PCD) e necessitarem de atendimento especializado, adaptações ou recursos de acessibilidade para a realização das etapas do processo seletivo deverão anexar, no ato da inscrição, <strong>laudo</strong> ou <strong>relatório médico</strong> atualizado que comprove a condição declarada, nos termos estabelecidos neste edital.
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <i class="bi bi-check2-circle"></i>
+
+                    <span>
+                        Este processo seletivo é <strong>exclusivo</strong> para moradores de Sumaré - SP.
                     </span>
                 </div>
 

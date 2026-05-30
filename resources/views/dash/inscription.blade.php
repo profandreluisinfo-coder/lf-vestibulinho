@@ -2,360 +2,28 @@
 
 @section('page-title', 'Vestibulinho LF')
 
-@push('styles')
-    <style>
-        /* ── Convocação banner ── */
-        .card-call {
-            background: #fffbeb;
-            border: 1px solid #fcd34d;
-            border-left: 4px solid #f59e0b;
-            border-radius: var(--radius-lg);
-            padding: 1.1rem 1.25rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow-sm);
-        }
 
-        .card-call-header {
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-            margin-bottom: .85rem;
-            flex-wrap: wrap;
-        }
-
-        .card-call-title {
-            font-size: .95rem;
-            font-weight: 700;
-            color: #92400e;
-            margin: 0;
-            flex: 1;
-        }
-
-        /* ── Grid de dados (convocação + local de prova) ── */
-        .call-data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: .75rem;
-            margin-bottom: .85rem;
-        }
-
-        .call-data-item {
-            background: var(--color-white);
-            border: 1px solid #fde68a;
-            border-radius: var(--radius-md);
-            padding: .6rem .85rem;
-        }
-
-        .call-data-label {
-            font-size: var(--font-size-xs);
-            font-weight: 600;
-            color: #b45309;
-            margin-bottom: .2rem;
-        }
-
-        .call-data-value {
-            font-family: var(--font-heading);
-            font-size: .95rem;
-            font-weight: 700;
-            color: #78350f;
-        }
-
-        /* ── Section header ── */
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: .7rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-md);
-            background: var(--color-teal-light);
-            color: var(--color-teal-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--color-navy);
-            margin: 0;
-        }
-
-        /* ── Card principal ── */
-        .card-modern {
-            background: var(--color-white);
-            border: 1px solid var(--color-light-mid);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        /* ── Cabeçalho do candidato ── */
-        .candidate-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.25rem;
-            border-bottom: 1px solid var(--color-light-mid);
-            background: var(--color-light);
-        }
-
-        .candidate-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: var(--grad-navy);
-            color: var(--color-white);
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: var(--shadow-md);
-        }
-
-        .candidate-name {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--color-navy);
-            margin: 0 0 .3rem;
-        }
-
-        .inscription-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            background: var(--color-teal-light);
-            color: var(--color-teal-dark);
-            font-size: var(--font-size-xs);
-            font-weight: 700;
-            padding: .2rem .65rem;
-            border-radius: var(--radius-pill);
-        }
-
-        /* ── Grid de dados principais ── */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0;
-            border-bottom: 1px solid var(--color-light-mid);
-        }
-
-        .data-item {
-            padding: .85rem 1.25rem;
-            border-right: 1px solid var(--color-light-mid);
-        }
-
-        .data-item:last-child {
-            border-right: none;
-        }
-
-        .data-label {
-            font-size: var(--font-size-xs);
-            font-weight: 600;
-            color: var(--color-muted);
-            text-transform: uppercase;
-            letter-spacing: .04em;
-            margin-bottom: .25rem;
-        }
-
-        .data-value {
-            font-size: var(--font-size-sm);
-            font-weight: 600;
-            color: var(--color-navy);
-        }
-
-        /* ── Blocos de nome social / PNE ── */
-        .info-block {
-            padding: .85rem 1.25rem;
-            border-bottom: 1px solid var(--color-light-mid);
-        }
-
-        .info-block-label {
-            font-size: var(--font-size-xs);
-            font-weight: 700;
-            color: var(--color-muted);
-            text-transform: uppercase;
-            letter-spacing: .04em;
-            margin-bottom: .5rem;
-            display: flex;
-            align-items: center;
-            gap: .35rem;
-        }
-
-        .info-block-row {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .file-link {
-            font-size: var(--font-size-xs);
-            color: var(--color-teal);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            margin-top: .3rem;
-        }
-
-        .file-link:hover {
-            color: var(--color-teal-dark);
-        }
-
-        /* ── Status badges ── */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            font-size: var(--font-size-xs);
-            font-weight: 700;
-            padding: .25rem .7rem;
-            border-radius: var(--radius-pill);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .status-badge.deferido {
-            background: rgba(39, 174, 96, .1);
-            color: var(--color-success-dark);
-        }
-
-        .status-badge.indeferido {
-            background: rgba(231, 76, 60, .08);
-            color: var(--color-danger);
-        }
-
-        .status-badge.analise {
-            background: var(--color-amber-light);
-            color: var(--color-amber-dark);
-        }
-
-        /* ── Ações ── */
-        .actions-row {
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-            padding: 1rem 1.25rem;
-            flex-wrap: wrap;
-        }
-
-        /* ── Modais: título de seção interna ── */
-        .modal-section-title {
-            font-size: var(--font-size-xs);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            color: var(--color-muted);
-            margin-bottom: .6rem;
-        }
-
-        /* ── Lista de documentos ── */
-        .docs-list-modern {
-            padding-left: 1.1rem;
-            margin: 0;
-        }
-
-        .docs-list-modern li {
-            font-size: var(--font-size-sm);
-            color: var(--color-navy);
-            padding: .3rem 0;
-            border-bottom: 1px solid var(--color-light-mid);
-            line-height: 1.45;
-        }
-
-        .docs-list-modern li:last-child {
-            border-bottom: none;
-        }
-
-        /* ── Card de resultado ── */
-        .result-card-modern {
-            border: 1px solid var(--color-light-mid);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-        }
-
-        .result-card-header {
-            background: var(--grad-navy);
-            padding: 1rem 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .result-card-header h5 {
-            color: var(--color-white);
-            margin: 0;
-            font-size: .95rem;
-        }
-
-        .result-body {
-            padding: 1.25rem;
-            text-align: center;
-        }
-
-        .result-score {
-            font-family: var(--font-heading);
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--color-teal);
-            line-height: 1;
-        }
-
-        .result-ranking {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--color-navy);
-            line-height: 1;
-        }
-
-        /* ── Mobile ── */
-        @media (max-width: 575.98px) {
-            .data-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .data-item {
-                border-bottom: 1px solid var(--color-light-mid);
-            }
-
-            .actions-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .actions-row .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .info-block-row {
-                flex-direction: column;
-            }
-
-            .call-data-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-    </style>
-@endpush
 
 @section('dash-content')
 
     <div class="wrapper">
+        {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║          MENSAGEM DE BOAS-VINDAS         ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        <div class="welcome-message animate__animated animate__fadeInUp mb-4">
+            <div class="welcome-message-icon">
+                <i class="bi bi-megaphone-fill"></i>
+            </div>
+            <div class="welcome-message-content">
+                <p class="welcome-message-text">
+                    Aqui você pode ver a situação da sua inscrição, saber seu local de prova
+                    e conferir seus resultados.
+                </p>
+                <p class="welcome-message-text mb-0">
+                    Fique atento(a) às mensagens e aos comunicados que enviaremos por aqui!
+                </p>
+            </div>
+        </div>
 
         {{-- ╔══════════════════════════════════════════╗ --}}
         {{-- ║         CONVOCAÇÃO PARA MATRÍCULA        ║ --}}
@@ -395,6 +63,19 @@
         @endif
 
         {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║     MENSAGEM DE INSCRIÇÃO EFETIVADA      ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        <div class="alert alert-success d-flex align-items-center mb-4 py-2" role="alert"
+            style="border-radius: var(--radius-md); background: rgba(39, 174, 96, 0.06); border-left: 4px solid var(--color-success);">
+            <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+            <div class="flex-grow-1">
+                <strong>🎉 Inscrição efetivada com sucesso!</strong>
+                Seu número de inscrição é <strong>#{{ auth()->user()->inscription->id }}</strong>.
+                Acompanhe abaixo todas as informações sobre sua participação.
+            </div>
+        </div>
+
+        {{-- ╔══════════════════════════════════════════╗ --}}
         {{-- ║           RESUMO DA INSCRIÇÃO            ║ --}}
         {{-- ╚══════════════════════════════════════════╝ --}}
         <div class="section-header">
@@ -414,8 +95,8 @@
                         : auth()->user()->name;
                 $nameParts = explode(' ', trim($displayName));
                 $initials = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
-                $sno = (auth()->user()->social_name_option != 2) ? true : false;
-                $pne = (auth()->user()->user_detail->pne != 2) ? true : false;
+                $sno = auth()->user()->social_name_option != 2 ? true : false;
+                $pne = auth()->user()->user_detail->pne != 2 ? true : false;
             @endphp
 
             <div class="candidate-header">
@@ -504,7 +185,8 @@
                     <div class="info-block-row">
                         <div>
                             <div style="font-size:0.9rem; font-weight:500;">
-                                {{ auth()->user()->user_detail?->accessibility }} - {{ auth()->user()->user_detail?->pne_description }}
+                                {{ auth()->user()->user_detail?->accessibility }} -
+                                {{ auth()->user()->user_detail?->pne_description }}
                             </div>
 
                             @if (!empty(auth()->user()->user_detail?->pne_report))

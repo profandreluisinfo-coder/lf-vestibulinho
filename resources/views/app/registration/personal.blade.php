@@ -86,8 +86,8 @@
             <div class="form-group col-md-12">
 
                 <label class="form-label required">
-                    Deseja ser tratado pelo nome social/afetivo? <i class="bi bi-info-circle text-primary"
-                        data-bs-toggle="modal" data-bs-target="#modalNomeSocial"></i>
+                    Deseja ser tratado pelo nome social/afetivo? <i class="bi bi-info-circle fs-6 text-primary ms-1"
+                        data-bs-toggle="modal" data-bs-target="#modalNomeSocial" title="Clique para obter ajuda sobre o uso do nome social"></i>
                 </label>
                 <div class="mt-2">
                     <div class="form-check form-check-inline">
@@ -117,60 +117,14 @@
 
             </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="modalNomeSocial" tabindex="-1" aria-labelledby="modalNomeSocialLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalNomeSocialLabel">
-                                <i class="bi bi-info-circle me-2"></i> O que é nome social e nome afetivo
-                            </h5>
-                        </div>
-
-                        <div class="modal-body">
-                            <p>
-                                <strong>Nome social é:</strong> designação pela qual a pessoa travesti ou transexual se
-                                identifica e é socialmente
-                                reconhecida (como garantido pelo
-                                <a class="text-decoration-none"
-                                    href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8727.htm"
-                                    target="_blank" title="DECRETO Nº 8.727, DE 28 DE ABRIL DE 2016">
-                                    DECRETO Nº 8.727, DE 28 DE ABRIL DE 2016
-                                </a>).
-                            </p>
-
-                            <p>
-                                <strong>Nome afetivo é:</strong> aquele que os responsáveis legais pela criança ou
-                                adolescente pretendem tornar
-                                definitivo quando das alterações da respectiva certidão de nascimento. (
-                                <a class="text-decoration-none"
-                                    href="https://www.al.sp.gov.br/repositorio/legislacao/lei/2018/lei-16785-03.07.2018.html"
-                                    target="_blank" title="LEI Nº 16.785, DE 03 DE JULHO DE 2018">
-                                    LEI Nº 16.785, DE 03 DE JULHO DE 2018
-                                </a>)
-                            </p>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                Fechar
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
             <div id="socialName" class="form-group col-md-12 d-none">
 
                 <label for="social_name" class="form-label">Nome social/afetivo:</label>
                 <input name="social_name" id="social_name" class="form-control @error('social_name') is-invalid @enderror"
                     value="{{ old('social_name', session('step1.social_name')) }}" aria-describedby="socialName">
 
-                <small id="socialName" class="form-text text-muted">Leia atentamente o item 4.10 do <a
-                        href="{{ asset('storage/' . $notice->file) }}" title="Clique para abrir o edital"
+                <small id="socialName" class="form-text fst-italic text-primary"><i class="bi bi-info-circle me-1"></i>Leia atentamente o item 4.10 do <a
+                        href="{{ asset('storage/' . $notice->file) }}" class="text-primary" title="Clique para abrir o edital"
                         target="_blank">edital</a>.</small>
 
                 @error('social_name')
@@ -183,12 +137,14 @@
 
             <!-- Área para anexar autorização do responsável legal -->
             <div id="authorizationDiv" class="form-group col-md-12 d-none">
-
-                <p>
-                    O(a) candidato(a) que desejar utilizar nome social/afetivo neste Processo Seletivo poderá fazê-lo,
-                    desde que obtenha autorização expressa dos responsáveis legais</u>. A autorização deverá ser enviada
-                    em anexo ao formulário de inscrição.
-                </p>
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        O(a) candidato(a) que desejar utilizar nome social/afetivo neste Processo Seletivo poderá fazê-lo,
+                        desde que obtenha autorização expressa dos responsáveis legais</u>. A autorização deverá ser enviada
+                        em anexo ao formulário de inscrição.
+                    </div>
+                </div>
 
                 @if (session('step1.authorization'))
                     <div class="alert alert-info mt-3">
@@ -208,7 +164,10 @@
                 <label for="authorization" class="form-label required">Autorização do responsável legal para uso do nome
                     social.</label>
                 <input type="file" name="authorization" id="authorization"
-                    class="form-control @error('authorization') is-invalid @enderror">
+                    class="form-control @error('authorization') is-invalid @enderror" aria-describedby="infoAuthorization">
+
+                <small id="infoAuthorization" class="form-text fst-italic text-primary"><i
+                        class="bi bi-info-circle me-1"></i>Somente arquivos no formato PDF são aceitos</small>
 
                 @error('authorization')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -293,6 +252,61 @@
 
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalNomeSocial" tabindex="-1" aria-labelledby="modalNomeSocialLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <!-- Cabeçalho com fundo escuro e botão de fechar -->
+                <div class="modal-header bg-primary text-light">
+                    <h5 class="modal-title text-light" id="modalNomeSocialLabel">
+                        <i class="bi bi-info-circle me-2"></i> O que é nome social e nome afetivo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+
+                <!-- Corpo do modal com dois alertas distintos e melhor espaçamento -->
+                <div class="modal-body">
+                    <!-- Nome social -->
+                    <div class="alert alert-info d-flex align-items-start mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill me-3 fs-4 flex-shrink-0"></i>
+                        <div>
+                            <strong>Nome social é:</strong> designação pela qual a pessoa travesti ou transexual se
+                            identifica e é socialmente reconhecida (como garantido pelo
+                            <a class="text-decoration-none fw-semibold"
+                                href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8727.htm"
+                                target="_blank" title="DECRETO Nº 8.727, DE 28 DE ABRIL DE 2016">
+                                Decreto nº 8.727/2016
+                            </a>).
+                        </div>
+                    </div>
+
+                    <!-- Nome afetivo -->
+                    <div class="alert alert-info d-flex align-items-start" role="alert">
+                        <i class="bi bi-heart-fill me-3 fs-4 flex-shrink-0"></i>
+                        <div>
+                            <strong>Nome afetivo é:</strong> aquele que os responsáveis legais pela criança ou
+                            adolescente pretendem tornar definitivo quando das alterações da respectiva certidão de
+                            nascimento (conforme
+                            <a class="text-decoration-none fw-semibold"
+                                href="https://www.al.sp.gov.br/repositorio/legislacao/lei/2018/lei-16785-03.07.2018.html"
+                                target="_blank" title="LEI Nº 16.785, DE 03 DE JULHO DE 2018">
+                                Lei nº 16.785/2018
+                            </a>).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rodapé com botão de fechar -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('plugins')

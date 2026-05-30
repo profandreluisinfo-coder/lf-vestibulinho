@@ -20,7 +20,7 @@
                     <div class="form-group mb-3">
                         <label for="name" class="form-label required">Nome:</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
-                            name="name" value="{{ $course->name }}">
+                            name="name" value="{{ $course->name }}" disabled>
                         @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -31,7 +31,7 @@
                     <div class="form-group mb-3">
                         <label for="description" class="form-label required">Descrição:</label>
                         <input type="text" class="form-control @error('description') is-invalid @enderror"
-                            id="description" name="description" value="{{ $course->description }}">
+                            id="description" name="description" value="{{ $course->description }}" disabled>
                         @error('description')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -43,7 +43,7 @@
                     <div class="form-group mb-3">
                         <label for="duration" class="form-label required">Duração:</label>
                         <input type="text" class="form-control @error('duration') is-invalid @enderror" id="duration"
-                            name="duration" value="{{ $course->duration }}">
+                            name="duration" value="{{ $course->duration }}" disabled>
                         @error('duration')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -65,7 +65,7 @@
                     <div class="form-group mb-3">
                         <label for="info" class="form-label required">Perfil profissional do egresso:</label>
                         <input type="text" class="form-control @error('info') is-invalid @enderror" id="info"
-                            name="info" value="{{ $course->info }}">
+                            name="info" value="{{ $course->info }}" disabled>
                         @error('info')
                             <div class="invalid-feedback">
                                 {{ $message }}

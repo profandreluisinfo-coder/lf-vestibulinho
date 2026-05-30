@@ -120,10 +120,15 @@
             <!-- Área para anexar laudo/relatório de avaliação médico -->
             <div class="form-group col-md-12" {{ $selectedPne == 1 ? '' : 'd-none' }}>
 
-                <div class="alert alert-warning text-justify">
-                    O(a) candidato(a) que declarou possuir necessidades especiais neste Processo Seletivo deve apresentar o
-                    laudo/relatório de avaliação médico, contendo BLA BLA BLA.... A autorização deverá ser enviada em anexo
-                    ao formulário de inscrição.
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        O(a) candidato(a) que declarou possuir necessidades especiais neste Processo Seletivo deve
+                        apresentar o
+                        laudo/relatório de avaliação médico, contendo BLA BLA BLA.... A autorização deverá ser enviada em
+                        anexo
+                        ao formulário de inscrição.
+                    </div>
                 </div>
 
                 <label for="report" class="form-label required">Anexe o laudo/relatório de avaliação médico</label>
@@ -135,17 +140,23 @@
                 @enderror
 
                 @if (session('step6.pne_report'))
-                    <div class="alert alert-info mt-3">
-                        <p>
-                            <strong>Arquivo já enviado.</strong>
-                            <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank">
-                                Visualizar PDF
-                            </a>
-                        </p>
+                    <div class="alert alert-info mt-3 d-flex align-items-start">
+                        <i class="bi bi-file-earmark-pdf-fill fs-4 me-3 flex-shrink-0"></i>
 
-                        <p class="mb-0">
-                            Caso deseje avançar e substituir o arquivo, selecione um novo PDF abaixo.
-                        </p>
+                        <div class="flex-grow-1">
+                            <div class="mb-2">
+                                <strong>Arquivo enviado anteriormente.</strong>
+                                <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
+                                    class="ms-2">
+                                    Visualizar PDF <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                </a>
+                            </div>
+
+                            <p class="mb-0 text-secondary-emphasis">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Caso deseje avançar com a inscrição a partir deste ponto, deverá substituir o arquivo anexado.
+                            </p>
+                        </div>
                     </div>
                 @endif
 
@@ -165,7 +176,7 @@
 
                 <small id="msgAccessibility" class="text-primary fst-italic">
                     <i class="bi bi-info-circle"></i>
-                    Escolha uma sugestão da lista ou descreva o recurso necessário.
+                    Clique para escolher um item de sugestão da lista ou descreva o recurso de acessibilidade necessário.
                 </small>
 
                 <datalist id="accessibilityResources">

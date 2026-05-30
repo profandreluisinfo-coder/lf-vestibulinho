@@ -28,8 +28,8 @@
                 <input list="schools" name="school_name" class="form-control @error('school_name') is-invalid @enderror"
                     id="school_name" value="{{ old('school_name', session('step4.school_name')) }}"
                     aria-describedby="schoolHelp">
-                <small id="schoolHelp" class="form-text text-muted">Escolha um item da lista, ou, digite o nome da
-                    escola.</small>
+                <small id="schoolHelp" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Escolha um item da lista, ou, digite o nome da
+                    sua escola.</small>
 
                 <datalist id="schools">
                     @foreach ($schools as $key => $label)
@@ -46,10 +46,6 @@
 
             <div class="form-group col-md-6">
                 <label for="registroAcademico" class="form-label required">Registro Acadêmico - RA </label>
-                <a class="text-decoration-none" href="https://sed.educacao.sp.gov.br/NCA/CadastroAluno/ConsultaRAAluno"
-                    target="_blank" title="Consultar RA" tabindex="-1" data-bs-toggle="popover" data-bs-trigger="hover"
-                    data-bs-content="Caso não saiba o número do seu Registro Acadêmico - RA, clique no link para consultar diretamente no site da Secretaria de Educação.">(Não
-                    sei meu RA)</a>
                 <input type="text" name="school_ra" id="school_ra"
                     class="form-control @error('school_ra') is-invalid @enderror"
                     value="{{ old('school_ra', session('step4.school_ra')) }}">

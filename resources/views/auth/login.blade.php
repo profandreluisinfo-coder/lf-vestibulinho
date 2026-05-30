@@ -94,7 +94,7 @@
 
             <!-- Título -->
             <h1>Vestibulinho<br>{{ $calendar?->year }}</h1>
-            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar.</p>
+            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique em "Ainda não tem registro" para se cadastrar.</p>
         </div>
 
         <!-- Alerta de erro (hidden por padrão) -->

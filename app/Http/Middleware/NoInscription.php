@@ -16,7 +16,7 @@ class NoInscription
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->inscription()->exists()) {
+        if (auth()->check() && auth()->user()->inscription()->exists()) {
             return redirect()->route('dash.user.inscription');
         }
 
