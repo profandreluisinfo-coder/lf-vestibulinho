@@ -104,7 +104,7 @@
                         <h5>Revise os Dados</h5>
 
                         <p>
-                            Confira atentamente todas as informações antes de finalizar.
+                            Confira atentamente todas as informações antes de finalizar. <span class="fw-semibold">Não será possível editar seus dados após finalizar a inscrição</span>.
                         </p>
                     </div>
 
@@ -123,7 +123,7 @@
                         <h5>Guarde sua Ficha</h5>
 
                         <p class="mb-0">
-                            Imprima ou salve sua ficha de inscrição para futuras consultas.
+                            Recomendamos que imprima ou salve sua ficha de inscrição para futuras consultas.
                         </p>
                     </div>
 
@@ -166,7 +166,7 @@
                     <i class="bi bi-check2-circle"></i>
 
                     <span>
-                        Este processo seletivo é <strong>exclusivo</strong> para moradores de Sumaré - SP.
+                        Este processo seletivo é <strong>exclusivo</strong> para moradores de <strong>Sumaré - SP</strong>.
                     </span>
                 </div>
 

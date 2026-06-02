@@ -8,10 +8,16 @@
 
         {{-- Titulo --}}
         <div class="section-title mb-4">
+            <div class="d-flex justify-content-between align-items-center">
             <h4>
                 <i class="bi bi-list-check me-2"></i>
                 Formulário de Inscrição
             </h4>
+
+            <h6 class="fw-semibold text-danger fst-italic">
+                * campo obrigatório
+            </h6>
+            </div>
 
             <div class="divider-teal"></div>
         </div>
@@ -156,7 +162,7 @@
                         </p>
 
                         <p class="mb-0">
-                            Caso deseje avançar e substituir o arquivo, selecione um novo PDF abaixo.
+                            Caso deseje avançar com a inscrição a partir deste ponto, deverá substituir o arquivo anexado.
                         </p>
                     </div>
                 @endif

@@ -48,8 +48,7 @@
                 <input list="healthIssues" class="form-control @error('health_issue') is-invalid @enderror"
                     id="health_issue" name="health_issue" value="{{ old('health_issue', session('step6.health_issue')) }}"
                     aria-describedby="msgHealthIssues">
-                <small id="msgHealthIssues" class="form-text text-muted">Escolha um item da lista ou digite o problema de
-                    saúde ou alergia.</small>
+                <small id="msgHealthIssues" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item de sugestão da lista ou descreva.</small>
 
                 <datalist id="healthIssues">
                     @foreach ($healthIssues as $key => $label)
@@ -100,8 +99,7 @@
                     id="accessibility_description" name="accessibility_description"
                     value="{{ old('accessibility_description', session('step6.accessibility_description')) }}"
                     aria-describedby="msgDisabilities">
-                <small id="msgDisabilities" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Escolha um
-                    item da lista ou descreva.</small>
+                <small id="msgDisabilities" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item de sugestão da lista  ou descreva.</small>
 
                 <datalist id="disabilities">
                     @foreach ($disabilities as $key => $label)
@@ -166,7 +164,7 @@
             <div class="form-group col-md-12 mt-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
 
                 <label for="pne_description" class="form-label required">
-                    Descreva os recursos de acessibilidade necessários para a realização da prova
+                    A EM Dr. Leandro Franceschini oferece atendimento especializado para quem tem deficiência, transtornos funcionais específicos ou precisa de condições especiais para fazer a prova. Você precisa de algum tipo de atendimento com recurso de acessibilidade para o dia de prova?
                 </label>
 
                 <input list="accessibilityResources" class="form-control @error('pne_description') is-invalid @enderror"

@@ -389,7 +389,7 @@
                 @if ($step6['social_program'] == 1)
                     <span class="badge bg-success">Sim</span>
                 @else
-                    <span class="badge bg-secondary">Não</span>
+                    <span class="badge bg-danger">Não</span>
                 @endif
             </span>
         </div>
@@ -403,9 +403,9 @@
             <span class="review-label">Problema de saúde / alergia</span>
             <span class="review-value">
                 @if ($step6['health'] == 1)
-                    <span class="badge bg-warning text-dark">Sim</span>
+                    <span class="badge bg-success">Sim</span>
                 @else
-                    <span class="badge bg-secondary">Não</span>
+                    <span class="badge bg-danger">Não</span>
                 @endif
             </span>
         </div>

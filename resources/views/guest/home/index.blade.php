@@ -18,6 +18,8 @@
 
     {{-- ═══════════════════════ HERO ════════════════════════════ --}}
     @include('partials.hero.home')
+    {{-- ═══════════════════════ FIQUE ATENTO ══════════════════════ --}}
+    @include('partials.guest.fique-atento')
     {{-- ═══════════════════════ CURSOS ════════════════════════════ --}}
     @include('partials.guest.cursos')
 

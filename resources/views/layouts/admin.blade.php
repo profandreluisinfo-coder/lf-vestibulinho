@@ -25,7 +25,6 @@
 
     {{-- Estilos --}}
     <link rel="stylesheet" href="{{ asset('assets/css/layouts/dash/admin.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dash/admin.css') }}"> --}}
 
     @stack('styles')
 
@@ -43,6 +42,17 @@
         </div>
 
         <nav class="sidebar-menu">
+
+            <div class="menu-section">
+                <div class="menu-section-title">Comunicados</div>
+                <div class="menu-item">
+                    <a href="{{ route('app.communicates.index') }}"
+                        class="menu-link {{ request()->routeIs('app.communicates.index') ? 'active' : '' }}">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Novo comunicado</span>
+                    </a>
+                </div>
+            </div>
 
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>

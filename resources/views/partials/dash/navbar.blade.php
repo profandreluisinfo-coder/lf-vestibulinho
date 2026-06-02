@@ -71,7 +71,7 @@
 
                             {{-- Nome: completo em md+, truncado em mobile --}}
                             <span class="d-none d-md-inline text-truncate" style="max-width:180px;">
-                                {{ $displayName ?? 'Candidato' }}
+                                {{ $displayName ?? 'Candidato sem inscrição' }}
                             </span>
                             <span class="d-inline d-md-none">
                                 Minha conta

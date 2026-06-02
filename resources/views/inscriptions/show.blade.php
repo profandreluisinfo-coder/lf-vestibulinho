@@ -285,6 +285,7 @@
                 </div>
                 @if ($user->user_detail?->accessibility)
                 <div class="fi-row"><span class="fi-row-label">Necessidade</span><span class="fi-row-value">{{ $user->user_detail->accessibility }}</span></div>
+                <div class="fi-row"><span class="fi-row-label">Auxílio</span><span class="fi-row-value">{{ $user->user_detail->pne_description }}</span></div>
                 @endif
             </div>
         </div>

@@ -153,9 +153,10 @@
 
         @endif
 
-        <div class="modal fade" id="setNewFAQ" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        {{-- ═══ Modal: Nova FaQ ════════════════════════════ --}}
+        <div class="modal fade" id="setNewFAQ"data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="setNewFAQModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
                         <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar

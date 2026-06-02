@@ -1,12 +1,23 @@
 <?php
 
 use App\Http\Controllers\App\{ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, LocalController, NoticeController, PdfController, ResultController, SettingController};
+use App\Http\Controllers\App\CommunicateController;
 use App\Http\Controllers\App\UserController;
 use App\Http\Middleware\{IsAdmin};
 use Illuminate\Support\Facades\Route;
 
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
+
+
+    // ==========================
+    // ❓ Comunicados
+    // ==========================
+    Route::prefix('fique-atento')
+        ->name('app.') // Mudado de 'app.communicates.' para 'app.'
+        ->group(function () {
+            Route::resource('communicates', CommunicateController::class);
+        });
 
     // ==========================
     // ❓ Perguntas Frequentes (FAQ) (OK)
@@ -181,7 +192,7 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
 
     Route::prefix('deferimentos') // pasta
         ->name('deferrals.')
-        ->group(function () {            
+        ->group(function () {
             // Rota para apagar o nome social dos candidatos que não possuem autorização dos pais
             Route::patch('/def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
                 ->name('accept.authorization');
@@ -192,7 +203,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
                 ->name('accept.report');
             Route::patch('/def/{user}/reject-report', [DeferralController::class, 'rejectReport'])
                 ->name('reject.report');
-
         });
 
     Route::prefix('usuarios')
