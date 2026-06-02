@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Communicate extends Model
 {
@@ -78,5 +79,10 @@ class Communicate extends Model
             'status'       => self::STATUS_RASCUNHO,
             'published_at' => null,
         ]);
+    }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(CommunicateAttachment::class);
     }
 }

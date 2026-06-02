@@ -44,6 +44,12 @@ class CommunicateController extends Controller
             'tipo'    => ['required', 'string', 'max:50'],
             'url'     => ['nullable', 'url', 'max:255'],
             'status'  => ['required', 'in:rascunho,publicado'],
+
+            'attachments' => ['nullable', 'array'],
+            'attachments.*' => [
+                'file',
+                'max:10240',
+            ],
         ]);
 
         $validated['user_id'] = auth()->id();
@@ -53,7 +59,25 @@ class CommunicateController extends Controller
             $validated['published_at'] = now();
         }
 
-        Communicate::create($validated);
+        $communicate = Communicate::create($validated);
+
+        if ($request->hasFile('attachments')) {
+
+            foreach ($request->file('attachments') as $file) {
+
+                $path = $file->store(
+                    'communicates',
+                    'public'
+                );
+
+                $communicate->attachments()->create([
+                    'name'      => $file->getClientOriginalName(),
+                    'path'      => $path,
+                    'mime_type' => $file->getMimeType(),
+                    'size'      => $file->getSize(),
+                ]);
+            }
+        }
 
         return redirect()
             ->route('app.communicates.index')
@@ -64,12 +88,12 @@ class CommunicateController extends Controller
      * Exibe um comunicado específico (área admin).
      * Rota: GET /admin/comunicados/{communicate}
      */
-    public function show(Communicate $communicate): View
-    {
-        $communicate->load('user');
+    // public function show(Communicate $communicate): View
+    // {
+    //     $communicate->load('user');
 
-        return view('app.communicates.show', compact('communicate'));
-    }
+    //     return view('app.communicates.show', compact('communicate'));
+    // }
 
     /**
      * Exibe o formulário de edição.
@@ -77,6 +101,8 @@ class CommunicateController extends Controller
      */
     public function edit(Communicate $communicate): View
     {
+        $communicate->load('attachments');
+
         return view('app.communicates.edit', compact('communicate'));
     }
 

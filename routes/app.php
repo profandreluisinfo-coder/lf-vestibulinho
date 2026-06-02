@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\{ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, LocalController, NoticeController, PdfController, ResultController, SettingController};
+use App\Http\Controllers\App\CommunicateAttachmentController;
 use App\Http\Controllers\App\CommunicateController;
 use App\Http\Controllers\App\UserController;
 use App\Http\Middleware\{IsAdmin};
@@ -13,10 +14,11 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // ==========================
     // ❓ Comunicados
     // ==========================
-    Route::prefix('fique-atento')
+    Route::prefix('comunicados')
         ->name('app.') // Mudado de 'app.communicates.' para 'app.'
         ->group(function () {
             Route::resource('communicates', CommunicateController::class);
+            Route::delete('/comunicados/anexos/{attachment}', [CommunicateAttachmentController::class, 'destroy'])->name('communicates.attachments.destroy');
         });
 
     // ==========================

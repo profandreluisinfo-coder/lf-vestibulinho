@@ -9,17 +9,17 @@
 @section('dash-content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Editar Comunicado</h5>
+            <h5 class="mb-0"><i class="bi bi-megaphone me-2"></i>Novo Comunicado</h5>
         </div>
 
-        <form id="communicateForm" action="{{ route('app.communicates.update', $communicate) }}" method="POST">
+        <form id="communicateForm" action="{{ route('app.communicates.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
+
             {{-- Título --}}
             <div class="form-group mb-3">
                 <label for="titulo" class="form-label required">Título:</label>
                 <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo"
-                    name="titulo" value="{{ old('titulo', $communicate->titulo) }}">
+                    name="titulo" value="{{ old('titulo') }}">
                 @error('titulo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -29,7 +29,7 @@
             <div class="form-group mb-3">
                 <label for="resumo" class="form-label required">Resumo:</label>
                 <textarea class="form-control summernote @error('resumo') is-invalid @enderror" id="resumo" name="resumo"
-                    rows="6">{{ old('resumo', $communicate->resumo) }} </textarea>
+                    rows="6">{{ old('resumo') }}</textarea>
                 @error('resumo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -39,7 +39,7 @@
             <div class="form-group mb-3">
                 <label for="tipo" class="form-label required">Tipo:</label>
                 <input type="text" class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo"
-                    placeholder="ex: info, alerta, urgente" value="{{ old('tipo', $communicate->tipo) }}">
+                    placeholder="ex: info, alerta, urgente" value="{{ old('tipo') }}">
                 @error('tipo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -49,67 +49,11 @@
             <div class="form-group mb-3">
                 <label for="url" class="form-label">Link (URL):</label>
                 <input type="url" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
-                    value="{{ old('url', $communicate->url) }}">
+                    value="{{ old('url') }}">
                 @error('url')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-
-            {{-- Anexos atuais --}}
-            @if ($communicate->attachments->isNotEmpty())
-                <div class="mb-4">
-
-                    <label class="form-label fw-semibold">
-                        <i class="bi bi-paperclip me-1"></i>
-                        Anexos atuais
-                    </label>
-
-                    <div class="list-group">
-
-                        @foreach ($communicate->attachments as $attachment)
-                            <div class="list-group-item d-flex justify-content-between align-items-center border px-4">
-
-                                <div class="d-flex align-items-center">
-
-                                    <i class="bi bi-file-earmark-text text-primary me-2"></i>
-
-                                    <a href="{{ Storage::url($attachment->path) }}" target="_blank"
-                                        class="text-decoration-none">
-                                        {{ $attachment->name }}
-                                    </a>
-
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2">
-
-                                    <a href="{{ Storage::url($attachment->path) }}" target="_blank"
-                                        class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-
-                                    <form id="delete-attachment-form-{{ $attachment->id }}"
-                                        action="{{ route('app.communicates.attachments.destroy', $attachment) }}"
-                                        method="POST" class="d-none">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                    </form>
-
-                                    <button type="button" class="btn btn-outline-danger btn-sm"
-                                        onclick="confirmAttachmentDelete({{ $attachment->id }},'{{ addslashes($attachment->name) }}')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-
-                                </div>
-
-                            </div>
-                        @endforeach
-
-                    </div>
-
-                </div>
-            @endif
 
             {{-- Attachments --}}
             <div class="form-group mb-3">
@@ -127,8 +71,12 @@
             <div class="form-group mb-3">
                 <label for="status" class="form-label required">Status:</label>
                 <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                    <option value="rascunho" {{ old('status', $communicate->status) === 'rascunho' ? 'selected' : '' }}>
-                    <option value="publicado" {{ old('status', $communicate->status) === 'publicado' ? 'selected' : '' }}>
+                    <option value="rascunho" {{ old('status') === 'rascunho' ? 'selected' : '' }}>
+                        Rascunho
+                    </option>
+                    <option value="publicado" {{ old('status') === 'publicado' ? 'selected' : '' }}>
+                        Publicado
+                    </option>
                 </select>
                 @error('status')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -138,10 +86,6 @@
             <button type="submit" class="btn btn-success btn-sm">
                 <i class="bi bi-check-circle me-1"></i>Salvar
             </button>
-
-            <a href="{{ route('app.communicates.index') }}" class="btn btn-danger btn-sm">
-                <i class="bi bi-x-circle me-1"></i>Cancelar
-            </a>
 
         </form>
 

@@ -44,10 +44,17 @@
         <nav class="sidebar-menu">
 
             <div class="menu-section">
-                <div class="menu-section-title">Comunicados</div>
+                <div class="menu-section-title">Comunicados</div>                
                 <div class="menu-item">
                     <a href="{{ route('app.communicates.index') }}"
                         class="menu-link {{ request()->routeIs('app.communicates.index') ? 'active' : '' }}">
+                        <i class="bi bi-list"></i>
+                        <span>Comunicados</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="{{ route('app.communicates.create') }}"
+                        class="menu-link {{ request()->routeIs('app.communicates.create') ? 'active' : '' }}">
                         <i class="bi bi-plus-circle"></i>
                         <span>Novo comunicado</span>
                     </a>

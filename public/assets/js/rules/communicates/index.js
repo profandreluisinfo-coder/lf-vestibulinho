@@ -47,8 +47,53 @@ $.validator.addMethod(
 /**
  * Exibir detalhes do comunicado no modal
  */
+function showCommunicateDetails(data) {
 
+    $('#view-titulo').text(data.titulo || '—');
+    $('#view-resumo').html(data.resumo || '—');
 
+    if (data.url) {
+        $('#view-url').html(
+            `<a href="${data.url}" target="_blank">${data.url}</a>`
+        );
+    } else {
+        $('#view-url').text('—');
+    }
+
+    // Anexos
+    const $attachments = $('#view-attachments');
+
+    if (data.attachments && data.attachments.length > 0) {
+
+        let html = '<div class="list-group">';
+
+        data.attachments.forEach(function (attachment) {
+
+            html += `
+                <a
+                    href="${attachment.url}"
+                    target="_blank"
+                    class="list-group-item list-group-item-action">
+
+                    <i class="bi bi-paperclip me-2"></i>
+                    ${attachment.name}
+
+                </a>
+            `;
+        });
+
+        html += '</div>';
+
+        $attachments.html(html);
+
+    } else {
+
+        $attachments.html(
+            '<span class="text-muted">Nenhum anexo.</span>'
+        );
+
+    }
+}
 
 /**
  * Confirmar exclusão do comunicado
@@ -100,6 +145,28 @@ function resetCommunicateForm() {
 
     // Remover borda de erro do Summernote
     $summernote.siblings('.note-editor').find('.note-editing-area').css('border', '');
+}
+
+function confirmAttachmentDelete(id, name) {
+
+    Swal.fire({
+        title: 'Remover anexo?',
+        text: `Deseja excluir "${name}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            document
+                .getElementById(
+                    `delete-attachment-form-${id}`
+                )
+                .submit();
+        }
+    });
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -298,8 +365,9 @@ $(document).ready(function () {
     $('#viewCommunicate').on('hidden.bs.modal', function () {
         $('#view-titulo').text('');
         $('#view-resumo').html('');
-        $('#view-tipo').text('');
+        // $('#view-tipo').text('');
         $('#view-url').html('');
-        $('#view-status').html('');
+        // $('#view-status').html('');
+        $('#view-attachments').html('');
     });
 });
