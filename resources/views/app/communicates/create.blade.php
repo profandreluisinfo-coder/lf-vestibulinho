@@ -47,9 +47,9 @@
 
             {{-- URL --}}
             <div class="form-group mb-3">
-                <label for="url" class="form-label">Link (URL):</label>
+                <label for="url" class="form-label">Link (URL)  (opcional):</label>
                 <input type="url" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
-                    value="{{ old('url') }}">
+                    value="{{ old('url') }}" placeholder="https://...">
                 @error('url')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -57,7 +57,7 @@
 
             {{-- Attachments --}}
             <div class="form-group mb-3">
-                <label for="attachments" class="form-label">Anexos:</label>
+                <label for="attachments" class="form-label">Anexos (opcional):</label>
                 <input type="file" class="form-control @error('attachments') is-invalid @enderror" id="attachments"
                     name="attachments[]" multiple>
                 @error('attachments.*')
@@ -92,8 +92,11 @@
     </div>
 @endsection
 
-@push('scripts')
+@push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
+@endpush
+
+@push('scripts')    
     <script src="{{ asset('assets/js/rules/communicates/index.js') }}"></script>
 @endpush

@@ -1,128 +1,4 @@
 // ═══════════════════════════════════════════════════════════════════
-// Funções Globais
-// ═══════════════════════════════════════════════════════════════════
-
-/**
- * Exibir detalhes do comunicado no modal
- */
-function showCommunicateDetails(data) {
-
-    $('#view-titulo').text(data.titulo || '—');
-
-    $('#view-resumo').html(data.resumo || '—');
-
-    if (data.url) {
-
-        $('#view-url').html(
-            `<a href="${data.url}"
-                target="_blank"
-                rel="noopener noreferrer">
-                ${data.url}
-            </a>`
-        );
-
-    } else {
-
-        $('#view-url').text('—');
-
-    }
-
-    const status = String(data.status || '').toLowerCase();
-
-    $('#view-status').html(
-        status === 'publicado'
-            ? '<span class="badge bg-success">Publicado</span>'
-            : '<span class="badge bg-secondary">Rascunho</span>'
-    );
-
-    // Anexos
-    const $attachments = $('#view-attachments');
-
-    if (data.attachments && data.attachments.length > 0) {
-
-        let html = '<div class="list-group">';
-
-        data.attachments.forEach(function (attachment) {
-
-            html += `
-                <a
-                    href="${attachment.url}"
-                    target="_blank"
-                    class="list-group-item list-group-item-action">
-
-                    <i class="bi bi-paperclip me-2"></i>
-                    ${attachment.name}
-
-                </a>
-            `;
-        });
-
-        html += '</div>';
-
-        $attachments.html(html);
-
-    } else {
-
-        $attachments.html(
-            '<span class="text-muted">Nenhum anexo.</span>'
-        );
-
-    }
-}
-
-/**
- * Confirmar exclusão do comunicado
- */
-function confirmCommunicateDelete(comunicadoId, titulo) {
-
-    Swal.fire({
-        title: 'Confirmar exclusão',
-        text: `Tem certeza que deseja excluir o comunicado "${titulo}"?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Sim, excluir',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-    }).then((result) => {
-
-        if (result.isConfirmed) {
-            document
-                .getElementById(`delete-communicate-form-${comunicadoId}`)
-                .submit();
-        }
-
-    });
-}
-
-/**
- * Limpar formulário e editor
- */
-function resetCommunicateForm() {
-    const $form = $('#communicateForm');
-    const $summernote = $('#resumo');
-
-    // Resetar o formulário
-    $form[0].reset();
-
-    // Limpar o Summernote
-    if ($summernote.data('summernote')) {
-        $summernote.summernote('code', '');
-    }
-
-    // Resetar validação
-    if ($form.data('validator')) {
-        $form.validate().resetForm();
-        $form.find('.is-invalid').removeClass('is-invalid');
-        $form.find('.invalid-feedback').remove();
-    }
-
-    // Remover borda de erro do Summernote
-    $summernote.siblings('.note-editor').find('.note-editing-area').css('border', '');
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // Métodos de Validação Customizados (ANTES de usar validate())
 // ═══════════════════════════════════════════════════════════════════
 
@@ -165,13 +41,39 @@ $.validator.addMethod(
 );
 
 // ═══════════════════════════════════════════════════════════════════
+// Funções Globais
+// ═══════════════════════════════════════════════════════════════════
+
+function confirmAttachmentDelete(id, name) {
+
+    Swal.fire({
+        title: 'Remover anexo?',
+        text: `Deseja excluir "${name}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            document
+                .getElementById(
+                    `delete-attachment-form-${id}`
+                )
+                .submit();
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // Inicialização
 // ═══════════════════════════════════════════════════════════════════
 
 $(document).ready(function () {
 
     // ─────────────────────────────────────────────────────────────
-    // Inicializar Summernote
+    // 1️⃣ INICIALIZAR SUMMERNOTE PRIMEIRO
     // ─────────────────────────────────────────────────────────────
 
     $('.summernote').summernote({
@@ -192,9 +94,12 @@ $(document).ready(function () {
             onInit: function () {
                 // Garantir que o editor funcione dentro do modal
                 $('.note-editor').css('z-index', '9999');
+
+                // SINCRONIZAR o conteúdo do Summernote com o textarea
+                $(this).val($(this).summernote('code'));
             },
             onChange: function (contents) {
-                // Sincronizar valor do textarea
+                // Sincronizar valor do textarea em tempo real
                 $(this).val(contents);
 
                 // Validar em tempo real
@@ -211,7 +116,16 @@ $(document).ready(function () {
     });
 
     // ─────────────────────────────────────────────────────────────
-    // Configurar Validação do Formulário
+    // 2️⃣ SINCRONIZAR ANTES DE VALIDAR
+    // ─────────────────────────────────────────────────────────────
+
+    $('.summernote').each(function () {
+        const code = $(this).summernote('code');
+        $(this).val(code);
+    });
+
+    // ─────────────────────────────────────────────────────────────
+    // 3️⃣ CONFIGURAR VALIDAÇÃO DO FORMULÁRIO
     // ─────────────────────────────────────────────────────────────
 
     $('#communicateForm').validate({
@@ -239,8 +153,8 @@ $(document).ready(function () {
             },
             resumo: {
                 required: "Por favor, insira o conteúdo do comunicado.",
-                summernoteMinlength: "O conteúdo deve ter no mínimo 10 caracteres.",
-                summernoteRequired: "Por favor, insira o conteúdo do comunicado."
+                summernoteRequired: "Por favor, insira o conteúdo do comunicado.",
+                summernoteMinlength: "O conteúdo deve ter no mínimo 10 caracteres."
             },
             tipo: {
                 required: "Por favor, selecione o tipo de comunicado."
@@ -268,7 +182,7 @@ $(document).ready(function () {
                 $element
                     .siblings('.note-editor')
                     .find('.note-editing-area')
-                    .css('border', '1px solid #dc3545');
+                    .css('border', '2px solid #dc3545');
             } else {
                 $element.addClass('is-invalid');
             }
@@ -310,33 +224,5 @@ $(document).ready(function () {
         onfocusout: function (element) {
             $(element).valid();
         }
-    });
-
-    // ─────────────────────────────────────────────────────────────
-    // Eventos do Modal
-    // ─────────────────────────────────────────────────────────────
-
-    // Limpar formulário quando o modal de novo comunicado é fechado
-    $('#setNewCommunicate').on('hidden.bs.modal', function () {
-        resetCommunicateForm();
-    });
-
-    // Limpar detalhes quando o modal de visualização é aberto
-    $('#viewCommunicate').on('show.bs.modal', function (event) {
-
-        const button = $(event.relatedTarget);
-
-        const data = button.data('communicate');
-
-        showCommunicateDetails(data);
-
-    });
-
-    // Limpar detalhes quando modal de visualização é fechado
-    $('#viewCommunicate').on('hidden.bs.modal', function () {
-        $('#view-titulo').text('');
-        $('#view-resumo').html('');
-        $('#view-url').html('');
-        $('#view-attachments').html('');
     });
 });

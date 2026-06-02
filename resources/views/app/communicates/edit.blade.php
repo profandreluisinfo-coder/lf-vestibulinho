@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Comunicados')
+@section('page-title', 'Editar Comunicado')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
@@ -12,14 +12,16 @@
             <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Editar Comunicado</h5>
         </div>
 
-        <form id="communicateForm" action="{{ route('app.communicates.update', $communicate) }}" method="POST">
+        <form id="communicateForm" action="{{ route('app.communicates.update', $communicate) }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
             {{-- Título --}}
             <div class="form-group mb-3">
                 <label for="titulo" class="form-label required">Título:</label>
                 <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo"
-                    name="titulo" value="{{ old('titulo', $communicate->titulo) }}">
+                    name="titulo" value="{{ $communicate->titulo }}">
                 @error('titulo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -29,7 +31,7 @@
             <div class="form-group mb-3">
                 <label for="resumo" class="form-label required">Resumo:</label>
                 <textarea class="form-control summernote @error('resumo') is-invalid @enderror" id="resumo" name="resumo"
-                    rows="6">{{ old('resumo', $communicate->resumo) }} </textarea>
+                    rows="6">{{ $communicate->resumo }} </textarea>
                 @error('resumo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -39,7 +41,7 @@
             <div class="form-group mb-3">
                 <label for="tipo" class="form-label required">Tipo:</label>
                 <input type="text" class="form-control @error('tipo') is-invalid @enderror" id="tipo" name="tipo"
-                    placeholder="ex: info, alerta, urgente" value="{{ old('tipo', $communicate->tipo) }}">
+                    placeholder="ex: info, alerta, urgente" value="{{ $communicate->tipo }}">
                 @error('tipo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -49,7 +51,7 @@
             <div class="form-group mb-3">
                 <label for="url" class="form-label">Link (URL):</label>
                 <input type="url" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
-                    value="{{ old('url', $communicate->url) }}">
+                    value="{{ $communicate->url }}">
                 @error('url')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -87,15 +89,6 @@
                                         <i class="bi bi-eye"></i>
                                     </a>
 
-                                    <form id="delete-attachment-form-{{ $attachment->id }}"
-                                        action="{{ route('app.communicates.attachments.destroy', $attachment) }}"
-                                        method="POST" class="d-none">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                    </form>
-
                                     <button type="button" class="btn btn-outline-danger btn-sm"
                                         onclick="confirmAttachmentDelete({{ $attachment->id }},'{{ addslashes($attachment->name) }}')">
                                         <i class="bi bi-trash"></i>
@@ -125,11 +118,22 @@
 
             {{-- Status --}}
             <div class="form-group mb-3">
-                <label for="status" class="form-label required">Status:</label>
+                <label for="status" class="form-label required">
+                    Status:
+                </label>
+
                 <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                    <option value="rascunho" {{ old('status', $communicate->status) === 'rascunho' ? 'selected' : '' }}>
-                    <option value="publicado" {{ old('status', $communicate->status) === 'publicado' ? 'selected' : '' }}>
+
+                    <option value="rascunho" {{ $communicate->status === 'rascunho' ? 'selected' : '' }}>
+                        Rascunho
+                    </option>
+
+                    <option value="publicado" {{ $communicate->status === 'publicado' ? 'selected' : '' }}>
+                        Publicado
+                    </option>
+
                 </select>
+
                 @error('status')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -144,12 +148,32 @@
             </a>
 
         </form>
+        {{-- FIM DO FORMULÁRIO PRINCIPAL --}}
 
     </div>
 @endsection
 
-@push('scripts')
+{{-- FORMULÁRIOS DE DELETE - FORA DO FORMULÁRIO PRINCIPAL --}}
+@if ($communicate->attachments->isNotEmpty())
+    @foreach ($communicate->attachments as $attachment)
+        <form id="delete-attachment-form-{{ $attachment->id }}"
+            action="{{ route('app.communicates.attachments.destroy', $attachment) }}"
+            method="POST" class="d-none">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endforeach
+@endif
+
+@push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
-    <script src="{{ asset('assets/js/rules/communicates/index.js') }}"></script>
+@endpush
+
+@push('scripts')
+    {{-- jQuery Validate (OBRIGATÓRIO - carregar PRIMEIRO) --}}
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validate@1.19.5/dist/jquery.validate.min.js"></script>
+
+    {{-- Seu arquivo (DEPOIS que tudo está pronto) --}}
+    <script src="{{ asset('assets/js/rules/communicates/edit.js') }}"></script>
 @endpush

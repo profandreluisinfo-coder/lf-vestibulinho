@@ -24,7 +24,7 @@
 
         {{-- ── Lista de comunicados ─────────────────────────────── --}}
         <div class="row">
-            <div class="col-12 col-lg-8 reveal">
+            <div class="col-12 reveal">
 
                 @if ($comunicados->isEmpty())
 
@@ -105,11 +105,11 @@
                     </div>
 
                     {{-- ── Botão "ver todos" ──────────────────────── --}}
-                    {{-- <div class="mt-4 reveal">
-                        <a href="{{ $urlVerTodos }}" class="btn-ver-todos">
+                    <div class="text-center mt-4 reveal">
+                        <a href="#" class="btn-ver-todos">
                             Ver todos os comunicados
                             <i class="bi bi-arrow-right"></i>
-                        </a> --}}
+                        </a>
                     </div>
 
                 @endif

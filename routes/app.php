@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Route;
 // 🔒 Rotas que exigem login
 Route::middleware(['auth', IsAdmin::class])->group(function () {
 
-
     // ==========================
-    // ❓ Comunicados
+    // 📝 Comunicados
     // ==========================
     Route::prefix('comunicados')
         ->name('app.') // Mudado de 'app.communicates.' para 'app.'
