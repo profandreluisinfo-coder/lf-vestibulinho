@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Guest\{ ArchiveController, HomeController, ResultController };
+use App\Http\Controllers\Guest\{ ArchiveController, CommunicateController, HomeController, ResultController };
 use App\Http\Controllers\Guest\{ CallController };
 use App\Http\Controllers\Guest\CalendarController;
 use App\Http\Controllers\Guest\FaqController;
@@ -25,5 +25,9 @@ Route::middleware(['guest'])->group(function () {
 
     // Calendário
     Route::get('/calendario', [CalendarController::class, 'show'])
-    ->name('guest.calendar.show');
+        ->name('guest.calendar.show');
+
+    // Comunicados públicos
+    Route::get('/comunicados', [CommunicateController::class, 'index'])
+        ->name('guest.communicates.index');
 });

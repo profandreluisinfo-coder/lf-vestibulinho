@@ -17,7 +17,7 @@ class CommunicateController extends Controller
             ->latest('published_at')
             ->paginate(10);
 
-        // return view('guest.communicates.index', compact('comunicados'));
+        return view('guest.communicates.index', compact('comunicados'));
     }
 
     /**

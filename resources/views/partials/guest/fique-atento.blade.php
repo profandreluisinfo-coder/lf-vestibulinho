@@ -31,7 +31,7 @@
                     {{-- Estado vazio --}}
                     <div class="fa-empty">
                         <i class="bi bi-inbox"></i>
-                        Nenhum comunicado no momento. Volte em breve!
+                        Nenhum comunicado no momento.
                     </div>
 
                 @else
@@ -42,17 +42,56 @@
                             @php
                                 /* Mapeamento tipo → ícone Bootstrap Icons */
                                 $iconeMap = [
-                                    'info'    => 'bi-info-circle-fill',
-                                    'alerta'  => 'bi-exclamation-triangle-fill',
-                                    'urgente' => 'bi-exclamation-octagon-fill',
+                                    'info'         => 'bi-info-circle-fill',
+                                    'alerta'       => 'bi-exclamation-triangle-fill',
+                                    'urgente'      => 'bi-exclamation-octagon-fill',
+                                    'aviso'        => 'bi-exclamation-triangle-fill',
+                                    'importante'   => 'bi-bookmark-star-fill',
+                                    'prazo'        => 'bi-clock-fill',
+                                    'edital'       => 'bi-file-earmark-text-fill',
+                                    'resultado'    => 'bi-trophy-fill',
+                                    'aprovacao'    => 'bi-patch-check-fill',
+                                    'inscricao'    => 'bi-pencil-square',
+                                    'documento'    => 'bi-folder-fill',
+                                    'calendario'   => 'bi-calendar-event-fill',
+                                    'prova'        => 'bi-journal-check',
+                                    'convocacao'   => 'bi-person-lines-fill',
+                                    'cancelamento' => 'bi-x-octagon-fill',
+                                    'manutencao'   => 'bi-tools',
+                                    'sistema'      => 'bi-cpu-fill',
+                                    'novidade'     => 'bi-stars',
+                                    'sucesso'      => 'bi-check-circle-fill',
+                                    'erro'         => 'bi-bug-fill',
+                                    'financeiro'   => 'bi-cash-stack',
+                                    'local'        => 'bi-geo-alt-fill',
                                 ];
+
                                 $icone = $iconeMap[$item->tipo] ?? 'bi-megaphone-fill';
 
                                 /* Label do badge */
                                 $labelMap = [
-                                    'info'    => 'Informativo',
-                                    'alerta'  => 'Atenção',
-                                    'urgente' => 'Urgente',
+                                    'info'         => 'Informativo',
+                                    'alerta'       => 'Atenção',
+                                    'urgente'      => 'Urgente',
+                                    'aviso'        => 'Aviso',
+                                    'importante'   => 'Importante',
+                                    'prazo'        => 'Prazo',
+                                    'edital'       => 'Edital',
+                                    'resultado'    => 'Resultado',
+                                    'aprovacao'    => 'Aprovação',
+                                    'inscricao'    => 'Inscrições',
+                                    'documento'    => 'Documentação',
+                                    'calendario'   => 'Calendário',
+                                    'prova'        => 'Prova',
+                                    'convocacao'   => 'Convocação',
+                                    'cancelamento' => 'Cancelamento',
+                                    'manutencao'   => 'Manutenção',
+                                    'sistema'      => 'Sistema',
+                                    'novidade'     => 'Novidade',
+                                    'sucesso'      => 'Concluído',
+                                    'erro'         => 'Erro',
+                                    'financeiro'   => 'Financeiro',
+                                    'local'        => 'Local de Prova',
                                 ];
                                 $label = $labelMap[$item->tipo] ?? 'Aviso';
                             @endphp
@@ -106,7 +145,7 @@
 
                     {{-- ── Botão "ver todos" ──────────────────────── --}}
                     <div class="text-center mt-4 reveal">
-                        <a href="#" class="btn-ver-todos">
+                        <a href="{{ route('guest.communicates.index') }}" class="btn-ver-todos">
                             Ver todos os comunicados
                             <i class="bi bi-arrow-right"></i>
                         </a>

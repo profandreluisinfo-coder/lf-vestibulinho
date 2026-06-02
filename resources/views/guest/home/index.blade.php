@@ -23,8 +23,7 @@
     {{-- ═══════════════════════ CURSOS ════════════════════════════ --}}
     @include('partials.guest.cursos')
 
-    @if ($show)
-        
+    @if ($show)        
         {{-- ═══════════════════════ COMO PARTICIPAR ═════════════════════ --}}    
         @include('partials.guest.como-participar')
         {{-- ═══════════════════════ CALENDÁRIO ═══════════════════════ --}}    
