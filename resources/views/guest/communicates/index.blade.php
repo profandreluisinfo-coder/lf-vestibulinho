@@ -88,13 +88,8 @@
                                     $label = $labelMap[$item->tipo] ?? 'Aviso';
                                 @endphp
 
-                                @if (!empty($item->url))
-                                    <a href="{{ $item->url }}"
-                                       class="comunicado-item delay-{{ ($loop->index % 4) + 1 }}"
-                                       target="_blank" rel="noopener">
-                                @else
-                                    <div class="comunicado-item delay-{{ ($loop->index % 4) + 1 }}">
-                                @endif
+                                <a href="{{ route('guest.communicates.show', $item) }}"
+                                   class="comunicado-item delay-{{ ($loop->index % 4) + 1 }}">
 
                                 <div class="comunicado-icon tipo-{{ $item->tipo ?? 'info' }}">
                                     <i class="bi {{ $icone }}"></i>
@@ -118,15 +113,9 @@
                                     </div>
                                 </div>
 
-                                @if (!empty($item->url))
-                                    <i class="bi bi-arrow-right comunicado-arrow"></i>
-                                @endif
+                                <i class="bi bi-arrow-right comunicado-arrow"></i>
 
-                                @if (!empty($item->url))
-                                    </a>
-                                @else
-                                    </div>
-                                @endif
+                                </a>
                             @endforeach
                         </div>
 

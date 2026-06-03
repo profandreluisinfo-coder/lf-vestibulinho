@@ -29,6 +29,6 @@ class CommunicateController extends Controller
         // Garante que o visitante só vê comunicados publicados
         abort_unless($communicate->estaPublicado(), 404);
 
-        // return view('guest.communicates.show', compact('communicate'));
+        return view('guest.communicates.show', compact('communicate'));
     }
 }

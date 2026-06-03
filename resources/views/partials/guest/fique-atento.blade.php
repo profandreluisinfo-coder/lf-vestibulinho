@@ -37,7 +37,7 @@
                 @else
 
                     <div class="comunicado-list">
-                        @foreach ($comunicados->take(10) as $item)
+                        @foreach ($comunicados->take(3) as $item)
 
                             @php
                                 /* Mapeamento tipo → ícone Bootstrap Icons */

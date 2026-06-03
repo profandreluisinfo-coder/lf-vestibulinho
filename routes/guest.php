@@ -30,4 +30,7 @@ Route::middleware(['guest'])->group(function () {
     // Comunicados públicos
     Route::get('/comunicados', [CommunicateController::class, 'index'])
         ->name('guest.communicates.index');
+
+    Route::get('/comunicados/{communicate}', [CommunicateController::class, 'show'])
+        ->name('guest.communicates.show');
 });
