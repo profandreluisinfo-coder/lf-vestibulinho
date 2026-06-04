@@ -4,6 +4,7 @@
 
 /* Componentes globais */
 @import '../layouts/guest/components/navbar.css';
+@import '../layouts/guest/sections/hero.css';
 @import '../layouts/guest/components/cta.css';
 @import '../layouts/guest/components/footer.css';
 

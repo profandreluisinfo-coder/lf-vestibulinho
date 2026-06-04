@@ -3,7 +3,7 @@
    ============================================ */
 
 /* Seções específicas da home */
-@import '../sections/hero.css';
+/* @import '../sections/hero.css'; */
 @import '../sections/fique-atento.css';
 @import '../sections/cursos.css';
 @import '../sections/como-participar.css';

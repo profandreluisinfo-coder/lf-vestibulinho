@@ -4,7 +4,7 @@
 @extends('layouts.guest')
 
 {{-- ── Título da página ──────────────────────────────────────── --}}
-@section('title', 'FAQ — Vestibulinho ' . $calendar?->year)
+{{-- @section('title', 'FAQ — Vestibulinho ' . $calendar?->year) --}}
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
@@ -121,5 +121,5 @@
     <script>
         const FAQ_DATA = @json($faqs ?? []);
     </script>
-    <script src="{{ asset('assets/js/guest/home/faqs.js') }}"></script>
+    <script src="{{ asset('assets/js/faqs/index.js') }}"></script>
 @endpush

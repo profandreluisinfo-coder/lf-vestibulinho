@@ -35,7 +35,7 @@
     overflow: hidden;
 }
 
-.faq-hero::before {
+/* .faq-hero::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -43,7 +43,7 @@
         radial-gradient(ellipse 55% 60% at 75% 50%, rgba(0, 168, 150, .2) 0%, transparent 70%),
         radial-gradient(ellipse 35% 45% at 15% 80%, rgba(244, 162, 97, .12) 0%, transparent 60%);
     pointer-events: none;
-}
+} */
 
 /* Herda .hero-circle do principal, mas com nomes específicos */
 .hero-c1 {
@@ -70,7 +70,7 @@
     animation: float 6s ease-in-out infinite;
 }
 
-.faq-hero-badge {
+/* .faq-hero-badge {
     display: inline-flex;
     align-items: center;
     gap: .5rem;
@@ -86,14 +86,14 @@
     animation: fadeDown .7s ease both;
     backdrop-filter: blur(8px);
     margin-bottom: 1.2rem;
-}
+} */
 
 .faq-hero h1 {
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
-    font-weight: 800;
+    /* font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 800; */
     color: #fff;
-    line-height: 1.14;
-    animation: fadeDown .9s ease .15s both;
+    /* line-height: 1.14;
+    animation: fadeDown .9s ease .15s both; */
 }
 
 .faq-hero h1 em {
@@ -230,7 +230,7 @@
 /* ─── STATS RÁPIDOS ─────────────────────────────────────── */
 .hero-stats {
     display: flex;
-    gap: 2rem;
+    gap: 1.2rem;
     flex-wrap: wrap;
     animation: fadeUp .9s ease .65s both;
     margin-top: 2rem;
@@ -242,7 +242,7 @@
 
 .hstat .num {
     font-family: var(--font-head);
-    font-size: 1.7rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: #fff;
     line-height: 1;

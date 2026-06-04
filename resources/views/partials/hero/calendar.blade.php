@@ -1,7 +1,10 @@
     <section class="cal-hero">
-        <div class="cal-hero-bg"></div>
+        <div class="hero-circle hero-circle-1"></div>
+        <div class="hero-circle hero-circle-2"></div>
+        <div class="hero-circle hero-circle-3"></div>
+        {{-- <div class="cal-hero-bg"></div> --}}
         <div class="container position-relative" style="z-index:1;">
-            <div class="row align-items-center g-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-7">
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb cal-breadcrumb">

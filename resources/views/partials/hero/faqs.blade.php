@@ -6,7 +6,7 @@
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
                 <div class="col-lg-7">
-                    <div class="faq-hero-badge">
+                    <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
                         Dúvidas Frequentes · Vestibulinho {{ $calendar?->year }}
                     </div>
