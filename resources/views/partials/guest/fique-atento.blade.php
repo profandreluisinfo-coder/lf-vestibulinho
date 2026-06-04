@@ -96,14 +96,8 @@
                                 $label = $labelMap[$item->tipo] ?? 'Aviso';
                             @endphp
 
-                            {{-- Se tiver URL vira link; senão é div --}}
-                            @if (!empty($item->url))
-                                <a href="{{ $item->url }}"
-                                   class="comunicado-item delay-{{ ($loop->index % 4) + 1 }}"
-                                   target="_blank" rel="noopener">
-                            @else
-                                <div class="comunicado-item">
-                            @endif
+                            {{-- Cada item fica em uma `div` — a seta aponta para a página interna de exibição --}}
+                            <div class="comunicado-item delay-{{ ($loop->index % 4) + 1 }}">
 
                                 {{-- Ícone colorido --}}
                                 <div class="comunicado-icon tipo-{{ $item->tipo ?? 'info' }}">
@@ -129,16 +123,19 @@
                                     </div>
                                 </div>
 
-                                {{-- Seta (só quando tem link) --}}
-                                @if (!empty($item->url))
-                                    <i class="bi bi-arrow-right comunicado-arrow"></i>
-                                @endif
-
-                            @if (!empty($item->url))
+                                {{-- Seta: sempre aponta para a página interna de exibição do comunicado --}}
+                                <a href="{{ route('guest.communicates.show', $item) }}" class="comunicado-arrow" title="Abrir comunicado">
+                                    <i class="bi bi-arrow-right"></i>
                                 </a>
-                            @else
-                                </div>
-                            @endif
+
+                                {{-- Se existir URL externa, mantenha um ícone discreto que abre em nova aba --}}
+                                {{-- @if (!empty($item->url))
+                                    <a href="{{ $item->url }}" class="comunicado-external ms-2" target="_blank" rel="noopener" title="Abrir link externo">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                    </a>
+                                @endif --}}
+
+                            </div>
 
                         @endforeach
                     </div>
