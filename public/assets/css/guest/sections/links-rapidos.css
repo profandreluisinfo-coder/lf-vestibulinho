@@ -1,0 +1,67 @@
+/* ─── LINKS RÁPIDOS ──────────────────────────────────────── */
+#links-rapidos {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+}
+
+#links-rapidos::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(0, 168, 150, .15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.quick-card {
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.4rem;
+    text-align: center;
+    color: #fff;
+    transition: background .3s, transform .35s cubic-bezier(.22, .68, 0, 1.2), box-shadow .35s;
+    cursor: pointer;
+    height: 100%;
+    backdrop-filter: blur(6px);
+}
+
+.quick-card:hover {
+    background: rgba(0, 168, 150, .2);
+    border-color: rgba(0, 168, 150, .5);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+}
+
+.quick-card .qc-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    margin: 0 auto 1rem;
+    background: rgba(255, 255, 255, .08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--amber);
+    transition: transform .35s cubic-bezier(.22, .68, 0, 1.2);
+}
+
+.quick-card:hover .qc-icon {
+    transform: scale(1.15) rotate(-6deg);
+    color: var(--teal);
+}
+
+.quick-card h5 {
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: .35rem;
+    color: #fff;
+}
+
+.quick-card p {
+    font-size: .78rem;
+    color: rgba(255, 255, 255, .55);
+    margin: 0;
+    line-height: 1.5;
+}

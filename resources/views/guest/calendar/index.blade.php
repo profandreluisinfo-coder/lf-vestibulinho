@@ -8,7 +8,7 @@
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/calendar.css') }}" />
 @endpush
 

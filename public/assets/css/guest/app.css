@@ -1,0 +1,14 @@
+/* Base (compartilhado com todas as páginas) */
+@import 'base/tokens.css';
+@import 'base/utilities.css';
+
+/* Componentes globais */
+@import 'components/navbar.css';
+@import 'components/footer.css';
+
+/* Responsive global adjustments */
+@media(max-width:575px) {
+    section {
+        padding: 3.5rem 0;
+    }
+}

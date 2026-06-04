@@ -1,0 +1,92 @@
+/* ─── SCROLL REVEAL ──────────────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal-left.visible,
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.delay-1 { transition-delay: .1s !important; }
+.delay-2 { transition-delay: .2s !important; }
+.delay-3 { transition-delay: .3s !important; }
+.delay-4 { transition-delay: .4s !important; }
+
+/* ─── UTILITIES ──────────────────────────────────────────── */
+.text-teal { color: var(--teal) !important; }
+.text-amber { color: var(--amber) !important; }
+.text-navy { color: var(--navy) !important; }
+.bg-navy { background: var(--navy) !important; }
+.fw-800 { font-weight: 800; }
+.rounded-pill-sm { border-radius: 50px; }
+.divider {
+    width: 48px;
+    height: 3px;
+    background: var(--grad-teal);
+    border-radius: 2px;
+}
+
+/* ─── SECTION COMMONS ────────────────────────────────────── */
+section {
+    padding: 4rem 0;
+}
+
+.section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: .75rem;
+}
+
+.section-tag::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    background: var(--teal);
+    border-radius: 1px;
+}
+
+.section-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.18;
+    color: var(--navy);
+}
+
+.section-title span {
+    color: var(--teal);
+}
+
+.section-lead {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 540px;
+}
