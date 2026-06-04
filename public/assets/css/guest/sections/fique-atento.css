@@ -92,6 +92,13 @@
     overflow: hidden;
 }
 
+.comunicado-resumo {
+    font-size: .55rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
 .comunicado-meta {
     display: flex;
     align-items: center;

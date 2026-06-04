@@ -3,7 +3,7 @@
 @section('title', 'Comunicados — Vestibulinho ' . ($calendar?->year ?? config('app.year')))
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/home/communicates.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/guest/communicates.css') }}" />
 @endpush
 
 @section('content')
