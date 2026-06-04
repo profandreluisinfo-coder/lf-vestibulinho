@@ -8,7 +8,6 @@
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/guest/home/calendar.css') }}" />
 @endpush
 
@@ -425,8 +424,3 @@
     @endif
 
 @endsection
-
-{{-- ── JS específico desta página ───────────────────────────── --}}
-@push('scripts')
-    <script src="{{ asset('assets/js/guest/home/app.js') }}"></script>
-@endpush
