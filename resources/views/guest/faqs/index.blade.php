@@ -8,7 +8,7 @@
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/home/faqs.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/guest/faqs.css') }}" />
 @endpush
 
 {{-- ══════════════════════════════════════════════════════════════

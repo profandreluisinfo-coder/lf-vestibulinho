@@ -13,7 +13,8 @@
                         100% Online · Gratuito
                     </div>
                     <h1 class="mb-3">
-                        Sua carreira começa<br>aqui. @if ($show && $open) No <em>Vestibulinho</em><br>{{ $calendar?->year }}. @endif
+                        <em>Vestibulinho LF</em>@if ($show && $open){{ ' ' .$calendar?->year }}.<br>@endif
+                        Sua carreira começa<br>aqui.
                     </h1>
                     <p class="hero-sub mb-4">
                         4 cursos técnicos gratuitos. Uma oportunidade real de transformar<br class="d-none d-md-block">

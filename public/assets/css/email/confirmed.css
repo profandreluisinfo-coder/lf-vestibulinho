@@ -1,60 +1,9 @@
-/* ─── TOKENS ──────────────────────────────────────────────── */
-:root {
-    --navy: #0B1E3D;
-    --navy2: #132948;
-    --teal: #00A896;
-    --teal2: #007F72;
-    --amber: #F4A261;
-    --amber2: #E07A3A;
-    --light: #EEF3FA;
-    --muted: #6B7FA3;
-    --shadow: 0 8px 32px rgba(11, 30, 61, .12);
-    --shadow-lg: 0 24px 64px rgba(11, 30, 61, .18);
-    --radius: 16px;
-    --grad-main: linear-gradient(135deg, #0B1E3D 0%, #1B3E72 60%, #0E4D6B 100%);
-    --grad-teal: linear-gradient(135deg, #00A896 0%, #007F72 100%);
-    --grad-amber: linear-gradient(135deg, #F4A261 0%, #E07A3A 100%);
-    --font-head: 'Sora', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-}
-
-/* ─── BASE ────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    height: 100%;
-}
+@import url("../auth/base.css");
 
 body {
-    font-family: var(--font-body);
-    background: var(--light);
-    color: var(--navy);
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-head);
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
 /* ─── KEYFRAMES ───────────────────────────────────────────── */
 @keyframes fadeDown {
     from {
@@ -80,16 +29,6 @@ a {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0
-    }
-
-    to {
-        opacity: 1
-    }
-}
-
 @keyframes scaleIn {
     from {
         opacity: 0;
@@ -99,32 +38,6 @@ a {
     to {
         opacity: 1;
         transform: scale(1)
-    }
-}
-
-@keyframes gradShift {
-    0% {
-        background-position: 0% 50%
-    }
-
-    50% {
-        background-position: 100% 50%
-    }
-
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0)
-    }
-
-    50% {
-        transform: translateY(-14px)
     }
 }
 
@@ -179,30 +92,8 @@ a {
 }
 
 /* ─── LAYOUT GRID ─────────────────────────────────────────── */
-.page-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 100vh;
-}
 
 /* ─── PAINEL ESQUERDO ─────────────────────────────────────── */
-.panel-left {
-    background: var(--grad-main);
-    background-size: 300% 300%;
-    animation: gradShift 14s ease infinite;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem;
-}
-
-.deco-circle {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-}
 
 .deco-c1 {
     width: 420px;
@@ -238,39 +129,6 @@ a {
     top: 10%;
     right: -120px;
     pointer-events: none;
-}
-
-.panel-brand {
-    position: relative;
-    z-index: 2;
-    animation: fadeDown .8s ease both;
-}
-
-.brand-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    background: var(--grad-teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(0, 168, 150, .4);
-    margin-bottom: 1.2rem;
-}
-
-.panel-brand h2 {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1.3;
-}
-
-.panel-brand p {
-    font-size: .8rem;
-    color: rgba(255, 255, 255, .55);
-    margin-top: .2rem;
 }
 
 .panel-center {
@@ -370,15 +228,6 @@ a {
 }
 
 /* ─── PAINEL DIREITO ──────────────────────────────────────── */
-.panel-right {
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2.5rem;
-    position: relative;
-    overflow-y: auto;
-}
 
 .confirm-card {
     width: 100%;

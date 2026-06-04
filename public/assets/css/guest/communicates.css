@@ -1,24 +1,4 @@
 /* ─── TOKENS ─────────────────────────────────────────────── */
-:root {
-    --navy: #0B1E3D;
-    --navy2: #132948;
-    --teal: #00A896;
-    --teal2: #007F72;
-    --amber: #F4A261;
-    --amber2: #E07A3A;
-    --red: #D62828;
-    --light: #EEF3FA;
-    --white: #FFFFFF;
-    --muted: #6B7FA3;
-    --card-bg: #FFFFFF;
-    --shadow: 0 8px 32px rgba(11, 30, 61, .12);
-    --shadow-lg: 0 20px 60px rgba(11, 30, 61, .18);
-    --radius: 16px;
-    --radius-lg: 24px;
-    --font-head: 'Sora', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-}
-
 .section-communicates {
     padding: 4rem 0;
     background: var(--light);
@@ -30,7 +10,7 @@
     gap: .75rem;
     font-size: .95rem;
     font-weight: 700;
-    color: var(--light);
+    color: var(--teal);
     margin-bottom: .85rem;
 }
 
@@ -110,8 +90,9 @@
 }
 
 .comunicado-resumo {
-    color: var(--muted);
-    line-height: 1.8;
+    /* font-size: .95rem; */
+    /* color: var(--muted); */
+    line-height: 1.5;
     margin-bottom: 1rem;
 }
 
