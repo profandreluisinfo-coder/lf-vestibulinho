@@ -9,6 +9,28 @@
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/guest/calendar.css') }}" />
+    <style>
+        .calendar-sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .95);
+            box-shadow: 0 0 18px rgba(255, 255, 255, .45), 0 0 40px rgba(255, 255, 255, .12);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(.5);
+            pointer-events: none;
+            transition: transform .22s ease, opacity .22s ease;
+        }
+
+        .tf-step:hover .tf-node {
+            transform: scale(1.08);
+        }
+
+        .btn-cta-main:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+    </style>
 @endpush
 
 {{-- ══════════════════════════════════════════════════════════════
@@ -424,3 +446,7 @@
     @endif
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/guest/calendar/index.js') }}"></script>
+@endpush

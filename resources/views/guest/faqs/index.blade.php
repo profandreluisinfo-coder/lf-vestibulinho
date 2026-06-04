@@ -121,5 +121,5 @@
     <script>
         const FAQ_DATA = @json($faqs ?? []);
     </script>
-    <script src="{{ asset('assets/js/faqs/index.js') }}"></script>
+    <script src="{{ asset('assets/js/guest/faqs/index.js') }}"></script>
 @endpush
