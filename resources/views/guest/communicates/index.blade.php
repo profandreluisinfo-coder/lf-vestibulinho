@@ -98,7 +98,7 @@
                                     <div class="comunicado-titulo">{{ $item->titulo }}</div>
 
                                     @if (!empty($item->resumo))
-                                        <p class="comunicado-resumo">{!! $item->resumo !!}</p>
+                                        <div class="comunicado-resumo">{!! $item->resumo !!}</div>
                                     @endif
 
                                     <div class="comunicado-meta">

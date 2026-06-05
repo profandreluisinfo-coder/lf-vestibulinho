@@ -57,9 +57,9 @@
 							@endif
 
 							<div class="mt-4 d-flex justify-content-between align-items-center">
-								<a href="{{ route('guest.communicates.index') }}" class="btn btn-outline-secondary">&larr; Voltar</a>
+								<a href="{{ url()->previous() }}" class="btn btn-sm btn-outline-secondary">&larr; Voltar</a>
 								@if (!empty($communicate->url))
-									<a href="{!! $communicate->url !!}" class="btn btn-primary" target="_blank" rel="noopener">Abrir link</a>
+									<a href="{!! $communicate->url !!}" class="btn btn-sm btn-primary" target="_blank" rel="noopener">Abrir link</a>
 								@endif
 							</div>
 						</div>
