@@ -6,10 +6,21 @@
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
                 <div class="col-lg-7">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb faq-breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">FAQs</li>
+                        </ol>
+                    </nav>
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
                         Dúvidas Frequentes · Vestibulinho {{ $calendar?->year }}
                     </div>
+                    <h1 class="faq-hero-title mb-3">
+                        Perguntas Frequentes<br><em>Processo Seletivo</em>
+                        {{-- <br>
+                        <span class="year-chip">{{ $calendar?->year }}</span> --}}
+                    </h1>
                     <h1>Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
                     <p class="lead mt-3">Reunimos as perguntas mais frequentes dos candidatos. Use a busca abaixo ou
                         navegue pelas categorias.</p>

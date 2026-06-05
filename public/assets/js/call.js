@@ -3,5 +3,5 @@ var animation = lottie.loadAnimation({
     renderer: "svg", // Pode ser 'svg', 'canvas' ou 'html'
     loop: true, // Define se a animação repete
     autoplay: true, // Inicia automaticamente
-    path: "/assets/animations/lottieflow-menu-nav-11-9-000080-easey.json", // Caminho para o arquivo JSON
+    path: "/assets/js/animations/lottieflow-menu-nav-11-9-000080-easey.json", // Caminho para o arquivo JSON
 });

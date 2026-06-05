@@ -110,6 +110,44 @@
     line-height: 1.7;
 }
 
+/* ___ BREADCRUMB ___ */
+.faq-breadcrumb {
+    margin: 0;
+}
+
+.faq-breadcrumb .breadcrumb-item a {
+    color: rgba(255, 255, 255, .6);
+    font-size: .8rem;
+    transition: color .2s;
+}
+
+.faq-breadcrumb .breadcrumb-item a:hover {
+    color: var(--teal);
+}
+
+.faq-breadcrumb .breadcrumb-item.active {
+    color: rgba(255, 255, 255, .4);
+    font-size: .8rem;
+}
+
+.faq-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, .3);
+}
+
+.faq-hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    animation: fadeDown 1s ease .2s both;
+}
+
+.faq-hero-title em {
+    color: var(--amber);
+    font-style: normal;
+}
+
 /* ─── SEARCH BAR ────────────────────────────────────────── */
 .search-wrap {
     animation: fadeUp .9s ease .45s both;
