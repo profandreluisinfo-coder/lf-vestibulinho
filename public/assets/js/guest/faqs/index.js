@@ -109,13 +109,28 @@ function buildSidebarNav() {
    TICKER INFINITO
    ═══════════════════════════════════════════════════════════════ */
 function buildTicker() {
-    const items = FAQ_DATA.map(f => f.q);
+    const items = FAQ_DATA;
     const track = document.getElementById('tickerTrack');
     // duplica para loop infinito sem salto
-    const html = [...items, ...items].map(q =>
-        `<span class="ticker-item"><i class="bi bi-question-circle-fill"></i>${q}</span>`
+    const html = [...items, ...items].map(f =>
+        `<a href="#faq-${f.id}" class="ticker-item" onclick="scrollToFaq(${f.id})"><i class="bi bi-question-circle-fill"></i>${f.q}</a>`
     ).join('');
     track.innerHTML = html;
+}
+
+function scrollToFaq(faqId) {
+    const element = document.getElementById(`faq-${faqId}`);
+    if (element) {
+        // scroll suave para o elemento
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // abre a pergunta
+        setTimeout(() => {
+            const question = element.querySelector('.faq-question');
+            if (question && !element.classList.contains('open')) {
+                toggleFaq(question);
+            }
+        }, 300);
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
