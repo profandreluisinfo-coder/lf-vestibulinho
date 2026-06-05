@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════
+   errors.css — Layout master de páginas de erro
+   Depende dos tokens de index.css (:root)
+   ══════════════════════════════════════════════════════════ */
+@import '../errors/tokens.css';
+@import '../errors/navbar.css';
+
+/* ─── BODY ───────────────────────────────────────────────── */
+.err-body {
+    background: var(--grad-main);
+    background-size: 300% 300%;
+    animation: gradShift 14s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── BRAND ICON (navbar) ────────────────────────────────── */
+.err-brand-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--grad-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ─── MAIN ───────────────────────────────────────────────── */
+.err-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.err-main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55% 60% at 80% 40%, rgba(0, 168, 150, .18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 45% at 15% 80%, rgba(244, 162, 97, .1) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* ─── CÍRCULOS DECORATIVOS ───────────────────────────────── */
+.err-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.err-circle-1 {
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    right: -150px;
+    border: 1px solid rgba(255, 255, 255, .06);
+}
+
+.err-circle-2 {
+    width: 320px;
+    height: 320px;
+    bottom: -80px;
+    left: -100px;
+    border: 1px solid rgba(0, 168, 150, .12);
+}
+
+.err-circle-3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(244, 162, 97, .15);
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ─── CÓDIGO DO ERRO (ex: "404") ─────────────────────────── */
+.err-code {
+    font-family: var(--font-head);
+    font-size: clamp(6rem, 18vw, 11rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.04em;
+    /* Gradiente shimmer no número */
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, .12) 0%,
+        rgba(255, 255, 255, .55) 35%,
+        rgba(0, 168, 150, .6)    55%,
+        rgba(255, 255, 255, .12) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+    user-select: none;
+    margin-bottom: -.5rem;
+}
+
+/* ─── ÍCONE SEMÂNTICO ─────────────────────────────────────── */
+.err-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .14);
+    backdrop-filter: blur(10px);
+    animation: fadeDown .9s ease .1s both;
+}
+
+.err-icon-wrap i {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, .85);
+}
+
+/* Variantes de cor por tipo de erro — aplique via @section('error_icon_color') */
+.err-icon-wrap.err-icon-warning i { color: var(--amber); }
+.err-icon-wrap.err-icon-danger  i { color: #ff7675; }
+.err-icon-wrap.err-icon-info    i { color: #74b9ff; }
+.err-icon-wrap.err-icon-lock    i { color: var(--amber); }
+
+/* ─── TÍTULO E MENSAGEM ──────────────────────────────────── */
+.err-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    animation: fadeDown 1s ease .2s both;
+}
+
+.err-message {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, .65);
+    line-height: 1.75;
+    font-weight: 300;
+    animation: fadeUp 1s ease .35s both;
+    max-width: 480px;
+    margin-inline: auto;
+}
+
+/* ─── BOTÕES ─────────────────────────────────────────────── */
+.err-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    background: var(--grad-amber);
+    color: var(--navy);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .85rem 2rem;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 6px 24px rgba(244, 162, 97, .35);
+    transition: transform .25s, box-shadow .25s;
+    animation: fadeUp 1s ease .5s both;
+}
+
+.err-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(244, 162, 97, .5);
+    color: var(--navy);
+}
+
+.err-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    color: rgba(255, 255, 255, .85);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: .95rem;
+    padding: .85rem 2rem;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, .25);
+    transition: border-color .25s, background .25s, transform .25s;
+    animation: fadeUp 1s ease .6s both;
+}
+
+.err-btn-outline:hover {
+    border-color: rgba(255, 255, 255, .7);
+    background: rgba(255, 255, 255, .08);
+    transform: translateY(-3px);
+    color: #fff;
+}
+
+/* ─── HINTS (dicas / links extras) ──────────────────────── */
+.err-hints {
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    padding-top: 2rem;
+    animation: fadeUp 1s ease .7s both;
+}
+
+.err-hints p {
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .45);
+    margin-bottom: 1rem;
+}
+
+.err-hint-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .6rem;
+}
+
+.err-hint-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 50px;
+    padding: .35rem 1rem;
+    transition: background .2s, color .2s, border-color .2s;
+}
+
+.err-hint-link:hover {
+    background: rgba(0, 168, 150, .2);
+    border-color: rgba(0, 168, 150, .4);
+    color: #fff;
+}
+
+/* ─── FOOTER MINIMALISTA ─────────────────────────────────── */
+.err-footer {
+    background: rgba(0, 0, 0, .2);
+    border-top: 1px solid rgba(255, 255, 255, .07);
+    padding: 1.25rem 0;
+    backdrop-filter: blur(8px);
+}
+
+.err-footer p,
+.err-footer a {
+    color: rgba(255, 255, 255, .4);
+    font-size: .78rem;
+    transition: color .2s;
+}
+
+.err-footer a:hover {
+    color: var(--teal);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 575px) {
+    .err-main {
+        padding: 3.5rem 0 3rem;
+        align-items: flex-start;
+    }
+
+    .err-btn-primary,
+    .err-btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .err-circle-1 { width: 280px; height: 280px; }
+    .err-circle-3 { display: none; }
+}
