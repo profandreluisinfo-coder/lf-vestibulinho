@@ -17,6 +17,7 @@
 # Laravel – Cache, Logs e Arquivos Temporários
 # ========================================================
 /storage/*.key
+bootstrap/cache/*.php
 
 # Conteúdo interno dessas pastas NÃO será versionado,
 # pois cada uma possui .gitignore interno mantendo apenas a pasta
@@ -64,4 +65,4 @@ Homestead.yaml
 # ========================================================
 # Outros arquivos sensíveis e auxiliares
 # ========================================================
-auth.json
+auth.jsonbootstrap/cache/*.php
