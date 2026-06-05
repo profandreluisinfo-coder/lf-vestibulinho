@@ -161,7 +161,7 @@
                             <strong style="color:var(--navy);">ATENÇÃO:</strong> Sua senha deve ter no
                             <strong>mínimo 6</strong> e no <strong>máximo 8</strong> caracteres, incluindo
                             <strong>pelo menos</strong> uma letra maiúscula, uma minúscula
-                            <strong>e</strong> um número.
+                            <strong>e</strong> um número. <strong>Não utilize caracteres especiais (@, #, $, *)</strong>
                         </p>
                         <div class="rules-grid">
                             <div class="rule-chip" id="rule-len">
@@ -179,6 +179,10 @@
                             <div class="rule-chip" id="rule-num">
                                 <div class="ri" id="ri-num"><i class="bi bi-dash"></i></div>
                                 Número
+                            </div>
+                            <div class="rule-chip" id="rule-noSpecial">
+                                <div class="ri" id="ri-noSpecial"><i class="bi bi-dash"></i></div>
+                                Sem caracteres especiais
                             </div>
                         </div>
                     </div>

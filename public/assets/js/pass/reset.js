@@ -5,6 +5,7 @@ const rules = {
     upper: v => /[A-Z]/.test(v),
     lower: v => /[a-z]/.test(v),
     num: v => /[0-9]/.test(v),
+    noSpecial: v => /^[A-Za-z0-9]*$/.test(v),
 };
 
 // ── Toggle TODAS as senhas ─────────────────────────────────
@@ -44,8 +45,9 @@ function onPwdInput() {
     setRule('upper', rules.upper(v));
     setRule('lower', rules.lower(v));
     setRule('num', rules.num(v));
+    setRule('noSpecial', rules.noSpecial(v));
 
-    let score = [rules.len(v), rules.upper(v), rules.lower(v), rules.num(v)]
+    let score = [rules.len(v), rules.upper(v), rules.lower(v), rules.num(v), rules.noSpecial(v)]
         .filter(Boolean).length;
 
     const fill = document.getElementById('strengthFill');
@@ -128,7 +130,7 @@ function checkSubmit() {
     const conf = document.getElementById('confirmPwd').value;
     const btn = document.getElementById('btnSubmit');
 
-    const pwdOk = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd);
+    const pwdOk = rules.len(pwd) && rules.upper(pwd) && rules.lower(pwd) && rules.num(pwd) && rules.noSpecial(pwd);
     const confirmOk = pwd === conf && conf.length > 0;
 
     btn.disabled = !(pwdOk && confirmOk);

@@ -88,7 +88,7 @@ class PasswordController extends Controller
             'password_confirmation' => 'required|same:password',
         ], [
             'password.required' => 'O campo senha é obrigatório',
-            'password.regex' => 'A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.',
+            'password.regex' => 'A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número. Não utilize caracteres especiais (@, #, $, *).',
             'password_confirmation.required' => 'O campo confirmação de senha é obrigatório',
             'password_confirmation.same' => 'As senhas devem ser iguais',
         ]);
