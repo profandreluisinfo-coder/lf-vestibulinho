@@ -21,11 +21,14 @@ class FaqController extends Controller
             ->get()
             ->map(fn($faq) => [
                 'id'  => $faq->id,
-                'cat' => $faq->category?->normalized_category,   // ajuste para o nome real da coluna
-                'q'   => $faq->question,   // ajuste para o nome real da coluna
-                'a'   => $faq->answer,     // ajuste para o nome real da coluna
+                'cat' => $faq->category?->normalized_category,
+                'q'   => $faq->question,
+                'a'   => $faq->answer,
             ]);
 
-        return view('guest.faqs.index', compact('faqs'));
+        // Converte para JSON mantendo HTML não escapado
+        $faqsJson = json_encode($faqs->toArray(), 2048 | 64); // JSON_UNESCAPED_HTML | JSON_UNESCAPED_SLASHES
+
+        return view('guest.faqs.index', compact('faqsJson'));
     }
 }

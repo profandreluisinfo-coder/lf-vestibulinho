@@ -68,8 +68,49 @@
 }
 
 .faq-item.open .faq-answer {
-    max-height: 300px;
+    max-height: 1000px;
     padding: .1rem 1.4rem 1.2rem;
+    overflow: visible;
+}
+
+/* Estilos para HTML renderizado do Summernote */
+.faq-answer p,
+.faq-answer ul,
+.faq-answer ol,
+.faq-answer blockquote,
+.faq-answer h1,
+.faq-answer h2,
+.faq-answer h3,
+.faq-answer h4,
+.faq-answer h5,
+.faq-answer h6 {
+    margin: .5rem 0;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+    margin-left: 1.5rem;
+}
+
+.faq-answer li {
+    margin: .25rem 0;
+}
+
+.faq-answer a {
+    color: var(--teal);
+    text-decoration: underline;
+    transition: opacity .2s;
+}
+
+.faq-answer a:hover {
+    opacity: .7;
+}
+
+.faq-answer blockquote {
+    border-left: 4px solid var(--teal);
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--muted);
 }
 
 .btn-faq-more {

@@ -262,7 +262,7 @@
     border-top: 1px solid rgba(0, 168, 150, .2);
     border-bottom: 1px solid rgba(0, 168, 150, .2);
     overflow: hidden;
-    padding: .55rem 0;
+    padding: 1rem 0;
     white-space: nowrap;
 }
 
@@ -484,6 +484,7 @@
     border-color: rgba(0, 168, 150, .25);
     box-shadow: 0 8px 32px rgba(0, 168, 150, .1);
     transform: translateX(0);
+    padding: 1rem 0;
 }
 
 .faq-question {

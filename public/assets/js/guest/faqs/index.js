@@ -295,6 +295,9 @@ function render() {
     // load more
     const loadWrap = document.getElementById('loadMoreWrap');
     loadWrap.style.display = filtered.length > visibleCount ? 'block' : 'none';
+    
+    // Ajusta as alturas dos elementos de resposta
+    setTimeout(adjustFaqAnswerHeights, 50);
 }
 
 function buildFaqItem(f) {
@@ -303,11 +306,24 @@ function buildFaqItem(f) {
     return `
             <div class="faq-item" id="faq-${f.id}">
                 <div class="faq-question" onclick="toggleFaq(this)">
-                    ${q}
+                    <span class="question-text">${q}</span>
                     <div class="faq-icon"><i class="bi bi-plus-lg"></i></div>
                 </div>
                 <div class="faq-answer">${a}</div>
             </div>`;
+}
+
+/* Após renderizar, ajusta max-height dinamicamente */
+function adjustFaqAnswerHeights() {
+    document.querySelectorAll('.faq-answer').forEach(answer => {
+        // Calcula a altura real do conteúdo
+        answer.style.maxHeight = 'none';
+        const fullHeight = answer.scrollHeight;
+        answer.style.maxHeight = '';
+        
+        // Armazena a altura para usar quando abrir
+        answer.dataset.fullHeight = fullHeight;
+    });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -316,9 +332,20 @@ function buildFaqItem(f) {
 function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
     const isOpen = item.classList.contains('open');
+    const answer = item.querySelector('.faq-answer');
+    
     // fecha todos
-    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        const ans = el.querySelector('.faq-answer');
+        ans.style.maxHeight = '0px';
+    });
+    
+    if (!isOpen) {
+        item.classList.add('open');
+        // Define a altura com base no conteúdo real
+        answer.style.maxHeight = (answer.dataset.fullHeight || 300) + 'px';
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════

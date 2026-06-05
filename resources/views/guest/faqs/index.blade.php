@@ -119,7 +119,8 @@
 
 @push('scripts')
     <script>
-        const FAQ_DATA = @json($faqs ?? []);
+        {{-- JSON com HTML não escapado para renderização correta do Summernote --}}
+        const FAQ_DATA = {!! $faqsJson ?? '[]' !!};
     </script>
     <script src="{{ asset('assets/js/guest/faqs/index.js') }}"></script>
 @endpush
