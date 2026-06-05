@@ -44,7 +44,7 @@
     @include('alerts.toasts')
 
     {{-- CONTEÚDO PRINCIPAL --}}
-    @yield('dash-content')
+    @yield('content')
 
     @include('partials.forms.change-password')
 
@@ -54,6 +54,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Validação --}}
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
 
     <script src="{{ asset('assets/js/dash.js') }}" type="module"></script>
 

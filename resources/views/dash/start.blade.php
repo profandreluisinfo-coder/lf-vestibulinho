@@ -2,7 +2,7 @@
 
 @section('page-title', 'Vestibulinho LF ' . $calendar?->year . ' | Área do Candidato')
 
-@section('dash-content')
+@section('content')
 
     <div class="wrapper">
 

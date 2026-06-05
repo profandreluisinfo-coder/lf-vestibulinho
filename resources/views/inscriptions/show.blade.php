@@ -112,7 +112,7 @@
 </style>
 @endpush
 
-@section('dash-content')
+@section('content')
 <div class="container">
 
     {{-- Header --}}

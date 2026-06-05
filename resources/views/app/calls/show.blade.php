@@ -2,7 +2,7 @@
 
 @section('page-title', 'Convocados da Chamada ' . $call_number)
 
-@section('dash-content')
+@section('content')
 
   <div class="container my-4">
     <h3>Convocados da Chamada {{ $call_number }}</h3>

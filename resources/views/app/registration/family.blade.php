@@ -1,8 +1,8 @@
 @extends('layouts.dash')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Filiação')
 
-@section('dash-content')
+@section('content')
 
     <div class="wrapper">
         {{-- Titulo --}}
@@ -168,9 +168,6 @@
 @endsection
 
 @push('plugins')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 @endpush
 

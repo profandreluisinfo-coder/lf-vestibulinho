@@ -21,105 +21,7 @@
     };
 @endphp
 
-@push('styles')
-<style>
-    .review-section {
-        background: var(--color-white);
-        border: 1px solid var(--color-light-mid);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-sm);
-        overflow: hidden;
-        margin-bottom: 1rem;
-    }
-
-    .review-section-header {
-        display: flex;
-        align-items: center;
-        gap: .6rem;
-        padding: .75rem 1.1rem;
-        background: var(--color-light);
-        border-bottom: 1px solid var(--color-light-mid);
-        font-family: var(--font-heading);
-        font-weight: 700;
-        font-size: .85rem;
-        color: var(--color-navy);
-    }
-
-    .review-section-header i {
-        color: var(--color-teal);
-        font-size: 1rem;
-    }
-
-    .review-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: .65rem 1.1rem;
-        font-size: var(--font-size-sm);
-        border-bottom: 1px solid var(--color-light-mid);
-    }
-
-    .review-row:last-child {
-        border-bottom: none;
-    }
-
-    .review-label {
-        color: var(--color-muted);
-        font-weight: 600;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-
-    .review-value {
-        color: var(--color-navy);
-        text-align: right;
-        word-break: break-word;
-    }
-
-    /* Terms box */
-    .terms-box {
-        background: var(--color-white);
-        border: 1px solid var(--color-light-mid);
-        border-radius: var(--radius-lg);
-        padding: 1.25rem;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .terms-box .terms-text {
-        font-size: var(--font-size-xs);
-        color: var(--color-muted);
-        line-height: 1.6;
-        text-align: justify;
-        max-height: 120px;
-        overflow-y: auto;
-        padding-right: .5rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Alert de confirmação */
-    .confirm-banner {
-        background: var(--color-teal-light);
-        border: 1px solid rgba(0,168,150,.25);
-        border-radius: var(--radius-lg);
-        padding: .85rem 1.1rem;
-        display: flex;
-        align-items: center;
-        gap: .7rem;
-        font-size: var(--font-size-sm);
-        color: var(--color-teal-dark);
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-    }
-
-    .confirm-banner i {
-        font-size: 1.2rem;
-        flex-shrink: 0;
-    }
-</style>
-@endpush
-
-@section('dash-content')
+@section('content')
 <div class="wrapper">
 
     {{-- Título --}}
@@ -354,7 +256,7 @@
                 @if ($step6['pne'] == 1)
                     <span class="badge bg-success">Sim</span>
                 @else
-                    <span class="badge bg-secondary">Não</span>
+                    <span class="badge bg-danger">Não</span>
                 @endif
             </span>
         </div>
@@ -465,12 +367,6 @@
 
 </div>
 @endsection
-
-@push('plugins')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
-@endpush
 
 @push('scripts')
     <script src="{{ asset('assets/js/swa/registration/confirm.js') }}"></script>

@@ -2,7 +2,7 @@
 
 @section('page-title', config('app.name') . ' | Calendário')
 
-@section('dash-content')
+@section('content')
 
     @php
         $notice = \App\Models\Notice::first();

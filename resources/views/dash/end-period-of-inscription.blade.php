@@ -2,7 +2,7 @@
 
 @section('page-title', 'Vestibulinho LF')
 
-@section('dash-content')
+@section('content')
 
     <div class="alert alert-danger border-0 rounded-3">
         <h6 class="fw-semibold mb-2">Prezado(a) Candidato(a),</h6>

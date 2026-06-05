@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dash/admin.css') }}">
 @endpush --}}
 
-@section('dash-content')
+@section('content')
 
     @php
         $calendar_active = App\Models\Calendar::first();

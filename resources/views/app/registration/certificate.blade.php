@@ -1,11 +1,11 @@
 @extends('layouts.dash')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Certidão de Nascimento')
 
-@section('dash-content')
+@section('content')
 
     <div class="wrapper">
-        {{-- Titulo --}}
+
         <div class="section-title mb-4">
             <h4>
                 <i class="bi bi-list-check me-2"></i>
@@ -31,7 +31,7 @@
                     </label>
                     <button type="button" class="btn btn-sm btn-link text-decoration-none" data-bs-toggle="modal"
                         data-bs-target="#newCertificateModal">
-                        Ver Modelo <i class="bi bi-search"></i>
+                        Ver Modelo <i class="bi bi-search ms-1"></i>
                     </button>
                 </div>
                 <div class="form-check">
@@ -43,7 +43,7 @@
                     </label>
                     <button type="button" class="btn btn-sm btn-link text-decoration-none" data-bs-toggle="modal"
                         data-bs-target="#oldCertificateModal">
-                        Ver Modelo <i class="bi bi-search"></i>
+                        Ver Modelo <i class="bi bi-search ms-1"></i>
                     </button>
                 </div>
                 @error('certificateModel')
@@ -154,9 +154,6 @@
 @endsection
 
 @push('plugins')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 @endpush
 

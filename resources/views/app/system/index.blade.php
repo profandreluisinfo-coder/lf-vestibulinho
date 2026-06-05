@@ -2,7 +2,7 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Configurações do Sistema')
 
-@section('dash-content')
+@section('content')
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">

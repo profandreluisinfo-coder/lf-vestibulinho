@@ -2,7 +2,7 @@
 
 @section('page-title', 'Erro na Inscrição')
 
-@section('dash-content')
+@section('content')
 
   <div class="row justify-content-center">
     <div class="col-lg-8 col-xl-6">

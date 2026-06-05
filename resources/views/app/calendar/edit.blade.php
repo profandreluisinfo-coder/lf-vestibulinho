@@ -2,7 +2,7 @@
 
 @section('page-title', config('app.name') . ' | Calendário ' . $calendar->year)
 
-@section('dash-content')
+@section('content')
 
     <div class="container">
 

@@ -1,11 +1,11 @@
 @extends('layouts.dash')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Informações Complementares')
 
-@section('dash-content')
+@section('content')
 
     <div class="wrapper">
-        {{-- Titulo --}}
+        
         <div class="section-title mb-4">
             <h4>
                 <i class="bi bi-list-check me-2"></i>
@@ -48,7 +48,7 @@
                 <input list="healthIssues" class="form-control @error('health_issue') is-invalid @enderror"
                     id="health_issue" name="health_issue" value="{{ old('health_issue', session('step6.health_issue')) }}"
                     aria-describedby="msgHealthIssues">
-                <small id="msgHealthIssues" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item de sugestão da lista ou descreva.</small>
+                <small id="msgHealthIssues" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item da lista ou descreva.</small>
 
                 <datalist id="healthIssues">
                     @foreach ($healthIssues as $key => $label)
@@ -99,7 +99,7 @@
                     id="accessibility_description" name="accessibility_description"
                     value="{{ old('accessibility_description', session('step6.accessibility_description')) }}"
                     aria-describedby="msgDisabilities">
-                <small id="msgDisabilities" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item de sugestão da lista  ou descreva.</small>
+                <small id="msgDisabilities" class="text-primary fst-italic"><i class="bi bi-info-circle"></i> Clique para escolher um item da lista  ou descreva.</small>
 
                 <datalist id="disabilities">
                     @foreach ($disabilities as $key => $label)
@@ -174,7 +174,7 @@
 
                 <small id="msgAccessibility" class="text-primary fst-italic">
                     <i class="bi bi-info-circle"></i>
-                    Clique para escolher um item de sugestão da lista ou descreva o recurso de acessibilidade necessário.
+                    Clique para escolher um item da lista ou descreva o recurso de acessibilidade necessário.
                 </small>
 
                 <datalist id="accessibilityResources">
@@ -245,9 +245,6 @@
 @endsection
 
 @push('plugins')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 @endpush
 

@@ -70,6 +70,7 @@ $(document).ready(function () {
             },
             school_year: {
                 required: true,
+                min: 2024,
                 pattern: /^\d{4}$/
             },
         },
@@ -93,6 +94,7 @@ $(document).ready(function () {
             },
             school_year: {
                 required: "* Obrigatório.",
+                min: "* O ano deve ser 2024 ou posterior.",
                 pattern: "* O ano deve conter 4 dígitos."
             },
         },

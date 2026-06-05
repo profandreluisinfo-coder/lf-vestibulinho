@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">
 @endpush
 
-@section('dash-content')
+@section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i>Classificação Geral</h5>

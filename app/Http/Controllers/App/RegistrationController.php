@@ -130,7 +130,7 @@ class RegistrationController extends Controller
             "EM PARQUE BANDEIRANTES II",
             "EM PARQUE DAS NAÇÕES",
             "EM PARQUE RESIDENCIAL REGINA",
-            "EM PROFª MARTHA SMOLII DOMINGUES",
+            "EM PROF MARTHA SMOLII DOMINGUES",
             "EM RAMONA CANHETE PINTO",
             "EM REINO DA GAROTADA",
             "EM SABIDINHO",
@@ -216,9 +216,7 @@ class RegistrationController extends Controller
         if (!session('step5_done')) { // Verifica se o passo 3 foi concluído
             return redirect()->route('step.family');
         }
-        // Título do card-header
-        // $title = "Informações Complementares";
-
+        
         // Array de acessibilidade
         $options = [
             '1' => 'Sim',
@@ -274,21 +272,19 @@ class RegistrationController extends Controller
         ];
 
         $healthIssues = [
-            1  => 'Hipertensão Arterial',
-            2  => 'Diabetes Mellitus',
-            3  => 'Asma',
-            4  => 'Doença Pulmonar Obstrutiva Crônica (DPOC)',
-            5  => 'Depressão',
-            6  => 'Ansiedade',
-            7  => 'Obesidade',
-            8  => 'Colesterol Alto (Dislipidemia)',
-            9  => 'Doença Cardíaca (Cardiopatia)',
-            10 => 'Osteoporose',
-            11 => 'Artrite Reumatoide',
-            12 => 'Alergias',
-            13 => 'Enxaqueca Crônica',
-            14 => 'Câncer',
-            15 => 'Insuficiência Renal Crônica'
+            1 => 'Hipertensão Arterial',
+            2 => 'Diabetes Mellitus - Tipo 1',
+            3 => 'Diabetes Mellitus - Tipo 2',
+            4 => 'Asma',
+            5 => 'Doença Pulmonar Obstrutiva Crônica (DPOC)',
+            6 => 'Depressão',
+            7 => 'Ansiedade',
+            8 => 'Doença Cardíaca (Cardiopatia)',
+            9 => 'Artrite Reumatoide',
+            10 => 'Alergias',
+            11 => 'Enxaqueca Crônica',
+            12 => 'Câncer',
+            13 => 'Insuficiência Renal Crônica'
         ];
 
         return view('app.registration.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));

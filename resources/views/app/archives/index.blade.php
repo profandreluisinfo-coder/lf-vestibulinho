@@ -2,7 +2,7 @@
 
 @section('page-title', 'Vestibulinho LF')
 
-@section('dash-content')
+@section('content')
 
     <div class="container">
 

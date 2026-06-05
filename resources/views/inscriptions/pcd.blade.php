@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endpush
 
-@section('dash-content')
+@section('content')
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
