@@ -2,10 +2,6 @@
 
 @section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Painel Administrativo')
 
-{{-- @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/dash/admin.css') }}">
-@endpush --}}
-
 @section('content')
 
     @php
@@ -28,7 +24,7 @@
         $steps_pct = round(($steps_done / $steps_total) * 100);
     @endphp
 
-    @include('partials.dash.tasks')    
+    @include('partials.dash.tasks')
 
     @if ($calendar_active?->hasInscriptionStarted())
 

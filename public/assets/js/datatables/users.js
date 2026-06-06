@@ -20,9 +20,9 @@ $(document).ready(function () {
     // Filtro personalizado
     $('#filterVerified').on('change', function () {
         if (this.checked) {
-            table.column(1).search('SIM').draw();
+            table.column(2).search('Sim').draw();
         } else {
-            table.column(1).search('').draw();
+            table.column(2).search('').draw();
         }
     });
 });

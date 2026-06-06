@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', 'Painel Administrativo')</title>
+    <title>@yield('page-title', 'Painel Administrativo | Vestibulinho LF')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -44,6 +44,17 @@
         <nav class="sidebar-menu">
 
             <div class="menu-section">
+                <div class="menu-section-title">Principal</div>
+                <div class="menu-item">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class="bi bi-house-door"></i>
+                        <span>Início</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-section">
                 <div class="menu-section-title">Comunicados</div>                
                 <div class="menu-item">
                     <a href="{{ route('app.communicates.index') }}"
@@ -59,18 +70,7 @@
                         <span>Novo comunicado</span>
                     </a>
                 </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">Principal</div>
-                <div class="menu-item">
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="menu-link {{ request()->routeIs('painel') ? 'active' : '' }}">
-                        <i class="bi bi-house-door"></i>
-                        <span>Início</span>
-                    </a>
-                </div>
-            </div>
+            </div>            
 
             <div class="menu-section">
                 <div class="menu-section-title">Vestibulinho</div>
@@ -292,7 +292,7 @@
 
         @include('alerts.toasts')
 
-        @yield('dash-content')
+        @yield('content')
 
         {{-- Modal Alterar Senha --}}
         @include('partials.forms.change-password')
