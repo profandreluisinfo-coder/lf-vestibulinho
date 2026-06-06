@@ -48,7 +48,7 @@ class RegisterController extends Controller
      * @param UserService $userService
      * @return RedirectResponse|View
      */
-    public function store(Request $request, UserService $userService)
+    public function store(Request $request, UserService $userService): RedirectResponse|View
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -65,8 +65,8 @@ class RegisterController extends Controller
 
         $result = $userService->register($credentials);
 
-        if (!$result['success']) {
-            return alertError($result['message']);
+        if (!($result['success'])) {
+            return redirect()->back()->with('error', $result['message']);
         }
 
         return view('register.email-sent', ['email' => $result['user']->email]);

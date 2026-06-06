@@ -78,11 +78,20 @@
     </div>
 
     <div class="form-card">
+        {{-- Mensagem de logout bem‑sucedido --}}
+        @if (session('success'))
+        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span>{{ session('success') }}</span>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+        @endif
+
         <!-- Topo -->
         <div class="form-top">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <a href="{{ route('home') }}" class="back-link">
-                    <i class="bi bi-arrow-left"></i> Voltar ao site
+                <a href="{{ url()->previous() }}" class="back-link">
+                    <i class="bi bi-arrow-left"></i> Voltar
                 </a>
                 <div class="form-badge">
                     <i class="bi bi-person-lock"></i> Área do Administrador

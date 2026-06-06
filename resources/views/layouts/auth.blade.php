@@ -23,7 +23,7 @@
 
 <body>    
 
-    @include('alerts.toasts')
+    {{-- @include('alerts.toasts') --}}
 
     <div class="page-wrapper">
 

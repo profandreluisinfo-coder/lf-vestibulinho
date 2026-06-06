@@ -60,8 +60,8 @@
 
         <!-- Topo -->
         <div class="form-top">
-            <a href="{{ route('home') }}" class="back-link">
-                <i class="bi bi-arrow-left"></i> Voltar ao site
+            <a href="{{ url()->previous() }}" class="back-link">
+                <i class="bi bi-arrow-left"></i> Voltar
             </a>
             <h1>Registrar<br>Dados de Acesso</h1>
             <p>Crie seu acesso para acompanhar o Vestibulinho 2025 pela Área do Candidato.</p>
@@ -75,8 +75,17 @@
             </button>
         </div>
 
+        {{-- Mensagem de ação mal‑sucedida --}}
+        @if (session('error'))
+        <div class="alert alert-danger border d-flex align-items-center alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span>{{ session('error') }}</span>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+        @endif
+
         <!-- Formulário -->
-        <form method="POST" action="{{ route('register') }}" style="display:flex;flex-direction:column;gap:1.1rem;">
+        <form method="POST" action="{{ route('register') }}" style="display:flex;flex-direction:column;">
 
             @csrf
             <!-- E-mail -->
