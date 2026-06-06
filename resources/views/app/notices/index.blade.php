@@ -39,14 +39,6 @@
                                         class="badge bg-{{ $settings->isNoticeEnabled() == '1' ? 'success' : 'warning' }}">{{ $settings->isNoticeEnabled() == '1' ? 'Publicado' : 'Publicar' }}</span>
                                 </td>
                                 <td>
-
-                                    {{-- Botão de publicar (alterar status) --}}
-                                    <form id="publish-notice-form-{{ $settings->id }}"
-                                        action="{{ route('app.system.publish.notice') }}" method="POST" class="d-none">
-                                        @csrf
-                                        @method('PUT')
-                                    </form>
-
                                     {{-- Botão de publicação --}}
                                     <button type="button"
                                         class="btn btn-sm btn-{{ $settings->isNoticeEnabled() ? 'secondary' : 'success' }}"
@@ -56,6 +48,23 @@
                                         {{ $settings->isNoticeEnabled() ? 'Ocultar' : 'Publicar' }}
                                     </button>
 
+                                    {{-- Botão de publicar (alterar status) --}}
+                                    <form id="publish-notice-form-{{ $settings->id }}"
+                                        action="{{ route('app.system.publish.notice') }}" method="POST" class="d-none">
+                                        @csrf
+                                        @method('PUT')
+                                    </form>                                    
+
+                                    {{-- Botão de edição --}}
+                                    <a href="#"
+                                        class="btn btn-sm btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editNoticeModal"
+                                        data-id="{{ $notice->id }}"
+                                        data-file="{{ $notice->file }}">
+                                            <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    
                                     {{-- Botão de excluir --}}
                                     <form id="delete-notice-form-{{ $notice->id }}"
                                         action="{{ route('app.notices.destroy', $notice->id) }}" method="POST"
@@ -98,7 +107,7 @@
 
         @endif
 
-        {{-- Modal de definição de local --}}
+        {{-- Modal de cadaastro --}}
         <div class="modal fade" id="setNewNotice" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="modalLabel" aria-hidden="true" data-bs-scroll="true">
             <div class="modal-dialog">
@@ -145,6 +154,53 @@
             </div>
         </div>
 
+        {{-- Modal de edição --}}
+        <div class="modal fade" id="editNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalLabel" aria-hidden="true" data-bs-scroll="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-light">
+                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Editar
+                            Edital</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+
+                                <form id="form-file" action="{{ route('app.notices.update') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input type="hidden" id="notice_id" name="notice_id">
+
+                                    {{-- Arquivo relacionado --}}
+                                    <div class="form-floating mb-3">
+                                        <input type="file" name="path"
+                                            class="form-control @error('path') is-invalid @enderror" id="path"
+                                            placeholder="Endereço">
+                                        <label for="path" class="form-label required">Arquivo relacionado</label>
+                                        @error('path')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>Salvar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
@@ -153,4 +209,18 @@
     <script src="{{ asset('assets/js/rules/notice/index.js') }}"></script>
     <script src="{{ asset('assets/js/swa/notice/delete.js') }}"></script>
     <script src="{{ asset('assets/js/swa/notice/publish.js') }}"></script>
+    <script>
+        const editModal = document.getElementById('editNoticeModal');
+
+editModal.addEventListener('show.bs.modal', function (event) {
+
+    const button = event.relatedTarget;
+
+    const noticeId = button.getAttribute('data-id');
+
+    document.getElementById('notice_id').value = noticeId;
+
+    console.log(noticeId);
+});
+    </script>
 @endpush

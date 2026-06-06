@@ -14,8 +14,9 @@
 
             <div class="card-body">
 
-                <form id="courseForm" action="{{ route('app.courses.edit', $course->id) }}" method="POST">
+                <form id="courseForm" action="{{ route('app.courses.update', $course->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
 
                     <div class="form-group mb-3">
                         <label for="name" class="form-label required">Nome:</label>

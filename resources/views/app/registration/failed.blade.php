@@ -1,6 +1,6 @@
-@extends('layouts.user.master')
+@extends('layouts.dash')
 
-@section('page-title', 'Erro na Inscrição')
+@section('page-title', 'Vestibulinho LF - Erro na Inscrição')
 
 @section('content')
 
@@ -132,7 +132,7 @@
               </p>
             </div>
             <div class="col-md-4 text-md-end">
-              <a href="https://leandrofranceschini.com.br/#form-contato" class="btn btn-outline-primary btn-sm" target="_blank">
+              <a href="https://leandrofranceschini.com.br/contato" class="btn btn-outline-primary btn-sm" target="_blank">
                 <i class="bi bi-headset me-1"></i>
                 Contatar Suporte
               </a>

@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Models\Notice;
-use App\Models\Calendar;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Calendar;
+use App\Models\Notice;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class CalendarController extends Controller
 {
     /**
-     * Exibe uma lista com as datas do vestibulinho.
+     * Exibe o formulário do calendário (criar ou editar).
+     * Como só existe um calendário no sistema, busca o primeiro ou cria um vazio.
      * 
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function edit(): View
     {
+        // Busca o único registro ou cria um objeto vazio
+        //$calendar = Calendar::first() ?? new Calendar();
+
         return view(
-            'app.calendar.index'
+            'app.calendar.edit'
         );
     }
 
@@ -29,7 +34,7 @@ class CalendarController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function save(Request $request)
+    public function update(Request $request)
     {
         try {
 
@@ -96,26 +101,22 @@ class CalendarController extends Controller
 
         if ($calendar) {
             $calendar->update($validated);
-            return alertSuccess('Calendário definido com sucesso!', 'app.calendar.index');
+            return alertSuccess('Calendário definido com sucesso!', 'app.calendar.show');
         }
 
         Calendar::create($validated);
-        return alertSuccess('Calendário definido com sucesso!', 'app.calendar.index');
+        return alertSuccess('Calendário definido com sucesso!', 'app.calendar.show');
     }
 
     /**
-     * Exibe o formulário do calendário (criar ou editar).
-     * Como só existe um calendário no sistema, busca o primeiro ou cria um vazio.
+     * Exibe uma lista com as datas do vestibulinho.
      * 
      * @return \Illuminate\View\View
      */
-    public function edit()
+    public function show(): View
     {
-        // Busca o único registro ou cria um objeto vazio
-        //$calendar = Calendar::first() ?? new Calendar();
-
         return view(
-            'app.calendar.edit'
+            'app.calendar.show'
         );
     }
 }

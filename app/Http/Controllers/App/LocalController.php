@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Models\ExamResult;
+use App\Http\Controllers\Controller;
 use App\Models\ExamLocation;
+use App\Models\ExamResult;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 class LocalController extends Controller
 {
@@ -17,7 +19,7 @@ class LocalController extends Controller
      *
      * @return View A view que exibe a lista de locais de exames.
      */
-    public function index()
+    public function index(): View
     {
         // Obter todos as locais de prova
         $locations = ExamLocation::all();
@@ -36,7 +38,7 @@ class LocalController extends Controller
      *
      * @return RedirectResponse Uma resposta de redirecionamento para a página anterior.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'name' => 'required|max:100',
@@ -79,7 +81,7 @@ class LocalController extends Controller
      * @param int $id ID do local de prova.
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $location = ExamLocation::find($id);
 
@@ -98,7 +100,7 @@ class LocalController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $location = ExamLocation::find($id);
         $location->name = $this->stringToUpper($request->name);

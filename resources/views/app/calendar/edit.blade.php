@@ -19,8 +19,9 @@
 
                     <div class="card-body p-4">
 
-                        <form id="form-calendar" action="{{ route('app.calendar.save') }}" method="POST">
+                        <form id="form-calendar" action="{{ route('app.calendar.update') }}" method="POST">
                             @csrf
+                            @method('PUT')
 
                             {{-- Seção: Informações Básicas --}}
                             <div class="border-start border-primary border-4 ps-3 mb-4">
@@ -227,7 +228,7 @@
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                 </button>
 
-                                <a href="{{ route('app.calendar.index') }}" class="btn btn-secondary btn-sm">
+                                <a href="{{ route('app.calendar.show') }}" class="btn btn-secondary btn-sm">
                                     <i class="bi bi-x-circle me-1"></i>Cancelar
                                 </a>
 

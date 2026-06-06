@@ -82,7 +82,7 @@
                     </button>
                     <div class="dropdown-menu-custom {{ request()->routeIs(['app.calendar.*', 'app.courses.*', 'app.notices.*', 'app.faqs.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
-                        <a href="{{ route('app.calendar.index') }}"
+                        <a href="{{ route('app.calendar.show') }}"
                             class="dropdown-item-custom {{ request()->routeIs('app.calendar.*') ? 'active' : '' }}">
                             <i class="bi bi-calendar-event me-1"></i> Calendário
                         </a>
@@ -114,7 +114,7 @@
                     </button>
                     <div class="dropdown-menu-custom {{ request()->routeIs('users.*') ? 'show' : '' }}"
                         id="menuUsuarios">
-                        <a href="{{ route('users.index') }}"
+                        <a href="{{ route('app.users.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('users.index') ? 'active' : '' }}">
                             <i class="bi bi-people me-1"></i> Lista de Usuários
                         </a>
@@ -169,7 +169,7 @@
                         </a>
                         <a href="javascript:void(0)" id="exportLink"
                             class="dropdown-item-custom {{ request()->routeIs('export.excel') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('export.excel') }}')">
+                            onclick="handleExport(event, '{{ route('app.export.excel') }}')">
                             <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                         </a>
                         <a href="{{ route('app.archives.index') }}"
@@ -315,7 +315,7 @@
                     Rápidas</h6>
                 <div class="row g-3">
                     <div class="col-6">
-                        <a href="{{ route('app.calendar.index') }}" class="offcanvas-card">
+                        <a href="{{ route('app.calendar.show') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #dbeafe; color: #2563eb;">
                                 <i class="bi bi-calendar-event"></i>
                             </div>
@@ -323,7 +323,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('users.index') }}" class="offcanvas-card">
+                        <a href="{{ route('app.users.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fce7f3; color: #db2777;">
                                 <i class="bi bi-people"></i>
                             </div>

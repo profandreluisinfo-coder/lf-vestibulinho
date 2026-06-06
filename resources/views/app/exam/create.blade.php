@@ -144,6 +144,31 @@
 
             </div>
 
+            @if ($examInfo)
+                
+                <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 mt-4 p-3" role="alert">
+
+                    <div class="me-3 fs-3" aria-hidden="true">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading mb-2">Informação Importante</h5>
+                        <p class="mb-0">
+                            Para agendar uma nova prova, clique no botão <i class="bi bi-calendar2-week me-1"></i>Agendar
+                            Prova. Este procedimento irá substituir o agendamento anterior.
+                        </p>
+                        <p class="mb-0 mt-2 small opacity-75">
+                            Em caso de dúvidas, entre em contato com o suporte técnico.
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close ms-3" aria-label="Fechar alerta"
+                        data-bs-dismiss="alert"></button>
+
+                </div>
+            @endif
+
         @endif
 
         {{-- Exibição dos dados cadastrados --}}
@@ -176,32 +201,7 @@
 
                 </tbody>
 
-            </table>
-
-            @if ($examInfo)
-                
-                <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 mt-4 p-3" role="alert">
-
-                    <div class="me-3 fs-3" aria-hidden="true">
-                        <i class="bi bi-info-circle-fill"></i>
-                    </div>
-
-                    <div class="flex-grow-1">
-                        <h5 class="alert-heading mb-2">Informação Importante</h5>
-                        <p class="mb-0">
-                            Para agendar uma nova prova, clique no botão <i class="bi bi-calendar2-week me-1"></i>Agendar
-                            Prova. Este procedimento irá substituir o agendamento anterior.
-                        </p>
-                        <p class="mb-0 mt-2 small opacity-75">
-                            Em caso de dúvidas, entre em contato com o suporte técnico.
-                        </p>
-                    </div>
-
-                    <button type="button" class="btn-close ms-3" aria-label="Fechar alerta"
-                        data-bs-dismiss="alert"></button>
-
-                </div>
-            @endif
+            </table>           
 
         </div>
 

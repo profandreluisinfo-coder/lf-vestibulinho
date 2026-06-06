@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\Controller;
 use App\Models\Notice;
+use App\Models\Setting;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
-use App\Models\Setting;
+use Illuminate\View\View;
 
 class NoticeController extends Controller
 {
@@ -15,7 +17,7 @@ class NoticeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         // Obter todos os arquivos de edital
         $notices = Notice::all();
@@ -34,7 +36,7 @@ class NoticeController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'path' => 'required|file|mimes:pdf'
@@ -66,45 +68,54 @@ class NoticeController extends Controller
         return alertSuccess('Edital cadastrado com sucesso!', 'app.notices.index');
     }
 
-    /**
-     * Atualiza um arquivo de edital.
-     *
-     * Valida as informações enviadas pelo formulário e salva o arquivo no
-     * disco 'public' na pasta 'notices'. Além disso, salva as informações do
-     * arquivo no banco de dados.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Notice $notice
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Notice $notice)
+
+    public function update(Request $request): RedirectResponse
     {
+        $notice = Notice::findOrFail($request->notice_id);
+
         $request->validate([
-            'file' => 'nullable|file|mimetypes:application/pdf'
+            'path' => 'nullable|file|mimetypes:application/pdf',
         ], [
-            'file.file' => 'O arquivo de prova deve ser um arquivo.',
-            'file.mimetypes' => 'O arquivo de prova deve ser um PDF.',
+            'path.file' => 'O arquivo de edital deve ser um arquivo.',
+            'path.mimetypes' => 'O arquivo de edital deve ser um PDF.',
         ]);
 
-        $file = $request->file('file');
+        // Se nenhum arquivo foi enviado
+        if (!$request->hasFile('path')) {
+            return alertWarning('Nenhum arquivo foi enviado.', 'app.notices.index');
+        }
 
-        // Pega o nome original do arquivo (sem espaços)
-        $originalName = str_replace(' ', '_', $file->getClientOriginalName());
+        $file = $request->file('path');
 
-        // Gera o nome final: ano_nomeoriginal_timestamp.pdf
-        $fileName = $request->year . '_' . pathinfo($originalName, PATHINFO_FILENAME)
+        // Remove o arquivo antigo, se existir
+        if ($notice->file && Storage::disk('public')->exists($notice->file)) {
+            Storage::disk('public')->delete($notice->file);
+        }
+
+        // Nome original sem espaços
+        $originalName = str_replace(
+            ' ',
+            '_',
+            $file->getClientOriginalName()
+        );
+
+        // Nome final
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME)
             . '_' . time()
             . '.' . $file->getClientOriginalExtension();
 
-        // Salva no disco 'public' na pasta archives
-        $path = $file->storeAs('notices', $fileName, 'public');
+        // Salva o novo arquivo
+        $filePath = $file->storeAs('notices', $fileName, 'public');
 
-        // Salva no banco apenas o caminho relativo
-        Notice::where('id', $notice->id)->update([
-            'file' => $path, // ex: notices/prova_1691778382.pdf
+        // Atualiza o registro
+        $notice->update([
+            'file' => $filePath,
         ]);
 
-        return alertSuccess('Edital atualizado com sucesso!', 'app.notices.index');
+        return alertSuccess(
+            'Edital atualizado com sucesso!',
+            'app.notices.index'
+        );
     }
 
     /**

@@ -120,11 +120,11 @@
                                             class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}"
                                             title="{{ $faq->status ? 'Não Publicar' : 'Publicar' }}"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
-                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i>
+                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i> {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
                                         </button>
 
                                         <a href="{{ route('app.faqs.edit', $faq->id) }}" class="btn btn-sm btn-primary">
-                                            <i class="bi bi-pencil-square" title="Editar"></i>
+                                            <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                         </a>
 
                                         <form id="delete-faq-form-{{ $faq->id }}"
@@ -135,7 +135,7 @@
                                         </form>
                                         <button type="button" class="btn btn-sm btn-danger"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="bi bi-trash"></i> Excluir
                                         </button>
                                     @endcan
 

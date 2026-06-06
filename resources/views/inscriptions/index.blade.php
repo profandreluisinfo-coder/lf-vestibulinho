@@ -162,7 +162,7 @@
                 `);
 
                 // Monta a URL com o filtro de busca (se houver)
-                let pdfUrl = "{{ route('pdf.inscriptions') }}";
+                let pdfUrl = "{{ route('app.pdf.inscriptions') }}";
                 if (searchValue) {
                     pdfUrl += '?search=' + encodeURIComponent(searchValue);
                 }

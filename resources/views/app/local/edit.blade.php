@@ -15,6 +15,8 @@
 
             <form id="exam-location" action="{{ route('app.local.edit', $location->id) }}" method="POST" novalidate>
                 @csrf
+                @method('PUT')
+                
                 {{-- Nome --}}
                 <div class="form-floating mb-3 ">
                     <input

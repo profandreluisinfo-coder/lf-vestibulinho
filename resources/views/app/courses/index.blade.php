@@ -73,7 +73,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo</h5>
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo Curso</h5>
                     </div>
                     <div class="modal-body">
 
@@ -82,6 +82,7 @@
 
                                 <form id="courseForm" action="{{ route('app.courses.store') }}" method="POST">
                                     @csrf
+                                    
                                     <div class="form-group mb-3">
                                         <label for="name" class="form-label required">Nome:</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"

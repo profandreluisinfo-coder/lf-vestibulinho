@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CourseController extends Controller
 {
     /**
      * Exibe a lista de cursos cadastrados.
      */
-    public function index()
+    public function index(): View
     {
         // Obter todos os cursos
         $courses = Course::all();
@@ -35,7 +36,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         return view('app.courses.edit', ['course' => Course::findOrFail($id)]);
     }
@@ -43,7 +44,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CourseRequest $request, string $id)
+    public function update(CourseRequest $request, string $id): RedirectResponse
     {
         Course::where('id', $id)->update($request->only(['vacancies']));
 
@@ -53,12 +54,11 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         // Excluir o curso com uma consulta única
         Course::where('id', $id)->delete();
 
-        // return redirect()->route('app.courses.index')->with('success', 'Curso excluido com sucesso!');
         return alertSuccess('Curso excluído com sucesso!', 'app.courses.index');
     }
 }

@@ -21,13 +21,15 @@
                     id="edit-faq-form-{{ $faq->id }}">
                     @csrf
 
+                    @method('PUT')
+
                     <div class="form-group mb-3">
 
                         <label for="category" class="form-label required">
                             Categoria:
                         </label>
 
-                        <input type="text" class="form-control" id="category" name="category"
+                        <input type="text" class="form-control" id="category" name="category" value="{{ $faq->category->category }}"
                             list="categoriesList" aria-describedby="categoryHelp">
 
                         <datalist id="categoriesList">

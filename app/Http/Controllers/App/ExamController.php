@@ -20,7 +20,7 @@ class ExamController extends Controller
      * @return \Illuminate\View\View
      */
     // public function listSchedule()
-    public function index()
+    public function index(): View
     {
         $candidates = DB::table('exam_results')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')

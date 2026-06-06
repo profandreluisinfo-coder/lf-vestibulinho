@@ -70,14 +70,14 @@
                             <td>
                                 @if ($user->user_detail?->pne_report && $user->user_detail?->pne_report_accepted === null)
                                     <button class="btn btn-sm btn-success accept-report"
-                                        data-url="{{ route('deferrals.accept.report', $user->id) }}"
+                                        data-url="{{ route('app.deferrals.accept.report', $user->id) }}"
                                         title="Deferir">
 
                                         <i class="bi bi-check me-1"></i> Deferir
                                     </button>
 
                                     <button class="btn btn-sm btn-danger reject-report"
-                                        data-url="{{ route('deferrals.reject.report', $user->id) }}"
+                                        data-url="{{ route('app.deferrals.reject.report', $user->id) }}"
                                         title="Indeferir">
 
                                         <i class="bi bi-x me-1"></i> Indeferir

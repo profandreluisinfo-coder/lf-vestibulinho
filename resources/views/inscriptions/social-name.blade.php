@@ -74,14 +74,14 @@
                             <td>
                                 @if ($user->authorization && $user->authorization_accepted === null)
                                     <button class="btn btn-sm btn-success accept-social-name mb-1"
-                                        data-url="{{ route('deferrals.accept.authorization', $user->id) }}"
+                                        data-url="{{ route('app.deferrals.accept.authorization', $user->id) }}"
                                         title="Deferir">
 
                                         <i class="bi bi-check me-1"></i> Deferir
                                     </button>
 
                                     <button class="btn btn-sm btn-danger reject-social-name"
-                                        data-url="{{ route('deferrals.reject.authorization', $user->id) }}"
+                                        data-url="{{ route('app.deferrals.reject.authorization', $user->id) }}"
                                         title="Indeferir">
 
                                         <i class="bi bi-x me-1"></i> Indeferir

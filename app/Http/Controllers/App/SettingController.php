@@ -145,11 +145,11 @@ class SettingController extends Controller
 
         if (Setting::first()->calendar) {
             // return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
-            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'app.calendar.index');
+            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'app.calendar.show');
         }
 
         // return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
-        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'app.calendar.index');
+        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'app.calendar.show');
     }
 
     /**

@@ -376,13 +376,13 @@ class RegistrationController extends Controller
         } catch (QueryException $e) {
 
             if (str_contains($e->getMessage(), 'SQLSTATE[22001]')) {
-                return redirect()->route('step.failed')
+                return redirect()->route('failed')
                     ->with(
                         'error',
                         'Um ou mais campos excedem o tamanho permitido. Corrija os dados e tente novamente.'
                     );
 
-                return redirect()->route('step.failed')->with(
+                return redirect()->route('failed')->with(
                     'error',
                     'Um ou mais campos excedem o tamanho permitido. Corrija os dados e tente novamente.',
                 );
@@ -392,7 +392,7 @@ class RegistrationController extends Controller
                 throw $e;
             }
 
-            return redirect()->route('step.failed')->with([
+            return redirect()->route('failed')->with([
                 'status' => [
                     'alert-type' => 'danger',
                     'message' => 'Erro ao salvar os dados. Verifique se todos os campos estão corretos.',
@@ -400,7 +400,7 @@ class RegistrationController extends Controller
             ]);
         } catch (\Exception $e) {
 
-            return redirect()->route('step.failed')->with(
+            return redirect()->route('failed')->with(
                 'danger',
                 $e->getMessage() === 'Inscrição já realizada.'
                     ? 'Você já se inscreveu.'
