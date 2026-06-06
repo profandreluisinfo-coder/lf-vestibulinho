@@ -59,7 +59,7 @@
                                 <span class="d-none">{{ $user->email_verified_at ? 'Sim' : 'Não' }}</span>
                             </td>                            
                             <td>
-                                <i class="bi {{ $user->inscription?->id ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="{{ $user->email_verified_at ? 'Sim' : 'Não' }}"></i>
+                                <i class="bi {{ $user->inscription?->id ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="{{ $user->inscription?->id ? 'Sim' : 'Não' }}"></i>
                             </td>
                             <td>
                                 {{ $user->created_at->format('d/m/Y') }}
