@@ -1,0 +1,98 @@
+/* Styles específicos para a página de Classificação Geral */
+
+/* Container e cartão */
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Cabeçalho da tabela fixo para facilitar scroll */
+#classification thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #f8f9fa;
+    border-bottom: 2px solid rgba(0,0,0,0.06);
+}
+
+/* Hover e linhas alternadas para melhor leitura */
+#classification tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+#classification tbody tr:nth-child(even) {
+    background-color: #fbfcfd;
+}
+#classification tbody tr:hover {
+    background-color: rgba(13,110,253,0.04);
+}
+
+/* Ajuste de paddings e fonte para melhor legibilidade */
+#classification th, #classification td {
+    padding: 0.55rem 0.75rem;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+/* Pequeno destaque ao focar na busca */
+#search:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.12);
+    border-color: #0d6efd;
+}
+
+/* Ajustes para o caption */
+#classification caption {
+    caption-side: top;
+    text-align: left;
+    padding-bottom: 0.5rem;
+    color: #6c757d;
+}
+
+/* Forçar largura mínima nas colunas importantes */
+#classification th:nth-child(2),
+#classification td:nth-child(2) {
+    min-width: 90px;
+}
+
+#classification th:nth-child(3),
+#classification td:nth-child(3) {
+    min-width: 220px;
+}
+
+/* Melhor contraste para badges dentro da tabela */
+#classification .badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.5em;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+}
+
+/* Espaçamento entre linhas para facilitar leitura */
+#classification tbody tr {
+    line-height: 1.25;
+}
+
+/* Scrollbar customizada (WebKit) */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.12);
+    border-radius: 6px;
+}
+
+/* Melhor contraste para o card e legenda */
+.card {
+    background: #ffffff;
+}
+
+/* Pequenas melhorias para telas pequenas */
+@media (max-width: 575px) {
+    #classification th, #classification td {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.45rem;
+    }
+    .section-title {
+        font-size: 1.15rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+}
