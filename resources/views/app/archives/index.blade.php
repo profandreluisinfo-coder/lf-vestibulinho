@@ -57,13 +57,13 @@
                             <td scope="row">{{ $file->year }}</td>
                             <td>
                                 <a href="{{ asset('storage/' . $file->file) }}" target="_blank">
-                                    Vestibulinho {{ $file->year }}
+                                    Vestibulinho {{ $file->year }} <i class="bi bi-box-arrow-up-right ms-2"></i>
                                 </a>
                             </td>
                             <td>
                                 @if ($file->answer?->file)
                                     <a href="{{ asset('storage/' . $file->answer->file) }}" target="_blank">
-                                        Gabarito
+                                        Gabarito <i class="bi bi-box-arrow-up-right ms-2"></i>
                                     </a>
                                 @else
                                     <span class="text-danger">-</span>

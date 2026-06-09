@@ -9,7 +9,7 @@
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/guest/home/archives.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/guest/archives.css') }}" />
 @endpush
 
 {{-- ══════════════════════════════════════════════════════════════
@@ -62,10 +62,11 @@
                             </div>
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
-
+                        @if ($show && $open)
                         <a href="{{ route('register') }}" class="btn-inscricao">
                             <i class="bi bi-pencil-square"></i> Fazer Inscrição
                         </a>
+                        @endif
                     </div>
                 </div>
 

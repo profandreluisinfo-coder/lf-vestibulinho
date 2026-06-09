@@ -13,8 +13,8 @@
                         100% Online · Gratuito
                     </div>
                     <h1 class="mb-3">
-                        <em>Vestibulinho LF</em>@if ($show && $open){{ ' ' .$calendar?->year }}.<br>@endif
-                        Sua carreira começa<br>aqui.
+                        <em>Vestibulinho LF</em>@if ($show && $open){{ ' ' .$calendar?->year }}<br>@endif
+                        . Sua carreira começa<br>aqui.
                     </h1>
                     <p class="hero-sub mb-4">
                         4 cursos técnicos gratuitos. Uma oportunidade real de transformar<br class="d-none d-md-block">
@@ -27,7 +27,7 @@
                             </a>
                         @else
                             <span class="btn-cta-main unavailable">
-                                <i class="bi bi-dash-circle"></i> Inscrições (Aguardando Abertura)
+                                <i class="bi bi-dash-circle"></i> Inscrições Encerradas
                             </span>
                         @endif
                         <a href="#cursos" class="btn-hero-outline">

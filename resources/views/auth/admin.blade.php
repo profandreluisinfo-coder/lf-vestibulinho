@@ -90,8 +90,8 @@
         <!-- Topo -->
         <div class="form-top">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <a href="{{ url()->previous() }}" class="back-link">
-                    <i class="bi bi-arrow-left"></i> Voltar
+                <a href="{{ route('home') }}" class="back-link">
+                    <i class="bi bi-arrow-left"></i> Voltar ao site
                 </a>
                 <div class="form-badge">
                     <i class="bi bi-person-lock"></i> Área do Administrador

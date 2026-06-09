@@ -60,8 +60,8 @@
 
         <!-- Topo -->
         <div class="form-top">
-            <a href="{{ url()->previous() }}" class="back-link">
-                <i class="bi bi-arrow-left"></i> Voltar
+            <a href="{{ route('home') }}" class="back-link">
+                <i class="bi bi-arrow-left"></i> Voltar ao site
             </a>
             <h1>Registrar<br>Dados de Acesso</h1>
             <p>Crie seu acesso para acompanhar o Vestibulinho 2025 pela Área do Candidato.</p>

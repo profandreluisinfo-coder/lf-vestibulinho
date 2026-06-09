@@ -152,10 +152,11 @@ class Calendar extends Model
      */
     public function isInscriptionOpen(): bool
     {
+        // Verifica se as datas de início e fim das inscrições foram definidas
         if (!$this->inscription_start || !$this->inscription_end) {
             return false;
         }
-
+        // Verifica se a data atual está entre a data de início e fim das inscrições
         return now()->between(
             $this->inscription_start->startOfDay(),
             $this->inscription_end->endOfDay()

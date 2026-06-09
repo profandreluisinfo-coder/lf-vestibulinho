@@ -79,7 +79,7 @@ class ArchiveController extends Controller
             'file' => $pathForArchive, // ex: archives/2025_prova_1691778382.pdf
             'year' => $request->year,
             'status' => false,
-            'user_id' => Auth::user()->id(),
+            'user_id' => auth()->user()->id
         ]);
 
         // Verificar se o gabarito foi enviado

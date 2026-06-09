@@ -1,8 +1,11 @@
-// ✅ Função JavaScript para confirmação de finalização da chamada
 function confirmFinalize(callListId) {
+
     Swal.fire({
         title: 'Tem certeza?',
-        text: 'Essa ação não poderá ser desfeita. Os candidatos receberão uma notificação por e-mail.',
+        html: `
+            Essa ação não poderá ser desfeita.<br>
+            Os candidatos receberão uma notificação por e-mail.
+        `,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#198754',
@@ -11,7 +14,9 @@ function confirmFinalize(callListId) {
         cancelButtonText: 'Cancelar',
     }).then((result) => {
         if (result.isConfirmed) {
-            // Mostra alerta de carregamento
+
+            // console.log('ID enviado:', callListId);
+
             Swal.fire({
                 title: 'Finalizando...',
                 text: 'Por favor, aguarde',
@@ -22,7 +27,6 @@ function confirmFinalize(callListId) {
                 }
             });
 
-            // Aqui você executa sua ação
             document.getElementById(`finalize-form-${callListId}`).submit();
         }
     });

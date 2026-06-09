@@ -28,11 +28,11 @@
         </div>
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-
+            @if ($callLists->count() > 0)
             <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="bi bi-bar-chart-fill me-2"></i> Convocados por Curso
             </button>
-
+            @endif
             <!-- The Modal -->
             <div class="modal" id="myModal">
                 <div class="modal-dialog modal-lg">
@@ -189,7 +189,7 @@
                     @endforelse
 
                 </tbody>
-
+                @if ($callLists->count() > 0)
                 <tfooter>
                     <tr class="table-success">
                         <th scope="col">Total: {{ $callLists->count() }}</th>
@@ -200,7 +200,7 @@
                         <th scope="col"></th>
                     </tr>
                 </tfooter>
-
+                @endif
             </table>
         </div>
 
@@ -221,12 +221,6 @@
                                 $last_call = App\Models\Call::orderBy('call_number', 'desc')->first();
                                 $amount = $last_call?->amount ?? 0;
                                 $number_of_pcd = App\Models\Call::countPcdInLastCall();
-                                // Total de convocados até o momento por chamada
-                                // $total = 0;
-                                // $soma = 0;
-                                // foreach ($total as $key => $value) {
-                                //     $soma += $value;
-                                // }
                             @endphp
 
                             <form action="{{ route('app.calls.store') }}" method="POST" class="p-3"
@@ -255,9 +249,6 @@
                                             <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Quantidade de
                                                 candidatos da última chamada:</span> <span
                                                 class="fs-6 fw-bold">{{ $amount }}</span>
-                                            {{-- <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Quantidade de
-                                                candidatos convocados até o momento:</span> <span
-                                                class="fs-6 fw-bold">{{ $soma }}</span> --}}
                                         @endif
                                     </div>
                                 </div>

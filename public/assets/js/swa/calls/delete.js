@@ -2,7 +2,9 @@
 function confirmDelete(callListId) {
     Swal.fire({
         title: 'Tem certeza?',
-        text: 'Essa ação apagará a chamada e todos os candidatos vinculados.',
+        html: `
+            Essa ação não poderá ser desfeita.<br><br>
+        `,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',

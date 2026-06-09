@@ -16,7 +16,7 @@
                 <form id="form-file-edit" action="{{ route('app.archives.edit', $archive) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
-
+                    @method('PUT')
                     {{-- Ano em que a prova foi aplicada --}}
                     <div class="form-floating mb-3">
                         <input type="text" name="year" class="form-control @error('year') is-invalid @enderror"

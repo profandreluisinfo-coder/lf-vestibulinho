@@ -8,7 +8,7 @@
             </div>
             <div>
                 <span class="school text-white">EM Dr. Leandro Franceschini</span>
-                <span class="sub text-white">Vestibulinho {{ $calendar?->year }}</span>
+                <span class="sub text-white">Vestibulinho @if ($show) {{ $calendar?->year }} @endif</span>
             </div>
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">

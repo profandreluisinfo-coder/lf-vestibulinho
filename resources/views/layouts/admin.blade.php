@@ -288,12 +288,10 @@
     </header>
 
     <!-- Conteúdo -->
-    <main class="main-content">
-
-        @include('alerts.toasts')
+    <main class="main-content">        
 
         @yield('content')
-
+@include('alerts.toasts')
         {{-- Modal Alterar Senha --}}
         @include('partials.forms.change-password')
 

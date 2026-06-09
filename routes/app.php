@@ -156,7 +156,7 @@ Route::middleware([
             Route::post('salvar', [ArchiveController::class, 'store'])->name('store');
 
             Route::get('editar/{archive}', [ArchiveController::class, 'edit'])->name('edit');
-            Route::put('editar/{archive}', [ArchiveController::class, 'update'])->name('update');
+            Route::put('atualizar/{archive}', [ArchiveController::class, 'update'])->name('update');
 
             Route::delete('excluir/{archive}', [ArchiveController::class, 'destroy'])->name('destroy');
 
@@ -231,11 +231,11 @@ Route::middleware([
             Route::get('registros', [CallController::class, 'index'])->name('index');
             Route::post('salvar', [CallController::class, 'store'])->name('store');
 
-            Route::delete('apagar/{call_number}', [CallController::class, 'destroy'])->name('destroy');
+            Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
 
             Route::get('numero/{call_number}', [CallController::class, 'show'])->name('show');
 
-            Route::patch('{call_number}/finalizar', [CallController::class, 'finalize'])->name('finalize');
+            Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
 
             Route::get('numero/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
             Route::get('numero/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');

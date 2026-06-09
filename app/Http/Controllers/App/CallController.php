@@ -9,9 +9,7 @@ use Illuminate\View\View;
 use App\Models\ExamResult;
 use App\Exports\CallExport;
 use Illuminate\Http\Request;
-use App\Services\MailService;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -49,13 +47,12 @@ class CallController extends Controller
         $pneCandidates = ExamResult::whereNotNull('ranking')
             ->whereNotIn('id', $alreadyCalledIds)
             ->whereHas('inscription.user.user_detail', function ($query) {
-                $query->where('pne', true)
-                    ->where('pne_report_accepted', true);
+                $query->where('pne', '=', 1)
+                    ->where('pne_report_accepted', '=', 1);
             })
             ->with(['inscription.user.user_detail'])
             ->orderBy('ranking')
             ->get();
-
         // Quantidade de convocados por curso
         $convocadosPorCurso = Call::with('examResult.inscription.course')
             ->get()
@@ -95,6 +92,12 @@ class CallController extends Controller
      */
     public function store(Request $request): Response | RedirectResponse
     {
+        $exam_results_count = ExamResult::count('ranking');
+
+        if ($exam_results_count === 0) {
+            return alertError('Não é possível criar uma chamada sem resultados de exame.');
+        }
+
         $request->validate([
             'number' => 'required|integer|min:1',
             'limit' => 'required|integer|min:1',
@@ -212,6 +215,7 @@ class CallController extends Controller
      */
     public function destroy(CallList $callList): RedirectResponse
     {
+        
         $callList->delete();
 
         return redirect()->route('app.calls.index')->with('success', 'Chamada excluída com sucesso!');
@@ -222,24 +226,26 @@ class CallController extends Controller
      * para todos os usuários associados às chamadas na lista.
      *
      * @param \App\Models\CallList $callList A lista de chamadas está sendo finalizada.
-     * @param \App\Services\MailService $mailService O serviço de correio usado para enviar e-mails.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function finalize(CallList $callList): RedirectResponse
     {
-        // Obtém o ano do calendário atual
+        $callList->update([
+            'status' => 'completed'
+        ]);
+
         $actual_calendar = Calendar::getYear();
 
-        // Atualiza o status da lista de chamadas para 'completed'
-        $callList->update(['status' => 'completed']);
+        $calls = $callList->calls()
+            ->with([
+                'examResult.inscription.user'
+            ])
+            ->get();
 
-        // Carrega todas as chamadas associadas à lista de chamadas, incluindo os dados do usuário
-        $calls = $callList->calls()->with('examResult.inscription.user')->get();
-
-        // Envia e-mails de convocação para os usuários associados às chamadas
         foreach ($calls as $call) {
-            $user = $call->examResult->inscription->user;
+
+            $user = $call->examResult?->inscription?->user;
 
             if (!$user || !$user->email) {
                 Log::warning("Usuário sem e-mail na chamada ID {$call->id}");
@@ -253,13 +259,17 @@ class CallController extends Controller
             );
 
             $content = [
-                'nome' => $user->social_name ?? $user->name,
+                'nome' => ($user->authorization_accepted == 1 && !empty($user->social_name))
+                    ? $user->social_name
+                    : $user->name,
+
                 'data' => \Carbon\Carbon::parse($callList->date)->format('d/m/Y'),
+
                 'hora' => \Carbon\Carbon::parse($callList->time)->format('H:i'),
+
                 'numero_chamada' => $callList->number,
             ];
 
-            // Dispara o job para fila
             SendCallNotificationJob::dispatch(
                 $user->email,
                 $subject,
@@ -268,9 +278,11 @@ class CallController extends Controller
             );
         }
 
-        return back()->with('success', 'Chamada finalizada! Os convocados serão notificados por e-mail.');
+        return back()->with(
+            'success',
+            'Chamada finalizada! Os convocados serão notificados por e-mail.'
+        );
     }
-
     /**
      * Retorna os dados da chamada para o qual o usuário autenticado foi convocado.
      * Caso o usuário não tenha resultado de exame ou não tenha sido convocado em nenhuma chamada finalizada,
