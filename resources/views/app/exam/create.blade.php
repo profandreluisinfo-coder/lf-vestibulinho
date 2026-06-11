@@ -278,7 +278,6 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/rules/admin/schedule/create.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/schedule/create.js') }}"></script>
     <script src="{{ asset('assets/js/swa/locations/settings.js') }}"></script>
-    {{-- <script src="{{ asset('assets/interactions/popover.js') }}"></script> --}}
 @endpush

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
-use App\Models\ExamResult;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Services\ExamRankingService;
-use Illuminate\Support\Facades\DB;
 use App\Imports\SimpleImport;
+use App\Models\ExamResult;
+use App\Services\ExamRankingService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
@@ -20,9 +21,9 @@ class ImportController extends Controller
     }
 
     // Exibe o formulário de importação
-    public function home()
+    public function home(): View
     {
-        return view('app.import.home');
+        return view('app.import.index');
     }
 
     /**
