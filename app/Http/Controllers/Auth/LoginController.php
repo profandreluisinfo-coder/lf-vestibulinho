@@ -23,13 +23,13 @@ class LoginController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        $settings = Setting::first();
+        // $settings = Setting::first();
 
-        if (!$settings?->calendar) {
-            return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde!');
-        }
+        // if (!$settings?->calendar) {
+        //     return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde!');
+        // }
 
-        return view('auth.login');
+        return view('guest.auth.login');
     }
 
     /**
@@ -39,7 +39,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('auth.admin');
+        return view('guest.auth.admin');
     }
 
     /**

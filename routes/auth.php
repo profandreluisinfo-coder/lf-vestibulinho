@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\{
-    LoginController,
-    RegisterController,
+    // LoginController,
+    // RegisterController,
     LogoutController,
     EmailController,
     PasswordController
@@ -12,14 +12,14 @@ use App\Http\Controllers\Auth\{
 
 Route::middleware(['guest'])->group(function () {
 
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
+    // Route::get('/login', [LoginController::class, 'login'])->name('login');
+    // Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
     
     // Login de admins
-    Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('auth.admin')->middleware('throttle:3,1');
+    // Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('guest.auth.admin')->middleware('throttle:3,1');
 
-    Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
-    Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
+    // Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
+    // Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
 
     // VERIFICAÇÃO DE EMAIL
     Route::get('/validate/{token}', [EmailController::class, 'verify'])->name('verify');

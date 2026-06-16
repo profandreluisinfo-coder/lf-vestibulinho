@@ -1,0 +1,140 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Notice;
+use App\Models\Setting;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+
+class NoticeController extends Controller
+{
+    /**
+     * Obter todos os arquivos de edital
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index(): View
+    {
+        // Obter todos os arquivos de edital
+        $notices = Notice::all();
+
+        // Renderizar a view com a lista de arquivos
+        return view('app.notices.index', compact('notices'));
+    }
+
+    /**
+     * Salva um novo arquivo de edital.
+     *
+     * Valida as informações enviadas pelo formulário e salva o arquivo no
+     * disco 'public' na pasta 'notices'. Além disso, salva as informações do
+     * arquivo no banco de dados.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'path' => 'required|file|mimes:pdf'
+        ], [
+            'path.required' => 'Carregue um arquivo.',
+            'path.file' => 'O arquivo de está corrompido.',
+            'path.mimes' => 'O arquivo deve ser um PDF.',
+        ]);
+
+        $file = $request->file('path');
+        // dd($request->all(), $request->file('path'));
+
+        if (!$file) {
+            return alertError('Envie um arquivo válido.');
+        }
+
+        $originalName = str_replace(' ', '_', $file->getClientOriginalName());
+
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME)
+            . '_' . time()
+            . '.' . $file->getClientOriginalExtension();
+
+        $path = $file->storeAs('notices', $fileName, 'public');
+
+        Notice::create([
+            'file' => $path
+        ]);
+
+        return alertSuccess('Edital cadastrado com sucesso!', 'app.notices.index');
+    }
+
+
+    public function update(Request $request): RedirectResponse
+    {
+        $notice = Notice::findOrFail($request->notice_id);
+
+        $request->validate([
+            'path' => 'nullable|file|mimetypes:application/pdf',
+        ], [
+            'path.file' => 'O arquivo de edital deve ser um arquivo.',
+            'path.mimetypes' => 'O arquivo de edital deve ser um PDF.',
+        ]);
+
+        // Se nenhum arquivo foi enviado
+        if (!$request->hasFile('path')) {
+            return alertWarning('Nenhum arquivo foi enviado.', 'app.notices.index');
+        }
+
+        $file = $request->file('path');
+
+        // Remove o arquivo antigo, se existir
+        if ($notice->file && Storage::disk('public')->exists($notice->file)) {
+            Storage::disk('public')->delete($notice->file);
+        }
+
+        // Nome original sem espaços
+        $originalName = str_replace(
+            ' ',
+            '_',
+            $file->getClientOriginalName()
+        );
+
+        // Nome final
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME)
+            . '_' . time()
+            . '.' . $file->getClientOriginalExtension();
+
+        // Salva o novo arquivo
+        $filePath = $file->storeAs('notices', $fileName, 'public');
+
+        // Atualiza o registro
+        $notice->update([
+            'file' => $filePath,
+        ]);
+
+        return alertSuccess(
+            'Edital atualizado com sucesso!',
+            'app.notices.index'
+        );
+    }
+
+    /**
+     * Exclui um arquivo de edital.
+     *
+     * Este método exclui um arquivo de edital da pasta 'notices' no disco
+     * 'public' e, em seguida, remove as informações do banco de dados.
+     *
+     * @param \App\Models\Notice $notice
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Notice $notice)
+    {
+        Storage::disk('public')->delete($notice->file);
+
+        $notice->delete();
+
+        Setting::where('notice', true)->update(['notice' => false]);
+
+        return alertSuccess('Edital excluido com sucesso!', 'app.notices.index');
+    }
+}

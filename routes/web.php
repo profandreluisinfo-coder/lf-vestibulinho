@@ -2,14 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-require 'app.php';
-require 'guest.php';
-require 'auth.php';
-require 'dash.php';
-require 'registration.php';
-require 'inscription.php';
+include __DIR__.'/site.php';
+include __DIR__.'/admin.php';
+include __DIR__.'/guest.php';
+include __DIR__.'/auth.php';
+include __DIR__.'/dash.php';
+include __DIR__.'/register.php';
 
-// ==============
-// ROTA FALLBACK
-// ==============
 Route::fallback(fn() => response()->view('errors.404', [], 404));

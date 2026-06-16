@@ -1,36 +1,53 @@
 <?php
 
-use App\Http\Controllers\Guest\{ ArchiveController, CommunicateController, HomeController, ResultController };
-use App\Http\Controllers\Guest\{ CallController };
-use App\Http\Controllers\Guest\CalendarController;
-use App\Http\Controllers\Guest\FaqController;
-use App\Http\Middleware\{ isResultEnabled };
+use App\Http\Controllers\Auth\{
+    LoginController,
+    RegisterController
+};
+use App\Http\Controllers\Guest\{
+    ArchiveController, 
+    HomeController, 
+    ResultController
+};
+use App\Http\Controllers\Guest\{
+    CallController,
+    CalendarController,
+    FaqController
+};
+use App\Http\Middleware\{isResultEnabled};
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['guest'])
+    ->prefix('vestibulinho')
+    ->name('guest.')
+    ->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name('home');   
+        Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    // Provas anteriores
-    Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('guest.archives.index');
+        // 🔒 Autenticação
+        Route::get('/login', [LoginController::class, 'login'])->name('login');
+        Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
 
-    // Resultados
-    Route::get('/resultado-final', [ResultController::class, 'index'])->name('guest.results.index')->middleware(isResultEnabled::class);
+        // Registro
+        Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
+        Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
 
-    // Chamadas
-    Route::get('/chamadas', [CallController::class, 'index'])->name('guest.calls.index');
+        // Login de admins
+        Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('guest.auth.admin')->middleware('throttle:3,1');
 
-    // Perguntas frequentes
-    Route::get('/perguntas-frequentes', [FaqController::class, 'index'])->name('guest.faqs.index');
+        // Provas anteriores
+        Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.index');
 
-    // Calendário
-    Route::get('/calendario', [CalendarController::class, 'show'])
-        ->name('guest.calendar.show');
+        // Resultados
+        Route::get('/resultado-final', [ResultController::class, 'index'])->name('results.index')->middleware(isResultEnabled::class);
 
-    // Comunicados públicos
-    Route::get('/comunicados', [CommunicateController::class, 'index'])
-        ->name('guest.communicates.index');
+        // Chamadas
+        Route::get('/chamadas', [CallController::class, 'index'])->name('calls.index');
 
-    Route::get('/comunicados/{communicate}', [CommunicateController::class, 'show'])
-        ->name('guest.communicates.show');
-});
+        // Perguntas frequentes
+        Route::get('/perguntas-frequentes', [FaqController::class, 'index'])->name('faqs.index');
+
+        // Calendário
+        Route::get('/calendario', [CalendarController::class, 'show'])
+            ->name('calendar.show');
+    });

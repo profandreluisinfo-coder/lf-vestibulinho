@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Recuperar Senha — Vestibulinho {{ $calendar?->year }}')
+@section('title', 'Recuperar Senha — Vestibulinho')
 
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 
@@ -66,7 +66,7 @@
 
 @section('right-panel')
 
-    @include('alerts.toasts')        
+    @include('alerts.toasts')
 
     <div class="form-card" style="position:relative;">
 
@@ -75,9 +75,9 @@
 
             <div class="form-top">
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('login') }}" class="back-link me-2">
+                    <a href="{{ route('guest.login') }}" class="back-link me-2">
                         <i class="bi bi-arrow-left"></i> Voltar ao login
-                    </a>                        
+                    </a>
                     <div class="form-badge">
                         <i class="bi bi-key-fill"></i> Recuperação de Senha
                     </div>
@@ -125,7 +125,7 @@
 
                 <!-- Link voltar -->
                 <div class="form-links">
-                    <a href="{{ route('login') }}" class="link-back-login">
+                    <a href="{{ route('guest.login') }}" class="link-back-login">
                         <i class="bi bi-arrow-left"></i> Lembrei minha senha
                     </a>
                 </div>
@@ -167,7 +167,7 @@
                     </button>
                 </div>
 
-                <a href="{{ route('login') }}" class="btn-back-login">
+                <a href="{{ route('guest.login') }}" class="btn-back-login">
                     <i class="bi bi-box-arrow-in-right"></i> Ir para o Login
                 </a>
 

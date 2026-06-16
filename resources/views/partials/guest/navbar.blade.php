@@ -16,18 +16,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#cursos">Cursos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i>Cursos</a></li>
                 @if ($settings?->calendar)
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#como-participar">Como Participar</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#calendario">Calendário</a></li>
                 @endif
-                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#faq">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> FAQ</a></li>
                 @if ($settings?->calendar)
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}/#links-rapidos">Documentos</a></li>
                 @endif
-                <li class="nav-item"><a class="nav-link" href="{{ route('guest.archives.index') }}/#contato">Provas Anteriores</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('guest.archives.index') }}/#contato"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a></li>
                 <li class="nav-item ms-lg-2">
-                    <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
+                    <a class="nav-link btn-nav-cta" href="{{ route('guest.login') }}">
                         <i class="bi bi-person-circle me-1"></i> Área do Candidato
                     </a>
                 </li>

@@ -19,7 +19,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function start(): View
+    public function index(): View
     {
         $user = Auth::user();
 
@@ -42,7 +42,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function inscription(): View | RedirectResponse
+    public function show(): View | RedirectResponse
     {
         $user = Auth::user();
 
