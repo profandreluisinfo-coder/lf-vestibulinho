@@ -39,7 +39,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('guest.auth.admin');
+        return view('admin.login');
     }
 
     /**
@@ -106,7 +106,7 @@ class LoginController extends Controller
                 : route('dash.user.inscription');
         }
 
-        return route('login');
+        return route('guest.login');
     }
 
     /**
@@ -118,21 +118,21 @@ class LoginController extends Controller
      * @param User $user
      * @return RedirectResponse
      */
-    protected function redirectUserBasedOnRole(User $user): RedirectResponse
-    {
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
+    // protected function redirectUserBasedOnRole(User $user): RedirectResponse
+    // {
+    //     if ($user->role === 'admin') {
+    //         return redirect()->route('admin.dashboard');
+    //     }
 
-        if ($user->role === 'user') {
-            // Verifica se o usuário possui inscrição
-            $hasInscription = $user->inscription()->exists();
+    //     if ($user->role === 'user') {
+    //         // Verifica se o usuário possui inscrição
+    //         $hasInscription = $user->inscription()->exists();
 
-            return $hasInscription
-                ? redirect()->route('dash.user.start') // Vai para o início da inscrição
-                : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
-        }
+    //         return $hasInscription
+    //             ? redirect()->route('dash.user.start') // Vai para o início da inscrição
+    //             : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
+    //     }
 
-        return alertError('Perfil de usuário desconhecido.');
-    }
+    //     return alertError('Perfil de usuário desconhecido.');
+    // }
 }

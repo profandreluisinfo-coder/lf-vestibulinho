@@ -41,7 +41,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('guest.calendar.show') }}">Calendário</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#faq">FAQ</a></li>
                     <li class="nav-item ms-lg-2">
-                        <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
+                        <a class="nav-link btn-nav-cta" href="{{ route('guest.login') }}">
                             <i class="bi bi-person-circle me-1"></i> Área do Candidato
                         </a>
                     </li>
@@ -115,7 +115,7 @@
                 </p>
                 <div class="d-flex gap-3">
                     <a href="{{ route('home') }}">Início</a>
-                    <a href="{{ route('login') }}">Área do Candidato</a>
+                    <a href="{{ route('guest.login') }}">Área do Candidato</a>
                     <a href="mailto:emdrleandrofranceschini@educacaosumare.com.br">Contato</a>
                 </div>
             </div>

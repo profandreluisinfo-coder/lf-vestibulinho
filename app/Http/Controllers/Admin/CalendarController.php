@@ -21,9 +21,7 @@ class CalendarController extends Controller
         // Busca o único registro ou cria um objeto vazio
         //$calendar = Calendar::first() ?? new Calendar();
 
-        return view(
-            'app.calendar.edit'
-        );
+        return view('admin.vestibulinho.calendar.edit');
     }
 
     /**
@@ -114,8 +112,6 @@ class CalendarController extends Controller
      */
     public function show(): View
     {
-        return view(
-            'app.calendar.show'
-        );
+        return view('admin.vestibulinho.calendar.show');
     }
 }

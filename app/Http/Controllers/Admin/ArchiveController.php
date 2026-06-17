@@ -30,7 +30,7 @@ class ArchiveController extends Controller
         // Obter todos os arquivos de prova
         $files = Archive::orderBy('year', 'desc')->get();
 
-        return view('app.archives.index', compact('files'));
+        return view('admin.vestibulinho.archives.index', compact('files'));
     }
 
     /**
@@ -117,7 +117,7 @@ class ArchiveController extends Controller
      */
     public function edit(Archive $archive): View
     {
-        return view('app.archives.edit', compact('archive'));
+        return view('admin.vestibulinho.archives.edit', compact('archive'));
     }
 
     /**
@@ -172,7 +172,7 @@ class ArchiveController extends Controller
             $answerModel->save();
         }
 
-        return redirect()->route('app.archives.index')->with('success', 'Arquivo atualizado com sucesso!');
+        return redirect()->route('admin.archives.index')->with('success', 'Arquivo atualizado com sucesso!');
     }
 
     /**

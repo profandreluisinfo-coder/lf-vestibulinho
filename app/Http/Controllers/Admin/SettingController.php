@@ -28,7 +28,7 @@ class SettingController extends Controller
      */
     public function index(): View
     {
-        return view('app.system.index');
+        return view('admin.vestibulinho.system.index');
     }
 
     /**
@@ -145,11 +145,11 @@ class SettingController extends Controller
 
         if (Setting::first()->calendar) {
             // return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
-            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'app.calendar.show');
+            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'admin.calendar.show');
         }
 
         // return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
-        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'app.calendar.show');
+        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'admin.calendar.show');
     }
 
     /**
@@ -170,7 +170,7 @@ class SettingController extends Controller
 
         Cache::forget('global_settings'); // MUITO IMPORTANTE!
 
-        return alertSuccess('Status alterado com sucesso!', 'app.notices.index');
+        return alertSuccess('Status alterado com sucesso!', 'admin.notices.index');
     }
 
     /**

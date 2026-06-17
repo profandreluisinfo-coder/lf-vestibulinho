@@ -18,7 +18,7 @@ class CourseController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        return view('app.courses.index', compact('courses'));
+        return view('admin.vestibulinho.courses.index', compact('courses'));
     }
 
     /**
@@ -30,7 +30,7 @@ class CourseController extends Controller
     {
         Course::create($request->validated());
 
-        return alertSuccess('Curso registrado com sucesso!', 'app.courses.index');
+        return alertSuccess('Curso registrado com sucesso!', 'admin.courses.index');
     }
 
     /**
@@ -38,7 +38,7 @@ class CourseController extends Controller
      */
     public function edit(string $id): View
     {
-        return view('app.courses.edit', ['course' => Course::findOrFail($id)]);
+        return view('admin.vestibulinho.courses.edit', ['course' => Course::findOrFail($id)]);
     }
 
     /**
@@ -48,7 +48,7 @@ class CourseController extends Controller
     {
         Course::where('id', $id)->update($request->only(['vacancies']));
 
-        return alertSuccess('Curso editado com sucesso!', 'app.courses.index');
+        return alertSuccess('Curso editado com sucesso!', 'admin.courses.index');
     }
 
     /**
@@ -59,6 +59,6 @@ class CourseController extends Controller
         // Excluir o curso com uma consulta única
         Course::where('id', $id)->delete();
 
-        return alertSuccess('Curso excluído com sucesso!', 'app.courses.index');
+        return alertSuccess('Curso excluído com sucesso!', 'admin.courses.index');
     }
 }

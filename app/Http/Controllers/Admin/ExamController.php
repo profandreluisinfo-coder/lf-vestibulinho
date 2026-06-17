@@ -50,7 +50,7 @@ class ExamController extends Controller
             'candidates' => $candidates,
         ]);
 
-        return view('app.exam.index');
+        return view('admin.vestibulinho..exam.index');
     }
 
     /**
@@ -89,7 +89,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('app.exam.create');
+        return view('admin.vestibulinho.exam.create');
     }
 
     /**
@@ -100,7 +100,6 @@ class ExamController extends Controller
      *
      * @param  Request  $request
      * @param  ExamAllocationService  $service
-     * @return RedirectResponse
      */
     public function store(Request $request, ExamAllocationService $service)
     {
@@ -173,7 +172,7 @@ class ExamController extends Controller
 
         $service->allocate($data);
 
-        return redirect()->route('app.exam.index')->with(
+        return redirect()->route('admin.exam.index')->with(
             'success',
             'Prova agendada com sucesso!'
         );

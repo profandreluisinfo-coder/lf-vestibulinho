@@ -1,28 +1,20 @@
 <?php
 
-use App\Http\Controllers\Admin\{
-    ArchiveController,
-    FaqController,
-    CalendarController,
-    CommunicateController,
-    CommunicateAttachmentController,
-    CourseController,
-    CallController,
-    DeferralController,
-    ExamController,
-    ExportController,
-    ImportController,
-    InscriptionController,
-    LocalController,
-    NoticeController,
-    ResultController,
-    SettingController,
-    UserController,
-};
-
+use App\Http\Controllers\Admin\{ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController, InfoController};
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dash\AdminController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
+
+// Login de admins
+Route::middleware(['guest'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('login', [LoginController::class, 'loginForAdmin'])->name('auth')->middleware('throttle:3,1');
+    });
+
 
 Route::middleware([
     'auth',
@@ -32,332 +24,271 @@ Route::middleware([
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
-            /*
-    |--------------------------------------------------------------------------
-    | Inscrições
-    |--------------------------------------------------------------------------
-    */
-            Route::prefix('inscricoes')
-                ->name('inscriptions.')
-                ->middleware([IsAdmin::class])
-                ->group(function () {
-                    // Lista de inscrições
-                    Route::get('/', [InscriptionController::class, 'index'])->name('index');
-                    Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
-                        ->name('get.data');
-                    // Lista de pessoas com deficiência
-                    Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
-                        ->name('pcd');
-                    Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
-                        ->name('pcd.data');
-                    // Candidatos com nome social
-                    Route::get('/nome-social', [InscriptionController::class, 'socialName'])
-                        ->name('social.name');
-                    Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
-                        ->name('show');
-                });
-            /*
-    |--------------------------------------------------------------------------
-    | Comunicados
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('comunicados')
-                ->name('communicates.')
-                ->group(function () {
-
-                    Route::get('/', [CommunicateController::class, 'index'])->name('index');
-                    Route::get('criar', [CommunicateController::class, 'create'])->name('create');
-                    Route::post('salvar', [CommunicateController::class, 'store'])->name('store');
-
-                    Route::get('visualizar/{communicate}', [CommunicateController::class, 'show'])->name('show');
-
-                    Route::get('editar/{communicate}', [CommunicateController::class, 'edit'])->name('edit');
-                    Route::put('editar/{communicate}', [CommunicateController::class, 'update'])->name('update');
-
-                    Route::delete('excluir/{communicate}', [CommunicateController::class, 'destroy'])->name('destroy');
-
-                    Route::delete(
-                        'anexos/{attachment}',
-                        [CommunicateAttachmentController::class, 'destroy']
-                    )->name('attachments.destroy');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | FAQ
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('faq')
-                ->name('faqs.')
-                ->group(function () {
-
-                    Route::get('/', [FaqController::class, 'index'])->name('index');
-                    Route::post('gravar', [FaqController::class, 'store'])->name('store');
-
-                    Route::get('editar/{faq}', [FaqController::class, 'edit'])->name('edit');
-                    Route::put('editar/{faq}', [FaqController::class, 'update'])->name('update');
-
-                    Route::delete('excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
-
-                    Route::put('publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
-                    Route::put('update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | Calendário
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('calendario')
-                ->name('calendar.')
-                ->group(function () {
-
-                    Route::get('detalhes', [CalendarController::class, 'show'])->name('show');
-                    Route::get('editar', [CalendarController::class, 'edit'])->name('edit');
-                    Route::put('atualizar', [CalendarController::class, 'update'])->name('update');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | Editais
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('edital')
-                ->name('notices.')
-                ->group(function () {
-
-                    Route::get('/', [NoticeController::class, 'index'])->name('index');
-                    Route::post('salvar', [NoticeController::class, 'store'])->name('store');
-                    Route::put('atualizar', [NoticeController::class, 'update'])->name('update');
-                    Route::delete('excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | Provas
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('prova')
-                ->name('exam.')
-                ->group(function () {
-
-                    Route::get('salas', [ExamController::class, 'index'])->name('index');
-                    Route::get('agendar', [ExamController::class, 'create'])->name('create');
-                    Route::post('salvar', [ExamController::class, 'store'])->name('store');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | Cursos
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('cursos')
-                ->name('courses.')
-                ->group(function () {
-
-                    Route::get('/', [CourseController::class, 'index'])->name('index');
-                    Route::post('salvar', [CourseController::class, 'store'])->name('store');
-
-                    Route::get('editar/{course}', [CourseController::class, 'edit'])->name('edit');
-                    Route::put('atualizar/{course}', [CourseController::class, 'update'])->name('update');
 
-                    Route::delete('excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
-                });
-
-            /*
-    |--------------------------------------------------------------------------
-    | Arquivos
-    |--------------------------------------------------------------------------
-    */
-
-            Route::prefix('arquivos')
-                ->name('archives.')
-                ->group(function () {
-
-                    Route::get('/', [ArchiveController::class, 'index'])->name('index');
-
-                    Route::post('salvar', [ArchiveController::class, 'store'])->name('store');
+            Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+
+            // Route::prefix('site')->group(function () {
+
+            //     Route::get('/', [AdminController::class, 'siteHome'])->name('site.home');
+            // });
+
+            Route::prefix('vestibulinho')->group(function () {
+
+                Route::get('/', [AdminController::class, 'vestibulinho'])->name('vestibulinho');
+
+                Route::prefix('inscricoes')
+                    ->name('inscriptions.')
+                    ->group(function () {
+                        // Lista de inscrições
+                        Route::get('/', [InscriptionController::class, 'index'])->name('index');
+                        Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
+                            ->name('get.data');
+                        // Lista de pessoas com deficiência
+                        Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
+                            ->name('pcd');
+                        Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
+                            ->name('pcd.data');
+                        // Candidatos com nome social
+                        Route::get('/nome-social', [InscriptionController::class, 'socialName'])
+                            ->name('social.name');
+                        Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+                            ->name('show');
+                    });
+
+                // Route::prefix('inscricoes')
+                //     ->name('inscriptions.')
+                //     ->middleware([IsAdmin::class])
+                //     ->group(function () {
+                //         // Lista de inscrições
+                //         Route::get('/', [InscriptionController::class, 'index'])->name('index');
+                //         Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
+                //             ->name('get.data');
+                //         // Lista de pessoas com deficiência
+                //         Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
+                //             ->name('pcd');
+                //         Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
+                //             ->name('pcd.data');
+                //         // Candidatos com nome social
+                //         Route::get('/nome-social', [InscriptionController::class, 'socialName'])
+                //             ->name('social.name');
+                //         Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+                //             ->name('show');
+                //     });
+
+                // Notícias
+                Route::prefix('noticias')
+                    ->name('news.')
+                    ->group(function () {
+                        Route::get('/', [PostController::class, 'index'])->name('index');
+                        Route::get('/criar', [PostController::class, 'create'])->name('create');
+                        Route::get('/{slug}', [PostController::class, 'show'])->name('show');
+                    });
+
+                // Comunicados
+                Route::prefix('comunicados')
+                    ->name('infos.')
+                    ->group(function () {
+                        Route::get('/', [InfoController::class, 'index'])->name('index');
+                        Route::get('/criar', [InfoController::class, 'create'])->name('create');
+                        Route::get('/{slug}', [InfoController::class, 'show'])->name('show');
+                    });
+
+                // Perguntas frequentes
+                Route::prefix('faq')
+                    ->name('faqs.')
+                    ->group(function () {
+
+                        Route::get('/', [FaqController::class, 'index'])->name('index');
+                        Route::post('gravar', [FaqController::class, 'store'])->name('store');
+
+                        Route::get('editar/{faq}', [FaqController::class, 'edit'])->name('edit');
+                        Route::put('editar/{faq}', [FaqController::class, 'update'])->name('update');
+
+                        Route::delete('excluir/{faq}', [FaqController::class, 'destroy'])->name('destroy');
+
+                        Route::put('publicar/{faq}', [FaqController::class, 'publish'])->name('publish');
+                        Route::put('update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
+                    });
+
+                // Calendário
+                Route::prefix('calendario')
+                    ->name('calendar.')
+                    ->group(function () {
+
+                        Route::get('detalhes', [CalendarController::class, 'show'])->name('show');
+                        Route::get('editar', [CalendarController::class, 'edit'])->name('edit');
+                        Route::put('atualizar', [CalendarController::class, 'update'])->name('update');
+                    });
+
+                // Edital
+                Route::prefix('edital')
+                    ->name('notices.')
+                    ->group(function () {
+
+                        Route::get('/', [NoticeController::class, 'index'])->name('index');
+                        Route::post('salvar', [NoticeController::class, 'store'])->name('store');
+                        Route::put('atualizar', [NoticeController::class, 'update'])->name('update');
+                        Route::delete('excluir/{notice}', [NoticeController::class, 'destroy'])->name('destroy');
+                    });
 
-                    Route::get('editar/{archive}', [ArchiveController::class, 'edit'])->name('edit');
-                    Route::put('atualizar/{archive}', [ArchiveController::class, 'update'])->name('update');
+                // Provas
+                Route::prefix('prova')
+                    ->name('exam.')
+                    ->group(function () {
 
-                    Route::delete('excluir/{archive}', [ArchiveController::class, 'destroy'])->name('destroy');
+                        Route::get('salas', [ExamController::class, 'index'])->name('index');
+                        Route::get('agendar', [ExamController::class, 'create'])->name('create');
+                        Route::post('salvar', [ExamController::class, 'store'])->name('store');
+                    });
 
-                    Route::put('publicar/{archive}', [ArchiveController::class, 'publish'])->name('publish');
-                });
+                // Cursos
+                Route::prefix('cursos')
+                    ->name('courses.')
+                    ->group(function () {
 
-            /*
-    |--------------------------------------------------------------------------
-    | Exportação
-    |--------------------------------------------------------------------------
-    */
+                        Route::get('/', [CourseController::class, 'index'])->name('index');
+                        Route::post('salvar', [CourseController::class, 'store'])->name('store');
 
-            Route::prefix('exportar')
-                ->name('export.')
-                ->group(function () {
+                        Route::get('editar/{course}', [CourseController::class, 'edit'])->name('edit');
+                        Route::put('atualizar/{course}', [CourseController::class, 'update'])->name('update');
 
-                    Route::get('candidatos', [ExportController::class, 'exporToExcel'])->name('excel');
-                });
+                        Route::delete('excluir/{course}', [CourseController::class, 'destroy'])->name('destroy');
+                    });
 
-            /*
-    |--------------------------------------------------------------------------
-    | Importação
-    |--------------------------------------------------------------------------
-    */
+                // Arquivos
+                Route::prefix('arquivos')
+                    ->name('archives.')
+                    ->group(function () {
 
-            Route::prefix('importar')
-                ->name('import.')
-                ->group(function () {
+                        Route::get('/', [ArchiveController::class, 'index'])->name('index');
 
-                    Route::get('notas', [ImportController::class, 'home'])->name('home');
-                    Route::post('notas', [ImportController::class, 'import'])->name('import');
-                });
+                        Route::post('salvar', [ArchiveController::class, 'store'])->name('store');
 
-            /*
-    |--------------------------------------------------------------------------
-    | Alocações
-    |--------------------------------------------------------------------------
-    */
+                        Route::get('editar/{archive}', [ArchiveController::class, 'edit'])->name('edit');
+                        Route::put('atualizar/{archive}', [ArchiveController::class, 'update'])->name('update');
 
-            Route::prefix('alocacoes')
-                ->name('allocations.')
-                ->group(function () {
+                        Route::delete('excluir/{archive}', [ArchiveController::class, 'destroy'])->name('destroy');
 
-                    Route::get('alocacao', [PdfController::class, 'allocationsToPdf'])->name('allocation');
-                    Route::get('salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
-                    Route::get('assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
-                });
+                        Route::put('publicar/{archive}', [ArchiveController::class, 'publish'])->name('publish');
+                    });
 
-            /*
-    |--------------------------------------------------------------------------
-    | PDFs
-    |--------------------------------------------------------------------------
-    */
+                // Exportação 
+                Route::prefix('exportar')
+                    ->name('export.')
+                    ->group(function () {
 
-            Route::prefix('pdf')
-                ->name('pdf.')
-                ->group(function () {
+                        Route::get('candidatos', [ExportController::class, 'exporToExcel'])->name('excel');
+                    });
 
-                    Route::get('inscricoes', [PdfController::class, 'allInscriptionsToPdf'])->name('inscriptions');
-                });
+                // Importação
+                Route::prefix('importar')
+                    ->name('import.')
+                    ->group(function () {
 
-            /*
-    |--------------------------------------------------------------------------
-    | Chamadas
-    |--------------------------------------------------------------------------
-    */
+                        Route::get('notas', [ImportController::class, 'home'])->name('home');
+                        Route::post('notas', [ImportController::class, 'import'])->name('import');
+                    });
 
-            Route::prefix('chamadas')
-                ->name('calls.')
-                ->group(function () {
+                // Alocações (PDFs)
+                Route::prefix('alocacoes')
+                    ->name('allocations.')
+                    ->group(function () {
 
-                    Route::get('registros', [CallController::class, 'index'])->name('index');
-                    Route::post('salvar', [CallController::class, 'store'])->name('store');
+                        Route::get('alocacao', [PdfController::class, 'allocationsToPdf'])->name('allocation');
+                        Route::get('salas', [PdfController::class, 'roomsToPdf'])->name('rooms');
+                        Route::get('assinaturas', [PdfController::class, 'signaturesToPdf'])->name('signs');
+                    });
 
-                    Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
+                // PDFs
+                Route::prefix('pdf')
+                    ->name('pdf.')
+                    ->group(function () {
 
-                    Route::get('numero/{call_number}', [CallController::class, 'show'])->name('show');
+                        Route::get('inscricoes', [PdfController::class, 'allInscriptionsToPdf'])->name('inscriptions');
+                    });
 
-                    Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
+                // Chamadas
+                Route::prefix('chamadas')
+                    ->name('calls.')
+                    ->group(function () {
 
-                    Route::get('numero/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
-                    Route::get('numero/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
-                });
+                        Route::get('registros', [CallController::class, 'index'])->name('index');
+                        Route::post('salvar', [CallController::class, 'store'])->name('store');
 
-            /*
-    |--------------------------------------------------------------------------
-    | Local de Prova
-    |--------------------------------------------------------------------------
-    */
+                        Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
 
-            Route::prefix('local')
-                ->name('local.')
-                ->group(function () {
+                        Route::get('numero/{call_number}', [CallController::class, 'show'])->name('show');
 
-                    Route::get('/', [LocalController::class, 'index'])->name('index');
+                        Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
 
-                    Route::post('salvar', [LocalController::class, 'store'])->name('store');
+                        Route::get('numero/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
+                        Route::get('numero/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
+                    });
 
-                    Route::get('editar/{location}', [LocalController::class, 'edit'])->name('edit');
-                    Route::put('editar/{location}', [LocalController::class, 'update'])->name('update');
+                // Local
+                Route::prefix('local')
+                    ->name('local.')
+                    ->group(function () {
 
-                    Route::delete('excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
-                });
+                        Route::get('/', [LocalController::class, 'index'])->name('index');
 
-            /*
-    |--------------------------------------------------------------------------
-    | Resultados
-    |--------------------------------------------------------------------------
-    */
+                        Route::post('salvar', [LocalController::class, 'store'])->name('store');
 
-            Route::prefix('resultados')
-                ->name('results.')
-                ->group(function () {
+                        Route::get('editar/{location}', [LocalController::class, 'edit'])->name('edit');
+                        Route::put('editar/{location}', [LocalController::class, 'update'])->name('update');
 
-                    Route::get('notas-e-classificacao', [ResultController::class, 'index'])->name('index');
-                });
+                        Route::delete('excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
+                    });
 
-            /*
-    |--------------------------------------------------------------------------
-    | Sistema
-    |--------------------------------------------------------------------------
-    */
+                // Resultados
+                Route::prefix('resultados')
+                    ->name('results.')
+                    ->group(function () {
 
-            Route::prefix('sistema')
-                ->name('system.')
-                ->group(function () {
+                        Route::get('notas-e-classificacao', [ResultController::class, 'index'])->name('index');
+                    });
 
-                    Route::get('redefinir-dados', [SettingController::class, 'index'])->name('index');
+                // Sistema
+                Route::prefix('sistema')
+                    ->name('system.')
+                    ->group(function () {
 
-                    Route::post('resetar', [SettingController::class, 'reset'])->name('reset');
+                        Route::get('redefinir-dados', [SettingController::class, 'index'])->name('index');
 
-                    Route::post('liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
-                    Route::post('liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
-                    Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
+                        Route::post('resetar', [SettingController::class, 'reset'])->name('reset');
 
-                    Route::put('liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
-                });
+                        Route::post('liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
+                        Route::post('liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
+                        Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
 
-            /*
-    |--------------------------------------------------------------------------
-    | Deferimentos
-    |--------------------------------------------------------------------------
-    */
+                        Route::put('liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
+                    });
 
-            Route::prefix('deferimentos')
-                ->name('deferrals.')
-                ->group(function () {
+                // Deferimentos
+                Route::prefix('deferimentos')
+                    ->name('deferrals.')
+                    ->group(function () {
 
-                    Route::patch('def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
-                        ->name('accept.authorization');
+                        Route::patch('def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])
+                            ->name('accept.authorization');
 
-                    Route::patch('def/{user}/reject-authorization', [DeferralController::class, 'rejectAuthorization'])
-                        ->name('reject.authorization');
+                        Route::patch('def/{user}/reject-authorization', [DeferralController::class, 'rejectAuthorization'])
+                            ->name('reject.authorization');
 
-                    Route::patch('def/{user}/accept-report', [DeferralController::class, 'acceptReport'])
-                        ->name('accept.report');
+                        Route::patch('def/{user}/accept-report', [DeferralController::class, 'acceptReport'])
+                            ->name('accept.report');
 
-                    Route::patch('def/{user}/reject-report', [DeferralController::class, 'rejectReport'])
-                        ->name('reject.report');
-                });
+                        Route::patch('def/{user}/reject-report', [DeferralController::class, 'rejectReport'])
+                            ->name('reject.report');
+                    });
 
-            /*
-    |--------------------------------------------------------------------------
-    | Usuários
-    |--------------------------------------------------------------------------
-    */
+                // Usuários
+                Route::prefix('usuarios')
+                    ->name('users.')
+                    ->group(function () {
 
-            Route::prefix('usuarios')
-                ->name('users.')
-                ->group(function () {
-
-                    Route::get('/', [UserController::class, 'index'])->name('index');
-                });
+                        Route::get('/', [UserController::class, 'index'])->name('index');
+                    });
+            }); // Fim da rota de admin/vestibulinho
         });
 });

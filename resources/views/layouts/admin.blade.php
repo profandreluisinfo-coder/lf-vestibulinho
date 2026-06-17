@@ -24,7 +24,7 @@
     @stack('datatable-styles')
 
     {{-- Estilos --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/dash/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/admin/dash.css') }}">
 
     @stack('styles')
 
@@ -43,68 +43,73 @@
 
         <nav class="sidebar-menu">
 
+            <!-- ====== SEÇÃO: SITE ====== -->
             <div class="menu-section">
-                <div class="menu-section-title">Principal</div>
+                <div class="menu-section-title">
+                    <i class="bi bi-globe me-2"></i> Site
+                </div>
+
                 <div class="menu-item">
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin.infos.index') }}"
+                        class="menu-link {{ request()->routeIs('admin.communicates.index') ? 'active' : '' }}">
+                        <i class="bi bi-list"></i>
+                        <span>Notícias e Comunicados</span>
+                    </a>
+                </div>
+
+                {{-- <div class="menu-item">
+                    <a href="{{ route('admin.infos.create') }}"
+                        class="menu-link {{ request()->routeIs('admin.communicates.create') ? 'active' : '' }}">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Novo comunicado</span>
+                    </a>
+                </div> --}}
+
+            </div>
+
+            <!-- ====== SEÇÃO: VESTIBULINHO ====== -->
+            <div class="menu-section">
+                <div class="menu-section-title">
+                    <i class="bi bi-book-half me-2"></i> Vestibulinho
+                </div>
+
+                <div class="menu-item">
+                    <a href="{{ route('admin.vestibulinho') }}"
+                        class="menu-link {{ request()->routeIs('admin.vestibulinho.*') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
                     </a>
                 </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-section-title">Comunicados</div>                
-                <div class="menu-item">
-                    <a href="{{ route('app.communicates.index') }}"
-                        class="menu-link {{ request()->routeIs('app.communicates.index') ? 'active' : '' }}">
-                        <i class="bi bi-list"></i>
-                        <span>Comunicados</span>
-                    </a>
-                </div>
-                <div class="menu-item">
-                    <a href="{{ route('app.communicates.create') }}"
-                        class="menu-link {{ request()->routeIs('app.communicates.create') ? 'active' : '' }}">
-                        <i class="bi bi-plus-circle"></i>
-                        <span>Novo comunicado</span>
-                    </a>
-                </div>
-            </div>            
-
-            <div class="menu-section">
-                <div class="menu-section-title">Vestibulinho</div>
+                
+                <!-- Gerenciar -->
                 <div class="menu-dropdown">
+
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuVestibulinho')">
                         <i class="bi bi-wrench"></i>
                         <span>Gerenciar</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.calendar.*', 'app.courses.*', 'app.notices.*', 'app.faqs.*']) ? 'show' : '' }}"
+
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.calendar.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
-                        <a href="{{ route('app.calendar.show') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.calendar.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.calendar.show') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">
                             <i class="bi bi-calendar-event me-1"></i> Calendário
                         </a>
-                        <a href="{{ route('app.courses.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.courses.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.courses.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}">
                             <i class="bi bi-book me-1"></i> Cursos
                         </a>
-                        <a href="{{ route('app.notices.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.notices.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.notices.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.notices.*') ? 'active' : '' }}">
                             <i class="bi bi-file-earmark-pdf me-1"></i> Edital
                         </a>
-                        <a href="{{ route('app.faqs.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.faqs.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.faqs.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
                             <i class="bi bi-question-circle me-1"></i> Registrar FAQ
                         </a>
                     </div>
                 </div>
-            </div>
-
-            <div class="menu-section">
-
-                <div class="menu-section-title">Usuários e Inscrições</div>
 
                 <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuUsuarios')">
@@ -112,10 +117,10 @@
                         <span>Usuários</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('users.*') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.users.*') ? 'show' : '' }}"
                         id="menuUsuarios">
-                        <a href="{{ route('app.users.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.users.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                             <i class="bi bi-people me-1"></i> Lista de Usuários
                         </a>
                     </div>
@@ -127,27 +132,22 @@
                         <span>Inscrições</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('inscriptions.*') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.*') ? 'show' : '' }}"
                         id="menuInscricoes">
-                        <a href="{{ route('inscriptions.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.inscriptions.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
                             <i class="bi bi-people me-1"></i> Candidatos
                         </a>
-                        <a href="{{ route('inscriptions.pcd') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.pcd') ? 'active' : '' }}">
+                        <a href="{{ route('admin.inscriptions.pcd') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcd') ? 'active' : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>
-                        <a href="{{ route('inscriptions.social.name') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('inscriptions.social.name') ? 'active' : '' }}">
+                        <a href="{{ route('admin.inscriptions.social.name') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.social.name') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Nome Social
                         </a>
                     </div>
                 </div>
-            </div>
-
-            <div class="menu-section">
-
-                <div class="menu-section-title">Provas e Resultados</div>
 
                 <div class="menu-dropdown">
 
@@ -157,23 +157,23 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.local.*', 'app.exam.*', 'app.archives.*', 'export.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.local.*', 'admin.exam.*', 'admin.archives.*', 'admin.export.*']) ? 'show' : '' }}"
                         id="menuProvas">
-                        <a href="{{ route('app.local.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.local.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.local.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.local.index') ? 'active' : '' }}">
                             <i class="bi bi-geo me-1"></i> Locais
                         </a>
-                        <a href="{{ route('app.exam.create') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.exam.create') ? 'active' : '' }}">
+                        <a href="{{ route('admin.exam.create') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.exam.create') ? 'active' : '' }}">
                             <i class="bi bi-calendar2-week me-1"></i> Agendar
                         </a>
                         <a href="javascript:void(0)" id="exportLink"
-                            class="dropdown-item-custom {{ request()->routeIs('export.excel') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('app.export.excel') }}')">
+                            class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
+                            onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
                             <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                         </a>
-                        <a href="{{ route('app.archives.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.archives.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.archives.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
                             <i class="bi bi-file-earmark-pdf me-1"></i> Arquivos
                         </a>
                     </div>
@@ -185,50 +185,46 @@
                         <span>Resultados</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['app.import.*', 'app.results.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.import.*', 'admin.results.*']) ? 'show' : '' }}"
                         id="menuResultados">
-                        <a href="{{ route('app.import.home') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.import.home') ? 'active' : '' }}">
+                        <a href="{{ route('admin.import.home') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
                             <i class="bi bi-upload me-1"></i> Importar Notas
                         </a>
-                        <a href="{{ route('app.results.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('app.results.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.results.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.results.index') ? 'active' : '' }}">
                             <i class="bi bi-list-ol me-1"></i> Classificação
                         </a>
                     </div>
                 </div>
-            </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">Matrícula</div>
                 <div class="menu-item">
-                    <a href="{{ route('app.calls.index') }}"
-                        class="menu-link {{ request()->routeIs('app.calls.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.calls.index') }}"
+                        class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">
                         <i class="bi bi-broadcast-pin"></i>
                         <span>Chamadas</span>
                     </a>
                 </div>
-            </div>
 
-            <div class="menu-section">
-                <div class="menu-section-title">Sistema</div>
-                <div class="menu-item">
-                    <a href="{{ route('app.system.index') }}"
-                        class="menu-link {{ request()->routeIs('app.system.*') ? 'active' : '' }}">
-                        <i class="bi bi-gear"></i>
-                        <span>Configurações</span>
-                    </a>
+                <div class="menu-section">
+                    <div class="menu-section-title">Sistema</div>
+                    <div class="menu-item">
+                        <a href="{{ route('admin.system.index') }}"
+                            class="menu-link {{ request()->routeIs('admin.system.*') ? 'active' : '' }}">
+                            <i class="bi bi-gear"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </div>
+                    <div class="menu-item p-0">
+                        <form action="{{ route('logout') }}" method="POST" class="menu-link float-start">
+                            @csrf
+                            <button type="submit" class="text-danger">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sair</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <div class="menu-item p-0">
-                    <form action="{{ route('logout') }}" method="POST" class="menu-link float-start">
-                        @csrf
-                        <button type="submit" class="text-danger">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Sair</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
         </nav>
 
     </aside>
@@ -288,10 +284,10 @@
     </header>
 
     <!-- Conteúdo -->
-    <main class="main-content">        
+    <main class="main-content">
 
         @yield('content')
-@include('alerts.toasts')
+        @include('alerts.toasts')
         {{-- Modal Alterar Senha --}}
         @include('partials.forms.change-password')
 
@@ -313,7 +309,7 @@
                     Rápidas</h6>
                 <div class="row g-3">
                     <div class="col-6">
-                        <a href="{{ route('app.calendar.show') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.calendar.show') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #dbeafe; color: #2563eb;">
                                 <i class="bi bi-calendar-event"></i>
                             </div>
@@ -321,7 +317,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('app.users.index') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.users.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fce7f3; color: #db2777;">
                                 <i class="bi bi-people"></i>
                             </div>
@@ -329,7 +325,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('inscriptions.index') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.inscriptions.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #d1fae5; color: #10b981;">
                                 <i class="bi bi-file-earmark-text"></i>
                             </div>
@@ -337,7 +333,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('app.results.index') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.results.index') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fef3c7; color: #f59e0b;">
                                 <i class="bi bi-bar-chart-line"></i>
                             </div>
@@ -352,23 +348,23 @@
                 <h6 class="text-muted mb-3 text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Links Úteis
                 </h6>
                 <div class="list-group list-group-flush">
-                    <a href="{{ route('app.courses.index') }}"
+                    <a href="{{ route('admin.courses.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-book me-2"></i>Gerenciar Cursos
                     </a>
-                    <a href="{{ route('app.faqs.index') }}"
+                    <a href="{{ route('admin.faqs.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                     </a>
-                    <a href="{{ route('app.exam.index') }}"
+                    <a href="{{ route('admin.exam.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
-                    <a href="{{ route('app.results.index') }}"
+                    <a href="{{ route('admin.results.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
-                    <a href="{{ route('app.calls.index') }}"
+                    <a href="{{ route('admin.calls.index') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula
                     </a>
@@ -411,11 +407,11 @@
 
     @stack('scripts')
 
-    <script src="{{ asset('assets/js/dash.js') }}" type="module"></script>
+    <script src="{{ asset('assets/js/admin/dash.js') }}" type="module"></script>
 
     {{-- Scripts --}}
     <script src="{{ asset('assets/js/admin/sidebar.js') }}"></script>
-    <script src="{{ asset('assets/js/export/export-handler.js') }}"></script>
+    <script src="{{ asset('assets/js/vestibulinho/export/export-handler.js') }}"></script>
 
 </body>
 

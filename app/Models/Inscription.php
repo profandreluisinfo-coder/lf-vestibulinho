@@ -15,7 +15,8 @@ class Inscription extends Model
 
     protected $fillable = [
         'user_id',
-        'course_id'
+        'course_id',
+        'vestibulinho_id'
     ];
 
     protected function casts(): array
@@ -24,6 +25,11 @@ class Inscription extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    public function vestibulinho(): BelongsTo
+    {
+        return $this->belongsTo(Vestibulinho::class);
     }
 
     /**

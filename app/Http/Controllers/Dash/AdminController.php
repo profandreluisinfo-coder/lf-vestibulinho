@@ -9,12 +9,17 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        return view('admin.index');
+    }
+
     /**
-     * Página Index do dashboard do admin
+     * Página inicial do painel de administração do vestibulinho.   
      *
      * @return \Illuminate\View\View
      */
-    public function home()
+    public function vestibulinho()
     {
         // Candidatos por bairro
         $bairros = DB::table('user_details')
@@ -60,7 +65,7 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('admin.home', [
+        return view('admin.vestibulinho.dash.index', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,

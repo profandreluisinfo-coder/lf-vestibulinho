@@ -23,7 +23,7 @@ class NoticeController extends Controller
         $notices = Notice::all();
 
         // Renderizar a view com a lista de arquivos
-        return view('app.notices.index', compact('notices'));
+        return view('admin.vestibulinho.notices.index', compact('notices'));
     }
 
     /**
@@ -47,7 +47,6 @@ class NoticeController extends Controller
         ]);
 
         $file = $request->file('path');
-        // dd($request->all(), $request->file('path'));
 
         if (!$file) {
             return alertError('Envie um arquivo válido.');
@@ -65,7 +64,7 @@ class NoticeController extends Controller
             'file' => $path
         ]);
 
-        return alertSuccess('Edital cadastrado com sucesso!', 'app.notices.index');
+        return alertSuccess('Edital cadastrado com sucesso!', 'admin.notices.index');
     }
 
 
@@ -82,7 +81,7 @@ class NoticeController extends Controller
 
         // Se nenhum arquivo foi enviado
         if (!$request->hasFile('path')) {
-            return alertWarning('Nenhum arquivo foi enviado.', 'app.notices.index');
+            return alertWarning('Nenhum arquivo foi enviado.', 'admin.notices.index');
         }
 
         $file = $request->file('path');
@@ -112,10 +111,7 @@ class NoticeController extends Controller
             'file' => $filePath,
         ]);
 
-        return alertSuccess(
-            'Edital atualizado com sucesso!',
-            'app.notices.index'
-        );
+        return alertSuccess('Edital atualizado com sucesso!', 'admin.notices.index');
     }
 
     /**
@@ -135,6 +131,6 @@ class NoticeController extends Controller
 
         Setting::where('notice', true)->update(['notice' => false]);
 
-        return alertSuccess('Edital excluido com sucesso!', 'app.notices.index');
+        return alertSuccess('Edital excluido com sucesso!', 'admin.notices.index');
     }
 }

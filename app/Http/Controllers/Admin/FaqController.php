@@ -22,7 +22,7 @@ class FaqController extends Controller
         $categories = Category::all();
         $faqs = Faq::orderBy('order', 'asc')->get();  // Ordenar por 'order'
 
-        return view('app.faqs.index', compact('categories', 'faqs'));
+        return view('admin.vestibulinho.faqs.index', compact('categories', 'faqs'));
     }
 
     /**
@@ -66,7 +66,7 @@ class FaqController extends Controller
         ]);
 
         return redirect()
-            ->route('app.faqs.index')
+            ->route('admin.faqs.index')
             ->with('success', 'FAQ criada com sucesso!');
     }
 
@@ -96,7 +96,7 @@ class FaqController extends Controller
     public function edit(Faq $faq)
     {
         $categories = Category::all();
-        return view('app.faqs.edit', compact('categories', 'faq'));
+        return view('admin.vestibulinho.faqs.edit', compact('categories', 'faq'));
     }
 
     /**
@@ -140,7 +140,7 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return redirect()->route('app.faqs.index')->with('success', 'FAQ atualizada com sucesso!');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
@@ -153,7 +153,7 @@ class FaqController extends Controller
         $faq->delete();
         // $faq->forceDelete();
 
-        return redirect()->route('app.faqs.index')->with('success', 'FAQ excluida com sucesso!');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
@@ -166,6 +166,6 @@ class FaqController extends Controller
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return redirect()->route('app.faqs.index')->with('success', 'Status da FAQ atualizado com sucesso!');
+        return redirect()->route('admin.faqs.index')->with('success', 'Status da FAQ atualizado com sucesso!');
     }
 }

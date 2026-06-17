@@ -32,9 +32,6 @@ Route::middleware(['guest'])
         Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
         Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
 
-        // Login de admins
-        Route::get('/admin/login', [LoginController::class, 'loginForAdmin'])->name('guest.auth.admin')->middleware('throttle:3,1');
-
         // Provas anteriores
         Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.index');
 

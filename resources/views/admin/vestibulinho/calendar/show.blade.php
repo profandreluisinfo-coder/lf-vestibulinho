@@ -1,0 +1,205 @@
+@extends('layouts.admin')
+
+@section('page-title', config('app.name') . ' | Calendário')
+
+@section('content')
+
+    @php
+        $notice = \App\Models\Notice::first();
+    @endphp
+
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h5 class="mb-0">
+                <i class="bi bi-calendar4-week me-2"></i>Calendário
+            </h5>
+
+            <a href="{{ route('admin.calendar.edit', $calendar->id) }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil-square me-1"></i>
+                {{ $calendar?->exists() ? 'Editar Calendário' : 'Definir Calendário' }}
+            </a>
+        </div>
+
+        @if ($calendar->exists())
+
+            @if ($settings->calendar == 0)
+                <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+                    <div class="me-3 fs-3" aria-hidden="true">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading mb-2">Informação Importante</h5>
+                        <p class="mb-0">
+                            Por padrão, o acesso ao calendário estará bloqueado no site até que você altere esta configuração.
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close ms-3" aria-label="Fechar alerta"
+                        data-bs-dismiss="alert"></button>
+
+                </div>
+            @endif
+
+            <div class="row g-4 mb-4">
+
+                {{-- Card de Período de Inscrições --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary">
+                                <i class="bi bi-pencil-square me-2"></i>Inscrições
+                            </h6>
+                            <p class="mb-0">
+                                {{ Carbon\Carbon::parse($calendar->inscription_start)->format('d/m/Y') }}
+                                <span class="text-muted">até</span>
+                                {{ Carbon\Carbon::parse($calendar->inscription_end)->format('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Locais de Prova --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-info">
+                                <i class="bi bi-geo-alt me-2"></i>Locais de Prova
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->exam_location_publish)->format('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Aplicação das Provas --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-danger">
+                                <i class="bi bi-journal-text me-2"></i>Aplicação das Provas
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->exam_date)->format('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Divulgação do Gabarito --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-success">
+                                <i class="bi bi-check2-circle me-2"></i>Divulgação do Gabarito
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->answer_key_publish)->format('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Revisão das Questões --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-warning">
+                                <i class="bi bi-search me-2"></i>Revisão das Questões
+                            </h6>
+                            <p class="mb-0">
+                                {{ Carbon\Carbon::parse($calendar->exam_revision_start)->format('d/m/Y') }}
+                                <span class="text-muted">até</span>
+                                {{ Carbon\Carbon::parse($calendar->exam_revision_end)->format('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Resultado Final --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-dark">
+                                <i class="bi bi-trophy me-2"></i>Resultado Final
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->final_result_publish)->format('d/m/Y') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Chamamento 1ª Chamada --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary">
+                                <i class="bi bi-megaphone me-2"></i>1ª Chamada
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->enrollment_start)->format('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Chamamento de Vagas Remanescentes --}}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-secondary">
+                                <i class="bi bi-people me-2"></i>Vagas Remanescentes
+                            </h6>
+                            <p class="mb-0">{{ Carbon\Carbon::parse($calendar->enrollment_end)->format('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            @if ($calendar->exists())
+                <form id="calendar-access-form" action="{{ route('admin.system.publish.calendar') }}" method="POST">
+                    @csrf
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" id="calendar" name="calendar"
+                            onchange="confirmCalendarAccess(this)" {{ $settings->calendar != 0 ? 'checked' : '' }}>
+                        <label class="form-check-label" for="calendar">
+                            <span class="badge bg-{{ $settings->calendar != 0 ? 'success' : 'danger' }} ms-2">
+                                {!! $settings->calendar != 0
+                                    ? '<i class="bi bi-unlock"></i> Acesso ao Calendário Liberado'
+                                    : '<i class="bi bi-lock"></i> Acesso ao Calendário Bloqueado' !!}
+                            </span>
+                        </label>
+                    </div>
+                </form>
+            @endif
+
+        @else
+        
+            <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-2">Informação Importante</h5>
+                    <p class="mb-0">
+                        Você ainda não definiu um calendário.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
+
+            </div>
+
+        @endif
+
+    </div>
+
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/vestibulinho/swa/calendar/publish.js') }}"></script>
+@endpush

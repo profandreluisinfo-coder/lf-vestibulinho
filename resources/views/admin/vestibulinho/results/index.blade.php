@@ -1,0 +1,148 @@
+@extends('layouts.admin')
+
+@section('page-title', 'Vestibulinho LF')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">
+@endpush
+
+@section('content')
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i>Classificação Geral</h5>
+        </div>
+        {{-- Verificar se $results é verdadeiro --}}
+        @if ($results?->isNotEmpty())
+            <div class="row">
+                <div class="col mx-auto">
+
+                    <form id="result-access-form" class="mb-3" action="{{ route('admin.system.publish.result') }}"
+                        method="POST">
+                        @csrf
+                        <div class="form-check form-switch mt-3">
+                            <input class="form-check-input" type="checkbox" id="result" name="result"
+                                onchange="confirmResultAccess(this)" {{ $settings->result != 0 ? 'checked' : '' }}>
+                            <label class="form-check-label" for="result">
+                                Acesso ao resultado:
+                                <span class="badge bg-{{ $settings->result != 0 ? 'success' : 'danger' }} ms-2">
+                                    {{ $settings->result != 0 ? 'Liberado' : 'Bloqueado' }}
+                                </span>
+                            </label>
+                        </div>
+                    </form>
+                    {{-- Filtros e legenda --}}
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+
+                        {{-- Filtro de Situação --}}
+                        <div>
+                            <label for="filter-status" class="form-label fw-semibold me-2">Filtrar por situação:</label>
+                            <select id="filter-status" class="form-select form-select-sm w-auto d-inline-block">
+                                <option value="all" selected>Todos</option>
+                                <option value="classificado">Classificados</option>
+                                <option value="empate">Empatados</option>
+                                <option value="desclassificado">Desclassificados</option>
+                            </select>
+                        </div>
+
+                        {{-- Filtro PCD --}}
+                        <div>
+                            <label for="filter-pcd" class="form-label fw-semibold me-2">PCD:</label>
+                            <select id="filter-pcd" class="form-select form-select-sm w-auto d-inline-block">
+                                <option value="all" selected>Todos</option>
+                                <option value="pcd">PCD</option>
+                                <option value="nao">Não PCD</option>
+                            </select>
+                        </div>
+
+                        {{-- Legenda --}}
+                        <div class="small text-center text-md-end">
+                            <span class="badge bg-success me-2">Classificado</span>
+                            <span class="badge bg-warning text-dark me-2">Empate</span>
+                            <span class="badge bg-danger">Desclassificado</span>
+                        </div>
+                    </div>
+
+                    {{-- Campo de busca --}}
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="search" name="search"
+                            placeholder="Pesquisar por nome ou inscrição" autocomplete="off">
+                    </div>
+
+                    {{-- Tabela de resultados --}}
+                    <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
+                        <table id="classification" class="table table-striped mb-0 caption-top">
+                            <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Classificação Geral
+                            </caption>
+                            <thead class="table-success">
+                                <tr>
+                                    <th>Classificação</th>
+                                    <th>Inscrição</th>
+                                    <th>Nome</th>
+                                    <th>Nascimento</th>
+                                    <th>Nota</th>
+                                    <th>Situação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results" class="table-group-divider">
+                                @foreach ($results as $index => $result)
+                                    @php
+                                        $isDirectClassified = $result->ranking <= $limit;
+                                        $isTieClassified = !$isDirectClassified && $result->score == $cutoffScore;
+                                        $isClassified = $isDirectClassified || $isTieClassified;
+
+                                    @endphp
+                                    <tr data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}"
+                                        data-pcd="{{ $result->pne ? 'pcd' : 'nao' }}">
+                                        <th scope="col">{{ $result->ranking }}º</th>
+                                        <td>{{ $result->id }}</td>
+                                        <th>{{ $result->authorization_accepted == 1 ? $result->social_name : $result->name }}
+                                        </th>
+                                        <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
+                                        <td>{{ $result->score }}</td>
+                                        <td>
+                                            @if ($isDirectClassified)
+                                                <span class="badge bg-success">CLASSIFICADO</span>
+                                            @elseif ($isTieClassified)
+                                                <span class="badge bg-warning text-dark">CLASSIFICADO</span>
+                                                <small class="text-muted d-block">(Empate na nota de corte)</small>
+                                            @else
+                                                <span class="badge bg-danger">DESCLASSIFICADO</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
+
+                <div class="me-3 fs-3" aria-hidden="true">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div class="flex-grow-1">
+                    <h5 class="alert-heading mb-2">Informação Importante</h5>
+                    <p class="mb-0">
+                        A tabela de classificação geral está vazia.
+                    </p>
+                    <p class="mb-0 mt-2 small opacity-75">
+                        Em caso de dúvidas, entre em contato com o suporte técnico.
+                    </p>
+                </div>
+
+                <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
+
+            </div>
+
+        @endif
+    </div>
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/vestibulinho/filters/results/private.js') }}"></script>x
+    <script src="{{ asset('assets/js/vestibulinho/swa/ranking/results.js') }}"></script>
+@endpush
