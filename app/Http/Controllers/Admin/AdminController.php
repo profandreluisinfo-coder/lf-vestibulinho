@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calendar;
+use App\Models\Call;
 use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\Setting;
@@ -18,28 +19,8 @@ class AdminController extends Controller
         $ranking_active = ExamResult::hasScores();
         $inscriptions_count = Inscription::count();
         $settings = Setting::first() ?? new Setting();
+        $calls_exists = Call::first() ?? new Call();
 
-        $steps_done = collect([
-            $calendar_active,
-            $local_status,
-            $ranking_active
-        ])
-            ->filter()
-            ->count();
-
-        $steps_total = 5;
-        $steps_pct = round(($steps_done / $steps_total) * 100);
-
-        return view('admin.home.index', compact('calendar_active', 'local_status', 'ranking_active', 'inscriptions_count', 'settings', 'steps_done', 'steps_total', 'steps_pct'));
-    }
-
-    /**
-     * Página inicial do painel de administração do vestibulinho.   
-     *
-     * @return \Illuminate\View\View
-     */
-    public function vestibulinho()
-    {
         // Candidatos por bairro
         $bairros = DB::table('user_details')
             ->select('burgh', DB::raw('COUNT(*) as total'))
@@ -84,12 +65,35 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('admin.dash.index', [
-            'bairros' => $bairros,
-            'cursos' => $cursos,
-            'escolas' => $escolas,
-            'sexos' => $sexos,
-            'sexoPorCurso' => $sexoPorCurso
-        ]);
+        $steps_done = collect([
+            $calendar_active,
+            $local_status,
+            $ranking_active
+        ])
+            ->filter()
+            ->count();
+
+        $steps_total = 5;
+        $steps_pct = round(($steps_done / $steps_total) * 100);
+
+        return view('admin.home.index', compact('calendar_active', 'local_status', 'ranking_active', 'inscriptions_count', 'settings', 'calls_exists', 'bairros', 'cursos', 'escolas', 'sexos', 'sexoPorCurso', 'steps_done', 'steps_total', 'steps_pct'));
     }
+
+    /**
+     * Página inicial do painel de administração do vestibulinho.   
+     *
+     * @return \Illuminate\View\View
+     */
+    // public function vestibulinho()
+    // {
+        
+
+    //     return view('admin.dash.index', [
+    //         'bairros' => $bairros,
+    //         'cursos' => $cursos,
+    //         'escolas' => $escolas,
+    //         'sexos' => $sexos,
+    //         'sexoPorCurso' => $sexoPorCurso
+    //     ]);
+    // }
 }

@@ -41,7 +41,7 @@ Route::middleware([
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('/', [AdminController::class, 'index'])->name('index');
 
         Route::prefix('vestibulinho')->group(function () {
 

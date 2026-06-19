@@ -98,7 +98,7 @@ class LoginController extends Controller
     protected function getRedirectUrl(User $user): string
     {
         if ($user->role === 'admin') {
-            return route('admin.dashboard');
+            return route('admin.index');
         }
 
         if ($user->role === 'user') {
@@ -109,31 +109,4 @@ class LoginController extends Controller
 
         return route('login');
     }
-
-    /**
-     * Redireciona o usuário para a rota baseada no seu papel.
-     * Se o papel do usuário for 'admin', ele será redirecionado para a rota 'admin.dashboard'.
-     * Se o papel do usuário for 'user', ele será redirecionado para a rota 'dashboard'.
-     * Caso contrário, ele será redirecionado para a rota 'login' com um erro.
-     *
-     * @param User $user
-     * @return RedirectResponse
-     */
-    // protected function redirectUserBasedOnRole(User $user): RedirectResponse
-    // {
-    //     if ($user->role === 'admin') {
-    //         return redirect()->route('admin.dashboard');
-    //     }
-
-    //     if ($user->role === 'user') {
-    //         // Verifica se o usuário possui inscrição
-    //         $hasInscription = $user->inscription()->exists();
-
-    //         return $hasInscription
-    //             ? redirect()->route('dash.user.start') // Vai para o início da inscrição
-    //             : redirect()->route('dash.user.inscription'); // Vai para o dashboard de inscrição
-    //     }
-
-    //     return alertError('Perfil de usuário desconhecido.');
-    // }
 }

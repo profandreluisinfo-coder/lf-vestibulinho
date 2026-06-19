@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="{{ route('admin') }}"
+                    <a href="{{ route('admin.index') }}"
                         class="menu-link {{ request()->routeIs('admin.*') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
