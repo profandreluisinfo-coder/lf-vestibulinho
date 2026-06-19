@@ -115,38 +115,6 @@ class Calendar extends Model
     }
 
     /**
-     * Formata uma data no formato 'd/m/Y' ou retorna '—' se a data for nula.
-     *
-     * @param \Carbon\Carbon|null $date Data a ser formatada.
-     *
-     * @return string Data formatada ou '—' se a data for nula.
-     */
-    public function formatDate($date): string
-    {
-        return $date ? $date->format('d/m/Y') : '—';
-    }
-
-    /**
-     * Formata um período de tempo com as datas de início e término no formato 'd/m/Y' e retorna como string.
-     *
-     * @param \Carbon\Carbon|null $start Data de início do período.
-     * @param \Carbon\Carbon|null $end Data de término do período.
-     *
-     * @return string Período formatado como string.
-     */
-    public function formatPeriod($start, $end): string
-    {
-        return $this->formatDate($start) . ' até ' . $this->formatDate($end);
-    }
-
-    // Limpa o cache automaticamente quando salvar ou excluir
-    protected static function booted()
-    {
-        static::saved(fn() => Cache::forget('global_calendar'));
-        static::deleted(fn() => Cache::forget('global_calendar'));
-    }
-
-    /**
      * Verifica se as inscrições estão abertas.
      *
      * @return bool Verdadeiro se as inscrições estão abertas, falso caso contrário.
@@ -169,7 +137,7 @@ class Calendar extends Model
      *
      * @return bool Verdadeiro se a data de início das inscrições já foi atingida, falso caso contrário.
      */
-    public function hasInscriptionStarted(): bool
+    public function isInscriptionStarted(): bool
     {
         if (!$this->inscription_start) {
             return false;
@@ -183,7 +151,7 @@ class Calendar extends Model
      *
      * @return bool Verdadeiro se as inscrições já encerraram, falso caso contrário.
      */
-    public function hasInscriptionEnded(): bool
+    public function isInscriptionEnded(): bool
     {
         if (!$this->inscription_end) {
             return false;
@@ -217,5 +185,37 @@ class Calendar extends Model
         $calendar = self::getActive() ?? self::orderBy('year', 'desc')->first();
 
         return $calendar ? $calendar->year : null;
+    }
+
+    /**
+     * Formata uma data no formato 'd/m/Y' ou retorna '—' se a data for nula.
+     *
+     * @param \Carbon\Carbon|null $date Data a ser formatada.
+     *
+     * @return string Data formatada ou '—' se a data for nula.
+     */
+    public function formatDate($date): string
+    {
+        return $date ? $date->format('d/m/Y') : '—';
+    }
+
+    /**
+     * Formata um período de tempo com as datas de início e término no formato 'd/m/Y' e retorna como string.
+     *
+     * @param \Carbon\Carbon|null $start Data de início do período.
+     * @param \Carbon\Carbon|null $end Data de término do período.
+     *
+     * @return string Período formatado como string.
+     */
+    public function formatPeriod($start, $end): string
+    {
+        return $this->formatDate($start) . ' até ' . $this->formatDate($end);
+    }
+
+    // Limpa o cache automaticamente quando salvar ou excluir
+    protected static function booted()
+    {
+        static::saved(fn() => Cache::forget('global_calendar'));
+        static::deleted(fn() => Cache::forget('global_calendar'));
     }
 }

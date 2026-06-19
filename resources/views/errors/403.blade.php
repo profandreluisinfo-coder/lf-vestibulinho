@@ -11,7 +11,7 @@
 
 @section('error_actions')
     <div class="d-flex flex-wrap justify-content-center gap-3">
-        <a href="{{ route('guest.login') }}" class="err-btn-primary">
+        <a href="{{ route('login') }}" class="err-btn-primary">
             <i class="bi bi-box-arrow-in-right me-2"></i> Fazer Login
         </a>
         <a href="{{ route('home') }}" class="err-btn-outline">

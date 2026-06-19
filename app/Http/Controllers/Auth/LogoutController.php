@@ -14,7 +14,7 @@ class LogoutController extends Controller
     {
         $user = Auth::user();
 
-        $redirectRoute = $user && $user->role === 'admin' ? 'admin.auth' : 'guest.login';
+        $redirectRoute = $user && $user->role === 'admin' ? 'admin.auth' : 'login';
 
         Auth::logout();
 

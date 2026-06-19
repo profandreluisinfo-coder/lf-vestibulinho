@@ -29,13 +29,13 @@
         <a href="{{ route('home') }}#cursos" class="err-hint-link">
             <i class="bi bi-grid-3x3-gap"></i> Cursos
         </a>
-        <a href="{{ route('guest.calendar.show') }}" class="err-hint-link">
+        <a href="{{ route('site.calendar.show') }}" class="err-hint-link">
             <i class="bi bi-calendar3"></i> Calendário
         </a>
-        <a href="{{ route('guest.login') }}" class="err-hint-link">
+        <a href="{{ route('login') }}" class="err-hint-link">
             <i class="bi bi-person-circle"></i> Área do Candidato
         </a>
-        <a href="{{ route('guest.faqs.index') }}#faq" class="err-hint-link">
+        <a href="{{ route('site.faqs.index') }}#faq" class="err-hint-link">
             <i class="bi bi-question-circle"></i> FAQ
         </a>
     </div>

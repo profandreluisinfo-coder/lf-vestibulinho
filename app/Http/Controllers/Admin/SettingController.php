@@ -28,7 +28,7 @@ class SettingController extends Controller
      */
     public function index(): View
     {
-        return view('admin.vestibulinho.system.index');
+        return view('admin.system.index');
     }
 
     /**

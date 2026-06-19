@@ -30,7 +30,7 @@ class ArchiveController extends Controller
         // Obter todos os arquivos de prova
         $files = Archive::orderBy('year', 'desc')->get();
 
-        return view('admin.vestibulinho.archives.index', compact('files'));
+        return view('admin.archives.index', compact('files'));
     }
 
     /**
@@ -117,7 +117,7 @@ class ArchiveController extends Controller
      */
     public function edit(Archive $archive): View
     {
-        return view('admin.vestibulinho.archives.edit', compact('archive'));
+        return view('admin.archives.edit', compact('archive'));
     }
 
     /**

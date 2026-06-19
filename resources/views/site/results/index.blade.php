@@ -1,0 +1,125 @@
+@extends('layouts.site')
+
+@section('page-title', config('app.name') . ' ' . ($calendar?->year ?? '') . ' | Classificação Geral')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/results.css') }}">
+@endpush
+
+@section('content')
+
+    <section id="results">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ url('/') }}">Início</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Classificação Geral</li>
+                        </ol>
+                    </nav>
+
+                    <h2 class="section-title text-center mb-3">
+                        {{ config('app.name') }} {{ $calendar?->year ?? '' }} | Classificação Geral
+                    </h2>
+
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong>, em conformidade com o item
+                                <strong>5.10</strong> do <a href="{{ asset('storage/' . $notice->file) }}"
+                                    class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do
+                                Processo Seletivo {{ $calendar?->year ?? '' }}, torna pública a classificação geral dos candidatos na prova
+                                objetiva, adotando como critério de desempate a menor idade, conforme disposto no item
+                                <strong>5.11</strong> do mesmo Edital.
+                            </p>
+
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-6 mb-2 mb-md-0">
+                                    <label for="filter-status" class="form-label fw-semibold me-2">Filtrar por situação:</label>
+                                    <select id="filter-status" class="form-select form-select-sm w-auto d-inline-block">
+                                        <option value="all" selected>Todos</option>
+                                        <option value="classificado">Classificados</option>
+                                        <option value="empate">Empatados</option>
+                                        <option value="desclassificado">Desclassificados</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 text-md-end small">
+                                    <span class="badge bg-success me-2">Classificado</span>
+                                    <span class="badge bg-warning text-dark me-2">Empate</span>
+                                    <span class="badge bg-danger">Desclassificado</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="search" name="search"
+                                        placeholder="Pesquisar por nome ou inscrição" autocomplete="off" aria-label="Pesquisar">
+                                </div>
+                            </div>
+
+                            <div id="results-counter" class="text-end small mb-2 mt-2" aria-live="polite" role="status"></div>
+
+                            <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
+                                <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top" role="table" aria-label="Classificação geral">
+                                    <caption class="text-muted small">{{ config('app.name') }} {{ $calendar?->year ?? '' }} - Lista de Classificação Geral</caption>
+
+                                    <thead class="table-success" role="rowgroup">
+                                        <tr>
+                                            <th scope="col">Classificação</th>
+                                            <th scope="col">Inscrição</th>
+                                            <th scope="col">Nome</th>
+                                            <th scope="col">Nascimento</th>
+                                            <th scope="col">Nota</th>
+                                            <th scope="col">Situação</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="results-tbody" class="table-group-divider">
+                                        @forelse ($results as $index => $result)
+                                            @php
+                                                $isDirectClassified = $result->ranking <= $limit;
+                                                $isTieClassified = !$isDirectClassified && $result->score == $cutoffScore;
+                                                $isClassified = $isDirectClassified || $isTieClassified;
+                                            @endphp
+                                            <tr data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}">
+                                                <th scope="row">{{ $result->ranking }}º</th>
+                                                <td>{{ $result->id }}</td>
+                                                <td>{{ $result->social_name ? $result->social_name : $result->name }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
+                                                <td>{{ $result->score }}</td>
+                                                <td>
+                                                    @if ($isDirectClassified)
+                                                        <span class="badge bg-success">CLASSIFICADO</span>
+                                                    @elseif ($isTieClassified)
+                                                        <span class="badge bg-warning text-dark">CLASSIFICADO</span>
+                                                        <small class="text-muted d-block">(Empate na nota de corte)</small>
+                                                    @else
+                                                        <span class="badge bg-danger">DESCLASSIFICADO</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">Nenhum resultado encontrado.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/filters/results/public.js') }}"></script>
+@endpush

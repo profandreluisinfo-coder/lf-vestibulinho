@@ -2,16 +2,35 @@
 
 namespace App\Http\Controllers\Admin;
 
-// use App\Models\Course;
-// use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Calendar;
+use App\Models\ExamResult;
+use App\Models\Inscription;
+use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        $calendar_active = Calendar::latest('id')->first() ?? new Calendar();
+        $local_status = ExamResult::hasRecords();
+        $ranking_active = ExamResult::hasScores();
+        $inscriptions_count = Inscription::count();
+        $settings = Setting::first() ?? new Setting();
+
+        $steps_done = collect([
+            $calendar_active,
+            $local_status,
+            $ranking_active
+        ])
+            ->filter()
+            ->count();
+
+        $steps_total = 5;
+        $steps_pct = round(($steps_done / $steps_total) * 100);
+
+        return view('admin.home.index', compact('calendar_active', 'local_status', 'ranking_active', 'inscriptions_count', 'settings', 'steps_done', 'steps_total', 'steps_pct'));
     }
 
     /**
@@ -65,7 +84,7 @@ class AdminController extends Controller
             ->orderBy('courses.name')
             ->get();
 
-        return view('admin.vestibulinho.dash.index', [
+        return view('admin.dash.index', [
             'bairros' => $bairros,
             'cursos' => $cursos,
             'escolas' => $escolas,

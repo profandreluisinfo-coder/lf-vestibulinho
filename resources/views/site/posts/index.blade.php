@@ -1,25 +1,25 @@
 @extends('layouts.site')
 
-@section('title', 'Notícias — Vestibulinho ' . ($calendar?->year ?? config('app.year')))
+@section('title', 'Vestibulinho - Notícias e Comunicados')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/news.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/posts.css') }}" />
 @endpush
 
 @section('content')
-    <section class="section-news">
+    <section class="section-posts">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 reveal">
                     <div class="fa-header-accent">
                         <i class="bi bi-megaphone-fill"></i>
-                        Notícias
+                        Notícias e Comunicados
                     </div>
 
-                    <h2 class="section-title">Todas as notícias</h2>
+                    <h2 class="section-title">Todas as notícias e comunicados</h2>
 
                     <p class="section-lead mt-2">
-                        Confira todas as notícias publicados sobre a escola.
+                        Confira todas as notícias e comunicados publicados sobre a escola.
                     </p>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                             Nenhuma noticia publicada no momento.
                         </div>
                     @else
-                        <div class="news-list">
+                        <div class="posts-list">
                             @foreach ($posts as $post)
                                 @php
                                     $iconeMap = [
@@ -87,31 +87,31 @@
                                     $label = $labelMap[$post->category->type] ?? 'Aviso';
                                 @endphp
 
-                                <a href="{{ route('news.show', $post->slug) }}"
-                                    class="news-item delay-{{ ($loop->index % 4) + 1 }}">
+                                <a href="{{ route('site.posts.show', $post->slug) }}"
+                                    class="posts-item delay-{{ ($loop->index % 4) + 1 }}">
 
-                                    <div class="news-icon type-{{ $post->category->type ?? 'info' }}">
+                                    <div class="posts-icon type-{{ $post->category->type ?? 'info' }}">
                                         <i class="bi {{ $icone }}"></i>
                                     </div>
 
-                                    <div class="news-body">
-                                        <div class="news-titulo">{{ $post->title }}</div>
+                                    <div class="posts-body">
+                                        <div class="posts-titulo">{{ $post->title }}</div>
 
                                         @if (!empty($post->resume))
-                                            <div class="news-resumo">{!! $post->resume !!}</div>
+                                            <div class="posts-resume">{!! $post->resume !!}</div>
                                         @endif
 
-                                        <div class="news-meta">
-                                            <span class="news-data">
+                                        <div class="posts-meta">
+                                            <span class="posts-data">
                                                 <i class="bi bi-calendar3 me-1"></i>
                                                 {{ $post->published_at?->format('d/m/Y') ?? $post->created_at->format('d/m/Y') }}
                                             </span>
-                                            <span class="news-badge badge-{{ $post->category->type ?? 'info' }}">
+                                            <span class="posts-badge badge-{{ $post->category->type ?? 'info' }}">
                                                 {{ $label }}
                                             </span>
                                         </div>
                                     </div>
-                                    <i class="bi bi-arrow-right news-arrow"></i>
+                                    <i class="bi bi-arrow-right posts-arrow"></i>
                                 </a>
                             @endforeach
                         </div>

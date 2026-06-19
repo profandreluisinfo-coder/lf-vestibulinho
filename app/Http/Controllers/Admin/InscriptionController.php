@@ -19,7 +19,7 @@ class InscriptionController extends Controller
     public function index(): View
     {
         // Agora apenas retorna a view, os dados virão via AJAX
-        return view('admin.vestibulinho.inscriptions.index');
+        return view('admin.inscriptions.index');
     }
 
     /**
@@ -77,7 +77,7 @@ class InscriptionController extends Controller
                 'name' => $user->name,
                 'cpf' => $user->cpf,
                 'user_id' => $user->id,
-                'actions' => view('admin.vestibulinho.inscriptions.inscription-actions', compact('user'))->render()
+                'actions' => view('admin.inscriptions.inscription-actions', compact('user'))->render()
             ];
         });
 
@@ -102,7 +102,7 @@ class InscriptionController extends Controller
             ->with(['inscription', 'user_detail'])
             ->get();
         // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('admin.vestibulinho.inscriptions.pcd', compact('users'));
+        return view('admin.inscriptions.pcd', compact('users'));
     }
 
     public function socialName(): View
@@ -114,7 +114,7 @@ class InscriptionController extends Controller
 
         view()->share('users', $users);
 
-        return view('admin.vestibulinho.inscriptions.social-name');
+        return view('admin.inscriptions.social-name');
     }
 
     /**
@@ -130,6 +130,6 @@ class InscriptionController extends Controller
 
         $user = User::find($id);
 
-        return view('admin.vestibulinho.inscriptions.show')->with('user', $user);
+        return view('admin.inscriptions.show')->with('user', $user);
     }
 }

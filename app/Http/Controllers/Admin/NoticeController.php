@@ -23,7 +23,7 @@ class NoticeController extends Controller
         $notices = Notice::all();
 
         // Renderizar a view com a lista de arquivos
-        return view('admin.vestibulinho.notices.index', compact('notices'));
+        return view('admin.notices.index', compact('notices'));
     }
 
     /**

@@ -24,7 +24,7 @@ class LocalController extends Controller
         // Obter todos as locais de prova
         $locations = ExamLocation::all();
 
-        return view('admin.vestibulinho.local.index', compact('locations'));
+        return view('admin.local.index', compact('locations'));
     }
 
     /**
@@ -89,7 +89,7 @@ class LocalController extends Controller
             'location' => $location,
         ]);
 
-        return view('admin.vestibulinho.local.edit');
+        return view('admin.local.edit');
     }
 
     /**

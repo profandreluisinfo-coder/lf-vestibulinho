@@ -48,6 +48,6 @@ class ResultController extends Controller
             'cutoffScore' => $cutoffScore,
         ]);
 
-        return view('admin.vestibulinho.results.index');
+        return view('admin.results.index');
     }
 }

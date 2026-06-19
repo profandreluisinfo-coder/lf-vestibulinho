@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Faq;
 use App\Models\Post;
 
+// Site
 class HomeController extends Controller
 {
     public function index()
@@ -14,11 +16,11 @@ class HomeController extends Controller
         $courses = Course::all();
         
         // Apenas posts publicados
-        $news = Post::type(Post::TYPE_NOTICIA)->published()->take(3)->get();
+        $posts = Post::type(Post::TYPE_NOTICIA)->published()->take(3)->get();
 
-        // Apenas comunicados publicados
-        $infos = Post::type(Post::TYPE_INFO)->published()->take(3)->get();
+        // Apenas faqs publicados
+        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(5)->get();
 
-        return view('site.home.index', compact('courses', 'news', 'infos'));
+        return view('site.home.index', compact('courses', 'posts', 'faqs'));
     }
 }

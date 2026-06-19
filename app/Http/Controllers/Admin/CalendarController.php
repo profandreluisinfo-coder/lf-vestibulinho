@@ -22,7 +22,7 @@ class CalendarController extends Controller
     {
         $calendar = Calendar::latest('id')->first() ?? new Calendar();
 
-        return view('admin.vestibulinho.calendar.edit', compact('calendar'));
+        return view('admin.calendar.edit', compact('calendar'));
     }
 
     /**
@@ -134,7 +134,7 @@ class CalendarController extends Controller
      */
     public function show(): View
     {
-        return view('admin.vestibulinho.calendar.show');
+        return view('admin.calendar.show');
     }
 
     public function activate(Calendar $calendar): RedirectResponse

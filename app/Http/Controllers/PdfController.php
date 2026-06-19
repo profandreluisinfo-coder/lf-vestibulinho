@@ -19,7 +19,7 @@ class PdfController extends Controller
     {
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('admin.vestibulinho.allocations.allocation', compact('allocations'))
+        $pdf = Pdf::loadView('admin.allocations.allocation', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('relatorio-de-alocacao.pdf');
@@ -30,7 +30,7 @@ class PdfController extends Controller
     {
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('admin.vestibulinho.allocations.rooms', compact('allocations'))
+        $pdf = Pdf::loadView('admin.allocations.rooms', compact('allocations'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('lista-para-salas.pdf');
@@ -58,7 +58,7 @@ class PdfController extends Controller
             ->get()
             ->groupBy(['location_name', 'room_number']);
 
-        $pdf = Pdf::loadView('admin.vestibulinho.allocations.signatures', compact('allocations'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('admin.allocations.signatures', compact('allocations'))->setPaper('a4', 'portrait');
 
         return $pdf->stream('lista-de-assinaturas.pdf');
     }
@@ -71,7 +71,7 @@ class PdfController extends Controller
     public function proofOfRegistrationToPdf()
     {
         // Gera o PDF com a view
-        $pdf = Pdf::loadView('admin.vestibulinho.pdf.proof-of-registration', [
+        $pdf = Pdf::loadView('admin.pdf.proof-of-registration', [
             'user' =>  Auth::user()
         ]);
 
@@ -114,7 +114,7 @@ class PdfController extends Controller
         }
 
         // código de geração de PDF...
-        $pdf = Pdf::loadView('admin.vestibulinho.pdf.all-inscriptions', [
+        $pdf = Pdf::loadView('admin.pdf.all-inscriptions', [
             'users' => $users,
             'search' => $search,
         ]);
@@ -140,7 +140,7 @@ class PdfController extends Controller
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
-        $pdf = Pdf::loadView('admin.vestibulinho.pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('admin.pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
 
         return $pdf->stream('cartao-local-prova.pdf');
     }
@@ -165,7 +165,7 @@ class PdfController extends Controller
             return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
-        return Pdf::loadView('admin.vestibulinho.pdf.test-result-card', compact('examResult', 'user'))
+        return Pdf::loadView('admin.pdf.test-result-card', compact('examResult', 'user'))
             ->setPaper('a4', 'portrait')
             ->download('resultado-da-prova.pdf');
     }
@@ -200,7 +200,7 @@ class PdfController extends Controller
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
-        $pdf = Pdf::loadView('admin.vestibulinho.pdf.call-card', [
+        $pdf = Pdf::loadView('admin.pdf.call-card', [
             'user' =>  $user,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
@@ -231,7 +231,7 @@ class PdfController extends Controller
 
         if ($user) {
             // Gera o PDF com a view
-            $pdf = Pdf::loadView('admin.vestibulinho.pdf.proof-of-registration', [
+            $pdf = Pdf::loadView('admin.pdf.proof-of-registration', [
                 'user' => $user
             ]);
 

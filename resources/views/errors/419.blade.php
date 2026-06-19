@@ -26,10 +26,10 @@
 @section('error_hints')
     <p>Isso costuma acontecer quando a aba fica aberta por muito tempo sem uso.</p>
     <div class="err-hint-links">
-        <a href="{{ route('guest.login') }}" class="err-hint-link">
+        <a href="{{ route('login') }}" class="err-hint-link">
             <i class="bi bi-box-arrow-in-right"></i> Fazer Login
         </a>
-        <a href="{{ route('guest.register') }}" class="err-hint-link">
+        <a href="{{ route('register') }}" class="err-hint-link">
             <i class="bi bi-person-plus"></i> Criar Conta
         </a>
     </div>

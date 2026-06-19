@@ -18,15 +18,6 @@ class GlobalDataHelper
     {
         View::composer('*', function ($view) {
 
-            // Edital: Se não houver registros, retorna uma instância vazia
-            //  $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
-
-            // Configurações gerais
-            $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
-            
-            // Chamadas existentes
-            $calls_exists = Cache::remember('calls_exists', 60, fn() => Call::exists());
-
             // Estatísticas de inscrições
             $totalInscriptions = Cache::remember('global_total_inscriptions', 60, fn() => Inscription::count());
 
@@ -38,15 +29,8 @@ class GlobalDataHelper
                     ->count()
             );
 
-            // Edital
-            // $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
-
             // Calendário: Se não houver registros, retorna uma instância vazia
             $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
-
-            // Inscrição aberta e calendário visível
-            $open = $calendar?->isInscriptionOpen();
-            $show = $calendar?->is_active;
 
             // Usuário autenticado e ano atual
             $authUser = Auth::user();
@@ -54,12 +38,7 @@ class GlobalDataHelper
 
             // Envia tudo para as views
             $view->with(compact(
-                'settings',
-                'calls_exists',
-                // 'notice',
                 'calendar',
-                'open',
-                'show',
                 'authUser',
                 'currentYear',
                 'totalInscriptions',

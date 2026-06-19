@@ -18,7 +18,7 @@ class CourseController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        return view('admin.vestibulinho.courses.index', compact('courses'));
+        return view('admin.courses.index', compact('courses'));
     }
 
     /**
@@ -45,7 +45,7 @@ class CourseController extends Controller
      */
     public function edit(string $id): View
     {
-        return view('admin.vestibulinho.courses.edit', ['course' => Course::findOrFail($id)]);
+        return view('admin.courses.edit', ['course' => Course::findOrFail($id)]);
     }
 
     /**

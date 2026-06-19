@@ -22,7 +22,7 @@ class FaqController extends Controller
         $categories = Category::all();
         $faqs = Faq::orderBy('order', 'asc')->get();  // Ordenar por 'order'
 
-        return view('admin.vestibulinho.faqs.index', compact('categories', 'faqs'));
+        return view('admin.faqs.index', compact('categories', 'faqs'));
     }
 
     /**
@@ -96,7 +96,7 @@ class FaqController extends Controller
     public function edit(Faq $faq)
     {
         $categories = Category::all();
-        return view('admin.vestibulinho.faqs.edit', compact('categories', 'faq'));
+        return view('admin.faqs.edit', compact('categories', 'faq'));
     }
 
     /**

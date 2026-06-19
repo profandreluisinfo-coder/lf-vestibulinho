@@ -50,7 +50,7 @@ class ExamController extends Controller
             'candidates' => $candidates,
         ]);
 
-        return view('admin.vestibulinho..exam.index');
+        return view('admin.exam.index');
     }
 
     /**
@@ -89,7 +89,7 @@ class ExamController extends Controller
             'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
         ]);
 
-        return view('admin.vestibulinho.exam.create');
+        return view('admin.exam.create');
     }
 
     /**
