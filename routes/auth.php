@@ -9,8 +9,11 @@ use App\Http\Controllers\Auth\{
 };
 
 use App\Http\Controllers\Site\{
-    HomeController, 
-    RegisterController, 
+    HomeController
+};
+
+use App\Http\Controllers\{
+    UserController,
     EmailController
 };
 
@@ -28,8 +31,8 @@ Route::middleware(['guest'])->group(function () {
     Route::post('login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
 
     // Registro
-    Route::get('registrar', [RegisterController::class, 'register'])->name('register');
-    Route::post('registrar', [RegisterController::class, 'store'])->name('register.store');
+    Route::get('registrar-se', [UserController::class, 'create'])->name('register');
+    Route::post('registrar-se', [UserController::class, 'store'])->middleware('throttle:3,1');
 
     // VERIFICAÇÃO DE EMAIL
     Route::get('validate/{token}', [EmailController::class, 'verify'])->name('verify');

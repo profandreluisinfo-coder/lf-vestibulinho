@@ -12,15 +12,12 @@ use App\Http\Middleware\{
 };
 
 use App\Http\Controllers\{
-    PdfController
-};
-
-use App\Http\Controllers\Site\{
-    RegisterController
-};
-
-use App\Http\Controllers\Site\{
+    PdfController,
     UserController
+};
+
+use App\Http\Controllers\Site\{
+    InscriptionController
 };
 
 // 🔒 Rotas que exigem login
@@ -33,30 +30,30 @@ Route::middleware(['auth', NotAdmin::class])->name('inscription.')->group(functi
         ->group(function () {
             // Area do candidato: exibe a página com informações sobre como fazer a inscrição
             Route::get('/', [UserController::class, 'index'])->name('start'); // pasta e view
-            Route::get('dados-pessoais', [RegisterController::class, 'personal'])->name('personal');
-            Route::post('dados-pessoais', [RegisterController::class, 'personalStore']);
+            Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
+            Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
 
-            Route::get('certidao-nascimento', [RegisterController::class, 'certificate'])->name('certificate');
-            Route::post('certidao-nascimento', [RegisterController::class, 'certificateStore']);
+            Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])->name('certificate');
+            Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
 
-            Route::get('endereco', [RegisterController::class, 'address'])->name('address');
-            Route::post('endereco', [RegisterController::class, 'addressStore']);
+            Route::get('endereco', [InscriptionController::class, 'address'])->name('address');
+            Route::post('endereco', [InscriptionController::class, 'addressStore']);
 
-            Route::get('dados-escolares', [RegisterController::class, 'academic'])->name('academic');
-            Route::post('dados-escolares', [RegisterController::class, 'academicStore']);
+            Route::get('dados-escolares', [InscriptionController::class, 'academic'])->name('academic');
+            Route::post('dados-escolares', [InscriptionController::class, 'academicStore']);
 
-            Route::get('filiacao', [RegisterController::class, 'family'])->name('family');
-            Route::post('filiacao', [RegisterController::class, 'familyStore']);
+            Route::get('filiacao', [InscriptionController::class, 'family'])->name('family');
+            Route::post('filiacao', [InscriptionController::class, 'familyStore']);
 
-            Route::get('outras-informacoes', [RegisterController::class, 'other'])->name('other');
-            Route::post('outras-informacoes', [RegisterController::class, 'otherStore']);
+            Route::get('outras-informacoes', [InscriptionController::class, 'other'])->name('other');
+            Route::post('outras-informacoes', [InscriptionController::class, 'otherStore']);
 
-            Route::get('curso', [RegisterController::class, 'course'])->name('course');
-            Route::post('curso', [RegisterController::class, 'courseStore']);
+            Route::get('curso', [InscriptionController::class, 'course'])->name('course');
+            Route::post('curso', [InscriptionController::class, 'courseStore']);
 
-            Route::get('confirmar-dados', [RegisterController::class, 'confirm'])->name('confirm');
+            Route::get('confirmar-dados', [InscriptionController::class, 'confirm'])->name('confirm');
 
-            Route::post('finalizar', [RegisterController::class, 'inscriptionStore'])->name('finalize');
+            Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])->name('finalize');
         });
 
     Route::middleware(WithInscription::class)

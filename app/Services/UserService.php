@@ -40,7 +40,7 @@ class UserService
             to: $user->email,
             subject: 'Confirme seu e-mail',
             data: ['link' => $link],
-            view: 'mail.verify'
+            view: 'emails.verify'
         );
 
         return [
@@ -79,7 +79,7 @@ class UserService
             to: $user->email,
             subject: 'E-mail confirmado',
             data: ['name' => $user->social_name ?? $user->name],
-            view: 'mail.confirmation'
+            view: 'emails.confirmation'
         );
 
         return ['success' => true, 'user' => $user];
@@ -115,7 +115,7 @@ class UserService
             to: $user->email,
             subject: 'Redefinir senha',
             data: ['name' => $user->social_name ?? $user->name, 'link' => $link],
-            view: 'mail.reset'
+            view: 'emails.reset'
         );
 
         return [
@@ -155,7 +155,7 @@ class UserService
             to: $user->email,
             subject: 'Senha alterada',
             data: ['name' => $user->social_name ?? $user->name],
-            view: 'mail.password-changed'
+            view: 'emails.password-changed'
         );
 
         return [
@@ -218,7 +218,7 @@ class UserService
                 to: $user->email,
                 subject: 'Confirme seu e-mail',
                 data: ['link' => $link],
-                view: 'mail.verify'
+                view: 'emails.verify'
             );
         } catch (\Throwable $e) {
             // Desfaz o token para permitir nova tentativa imediata
@@ -250,7 +250,7 @@ class UserService
             to: $user->email,
             subject: 'Senha alterada',
             data: ['name' => $user->social_name ?? $user->name],
-            view: 'mail.password-changed'
+            view: 'emails.password-changed'
         );
 
         return [

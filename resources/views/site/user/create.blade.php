@@ -196,7 +196,7 @@
             </button>
 
             <!-- Links inferiores -->
-            @if ($open && $show)
+            @if ($calendar->isInscriptionOpen())
                 <div class="form-links">
                     <a href="{{ route('login') }}" class="link-btn">
                         <i class="bi bi-box-arrow-in-right"></i> Já tenho registro

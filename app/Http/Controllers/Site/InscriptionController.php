@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Models\Calendar;
-use App\Models\Setting;
-use App\Services\UserService;
 use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,67 +18,12 @@ use App\Models\Notice;
 use App\Services\InscriptionService;
 use Illuminate\Database\QueryException;
 
-class RegisterController extends Controller
+class InscriptionController extends Controller
 {
-    /**
-     * Mostra a página de registro de dados de acesso para o usuário.
-     *
-     * Caso o calendário do Processo Seletivo esteja aberto, a página de registro será exibida.
-     * Caso contrário, o usuário será redirecionado para a página de início.
-     *
-     * @return View|RedirectResponse
-     */
-    public function register(): View | RedirectResponse
-    {
-        $calendar = Calendar::first() ?? new Calendar();
-
-        if (empty($calendar) || !($calendar?->isInscriptionOpen())) {
-            return alertError('Não é possível efetuar o registro no momento.');
-        }
-
-        return view('site.register.create');
-    }
-
-    /**
-     * Realiza o registro do usuário com base nas credenciais informadas.
-     *
-     * Valida os campos 'email', 'password', 'password_confirmation' e 'terms' e
-     * tenta registrar o usuário com base nas credenciais informadas.
-     * Se o registro for bem sucedido, o usuário receberá um e-mail para confirmar o endereço de e-mail.
-     * Caso contrário, será exibido um erro.
-     *
-     * @param Request $request
-     * @param UserService $userService
-     * @return RedirectResponse|View
-     */
-    public function store(Request $request, UserService $userService): RedirectResponse|View
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|confirmed|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{6,8}$/',
-            'password_confirmation' => 'required'
-        ], [
-            'email.required' => 'O campo email é obrigatório',
-            'email.email' => 'O campo email deve ser um email válido',
-            'password.required' => 'O campo senha é obrigatório',
-            'password.confirmed' => 'As senhas devem ser iguais',
-            'password.regex' => 'A senha deve ter de 6 a 8 caracteres, com pelo menos uma letra maiúscula, uma minúscula e um número.',
-            'password_confirmation.required' => 'O campo repetir senha é obrigatório'
-        ]);
-
-        $result = $userService->register($credentials);
-
-        if (!($result['success'])) {
-            return redirect()->back()->with('error', $result['message']);
-        }
-
-        return view('site.register.email-sent', ['email' => $result['user']->email]);
-    }
-
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        return view('app.registration.personal', [
+        return view('site.inscription.personal', [
             'nationalities' => [
                 '1' => 'Brasileira',
                 '2' => 'Estrangeira'
@@ -131,7 +73,7 @@ class RegisterController extends Controller
             return redirect()->route('step.personal');
         }
 
-        return view('app.registration.certificate');
+        return view('site.inscription.certificate');
     }
     // Gravar Dados de Passo 2
     public function certificateStore(CertificateRequest $request): Response|RedirectResponse
@@ -149,7 +91,7 @@ class RegisterController extends Controller
             return redirect()->route('step.certificate');
         }
 
-        return view('app.registration.address');
+        return view('site.inscription.address');
     }
     // Gravar Dados de Passo 3
     public function addressStore(AddressRequest $request): RedirectResponse
@@ -209,7 +151,7 @@ class RegisterController extends Controller
             "EM DIRCE APARECIDA MENUZZO RICARDO (JARDIM DAS ESTÂNCIAS)"
         ];
 
-        return view('app.registration.academic', [
+        return view('site.inscription.academic', [
             'schools' => $schools
         ]);
     }
@@ -229,7 +171,7 @@ class RegisterController extends Controller
             return redirect()->route('step.academic');
         }
 
-        return view('app.registration.family', [
+        return view('site.inscription.family', [
             'degrees' => [
                 '1' => 'Padrasto',
                 '2' => 'Madrasta',
@@ -345,7 +287,7 @@ class RegisterController extends Controller
             13 => 'Insuficiência Renal Crônica'
         ];
 
-        return view('app.registration.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));
+        return view('site.inscription.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));
     }
 
     // Gravar Dados de Passo 6
@@ -384,7 +326,7 @@ class RegisterController extends Controller
             return redirect()->route('step.other');
         }
 
-        return view('app.registration.course', [
+        return view('site.inscription.course', [
             'courses' => Course::all()
         ]);
     }
@@ -414,7 +356,7 @@ class RegisterController extends Controller
         }
 
         // Retorna a view com os dados necessários
-        return view('app.registration.confirm', array_merge(
+        return view('site.inscription.confirm', array_merge(
             $steps->all()
         ));
     }

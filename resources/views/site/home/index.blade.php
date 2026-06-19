@@ -486,9 +486,6 @@
                             <a href="{{ route('login') }}" class="btn-cta-main">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
-                            <span class="btn-cta-main unavailable">
-                                <i class="bi bi-dash-circle"></i> Inscrições Encerradas
-                            </span>
                         </div>
                     </div>
                 </div>

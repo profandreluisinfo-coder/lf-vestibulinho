@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calendar;
@@ -52,16 +52,12 @@ class EmailController extends Controller
      */
     public function resendEmail(): View | RedirectResponse
     {
-        $settings = Setting::first();
         $calendar = Calendar::first() ?? new Calendar();
 
-        if (!$settings?->calendar) {
-            return alertError('O período de inscrições para o Processo Seletivo ainda não está aberto. Por favor, aguarde o início das inscrições para criar sua conta.');
+        if (empty($calendar) || !($calendar?->isInscriptionOpen())) {
+            return alertError('Não é possível efetuar o reenvio de e-mail no momento.');
         }
-        
-        if (!$calendar?->isInscriptionOpen()) {
-             return alertError('O período de inscrições para o Processo Seletivo está encerrado.');
-        }
+
         return view('register.resend-email');
     }
 

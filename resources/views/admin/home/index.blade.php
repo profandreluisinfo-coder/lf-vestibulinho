@@ -191,28 +191,29 @@
                             </a>
 
                         </div>
-                    </div>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                <small class="fw-semibold text-muted">Progresso das tarefas</small>
+                                <small class="text-muted">
+                                    {{ $steps_done }} de {{ $steps_total }} concluídas ({{ $steps_pct }}%)
+                                </small>
+                            </div>
+
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ $steps_pct }}%" aria-valuenow="{{ $steps_pct }}"
+                                    aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.accordion-body -->
+
                 </div>
             </div>
 
         </div><!-- /.accordion -->
 
-        <div class="mb-5">
-            <div class="d-flex justify-content-between align-items-baseline mb-1">
-                <small class="fw-semibold text-muted">Progresso das tarefas</small>
-                <small class="text-muted">
-                    {{ $steps_done }} de {{ $steps_total }} concluídas ({{ $steps_pct }}%)
-                </small>
-            </div>
-
-            <div class="progress" style="height: 10px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $steps_pct }}%"
-                    aria-valuenow="{{ $steps_pct }}" aria-valuemin="0" aria-valuemax="100">
-                </div>
-            </div>
-        </div>
-        
-        <div class="accordion accordion-flush shadow-lg" id="accordionFlushTwo">
+        <div class="accordion accordion-flush shadow-lg mt-5" id="accordionFlushTwo">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"

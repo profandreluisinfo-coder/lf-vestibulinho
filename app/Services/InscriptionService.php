@@ -113,7 +113,7 @@ class InscriptionService
             Mail::to($user->email)->send(new SendMail(
                 subject: 'Confirmação de Inscrição',
                 content: ['name' => $user->social_name ?: $user->name],
-                view: 'mail.register',
+                view: 'site.emails.register',
                 attachment: $path
             ));
 
