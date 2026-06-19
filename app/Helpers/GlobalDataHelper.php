@@ -19,7 +19,7 @@ class GlobalDataHelper
         View::composer('*', function ($view) {
 
             // Edital: Se não houver registros, retorna uma instância vazia
-             $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
+            //  $notice = Cache::remember('global_notice', 60, fn() => Notice::first() ?? new Notice());
 
             // Configurações gerais
             $settings = Cache::remember('global_settings', 60, fn() => Setting::first() ?? new Setting());
@@ -46,7 +46,7 @@ class GlobalDataHelper
 
             // Inscrição aberta e calendário visível
             $open = $calendar?->isInscriptionOpen();
-            $show = $calendar?->exists && $settings?->calendar;
+            $show = $calendar?->is_active;
 
             // Usuário autenticado e ano atual
             $authUser = Auth::user();
@@ -56,7 +56,7 @@ class GlobalDataHelper
             $view->with(compact(
                 'settings',
                 'calls_exists',
-                'notice',
+                // 'notice',
                 'calendar',
                 'open',
                 'show',

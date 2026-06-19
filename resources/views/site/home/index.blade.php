@@ -1,7 +1,5 @@
 @extends('layouts.site')
 
-@section('title', 'EM Dr Leandro Franceschini')
-
 @section('content')
 
 <!-- ===== HERO SECTION REVISADO ===== -->
@@ -174,7 +172,12 @@
             <div class="reveal delay-{{ $i++ }}">
                 <div class="news-card">
                     <div class="news-card-image news-card-image-teal">
-                        📰
+                        
+                        @if ($new->image)
+                            <img src="{{ Storage::url($new->image) }}" alt="Imagem da noticia">
+                        @else
+                            📰
+                        @endif
                     </div>
                     
                     <div class="news-card-body">

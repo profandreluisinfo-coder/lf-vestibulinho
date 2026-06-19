@@ -3,10 +3,9 @@ $(document).ready(function () {
     // Inicialização do jQuery Validate
     $("#form-calendar").validate({
         rules: {
-            year: {
+            reference: {
                 required: true,
-                number: true,
-                min: 2026
+                number: true
             },
             inscription_start: {
                 required: true,
@@ -50,10 +49,9 @@ $(document).ready(function () {
             }
         },
         messages: {
-            year: {
+            reference: {
                 required: "Por favor, informe o ano do processo seletivo.",
-                number: "Por favor, insira um ano válido.",
-                min: "O ano deve ser 2026 ou posterior."
+                number: "Por favor, insira um ano válido."
             },
             inscription_start: {
                 required: "Por favor, informe a data de início das inscrições.",

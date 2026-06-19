@@ -9,10 +9,12 @@
         $local_status = App\Models\ExamResult::hasRecords();
         $ranking_active = App\Models\ExamResult::hasScores();
         $inscriptions_count = App\Models\Inscription::count();
+        $notice = App\Models\Notice::first();
 
         $steps_done = collect([
             $calendar_active,
-            $settings->isNoticeEnabled(),
+            // $notice->status,
+            $notice,
             $local_status,
             $ranking_active,
             $settings->result,
@@ -59,7 +61,7 @@
                         <a href="{{ route('admin.notices.index') }}" class="step-item text-secondary text-center"
                             title="Publicar Edital">
                             <i
-                                class="bi {{ $settings->isNoticeEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                                class="bi {{ $notice?->status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                             <p class="mt-2 mb-0 fw-semibold">Publicar edital</p>
                         </a>
 

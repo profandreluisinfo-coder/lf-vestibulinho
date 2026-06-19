@@ -13,12 +13,28 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['category' => 'Cursos'],
-            ['category' => 'Geral'],
-            ['category' => 'Inscrição'],
-            ['category' => 'Matrícula'],
-            ['category' => 'Prova'],
-            ['category' => 'Resultado'],
+            ['name' => 'Clube de Xadrez'],
+            ['name' => 'Congresso'],
+            ['name' => 'Convocação'],
+            ['name' => 'Cursos'],
+            ['name' => 'Encontro'],
+            ['name' => 'Estágio'],
+            ['name' => 'Feira Científica'],
+            ['name' => 'Geral'],
+            ['name' => 'Inscrição'],
+            ['name' => 'Matrícula'],
+            ['name' => 'Oficina'],
+            ['name' => 'Outros'],
+            ['name' => 'Palestra'],
+            ['name' => 'Prova'],
+            ['name' => 'Resultado'],
+            ['name' => 'Reunião de pais'],
+            ['name' => 'Seminário'],
+            ['name' => 'Simpósio'],
+            ['name' => 'Vestibular'],
+            ['name' => 'Vestibulinho'],
+            ['name' => 'Visita Técnica'],
+            ['name' => 'Workshop'],
         ];
         foreach ($categories as $category) {
             Category::updateOrCreate($category);

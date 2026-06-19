@@ -28,7 +28,14 @@ class CourseController extends Controller
      */
     public function store(CourseRequest $request): RedirectResponse
     {
-        Course::create($request->validated());
+        // Course::create($request->validated());
+        Course::create([
+            'vacancies' => $request->vacancies,
+            'description' => $request->description,
+            'name' => $request->name,
+            'duration' => $request->duration,
+            'info' => $request->info
+        ]);
 
         return alertSuccess('Curso registrado com sucesso!', 'admin.courses.index');
     }

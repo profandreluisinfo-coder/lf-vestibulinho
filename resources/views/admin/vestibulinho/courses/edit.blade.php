@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' | Vestibulinho LF')
+@section('page-title', 'Vestibulinho | Cursos')
 
 @section('content')
 

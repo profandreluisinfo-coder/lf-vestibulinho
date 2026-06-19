@@ -39,8 +39,12 @@ class NoticeController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'year' => 'required|numeric|digits:4',
             'path' => 'required|file|mimes:pdf'
         ], [
+            'year.required' => 'O campo ano é obrigatório.',
+            'year.numeric' => 'O campo ano deve ser numérico.',
+            'year.digits' => 'O campo ano deve ter 4 dígitos.',
             'path.required' => 'Carregue um arquivo.',
             'path.file' => 'O arquivo de está corrompido.',
             'path.mimes' => 'O arquivo deve ser um PDF.',
@@ -61,6 +65,7 @@ class NoticeController extends Controller
         $path = $file->storeAs('notices', $fileName, 'public');
 
         Notice::create([
+            'year' => $request->year,
             'file' => $path
         ]);
 
@@ -73,8 +78,12 @@ class NoticeController extends Controller
         $notice = Notice::findOrFail($request->notice_id);
 
         $request->validate([
+            'year' => 'nullable|numeric|digits:4',
             'path' => 'nullable|file|mimetypes:application/pdf',
         ], [
+            'year.numeric' => 'O campo ano deve ser numérico.',
+            'year.required' => 'O campo ano é obrigatório.',
+            'year.digits' => 'O campo ano deve ter 4 dígitos.',
             'path.file' => 'O arquivo de edital deve ser um arquivo.',
             'path.mimetypes' => 'O arquivo de edital deve ser um PDF.',
         ]);
@@ -108,6 +117,7 @@ class NoticeController extends Controller
 
         // Atualiza o registro
         $notice->update([
+            'year' => $request->year,
             'file' => $filePath,
         ]);
 

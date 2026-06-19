@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Calendar extends Model
 {
     protected $fillable = [
+        'year',
+        'is_active',
+        'edital',
+        'reference',
         'inscription_start',
         'inscription_end',
         'exam_location_publish',
@@ -18,9 +22,6 @@ class Calendar extends Model
         'final_result_publish',
         'enrollment_start',
         'enrollment_end',
-        'name',
-        'year',
-        'is_active'
     ];
 
     protected $casts = [

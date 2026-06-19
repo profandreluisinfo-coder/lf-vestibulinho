@@ -15,11 +15,11 @@ use App\Http\Controllers\{
     PdfController
 };
 
-use App\Http\Controllers\Auth\{
+use App\Http\Controllers\Vestibulinho\{
     RegisterController
 };
 
-use App\Http\Controllers\Dash\{
+use App\Http\Controllers\Vestibulinho\{
     UserController
 };
 

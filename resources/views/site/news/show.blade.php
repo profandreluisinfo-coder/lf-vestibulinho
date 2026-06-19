@@ -49,6 +49,14 @@
                 <div style="height: 1px; background: rgba(11, 30, 61, 0.1); margin: 2rem 0;"></div>
             </div>
 
+            <!-- Imagem do Comunicado -->
+            {{-- @if($noticia->image) --}}
+            <div class="post-image-container">
+                <img src="{{ Storage::url($noticia->image) }}"
+                    alt="Imagem do Comunicado">
+            </div>
+            {{-- @endif --}}
+
             <!-- Conteúdo -->
             <div style="color: var(--navy); line-height: 1.8; font-size: 1.05rem;">
                 {!! nl2br(e($noticia->conteudo)) !!}

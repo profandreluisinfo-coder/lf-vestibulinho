@@ -4,6 +4,7 @@
 @section('error_code',    '404')
 @section('error_icon',    'bi-compass')
 @section('error_heading', 'Página não encontrada')
+
 @section('error_message')
     O endereço que você tentou acessar não existe ou foi movido.<br>
     Verifique o link e tente novamente.
@@ -34,7 +35,7 @@
         <a href="{{ route('guest.login') }}" class="err-hint-link">
             <i class="bi bi-person-circle"></i> Área do Candidato
         </a>
-        <a href="{{ route('guest.home') }}#faq" class="err-hint-link">
+        <a href="{{ route('guest.faqs.index') }}#faq" class="err-hint-link">
             <i class="bi bi-question-circle"></i> FAQ
         </a>
     </div>

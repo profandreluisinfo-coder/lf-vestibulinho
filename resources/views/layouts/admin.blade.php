@@ -50,8 +50,8 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="{{ route('admin.infos.index') }}"
-                        class="menu-link {{ request()->routeIs('admin.communicates.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.posts.index') }}"
+                        class="menu-link {{ request()->routeIs('admin.posts.index') ? 'active' : '' }}">
                         <i class="bi bi-list"></i>
                         <span>Notícias e Comunicados</span>
                     </a>
@@ -100,13 +100,9 @@
                             class="dropdown-item-custom {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}">
                             <i class="bi bi-book me-1"></i> Cursos
                         </a>
-                        <a href="{{ route('admin.notices.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.notices.*') ? 'active' : '' }}">
-                            <i class="bi bi-file-earmark-pdf me-1"></i> Edital
-                        </a>
                         <a href="{{ route('admin.faqs.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
-                            <i class="bi bi-question-circle me-1"></i> Registrar FAQ
+                            <i class="bi bi-question-circle me-1"></i> FAQs
                         </a>
                     </div>
                 </div>
@@ -285,9 +281,9 @@
 
     <!-- Conteúdo -->
     <main class="main-content">
-
+@include('alerts.toasts')
         @yield('content')
-        @include('alerts.toasts')
+        
         {{-- Modal Alterar Senha --}}
         @include('partials.forms.change-password')
 
@@ -402,16 +398,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
+    <script src="{{ asset('assets/js/admin/sidebar.js') }}"></script>
+    <script src="{{ asset('assets/js/vestibulinho/export/export-handler.js') }}"></script>
 
     @stack('plugins')
 
     @stack('scripts')
 
-    <script src="{{ asset('assets/js/admin/dash.js') }}" type="module"></script>
-
-    {{-- Scripts --}}
-    <script src="{{ asset('assets/js/admin/sidebar.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/export/export-handler.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/dash.js') }}" type="module"></script>    
 
 </body>
 

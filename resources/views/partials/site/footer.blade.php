@@ -58,7 +58,7 @@
                 <h6>Candidato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
                     @if ($open)
-                    <li><a href="{{ route('register') }}">Registrar-se</a></li>
+                    <li><a href="{{ route('guest.register') }}">Registrar-se</a></li>
                     @endif
                     <li><a href="{{ route('guest.login') }}">Área do Candidato</a></li>
                     <li><a href="{{ route('guest.faqs.index') }}">FAQ Completo</a></li>

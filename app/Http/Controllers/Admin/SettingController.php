@@ -128,30 +128,6 @@ class SettingController extends Controller
         }
     }
 
-    public function calendar(Request $request): RedirectResponse
-    {
-        $settings = [
-            'calendar' => $request->filled('calendar')
-        ];
-
-        Setting::updateOrCreate(
-            ['id' => 1],
-            [
-                'calendar' => $settings['calendar']
-            ]
-        );
-
-        Cache::forget('global_settings'); // MUITO IMPORTANTE!
-
-        if (Setting::first()->calendar) {
-            // return redirect()->back()->with('success', 'Acesso ao calendário liberado com sucesso!');
-            return alertSuccess('Acesso ao calendário liberado com sucesso!', 'admin.calendar.show');
-        }
-
-        // return redirect()->back()->with('success', 'Acesso ao calendário bloqueado com sucesso!');
-        return alertSuccess('Acesso ao calendário bloqueado com sucesso!', 'admin.calendar.show');
-    }
-
     /**
      * Altera o status de um arquivo de edital.
      *

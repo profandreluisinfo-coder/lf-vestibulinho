@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\{
+use App\Http\Controllers\Vestibulinho\{
+    ArchiveController,
+    HomeController,
+    ResultController,
     LoginController,
-    RegisterController
+    RegisterController,
+    EmailController
 };
-use App\Http\Controllers\Guest\{
-    ArchiveController, 
-    HomeController, 
-    ResultController
-};
-use App\Http\Controllers\Guest\{
+use App\Http\Controllers\Vestibulinho\{
     CallController,
     CalendarController,
     FaqController
@@ -31,6 +30,13 @@ Route::middleware(['guest'])
         // Registro
         Route::get('/registrar', [RegisterController::class, 'register'])->name('register');
         Route::post('/registrar', [RegisterController::class, 'store'])->name('register.store');
+
+        // VERIFICAÇÃO DE EMAIL
+        Route::get('/validate/{token}', [EmailController::class, 'verify'])->name('verify');
+
+        // Reenvio de verificação de e-mail
+        Route::get('/reenviar-email', [EmailController::class, 'resendEmail'])->name('resend.email');
+        Route::post('/reenviar-email', [EmailController::class, 'resendEmailAction']);
 
         // Provas anteriores
         Route::get('/provas-anteriores', [ArchiveController::class, 'index'])->name('archives.index');

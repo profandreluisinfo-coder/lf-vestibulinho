@@ -18,7 +18,7 @@
                     </div>
                     <h1 class="cal-hero-title mb-3">
                         Calendário do<br><em>Processo Seletivo</em><br>
-                        <span class="year-chip">{{ $calendar?->year }}</span>
+                        <span class="year-chip">{{ $calendar?->reference }}</span>
                     </h1>
                     <p class="hero-sub mb-0">
                         Todas as datas e prazos do Vestibulinho em um único lugar.<br class="d-none d-md-block">

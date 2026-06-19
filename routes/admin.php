@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\{ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController, InfoController};
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Dash\AdminController;
+use App\Http\Controllers\Admin\{AdminController,ArchiveController, FaqController, CalendarController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController};
+use App\Http\Controllers\Vestibulinho\{LoginController};
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -55,43 +54,11 @@ Route::middleware([
                             ->name('show');
                     });
 
-                // Route::prefix('inscricoes')
-                //     ->name('inscriptions.')
-                //     ->middleware([IsAdmin::class])
-                //     ->group(function () {
-                //         // Lista de inscrições
-                //         Route::get('/', [InscriptionController::class, 'index'])->name('index');
-                //         Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
-                //             ->name('get.data');
-                //         // Lista de pessoas com deficiência
-                //         Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
-                //             ->name('pcd');
-                //         Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
-                //             ->name('pcd.data');
-                //         // Candidatos com nome social
-                //         Route::get('/nome-social', [InscriptionController::class, 'socialName'])
-                //             ->name('social.name');
-                //         Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
-                //             ->name('show');
-                //     });
-
-                // Notícias
-                Route::prefix('noticias')
-                    ->name('news.')
-                    ->group(function () {
-                        Route::get('/', [PostController::class, 'index'])->name('index');
-                        Route::get('/criar', [PostController::class, 'create'])->name('create');
-                        Route::get('/{slug}', [PostController::class, 'show'])->name('show');
-                    });
-
-                // Comunicados
-                Route::prefix('comunicados')
-                    ->name('infos.')
-                    ->group(function () {
-                        Route::get('/', [InfoController::class, 'index'])->name('index');
-                        Route::get('/criar', [InfoController::class, 'create'])->name('create');
-                        Route::get('/{slug}', [InfoController::class, 'show'])->name('show');
-                    });
+                Route::resource('posts', PostController::class);
+                Route::delete('posts/{post}/attachments/{attachment}', [PostController::class, 'destroyAttachment'])
+                    ->name('posts.attachments.destroy');
+                Route::patch('posts/{post}/toggle', [PostController::class, 'togglePublished'])
+                    ->name('posts.toggle');
 
                 // Perguntas frequentes
                 Route::prefix('faq')
@@ -118,6 +85,7 @@ Route::middleware([
                         Route::get('detalhes', [CalendarController::class, 'show'])->name('show');
                         Route::get('editar', [CalendarController::class, 'edit'])->name('edit');
                         Route::put('atualizar', [CalendarController::class, 'update'])->name('update');
+                        Route::put('ativar/{calendar}', [CalendarController::class, 'activate'])->name('activate');
                     });
 
                 // Edital
@@ -255,9 +223,7 @@ Route::middleware([
 
                         Route::get('redefinir-dados', [SettingController::class, 'index'])->name('index');
 
-                        Route::post('resetar', [SettingController::class, 'reset'])->name('reset');
-
-                        Route::post('liberar-acesso-calendario', [SettingController::class, 'calendar'])->name('publish.calendar');
+                        Route::post('resetar', [SettingController::class, 'reset'])->name('reset');                        
                         Route::post('liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
                         Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
 
@@ -286,8 +252,14 @@ Route::middleware([
                 Route::prefix('usuarios')
                     ->name('users.')
                     ->group(function () {
-
                         Route::get('/', [UserController::class, 'index'])->name('index');
+
+                        // Route::post('salvar', [UserController::class, 'store'])->name('store');
+
+                        // Route::get('editar/{user}', [UserController::class, 'edit'])->name('edit');
+                        // Route::put('editar/{user}', [UserController::class, 'update'])->name('update');
+
+                        Route::delete('excluir/{user}', [UserController::class, 'destroy'])->name('destroy');
                     });
             }); // Fim da rota de admin/vestibulinho
         });

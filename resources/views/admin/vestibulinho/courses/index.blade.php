@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Vestibulinho | Cursos')
 
 @section('content')
     <div class="container">

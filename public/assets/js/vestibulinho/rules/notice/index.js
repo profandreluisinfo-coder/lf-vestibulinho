@@ -1,12 +1,22 @@
 $(document).ready(function () {
     $('#form-file').validate({
         rules: {
+            year: {
+                required: true,
+                number: true,
+                min: 2024
+            },
             path: {
                 required: true,
                 extension: "pdf"
             },
         },
         messages: {
+            year: {
+                required: '* Ano de referência da prova',
+                number: '* Ano de referência da prova',
+                min: '* Ano de referência da prova'
+            },
             path: {
                 required: '* Selecione um arquivo',
                 extension: '* Formato de arquivo inválido. Apenas arquivos PDF.'

@@ -19,7 +19,7 @@ class Course extends Model
         'info',
         'vacancies'
     ];
-
+    
     public $timestamps = false;
 
     // Obter a descricao do curso

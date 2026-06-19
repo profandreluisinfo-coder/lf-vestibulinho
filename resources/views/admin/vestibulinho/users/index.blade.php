@@ -41,6 +41,7 @@
                         <th>Inscrição</th>
                         <th>Registrado em</th>
                         <th>E-mail verificado em</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -55,17 +56,51 @@
                                     data-bs-content="{{ $user->role === 'admin' ? 'Administrador' : 'Candidato' }}"></i>
                             </td>
                             <td>
-                                <i class="bi {{ $user->email_verified_at ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="{{ $user->email_verified_at ? 'Sim' : 'Não' }}"></i>
+                                <i class="bi {{ $user->email_verified_at ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5"
+                                    data-bs-toggle="popover" data-bs-trigger="hover"
+                                    data-bs-content="{{ $user->email_verified_at ? 'Sim' : 'Não' }}"></i>
                                 <span class="d-none">{{ $user->email_verified_at ? 'Sim' : 'Não' }}</span>
-                            </td>                            
+                            </td>
                             <td>
-                                <i class="bi {{ $user->inscription?->id ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="{{ $user->inscription?->id ? 'Sim' : 'Não' }}"></i>
+                                @if ($user->role !== 'admin')
+                                    <i class="bi {{ $user->inscription?->id ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5"
+                                        data-bs-toggle="popover" data-bs-trigger="hover"
+                                        data-bs-content="{{ $user->inscription?->id ? 'Sim' : 'Não' }}"></i>
+                                @else
+                                    <span class="text-muted">N/A</span>
+                                @endif
                             </td>
                             <td>
                                 {{ $user->created_at->format('d/m/Y') }}
                             </td>
                             <td>
                                 {{ $user->email_verified_at ? $user->email_verified_at->format('d/m/Y') : '-' }}
+                            </td>
+                            <td>
+                                @if ($user->role === 'user')
+
+                                @if ($user->inscription?->id)
+                                    <a href="{{ route('admin.inscriptions.show', Crypt::encrypt($user->id)) }}"
+                                        class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
+                                        <i class="bi bi-search"></i> Detalhes
+                                    </a>
+                                @endif
+
+                                <form id="delete-form-{{ $user->id }}"
+                                    action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                        onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
+                                        <i class="bi bi-trash"></i> Excluir
+                                    </button>
+                                </form>
+
+                                @else 
+                                    <span class="text-muted">N/A</span>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -114,5 +149,27 @@
         var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
         })
+    </script>
+    <script>
+        // ✅ Função JavaScript para confirmação de exclusão (exemplo de uso abaixo)
+        function confirmDelete(userId, userName) {
+            Swal.fire({
+                title: 'Tem certeza que deseja excluir o usuário?',
+                html: `
+            <strong>${userName}</strong><br><br>
+            Esta ação irá excluir permanentemente o usuário e todos os seus dados associados.
+        `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sim, excluir',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-form-${userId}`).submit();
+                }
+            });
+        }
     </script>
 @endpush

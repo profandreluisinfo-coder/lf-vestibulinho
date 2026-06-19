@@ -7,12 +7,13 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    protected $fillable = ['category'];
+    protected $fillable = ['name'];
 
-    public function getNormalizedCategoryAttribute()
+    public function getNormalizedNameAttribute(): string
     {
-        return Str::lower(
-            Str::ascii($this->category)
-        );
+        return Str::of($this->name)
+            ->ascii()
+            ->lower()
+            ->toString();
     }
 }

@@ -16,7 +16,7 @@ class Inscription extends Model
     protected $fillable = [
         'user_id',
         'course_id',
-        'vestibulinho_id'
+        'calendar_id'
     ];
 
     protected function casts(): array
@@ -27,9 +27,14 @@ class Inscription extends Model
         ];
     }
 
-    public function vestibulinho(): BelongsTo
+    /**
+     * Obtenha o calendário associado ao curso.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function calendar(): BelongsTo
     {
-        return $this->belongsTo(Vestibulinho::class);
+        return $this->belongsTo(Calendar::class);
     }
 
     /**

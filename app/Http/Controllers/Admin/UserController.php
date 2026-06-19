@@ -64,8 +64,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->role !== 'user') {
+            return alertError('Este usuário não pode ser excluído.');
+        }
+
+        $user->delete();
+
+        return alertSuccess(
+            'Usuário excluído com sucesso!',
+            'admin.users.index'
+        );
     }
 }

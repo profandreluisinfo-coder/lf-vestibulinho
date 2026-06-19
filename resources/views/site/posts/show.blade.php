@@ -55,6 +55,14 @@
                 <div class="post-divider"></div>
             </div>
 
+            <!-- Imagem do Comunicado -->
+            @if($post->image)
+                <div class="post-image-container">
+                    <img src="{{ Storage::url($post->image) }}"
+                        alt="Imagem do Comunicado">
+                </div>
+            @endif
+
             <!-- Conteúdo -->
             <div class="post-content">
                 {!! $post->content !!}

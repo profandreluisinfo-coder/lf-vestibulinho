@@ -24,7 +24,9 @@ class PostSeeder extends Seeder
                 'image' => 'posts/noticia-01.jpg',
                 'url' => null,
                 'type' => 'noticia',
+                'category_id' => $category?->id,
                 'published' => true,
+                'published_at' => now()->subDays(1),
             ],
             [
                 'title' => 'Novo Comunicado para os Usuários',
@@ -33,7 +35,9 @@ class PostSeeder extends Seeder
                 'image' => 'posts/comunicado-01.jpg',
                 'url' => 'https://www.exemplo.com.br',
                 'type' => 'comunicado',
+                'category_id' => $category?->id,
                 'published' => true,
+                'published_at' => now()->subDays(1),
             ],
             [
                 'title' => 'Atualização do Sistema',
@@ -42,7 +46,9 @@ class PostSeeder extends Seeder
                 'image' => null,
                 'url' => null,
                 'type' => 'noticia',
+                'category_id' => $category?->id,
                 'published' => false,
+                'published_at' => now()->subDays(1),
             ],
         ];
 
@@ -57,6 +63,7 @@ class PostSeeder extends Seeder
                 'category_id' => $category?->id,
                 'user_id' => $user->id,
                 'published' => $post['published'],
+                'published_at' => $post['published_at'],
             ]);
         }
     }

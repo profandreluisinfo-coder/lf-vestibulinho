@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notice extends Model
 {
-    protected $fillable = ['file'];
+    protected $fillable = ['year', 'file', 'status'];
 
     // Limpa o cache automaticamente quando salvar ou excluir
     public static function booted()
