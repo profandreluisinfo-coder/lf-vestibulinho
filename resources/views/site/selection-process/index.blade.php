@@ -1,19 +1,11 @@
-{{-- ═══════════════════════════════════════════════════════════════
-     Herança do layout master
-════════════════════════════════════════════════════════════════ --}}
 @extends('layouts.site')
 
-{{-- ── Título da página ──────────────────────────────────────── --}}
 @section('title', 'Vestibulinho LF · Calendário')
 
-{{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/calendar/index.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/selection-process/index.css') }}" />
 @endpush
 
-{{-- ══════════════════════════════════════════════════════════════
-     CONTEÚDO PRINCIPAL
-══════════════════════════════════════════════════════════════ --}}
 @section('content')
 
     @php
@@ -566,5 +558,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/guest/calendar/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/selection-process/index.js') }}"></script>
 @endpush

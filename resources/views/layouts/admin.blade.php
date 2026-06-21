@@ -281,9 +281,11 @@
 
     <!-- Conteúdo -->
     <main class="main-content">
-@include('alerts.toasts')
-        @yield('content')
+
+        @include('alerts.toasts')
         
+        @yield('content')
+                
         {{-- Modal Alterar Senha --}}
         @include('partials.forms.change-password')
 
