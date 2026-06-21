@@ -1,4 +1,5 @@
 @import url("../auth/base.css");
+@import url("../auth/buttons.css");
 
 body {
     display: flex;
@@ -390,7 +391,7 @@ body {
 }
 
 /* ─── BOTÃO CTA ───────────────────────────────────────────── */
-.btn-cta {
+/* .btn-cta {
     width: 100%;
     padding: .95rem;
     border: none;
@@ -408,17 +409,17 @@ body {
     box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
     transition: transform .25s, box-shadow .25s;
     animation: fadeUp .7s ease .75s both;
-}
+} */
 
-.btn-cta:hover {
+/* .btn-cta:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
     color: #fff;
-}
+} */
 
-.btn-cta:active {
+/* .btn-cta:active {
     transform: translateY(0);
-}
+} */
 
 /* ─── DIVIDER + LINK VOLTAR ───────────────────────────────── */
 .confirm-divider {

@@ -13,15 +13,11 @@ class SelectionProcessController extends Controller
      * Exibe a página pública dos eventos do processo seletivo.
      */
     public function show(): View | RedirectResponse
-    {       
-        $selection_process = SelectionProcess::current();
-        
-        if (!($selection_process->status)) {
+    {
+        if (!(SelectionProcess::current()?->status)) {
             abort(404);
         }
 
-        $event = $selection_process->latestEvent;
-
-        return view('site.selection-process.index', compact('event'));
+        return view('site.selection-process.index');
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Calendar;
-use App\Models\Setting;
+use App\Models\SelectionProcess;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -51,10 +50,10 @@ class EmailController extends Controller
      */
     public function resendEmail(): View | RedirectResponse
     {
-        $calendar = Calendar::first() ?? new Calendar();
+        $selection_process = SelectionProcess::current();
 
-        if (empty($calendar) || !($calendar?->isInscriptionOpen())) {
-            return alertError('Não é possível efetuar o reenvio de e-mail no momento.');
+        if (!$selection_process || !($selection_process->isInscriptionOpen())) {
+            abort(404);
         }
 
         return view('register.resend-email');

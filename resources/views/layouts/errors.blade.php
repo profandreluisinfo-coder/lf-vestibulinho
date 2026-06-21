@@ -38,7 +38,7 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cursos">Cursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#como-participar">Como Participar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('site.calendar.show') }}">Calendário</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('site.process.show') }}">Calendário</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#faq">FAQ</a></li>
                     <li class="nav-item ms-lg-2">
                         <a class="nav-link btn-nav-cta" href="{{ route('login') }}">

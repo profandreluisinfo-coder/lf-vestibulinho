@@ -64,12 +64,12 @@
             <div class="col-6 col-lg-2 foot-col">
                 <h6>Candidato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
-                    @if ($selection_process?->informations?->isInscriptionOpen())
+                    @if ($selection_process?->isInscriptionOpen())
                         <li><a href="{{ route('register') }}">Registrar-se</a></li>
                     @endif
                     <li><a href="{{ route('login') }}">Área do Candidato</a></li>
                     <li><a href="{{ route('site.faqs.index') }}">FAQ Completo</a></li>
-                    @if ($selection_process?->informations?->isInscriptionOpen())
+                    @if ($selection_process?->isInscriptionOpen())
                         <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
                     @endif
                 </ul>

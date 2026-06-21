@@ -28,7 +28,7 @@ class LoginController extends Controller
             return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!');
         }
 
-        return view('site.auth.login');
+        return view('user.auth.login');
     }
 
     /**

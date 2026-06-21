@@ -2,24 +2,29 @@
 function onEmailInput() {
     const el = document.getElementById('forgotEmail');
     const msg = document.getElementById('msgEmail');
+    const btn = document.querySelector('.btn-recover');
     const v = el.value.trim();
 
     if (!v) {
         el.classList.remove('input-ok', 'input-error');
         msg.innerHTML = '';
         msg.className = 'field-msg';
+        btn.disabled = true; // Desabilita o botão quando vazio
         return;
     }
+    
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
         el.classList.remove('input-ok');
         el.classList.add('input-error');
         msg.innerHTML = '<i class="bi bi-x-circle-fill"></i> E-mail inválido';
         msg.className = 'field-msg error';
+        btn.disabled = true; // Desabilita o botão quando email inválido
     } else {
         el.classList.remove('input-error');
         el.classList.add('input-ok');
         msg.innerHTML = '<i class="bi bi-check-circle-fill"></i> E-mail válido';
         msg.className = 'field-msg ok';
+        btn.disabled = false; // Habilita o botão quando email válido
     }
 }
 
@@ -219,3 +224,9 @@ document
             msg.className = 'field-msg error';
         }
     });
+
+// ── Inicialização: garante que o botão comece desabilitado ──
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.querySelector('.btn-recover');
+    btn.disabled = true;
+});

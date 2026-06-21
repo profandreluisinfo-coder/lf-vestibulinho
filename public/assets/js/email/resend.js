@@ -2,12 +2,14 @@
 function onEmailInput() {
     const el = document.getElementById('myEmail');
     const msg = document.getElementById('msgEmail');
+    const btn = document.getElementById('btnSubmit');  // ← ADICIONE ISTO
     const v = el.value.trim();
 
     if (!v) {
         el.classList.remove('input-ok', 'input-error');
         msg.innerHTML = '';
         msg.className = 'field-msg';
+        btn.disabled = true;  // ← ADICIONE ISTO
         return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
@@ -15,11 +17,13 @@ function onEmailInput() {
         el.classList.add('input-error');
         msg.innerHTML = '<i class="bi bi-x-circle-fill"></i> E-mail inválido';
         msg.className = 'field-msg error';
+        btn.disabled = true;  // ← ADICIONE ISTO
     } else {
         el.classList.remove('input-error');
         el.classList.add('input-ok');
         msg.innerHTML = '<i class="bi bi-check-circle-fill"></i> E-mail válido';
         msg.className = 'field-msg ok';
+        btn.disabled = false;  // ← ADICIONE ISTO (habilita!)
     }
 }
 

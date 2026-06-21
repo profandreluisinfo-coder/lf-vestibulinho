@@ -34,11 +34,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a>
                 </li>
+                @if ($selection_process?->status)
                 <li class="nav-item ms-lg-2">
                     <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
                         <i class="bi bi-person-circle me-1"></i> Área do Candidato
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
     </div>

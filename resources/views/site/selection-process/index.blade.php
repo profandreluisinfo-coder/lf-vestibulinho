@@ -15,6 +15,10 @@
      CONTEÚDO PRINCIPAL
 ══════════════════════════════════════════════════════════════ --}}
 @section('content')
+
+    @php
+        $event = $selection_process->latestEvent;
+    @endphp
     <!-- ═══════════════════════ PAGE HERO ════════════════════════ -->
     <section class="cal-hero">
         <div class="hero-circle hero-circle-1"></div>

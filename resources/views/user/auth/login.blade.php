@@ -76,18 +76,18 @@
         <div class="success-icon"><i class="bi bi-check-lg"></i></div>
         <h3>Acesso confirmado!</h3>
         <p>Redirecionando para sua Área do Candidato…</p>
-        <div class="spinner-border text-success mt-1" style="width:1.4rem;height:1.4rem;border-width:2px;"
-            role="status"></div>
+        <div class="spinner-border text-success mt-1" style="width:1.4rem;height:1.4rem;border-width:2px;" role="status">
+        </div>
     </div>
 
     <div class="form-card">
         {{-- Mensagem de logout bem‑sucedido --}}
         @if (session('success'))
-        <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <span>{{ session('success') }}</span>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
-        </div>
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            </div>
         @endif
 
         <!-- Topo -->
@@ -103,7 +103,8 @@
 
             <!-- Título -->
             <h1>Vestibulinho<br>{{ $selection_process->year }}</h1>
-            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique em "Ainda não tem registro?" para se cadastrar.</p>
+            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique
+                em "Ainda não tem registro?" para se cadastrar.</p>
         </div>
 
         <!-- Alerta de erro (hidden por padrão) -->
@@ -124,7 +125,7 @@
                 <div class="field-wrap">
                     <input type="email" id="loginEmail" name="email"
                         class="form-input @error('email') is-invalid @enderror" placeholder="seu@email.com"
-                        autocomplete="email" oninput="clearError(this)" />
+                        autocomplete="email" oninput="clearError(this); validateForm()" />
                     <i class="bi bi-envelope-fill field-icon"></i>
                     @error('email')
                         <div id="emailError" class="invalid-feedback">
@@ -142,8 +143,7 @@
                 <div class="field-wrap">
                     <input type="password" id="loginPassword" name="password"
                         class="form-input @error('password') is-invalid @enderror" placeholder="Sua senha"
-                        style="padding-right:2.8rem;" autocomplete="current-password"
-                        oninput="clearError(this)" />
+                        style="padding-right:2.8rem;" autocomplete="current-password" oninput="clearError(this); validateForm()" />
                     <i class="bi bi-lock-fill field-icon"></i>
                     <button class="eye-btn" type="button" onclick="toggleEye('loginPassword','eyeLogin')"
                         aria-label="Mostrar senha">
@@ -166,20 +166,20 @@
                 </label>
                 <a href="{{ route('forgot.password') }}" class="forgot-link">Esqueceu a senha?</a>
             </div>
-            
+
             <!-- Botão entrar -->
-            <button type="submit" class="btn-login">
+            <button type="submit" class="btn-login" disabled>
                 <i class="bi bi-box-arrow-in-right"></i> Entrar
             </button>
 
             <!-- Links -->
             @if ($selection_process->isInscriptionOpen())
-            <div class="form-links">
-                <div class="divider-or">ou</div>
-                <a href="{{ route('register') }}" class="link-register">
-                    <i class="bi bi-person-plus-fill"></i> Ainda não tem registro?
-                </a>
-            </div>
+                <div class="form-links">
+                    <div class="divider-or">ou</div>
+                    <a href="{{ route('register') }}" class="link-register">
+                        <i class="bi bi-person-plus-fill"></i> Ainda não tem registro?
+                    </a>
+                </div>
             @endif
         </form>
 

@@ -100,7 +100,7 @@
         </div>
 
         <!-- CTA -->
-        <a href="{{ route('login') }}" class="btn-cta">
+        <a href="{{ route('login') }}" class="btn-login">
             <i class="bi bi-person-fill-lock"></i>
             Acessar Área do Candidato
         </a>

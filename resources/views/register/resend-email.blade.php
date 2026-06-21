@@ -51,7 +51,7 @@
     <div class="panel-footer">
         © {{ $year ?? date('Y') }} EM Dr. Francisco de Souza · Todos os direitos reservados
     </div>
-    
+
 @endsection
 
 @section('right-panel')
@@ -65,7 +65,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <a href="{{ route('register') }}" class="back-link">
                         <i class="bi bi-arrow-left"></i> Voltar ao registro
-                    </a>                        
+                    </a>
                     <div class="form-badge">
                         <i class="bi bi-envelope-check-fill"></i> Verificação de E-mail
                     </div>
@@ -86,7 +86,6 @@
 
             <form id="resend-email" method="POST" action="{{ route('resend.email') }}"
                 style="display:flex;flex-direction:column;gap:1.1rem;">
-
                 @csrf
 
                 <!-- E-mail -->
@@ -95,17 +94,10 @@
                         Endereço de e-mail <span style="color:#e74c3c;font-size:.7rem;">*</span>
                     </label>
                     <div class="field-wrap">
-                        <input
-                            type="email"
-                            name="email"
-                            id="myEmail"
-                            class="form-input @error('email') is-invalid @enderror"
-                            value="{{ old('email') }}"
-                            placeholder="seu@email.com"
-                            autocomplete="email"
-                            oninput="onEmailInput()"
-                            aria-describedby="@error('email') emailError @enderror"
-                        />
+                        <input type="email" name="email" id="myEmail"
+                            class="form-input @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                            placeholder="seu@email.com" autocomplete="email" oninput="onEmailInput()"
+                            aria-describedby="@error('email') emailError @enderror" />
                         <i class="bi bi-envelope-fill field-icon"></i>
                     </div>
                     <div class="field-msg" id="msgEmail"></div>
@@ -117,7 +109,7 @@
                 </div>
 
                 <!-- Botão submit -->
-                <button type="submit" class="btn-send" id="btnSubmit">
+                <button type="submit" class="btn-send" id="btnSubmit" disabled>
                     <i class="bi bi-envelope-check"></i> Reenviar E-mail de Verificação
                 </button>
 

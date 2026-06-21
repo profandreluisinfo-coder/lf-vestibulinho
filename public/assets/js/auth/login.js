@@ -46,6 +46,23 @@ function resetBtn(btn) {
     btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar';
 }
 
+// ── Valida e habilita/desabilita botão ─────────────────────
+function validateForm() {
+    const email = document.getElementById('loginEmail');
+    const pwd = document.getElementById('loginPassword');
+    const btn = document.querySelector('.btn-login');
+    
+    // Verifica email
+    const emailOk = email.value.trim() && 
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    
+    // Verifica password
+    const pwdOk = pwd.value.trim();
+    
+    // Habilita botão APENAS se ambos forem válidos
+    btn.disabled = !(emailOk && pwdOk);
+}
+
 // ── Submit via fetch ───────────────────────────────────────
 document.querySelector('form').addEventListener('submit', async function (event) {
     event.preventDefault();

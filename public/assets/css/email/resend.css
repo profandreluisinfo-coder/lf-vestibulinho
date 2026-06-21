@@ -360,7 +360,7 @@ body {
 /* Botão submit */
 .btn-send {
     width: 100%;
-    padding: .92rem;
+    padding: .9rem;
     border: none;
     border-radius: 50px;
     background: var(--grad-teal);
@@ -384,6 +384,18 @@ body {
 
 .btn-send:active {
     transform: translateY(0);
+}
+
+.btn-send:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+    box-shadow: none;
+    transform: none !important;
+}
+
+.btn-send:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
 }
 
 /* Links bottom */

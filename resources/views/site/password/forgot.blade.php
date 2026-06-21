@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Botão -->
-                <button class="btn-recover" type="submit">
+                <button class="btn-recover" type="submit" disabled>
                     <i class="bi bi-key-fill"></i> Recuperar Senha
                 </button>
 

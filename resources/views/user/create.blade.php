@@ -196,7 +196,7 @@
             </button>
 
             <!-- Links inferiores -->
-            @if ($selection_process?->informations?->isInscriptionOpen())
+            @if ($selection_process && $selection_process->isInscriptionOpen())
                 <div class="form-links">
                     <a href="{{ route('login') }}" class="link-btn">
                         <i class="bi bi-box-arrow-in-right"></i> Já tenho registro

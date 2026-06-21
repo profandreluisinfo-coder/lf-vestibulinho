@@ -1,0 +1,72 @@
+/* Propriedades comuns a todos */
+.btn-login,
+.btn-register,
+.btn-back-login,
+.btn-recover {
+    background: var(--grad-teal);
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
+    transition: transform .25s, box-shadow .25s;
+}
+
+/* Propriedades específicas dos botões de login/register */
+.btn-login,
+.btn-register,
+.btn-recover {
+    width: 100%;
+    padding: .9rem;
+    font-size: .95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    transition: transform .25s, box-shadow .25s, opacity .3s;
+}
+
+/* Propriedades específicas do botão back-login */
+.btn-back-login {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .88rem;
+    padding: .72rem 1.8rem;
+    margin-top: 1.4rem;
+}
+
+.btn-login:hover,
+.btn-register:hover,
+.btn-back-login:hover,
+.btn-recover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 34px rgba(0, 168, 150, .45);
+}
+
+.btn-login:active,
+.btn-register:active,
+.btn-back-login:active,
+.btn-recover:active {
+    transform: translateY(0);
+}
+
+.btn-login:disabled,
+.btn-register:disabled,
+.btn-back-login:disabled,
+.btn-recover:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none !important;
+}
+
+.btn-login:not(:disabled):hover,
+.btn-register:not(:disabled):hover,
+.btn-back-login:not(:disabled):hover,
+.btn-recover:not(:disabled):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
+}

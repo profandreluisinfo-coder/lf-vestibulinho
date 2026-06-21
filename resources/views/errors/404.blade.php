@@ -29,7 +29,7 @@
         <a href="{{ route('home') }}#cursos" class="err-hint-link">
             <i class="bi bi-grid-3x3-gap"></i> Cursos
         </a>
-        <a href="{{ route('site.calendar.show') }}" class="err-hint-link">
+        <a href="{{ route('site.process.show') }}" class="err-hint-link">
             <i class="bi bi-calendar3"></i> Calendário
         </a>
         <a href="{{ route('login') }}" class="err-hint-link">
