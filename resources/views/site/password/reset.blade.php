@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Redefinir Senha — Vestibulinho {{ $calendar?->year }}')
+@section('title', 'Redefinir Senha — Vestibulinho LF')
 
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 
@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $calendar?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $selection_process->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Centro -->
@@ -71,7 +71,7 @@
 
     <!-- Rodapé -->
     <div class="panel-footer">
-        © {{ $currentYear }} EM Dr. Leandro Franceschini · Todos os direitos reservados
+        © {{ $year }} EM Dr. Leandro Franceschini · Todos os direitos reservados
     </div>
 
 @endsection

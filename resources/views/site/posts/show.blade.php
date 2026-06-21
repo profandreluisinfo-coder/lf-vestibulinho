@@ -2,6 +2,10 @@
 
 @section('title', $post->title . ' - EM Dr Leandro Franceschini')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/site/posts/show.css') }}" />
+@endpush
+
 @section('content')
 
 <!-- ===== BREADCRUMB ===== -->
@@ -12,8 +16,8 @@
                 Home
             </a>
             <span> / </span>
-            <a href="{{ route('news.index') }}" class="post-breadcrumb-link">
-                news
+            <a href="{{ route('site.faqs.index') }}" class="post-breadcrumb-link">
+                Notícias e Comunicados
             </a>
             <span> / </span>
             <span>{{ $post->title }}</span>
@@ -22,9 +26,9 @@
 </section>
 
 <!-- ===== COMUNICADO ===== -->
-<section class="post-comunicado-section">
+<section class="post-section">
     <div class="container-lg">
-        <div class="post-comunicado-container">
+        <div class="post-container">
             <!-- Header do Comunicado -->
             <div class="post-header">
                 <span class="news-card-badge news-card-badge-navy post-badge">
@@ -106,7 +110,7 @@
 
             <!-- Voltar -->
             <div class="post-back-container">
-                <a href="{{ route('news.index') }}" class="btn-hero-primary">
+                <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
                     <i class="bi bi-arrow-left me-2"></i> Voltar para notícias
                 </a>
             </div>

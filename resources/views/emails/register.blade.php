@@ -1,6 +1,6 @@
 <p>Olá {{ $name }},</p>
 
-<p><strong>Parabéns! Sua inscrição no Processo Seletivo {{ $calendar->year }} foi concluída com sucesso.</strong></p>
+<p><strong>Parabéns! Sua inscrição no Processo Seletivo {{ $selection_process->reference }} foi concluída com sucesso.</strong></p>
 <p>Em anexo, você encontrará uma cópia da sua ficha de inscrição para conferência.</p>
 <p><strong>Sugerimos que você a imprima e apresente no dia da prova.</strong></p>
 <p>Ela também está disponível para download e impressão na <a href="{{ route('login') }}" target="_blank">Área do Candidato.</p>
@@ -9,4 +9,4 @@
 
 <p><strong>Escola Municipal Dr. Leandro Franceschini<br>Prefeitura Municipal de Sumaré</strong></p>
 
-@include("partials.mail.footer")
+@include("partials.emails.footer")

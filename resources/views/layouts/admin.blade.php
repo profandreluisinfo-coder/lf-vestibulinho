@@ -24,7 +24,7 @@
     @stack('datatable-styles')
 
     {{-- Estilos --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/admin/dash.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/admin/styles.css') }}">
 
     @stack('styles')
 
@@ -38,7 +38,7 @@
         <div class="sidebar-brand" onclick="toggleSidebarCollapse()">
             <!-- IMAGEM PARA RECOLHER/EXPANDIR -->
             <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
-            <h4>{{ config('app.name') }} {{ $calendar->year }}</h4>
+            <h4>{{ config('app.name') }} {{ $selection_process->year }}</h4>
         </div>
 
         <nav class="sidebar-menu">
@@ -90,11 +90,11 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.calendar.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.events.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
-                        <a href="{{ route('admin.calendar.show') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">
-                            <i class="bi bi-calendar-event me-1"></i> Calendário
+                        <a href="{{ route('admin.process.show') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                            <i class="bi bi-calendar-event me-1"></i> Eventos
                         </a>
                         <a href="{{ route('admin.courses.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.courses.*') ? 'active' : '' }}">
@@ -305,7 +305,7 @@
                     Rápidas</h6>
                 <div class="row g-3">
                     <div class="col-6">
-                        <a href="{{ route('admin.calendar.show') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.process.show') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #dbeafe; color: #2563eb;">
                                 <i class="bi bi-calendar-event"></i>
                             </div>

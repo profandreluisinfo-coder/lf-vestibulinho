@@ -2,48 +2,62 @@
 
 namespace App\Helpers;
 
-use App\Models\Call;
-use App\Models\User;
-use App\Models\Notice;
-use App\Models\Setting;
-use App\Models\Calendar;
 use App\Models\Inscription;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
+use App\Models\SelectionProcess;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\View;
 
 class GlobalDataHelper
 {
     public static function share()
     {
-        View::composer('*', function ($view) {
+        /**
+         * =========================
+         * CACHE DOS DADOS GLOBAIS
+         * =========================
+         */
 
-            // Estatísticas de inscrições
-            $totalInscriptions = Cache::remember('global_total_inscriptions', 60, fn() => Inscription::count());
+        $selectionProcess = Cache::remember(
+            'global_selection_process',
+            300,
+            fn() => SelectionProcess::current()
+        );
 
-            $usersWithoutInscription = Cache::remember(
-                'global_users_without_inscription',
-                60,
-                fn() => User::where('role', 'user')
-                    ->doesntHave('inscription')
-                    ->count()
-            );
+        $totalInscriptions = Cache::remember(
+            'global_total_inscriptions',
+            300,
+            fn() => Inscription::count()
+        );
 
-            // Calendário: Se não houver registros, retorna uma instância vazia
-            $calendar = Cache::remember('global_calendar', 60, fn() => Calendar::first() ?? new Calendar());
+        $usersWithoutInscription = Cache::remember(
+            'global_users_without_inscription',
+            300,
+            fn() => User::where('role', 'user')
+                ->doesntHave('inscription')
+                ->count()
+        );
 
-            // Usuário autenticado e ano atual
-            $authUser = Auth::user();
-            $currentYear = now()->year;
+        $year = now()->year;
 
-            // Envia tudo para as views
-            $view->with(compact(
-                'calendar',
-                'authUser',
-                'currentYear',
-                'totalInscriptions',
-                'usersWithoutInscription'
-            ));
+        /**
+         * =========================
+         * COMPARTILHAMENTO GLOBAL
+         * =========================
+         */
+
+        View::composer('*', function ($view) use (
+            $selectionProcess,
+            $totalInscriptions,
+            $usersWithoutInscription,
+            $year
+        ) {
+            $view->with([
+                'selection_process' => $selectionProcess,
+                'totalInscriptions' => $totalInscriptions,
+                'usersWithoutInscription' => $usersWithoutInscription,
+                'year' => $year,
+            ]);
         });
     }
 }

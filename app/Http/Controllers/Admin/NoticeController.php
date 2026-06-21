@@ -96,8 +96,8 @@ class NoticeController extends Controller
         $file = $request->file('path');
 
         // Remove o arquivo antigo, se existir
-        if ($notice->file && Storage::disk('public')->exists($notice->file)) {
-            Storage::disk('public')->delete($notice->file);
+        if ($selection_process->edital && Storage::disk('public')->exists($selection_process->edital)) {
+            Storage::disk('public')->delete($selection_process->edital);
         }
 
         // Nome original sem espaços
@@ -135,7 +135,7 @@ class NoticeController extends Controller
      */
     public function destroy(Notice $notice)
     {
-        Storage::disk('public')->delete($notice->file);
+        Storage::disk('public')->delete($selection_process->edital);
 
         $notice->delete();
 

@@ -4,7 +4,7 @@
         <div class="row g-4 mb-4">
             <div class="col-lg-4">
                 <div class="brand mb-2">EM Dr. Leandro Franceschini<small>Escola Municipal · Vestibulinho
-                        {{ $calendar?->year }}</small></div>
+                        {{ $selection_process->year }}</small></div>
                 <p style="font-size:.82rem;line-height:1.7;" class="mb-3">
                     Oferecendo educação técnica de qualidade e oportunidades reais de crescimento profissional para
                     toda a comunidade.
@@ -37,14 +37,14 @@
                 <h6>Processo Seletivo</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
 
-                    @if ($calendar->edital)
+                    @if ($selection_process->edital)
                         <li>
-                            <a href="{{ asset('storage/' . $calendar->edital) }}" target="_blank">
+                            <a href="{{ asset('storage/' . $selection_process->edital) }}" target="_blank">
                                 Edital
                             </a>
                         </li>
                     @endif
-                    @if ($calendar->is_active)
+                    @if ($selection_process->is_active)
                         <li><a href="{{ route('site.calendar.show') }}">Calendário</a></li>
                     @endif
                     <li><a href="{{ route('site.archives.index') }}">Provas Anteriores</a></li>
@@ -64,12 +64,12 @@
             <div class="col-6 col-lg-2 foot-col">
                 <h6>Candidato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
-                    @if ($calendar->isInscriptionOpen())
+                    @if ($selection_process?->informations?->isInscriptionOpen())
                         <li><a href="{{ route('register') }}">Registrar-se</a></li>
                     @endif
                     <li><a href="{{ route('login') }}">Área do Candidato</a></li>
                     <li><a href="{{ route('site.faqs.index') }}">FAQ Completo</a></li>
-                    @if ($calendar->isInscriptionOpen())
+                    @if ($selection_process?->informations?->isInscriptionOpen())
                         <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
                     @endif
                 </ul>
@@ -90,7 +90,7 @@
         </div>
         <hr>
         <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <p class="mb-0">© {{ $currentYear }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
+            <p class="mb-0">© {{ $year }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
         </div>
     </div>
 </footer>

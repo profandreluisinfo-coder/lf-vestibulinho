@@ -8,7 +8,7 @@
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/faqs.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/faqs/index.css') }}" />
 @endpush
 
 {{-- ══════════════════════════════════════════════════════════════
@@ -32,12 +32,12 @@
                     </nav>
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        Dúvidas Frequentes · Vestibulinho {{ $calendar?->year }}
+                        Dúvidas Frequentes · Vestibulinho {{ $selection_process->year }}
                     </div>
                     <h1 class="faq-hero-title mb-3">
                         Perguntas Frequentes<br><em>Processo Seletivo</em>
                         {{-- <br>
-                <span class="year-chip">{{ $calendar?->year }}</span> --}}
+                <span class="year-chip">{{ $selection_process->year }}</span> --}}
                     </h1>
                     <h1>Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
                     <p class="lead mt-3">Reunimos as perguntas mais frequentes dos candidatos. Use a busca abaixo ou
@@ -170,7 +170,7 @@
         </div>
     </div>
 
-    @if ($calendar->isInscriptionOpen())
+    @if ($selection_process?->informations?->isInscriptionOpen())
         <!-- ═══════════════════════ CTA ══════════════════════════════ -->
         <section id="faq-cta">
             <div class="container text-center position-relative" style="z-index:1;">
@@ -203,5 +203,5 @@
     <script>
         const FAQ_DATA = {!! $faqsJson !!};
     </script>
-    <script src="{{ asset('assets/js/vestibulinho/faqs/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/faqs/index.js') }}"></script>
 @endpush

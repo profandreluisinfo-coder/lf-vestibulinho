@@ -46,7 +46,7 @@
 
 <body>
 
-  <h1>Processo Seletivo {{ $calendar?->year }} - Convocação para Matrícula</h1>
+  <h1>Processo Seletivo {{ $selection_process->year }} - Convocação para Matrícula</h1>
 
   <div class="info">
     <p><strong>Candidato(a):</strong> {{ ($user->authorization_accepted == 1) ? $user->social_name : $user->name }}</p>

@@ -38,7 +38,8 @@ class InscriptionService
                 'social_name' => $data['social_name'],
                 'authorization' => data_get($data, 'authorization'),
                 'birth' => $data['birth'],
-                'gender' => $data['gender']
+                'gender' => $data['gender'],
+                'nationality_id' => $data['nationality']
             ]);
 
             if (Inscription::where('user_id', $user->id)->where('course_id', $data['course_id'])->exists()) {

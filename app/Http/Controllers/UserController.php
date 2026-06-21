@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Calendar;
-// use App\Models\ExamResult;
-// use App\Models\User;
+use App\Models\SelectionProcess;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -25,13 +24,13 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $calendar = Calendar::first() ?? new Calendar();
+        $selection_process = SelectionProcess::current();
 
-        if ($calendar?->isInscriptionOpen()) {
-            return view('dash.start', compact('user'));
+        if (!$selection_process->isInscriptionOpen()) {
+            abort(404);
         }
 
-        return view('dash.end-period-of-inscription', compact('user'));
+        return view('inscription.start', compact('user'));
     }
 
     /**
@@ -44,13 +43,13 @@ class UserController extends Controller
      */
     public function create(): View | RedirectResponse
     {
-        $calendar = Calendar::first() ?? new Calendar();
+        $selection_process = SelectionProcess::current();
 
-        if (empty($calendar) || !($calendar?->isInscriptionOpen())) {
+        if (empty($selection_process) || !($selection_process->isInscriptionOpen())) {
             return alertError('Não é possível efetuar o registro no momento.');
         }
 
-        return view('site.user.create');
+        return view('user.create');
     }
 
     /**
@@ -80,13 +79,22 @@ class UserController extends Controller
             'password_confirmation.required' => 'O campo repetir senha é obrigatório'
         ]);
 
-        $result = $userService->register($credentials);
+        try {
+            $result = $userService->register($credentials);
 
-        if (!($result['success'])) {
-            return redirect()->back()->with('error', $result['message']);
+            if (!$result['success']) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', $result['message']);
+            }
+
+            return view('register.email-sent', ['email' => $result['user']->email]);
+        } catch (\Exception $e) {
+            Log::error('Erro crítico: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Erro no sistema. Contate o suporte.');
         }
-
-        return view('emails.email-sent', ['email' => $result['user']->email]);
     }
 
     /**
@@ -124,7 +132,6 @@ class UserController extends Controller
 
         $call = $examResult?->completedCall;
 
-        return view('dash.inscription', compact('user', 'exam', 'examResult', 'call'));
+        return view('user.show', compact('user', 'exam', 'examResult', 'call'));
     }
-
 }

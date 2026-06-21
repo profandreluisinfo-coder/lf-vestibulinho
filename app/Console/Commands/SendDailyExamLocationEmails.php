@@ -22,7 +22,7 @@ class SendDailyExamLocationEmails extends Command
         Log::info("Verificando permissão para envio diário...");
 
         // 🔎 Busca as configurações
-        $settings = Setting::first();
+        $settings = Setting::first() ?? new Setting();
 
         // ❌ Se o admin NÃO liberou o acesso, não envia nada
         if (!$settings || !$settings->location) {
@@ -34,7 +34,7 @@ class SendDailyExamLocationEmails extends Command
         Log::info("Acesso liberado! Iniciando processamento de envios...");
 
         // 🔎 Carrega calendário
-        $calendar = Calendar::first();
+        $calendar = Calendar::latest('id')->first() ?? new Calendar();
 
         // 🔎 Busca exam_results ainda não enviados
         $results = ExamResult::whereNull('email_sent_at')
@@ -53,7 +53,7 @@ class SendDailyExamLocationEmails extends Command
 
             SendExamLocationMailJob::dispatch(
                 email: $user->email,
-                subject: 'Local de Prova – Vestibulinho ' . ($calendar->year ?? now()->year),
+                subject: 'Local de Prova – Vestibulinho ' . ($selection_process->year ?? now()->year),
                 content: [
                     'name' => $user->name,
                     'date' => $result->exam_date,
@@ -62,7 +62,7 @@ class SendDailyExamLocationEmails extends Command
                     'address' => $result->examLocation->address,
                     'room_number' => $result->room_number,
                 ],
-                view: 'mail.location'
+                view: 'emails.location'
             );
 
             $result->update(['email_sent_at' => now()]);

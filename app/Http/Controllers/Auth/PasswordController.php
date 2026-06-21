@@ -22,7 +22,7 @@ class PasswordController extends Controller
      */
     public function forgotPassword(): View
     {
-        return view('password.forgot');
+        return view('site.password.forgot');
     }
 
     /**
@@ -41,33 +41,42 @@ class PasswordController extends Controller
             'email.email' => 'O campo e-mail deve ser um endereço de e-mail válido',
         ]);
 
-        $result = app(UserService::class)
-            ->forgotPassword($credentials['email']);
+        try {
+            $result = app(UserService::class)
+                ->forgotPassword($credentials['email']);
 
-        return response()->json([
-            'success' => true,
-            'message' => $result['message'],
-        ]);
+            return response()->json([
+                'success' => $result['success'],  // ← Usa o resultado real
+                'message' => $result['message'],
+            ], $result['success'] ? 200 : 422);  // ← Status HTTP correto
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao processar solicitação. Tente novamente.',
+            ], 500);
+        }
     }
 
     /**
      * Exibe a página de redefinição de senha com base no token informado.
      *
-     * Se o token for inválido, o usuário será redirecionado para a página de início.
-     * Se o token for válido, o endereço de e-mail armazenado no token será exibido na página de redefinição de senha.
+     * Se o token for inválido, o usuário será redirecionado para a página de login.
      *
      * @param string $token
      * @return RedirectResponse|View
      */
-    public function resetPassword($token): RedirectResponse|View
+    public function resetPassword(string $token): RedirectResponse|View
     {
         $user = User::where('token', $token)->first();
 
         if (!$user) {
-            return redirect()->route('login');
+            return redirect()
+                ->route('login')
+                ->with('error', 'O link de redefinição de senha é inválido ou expirou.');
         }
 
-        return view('password.reset', ['token' => $token]);
+        return view('site.password.reset', compact('token'));
     }
 
     /**

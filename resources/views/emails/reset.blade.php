@@ -3,4 +3,4 @@
 <a href="{{ $link }}" target="_blank">{{ $link }}</a>
 <p>Atenciosamente,</p>
 <p><strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong></p>
-@include("partials.mail.footer")
+@include("partials.emails.footer")

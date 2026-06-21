@@ -17,19 +17,17 @@ return new class extends Migration
 
             // Dados pessoais
             $table->string('cpf', 11)->nullable()->unique(); // cpf único na tabela toda
-
             $table->string('name', 100)->nullable();
-
-            $table->boolean('social_name_option')->default(false); // 0 = Não, 1 = Sim
-            $table->string('social_name', 100)->nullable();
-            $table->string('authorization')->nullable();
-            $table->unsignedTinyInteger('authorization_accepted')->nullable();
-            $table->string('authorization_rejection_reason')->nullable();
 
             $table->date('birth')->nullable();
 
-            // Gênero
-            $table->unsignedTinyInteger('gender')->nullable(); // 1 = Masculino, 2 = Feminino, 3 = Outro, 4 = Prefiro não informar
+            $table->foreignId('gender_id')->nullable()->constrained('genders')->nullOnDelete();
+            
+            $table->foreignId('nationality_id')->nullable()->constrained('nationalities')->nullOnDelete();
+
+            $table->foreignId('document_id')->nullable()->constrained('documents')->nullOnDelete();
+            $table->string('document_number', 20)->nullable()->unique();
+
 
             // Endereço de e-mail
             $table->string('email', 150)->unique();

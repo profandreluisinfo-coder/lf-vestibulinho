@@ -1,29 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\{ AdminController, ArchiveController, FaqController, EventController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController };
+use App\Http\Controllers\Admin\SelectionProcessController;
 use App\Http\Controllers\Auth\{LoginController};
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Admin\{
-    AdminController,
-    ArchiveController,
-    FaqController,
-    CalendarController,
-    CourseController,
-    CallController,
-    DeferralController,
-    ExamController,
-    ExportController,
-    ImportController,
-    InscriptionController,
-    LocalController,
-    NoticeController,
-    ResultController,
-    SettingController,
-    UserController,
-    PostController
-};
 
 // Login de admins
 Route::middleware(['guest'])
@@ -42,8 +24,6 @@ Route::middleware([
     Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/', [AdminController::class, 'index'])->name('index');
-
-        Route::get('/', [AdminController::class, 'vestibulinho'])->name('vestibulinho');
 
         Route::prefix('inscricoes')->name('inscriptions.')->group(function () {
             // Lista de inscrições
@@ -80,12 +60,12 @@ Route::middleware([
             Route::put('update-order', [FaqController::class, 'updateOrder'])->name('updateOrder');
         });
 
-        // Calendário
-        Route::prefix('calendario')->name('calendar.')->group(function () {
-            Route::get('detalhes', [CalendarController::class, 'show'])->name('show');
-            Route::get('editar', [CalendarController::class, 'edit'])->name('edit');
-            Route::put('atualizar', [CalendarController::class, 'update'])->name('update');
-            Route::put('ativar/{calendar}', [CalendarController::class, 'activate'])->name('activate');
+        // Processo Seltivo
+        Route::prefix('processo-seletivo')->name('process.')->group(function () {
+            Route::get('detalhes', [SelectionProcessController::class, 'show'])->name('show');
+            Route::get('editar', [SelectionProcessController::class, 'edit'])->name('edit');
+            Route::put('atualizar', [SelectionProcessController::class, 'update'])->name('update');
+            Route::put('ativar/{sp}', [SelectionProcessController::class, 'activate'])->name('activate');
         });
 
         // Edital

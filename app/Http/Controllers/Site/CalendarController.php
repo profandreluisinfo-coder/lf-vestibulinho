@@ -22,7 +22,7 @@ class CalendarController extends Controller
     {       
         $calendar = Calendar::first() ?? new Calendar();
 
-        if (!($calendar->is_active)) {
+        if (!($selection_process->is_active)) {
             return redirect()->route('home');
         }
 

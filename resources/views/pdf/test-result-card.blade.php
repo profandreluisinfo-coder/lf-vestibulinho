@@ -39,9 +39,9 @@
 <body>
 
   <div style="text-align: center; padding: 30px; font-family: DejaVu Sans, sans-serif;">
-    <h2>{{ config('app.name') }} {{ $calendar?->year }}</h2>
+    <h2>{{ config('app.name') }} {{ $selection_process->year }}</h2>
     <h1>Resultado da Prova</h1>
-    <p>Ano {{ $calendar?->year }}</p>
+    <p>Ano {{ $selection_process->year }}</p>
 
     <hr style="margin: 20px 0;">
 

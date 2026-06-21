@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('page-title', config('app.name') . ' ' . ($calendar?->year ?? '') . ' | Classificação Geral')
+@section('page-title', config('app.name') . ' ' . ($selection_process->year ?? '') . ' | Classificação Geral')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/pages/results.css') }}">
@@ -22,15 +22,15 @@
                     </nav>
 
                     <h2 class="section-title text-center mb-3">
-                        {{ config('app.name') }} {{ $calendar?->year ?? '' }} | Classificação Geral
+                        {{ config('app.name') }} {{ $selection_process->year ?? '' }} | Classificação Geral
                     </h2>
 
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
                             <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong>, em conformidade com o item
-                                <strong>5.10</strong> do <a href="{{ asset('storage/' . $notice->file) }}"
+                                <strong>5.10</strong> do <a href="{{ asset('storage/' . $selection_process->edital) }}"
                                     class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do
-                                Processo Seletivo {{ $calendar?->year ?? '' }}, torna pública a classificação geral dos candidatos na prova
+                                Processo Seletivo {{ $selection_process->year ?? '' }}, torna pública a classificação geral dos candidatos na prova
                                 objetiva, adotando como critério de desempate a menor idade, conforme disposto no item
                                 <strong>5.11</strong> do mesmo Edital.
                             </p>
@@ -65,7 +65,7 @@
 
                             <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                                 <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top" role="table" aria-label="Classificação geral">
-                                    <caption class="text-muted small">{{ config('app.name') }} {{ $calendar?->year ?? '' }} - Lista de Classificação Geral</caption>
+                                    <caption class="text-muted small">{{ config('app.name') }} {{ $selection_process->year ?? '' }} - Lista de Classificação Geral</caption>
 
                                     <thead class="table-success" role="rowgroup">
                                         <tr>

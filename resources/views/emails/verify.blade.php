@@ -4,4 +4,4 @@
 <p>Seu acesso à Área do Candidato e ao Formulário de Inscrição será liberado assim que confirmar seu endereço de e-mail.</p>
 <p>Atenciosamente,</p>
 <p><strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong></p>
-@include("partials.mail.footer")
+@include("partials.emails.footer")

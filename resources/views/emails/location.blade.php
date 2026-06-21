@@ -1,7 +1,7 @@
   <p>Prezado(a) candidato(a), {{ $name }}!</p>
 
   <p>A Direção da E.M. Dr. Leandro Franceschini tem a satisfação de convocá-lo(a) para realizar a prova do Processo
-      Seletivo {{ $calendar->year }}. Confira os dados abaixo:</p>
+      Seletivo {{ $selection_process->reference }}. Confira os dados abaixo:</p>
 
   <ul>
       <li><strong>Data:</strong> {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</li>
@@ -55,4 +55,4 @@
       Equipe de Seleção E.M. Dr. Leandro Franceschini<br>
       <strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong>
   </p>
-  @include('partials.mail.footer')
+  @include('partials.emails.footer')

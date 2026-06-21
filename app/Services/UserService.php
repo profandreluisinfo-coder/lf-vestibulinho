@@ -2,20 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendTransactionalEmailJob;
+use App\Models\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserService
 {
-    /**
-     * Cadastra um usuário com base nos dados informados.
-     *
-     * @param array $data
-     * @return array
-     */
     public function register(array $data): array
     {
         $email = strtolower($data['email']);
@@ -27,26 +22,36 @@ class UserService
             ];
         }
 
-        $user = new User();
-        $user->email = $email;
-        $user->password = Hash::make($data['password']);
-        $user->token = Str::random(64);
+        try {
+            $user = DB::transaction(function () use ($data, $email) {
+                $user = new User();
+                $user->email = $email;
+                $user->password = Hash::make($data['password']);
+                $user->token = Str::random(64);
+                $user->save();
 
-        $link = route('verify', ['token' => $user->token]);
+                $link = route('verify', ['token' => $user->token]);
 
-        $user->save();
+                $this->sendEmail(
+                    to: $user->email,
+                    subject: 'Confirme seu e-mail',
+                    data: ['link' => $link],
+                    view: 'emails.verify'
+                );
 
-        $this->sendEmail(
-            to: $user->email,
-            subject: 'Confirme seu e-mail',
-            data: ['link' => $link],
-            view: 'emails.verify'
-        );
+                return $user;
+            });
 
-        return [
-            'success' => true,
-            'user' => $user,
-        ];
+            return [
+                'success' => true,
+                'user' => $user,
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Erro ao enviar email de confirmação. Tente novamente.',
+            ];
+        }
     }
 
     /**
@@ -84,44 +89,43 @@ class UserService
 
         return ['success' => true, 'user' => $user];
     }
-    /**
-     * Envia um e-mail para o usuário com um link para redefinição de senha.
-     * Se o usuário não existir, retorna sucesso para não vazar informação.
-     * Se o usuário existir, gera um token randômico e o armazena no banco de dados.
-     * Envia um e-mail para o usuário com o link para redefinição de senha.
-     *
-     * @param string $email
-     * @return array
-     */
+
     public function forgotPassword(string $email): array
     {
         $user = User::where('email', $email)->first();
 
-        // Retorna sucesso mesmo que não encontre usuário, pra não vazar informação
         if (!$user) {
             return [
                 'success' => true,
-                'message' => 'Verifique a sua caixa de e-mail principal ou spam para prosseguir com a redefinição da senha.'
+                'message' => 'Verifique a sua caixa de e-mail principal ou spam...'
             ];
         }
 
-        $user->token = Str::random(32);
+        try {
+            DB::transaction(function () use ($user) {
+                $user->token = Str::random(32);
+                $user->save();
 
-        $user->save();
+                $link = route('reset.password', ['token' => $user->token]);
 
-        $link = route('reset.password', ['token' => $user->token]);
+                $this->sendEmail(
+                    to: $user->email,
+                    subject: 'Redefinir senha',
+                    data: ['name' => $user->social_name ?? $user->name, 'link' => $link],
+                    view: 'emails.reset'
+                );
+            });
 
-        $this->sendEmail(
-            to: $user->email,
-            subject: 'Redefinir senha',
-            data: ['name' => $user->social_name ?? $user->name, 'link' => $link],
-            view: 'emails.reset'
-        );
-
-        return [
-            'success' => true,
-            'message' => 'E-mail enviado com sucesso! Verifique a sua caixa de e-mail principal ou spam para prosseguir com a redefinição da senha.'
-        ];
+            return [
+                'success' => true,
+                'message' => 'E-mail enviado com sucesso!...'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => true,  // ← Mantém seguro (não vaza se existe)
+                'message' => 'Verifique a sua caixa de e-mail...'
+            ];
+        }
     }
     /**
      * Redefine a senha do usuário com base no token informado.

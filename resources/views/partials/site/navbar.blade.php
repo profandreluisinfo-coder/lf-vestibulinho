@@ -32,7 +32,7 @@
                     <a class="nav-link" href="{{ route('home') }}/#links-rapidos">Documentos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('site.archives.index') }}/#contato"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a>
+                    <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a>
                 </li>
                 <li class="nav-item ms-lg-2">
                     <a class="nav-link btn-nav-cta" href="{{ route('login') }}">

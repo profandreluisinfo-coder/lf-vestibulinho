@@ -1,8 +1,8 @@
 @extends('layouts.auth')
 
-@section('title', 'Verificação de E-mail — Vestibulinho ' . $calendar?->year)
+@section('title', 'Verificação de E-mail — Vestibulinho ' . $selection_process->year)
 
-@section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $calendar?->year)
+@section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $selection_process->year)
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/email/sent.css') }}">
@@ -19,7 +19,7 @@
   <div class="panel-brand">
     <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
     <h2>EM Dr. Francisco de Souza</h2>
-    <p>Vestibulinho {{ $calendar?->year }} · Cursos Técnicos Gratuitos</p>
+    <p>Vestibulinho {{ $selection_process->year }} · Cursos Técnicos Gratuitos</p>
   </div>
 
   <!-- Centro -->
@@ -66,7 +66,7 @@
 
   <!-- Rodapé -->
   <div class="panel-footer">
-    © {{ $currentYear ?? date('Y') }} EM Dr. Leandro Franceschini · Todos os direitos reservados
+    © {{ $year ?? date('Y') }} EM Dr. Leandro Franceschini · Todos os direitos reservados
   </div>
 
 @endsection

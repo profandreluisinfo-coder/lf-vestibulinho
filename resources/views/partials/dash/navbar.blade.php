@@ -17,7 +17,7 @@
             </div>
             <div>
                 <span class="school text-white">EM Dr. Leandro Franceschini</span>
-                <span class="sub text-white">Vestibulinho {{ $calendar?->year }}</span>
+                <span class="sub text-white">Vestibulinho {{ $selection_process->year }}</span>
             </div>
         </a>
 

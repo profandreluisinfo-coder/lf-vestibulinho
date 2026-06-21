@@ -157,11 +157,11 @@
         ? auth()->user()->social_name
         : auth()->user()->name;
   @endphp
-  <div class="watermark">{{ config('app.name') }} {{ $calendar->year }}</div>
+  <div class="watermark">{{ config('app.name') }} {{ $selection_process->year }}</div>
 
   <div class="card">
     <div class="header-info" style="text-align: center;">
-      <span style="font-size: 16px; text-transform:uppercase; font-weight: 600;">{{ config('app.name') }} {{ $calendar->year }} - Comprovante de Inscrição
+      <span style="font-size: 16px; text-transform:uppercase; font-weight: 600;">{{ config('app.name') }} {{ $selection_process->year }} - Comprovante de Inscrição
     </div>
 
     <div class="card-body">
@@ -297,7 +297,7 @@
     </div>
 
     <div class="card-footer">
-      <p>E. M. Dr. Leandro Franceschini | {{ config('app.name') }} {{ $calendar->year }}</p>
+      <p>E. M. Dr. Leandro Franceschini | {{ config('app.name') }} {{ $selection_process->year }}</p>
     </div>
   </div>
 </body>

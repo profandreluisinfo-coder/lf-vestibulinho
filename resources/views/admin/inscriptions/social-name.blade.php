@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $calendar?->year . ' | Nome Social')
+@section('page-title', config('app.name') . ' ' . $selection_process->year . ' | Nome Social')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -26,7 +26,7 @@
         @endif
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
-                <caption>{{ config('app.name') }} {{ $calendar->year }} - Lista de Candidatos com Nome Social</caption>
+                <caption>{{ config('app.name') }} {{ $selection_process->year }} - Lista de Candidatos com Nome Social</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Inscrição</th>

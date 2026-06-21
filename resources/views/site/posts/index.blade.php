@@ -3,7 +3,7 @@
 @section('title', 'Vestibulinho - Notícias e Comunicados')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/posts.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/posts/index.css') }}" />
 @endpush
 
 @section('content')

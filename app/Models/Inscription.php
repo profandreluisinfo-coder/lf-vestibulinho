@@ -16,7 +16,7 @@ class Inscription extends Model
     protected $fillable = [
         'user_id',
         'course_id',
-        'calendar_id'
+        'selection_process_id'
     ];
 
     protected function casts(): array
@@ -75,6 +75,16 @@ class Inscription extends Model
     public function calls(): HasMany
     {
         return $this->hasMany(Call::class, 'exam_result_id');
+    }
+
+    /**
+     * Obtenha o processo de seleção associado ao curso.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function selection_process(): BelongsTo
+    {
+        return $this->belongsTo(SelectionProcess::class);
     }
 
     // 🔹 Limpa o cache automaticamente quando salvar ou excluir

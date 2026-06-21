@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Calendar;
-use App\Models\Setting;
+use App\Models\SelectionProcess;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -18,15 +17,14 @@ class LoginController extends Controller
     /**
      * * Usuário que inicia sessão no sistema
      * 
-     * @param Request $request
      * @return View|RedirectResponse A view da página de login ou um redirecionamento para a página inicial se as inscrições ainda não 
      * tiverem começado o período de inscrições.
      */
     public function login(): View | RedirectResponse
     {
-        $calendar = Calendar::latest('id')->first() ?? new Calendar();
+        $selection_process_status = SelectionProcess::current();
         
-        if (!$calendar) {
+        if (!$selection_process_status?->status) {
             return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!');
         }
 
@@ -103,8 +101,8 @@ class LoginController extends Controller
 
         if ($user->role === 'user') {
             return $user->inscription()->exists()
-                ? route('dash.user.start')
-                : route('dash.user.inscription');
+                ? route('inscription.step.start')
+                : route('user.show');
         }
 
         return route('login');

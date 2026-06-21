@@ -1,0 +1,109 @@
+/* ─── POST SHOW ──────────────────────────────────────────── */
+.post-breadcrumb-section {
+    background: var(--light);
+    padding: 1.5rem 0;
+}
+
+.post-breadcrumb-nav {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.post-breadcrumb-link {
+    color: var(--teal);
+    text-decoration: none;
+}
+
+.post-section {
+    background: var(--white);
+    padding: 3rem 0;
+}
+
+.post-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.post-header {
+    margin-bottom: 2rem;
+}
+
+.post-badge {
+    display: inline-block;
+}
+
+.post-title {
+    margin: 1rem 0;
+    color: var(--navy);
+}
+
+.post-info-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.post-info-label {
+    color: var(--navy);
+}
+
+.post-divider {
+    height: 2px;
+    background: var(--grad-amber);
+    margin: 2rem 0;
+}
+
+.post-content {
+    color: var(--navy);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.post-nav-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.post-nav-link {
+    padding: 1.5rem;
+    background: var(--light);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.post-nav-link:hover {
+    background: rgba(244, 162, 97, 0.15);
+    transform: translateX(-4px);
+}
+
+.post-nav-link-next:hover {
+    transform: translateX(4px);
+}
+
+.post-nav-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.post-nav-title {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.post-nav-link-next {
+    text-align: right;
+}
+
+.post-back-container {
+    text-align: center;
+    margin-top: 2rem;
+}

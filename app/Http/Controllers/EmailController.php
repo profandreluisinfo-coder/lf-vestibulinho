@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Calendar;
 use App\Models\Setting;
 use App\Services\UserService;

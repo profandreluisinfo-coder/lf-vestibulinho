@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-// use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -22,32 +22,28 @@ class User extends Authenticatable
      */
     protected $fillable = [
 
-        // Nascimento    
+        // Dados pessoais
+        'cpf',
+        'name',
+        // Nascimento
         'birth',
 
+        // Relacionamentos
+        // Documento
+        'document_id',
+        // Nacionalidade
+        'nationality_id',
         // Gênero
-        'gender',
+        'gender_id',
 
         // Email
         'email',
         'email_verified_at',
 
-        // Senha
+        // Autenticação
         'password',
-
-        // Token
         'token',
-
-        'last_login_at',
-
-        // Dados pessoais
-        'cpf',
-        'name',
-        'social_name_option',
-        'social_name',
-        'authorization', // caminho do arquivo de autorização dos pais (se necessário)
-        'authorization_accepted',
-        'authorization_rejection_reason',
+        'last_login_at'
     ];
 
     /**
@@ -73,15 +69,102 @@ class User extends Authenticatable
         ];
     }
 
-    public function getBirthAttribute($value)
+    // Relacionamentos
+
+    public function social_name(): HasOne
     {
-        return Carbon::parse($value)->format('d/m/Y');
+        return $this->hasOne(SocialName::class);
     }
 
-    public function getAgeAttribute(): ?int
+    /**
+     * Obter o documento do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function document(): BelongsTo
     {
-        $birth = $this->getRawOriginal('birth');
-        return $birth ? Carbon::parse($birth)->age : null;
+        return $this->belongsTo(Document::class);
+    }
+
+    /**
+     * Obter o gênero do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    /**
+     * Obter os endereços do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class);
+    }
+
+    /**
+     * Obter a nacionalidade do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function nationality(): BelongsTo
+    {
+        return $this->belongsTo(Nationality::class);
+    }
+
+    /**
+     * Obter os telefones do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function phone(): HasOne
+    {
+        return $this->hasOne(Phone::class);
+    }
+
+    /**
+     * Obter a escola do usuário.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function school(): HasOne
+    {
+        return $this->hasOne(School::class);
+    }
+
+
+    public function mother(): HasOne
+    {
+        return $this->hasOne(Mother::class);
+    }
+
+    public function father(): HasOne
+    {
+        return $this->hasOne(Father::class);
+    }
+
+    public function guardian(): HasOne
+    {
+        return $this->hasOne(Guardian::class);
+    }
+
+    public function social_program(): HasOne
+    {
+        return $this->hasOne(SocialProgram::class);
+    }
+
+    public function health(): HasOne
+    {
+        return $this->hasOne(Health::class);
+    }
+
+    public function pne(): HasOne
+    {
+        return $this->hasOne(Pne::class);
     }
 
     /**
@@ -164,17 +247,7 @@ class User extends Authenticatable
         return $this->inscription()->exists();
     }
 
-    /**
-     * Remove todos os caracteres não numéricos do CPF.
-     *
-     * @param string $value
-     */
-    public function setCpfAttribute($value)
-    {
-        // Remove todos os caracteres não numéricos
-        $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
-    }
-
+    // Acessors
     /**
      * Formata o CPF no formato 'xxx.xxx.xxx-xx'
      *
@@ -209,15 +282,28 @@ class User extends Authenticatable
         return $this->birth ? $this->birth->format('d/m/Y') : null;
     }
 
-    // /**
-    //  * Retorna a idade do usuário, baseada na data de nascimento, ou null se a data de nascimento for nula.
-    //  *
-    //  * @return int|null
-    //  */
-    // public function getAgeAttribute(): ?int
-    // {
-    //     return $this->birth ? $this->birth->age : null;
-    // }
+    public function getBirthAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
+    public function getAgeAttribute(): ?int
+    {
+        $birth = $this->getRawOriginal('birth');
+        return $birth ? Carbon::parse($birth)->age : null;
+    }
+
+    // Mutators
+    /**
+     * Remove todos os caracteres não numéricos do CPF.
+     *
+     * @param string $value
+     */
+    public function setCpfAttribute($value)
+    {
+        // Remove todos os caracteres não numéricos
+        $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
+    }
 
     protected static function booted()
     {

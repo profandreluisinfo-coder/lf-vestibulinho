@@ -1,27 +1,22 @@
 <?php
 
+use App\Http\Controllers\{ UserController, EmailController };
+use App\Http\Controllers\Auth\{ LoginController, LogoutController, PasswordController };
+use App\Http\Controllers\Site\{ HomeController };
+use App\Http\Middleware\WithInscription;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Auth\{
-    LoginController,
-    LogoutController,
-    PasswordController
-};
-
-use App\Http\Controllers\Site\{
-    HomeController
-};
-
-use App\Http\Controllers\{
-    UserController,
-    EmailController
-};
+// Autenticados
+Route::middleware(['auth', WithInscription::class])->prefix('candidato')->name('user.')->group(function () {
+    Route::get('/area-do-candidato', [UserController::class, 'show'])->name('show');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/alterar-senha', [PasswordController::class, 'updatePassword'])->name('update.password');
     Route::post('/logout', LogoutController::class)->name('logout');
 });
 
+// Nâo autenticados
 Route::middleware(['guest'])->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');

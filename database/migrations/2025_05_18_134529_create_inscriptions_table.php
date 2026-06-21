@@ -17,12 +17,12 @@ return new class extends Migration
             // Relacionamentos com chaves estrangeiras
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
-            $table->foreignId('calendar_id')->constrained('calendars')->onDelete('cascade');
+            $table->foreignId('selection_process_id')->constrained('selection_processes')->onDelete('cascade');
             
             $table->timestamps();
 
             // Garante que um usuário não possa se inscrever duas vezes no mesmo curso
-            $table->unique(['user_id', 'course_id', 'calendar_id']);
+            $table->unique(['user_id', 'course_id', 'selection_process_id']);
         });
     }
 

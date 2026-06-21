@@ -8,7 +8,7 @@
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/archives.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/archives/index.css') }}" />
 @endpush
 
 {{-- ══════════════════════════════════════════════════════════════
@@ -91,7 +91,7 @@
                             </div>
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
-                        @if ($calendar->isInscriptionOpen())
+                        @if ($selection_process?->informations?->isInscriptionOpen())
                         <a href="{{ route('register') }}" class="btn-inscricao">
                             <i class="bi bi-pencil-square"></i> Fazer Inscrição
                         </a>
@@ -213,7 +213,7 @@
     </div>
 
     <!-- ═══════════════════════ CTA ══════════════════════════════ -->
-    @if ($calendar->isInscriptionOpen())
+    @if ($selection_process?->informations?->isInscriptionOpen())
         <section id="pa-cta">
             <div class="container text-center position-relative" style="z-index:1;">
                 <div class="reveal">
@@ -246,5 +246,5 @@
 
 {{-- ── JS específico desta página ───────────────────────────── --}}
 @push('scripts')
-    <script src="{{ asset('assets/js/site/pages/archives.js') }}"></script>
+    <script src="{{ asset('assets/js/site/archives/index.js') }}"></script>
 @endpush
