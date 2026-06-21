@@ -178,7 +178,7 @@ class Event extends Model
     /**
      * Formata uma data no formato 'd/m/Y' ou retorna '—' se a data for nula.
      *
-     * @param \Carbon\Carbon|null $date Data a ser formatada.
+     * @param \Carbon\Carbon|null $attribute Data a ser formatada.
      *
      * @return string Data formatada ou '—' se a data for nula.
      */
@@ -186,6 +186,12 @@ class Event extends Model
     {
         return $date ? $date->format('d/m/Y') : '—';
     }
+    // public function formatDate($attribute): string
+    // {
+    //     return $this->$attribute
+    //         ? $this->$attribute->format('d/m/Y')
+    //         : '—';
+    // }
 
     /**
      * Formata um período de tempo com as datas de início e término no formato 'd/m/Y' e retorna como string.

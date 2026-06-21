@@ -183,7 +183,7 @@
                             <div class="icon-wrap"><i class="bi bi-{{ $course->icone }}"></i></div>
                             <h3>{{ $course->name }}</h3>
                             <p>{{ $course->info }}</p>
-                            @if ($course?->vacancies && $selection_process->is_active)
+                            @if ($course?->vacancies && $selection_process->status)
                                 <span class="tag-vagas">
                                     <i class="bi bi-people-fill me-1"></i>{{ $course?->vacancies }} Vagas disponíveis
                                 </span>
@@ -196,7 +196,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($selection_process?->informations?->isInscriptionOpen())
+    @if ($selection_process->isInscriptionOpen())
         {{-- ═══════════════════════ COMO PARTICIPAR ═════════════════════ --}}
         <section id="como-participar">
             <div class="container">
@@ -287,8 +287,8 @@
                     <div class="col-lg-8">
                         <div class="cal-card mb-3 reveal delay-1">
                             <div class="cal-date">
-                                <div class="day">{{ $selection_process->inscription_start?->format('d') }}</div>
-                                <div class="mon">{{ ucfirst($selection_process->inscription_start?->translatedFormat('M')) }}
+                                <div class="day">{{ $selection_process->latestEvent?->start?->format('d') }}</div>
+                                <div class="mon">{{ ucfirst($selection_process->latestEvent?->start?->translatedFormat('M')) }}
                                 </div>
                             </div>
                             <div class="cal-info flex-grow-1">
@@ -299,8 +299,8 @@
                         </div>
                         <div class="cal-card mb-3 reveal delay-2">
                             <div class="cal-date" style="background:var(--teal2);">
-                                <div class="day">{{ $selection_process->inscription_end?->format('d') }}</div>
-                                <div class="mon">{{ ucfirst($selection_process->inscription_end?->translatedFormat('M')) }}
+                                <div class="day">{{ $selection_process->latestEvent?->end?->format('d') }}</div>
+                                <div class="mon">{{ ucfirst($selection_process->latestEvent?->end?->translatedFormat('M')) }}
                                 </div>
                             </div>
                             <div class="cal-info flex-grow-1">
@@ -311,9 +311,9 @@
                         </div>
                         <div class="cal-card mb-3 reveal delay-3">
                             <div class="cal-date" style="background:#7B3FA0;">
-                                <div class="day">{{ $selection_process->exam_location_publish?->format('d') }}</div>
+                                <div class="day">{{ $selection_process->latestEvent?->location_publish?->format('d') }}</div>
                                 <div class="mon">
-                                    {{ ucfirst($selection_process->exam_location_publish?->translatedFormat('M')) }}</div>
+                                    {{ ucfirst($selection_process->latestEvent?->location_publish?->translatedFormat('M')) }}</div>
                             </div>
                             <div class="cal-info flex-grow-1">
                                 <h5>Divulgação dos Locais de Prova</h5>
@@ -323,8 +323,8 @@
                         </div>
                         <div class="cal-card mb-3 reveal delay-2">
                             <div class="cal-date" style="background:#C0392B;">
-                                <div class="day">{{ $selection_process->exam_date?->format('d') }}</div>
-                                <div class="mon">{{ ucfirst($selection_process->exam_date?->translatedFormat('M')) }}</div>
+                                <div class="day">{{ $selection_process->latestEvent?->exam_date?->format('d') }}</div>
+                                <div class="mon">{{ ucfirst($selection_process->latestEvent?->exam_date?->translatedFormat('M')) }}</div>
                             </div>
                             <div class="cal-info flex-grow-1">
                                 <h5>Dia da Prova</h5>
@@ -334,8 +334,8 @@
                         </div>
                         <div class="cal-card mb-3 reveal delay-3">
                             <div class="cal-date" style="background:var(--amber2);">
-                                <div class="day">{{ $selection_process->final_result_publish?->format('d') }}</div>
-                                <div class="mon">{{ ucfirst($selection_process->final_result_publish?->translatedFormat('M')) }}
+                                <div class="day">{{ $selection_process->latestEvent?->result_publish?->format('d') }}</div>
+                                <div class="mon">{{ ucfirst($selection_process->latestEvent?->result_publish?->translatedFormat('M')) }}
                                 </div>
                             </div>
                             <div class="cal-info flex-grow-1">
@@ -347,8 +347,8 @@
                         </div>
                         <div class="cal-card reveal delay-4">
                             <div class="cal-date" style="background:var(--teal);">
-                                <div class="day">{{ $selection_process->enrollment_start?->format('d') }}</div>
-                                <div class="mon">{{ ucfirst($selection_process->enrollment_start?->translatedFormat('M')) }}
+                                <div class="day">{{ $selection_process->latestEvent?->enrol_start?->format('d') }}</div>
+                                <div class="mon">{{ ucfirst($selection_process->latestEvent?->enrol_start?->translatedFormat('M')) }}
                                 </div>
                             </div>
                             <div class="cal-info flex-grow-1">
@@ -358,7 +358,7 @@
                             <span class="cal-badge badge-open">Matrícula</span>
                         </div>
                         <div class="text-center mt-4 reveal delay-4">
-                            <a href="{{ route('site.calendar.show') }}" class="btn-faq-more">
+                            <a href="{{ route('site.process.show') }}" class="btn-faq-more">
                                 Ver todas as datas do Vestibulinho <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                         </div>
@@ -405,7 +405,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($selection_process?->informations?->isInscriptionOpen())
+    @if ($selection_process->isInscriptionOpen())
         {{-- ═══════════════════════ LINKS RÁPIDOS ════════════════════ --}}
         <section id="links-rapidos">
             <div class="container position-relative" style="z-index:1;">
@@ -421,8 +421,8 @@
 
                 <div class="row g-4">
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-1">
-                        <a href="{{ $selection_process->is_active && $selection_process->edital ? asset('storage/' . $selection_process->edital) : '#' }}"
-                            class="quick-card d-block" @if ($selection_process->is_active && $selection_process->edital) target="_blank" @endif>
+                        <a href="{{ $selection_process->status && $selection_process->edital ? asset('storage/' . $selection_process->edital) : '#' }}"
+                            class="quick-card d-block" @if ($selection_process->status && $selection_process->edital) target="_blank" @endif>
                             <div class="qc-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
                             <h5>Edital</h5>
                             <p>Regras e regulamento completo</p>
@@ -478,7 +478,7 @@
 
                     <p class="section-lead mx-auto text-center mb-5">
                         Inscrições encerram em <strong
-                            style="color:var(--amber);">{{ $calendar?->inscription_end?->translatedFormat('d \d\e F Y') }}</strong>.
+                            style="color:var(--amber);">{{ $selection_process->latestEvent?->end?->translatedFormat('d \d\e F Y') }}</strong>.
                         Comece agora mesmo — leva menos de 5 minutos.
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">

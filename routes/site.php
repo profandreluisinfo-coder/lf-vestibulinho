@@ -8,8 +8,8 @@ use App\Http\Controllers\Site\{
     ArchiveController, 
     ResultController, 
     CallController, 
-    CalendarController, 
-    FaqController
+    FaqController, 
+    SelectionProcessController
 };
 
 Route::middleware(['guest'])->group(function () {
@@ -39,6 +39,6 @@ Route::middleware(['guest'])->name('site.')->group(function () {
         Route::get('perguntas-frequentes', [FaqController::class, 'index'])->name('faqs.index');
 
         // Calendário
-        Route::get('calendario', [CalendarController::class, 'show'])
-            ->name('calendar.show');
+        Route::get('calendario', [SelectionProcessController::class, 'show'])
+            ->name('process.show');
 });

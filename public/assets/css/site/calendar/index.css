@@ -73,7 +73,7 @@
     font-size: .8rem;
 }
 
-.cal-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+.cal-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
     color: rgba(255, 255, 255, .3);
 }
 
@@ -103,6 +103,27 @@
     color: #fff;
     letter-spacing: .04em;
     vertical-align: middle;
+}
+
+.calendar-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .95);
+    box-shadow: 0 0 18px rgba(255, 255, 255, .45), 0 0 40px rgba(255, 255, 255, .12);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.5);
+    pointer-events: none;
+    transition: transform .22s ease, opacity .22s ease;
+}
+
+.tf-step:hover .tf-node {
+    transform: scale(1.08);
+}
+
+.btn-cta-main:hover {
+    transform: translateY(-4px) scale(1.02);
 }
 
 /* ─── STATUS CARD (hero direita) ────────────────────────── */
@@ -142,10 +163,21 @@
     flex-shrink: 0;
 }
 
-.status-open .status-icon    { color: #5ef0e0; }
-.status-closed .status-icon  { color: #ff7675; }
-.status-soon .status-icon    { color: var(--amber); }
-.status-pending .status-icon { color: rgba(255,255,255,.5); }
+.status-open .status-icon {
+    color: #5ef0e0;
+}
+
+.status-closed .status-icon {
+    color: #ff7675;
+}
+
+.status-soon .status-icon {
+    color: var(--amber);
+}
+
+.status-pending .status-icon {
+    color: rgba(255, 255, 255, .5);
+}
 
 .status-label {
     font-family: var(--font-head);
@@ -224,26 +256,70 @@
     border: 3px solid #e0e8f0;
     position: relative;
     z-index: 1;
-    transition: all .35s cubic-bezier(.22,.68,0,1.2);
+    transition: all .35s cubic-bezier(.22, .68, 0, 1.2);
     flex-shrink: 0;
 }
 
 /* Color variants */
-.tf-color-teal   .tf-node { background: rgba(0,168,150,.1);  border-color: rgba(0,168,150,.3);  color: var(--teal); }
-.tf-color-purple .tf-node { background: rgba(123,63,160,.1); border-color: rgba(123,63,160,.3); color: #7B3FA0; }
-.tf-color-red    .tf-node { background: rgba(192,57,43,.1);  border-color: rgba(192,57,43,.3);  color: #C0392B; }
-.tf-color-amber  .tf-node { background: rgba(244,162,97,.1); border-color: rgba(244,162,97,.3); color: var(--amber2); }
-.tf-color-orange .tf-node { background: rgba(224,122,58,.1); border-color: rgba(224,122,58,.3); color: var(--amber2); }
+.tf-color-teal .tf-node {
+    background: rgba(0, 168, 150, .1);
+    border-color: rgba(0, 168, 150, .3);
+    color: var(--teal);
+}
+
+.tf-color-purple .tf-node {
+    background: rgba(123, 63, 160, .1);
+    border-color: rgba(123, 63, 160, .3);
+    color: #7B3FA0;
+}
+
+.tf-color-red .tf-node {
+    background: rgba(192, 57, 43, .1);
+    border-color: rgba(192, 57, 43, .3);
+    color: #C0392B;
+}
+
+.tf-color-amber .tf-node {
+    background: rgba(244, 162, 97, .1);
+    border-color: rgba(244, 162, 97, .3);
+    color: var(--amber2);
+}
+
+.tf-color-orange .tf-node {
+    background: rgba(224, 122, 58, .1);
+    border-color: rgba(224, 122, 58, .3);
+    color: var(--amber2);
+}
 
 /* Active state */
 .tf-active .tf-node {
     transform: scale(1.18);
-    box-shadow: 0 0 0 6px rgba(0,168,150,.15), 0 6px 20px rgba(0,168,150,.3);
+    box-shadow: 0 0 0 6px rgba(0, 168, 150, .15), 0 6px 20px rgba(0, 168, 150, .3);
 }
-.tf-color-teal.tf-active   .tf-node { background: var(--teal);  color: #fff; border-color: var(--teal); }
-.tf-color-purple.tf-active .tf-node { background: #7B3FA0; color: #fff; border-color: #7B3FA0; }
-.tf-color-red.tf-active    .tf-node { background: #C0392B; color: #fff; border-color: #C0392B; }
-.tf-color-amber.tf-active  .tf-node { background: var(--amber2); color: #fff; border-color: var(--amber2); }
+
+.tf-color-teal.tf-active .tf-node {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+}
+
+.tf-color-purple.tf-active .tf-node {
+    background: #7B3FA0;
+    color: #fff;
+    border-color: #7B3FA0;
+}
+
+.tf-color-red.tf-active .tf-node {
+    background: #C0392B;
+    color: #fff;
+    border-color: #C0392B;
+}
+
+.tf-color-amber.tf-active .tf-node {
+    background: var(--amber2);
+    color: #fff;
+    border-color: var(--amber2);
+}
 
 /* Done state */
 .tf-done .tf-node {
@@ -326,20 +402,54 @@
 }
 
 /* Icon bg colors */
-.teal-bg   { background: var(--grad-teal); }
-.teal2-bg  { background: linear-gradient(135deg, var(--teal2), #005a52); }
-.purple-bg { background: linear-gradient(135deg, #7B3FA0, #5A2D77); }
-.red-bg    { background: linear-gradient(135deg, #C0392B, #922B21); }
-.amber-bg  { background: var(--grad-amber); }
-.orange-bg { background: linear-gradient(135deg, #E07A3A, #C0581A); }
+.teal-bg {
+    background: var(--grad-teal);
+}
+
+.teal2-bg {
+    background: linear-gradient(135deg, var(--teal2), #005a52);
+}
+
+.purple-bg {
+    background: linear-gradient(135deg, #7B3FA0, #5A2D77);
+}
+
+.red-bg {
+    background: linear-gradient(135deg, #C0392B, #922B21);
+}
+
+.amber-bg {
+    background: var(--grad-amber);
+}
+
+.orange-bg {
+    background: linear-gradient(135deg, #E07A3A, #C0581A);
+}
 
 /* Left accent bar by color */
-.detail-teal   { border-left: 4px solid var(--teal); }
-.detail-teal2  { border-left: 4px solid var(--teal2); }
-.detail-purple { border-left: 4px solid #7B3FA0; }
-.detail-red    { border-left: 4px solid #C0392B; }
-.detail-amber  { border-left: 4px solid var(--amber2); }
-.detail-orange { border-left: 4px solid var(--amber2); }
+.detail-teal {
+    border-left: 4px solid var(--teal);
+}
+
+.detail-teal2 {
+    border-left: 4px solid var(--teal2);
+}
+
+.detail-purple {
+    border-left: 4px solid #7B3FA0;
+}
+
+.detail-red {
+    border-left: 4px solid #C0392B;
+}
+
+.detail-amber {
+    border-left: 4px solid var(--amber2);
+}
+
+.detail-orange {
+    border-left: 4px solid var(--amber2);
+}
 
 .detail-phase-info {
     flex: 1;
@@ -371,9 +481,20 @@
     letter-spacing: .04em;
 }
 
-.badge-open     { background: rgba(0,168,150,.12); color: var(--teal2); }
-.badge-done     { background: rgba(0,168,150,.1);  color: #00796B; }
-.badge-upcoming { background: rgba(11,30,61,.06);  color: var(--muted); }
+.badge-open {
+    background: rgba(0, 168, 150, .12);
+    color: var(--teal2);
+}
+
+.badge-done {
+    background: rgba(0, 168, 150, .1);
+    color: #00796B;
+}
+
+.badge-upcoming {
+    background: rgba(11, 30, 61, .06);
+    color: var(--muted);
+}
 
 /* Body */
 .detail-body {

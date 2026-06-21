@@ -91,7 +91,7 @@
                             </div>
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
-                        @if ($selection_process?->informations?->isInscriptionOpen())
+                        @if ($selection_process->isInscriptionOpen())
                         <a href="{{ route('register') }}" class="btn-inscricao">
                             <i class="bi bi-pencil-square"></i> Fazer Inscrição
                         </a>
@@ -213,7 +213,7 @@
     </div>
 
     <!-- ═══════════════════════ CTA ══════════════════════════════ -->
-    @if ($selection_process?->informations?->isInscriptionOpen())
+    @if ($selection_process->isInscriptionOpen())
         <section id="pa-cta">
             <div class="container text-center position-relative" style="z-index:1;">
                 <div class="reveal">
@@ -227,7 +227,7 @@
                     <p
                         style="color:rgba(255,255,255,.65);font-size:1rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.7;">
                         Inscrições encerram em <strong
-                            style="color:var(--amber);">{{ $calendar?->inscription_end?->translatedFormat('d \d\e F Y') ?? '—' }}</strong>.
+                            style="color:var(--amber);">{{ $selection_process->latestEvent?->end?->translatedFormat('d \d\e F Y') ?? '—' }}</strong>.
                         Comece agora — leva menos de 5 minutos.
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">

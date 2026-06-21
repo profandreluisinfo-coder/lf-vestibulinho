@@ -53,6 +53,16 @@ class SelectionProcess extends Model
         return $this->latestEvent?->isInscriptionOpen() ?? false;
     }
 
+    public function isInscriptionStarted(): bool
+    {
+        return $this->latestEvent?->isInscriptionStarted() ?? false;
+    }
+
+    public function isInscriptionEnded(): bool
+    {
+        return $this->latestEvent?->isInscriptionEnded() ?? false;
+    }
+    
     /**
      * Retorna o ano do processo seletivo ativo ou do processo seletivo mais recente.
      *
