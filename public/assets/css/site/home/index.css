@@ -1,12 +1,892 @@
-/* ============================================
-   HOME PAGE - CSS MODULAR
-   ============================================ */
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero {
+    min-height: 100vh;
+    background: var(--grad-main);
+    background-size: 300% 300%;
+    animation: gradShift 12s ease infinite;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
 
-/* Seções específicas da home */
-/* @import '../sections/hero.css'; */
-@import '../sections/fique-atento.css';
-@import '../sections/cursos.css';
-@import '../sections/como-participar.css';
-@import '../sections/calendario.css';
-@import '../sections/faq.css';
-@import '../sections/links-rapidos.css';
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 60% 55% at 80% 50%, rgba(0, 168, 150, .22) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(244, 162, 97, .12) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.hero-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .08);
+    pointer-events: none;
+}
+
+.hero-circle-1 {
+    width: 460px;
+    height: 460px;
+    top: -80px;
+    right: -120px;
+}
+
+.hero-circle-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -60px;
+    left: -80px;
+    border-color: rgba(0, 168, 150, .15);
+}
+
+.hero-circle-3 {
+    width: 180px;
+    height: 180px;
+    top: 50%;
+    right: 12%;
+    transform: translateY(-50%);
+    border-color: rgba(244, 162, 97, .2);
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(0, 168, 150, .18);
+    border: 1px solid rgba(0, 168, 150, .4);
+    color: #5ef0e0;
+    border-radius: 50px;
+    padding: .35rem 1rem;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    animation: fadeDown .8s ease both;
+    backdrop-filter: blur(8px);
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: #5ef0e0;
+    border-radius: 50%;
+    animation: blink-dot 1.2s ease-in-out infinite;
+}
+
+.hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.12;
+    animation: fadeDown 1s ease .2s both;
+}
+
+.hero h1 em {
+    color: var(--amber);
+    font-style: normal;
+}
+
+.hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, .75);
+    animation: fadeDown 1s ease .4s both;
+    font-weight: 300;
+}
+
+.hero-actions {
+    animation: fadeUp 1s ease .6s both;
+}
+
+.btn-hero-primary {
+    background: var(--grad-amber);
+    color: var(--navy);
+    font-family: var(--font-head);
+    font-weight: 700;
+    padding: .85rem 2rem;
+    border-radius: 50px;
+    font-size: .95rem;
+    border: none;
+    box-shadow: 0 6px 24px rgba(244, 162, 97, .4);
+    transition: transform .25s, box-shadow .25s;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(244, 162, 97, .5);
+    color: var(--navy);
+}
+
+.btn-hero-outline {
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 600;
+    padding: .85rem 2rem;
+    border-radius: 50px;
+    font-size: .95rem;
+    border: 2px solid rgba(255, 255, 255, .35);
+    transition: border-color .25s, background .25s, transform .25s;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.btn-hero-outline:hover {
+    border-color: rgba(255, 255, 255, .8);
+    background: rgba(255, 255, 255, .08);
+    transform: translateY(-3px);
+    color: #fff;
+}
+
+.stat-chip {
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .15);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius);
+    padding: .9rem 1.3rem;
+    text-align: center;
+    animation: fadeUp 1s ease both;
+}
+
+.stat-chip .num {
+    font-family: var(--font-head);
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+}
+
+.stat-chip .lbl {
+    font-size: .72rem;
+    color: rgba(255, 255, 255, .6);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: .2rem;
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+    animation: fadeIn 1s ease 1.4s both;
+}
+
+.scroll-hint span {
+    font-size: .7rem;
+    color: rgba(255, 255, 255, .4);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.scroll-hint .mouse {
+    width: 22px;
+    height: 36px;
+    border: 2px solid rgba(255, 255, 255, .3);
+    border-radius: 11px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+.scroll-hint .wheel {
+    width: 3px;
+    height: 8px;
+    background: rgba(255, 255, 255, .5);
+    border-radius: 2px;
+    animation: float 1.6s ease-in-out infinite;
+}
+/* //─── FIM HERO ───────────────────────────────────────────────── */
+
+/* ─── NOTÍCIAS SECTION ───────────────────────────────────── */
+.news-section {
+    background: var(--light);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header .section-lead {
+    margin: 1rem auto;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.news-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.news-card-image {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.news-card-image-teal {
+    background: var(--grad-teal);
+}
+
+.news-card-image-amber {
+    background: var(--grad-amber);
+}
+
+.news-card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-card-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.news-card-badge-teal {
+    color: var(--teal);
+}
+
+.news-card-badge-amber {
+    color: var(--amber);
+}
+
+.news-card-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.news-card-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.news-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(11, 30, 61, 0.08);
+}
+
+.news-card-date {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.news-card-link {
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.news-card-link-teal {
+    color: var(--teal);
+}
+
+.news-card-link-teal:hover {
+    color: var(--teal2);
+}
+
+.news-card-link-amber {
+    color: var(--amber);
+}
+
+.news-card-link-amber:hover {
+    color: var(--amber2);
+}
+/* ───// FIM NOTÍCIAS SECTION ───────────────────────────────────── */
+
+/* ─── COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
+#como-participar {
+    background: #fff;
+}
+
+.timeline-wrap {
+    position: relative;
+}
+
+.timeline-wrap::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--teal), var(--amber));
+    transform: translateX(-50%);
+}
+
+.tl-item {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+}
+
+.tl-item:nth-child(odd) {
+    flex-direction: row;
+}
+
+.tl-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.tl-content {
+    width: 45%;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(11, 30, 61, .06);
+    transition: transform .3s, box-shadow .3s;
+}
+
+.tl-content:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tl-item:nth-child(odd) .tl-content {
+    margin-right: calc(10% + 1rem);
+}
+
+.tl-item:nth-child(even) .tl-content {
+    margin-left: calc(10% + 1rem);
+}
+
+.tl-node {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--grad-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 0 0 6px rgba(0, 168, 150, .15), 0 4px 16px rgba(0, 168, 150, .35);
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.tl-node.amber-node {
+    background: var(--grad-amber);
+    box-shadow: 0 0 0 6px rgba(244, 162, 97, .15), 0 4px 16px rgba(244, 162, 97, .35);
+}
+
+.tl-content h4 {
+    font-size: .95rem;
+    font-weight: 700;
+    margin-bottom: .4rem;
+}
+
+.tl-content p {
+    font-size: .85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+/* ─── FIM COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
+
+/* ─── CURSOS ────────────────────────────────────────────── */
+#cursos {
+    background: var(--light);
+}
+
+.course-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(11, 30, 61, .07);
+    position: relative;
+    overflow: hidden;
+    transition: transform .35s cubic-bezier(.22, .68, 0, 1.2), box-shadow .35s ease;
+    cursor: pointer;
+    height: 100%;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--grad-teal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.course-card:hover::before {
+    transform: scaleX(1);
+}
+
+.course-card .icon-wrap {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    transition: transform .35s cubic-bezier(.22, .68, 0, 1.2);
+}
+
+.course-card:hover .icon-wrap {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.course-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
+.course-card p {
+    font-size: .87rem;
+    color: var(--muted);
+    line-height: 1.65;
+}
+
+.course-card .tag-vagas {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--light);
+    color: var(--navy);
+    border-radius: 50px;
+    padding: .2rem .8rem;
+    font-size: .73rem;
+    font-weight: 600;
+}
+
+/* Course card variants */
+.cc-admin .icon-wrap {
+    background: rgba(0, 168, 150, .12);
+    color: var(--teal);
+}
+
+.cc-cont .icon-wrap {
+    background: rgba(11, 30, 61, .08);
+    color: var(--navy);
+}
+
+.cc-info .icon-wrap {
+    background: rgba(244, 162, 97, .15);
+    color: var(--amber2);
+}
+
+.cc-seg .icon-wrap {
+    background: rgba(220, 50, 50, .08);
+    color: #c0392b;
+}
+/* ─── FIM CURSOS ────────────────────────────────────────────── */
+
+/* ─── CALENDÁRIO ─────────────────────────────────────────── */
+#calendario {
+    background: var(--light);
+}
+
+.cal-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 1.3rem 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(11, 30, 61, .06);
+    transition: transform .3s, box-shadow .3s;
+}
+
+.cal-card:hover {
+    transform: translateX(6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.cal-date {
+    min-width: 58px;
+    text-align: center;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 12px;
+    padding: .6rem .4rem;
+}
+
+.cal-date .day {
+    font-family: var(--font-head);
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.cal-date .mon {
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    opacity: .7;
+}
+
+.cal-info h5 {
+    font-size: .92rem;
+    font-weight: 700;
+    margin-bottom: .15rem;
+}
+
+.cal-info p {
+    font-size: .8rem;
+    color: var(--muted);
+    margin: 0;
+}
+
+.cal-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: .2rem .75rem;
+    border-radius: 50px;
+}
+
+.badge-open {
+    background: rgba(0, 168, 150, .12);
+    color: var(--teal2);
+}
+
+.badge-close {
+    background: rgba(244, 162, 97, .15);
+    color: var(--amber2);
+}
+
+.badge-event {
+    background: rgba(11, 30, 61, .08);
+    color: var(--navy);
+}
+/* ─── FIM CALENDÁRIO ─────────────────────────────────────────── */
+
+/* ─── FAQ ────────────────────────────────────────────────── */
+#faq {
+    background: #fff;
+}
+
+.faq-item {
+    background: var(--light);
+    border-radius: var(--radius);
+    margin-bottom: .85rem;
+    overflow: hidden;
+    border: 1px solid rgba(11, 30, 61, .07);
+    transition: box-shadow .25s;
+}
+
+.faq-item:hover {
+    box-shadow: var(--shadow);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    gap: 1rem;
+    font-weight: 600;
+    font-size: .92rem;
+    transition: color .2s;
+    user-select: none;
+}
+
+.faq-question:hover {
+    color: var(--teal);
+}
+
+.faq-question .faq-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(0, 168, 150, .12);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    transition: transform .3s, background .25s;
+}
+
+.faq-item.open .faq-question {
+    color: var(--teal);
+}
+
+.faq-item.open .faq-icon {
+    transform: rotate(45deg);
+    background: var(--teal);
+    color: #fff;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(.4, 0, .2, 1), padding .3s;
+    padding: 0 1.4rem;
+    font-size: .88rem;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.faq-item.open .faq-answer {
+    max-height: 1000px;
+    padding: .1rem 1.4rem 1.2rem;
+    overflow: visible;
+}
+
+/* Estilos para HTML renderizado do Summernote */
+.faq-answer p,
+.faq-answer ul,
+.faq-answer ol,
+.faq-answer blockquote,
+.faq-answer h1,
+.faq-answer h2,
+.faq-answer h3,
+.faq-answer h4,
+.faq-answer h5,
+.faq-answer h6 {
+    margin: .5rem 0;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+    margin-left: 1.5rem;
+}
+
+.faq-answer li {
+    margin: .25rem 0;
+}
+
+.faq-answer a {
+    color: var(--teal);
+    text-decoration: underline;
+    transition: opacity .2s;
+}
+
+.faq-answer a:hover {
+    opacity: .7;
+}
+
+.faq-answer blockquote {
+    border-left: 4px solid var(--teal);
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--muted);
+}
+
+.btn-faq-more {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: transparent;
+    border: 2px solid var(--teal);
+    color: var(--teal);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: .88rem;
+    padding: .65rem 1.5rem;
+    border-radius: 50px;
+    transition: background .25s, color .25s, transform .25s;
+}
+
+.btn-faq-more:hover {
+    background: var(--teal);
+    color: #fff;
+    transform: translateX(4px);
+}
+/* ─── FIM FAQ ────────────────────────────────────────────────── */
+
+/* ─── LINKS RÁPIDOS ──────────────────────────────────────── */
+#links-rapidos {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+}
+
+#links-rapidos::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(0, 168, 150, .15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.quick-card {
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: var(--radius);
+    padding: 1.8rem 1.4rem;
+    text-align: center;
+    color: #fff;
+    transition: background .3s, transform .35s cubic-bezier(.22, .68, 0, 1.2), box-shadow .35s;
+    cursor: pointer;
+    height: 100%;
+    backdrop-filter: blur(6px);
+}
+
+.quick-card:hover {
+    background: rgba(0, 168, 150, .2);
+    border-color: rgba(0, 168, 150, .5);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+}
+
+.quick-card .qc-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    margin: 0 auto 1rem;
+    background: rgba(255, 255, 255, .08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--amber);
+    transition: transform .35s cubic-bezier(.22, .68, 0, 1.2);
+}
+
+.quick-card:hover .qc-icon {
+    transform: scale(1.15) rotate(-6deg);
+    color: var(--teal);
+}
+
+.quick-card h5 {
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: .35rem;
+    color: #fff;
+}
+
+.quick-card p {
+    font-size: .78rem;
+    color: rgba(255, 255, 255, .55);
+    margin: 0;
+    line-height: 1.5;
+}
+/* ─── FIM LINKS RÁPIDOS ──────────────────────────────────────── */
+
+
+/* Mobile timeline */
+@media(max-width:768px) {
+    .timeline-wrap::before {
+        left: 26px;
+    }
+
+    .tl-item {
+        flex-direction: row !important;
+        padding-left: 60px;
+    }
+
+    .tl-item:nth-child(even) .tl-content {
+        margin-left: 0;
+    }
+
+    .tl-item:nth-child(odd) .tl-content {
+        margin-right: 0;
+    }
+
+    .tl-content {
+        width: 100%;
+    }
+
+    .tl-node {
+        left: 26px;
+        transform: none;
+        position: absolute;
+    }
+}
+
+/* Responsive Hero */
+@media(max-width:991px) {
+    .hero {
+        min-height: auto;
+        padding: 6rem 0 4rem;
+    }
+
+    .stat-chip .num {
+        font-size: 1.4rem;
+    }
+}
+
+@media(max-width:575px) {
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-outline {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Responsive global adjustments */
+@media(max-width:575px) {
+    section {
+        padding: 3.5rem 0;
+    }
+}

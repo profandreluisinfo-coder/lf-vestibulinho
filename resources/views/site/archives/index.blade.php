@@ -1,19 +1,11 @@
-{{-- ═══════════════════════════════════════════════════════════════
-     Herança do layout master
-════════════════════════════════════════════════════════════════ --}}
 @extends('layouts.site')
 
-{{-- ── Título da página ──────────────────────────────────────── --}}
 @section('title', 'Provas Anteriores — Vestibulinho · EM Dr. Leandro Franceschini')
 
-{{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/archives/index.css') }}" />
 @endpush
 
-{{-- ══════════════════════════════════════════════════════════════
-     CONTEÚDO PRINCIPAL
-══════════════════════════════════════════════════════════════ --}}
 @section('content')
 
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
@@ -244,7 +236,6 @@
 
 @endsection
 
-{{-- ── JS específico desta página ───────────────────────────── --}}
 @push('scripts')
     <script src="{{ asset('assets/js/site/archives/index.js') }}"></script>
 @endpush

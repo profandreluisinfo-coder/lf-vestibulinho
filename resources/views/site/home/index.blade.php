@@ -1,25 +1,17 @@
-{{-- ═══════════════════════════════════════════════════════════════
-     Herança do layout master
-════════════════════════════════════════════════════════════════ --}}
 @extends('layouts.site')
 
-{{-- ── Título da página ──────────────────────────────────────── --}}
 @section('title', 'Vestibulinho ' . $selection_process->year . ' · EM Dr. Leandro Franceschini')
 
-{{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/home/index.css') }}" />
 @endpush
 
-{{-- ══════════════════════════════════════════════════════════════
-     CONTEÚDO PRINCIPAL
-══════════════════════════════════════════════════════════════ --}}
 @section('content')
 
     @php
         $event = $selection_process->latestEvent;
     @endphp
-    {{-- ═══════════════════════ HERO ════════════════════════════ --}}
+    
     <section class="hero" id="home">
         <div class="hero-circle hero-circle-1"></div>
         <div class="hero-circle hero-circle-2"></div>
@@ -501,5 +493,5 @@
 
 {{-- ── JS específico desta página ───────────────────────────── --}}
 @push('scripts')
-    <script src="{{ asset('assets/js/guest/home/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/home/index.js') }}"></script>
 @endpush

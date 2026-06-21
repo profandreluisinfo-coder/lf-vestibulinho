@@ -1,4 +1,4 @@
-import { lockSubmitButton } from '../../ui/spinner.js';
+import { lockSubmitButton } from '../../layoust/inscription/ui/spinner.js';
 
 export function initChangePasswordValidation() {
 

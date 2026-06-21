@@ -1,0 +1,11 @@
+@import '../../site/base/tokens.css';
+@import '../../site/base/utilities.css';
+@import '../../site/components/navbar.css';
+@import '../../site/components/cta.css';
+@import '../../site/components/footer.css';
+
+@media(max-width:575px) {
+    section {
+        padding: 3.5rem 0;
+    }
+}
