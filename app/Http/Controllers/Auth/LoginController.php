@@ -67,7 +67,9 @@ class LoginController extends Controller
             $user = Auth::user();
 
             if (!$user->email_verified_at) {
+
                 Auth::logout();
+
                 $msg = 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.';
 
                 return $request->wantsJson()
@@ -101,8 +103,8 @@ class LoginController extends Controller
 
         if ($user->role === 'user') {
             return $user->inscription()->exists()
-                ? route('inscription.step.start')
-                : route('user.show');
+                ? route('inscription.user.show') // O usuário não possui inscrição
+                : route('inscription.step.start'); // O usuário possui inscrição
         }
 
         return route('login');

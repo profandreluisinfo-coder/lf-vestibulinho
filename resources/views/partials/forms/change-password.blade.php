@@ -77,7 +77,7 @@
 </div>
 
 @push('scripts')
-    <script src="{{ asset('assets/js/ui/auth/toggleAllPasswords.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/toggle-passwords.js') }}"></script>
 @endpush
 
 @if (session('open_modal') === 'password')

@@ -1,11 +1,3 @@
-{{--
-  ─── partials/dash/navbar.blade.php ────────────────────────
-  Navbar da Área do Candidato.
-  Derivada da navbar pública — mantém o navbar-brand original.
-  Depende de: theme.css  (tokens e .navbar-custom)
-  ────────────────────────────────────────────────────────────
---}}
-
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top" id="mainNav">
     <div class="container">
 
@@ -135,9 +127,7 @@
                     </li>
 
                 @endauth
-
             </ul>
         </div>
-
     </div>
 </nav>

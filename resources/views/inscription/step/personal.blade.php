@@ -6,7 +6,6 @@
 
     <div class="wrapper">
 
-        {{-- Titulo --}}
         <div class="section-title mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
@@ -27,6 +26,7 @@
         <form id="inscription" class="row m-0 g-4" action="{{ route('inscription.step.personal') }}" method="POST"
             enctype="multipart/form-data">
             @csrf
+
             <h5 class="fw-semibold border-bottom pb-1">Dados Pessoais</h5>
             <div class="form-group col-md-3">
 
@@ -71,13 +71,14 @@
 
                 <label for="gender" class="form-label required">Gênero:</label>
                 <select class="form-select @error('gender') is-invalid @enderror" id="gender" name="gender">
-
                     <option value="">Selecione...</option>
 
                     @foreach ($genders as $gender)
+
                         <option value="{{ $gender->id }}"
                             {{ old('gender', session('step1.gender')) == $gender->id ? 'selected' : '' }}> {{ $gender->description }}
                         </option>
+
                     @endforeach
 
                 </select>
@@ -325,6 +326,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/inscription/ui/name.js') }}"></script>
-    <script src="{{ asset('assets/js/inscription/rules/personal.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/name.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/registration/personal.js') }}"></script>
 @endpush

@@ -153,5 +153,5 @@
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
     <script src="{{ asset('assets/js/services/cep.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/address.js') }}"></script>g
+    <script src="{{ asset('assets/js/rules/registration/address.js') }}"></script>
 @endpush

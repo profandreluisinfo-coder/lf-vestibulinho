@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('number', 32);
             $table->string('fls', 4)->nullable();
             $table->string('book', 10)->nullable();
-            $table->string('old_number', 6)->nullable();
             $table->string('municipality', 45)->nullable();
             $table->timestamps();
         });

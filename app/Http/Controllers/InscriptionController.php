@@ -12,41 +12,84 @@ use App\Models\Course;
 use App\Models\Document;
 use App\Models\Gender;
 use App\Models\Nationality;
-use App\Models\Notice;
+use App\Models\SelectionProcess;
 use App\Services\InscriptionService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class InscriptionController extends Controller
 {
+    public function start(): View
+    {
+        $user = Auth::user();
+
+        $selection_process = SelectionProcess::current();
+
+        if (!$selection_process || !$selection_process->isInscriptionOpen()) {
+            abort(404);
+        }
+
+        return view('inscription.start', compact('user'));
+    }
+    
+    public function show(): View | RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Segurança extra caso acessem direto sem ter inscrição
+        if (!$user->inscription()->exists()) {
+            return redirect()
+                ->route('inscription.step.start')
+                ->with('warning', 'Você ainda não possui inscrição ativa.');
+        }
+
+        // Carrega tudo que o painel precisa
+        $user->load([
+            'inscription.exam_result.examLocation',
+            'inscription.exam_result.completedCall',
+        ]);
+
+        $inscription  = $user->inscription;
+        $examResult   = $inscription->exam_result;
+        $examLocation = $examResult?->examLocation;
+
+        $exam = $examResult; // O EXAM REAL — o model completo
+
+        $call = $examResult?->completedCall;
+
+        return view('inscription.show', compact('user', 'exam', 'examResult', 'call'));
+    }
+
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
+        $nationalities = Nationality::all();
+        $documents = Document::all();
+        $genders = Gender::all();
+
         return view('inscription.step.personal', [
-            'nationalities' => Nationality::all(),
-            'documents' => Document::all(),
-            'genders' => Gender::all(),
-            'options' => [
-                '1' => 'Sim',
-                '2' => 'Não',
-            ]
+            'nationalities' => $nationalities,
+            'documents' => $documents,
+            'genders' => $genders
         ]);
     }
+
     // Gravar Dados de Passo 1
     public function personalStore(PersonalRequest $request): RedirectResponse
     {
         $data = $request->except(['_token', 'authorization']);
 
+        if (($data['social_name_option'] ?? null) == "2") {
+            $data['social_name'] = null;
+        }
+
         if ($request->hasFile('authorization')) {
             $path = $request->file('authorization')->store('authorizations', 'public');
             $data['authorization'] = $path; // salva só o caminho
-        }
-
-        if (($data['social_name_option'] ?? null) == "2") {
-            $data['social_name'] = null;
         }
 
         session()->put('step1', $data);
@@ -62,7 +105,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.personal');
         }
 
-        return view('inscription.certificate');
+        return view('inscription.step.certificate');
     }
     // Gravar Dados de Passo 2
     public function certificateStore(CertificateRequest $request): Response|RedirectResponse
@@ -70,7 +113,7 @@ class InscriptionController extends Controller
         session()->put('step2', $request->except('_token'));
         session()->put('step2_done', true);
 
-        return redirect()->route('inscription.step.step.address');
+        return redirect()->route('inscription.step.address');
     }
 
     // Passo 3: Endereço
@@ -341,7 +384,7 @@ class InscriptionController extends Controller
 
         // Se não houver dados, redireciona para o dashboard
         if (empty($data)) {
-            return redirect()->route('dash.user.start'); // <= CORRIGIR ROTA
+            return redirect()->route('inscription.step.start'); // <= CORRIGIR ROTA
         }
 
         // Retorna a view com os dados necessários

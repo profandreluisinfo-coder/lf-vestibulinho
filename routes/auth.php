@@ -3,14 +3,9 @@
 use App\Http\Controllers\{ UserController, EmailController };
 use App\Http\Controllers\Auth\{ LoginController, LogoutController, PasswordController };
 use App\Http\Controllers\Site\{ HomeController };
-use App\Http\Middleware\WithInscription;
 use Illuminate\Support\Facades\Route;
 
 // Autenticados
-Route::middleware(['auth', WithInscription::class])->prefix('candidato')->name('user.')->group(function () {
-    Route::get('/area-do-candidato', [UserController::class, 'show'])->name('show');
-});
-
 Route::middleware(['auth'])->group(function () {
     Route::post('/alterar-senha', [PasswordController::class, 'updatePassword'])->name('update.password');
     Route::post('/logout', LogoutController::class)->name('logout');

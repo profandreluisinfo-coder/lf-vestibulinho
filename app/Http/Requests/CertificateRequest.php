@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\UserDetail;
+use App\Models\Certificate;
 use App\Rules\CertificateRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,11 +14,18 @@ class CertificateRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // Verifica se o usuário está autenticado
+        if (!auth()->check()) {
+            return false;
+        }
+
+        // Verifica se os dados pessoais (etapa 1) foram preenchidos
         if (session()->has('step1')) {
             return true;
         }
 
-        return false;
+        // Retorna true apenas se NÃO tiver inscrição
+        return !auth()->user()->hasInscription();
     }
 
     public function prepareForValidation()
@@ -55,6 +62,8 @@ class CertificateRequest extends FormRequest
     {
         return [
             // Certidão de nascimento (seleção de modelo)
+            // 1 - Novo
+            // 2 - Antigo
             'certificateModel' => ['required', 'in:1,2'],
 
             // certidão de nascimento modelo novo
@@ -62,7 +71,7 @@ class CertificateRequest extends FormRequest
                 'nullable',
                 // 'unique:user_details,new_number',
                 function ($attribute, $value, $fail) {
-                    if ($value && UserDetail::where('new_number', $value)->exists()) {
+                    if ($value && Certificate::where('number', $value)->exists()) {
                         $fail('* Este número de certidão já foi cadastrado.');
                     }
                 },
@@ -83,15 +92,13 @@ class CertificateRequest extends FormRequest
                 $this->requiredIfOldCert(),
                 'string',
                 'max:10',
-                // Padrão esperado: Letras e/ou números, de 1 a 10 caracteres (ex: A12, B001, ABC1234567)
                 'regex:/^[A-Za-z0-9]{1,10}$/'
             ],
             'old_number' => [
                 'nullable',
                 $this->requiredIfOldCert(),
-                // 'unique:user_details,old_number',
                 function ($attribute, $value, $fail) {
-                    if ($value && UserDetail::where('old_number', $value)->exists()) {
+                    if ($value && Certificate::where('number', $value)->exists()) {
                         $fail('* * Este número de certidão já foi cadastrado.');
                     }
                 },
@@ -141,13 +148,13 @@ class CertificateRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'accessibility_description' => 'descrição de acessibilidade',
-            'allergy_description' => 'descrição de alergia',
-        ];
-    }
+    // public function attributes()
+    // {
+    //     return [
+    //         'accessibility_description' => 'descrição de acessibilidade',
+    //         'allergy_description' => 'descrição de alergia',
+    //     ];
+    // }
 
     protected function requiredIfOldCert()
     {

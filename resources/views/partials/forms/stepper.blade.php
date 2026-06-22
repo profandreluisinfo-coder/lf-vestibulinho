@@ -1,13 +1,13 @@
 @php
     $steps = [
-        1 => ['label' => 'Dados Pessoais',          'route' => 'step.personal',     'done_key' => 'step1_done'],
-        2 => ['label' => 'Certidão de Nascimento',  'route' => 'step.certificate',  'done_key' => 'step2_done'],
-        3 => ['label' => 'Endereço',                'route' => 'step.address',      'done_key' => 'step3_done'],
-        4 => ['label' => 'Dados Escolares',         'route' => 'step.academic',     'done_key' => 'step4_done'],
-        5 => ['label' => 'Filiação',                'route' => 'step.family',       'done_key' => 'step5_done'],
-        6 => ['label' => 'Outras Informações',      'route' => 'step.other',       'done_key' => 'step6_done'],
-        7 => ['label' => 'Curso',                   'route' => 'step.course',       'done_key' => 'step7_done'],
-        8 => ['label' => 'Revisão',                 'route' => 'step.confirm',       'done_key' => 'step8_done'],
+        1 => ['label' => 'Dados Pessoais',          'route' => 'inscription.step.personal',     'done_key' => 'step1_done'],
+        2 => ['label' => 'Certidão de Nascimento',  'route' => 'inscription.step.certificate',  'done_key' => 'step2_done'],
+        3 => ['label' => 'Endereço',                'route' => 'inscription.step.address',      'done_key' => 'step3_done'],
+        4 => ['label' => 'Dados Escolares',         'route' => 'inscription.step.academic',     'done_key' => 'step4_done'],
+        5 => ['label' => 'Filiação',                'route' => 'inscription.step.family',       'done_key' => 'step5_done'],
+        6 => ['label' => 'Outras Informações',      'route' => 'inscription.step.other',        'done_key' => 'step6_done'],
+        7 => ['label' => 'Curso',                   'route' => 'inscription.step.course',       'done_key' => 'step7_done'],
+        8 => ['label' => 'Revisão',                 'route' => 'inscription.step.confirm',      'done_key' => 'step8_done'],
     ];
 
     // Determina o passo atual pela rota

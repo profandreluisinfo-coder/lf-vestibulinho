@@ -12,8 +12,7 @@ use App\Http\Middleware\{
 };
 
 use App\Http\Controllers\{
-    PdfController,
-    UserController
+    PdfController
 };
 
 use App\Http\Controllers\{
@@ -23,13 +22,14 @@ use App\Http\Controllers\{
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->name('inscription.')->group(function () {
 
-    // 📝 Processo de inscrição
+    // 📝 Passos da inscrição
     Route::middleware(NoInscription::class)
         ->prefix('inscricao')
         ->name('step.')
         ->group(function () {
             // Area do candidato: exibe a página com informações sobre como fazer a inscrição
-            Route::get('informacoes', [UserController::class, 'index'])->name('start'); // pasta e view
+            Route::get('informacoes', [InscriptionController::class, 'start'])->name('start'); // Início
+            
             Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
             Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
 
@@ -56,30 +56,34 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
             Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])->name('finalize');
         });
 
-    Route::middleware(WithInscription::class)
-        ->group(function () {
-            Route::prefix('cartao')
-                ->name('card.')
-                ->group(function () {
-                    // PDF Cartão do local de prova
-                    Route::get('meu-local', [PdfController::class, 'testLocationCardToPdf'])
-                        ->name('exam')
-                        ->middleware([isLocationEnabled::class]);
+    Route::middleware(WithInscription::class)->group(function () {
 
-                    // PDF Cartão do resultado da Prova
-                    Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])->name('result')->middleware([isResultEnabled::class]);
+        Route::prefix('cartao')
+            ->name('card.')
+            ->group(function () {
+                // PDF Cartão do local de prova
+                Route::get('meu-local', [PdfController::class, 'testLocationCardToPdf'])
+                    ->name('exam')
+                    ->middleware([isLocationEnabled::class]);
 
-                    // PDF Cartão de chamada
-                    Route::get('chamada', [PdfController::class, 'callCardToPdf'])->name('call');
-                });
+                // PDF Cartão do resultado da Prova
+                Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])->name('result')->middleware([isResultEnabled::class]);
 
-            Route::prefix('comprovante')
-                ->name('receipt.')
-                ->group(function () {
-                    // PDF Comprovante de inscrição
-                    Route::post('inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('to.pdf');
-                });
+                // PDF Cartão de chamada
+                Route::get('chamada', [PdfController::class, 'callCardToPdf'])->name('call');
+            });
+
+        Route::prefix('comprovante')
+            ->name('receipt.')
+            ->group(function () {
+                // PDF Comprovante de inscrição
+                Route::post('inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('to.pdf');
+            });
+
+        Route::prefix('area-do-candidato')->name('user.')->group(function () {
+            Route::get('/', [InscriptionController::class, 'show'])->name('show');
         });
+    });
 });
 
 Route::get('erro', fn() => view('inscription.failed'))->name('failed');

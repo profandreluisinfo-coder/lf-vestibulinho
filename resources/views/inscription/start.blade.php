@@ -5,6 +5,40 @@
 @section('content')
 
     <div class="wrapper">
+        <div class="important-info-box mb-5">
+            <div class="info-header">
+                <i class="bi bi-info-circle-fill"></i> Informações importantes
+            </div>
+            <div class="info-content">
+                <div class="info-item">
+                    <span class="fw-bold">Antes de inscrever-se, leia com muito atenção as informações abaixo:</span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Candidatos transgêneros menores de idade que desejarem utilizar o nome social deverão anexar, no ato da inscrição, autorização assinada por seu responsável legal, conforme modelo disponibilizado pela instituição.
+                    </span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Os candidatos que se enquadrarem na condição de Pessoa com Deficiência (PCD) e necessitarem de atendimento especializado, adaptações ou recursos de acessibilidade para a realização das etapas do processo seletivo deverão anexar, no ato da inscrição, <strong>laudo</strong> ou <strong>relatório médico</strong> atualizado que comprove a condição declarada, nos termos estabelecidos neste edital.
+                    </span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Este processo seletivo é <strong>exclusivo</strong> para moradores de <strong>Sumaré - SP</strong>.
+                    </span>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        O acompanhamento do processo seletivo é responsabilidade do candidato.
+                    </span>
+                </div>
+            </div>
+        </div>
         <div class="section-title mb-4">
             <h4><i class="bi bi-list-check me-2"></i> Como fazer sua inscrição</h4>
             <div class="divider-teal"></div>
@@ -63,42 +97,6 @@
                         <h5>Guarde sua Ficha</h5>
                         <p class="mb-0">Recomendamos que imprima ou salve sua ficha de inscrição para futuras consultas.</p>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- INFORMAÇÕES --}}
-        <div class="important-info-box mb-5">
-            <div class="info-header">
-                <i class="bi bi-info-circle-fill"></i> Informações importantes
-            </div>
-            <div class="info-content">
-                <div class="info-item">
-                    <span class="fw-bold">Antes de inscrever-se, leia com muito atenção as informações abaixo:</span>
-                </div>
-                <div class="info-item">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>
-                        Candidatos transgêneros menores de idade que desejarem utilizar o nome social deverão anexar, no ato da inscrição, autorização assinada por seu responsável legal, conforme modelo disponibilizado pela instituição.
-                    </span>
-                </div>
-                <div class="info-item">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>
-                        Os candidatos que se enquadrarem na condição de Pessoa com Deficiência (PCD) e necessitarem de atendimento especializado, adaptações ou recursos de acessibilidade para a realização das etapas do processo seletivo deverão anexar, no ato da inscrição, <strong>laudo</strong> ou <strong>relatório médico</strong> atualizado que comprove a condição declarada, nos termos estabelecidos neste edital.
-                    </span>
-                </div>
-                <div class="info-item">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>
-                        Este processo seletivo é <strong>exclusivo</strong> para moradores de <strong>Sumaré - SP</strong>.
-                    </span>
-                </div>
-                <div class="info-item">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>
-                        O acompanhamento do processo seletivo é responsabilidade do candidato.
-                    </span>
                 </div>
             </div>
         </div>

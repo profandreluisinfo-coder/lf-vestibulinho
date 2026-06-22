@@ -31,9 +31,9 @@
   /* Tipografia */
   --font-heading: 'Sora', system-ui, sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-size-base: 0.925rem;
-  --font-size-sm: 0.82rem;
-  --font-size-xs: 0.74rem;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.885rem;
+  --font-size-xs: 0.80rem;
 
   /* Gradientes */
   --grad-navy: linear-gradient(135deg, #0B1E3D 0%, #1B3E72 60%, #0E4D6B 100%);
@@ -390,7 +390,6 @@ small,
   border-color: var(--color-teal);
 }
 
-
 /* ─────────────────────────────────────────────────────────────
    6. FORMULÁRIOS
    ───────────────────────────────────────────────────────────── */
@@ -662,7 +661,6 @@ small,
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
-
 /* ─────────────────────────────────────────────────────────────
    9. RODAPÉ MÍNIMO
    ───────────────────────────────────────────────────────────── */
@@ -775,7 +773,6 @@ small,
   margin-bottom: 1rem;
 }
 
-
 /* ─────────────────────────────────────────────────────────────
    11. STEPPERS
    ───────────────────────────────────────────────────────────── */
@@ -860,7 +857,7 @@ small,
 
 /* Label */
 .stepper-label {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-muted);
   transition: color var(--transition-base);
@@ -954,7 +951,7 @@ small,
   color: var(--color-white);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: .9rem;
+  font-size: var(--font-size-base);
   padding: .85rem 1.3rem;
   display: flex;
   align-items: center;
@@ -973,7 +970,8 @@ small,
   display: flex;
   align-items: flex-start;
   gap: .6rem;
-  font-size: var(--font-size-sm);
+  /* font-size: var(--font-size-sm); */
+  font-size: var(--font-size-base);
   color: var(--color-navy);
 }
 
@@ -1088,7 +1086,7 @@ small,
 }
 
 .section-title {
-  font-size: 1rem;
+  font-size: 32px !important;
   font-weight: 700;
   color: var(--color-navy);
   margin: 0;

@@ -11,11 +11,17 @@ class AddressRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // Verifica se o usuário está autenticado
+        if (!auth()->check()) {
+            return false;
+        }
+
         if (session()->has('step1') && session()->has('step2')) {
             return true;
         }
 
-        return false;
+        // Retorna true apenas se NÃO tiver inscrição
+        return !auth()->user()->hasInscription();
     }
 
     public function prepareForValidation()

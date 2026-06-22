@@ -10,11 +10,17 @@ use Illuminate\Validation\Rule;
 class PersonalRequest extends FormRequest
 {
     /**
-     * Autoriza todos os usuários a fazer esta requisição.
+     * Autoriza todos os usuários que não tenham uma inscrição a fazer esta requisição.
      */
     public function authorize(): bool
     {
-        return true;
+        // Verifica se o usuário está autenticado
+        if (!auth()->check()) {
+            return false;
+        }
+
+        // Retorna true apenas se NÃO tiver inscrição
+        return !auth()->user()->hasInscription();
     }
 
     /**
@@ -41,22 +47,21 @@ class PersonalRequest extends FormRequest
         $socialNameRequired = $this->input('social_name_option') == 1;
 
         return [
+
             'cpf' => ['required', new CpfRule(), 'unique:users,cpf'],
-
             'name' => ['required', 'max:100', 'regex:/^[\p{L}\s]+$/u', new NameRule()],
+            'birth' => ['required', 'date', 'before:today'],
 
-            'gender' => ['required', Rule::in([1, 2, 3, 4])],
+            'gender' => ['required', Rule::in([1, 2, 3, 4])], // Relacionamento
 
-            // 'social_name_option' => ['required'],
-
-            'social_name' => [
+            'social_name' => [ // Relacionamento
                 Rule::requiredIf($socialNameRequired),
                 $socialNameRequired ? new NameRule() : null,
                 'nullable',
                 'max:100',
                 'regex:/^[\p{L}\s]+$/u',
             ],
-
+            // Arquivo (Relacionamento)
             'authorization' => [
                 Rule::requiredIf($socialNameRequired),
                 'nullable',
@@ -65,20 +70,18 @@ class PersonalRequest extends FormRequest
                 'max:2048', // limite de 2MB
             ],
 
-            'phone' => ['required', 'min:14', 'max:15'],
+            'phone' => ['required', 'min:14', 'max:15'], // Relacionamento
 
-            'birth' => ['required', 'date', 'before:today'],
+            'nationality' => ['required', Rule::in([1, 2])], // Relacionamento
 
-            'nationality' => ['required', Rule::in([1, 2])],
-
-            'doc_type' => ['required', Rule::in([1, 2, 3])],
+            'doc_type' => ['required', Rule::in([1, 2, 3])], // Relacionamento
 
             'doc_number' => [
                 'required',
                 'regex:/^\d{7}[\dA-Za-z]{0,4}$/',
                 'min:7',
                 'max:11',
-                'unique:user_details,doc_number',
+                'unique:users,document_number',
             ],
         ];
     }
