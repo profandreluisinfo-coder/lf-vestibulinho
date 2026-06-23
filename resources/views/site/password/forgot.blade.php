@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $selection_process->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $selection_process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Centro -->
@@ -91,7 +91,7 @@
                 <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                 <span>
                     Use o mesmo e-mail informado durante o seu registro no Vestibulinho
-                    {{ $selection_process->year }}.
+                    {{ $selection_process?->year }}.
                     Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
                 </span>
             </div>

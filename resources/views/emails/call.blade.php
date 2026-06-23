@@ -1,6 +1,6 @@
   <p>Prezado(a) candidato(a), {{ $nome }}!</p>
 
-  <p>Parabéns pela sua aprovação no Processo Seletivo {{ $selection_process->reference }} da ESCOLA MUNICIPAL DR. LEANDRO
+  <p>Parabéns pela sua aprovação no Processo Seletivo {{ $selection_process?->reference }} da ESCOLA MUNICIPAL DR. LEANDRO
       FRANCESCHINI! Estamos felizes em recebê-lo(a) em nossa Unidade Escolar.</p>
 
   <p>É com grande satisfação que convocamos seus responsáveis legais para realizar sua matrícula no ENSINO TÉCNICO DE

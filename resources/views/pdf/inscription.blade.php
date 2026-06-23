@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        {{ config('app.name') . ' ' . $selection_process->year . ' | Ficha de Inscrição'}}
+        {{ config('app.name') . ' ' . $selection_process?->year . ' | Ficha de Inscrição'}}
     </title>
 
     <style>
@@ -161,12 +161,12 @@
         // $nameParts = explode(' ', trim($displayName));
         // $initials  = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
     @endphp
-    <div class="watermark">{{ config('app.name') }} {{ $selection_process->year }}</div>
+    <div class="watermark">{{ config('app.name') }} {{ $selection_process?->year }}</div>
 
     <div class="card">
         <div class="header-info">
             <span style="font-size: 16px; text-transform:uppercase; font-weight: 600">{{ config('app.name') }}
-                {{ $selection_process->year }}
+                {{ $selection_process?->year }}
         </div>
 
         <div class="header-info">
@@ -425,7 +425,7 @@
         </div>
 
         <div class="card-footer">
-            <p>E. M. Dr. Leandro Franceschini | {{ config('app.name') }} {{ $selection_process->year }}</p>
+            <p>E. M. Dr. Leandro Franceschini | {{ config('app.name') }} {{ $selection_process?->year }}</p>
         </div>
     </div>
 </body>

@@ -5,8 +5,8 @@
 @section('content')
 
     @php
-        $sp = App\Models\SelectionProcess::find($selection_process->id);
-        $event = $sp->latestEvent;
+        $sp = App\Models\SelectionProcess::find($selection_process?->id);
+        $event = $sp?->latestEvent;
     @endphp
 
     <div class="container">
@@ -15,13 +15,13 @@
             <h5 class="mb-0">
                 <i class="bi bi-calendar4-week me-2"></i> Eventos
             </h5>
-            <a href="{{ route('admin.process.edit', $sp->id) }}" class="btn btn-primary btn-sm">
+            <a href="{{ route('admin.process.edit', $sp?->id) }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-pencil-square me-1"></i>
-                {{ $sp->exists() ? 'Editar Eventos' : 'Definir Eventos' }}
+                {{ $sp?->exists() ? 'Editar Eventos' : 'Definir Eventos' }}
             </a>
         </div>
 
-        @if ($sp->exists())
+        @if ($sp?->exists())
 
             <div class="row g-4 mb-4">
 
@@ -33,8 +33,8 @@
                                 <i class="bi bi-info-circle me-2"></i>Informações Básicas
                             </h6>
                             <p class="mb-0">
-                                <span class="text-muted">Processo Seletivo</span>: {{ $sp->year }}<br><span
-                                    class="text-muted">Ano de Referência:</span> {{ $sp->year }}
+                                <span class="text-muted">Processo Seletivo</span>: {{ $sp?->year }}<br><span
+                                    class="text-muted">Ano de Referência:</span> {{ $sp?->year }}
                             </p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body">
                             <h6 class="fw-bold text-info">
-                                <a href="{{ Storage::url($sp->edital) }}" target="_blank" class="text-decoration-none"
+                                <a href="{{ Storage::url($sp?->edital) }}" target="_blank" class="text-decoration-none"
                                     title="Visualizar detalhes">
                                     <i class="bi bi-file-text me-2"></i>Edital do Processo Seletivo <i
                                         class="bi bi-search ms-2"></i>
@@ -163,17 +163,17 @@
                 </div>
             </div>
 
-            @if ($sp->exists())
+            @if ($sp?->exists())
                 <form id="process-access-form" action="{{ route('admin.process.activate', $sp) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <div class="form-check form-switch mt-3">
                         <input class="form-check-input" type="checkbox" id="process" name="process"
-                            onchange="activateProcessSelective(this)" {{ $sp->status ? 'checked' : '' }}>
+                            onchange="activateProcessSelective(this)" {{ $sp?->status ? 'checked' : '' }}>
                         <label class="form-check-label" for="calendar">
-                            <span class="badge bg-{{ $sp->status ? 'success' : 'danger' }} ms-2">
-                                {!! $sp->status
+                            <span class="badge bg-{{ $sp?->status ? 'success' : 'danger' }} ms-2">
+                                {!! $sp?->status
                                     ? '<i class="bi bi-unlock"></i> O Processo Seletivo está aberto'
                                     : '<i class="bi bi-lock"></i> O Processo Seletivo está fechado' !!}
                             </span>

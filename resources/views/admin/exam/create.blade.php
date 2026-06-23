@@ -174,7 +174,7 @@
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
 
             <table class="table table-striped freezed-table mb-0 caption-top">
-                <caption>{{ config('app.name') }} {{ $selection_process->year }} - Lista de Alocação de Candidatos</caption>
+                <caption>{{ config('app.name') }} {{ $selection_process?->year }} - Lista de Alocação de Candidatos</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Local</th>

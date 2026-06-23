@@ -72,6 +72,6 @@ class SelectionProcess extends Model
     {
         $selection_process = self::getActive() ?? self::orderBy('year', 'desc')->first();
 
-        return $selection_process ? $selection_process->year : null;
+        return $selection_process ? $selection_process?->year : null;
     }
 }

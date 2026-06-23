@@ -72,7 +72,7 @@
                     {{-- Tabela de resultados --}}
                     <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                         <table id="classification" class="table table-striped mb-0 caption-top">
-                            <caption>{{ config('app.name') }} {{ $selection_process->year }} - Lista de Classificação Geral
+                            <caption>{{ config('app.name') }} {{ $selection_process?->year }} - Lista de Classificação Geral
                             </caption>
                             <thead class="table-success">
                                 <tr>

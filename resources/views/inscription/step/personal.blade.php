@@ -132,7 +132,7 @@
                     value="{{ old('social_name', session('step1.social_name')) }}" aria-describedby="socialName">
 
                 <small id="socialName" class="form-text fst-italic text-primary"><i class="bi bi-info-circle me-1"></i>Leia
-                    atentamente o item 4.10 do <a href="{{ asset('storage/' . $selection_process->edital) }}" class="text-primary"
+                    atentamente o item 4.10 do <a href="{{ asset('storage/' . $selection_process?->edital) }}" class="text-primary"
                         title="Clique para abrir o edital" target="_blank">edital</a>.</small>
 
                 @error('social_name')

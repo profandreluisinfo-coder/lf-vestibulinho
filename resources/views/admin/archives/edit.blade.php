@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $selection_process->year . ' | Editar Arquivo de Prova')
+@section('page-title', config('app.name') . ' ' . $selection_process?->year . ' | Editar Arquivo de Prova')
 
 @section('content')
 

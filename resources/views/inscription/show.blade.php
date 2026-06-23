@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Vestibulinho LF ' . $selection_process->year . ' | Área do Candidato')
+@section('page-title', 'Vestibulinho LF ' . $selection_process?->year . ' | Área do Candidato')
 
 @section('content')
 
@@ -358,7 +358,7 @@
 
                                 <div class="result-card-header">
                                     <h5><i class="bi bi-list-ol me-2"></i>Resultado da Prova Objetiva</h5>
-                                    <span class="badge bg-light text-primary">Ano {{ $selection_process->year }}</span>
+                                    <span class="badge bg-light text-primary">Ano {{ $selection_process?->year }}</span>
                                 </div>
 
                                 <div class="result-body">

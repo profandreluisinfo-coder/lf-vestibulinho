@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         $selection_process = SelectionProcess::current();
 
-        if (empty($selection_process) || !($selection_process->isInscriptionOpen())) {
+        if (empty($selection_process) || !($selection_process?->isInscriptionOpen())) {
             return alertError('Não é possível efetuar o registro no momento.');
         }
 

@@ -57,7 +57,7 @@
 <div class="card">
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" alt="Logo">
-        <h2>Processo Seletivo {{ $selection_process->year }} - Cartão do Local de Prova</h2>
+        <h2>Processo Seletivo {{ $selection_process?->year }} - Cartão do Local de Prova</h2>
     </div>
 
     <div class="section">

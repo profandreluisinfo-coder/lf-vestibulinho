@@ -50,8 +50,8 @@
                     <div class="step-content">
                         <h5>Leia o Edital</h5>
                         <p>Consulte o edital oficial do processo seletivo antes de iniciar.</p>
-                        @if (file_exists(public_path('storage/' . $selection_process->edital)))
-                            <a href="{{ asset('storage/' . $selection_process->edital) }}" target="_blank"
+                        @if (file_exists(public_path('storage/' . $selection_process?->edital)))
+                            <a href="{{ asset('storage/' . $selection_process?->edital) }}" target="_blank"
                                 class="btn btn-outline-primary btn-sm mt-2"><i class="bi bi-file-earmark-pdf me-1"></i> Abrir Edital
                             </a>
                         @endif

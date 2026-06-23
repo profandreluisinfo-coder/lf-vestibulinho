@@ -4,7 +4,7 @@
 
 @section('content')
     @php 
-        $event = $selection_process->latestEvent;
+        $event = $selection_process?->latestEvent;
     @endphp
 
     <div class="container">
@@ -31,7 +31,7 @@
                                         </label>
                                         <input type="number" class="form-control @error('year') is-invalid @enderror"
                                             id="year" name="year" min="2027"
-                                            value="{{ old('year', $selection_process->year ?? '') }}">
+                                            value="{{ old('year', $selection_process?->year ?? '') }}">
                                         @error('year')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

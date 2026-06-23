@@ -1,7 +1,7 @@
 @extends('layouts.site.master')
 
 @push('metas')
-    <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $selection_process->year }}">
+    <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $selection_process?->year }}">
 @endpush
 
 @section('page-title', 'Vestibulinho LF | Convocação para Matrícula')
@@ -110,7 +110,7 @@
 
                                         <caption class="bg-warning text-light px-4">
                                             <strong>
-                                                {{ config('app.name') }} {{ $selection_process->year }}
+                                                {{ config('app.name') }} {{ $selection_process?->year }}
                                                 - Chamada nº {{ $callNumber }}
                                                 ({{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                                                 às {{ \Carbon\Carbon::parse($time)->format('H:i') }})

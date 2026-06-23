@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $selection_process->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $selection_process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Conteúdo central -->
@@ -196,7 +196,7 @@
             </button>
 
             <!-- Links inferiores -->
-            @if ($selection_process && $selection_process->isInscriptionOpen())
+            @if ($selection_process && $selection_process?->isInscriptionOpen())
                 <div class="form-links">
                     <a href="{{ route('login') }}" class="link-btn">
                         <i class="bi bi-box-arrow-in-right"></i> Já tenho registro

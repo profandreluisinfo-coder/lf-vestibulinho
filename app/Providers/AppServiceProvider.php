@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
-use App\Models\Faq;
-use App\Models\User;
 use App\Helpers\GlobalDataHelper;
+use App\Models\Faq;
+use App\Models\SelectionProcess;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +36,18 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-faq', function (User $user, Faq $faq) {
             return $user->id === $faq->user_id && $user->role === 'admin';
         });
+
+        // Impede consultas ao banco durante comandos Artisan.
+        if ($this->app->runningInConsole()) {
+            return;
+        }
+
+        // Evita erro caso a tabela ainda não tenha sido criada.
+        if (! Schema::hasTable('selection_processes')) {
+            return;
+        }
+
+        $selectionProcess = SelectionProcess::latest('id')->first();
 
         // Torna variáveis globais acessíveis em todas as views
         GlobalDataHelper::share();

@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Área Administrativa — Vestibulinho {{ $selection_process->year }}')
+@section('title', 'Área Administrativa — Vestibulinho {{ $selection_process?->year }}')
 
 @section('meta_description', 'Área de acesso exclusivo para administradores.')
 
@@ -24,7 +24,7 @@
         <h2>EM Dr. Leandro Franceschini</h2>
 
         <p>
-            Vestibulinho {{ $selection_process->year }}
+            Vestibulinho {{ $selection_process?->year }}
             · Cursos Técnicos Gratuitos
         </p>
     </div>

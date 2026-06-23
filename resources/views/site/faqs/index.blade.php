@@ -32,12 +32,12 @@
                     </nav>
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        Dúvidas Frequentes · Vestibulinho {{ $selection_process->year }}
+                        Dúvidas Frequentes · Vestibulinho {{ $selection_process?->year }}
                     </div>
                     <h1 class="faq-hero-title mb-3">
                         Perguntas Frequentes<br><em>Processo Seletivo</em>
                         {{-- <br>
-                <span class="year-chip">{{ $selection_process->year }}</span> --}}
+                <span class="year-chip">{{ $selection_process?->year }}</span> --}}
                     </h1>
                     <h1>Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
                     <p class="lead mt-3">Reunimos as perguntas mais frequentes dos candidatos. Use a busca abaixo ou

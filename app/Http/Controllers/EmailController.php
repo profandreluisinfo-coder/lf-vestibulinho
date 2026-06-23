@@ -52,7 +52,7 @@ class EmailController extends Controller
     {
         $selection_process = SelectionProcess::current();
 
-        if (!$selection_process || !($selection_process->isInscriptionOpen())) {
+        if (!$selection_process || !($selection_process?->isInscriptionOpen())) {
             abort(404);
         }
 

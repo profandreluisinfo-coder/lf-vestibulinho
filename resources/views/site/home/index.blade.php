@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho ' . $selection_process->year . ' · EM Dr. Leandro Franceschini')
+@section('title', 'Vestibulinho ' . $selection_process?->year . ' · EM Dr. Leandro Franceschini')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/home/index.css') }}" />
@@ -9,7 +9,7 @@
 @section('content')
 
     @php
-        $event = $selection_process->latestEvent;
+        $event = $selection_process?->latestEvent;
     @endphp
     
     <section class="hero" id="home">
@@ -26,7 +26,7 @@
                         100% Online · Gratuito
                     </div>
                     <h1 class="mb-3">
-                        <em>Vestibulinho LF</em> {{ $selection_process->year }}<br>
+                        <em>Vestibulinho LF</em> {{ $selection_process?->year }}<br>
                         Sua carreira começa<br>aqui.
                     </h1>
                     <p class="hero-sub mb-4">
@@ -35,7 +35,7 @@
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
 
-                        @if ($selection_process->status && $selection_process->isInscriptionOpen())
+                        @if ($selection_process?->status && $selection_process?->isInscriptionOpen())
                             <a href="{{ route('login') }}" class="btn-hero-primary">
                                 <i class="bi bi-pencil-square"></i> Inscrever-se Agora
                             </a>
@@ -68,10 +68,10 @@
                             </div>
                         </div>
 
-                        @if ($selection_process->isInscriptionOpen())
+                        @if ($selection_process?->isInscriptionOpen())
                             <div class="col-6">
                                 <div class="stat-chip delay-4">
-                                    <div class="num">{{ $selection_process->year }}</div>
+                                    <div class="num">{{ $selection_process?->year }}</div>
                                     <div class="lbl">Processo Seletivo</div>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                             <div class="icon-wrap"><i class="bi bi-{{ $course->icone }}"></i></div>
                             <h3>{{ $course->name }}</h3>
                             <p>{{ $course->info }}</p>
-                            @if ($course?->vacancies && $selection_process->status)
+                            @if ($course?->vacancies && $selection_process?->status)
                                 <span class="tag-vagas">
                                     <i class="bi bi-people-fill me-1"></i>{{ $course?->vacancies }} Vagas disponíveis
                                 </span>
@@ -191,7 +191,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($selection_process->status && $selection_process->isInscriptionOpen())
+    @if ($selection_process?->status && $selection_process?->isInscriptionOpen())
         {{-- ═══════════════════════ COMO PARTICIPAR ═════════════════════ --}}
         <section id="como-participar">
             <div class="container">
@@ -400,7 +400,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($selection_process->status && $selection_process->isInscriptionOpen())
+    @if ($selection_process?->status && $selection_process?->isInscriptionOpen())
         {{-- ═══════════════════════ LINKS RÁPIDOS ════════════════════ --}}
         <section id="links-rapidos">
             <div class="container position-relative" style="z-index:1;">
@@ -416,8 +416,8 @@
 
                 <div class="row g-4">
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-1">
-                        <a href="{{ $selection_process->status && $selection_process->edital ? asset('storage/' . $selection_process->edital) : '#' }}"
-                            class="quick-card d-block" @if ($selection_process->status && $selection_process->edital) target="_blank" @endif>
+                        <a href="{{ $selection_process?->status && $selection_process?->edital ? asset('storage/' . $selection_process?->edital) : '#' }}"
+                            class="quick-card d-block" @if ($selection_process?->status && $selection_process?->edital) target="_blank" @endif>
                             <div class="qc-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
                             <h5>Edital</h5>
                             <p>Regras e regulamento completo</p>
