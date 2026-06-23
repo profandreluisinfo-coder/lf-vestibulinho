@@ -34,9 +34,7 @@ class User extends Authenticatable
         'nationality_id',
         // Gênero
         'gender_id',
-        // Escola
-        'school_id',
-
+        
         // Email
         'email',
         'email_verified_at',
@@ -90,11 +88,6 @@ class User extends Authenticatable
     public function phone(): HasOne
     {
         return $this->hasOne(Phone::class);
-    }
-
-    public function school(): BelongsTo
-    {
-        return $this->belongsTo(School::class);
     }
 
     public function mother(): HasOne

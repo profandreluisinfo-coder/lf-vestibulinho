@@ -9,7 +9,7 @@ class Academic extends Model
 {
     protected $fillable = [
         'user_id',
-        'name',
+        'school',
         'city',
         'state',
         'year',

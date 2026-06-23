@@ -32,8 +32,8 @@
                     sua escola.</small>
 
                 <datalist id="schools">
-                    @foreach ($schools as $key => $label)
-                        <option value="{{ $label }}">
+                    @foreach ($schools as $school)
+                        <option value="{{ $school->id }}"> {{$school->name}}
                     @endforeach
                 </datalist>
 
