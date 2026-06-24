@@ -23,7 +23,7 @@
 
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
-                <div class="col-lg-7">
+                <div class="col-lg-8">
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb faq-breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
@@ -36,8 +36,6 @@
                     </div>
                     <h1 class="faq-hero-title mb-3">
                         Perguntas Frequentes<br><em>Processo Seletivo</em>
-                        {{-- <br>
-                <span class="year-chip">{{ $selection_process?->year }}</span> --}}
                     </h1>
                     <h1>Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
                     <p class="lead mt-3">Reunimos as perguntas mais frequentes dos candidatos. Use a busca abaixo ou
@@ -81,9 +79,8 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Stats -->
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <div class="hero-stats justify-content-lg-end">
                         <div class="hstat">
                             <div class="num" id="statTotal">—</div>

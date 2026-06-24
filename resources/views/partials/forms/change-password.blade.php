@@ -1,5 +1,5 @@
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-    aria-hidden="true" data-bs-scroll="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true"
+    data-bs-scroll="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,11 +17,9 @@
 
                     <div class="mb-3">
                         <label for="currentPassword" class="form-label required">Senha atual</label>
-
                         <div class="input-group">
                             <input type="password" name="current_password" id="currentPassword"
                                 class="form-control password-field @error('current_password') is-invalid @enderror">
-
                             @error('current_password')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -32,37 +30,36 @@
 
                     <div class="mb-3">
                         <label for="newPassword" class="form-label required">Nova senha</label>
-
                         <div class="input-group">
                             <input type="password" name="new_password" id="newPassword"
                                 class="form-control password-strength-field password-field @error('new_password') is-invalid @enderror">
-
                             @error('new_password')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
-                        <div class="progress mt-2" style="height:6px;">
-                            <div class="progress-bar passwordStrength"></div>
-                        </div>
-
-                        <small class="text-muted passwordStrengthText"></small>
+                        <!-- Removido: progress e strengthText - serão criados pelo JavaScript -->
                     </div>
 
                     <div class="mb-3">
                         <label for="password_confirmation" class="form-label required">Confirmar senha</label>
-
                         <div class="input-group">
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 class="form-control password-field @error('password_confirmation') is-invalid @enderror">
-
                             @error('password_confirmation')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
+                    </div>
+
+                    <!-- Botão para mostrar/ocultar senhas -->
+                    <div class="mb-3">
+                        <button type="button" id="toggleAllPasswords" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-eye-slash"></i> Mostrar senhas
+                        </button>
                     </div>
 
                     <div class="d-grid">
@@ -76,14 +73,13 @@
     </div>
 </div>
 
-@push('scripts')
-    <script src="{{ asset('assets/js/ui/toggle-passwords.js') }}"></script>
-@endpush
 
-@if (session('open_modal') === 'password')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
-        });
-    </script>
-@endif
+@push('script')
+    @if (session('open_modal') === 'password')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
+            });
+        </script>
+    @endif
+@endpush

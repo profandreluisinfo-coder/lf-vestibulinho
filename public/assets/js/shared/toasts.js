@@ -1,4 +1,4 @@
-export function showToasts() {
+function showToasts() {
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', showToasts);
@@ -40,14 +40,13 @@ export function showToasts() {
             badge
         };
 
-        const isPersistent =
-            toastEl.dataset.persistent === 'true';
-
         const toast = new bootstrap.Toast(toastEl, {
-            autohide: !isPersistent,
+            autohide: true,
             delay: 3000
         });
 
         toast.show();
     });
 }
+
+showToasts();

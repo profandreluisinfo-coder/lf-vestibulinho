@@ -6,7 +6,7 @@ Controla o comportamento completo da sidebar:
 - Dropdowns: gerenciar menus internos
 ========================================================= */
 
-// ==================== FUNÇÕES GLOBAIS ====================
+// ==================== TOGGLE E CONTROLE ====================
 
 /**
  * Toggle da sidebar no MOBILE (abrir/fechar)
@@ -27,15 +27,6 @@ function toggleSidebar() {
     overlay.classList.toggle('show');
 }
 
-// function toggleSidebar() {
-//     const sidebar = document.getElementById('sidebar');
-//     const overlay = document.getElementById('sidebarOverlay');
-    
-//     if (sidebar && overlay) {
-//         sidebar.classList.toggle('show');
-//         overlay.classList.toggle('show');
-//     }
-// }
 
 /**
  * Fecha a sidebar no MOBILE

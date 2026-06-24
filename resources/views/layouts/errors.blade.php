@@ -10,8 +10,6 @@
         href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    {{-- Tokens e estilos base do site --}}
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/guest/home/index.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/layouts/errors/styles.css') }}" />
     @stack('styles')
 </head>

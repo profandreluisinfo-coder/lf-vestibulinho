@@ -38,7 +38,7 @@
     {{-- ── Navbar ──────────────────────────────────────────────── --}}
     @include('partials.dash.navbar')
 
-    @include('alerts.toasts')
+    @include('shared.toasts')
 
     {{-- CONTEÚDO PRINCIPAL --}}
     @yield('content')
@@ -55,8 +55,11 @@
     {{-- Validação --}}
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
-    <script type="module" src="{{ asset('assets/js/layouts/inscription/scripts.js') }}"></script>
-    <script src="{{ asset('assets/js/layouts/inscription/ui/popover.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/toasts.js') }}" type="module"></script>
+    <script type="module" src="{{ asset('assets/js/shared/strength.js') }}"></script>
+    <script type="module" src="{{ asset('assets/js/shared/change-password.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/popovers.js') }}"></script>
+    
     @stack('plugins') {{-- plugins  específicos --}}
     @stack('scripts') {{-- scripts  específicos --}}
 </body>

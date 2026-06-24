@@ -25,7 +25,7 @@ class LoginController extends Controller
         $selection_process_status = SelectionProcess::current();
         
         if (!$selection_process_status?->status) {
-            return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!');
+            return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!', 'home');
         }
 
         return view('user.auth.login');

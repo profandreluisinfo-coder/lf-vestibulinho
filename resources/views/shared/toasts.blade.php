@@ -6,8 +6,7 @@
                 'class' => 'danger',
                 'title' => 'Erro!',
                 'icon' => 'exclamation-octagon-fill',
-                'silent' => false,
-                'persistent' => true,
+                'silent' => true,
                 'animation' => 'shakeX',
             ],
             'warning' => [
@@ -15,7 +14,6 @@
                 'title' => 'Atenção!',
                 'icon' => 'exclamation-triangle-fill',
                 'silent' => false,
-                'persistent' => false,
                 'animation' => 'pulse',
             ],
             'success' => [
@@ -23,7 +21,6 @@
                 'title' => 'Sucesso!',
                 'icon' => 'check-circle-fill',
                 'silent' => false,
-                'persistent' => false,
                 'animation' => 'bounceIn',
             ],
             'info' => [
@@ -31,7 +28,6 @@
                 'title' => 'Informação',
                 'icon' => 'info-circle-fill',
                 'silent' => true,
-                'persistent' => false,
                 'animation' => 'fadeIn',
             ],
         ];
@@ -41,7 +37,7 @@
         @if (session($key) && (!$alert['silent'] || config('app.debug')))
             <div class="toast animate__animated animate__{{ $alert['animation'] }} align-items-center text-bg-{{ $alert['class'] }} 
                         border-0 shadow mb-2 show animate__animated animate__fadeInDown"
-                role="alert" data-message="{{ session($key) }}" data-type="{{ $key }}" data-bs-delay="3000">
+                role="alert" data-message="{{ session($key) }}" data-type="{{ $key }}">
 
                 <div class="d-flex">
                     <div class="toast-body">

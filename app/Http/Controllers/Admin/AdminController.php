@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Calendar;
 use App\Models\Call;
 use App\Models\ExamResult;
-use App\Models\Inscription;
 use App\Models\Setting;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {

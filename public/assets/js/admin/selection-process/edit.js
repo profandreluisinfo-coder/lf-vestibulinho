@@ -97,25 +97,24 @@ $(document).ready(function () {
         errorElement: "div",
         errorClass: "invalid-feedback",
         highlight: function (element) {
-            $(element).addClass("is-invalid").removeClass("is-valid");
+            $(element).addClass("is-invalid"); // quando estiver certo
         },
         unhighlight: function (element) {
-            $(element).removeClass("is-invalid").addClass("is-valid");
+            $(element).removeClass("is-invalid"); // quando estiver errado
         },
         errorPlacement: function (error, element) {
             error.insertAfter(element);
         },
         submitHandler: function (form) {
-            
             form.submit();
         }
     });
 
     // Feedback visual ao digitar
-    $('#form-calendar input').on('blur', function () {
-        if ($(this).valid()) {
-            $(this).addClass('is-valid');
-        }
-    });
+    // $('#form-calendar input').on('blur', function () {
+    //     if ($(this).valid()) {
+    //         $(this).addClass('is-valid');
+    //     }
+    // });
 
 });

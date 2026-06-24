@@ -3,7 +3,7 @@
 @section('page-title', 'Vestibulinho LF')
 
 @section('content')
-    @php 
+    @php
         $event = $selection_process?->latestEvent;
     @endphp
 
@@ -162,9 +162,9 @@
                                 </div>
                             </div>
 
-                            {{-- Seção: Resultados e Matrículas --}}
+                            {{-- Seção: Resultados --}}
                             <div class="border-start border-danger border-4 ps-3 mb-4">
-                                <h5 class="text-danger mb-3"><i class="bi bi-trophy me-2"></i>Resultados e Matrículas</h5>
+                                <h5 class="text-danger mb-3"><i class="bi bi-trophy me-2"></i>Resultados</h5>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="result_publish" class="form-label fw-semibold text-secondary small">
@@ -178,7 +178,12 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+                            </div>
 
+                            <div class="border-start border-danger border-4 ps-3 mb-4">
+                                <h5 class="text-danger mb-3"><i class="bi bi-trophy me-2"></i>Matrículas</h5>
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="enrol_start" class="form-label fw-semibold text-secondary small">
                                             <i class="bi bi-person-check me-1"></i>Cronograma de Matrícula - 1ª Chamada
@@ -191,14 +196,13 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-6">
                                         <label for="enrol_remaining" class="form-label fw-semibold text-secondary small">
                                             <i class="bi bi-people me-1"></i>Cronograma de Vagas Remanescentes
                                         </label>
                                         <input type="date"
-                                            class="form-control @error('enrol_remaining') is-invalid @enderror" id="enrol_remaining"
-                                            name="enrol_remaining"
+                                            class="form-control @error('enrol_remaining') is-invalid @enderror"
+                                            id="enrol_remaining" name="enrol_remaining"
                                             value="{{ old('enrol_remaining', $event?->enrol_remaining?->format('Y-m-d') ?? '') }}">
                                         @error('enrol_remaining')
                                             <div class="invalid-feedback">{{ $message }}</div>
