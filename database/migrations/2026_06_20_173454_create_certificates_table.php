@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->unsignedTinyInteger('type'); // 1 = Novo, 2 = Antigo
-            $table->string('number', 32);
-            $table->string('fls', 4)->nullable();
+            $table->string('number', 32)->unique();
+            $table->string('fls', 10)->nullable();
             $table->string('book', 10)->nullable();
             $table->string('municipality', 45)->nullable();
             $table->timestamps();

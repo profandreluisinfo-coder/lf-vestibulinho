@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('social_programs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nis', 11)->nullable();
+            $table->string('nis', 11)->nullable()->unique();
             $table->timestamps();
         });
     }

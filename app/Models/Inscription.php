@@ -26,17 +26,26 @@ class Inscription extends Model
             'updated_at' => 'datetime',
         ];
     }
-
+    
     /**
-     * Obtenha o calendário associado ao curso.
+     * Defina o valor de um determinado atributo no modelo.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Se o valor for uma string vazia, ele será convertido em nulo.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
      */
-    public function calendar(): BelongsTo
+    public function setAttribute($key, $value)
     {
-        return $this->belongsTo(Calendar::class);
-    }
+        // Se o valor for string vazia, converte para null
+        if ($value === "") {
+            $value = null;
+        }
 
+        return parent::setAttribute($key, $value);
+    }
+    
     /**
      * Obtenha o resultado do exame associado à inscrição.
      *

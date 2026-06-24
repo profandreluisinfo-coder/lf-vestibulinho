@@ -4,9 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Notice extends Model
+class Degree extends Model
 {
-    protected $fillable = ['year', 'file', 'status'];
+    protected $fillable = [
+        'description',
+    ];
+
+    // Relacionamentos
+    public function guardians()
+    {
+        return $this->hasMany(Guardian::class);
+    }
 
     /**
      * Defina o valor de um determinado atributo no modelo.
@@ -25,17 +33,5 @@ class Notice extends Model
         }
 
         return parent::setAttribute($key, $value);
-    }
-
-    // Limpa o cache automaticamente quando salvar ou excluir
-    public static function booted()
-    {
-        static::saved(function () {
-            cache()->forget('global_notice');
-        });
-
-        static::deleted(function () {
-            cache()->forget('global_notice');
-        });
     }
 }

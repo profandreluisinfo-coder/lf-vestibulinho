@@ -12,9 +12,13 @@ class NationalitySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('nationalities')->insert([
+        $nationalities = [
             ['description' => 'Brasileiro'],
             ['description' => 'Estrangeiro'],
-        ]);
+        ];
+
+        foreach ($nationalities as $nationality) {
+            \App\Models\Nationality::updateOrCreate($nationality);
+        }
     }
 }

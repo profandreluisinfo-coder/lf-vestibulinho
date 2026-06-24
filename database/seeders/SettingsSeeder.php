@@ -10,8 +10,6 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         DB::table('settings')->insert([
-            // 'calendar' => false,
-            // 'notice'   => false,
             'location' => false,
             'result'   => false,
             'created_at' => now(),

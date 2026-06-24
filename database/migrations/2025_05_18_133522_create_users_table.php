@@ -14,46 +14,31 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
 
             $table->id();
-
-            // Dados pessoais
-            $table->string('cpf', 11)->nullable()->unique(); // cpf único na tabela toda
+            $table->string('cpf', 11)->nullable()->unique();
             $table->string('name', 100)->nullable();
-
             $table->date('birth')->nullable();
-
-            $table->foreignId('gender_id')->nullable()->constrained('genders')->nullOnDelete();
-            
+            $table->foreignId('gender_id')->nullable()->constrained('genders')->nullOnDelete();            
             $table->foreignId('nationality_id')->nullable()->constrained('nationalities')->nullOnDelete();
-
             $table->foreignId('document_id')->nullable()->constrained('documents')->nullOnDelete();
-            $table->string('document_number', 20)->nullable()->unique();
-
-
-            // Endereço de e-mail
+            $table->string('document_number', 15)->nullable()->unique();
             $table->string('email', 150)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            
-            // Permissões
-            $table->enum('role', ['user', 'admin'])->default('user'); // valores: user, admin, etc.
-
-            // Dados de login
+            $table->enum('role', ['user', 'admin'])->default('user');
             $table->timestamp('last_login_at')->nullable();
-
             $table->string('password', 200);
             $table->string('token', 100)->nullable();
             $table->timestamp('token_expires_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-
     }
+    
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

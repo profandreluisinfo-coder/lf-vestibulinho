@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('academics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('school');
-            $table->string('city');
-            $table->string('state');
+            $table->string('school', 100);
+            $table->string('city', 45);
+            $table->string('state', 2);
             $table->year('year');
-            $table->string('ra');
+            $table->string('ra', 20)->unique();
             $table->timestamps();
         });
     }

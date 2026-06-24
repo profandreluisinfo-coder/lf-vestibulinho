@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('nationalities', function (Blueprint $table) {
             $table->id();
-            $table->string('description', 50);
+            $table->string('description', 15);
+            $table->timestamps();
         });
     }
 

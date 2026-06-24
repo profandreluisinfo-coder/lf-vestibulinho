@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -20,42 +21,49 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-
-        // Dados pessoais
         'cpf',
         'name',
-        // Nascimento
         'birth',
-
-        // Relacionamentos
-        // Documento
         'document_id',
-        // Nacionalidade
+        'document_number',
         'nationality_id',
-        // Gênero
-        'gender_id',
-        
-        // Email
+        'gender_id',        
         'email',
         'email_verified_at',
-
-        // Autenticação
         'password',
         'token',
         'last_login_at'
     ];
 
-    protected $hidden = ['password', 'remember_token',];
+    protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
     {
         return [
-            'birth' => 'date',
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Defina o valor de um determinado atributo no modelo.
+     *
+     * Se o valor for uma string vazia, ele será convertido em nulo.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        // Se o valor for string vazia, converte para null
+        if ($value === "") {
+            $value = null;
+        }
+
+        return parent::setAttribute($key, $value);
     }
 
     // Relacionamentos
@@ -175,11 +183,16 @@ class User extends Authenticatable
         return $this->inscription()->exists();
     }
 
-    // Acessors
+    // Acessors e Mutators
     public function getCpfAttribute($value)
     {
         // Formata o CPF no formato 'xxx.xxx.xxx-xx'
         return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value);
+    }
+
+    public function setCpfAttribute($value)
+    {
+        $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
     }
 
     public function getBirthAttribute($value)
@@ -193,12 +206,44 @@ class User extends Authenticatable
         return $birth ? Carbon::parse($birth)->age : null;
     }
 
-    // Mutators
-    public function setCpfAttribute($value)
+    /**
+     * Remove todos os caracteres não numéricos do atributo 'document_number'.
+     *
+     * @param string $value    O valor do atributo 'document_number'
+     */
+    public function setDocumentNumberAttribute($value)
     {
-        $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
+        $this->attributes['document_number'] = str_replace(['.', '-'], '', $value);
     }
 
+    /**
+     * Retorna o valor do atributo 'document_number' formatado como 99.999.999-9.
+     *
+     * @param string $value    O valor do atributo 'document_number'
+     * @return string    O valor do atributo 'document_number' formatado como 99.999.999-9
+     */
+    public function getDocumentNumberAttribute($value)
+    {
+        // Formato ao retornar deve ser 99.999.999-9
+        return preg_replace('/(\d{2})(\d{3})(\d{3})(\d{1})/', '$1.$2.$3-$4', $value);
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $this->toUpper($value);
+    }
+
+    /**
+     * Converte o valor para maiúsculas, tratando nulos e espaços.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    private function toUpper(?string $value): ?string
+    {
+        return $value ? Str::of(trim($value))->upper() : null;
+    }
+    
     protected static function booted()
     {
         static::saved(fn() => Cache::forget('global_users_without_inscription'));

@@ -99,10 +99,10 @@
                 <label for="grauDeParentesco" class="form-label required">Grau de Parentesco</label>
                 <select name="degree" id="degree" class="form-select @error('degree') is-invalid @enderror">
                     <option value="" selected>...</option>
-                    @foreach ($degrees as $degree => $value)
-                        <option value="{{ $degree }}"
-                            {{ old('degree', session('step5.degree')) == $degree ? 'selected' : '' }}>
-                            {{ $value }}
+                    @foreach ($degrees as $degree)
+                        <option value="{{ $degree->id }}"
+                            {{ old('degree', session('step5.degree')) == $degree->id ? 'selected' : '' }}>
+                            {{ $degree->name }}
                         </option>
                     @endforeach
                 </select>

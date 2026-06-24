@@ -19,6 +19,25 @@ class CallList extends Model
     }
 
     /**
+     * Defina o valor de um determinado atributo no modelo.
+     *
+     * Se o valor for uma string vazia, ele será convertido em nulo.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        // Se o valor for string vazia, converte para null
+        if ($value === "") {
+            $value = null;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
      * Relação com todas as chamadas associadas a essa lista de chamada.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

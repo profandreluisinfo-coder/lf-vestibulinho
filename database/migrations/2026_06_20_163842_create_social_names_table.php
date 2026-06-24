@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 100)->nullable();
             $table->string('authorization')->nullable();
             $table->unsignedTinyInteger('status')->nullable();
-            $table->string('response')->nullable();
+            $table->string('observations')->nullable();
             $table->timestamps();
         });
     }

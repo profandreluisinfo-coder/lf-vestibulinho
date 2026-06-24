@@ -53,7 +53,7 @@ class AcademicRequest extends FormRequest
             // Escolaridade
             'school_name' => ['required', 'max:60', 'regex:/^[a-zA-ZÀ-ÿ0-9 ()]*$/'], // Nome da escola
             // 'school_ra' => ['required', 'unique:user_details,school_ra', 'regex:/^\d{3}\.\d{3}\.\d{3}-[A-Za-z0-9]{1}$/'],
-            'school_ra' => ['required', 'unique:academic,ra'], // RA escolar
+            'school_ra' => ['required', 'unique:academics,ra'], // RA escolar
             'school_city' => ['required', 'max:30', 'regex:/^[a-zA-ZÀ-Úà-ú ]+$/'], // Cidade da escola
             'school_state' => [
                 'required',

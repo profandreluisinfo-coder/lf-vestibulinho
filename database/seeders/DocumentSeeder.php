@@ -12,10 +12,14 @@ class DocumentSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('documents')->insert([
+        $documents = [
             ['type' => 'RG', 'description' => 'Registro Geral'],
             ['type' => 'CIN', 'description' => 'Carteira de Identidade Nacional'],
-            ['type' => 'RNM', 'description' => 'Registro Nacional de Migratório'],
-        ]);
+            ['type' => 'RNM', 'description' => 'Registro Nacional de Migratório'],
+        ];
+
+        foreach ($documents as $document) {
+            \App\Models\Document::updateOrCreate($document);
+        }
     }
 }

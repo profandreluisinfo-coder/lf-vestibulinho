@@ -17,20 +17,30 @@ class Setting extends Model
         'result',
     ];
 
-    // Retornar o valor de 'calendar'
-    // public static function isCalendarEnabled()
-    // {
-    //     $setting = self::first();
-    //     return $setting ? (bool) $setting->calendar : false;
-    // }
+    protected $casts = [
+        'location' => 'boolean',
+        'result' => 'boolean',
+    ];
 
-    // Retornar o valor de 'notice'
-    // public static function isNoticeEnabled()
-    // {
-    //     $setting = self::first();
-    //     return $setting ? (bool) $setting->notice : false;
-    // }
+    /**
+     * Defina o valor de um determinado atributo no modelo.
+     *
+     * Se o valor for uma string vazia, ele será convertido em nulo.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        // Se o valor for string vazia, converte para null
+        if ($value === "") {
+            $value = null;
+        }
 
+        return parent::setAttribute($key, $value);
+    }
+   
     // Retornar o valor de 'location'
     public static function isLocationEnabled()
     {

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('burgh', 45);
             $table->string('city', 45);
             $table->string('state', 45);
-            $table->string('country', 45);
             $table->timestamps();
         });
     }

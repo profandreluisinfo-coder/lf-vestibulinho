@@ -9,9 +9,13 @@ use App\Http\Requests\FamilyRequest;
 use App\Http\Requests\OtherRequest;
 use App\Http\Requests\PersonalRequest;
 use App\Models\Course;
+use App\Models\Degree;
+use App\Models\Disability;
 use App\Models\Document;
 use App\Models\Gender;
+use App\Models\HealthIssue;
 use App\Models\Nationality;
+use App\Models\Resource;
 use App\Models\School;
 use App\Models\SelectionProcess;
 use App\Services\InscriptionService;
@@ -164,21 +168,10 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.academic');
         }
 
+        $degrees = Degree::all();
+
         return view('inscription.step.family', [
-            'degrees' => [
-                '1' => 'Padrasto',
-                '2' => 'Madrasta',
-                '3' => 'Avô(ó)',
-                '4' => 'Tio(a)',
-                '5' => 'Irmão(ã)',
-                '6' => 'Primo(a)',
-                '7' => 'Tio(a)',
-                '8' => 'Outro',
-            ],
-            // 'options' => [
-            //     '1' => 'Sim',
-            //     '2' => 'Não',
-            // ],
+            'degrees' => $degrees
         ]);
     }
     // Gravar Dados de Passo 5
@@ -216,69 +209,11 @@ class InscriptionController extends Controller
             '2' => 'Não',
         ];
 
-        $disabilities = [
-            1  => 'Auditiva - Leve',
-            2  => 'Visual - Baixa Visão',
-            3  => 'Intelectual - Leve',
-            4  => 'Física - Amputado',
-            6  => 'Auditiva - Moderada',
-            7  => 'Auditiva - Severa',
-            8  => 'Auditiva - Profunda',
-            9  => 'Intelectual - Moderada',
-            10 => 'Intelectual - Severo',
-            11 => 'Transtorno Específico da Aprendizagem',
-            12 => 'TDAH - Leve',
-            13 => 'TDAH - Moderado',
-            14 => 'TDAH - Severo',
-            15 => 'Transtornos do Espectro Autista - Nível 1',
-            16 => 'Transtornos do Espectro Autista - Nível 2',
-            17 => 'Transtornos do Espectro Autista - Nível 3',
-            18 => 'Síndrome de Down',
-            19 => 'Múltiplas',
-            20 => 'Física - Paralisia Cerebral',
-            22 => 'Física - Hemiplegia',
-            23 => 'Física - Hemiparesia',
-            24 => 'Física - Monoplegia',
-            25 => 'Física - Monoparesia',
-            26 => 'Física - Paraplegia',
-            27 => 'Física - Paraparesia',
-            28 => 'Física - Tetraplegia',
-            29 => 'Visual - Monocular',
-            30 => 'Visual - Cego',
-            31 => 'Visual /Cego - Surdocegueira'
-        ];
+        $disabilities = Disability::all();
+        
+        $accessibilityResources = Resource::all();
 
-        $accessibilityResources = [
-            'Prova ampliada (fonte tamanho 20)',
-            'Prova em braile',
-            'Auxílio para leitura da prova',
-            'Auxílio para transcrição das respostas',
-            'Intérprete de Libras',
-            'Tempo adicional para realização da prova',
-            'Mesa adaptada para cadeira de rodas',
-            'Uso de equipamento médico',
-            'Permissão para uso de aparelho auditivo',
-            'Permissão para uso de medicação durante a prova',
-            'Acompanhamento de ledor',
-            'Apoio para mobilidade',
-            'Ambiente com menor estímulo sonoro'
-        ];
-
-        $healthIssues = [
-            1 => 'Hipertensão Arterial',
-            2 => 'Diabetes Mellitus - Tipo 1',
-            3 => 'Diabetes Mellitus - Tipo 2',
-            4 => 'Asma',
-            5 => 'Doença Pulmonar Obstrutiva Crônica (DPOC)',
-            6 => 'Depressão',
-            7 => 'Ansiedade',
-            8 => 'Doença Cardíaca (Cardiopatia)',
-            9 => 'Artrite Reumatoide',
-            10 => 'Alergias',
-            11 => 'Enxaqueca Crônica',
-            12 => 'Câncer',
-            13 => 'Insuficiência Renal Crônica'
-        ];
+        $healthIssues = HealthIssue::all();
 
         return view('inscription.step.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));
     }
@@ -365,7 +300,7 @@ class InscriptionController extends Controller
 
             $inscriptionService->store(); // Grava os dados através do service
 
-            return redirect()->route('inscription.user.show ')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('inscription.user.show')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
 
             if (str_contains($e->getMessage(), 'SQLSTATE[22001]')) {
