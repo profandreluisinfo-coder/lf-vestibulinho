@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Endereço')
+@section('page-title', 'Inscrição | Endereço')
 
 @section('content')
 
@@ -153,5 +153,5 @@
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
     <script src="{{ asset('assets/js/services/cep.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/address.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/address.js') }}"></script>
 @endpush

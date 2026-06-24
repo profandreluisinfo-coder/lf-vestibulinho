@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Informações Complementares')
+@section('page-title', 'Inscrição | Informações Complementares')
 
 @section('content')
 
@@ -250,7 +250,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/registration/kinship.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/registration/others.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/others.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/others.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/others.js') }}"></script>
 @endpush

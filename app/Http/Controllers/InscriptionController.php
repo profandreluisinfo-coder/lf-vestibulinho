@@ -175,10 +175,10 @@ class InscriptionController extends Controller
                 '7' => 'Tio(a)',
                 '8' => 'Outro',
             ],
-            'options' => [
-                '1' => 'Sim',
-                '2' => 'Não',
-            ],
+            // 'options' => [
+            //     '1' => 'Sim',
+            //     '2' => 'Não',
+            // ],
         ]);
     }
     // Gravar Dados de Passo 5
@@ -315,7 +315,7 @@ class InscriptionController extends Controller
     // Passo 7: Curso Pretendido
     public function course(): View|RedirectResponse
     {
-        if (!session('step6_done')) { // Verifica se o passo 3 foi concluído
+        if (!session('step1_done') && !session('step2_done') && !session('step3_done') && !session('step4_done') && !session('step5_done') && !session('step6_done')) { // Verifica se o passo 6 foi concluído
             return redirect()->route('inscription.step.other');
         }
 
@@ -365,7 +365,7 @@ class InscriptionController extends Controller
 
             $inscriptionService->store(); // Grava os dados através do service
 
-            return redirect()->route('dash.user.inscription')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('inscription.user.show ')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
 
             if (str_contains($e->getMessage(), 'SQLSTATE[22001]')) {

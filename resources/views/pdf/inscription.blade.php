@@ -155,7 +155,7 @@
 
 <body>
     @php
-        $displayName = (auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1)
+        $displayName = (auth()->user()?->social_name && auth()->user()->authorization_accepted == 1)
             ? auth()->user()->social_name
             : auth()->user()->name;
         // $nameParts = explode(' ', trim($displayName));

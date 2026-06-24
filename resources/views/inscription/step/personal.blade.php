@@ -74,11 +74,10 @@
                     <option value="">Selecione...</option>
 
                     @foreach ($genders as $gender)
-
                         <option value="{{ $gender->id }}"
-                            {{ old('gender', session('step1.gender')) == $gender->id ? 'selected' : '' }}> {{ $gender->description }}
+                            {{ old('gender', session('step1.gender')) == $gender->id ? 'selected' : '' }}>
+                            {{ $gender->description }}
                         </option>
-
                     @endforeach
 
                 </select>
@@ -132,8 +131,8 @@
                     value="{{ old('social_name', session('step1.social_name')) }}" aria-describedby="socialName">
 
                 <small id="socialName" class="form-text fst-italic text-primary"><i class="bi bi-info-circle me-1"></i>Leia
-                    atentamente o item 4.10 do <a href="{{ asset('storage/' . $selection_process?->edital) }}" class="text-primary"
-                        title="Clique para abrir o edital" target="_blank">edital</a>.</small>
+                    atentamente o item 4.10 do <a href="{{ asset('storage/' . $selection_process?->edital) }}"
+                        class="text-primary" title="Clique para abrir o edital" target="_blank">edital</a>.</small>
 
                 @error('social_name')
                     <div class="invalid-feedback">
@@ -263,7 +262,6 @@
 
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="modalNomeSocial" tabindex="-1" aria-labelledby="modalNomeSocialLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -326,6 +324,29 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/registration/name.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/personal.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/name.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/personal.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const socialNameOption1 = document.getElementById('radioYes');
+            const socialNameOption2 = document.getElementById('radioNo');
+            const socialNameDiv = document.getElementById('socialName');
+            const authorizationDiv = document.getElementById('authorizationDiv');
+
+            function toggleSocialNameField() {
+                if (socialNameOption1.checked) {
+                    socialNameDiv.classList.remove('d-none');
+                    authorizationDiv.classList.remove('d-none');
+                } else {
+                    socialNameDiv.classList.add('d-none');
+                    authorizationDiv.classList.add('d-none');
+                }
+            }
+
+            socialNameOption1.addEventListener('change', toggleSocialNameField);
+            socialNameOption2.addEventListener('change', toggleSocialNameField);
+
+            setTimeout(toggleSocialNameField, 10);
+        });
+    </script>
 @endpush

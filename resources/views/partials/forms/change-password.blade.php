@@ -54,14 +54,6 @@
                             @enderror
                         </div>
                     </div>
-
-                    <!-- Botão para mostrar/ocultar senhas -->
-                    <div class="mb-3">
-                        <button type="button" id="toggleAllPasswords" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-eye-slash"></i> Mostrar senhas
-                        </button>
-                    </div>
-
                     <div class="d-grid">
                         <button type="submit" class="btn btn-success submit-password" disabled>
                             <i class="bi bi-check-circle me-2"></i>Alterar

@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Filiação')
+@section('page-title', 'Inscrição | Filiação')
 
 @section('content')
 
@@ -172,7 +172,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/ui/registration/family.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/family.js') }}"></script>
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/family.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/family.js') }}"></script>
 @endpush

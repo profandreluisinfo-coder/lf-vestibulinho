@@ -88,13 +88,13 @@
             {{-- Cabeçalho com avatar --}}
             @php
                 $displayName =
-                    auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1
-                        ? auth()->user()->social_name
+                        auth()->user()?->social_name?->status 
+                        ? auth()->user()?->social_name?->name
                         : auth()->user()->name;
                 $nameParts = explode(' ', trim($displayName));
                 $initials = strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1));
-                $sno = auth()->user()->social_name_option != 2 ? true : false;
-                $pne = auth()->user()->user_detail->pne != 2 ? true : false;
+                $sno = auth()->user()?->social_name ? true : false;
+                $pne = auth()->user()?->pne ? true : false;
             @endphp
 
             <div class="candidate-header">
@@ -122,7 +122,7 @@
                 </div>
                 <div class="data-item">
                     <div class="data-label">Sexo</div>
-                    <div class="data-value">{{ auth()->user()->gender }}</div>
+                    <div class="data-value">{{ auth()->user()?->gender?->description }}</div>
                 </div>
             </div>
 
@@ -136,32 +136,21 @@
                     <div class="info-block-row">
                         <div>
                             <div style="font-size:0.9rem; font-weight:500;">
-                                {{ auth()->user()->social_name }}
+                                {{ auth()->user()?->social_name?->name }}
                             </div>
 
-                            @if (auth()->user()->authorization)
-                                <a class="file-link" href="{{ asset('storage/' . auth()->user()->authorization) }}"
+                            @if (auth()->user()?->social_name?->authorization)
+                                <a class="file-link" href="{{ asset('storage/' . auth()->user()?->social_name?->authorization) }}"
                                     target="_blank">
                                     <i class="bi bi-file-earmark-pdf"></i> Visualizar autorização
                                 </a>
                             @endif
                         </div>
 
-                        @if (auth()->user()->authorization_accepted == 1)
+                        @if (auth()->user()?->social_name?->status)
                             <span class="status-badge deferido">
                                 <i class="bi bi-check-circle-fill"></i> Deferido
                             </span>
-                        @elseif (auth()->user()->authorization_accepted == 2)
-                            <div class="text-end">
-                                <span class="status-badge indeferido">
-                                    <i class="bi bi-x-circle-fill"></i> Indeferido
-                                </span>
-                                @if (auth()->user()->authorization_rejection_reason)
-                                    <p class="mt-1 mb-0" style="font-size:0.78rem; color:#991b1b;">
-                                        {{ auth()->user()->authorization_rejection_reason }}
-                                    </p>
-                                @endif
-                            </div>
                         @else
                             <span class="status-badge analise">
                                 <i class="bi bi-hourglass-split"></i> Em análise
@@ -183,13 +172,13 @@
                     <div class="info-block-row">
                         <div>
                             <div style="font-size:0.9rem; font-weight:500;">
-                                {{ auth()->user()->user_detail?->accessibility }} -
-                                {{ auth()->user()->user_detail?->pne_description }}
+                                {{ auth()->user()?->pne?->description }} -
+                                {{ auth()->user()?->pne?->support }}
                             </div>
 
-                            @if (!empty(auth()->user()->user_detail?->pne_report))
+                            @if (auth()->user()?->pne?->report)
                                 <a class="file-link"
-                                    href="{{ asset('storage/' . auth()->user()->user_detail?->pne_report) }}"
+                                    href="{{ asset('storage/' . auth()->user()->pne?->report) }}"
                                     target="_blank">
                                     <i class="bi bi-file-earmark-pdf"></i> Visualizar laudo médico
                                 </a>
@@ -200,21 +189,10 @@
                             @endif
                         </div>
 
-                        @if (auth()->user()->user_detail?->pne_report_accepted == 1)
+                        @if (auth()->user()?->pne?->status)
                             <span class="status-badge deferido">
                                 <i class="bi bi-check-circle-fill"></i> Deferido
                             </span>
-                        @elseif (auth()->user()->user_detail?->pne_report_accepted == 2)
-                            <div class="text-end">
-                                <span class="status-badge indeferido">
-                                    <i class="bi bi-x-circle-fill"></i> Indeferido
-                                </span>
-                                @if (auth()->user()->user_detail?->pne_report_rejection_reason)
-                                    <p class="mt-1 mb-0" style="font-size:0.78rem; color:#991b1b;">
-                                        {{ auth()->user()->user_detail?->pne_report_rejection_reason }}
-                                    </p>
-                                @endif
-                            </div>
                         @else
                             <span class="status-badge analise">
                                 <i class="bi bi-hourglass-split"></i> Em análise
@@ -227,7 +205,7 @@
 
             {{-- Botões de ação --}}
             <div class="actions-row">
-                <form action="{{ route('receipt.inscription') }}" method="post" class="d-inline">
+                <form action="{{ route('inscription.receipt.to.pdf') }}" method="post" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-filetype-pdf me-1"></i> Gerar PDF
@@ -332,7 +310,7 @@
                         </div>
 
                         <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                            <a href="{{ route('card.exam') }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('inscription.card.exam') }}" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-download me-1"></i> Baixar PDF
                             </a>
                             <button type="button" class="btn btn-secondary btn-sm"
@@ -386,7 +364,7 @@
                         </div>
 
                         <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                            <a href="{{ route('card.result') }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('inscription.card.result') }}" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
                             </a>
                             <button type="button" class="btn btn-secondary btn-sm"
@@ -474,7 +452,7 @@
                         </div>
 
                         <div class="modal-footer" style="border-top:1px solid #fef3c7; gap:8px;">
-                            <a href="{{ route('card.call') }}" class="btn btn-outline-danger btn-sm">
+                            <a href="{{ route('inscription.card.call') }}" class="btn btn-outline-danger btn-sm">
                                 <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
                             </a>
                             <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">

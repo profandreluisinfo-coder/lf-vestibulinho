@@ -60,24 +60,14 @@ class User extends Authenticatable
 
     // Relacionamentos
 
-    public function social_name(): HasOne
-    {
-        return $this->hasOne(SocialName::class);
-    }
-
-    public function document(): BelongsTo
-    {
-        return $this->belongsTo(Document::class);
-    }
-
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);
     }
 
-    public function address(): HasOne
+    public function social_name(): HasOne
     {
-        return $this->hasOne(Address::class);
+        return $this->hasOne(SocialName::class);
     }
 
     public function nationality(): BelongsTo
@@ -85,9 +75,29 @@ class User extends Authenticatable
         return $this->belongsTo(Nationality::class);
     }
 
-    public function phone(): HasOne
+    public function document(): BelongsTo
     {
-        return $this->hasOne(Phone::class);
+        return $this->belongsTo(Document::class);
+    }
+
+    public function phone(): HasMany
+    {
+        return $this->hasMany(Phone::class);
+    }
+
+    public function certificate(): HasOne
+    {
+        return $this->hasOne(Certificate::class);
+    }
+
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class);
+    }
+
+    public function academic(): HasOne
+    {
+        return $this->hasOne(Academic::class);
     }
 
     public function mother(): HasOne
@@ -105,10 +115,10 @@ class User extends Authenticatable
         return $this->hasOne(Guardian::class);
     }
 
-    public function social_program(): HasOne
+    public function parent_email(): HasOne
     {
-        return $this->hasOne(SocialProgram::class);
-    }
+        return $this->hasOne(ParentEmail::class);
+    }   
 
     public function health(): HasOne
     {
@@ -118,6 +128,11 @@ class User extends Authenticatable
     public function pne(): HasOne
     {
         return $this->hasOne(Pne::class);
+    }
+
+    public function social_program(): HasOne
+    {
+        return $this->hasOne(SocialProgram::class);
     }
 
     public function archives(): HasMany

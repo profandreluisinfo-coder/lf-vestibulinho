@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Inscription;
 use App\Models\SelectionProcess;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
@@ -38,6 +39,12 @@ class GlobalDataHelper
                 ->count()
         );
 
+        $settings = Cache::remember(
+            'global_settings',
+            300,
+            fn() => Setting::latest('id')->first()
+        );
+
         $year = now()->year;
 
         /**
@@ -50,12 +57,14 @@ class GlobalDataHelper
             $selectionProcess,
             $totalInscriptions,
             $usersWithoutInscription,
+            $settings,
             $year
         ) {
             $view->with([
                 'selection_process' => $selectionProcess,
                 'totalInscriptions' => $totalInscriptions,
                 'usersWithoutInscription' => $usersWithoutInscription,
+                'settings' => $settings,
                 'year' => $year,
             ]);
         });

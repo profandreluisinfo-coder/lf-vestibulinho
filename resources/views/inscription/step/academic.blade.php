@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Dados Escolares')
+@section('page-title', 'Inscrição | Dados Escolares')
 
 @section('content')
 
@@ -33,7 +33,7 @@
 
                 <datalist id="schools">
                     @foreach ($schools as $school)
-                        <option value="{{ $school->id }}"> {{$school->name}}
+                        <option value="{{ $school->name }}">
                     @endforeach
                 </datalist>
 
@@ -151,6 +151,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/registration/popover.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/registration/academic.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/academic.js') }}"></script>
 @endpush

@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Inscrição | Confirmar Dados')
 
 @php
     $degrees = [
@@ -369,5 +369,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/swa/registration/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/inscription/confirm.js') }}"></script>
 @endpush

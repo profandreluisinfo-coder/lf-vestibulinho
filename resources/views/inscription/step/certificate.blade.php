@@ -170,7 +170,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/ui/registration/certificates.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/certificates.js') }}"></script>
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/certificates/create.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/certificate.js') }}"></script>
 @endpush

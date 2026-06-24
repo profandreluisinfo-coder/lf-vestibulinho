@@ -13,11 +13,17 @@ class OtherRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // Verifica se o usuário está autenticado
+        if (!auth()->check()) {
+            return false;
+        }
+
         if (session()->has('step1') && session()->has('step2') && session()->has('step3') && session()->has('step4') && session()->has('step5')) {
             return true;
         }
 
-        return false;
+        // Retorna true apenas se NÃO tiver inscrição
+        return !auth()->user()->hasInscription();
     }
 
     public function prepareForValidation()
@@ -111,7 +117,7 @@ class OtherRequest extends FormRequest
                 'nullable',
                 Rule::requiredIf(fn() => $this->input('social_program') == 1),
                 $this->input('social_program') == 1 ? new NisRule() : null,
-                'unique:user_details,nis'                
+                'unique:social_programs,nis'                
             ],
         ];
     }

@@ -29,7 +29,7 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
         ->group(function () {
             // Area do candidato: exibe a página com informações sobre como fazer a inscrição
             Route::get('informacoes', [InscriptionController::class, 'start'])->name('start'); // Início
-            
+
             Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
             Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
 
@@ -79,10 +79,10 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
                 // PDF Comprovante de inscrição
                 Route::post('inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('to.pdf');
             });
+    });
 
-        Route::prefix('area-do-candidato')->name('user.')->group(function () {
-            Route::get('/', [InscriptionController::class, 'show'])->name('show');
-        });
+    Route::prefix('area-do-candidato')->name('user.')->group(function () {
+        Route::get('/', [InscriptionController::class, 'show'])->name('show');
     });
 });
 
