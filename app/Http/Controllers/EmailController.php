@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SelectionProcess;
+use App\Models\Process;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -50,9 +50,9 @@ class EmailController extends Controller
      */
     public function resendEmail(): View | RedirectResponse
     {
-        $selection_process = SelectionProcess::current();
+        $process = Process::current();
 
-        if (!$selection_process || !($selection_process?->isInscriptionOpen())) {
+        if (!$process || !($process?->isInscriptionOpen())) {
             abort(404);
         }
 

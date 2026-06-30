@@ -259,8 +259,8 @@ class CallController extends Controller
             );
 
             $content = [
-                'nome' => ($user->authorization_accepted == 1 && !empty($user->social_name))
-                    ? $user->social_name
+                'nome' => ($user->authorization_accepted == 1 && !empty($user->name))
+                    ? $user->name
                     : $user->name,
 
                 'data' => \Carbon\Carbon::parse($callList->date)->format('d/m/Y'),

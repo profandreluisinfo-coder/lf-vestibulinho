@@ -32,7 +32,7 @@ class ExamController extends Controller
                 'exam_locations.name as location_name',
                 'users.cpf as candidate_cpf',
                 'users.name as candidate_name',
-                'users.social_name as candidate_social_name',
+                'users.name as candidate_social_name',
                 'user_details.pne as candidate_pne',
                 'exam_results.exam_date as date',
                 'exam_results.exam_time as time',

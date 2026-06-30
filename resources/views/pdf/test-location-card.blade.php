@@ -57,11 +57,11 @@
 <div class="card">
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" alt="Logo">
-        <h2>Processo Seletivo {{ $selection_process?->year }} - Cartão do Local de Prova</h2>
+        <h2>Processo Seletivo {{ $process?->year }} - Cartão do Local de Prova</h2>
     </div>
 
     <div class="section">
-        <p><strong>Nome:</strong> {{ ($exam->inscription->user->authorization_accepted == 1) ? $exam->inscription->user->social_name : $exam->inscription->user->name }}</p>
+        <p><strong>Nome:</strong> {{ ($exam->inscription->user->authorization_accepted == 1) ? $exam->inscription->user->name : $exam->inscription->user->name }}</p>
         <p><strong>CPF:</strong> {{ $exam->inscription->user->cpf }}</p>
         <p><strong>Local:</strong> {{ $exam->location->name }}</p>
         <p><strong>Endereço:</strong> {{ $exam->location->address }}</p>

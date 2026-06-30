@@ -1,8 +1,10 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Área do Candidato | Vestibulinho LF ')
+@section('page-title', 'Vestibulinho LF | Procedimentos para inscrição')
 
 @section('content')
+
+    @include('inscription.partials.navbar')
 
     <div class="wrapper">
         <div class="important-info-box mb-5">
@@ -50,8 +52,8 @@
                     <div class="step-content">
                         <h5>Leia o Edital</h5>
                         <p>Consulte o edital oficial do processo seletivo antes de iniciar.</p>
-                        @if (file_exists(public_path('storage/' . $selection_process?->edital)))
-                            <a href="{{ asset('storage/' . $selection_process?->edital) }}" target="_blank"
+                        @if (file_exists(public_path('storage/' . $process?->edital)))
+                            <a href="{{ asset('storage/' . $process?->edital) }}" target="_blank"
                                 class="btn btn-outline-primary btn-sm mt-2"><i class="bi bi-file-earmark-pdf me-1"></i> Abrir Edital
                             </a>
                         @endif
@@ -110,7 +112,7 @@
             </a>
         </div>
         <div class="registration-footer text-center">
-            <strong>E. M. Dr. Leandro Franceschini</strong>
+            <strong>EM Dr Leandro Franceschini</strong>
             <span>Prefeitura Municipal de Sumaré</span>
         </div>
     </div>

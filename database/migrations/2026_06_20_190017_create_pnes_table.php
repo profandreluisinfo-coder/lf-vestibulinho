@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('support')->nullable();
             $table->string('report')->nullable();
-            $table->boolean('status')->nullable()->default(0); // 0 = Não, 1 = Sim
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->string('observations')->nullable();
             $table->timestamps();
         });

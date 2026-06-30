@@ -15,8 +15,8 @@ class AdminController extends Controller
         $local_status = ExamResult::hasRecords();
         $ranking_active = ExamResult::hasScores();
         // $inscriptions_count = Inscription::count();
-        $settings = Setting::first() ?? new Setting();
-        $calls_exists = Call::first() ?? new Call();
+        // $settings = Setting::first() ?? new Setting();
+        // $calls_exists = Call::first() ?? new Call();
 
         // Candidatos por bairro
         // $bairros = DB::table('user_details')
@@ -76,10 +76,10 @@ class AdminController extends Controller
 
         return view('admin.home.index', compact(
             // 'inscriptions_count', 
-            'settings', 
+            // 'settings', 
             'local_status', 
             'ranking_active', 
-            'calls_exists', 
+            // 'calls_exists', 
             'steps_done', 
             'steps_total', 
             'steps_pct')

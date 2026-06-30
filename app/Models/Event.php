@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 class Event extends Model
 {
     protected $fillable = [
-        'selection_process_id',
+        'selection_id',
         'start',
         'end',
         'location_publish',
@@ -61,9 +61,9 @@ class Event extends Model
         return parent::setAttribute($key, $value);
     }
 
-    public function selectionProcess(): BelongsTo
+    public function process(): BelongsTo
     {
-        return $this->belongsTo(SelectionProcess::class);
+        return $this->belongsTo(Process::class);
     }
 
     /**

@@ -23,7 +23,7 @@
 
   /* Neutros */
   --color-white: #FFFFFF;
-  --color-light: #EEF3FA;
+  --color-light: #F8FAFD;
   --color-light-mid: #E2EAF4;
   --color-muted: #6B7FA3;
   --color-muted-light: rgba(107, 127, 163, .45);
@@ -882,8 +882,8 @@ small,
 
 /* ── Título de seção ── */
 .section-title h4 {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--color-navy);
 }
 
@@ -1163,6 +1163,10 @@ small,
 
 .data-item:last-child {
   border-right: none;
+}
+
+.data-item-name {
+  grid-column: span 2;
 }
 
 .data-label {

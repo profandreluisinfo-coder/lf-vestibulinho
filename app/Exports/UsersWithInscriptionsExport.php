@@ -36,7 +36,7 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
             $user->inscription->id ?? '',
             $user->id,
             $user->cpf,
-            $user->authorization_accepted ? $user->social_name : $user->name,
+            $user->authorization_accepted ? $user->name : $user->name,
             // $user->birth ? $user->birth->format('Y-m-d') : '',
             $user->birth,
         ];

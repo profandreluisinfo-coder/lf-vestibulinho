@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\SelectionProcess;
+use App\Models\Process;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -22,9 +22,9 @@ class LoginController extends Controller
      */
     public function login(): View | RedirectResponse
     {
-        $selection_process_status = SelectionProcess::current();
+        $process = Process::current();
         
-        if (!$selection_process_status?->status) {
+        if (!$process?->status) {
             return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!', 'home');
         }
 
@@ -104,7 +104,7 @@ class LoginController extends Controller
         if ($user->role === 'user') {
             return $user->inscription()->exists()
                 ? route('inscription.user.show') // O usuário não possui inscrição
-                : route('inscription.step.start'); // O usuário possui inscrição
+                : route('inscription.start'); // O usuário possui inscrição
         }
 
         return route('login');

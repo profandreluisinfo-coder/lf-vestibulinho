@@ -1,4 +1,4 @@
-<p>Prezado(a) Candidato(a): @if($name)<strong>{{ $name }}</strong> @endif</p>
+<p>Prezado(a) <strong>{{ $name }}</strong></p>
 <p>Conforme sua solicitação, <strong>sua senha foi alterada com sucesso!</strong></p>
 <p>Até breve!
 </p>

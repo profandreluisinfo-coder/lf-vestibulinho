@@ -21,23 +21,11 @@
 
     @stack('styles')
 
-    <script src="{{ asset('assets/js/shared/reload.js') }}"></script>
-    
     @stack('head-scripts')
 </head>
 </head>
 
 <body>
-    @php
-        $displayName =
-            auth()->user()->social_name_option && auth()->user()->authorization_accepted == 1
-                ? auth()->user()->social_name
-                : auth()->user()->name;
-    @endphp
-
-    {{-- ── Navbar ──────────────────────────────────────────────── --}}
-    @include('partials.dash.navbar')
-
     @include('shared.toasts')
 
     {{-- CONTEÚDO PRINCIPAL --}}
@@ -54,7 +42,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
-    
+
     @stack('plugins') {{-- plugins  específicos --}}
 
     <script src="{{ asset('assets/js/shared/toasts.js') }}"></script>

@@ -1,8 +1,8 @@
 @extends('layouts.auth')
 
-@section('title', 'Verificação de E-mail — Vestibulinho ' . $selection_process?->year)
+@section('title', 'Verificação de E-mail — Vestibulinho ' . $process?->year)
 
-@section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $selection_process?->year)
+@section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $process?->year)
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/email/sent.css') }}">
@@ -19,7 +19,7 @@
   <div class="panel-brand">
     <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
     <h2>EM Dr. Francisco de Souza</h2>
-    <p>Vestibulinho {{ $selection_process?->year }} · Cursos Técnicos Gratuitos</p>
+    <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
   </div>
 
   <!-- Centro -->

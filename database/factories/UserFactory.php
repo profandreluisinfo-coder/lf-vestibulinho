@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'cpf' => $this->faker->unique()->numerify('###########'),
 
             'name' => $fullName,
-            // 'social_name' => $socialName,
+            // 'name' => $socialName,
 
             'birth' => $this->faker->date('Y-m-d'),
             'gender' => $this->faker->randomElement(['1', '2', '3', '4']),

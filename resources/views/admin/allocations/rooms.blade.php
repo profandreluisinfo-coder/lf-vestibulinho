@@ -44,7 +44,7 @@
     @foreach($allocations as $location => $rooms)
         @foreach($rooms as $room => $candidates)
             <div class="sala">
-                <div class="title">{{ config('app.name') }} {{ $selection_process?->>year }}</div>
+                <div class="title">{{ config('app.name') }} {{ $process?->>year }}</div>
 
                 <div class="header">
                     <strong>LOCAL:</strong> {{ $location }} -
@@ -63,7 +63,7 @@
                         @foreach($candidates as $candidate)
                             <tr>
                                 <td>{{ $candidate->inscription_id }}</td>
-                                <td>{{ $candidate->social_name ? $candidate->social_name : $candidate->name }} {{ $candidate->social_name ? '*' : '' }}</td>
+                                <td>{{ $candidate->name ? $candidate->name : $candidate->name }} {{ $candidate->name ? '*' : '' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($candidate->birth)->format('d/m/Y') }}</td>
                             </tr>
                         @endforeach

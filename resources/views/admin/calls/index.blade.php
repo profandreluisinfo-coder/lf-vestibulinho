@@ -156,7 +156,7 @@
                                                 <tr>
                                                     <td>{{ $call->examResult->ranking }}</td>
                                                     <td>{{ $call->examResult->inscription_id }}</td>
-                                                    <td>{{ ($user->authorization_accepted == 1) ?$user->social_name : $user->name }}</td>
+                                                    <td>{{ ($user->authorization_accepted == 1) ?$user->name : $user->name }}</td>
                                                     <td>{{ $user->cpf }}</td>
                                                     <td>
                                                         @if ($user->user_detail->pne_report_accepted == 1)

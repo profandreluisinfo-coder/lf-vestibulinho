@@ -34,8 +34,8 @@ class ExamAllocationService
 
             // 2. Ordenar por nome (com nome social)
             $sorted = $inscriptions->sortBy(function ($i) {
-                $name = $i->user->social_name_option && $i->user->social_name
-                    ? $i->user->social_name
+                $name = $i->user->social_name_option && $i->user->name
+                    ? $i->user->name
                     : $i->user->name;
 
                 return Str::ascii($name);

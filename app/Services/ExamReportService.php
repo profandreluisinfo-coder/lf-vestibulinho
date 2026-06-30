@@ -21,7 +21,7 @@ class ExamReportService
                 'exam_locations.name as location_name',
                 'exam_results.room_number',
                 'users.name',
-                'users.social_name',
+                'users.name',
                 'users.cpf',
                 'users.birth',
                 'user_details.pne',

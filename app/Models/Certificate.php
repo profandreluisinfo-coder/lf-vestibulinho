@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Certificate extends Model
 {
@@ -13,27 +14,8 @@ class Certificate extends Model
         'number',
         'fls',
         'book',
-        'municipality'
+        'city'
     ];
-
-    /**
-     * Defina o valor de um determinado atributo no modelo.
-     *
-     * Se o valor for uma string vazia, ele será convertido em nulo.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function setAttribute($key, $value)
-    {
-        // Se o valor for string vazia, converte para null
-        if ($value === "") {
-            $value = null;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
 
     public function user(): BelongsTo
     {
@@ -45,9 +27,9 @@ class Certificate extends Model
      *
      * @param string $value    O valor do atributo 'fls'
      */
-    public function setFlsAttribute($value)
+    public function getFlsAttribute($value)
     {
-        $this->attributes['fls'] = strtoupper($value);
+        return Str::of($value)->upper();
     }
 
     /**
@@ -72,5 +54,15 @@ class Certificate extends Model
     {
         // Aplica o formato 99.99999
         return preg_replace('/^(\d{2})(\d{5})$/', '$1.$2', $value);
+    }
+    
+    /**
+     * Converte o valor do atributo 'city' para maiúsculo.
+     *
+     * @param string $value    O valor do atributo 'city'
+     */
+    public function getCityAttribute($value)
+    {
+        return Str::of($value)->upper();
     }
 }

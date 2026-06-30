@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\SendTransactionalEmailJob;
+use App\Models\Process;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class UserService
 
         try {
             $user = DB::transaction(function () use ($data, $email) {
-                $user = new User();
+                $user = new User;
                 $user->email = $email;
                 $user->password = Hash::make($data['password']);
                 $user->token = Str::random(64);
@@ -60,14 +61,12 @@ class UserService
      * Se o endereço de e-mail informado pelo token já foi validado, o usuário será redirecionado para a página de início com um erro.
      * Se o endereço de e-mail informado pelo token for válido e nunca validado, o endereço de e-mail será armazenado em sessão e o usuário será redirecionado para a página de confirmação de e-mail.
      *
-     * @param string $token
-     * @return array
      * */
     public function verifyEmailToken(string $token): array
     {
         $user = User::where('token', $token)->first();
 
-        if (!$user) {
+        if (! $user) {
             return ['success' => false, 'message' => 'Token inválido.'];
         }
 
@@ -76,14 +75,18 @@ class UserService
         }
 
         $user->email_verified_at = Carbon::now();
+        $user->role = 'user';
         $user->token = null;
 
         $user->save();
 
+        $current_process = Process::current();
+        $year_process = $current_process->year;
+
         $this->sendEmail(
             to: $user->email,
             subject: 'E-mail confirmado',
-            data: ['name' => $user->social_name ?? $user->name],
+            data: ['process' => $year_process, 'name' => $user?->name ?? 'Candidato'],
             view: 'emails.confirmation'
         );
 
@@ -94,10 +97,10 @@ class UserService
     {
         $user = User::where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return [
                 'success' => true,
-                'message' => 'Verifique a sua caixa de e-mail principal ou spam...'
+                'message' => 'Verifique a sua caixa de e-mail principal ou spam...',
             ];
         }
 
@@ -108,25 +111,36 @@ class UserService
 
                 $link = route('reset.password', ['token' => $user->token]);
 
+                $name = '';
+
+                if (empty($user?->name)) {
+                    $name = 'Candidato';
+                } elseif ($user?->lgbt?->status === 'accepted') {
+                    $name = $user->lgbt->name;
+                } else {
+                    $name = $user->name;
+                }
+
                 $this->sendEmail(
                     to: $user->email,
                     subject: 'Redefinir senha',
-                    data: ['name' => $user->social_name ?? $user->name, 'link' => $link],
+                    data: ['name' => $name, 'link' => $link],
                     view: 'emails.reset'
                 );
             });
 
             return [
                 'success' => true,
-                'message' => 'E-mail enviado com sucesso!...'
+                'message' => 'E-mail enviado com sucesso!...',
             ];
         } catch (\Exception $e) {
             return [
                 'success' => true,  // ← Mantém seguro (não vaza se existe)
-                'message' => 'Verifique a sua caixa de e-mail...'
+                'message' => 'Verifique a sua caixa de e-mail...',
             ];
         }
     }
+
     /**
      * Redefine a senha do usuário com base no token informado.
      *
@@ -134,16 +148,14 @@ class UserService
      * tenta redefinir a senha do usuário com base nas credenciais informadas.
      * Se a redefinição for bem sucedida, o usuário receberá um e-mail para confirmar o endereço de e-mail.
      * Caso contrário, será exibido um erro.
-     *
-     * @param string $token
-     * @param string $newPassword
-     * @return array
      */
     public function resetPassword(string $token, string $newPassword): array
     {
+        $name = '';
+
         $user = User::where('token', $token)->first();
 
-        if (!$user) {
+        if (! $user) {
             return [
                 'success' => false,
                 'message' => 'Token inválido ou expirado.',
@@ -155,16 +167,24 @@ class UserService
 
         $user->save();
 
+        if (empty($user?->name)) {
+            $name = 'Candidato';
+        } elseif ($user?->lgbt?->status === 'accepted') {
+            $name = $user->lgbt->name;
+        } else {
+            $name = $user->name;
+        }
+
         $this->sendEmail(
             to: $user->email,
             subject: 'Senha alterada',
-            data: ['name' => $user->social_name ?? $user->name],
+            data: ['name' => $name],
             view: 'emails.password-changed'
         );
 
         return [
             'success' => true,
-            'message' => 'Senha alterada.'
+            'message' => 'Senha alterada.',
         ];
     }
 
@@ -176,7 +196,6 @@ class UserService
      * Retorna sucesso genérico quando o usuário não existe ou já está verificado,
      * evitando enumeração de contas.
      *
-     * @param string $email
      * @return array{success: bool, message: string}
      */
     public function resendEmail(string $email): array
@@ -184,7 +203,7 @@ class UserService
         $user = User::where('email', $email)->first();
 
         // Retorna sucesso mesmo que não encontre usuário, pra não vazar informação
-        if (!$user) {
+        if (! $user) {
             return [
                 'success' => true,
                 'message' => 'Verifique a sua caixa de e-mail principal ou spam para prosseguir com a validação do e-mail.',
@@ -201,9 +220,10 @@ class UserService
 
         if ($user->token_expires_at && now()->lt($user->token_expires_at)) {
             $remaining = ceil(now()->diffInMinutes($user->token_expires_at));
+
             return [
                 'success' => false,
-                'message' => "Você precisa aguardar {$remaining} " . Str::plural('minuto', $remaining) . " antes de solicitar um novo e-mail.",
+                'message' => "Você precisa aguardar {$remaining} ".Str::plural('minuto', $remaining).' antes de solicitar um novo e-mail.',
             ];
         }
 
@@ -235,6 +255,7 @@ class UserService
                 'message' => 'Não foi possível enviar o e-mail. Tente novamente em instantes.',
             ];
         }
+
         // retorna sucesso
         return [
             'success' => true,
@@ -245,21 +266,30 @@ class UserService
     /**
      * Envia um e-mail para o usuário informando que a senha foi alterada com sucesso.
      *
-     * @param User $user
      * @return array
      */
     public function passwordChanged(User $user)
     {
+        $name = '';
+
+        if (empty($user?->name)) {
+            $name = 'Candidato';
+        } elseif ($user?->lgbt?->status === 'accepted') {
+            $name = $user->lgbt->name;
+        } else {
+            $name = $user->name;
+        }
+
         $this->sendEmail(
             to: $user->email,
             subject: 'Senha alterada',
-            data: ['name' => $user->social_name ?? $user->name],
+            data: ['name' => $name],
             view: 'emails.password-changed'
         );
 
         return [
             'success' => true,
-            'message' => 'Senha alterada com sucesso.'
+            'message' => 'Senha alterada com sucesso.',
         ];
     }
 
@@ -268,7 +298,7 @@ class UserService
         string $subject,
         array $data,
         string $view,
-        ?string $attachment = null // 👈 ADICIONE ISSO
+        ?string $attachment = null
     ) {
         dispatch(
             new SendTransactionalEmailJob(
@@ -276,7 +306,7 @@ class UserService
                 $subject,
                 $data,
                 $view,
-                $attachment // 👈 PASSE AQUI
+                $attachment
             )
         )->delay(now()->addSeconds(10));
     }

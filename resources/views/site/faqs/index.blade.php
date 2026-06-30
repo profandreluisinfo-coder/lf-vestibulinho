@@ -32,7 +32,7 @@
                     </nav>
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        Dúvidas Frequentes · Vestibulinho {{ $selection_process?->year }}
+                        Dúvidas Frequentes · Vestibulinho {{ $process?->year }}
                     </div>
                     <h1 class="faq-hero-title mb-3">
                         Perguntas Frequentes<br><em>Processo Seletivo</em>
@@ -167,7 +167,7 @@
         </div>
     </div>
 
-    @if ($selection_process?->informations?->isInscriptionOpen())
+    @if ($process?->informations?->isInscriptionOpen())
         <!-- ═══════════════════════ CTA ══════════════════════════════ -->
         <section id="faq-cta">
             <div class="container text-center position-relative" style="z-index:1;">

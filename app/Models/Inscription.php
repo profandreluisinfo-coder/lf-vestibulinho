@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
@@ -16,7 +16,7 @@ class Inscription extends Model
     protected $fillable = [
         'user_id',
         'course_id',
-        'selection_process_id'
+        'process_id'
     ];
 
     protected function casts(): array
@@ -91,9 +91,9 @@ class Inscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function selection_process(): BelongsTo
+    public function process(): BelongsTo
     {
-        return $this->belongsTo(SelectionProcess::class);
+        return $this->belongsTo(Process::class);
     }
 
     // 🔹 Limpa o cache automaticamente quando salvar ou excluir

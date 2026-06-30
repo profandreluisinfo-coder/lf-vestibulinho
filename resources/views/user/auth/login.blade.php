@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Área do Candidato — Vestibulinho ' . $selection_process?->year)
+@section('title', 'Área do Candidato — Vestibulinho ' . $process?->year)
 
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 
@@ -24,7 +24,7 @@
         <h2>EM Dr. Leandro Franceschini</h2>
 
         <p>
-            Vestibulinho {{ $selection_process?->year }}
+            Vestibulinho {{ $process?->year }}
             · Cursos Técnicos Gratuitos
         </p>
     </div>
@@ -102,7 +102,7 @@
             </div>
 
             <!-- Título -->
-            <h1>Vestibulinho<br>{{ $selection_process?->year }}</h1>
+            <h1>Vestibulinho<br>{{ $process?->year }}</h1>
             <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique
                 em "Ainda não tem registro?" para se cadastrar.</p>
         </div>
@@ -173,7 +173,7 @@
             </button>
 
             <!-- Links -->
-            @if ($selection_process?->isInscriptionOpen())
+            @if ($process?->isInscriptionOpen())
                 <div class="form-links">
                     <div class="divider-or">ou</div>
                     <a href="{{ route('register') }}" class="link-register">

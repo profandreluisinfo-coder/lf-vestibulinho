@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $selection_process?->year . ' | Configurações do Sistema')
+@section('page-title', config('app.name') . ' ' . $process?->year . ' | Configurações do Sistema')
 
 @section('content')
     <div class="container">

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
-use App\Models\User;
 use App\Models\ExamResult;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\User;
 use App\Services\ExamReportService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -45,7 +45,7 @@ class PdfController extends Controller
                 'exam_locations.name as location_name',
                 'exam_results.room_number',
                 'users.name',
-                'users.social_name',
+                'users.name',
                 'users.cpf',
                 'users.birth',
                 'users.pne',
@@ -71,14 +71,14 @@ class PdfController extends Controller
     {
         // Gera o PDF com a view
         $pdf = Pdf::loadView('admin.pdf.proof-of-registration', [
-            'user' =>  Auth::user()
+            'user' => Auth::user(),
         ]);
 
         // Sanitiza o CPF (remove espaços, pontos, traços etc.)
-        $cpfSanitizado = preg_replace('/[^0-9]/', '',  Auth::user()->cpf);
+        $cpfSanitizado = preg_replace('/[^0-9]/', '', Auth::user()->cpf);
 
         // Monta o nome do arquivo
-        $filename = 'comprovante_' . $cpfSanitizado . '.pdf';
+        $filename = 'comprovante_'.$cpfSanitizado.'.pdf';
 
         // Retorna o PDF diretamente como download
         return $pdf->download($filename);
@@ -87,7 +87,6 @@ class PdfController extends Controller
     /**
      * Exporta a lista de inscrições em formato PDF.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function allInscriptionsToPdf(Request $request)
@@ -123,19 +122,19 @@ class PdfController extends Controller
 
     /**
      * Gera um PDF com o cartão do local de prova do candidato.
-     * 
+     *
      * Verifica se o usuário logado possui local de prova.
      * Caso não possua, redireciona para a página anterior com um aviso.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function testLocationCardToPdf()
     {
         $exam = ExamResult::with('location')
-            ->whereHas('inscription', fn($q) => $q->where('user_id',  Auth::user()->id))
+            ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::user()->id))
             ->first();
 
-        if (!$exam) {
+        if (! $exam) {
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
@@ -146,10 +145,10 @@ class PdfController extends Controller
 
     /**
      * Gera um PDF com o cartão do resultado da prova do candidato.
-     * 
+     *
      * Verifica se o usuário logado possui resultado da prova.
      * Caso não possua, redireciona para a página anterior com um aviso.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function testResultCardToPdf()
@@ -157,10 +156,10 @@ class PdfController extends Controller
         $user = Auth::user();
         // Verifica se o usuário logado possui resultado de exame
         $examResult = ExamResult::with(['inscription.user'])
-            ->whereHas('inscription', fn($q) => $q->where('user_id', $user->id))
+            ->whereHas('inscription', fn ($q) => $q->where('user_id', $user->id))
             ->first();
 
-        if (!$examResult) {
+        if (! $examResult) {
             return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
@@ -171,11 +170,11 @@ class PdfController extends Controller
 
     /**
      * Gera um PDF com a ficha de convocação do candidato atual com base na lista de chamada finalizada.
-     * 
+     *
      * Verifica se o usuário logado possui resultado de exame e se há chamada para esse resultado com lista finalizada.
      * Caso o usuário não tenha resultado de exame ou não tenha sido convocado em nenhuma chamada finalizada,
      * retorna null.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function callCardToPdf()
@@ -185,22 +184,22 @@ class PdfController extends Controller
         // Acessar a inscrição e o resultado do exame do usuário autenticado
         $examResult = $user->inscription->exam_result ?? null;
 
-        if (!$examResult) {
+        if (! $examResult) {
             return null; // Usuário sem resultado de exame
         }
 
         // Verifica se há chamada para esse resultado com lista finalizada
         $call = Call::where('exam_result_id', $examResult->id)
-            ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
+            ->whereHas('callList', fn ($query) => $query->where('status', 'completed'))
             ->with('callList') // carrega os dados da lista de chamada
             ->first();
 
-        if (!$call) {
+        if (! $call) {
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
         $pdf = Pdf::loadView('admin.pdf.call-card', [
-            'user' =>  $user,
+            'user' => $user,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
             'phone' => '(19) 3873-2605',
@@ -212,7 +211,7 @@ class PdfController extends Controller
                 'Original e 01 cópia do comprovante de residência em Sumaré (menos de 30 dias);',
                 'Original e 01 cópia da certidão de nascimento;',
                 '3 (três) fotos 3x4;',
-                'Laudo médico atualizado (se PCD).'
+                'Laudo médico atualizado (se PCD).',
             ],
         ]);
 
@@ -222,26 +221,37 @@ class PdfController extends Controller
     /**
      * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.
      *
-     * @return Response O PDF gerado com a ficha de inscri o do candidato.
+     * @return Response O PDF gerado com a ficha de inscrição do candidato.
      */
     public function inscriptionReceiptToPdf()
     {
-        $user = Auth::user();
+        $user = auth()->user()->load([
+            'inscription',
+            'lgbt',
+            'document',
+            'certificate',
+            'academic',
+            'mother',
+            'father',
+            'guardian',
+            'parent_email',
+            'pne'
+        ]);
 
-        if ($user) {
-            // Gera o PDF com a view
-            $pdf = Pdf::loadView('admin.pdf.proof-of-registration', [
-                'user' => $user
-            ]);
+        $displayName = $user->lgbt?->status === "accepted"
+            ? $user?->lgbt?->name
+            : $user->name;
 
-            // Sanitiza o CPF (remove espaços, pontos, traços etc.)
-            $cpfSanitizado = preg_replace('/[^0-9]/', '', $user->cpf);
+        $process = $user->inscription?->process;
 
-            // Monta o nome do arquivo
-            $filename = 'Inscricao_' . $cpfSanitizado . '.pdf';
+        $pdf = Pdf::loadView('inscription.pdf.complete', [
+            'user' => $user,
+            'displayName' => $displayName,
+            'process' => $process,
+        ]);
 
-            // Retorna o PDF diretamente como download
-            return $pdf->download($filename);
-        }
+        $cpfSanitizado = preg_replace('/\D/', '', $user->cpf);
+
+        return $pdf->download("Inscricao_{$cpfSanitizado}.pdf");
     }
 }

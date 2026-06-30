@@ -67,22 +67,23 @@ class PersonalRequest extends FormRequest
                 'nullable',
                 'file',
                 'mimes:pdf',
-                'max:2048', // limite de 2MB
+                'max:5120', // limite de 5MB
             ],
 
-            'phone' => ['required', 'min:14', 'max:15'], // Relacionamento
+            'phone' => ['required', 'min:14', 'max:15'],
 
-            'nationality' => ['required', Rule::in([1, 2])], // Relacionamento
+            'nationality' => ['required', Rule::in([1, 2, 3, 4])],
 
-            'doc_type' => ['required', Rule::in([1, 2, 3])], // Relacionamento
+            'doc_type' => ['required', Rule::in([1, 2, 3])],
 
             'doc_number' => [
                 'required',
                 'regex:/^\d{7}[\dA-Za-z]{0,4}$/',
                 'min:7',
                 'max:11',
-                'unique:users,document_number',
+                'unique:documents,number'
             ],
+            'expedition' => ['required', 'date', 'before:today'],
         ];
     }
 
@@ -111,7 +112,7 @@ class PersonalRequest extends FormRequest
             'authorization.required' => '* O campo autorização é obrigatório.',
             'authorization.file' => '* O campo autorização deve ser um arquivo PDF.',
             'authorization.mimes' => '* O campo autorização deve ser um arquivo PDF.',
-            'authorization.max' => '* O campo autorização deve ter no máximo 2MB.',
+            'authorization.max' => '* O campo autorização deve ter no máximo 5MB.',
 
             // Nacionalidade
             'nationality.required' => '* O campo nacionalidade é obrigatório.',
@@ -127,6 +128,11 @@ class PersonalRequest extends FormRequest
             'doc_number.min' => '* O campo nº do documento deve conter no mínimo :min caracteres.',
             'doc_number.max' => '* O campo nº do documento deve conter no máximo :max caracteres.',
             'doc_number.unique' => '* Documento já cadastrado.',
+
+            // Data de Expedição
+            'expedition.required' => '* O campo data de expedição é obrigatório.',
+            'expedition.date' => '* Data de expedição inválida.',
+            'expedition.before' => '* Data de expedição inválida. Não pode ser maior que a data atual.',
 
             // Data de Nascimento
             'birth.required' => '* O campo data de nascimento é obrigatório.',

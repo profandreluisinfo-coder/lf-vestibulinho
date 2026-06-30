@@ -62,7 +62,7 @@ $(document).ready(function () {
                 noSequences: true,
                 wordLength: true
             },
-            number: {
+            home: {
                 required: true,
                 maxlength: 10,
                 pattern: /^[a-zA-ZÀ-ÿ0-9 \/]*$/
@@ -104,7 +104,7 @@ $(document).ready(function () {
                 maxlength: "* Máximo de 60 caracteres.",
                 pattern: "* Apenas letras, números e espaços.",
             },
-            number: {
+            home: {
                 required: "* Obrigatório. Caso não tenha, digite S/N.",
                 maxlength: "* Máximo de 10 caracteres.",
                 pattern: "* Apenas letras, números e espaços.",

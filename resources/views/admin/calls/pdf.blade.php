@@ -118,7 +118,7 @@
             $call_date = $call->date->format('d/m/Y');
             $doc = trim(explode(' ', $detail?->doc_type)[0]); // pega a primeira palavra do tipo de documento
             $displayName = ($user->social_name_option && $user->authorization_accepted == 1)
-                ? $user->social_name    
+                ? $user->name    
                 : '';
         @endphp
 

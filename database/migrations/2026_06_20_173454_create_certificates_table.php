@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('number', 32)->unique();
             $table->string('fls', 10)->nullable();
             $table->string('book', 10)->nullable();
-            $table->string('municipality', 45)->nullable();
+            $table->string('city', 45)->nullable();
             $table->timestamps();
         });
     }

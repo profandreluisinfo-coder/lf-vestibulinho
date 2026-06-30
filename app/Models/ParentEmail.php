@@ -11,7 +11,7 @@ class ParentEmail extends Model
 
     protected $fillable = [
         'user_id',
-        'email',
+        'address',
     ];
 
     /**

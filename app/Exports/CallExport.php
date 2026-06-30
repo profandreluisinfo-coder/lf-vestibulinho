@@ -31,7 +31,7 @@ class CallExport implements FromCollection, WithHeadings
                 return [
                     'Inscrição'        => $call->examResult->inscription->id,
                     'Nome'             => $user->name,
-                    'Nome Social'      => $user->social_name,
+                    'Nome Social'      => $user->name,
                     'CPF'              => $user->cpf,
                     'Nascimento'       => \Carbon\Carbon::parse($user->birth)->format('d/m/Y'),
                     'Gênero'           => $user->gender,

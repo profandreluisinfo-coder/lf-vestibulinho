@@ -1,39 +1,69 @@
 @php
     $steps = [
-        1 => ['label' => 'Dados Pessoais',          'route' => 'inscription.step.personal',     'done_key' => 'step1_done'],
-        2 => ['label' => 'Certidão de Nascimento',  'route' => 'inscription.step.certificate',  'done_key' => 'step2_done'],
-        3 => ['label' => 'Endereço',                'route' => 'inscription.step.address',      'done_key' => 'step3_done'],
-        4 => ['label' => 'Dados Escolares',         'route' => 'inscription.step.academic',     'done_key' => 'step4_done'],
-        5 => ['label' => 'Filiação',                'route' => 'inscription.step.family',       'done_key' => 'step5_done'],
-        6 => ['label' => 'Outras Informações',      'route' => 'inscription.step.other',        'done_key' => 'step6_done'],
-        7 => ['label' => 'Curso',                   'route' => 'inscription.step.course',       'done_key' => 'step7_done'],
-        8 => ['label' => 'Revisão',                 'route' => 'inscription.step.confirm',      'done_key' => 'step8_done'],
+        1 => ['label' => 'Dados Pessoais', 'route' => 'inscription.step.personal', 'done_key' => 'step1_done'],
+        2 => [
+            'label' => 'Certidão de Nascimento',
+            'route' => 'inscription.step.certificate',
+            'done_key' => 'step2_done',
+        ],
+        3 => ['label' => 'Endereço', 'route' => 'inscription.step.address', 'done_key' => 'step3_done'],
+        4 => ['label' => 'Dados Escolares', 'route' => 'inscription.step.academic', 'done_key' => 'step4_done'],
+        5 => ['label' => 'Filiação', 'route' => 'inscription.step.family', 'done_key' => 'step5_done'],
+        6 => ['label' => 'Outras Informações', 'route' => 'inscription.step.other', 'done_key' => 'step6_done'],
+        7 => ['label' => 'Curso', 'route' => 'inscription.step.course', 'done_key' => 'step7_done'],
+        8 => ['label' => 'Revisão', 'route' => 'inscription.step.confirm', 'done_key' => 'step8_done'],
     ];
 
-    // Determina o passo atual pela rota
+    // Passo atual
     $currentRoute = Route::currentRouteName();
-    $currentStep  = collect($steps)->search(fn($s) => $s['route'] === $currentRoute) ?? 1;
+    $currentStep = collect($steps)->search(fn($s) => $s['route'] === $currentRoute);
+
+    if ($currentStep === false) {
+        $currentStep = 1;
+    }
+
+    /**
+     * Descobre até qual passo o usuário pode navegar.
+     *
+     * Exemplo:
+     * Passos 1,2,3 concluídos => libera até o 4.
+     * Passos 1..7 concluídos => libera até o 8.
+     */
+    $maxUnlocked = 1;
+
+    foreach ($steps as $number => $step) {
+        if (session($step['done_key'], false)) {
+            $maxUnlocked = min($number + 1, count($steps));
+        } else {
+            break;
+        }
+    }
 @endphp
 
 <div class="stepper-wrapper mb-4">
     <ol class="stepper">
         @foreach ($steps as $number => $step)
             @php
-                $done    = session($step['done_key'], false);
-                $active  = $number === $currentStep;
-                $canVisit = $done || $active || ($number > 1 && session($steps[$number - 1]['done_key'], false));
+                $done = session($step['done_key'], false);
+                $active = $number === $currentStep;
+                $canVisit = $number <= $maxUnlocked;
 
                 $classes = 'stepper-item';
-                if ($active)    $classes .= ' active';
-                elseif ($done)  $classes .= ' done';
-                else            $classes .= ' locked';
+
+                if ($active) {
+                    $classes .= ' active';
+                } elseif ($done) {
+                    $classes .= ' done';
+                } else {
+                    $classes .= ' locked';
+                }
             @endphp
 
             <li class="{{ $classes }}">
-                @if ($done && !$active && $canVisit)
+                @if ($canVisit && !$active)
                     <a href="{{ route($step['route']) }}" class="stepper-link">
-                @else
-                    <span class="stepper-link">
+                    @else
+                        <span class="stepper-link">
                 @endif
 
                 <span class="stepper-bubble">
@@ -44,9 +74,11 @@
                     @endif
                 </span>
 
-                <span class="stepper-label">{{ $step['label'] }}</span>
+                <span class="stepper-label">
+                    {{ $step['label'] }}
+                </span>
 
-                @if ($done && !$active && $canVisit)
+                @if ($canVisit && !$active)
                     </a>
                 @else
                     </span>

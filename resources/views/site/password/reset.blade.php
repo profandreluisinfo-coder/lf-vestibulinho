@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $selection_process?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Centro -->

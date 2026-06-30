@@ -1,6 +1,8 @@
 $(function () {
+    const EXPEDITION_WARNING_KEY = 'expedition-warning-confirmed';
     const $form = $("#inscription");
     const $radioYes = $('#radioYes');
+    const $expedition = $('#expedition');
 
     // Métodos de validação personalizados
     $.validator.addMethod("noSequences", value =>
@@ -27,6 +29,16 @@ $(function () {
             .some(i => value === value.slice(0, i).repeat(value.length / i));
     }, "* Padrão numérico inválido para o documento");
 
+    $.validator.addMethod('dataNaoFutura', function (value, element) {
+        if (!value) return true; // Campo vazio é validado pelo 'required'
+
+        const dataInformada = new Date(value);
+        const dataAtual = new Date();
+        dataAtual.setHours(0, 0, 0, 0); // Zera horas para comparar apenas dias
+
+        return dataInformada <= dataAtual;
+    }, '* A data não pode ser superior à data atual.');
+
     const validateIfFilled = param => ({
         depends: el => $(el).val().trim() !== "",
         param
@@ -47,7 +59,7 @@ $(function () {
             cpf: { required: true, cpfBR: true },
             name: {
                 required: true,
-                maxlength: 60,
+                maxlength: 100,
                 pattern: /^[a-zA-ZÀ-ÿ ]*$/,
                 noSequences: true,
                 wordLength: true,
@@ -65,7 +77,7 @@ $(function () {
                 ...ruleIf(isRadioYesChecked, 'required'),
                 extension: "pdf"
             },
-            nationality: { required: true, range: [1, 2] },
+            nationality: { required: true, range: [1, 4] },
             doc_type: { required: true, range: [1, 3] },
             doc_number: {
                 required: true,
@@ -74,8 +86,20 @@ $(function () {
                 pattern: /^\d{7}[\dA-Za-z]{0,4}$/,
                 noSimplePatterns: true
             },
-            gender: { required: true, range: [1, 4] },
-            birth: { required: true, date: true },
+            expedition: {
+                required: true,
+                date: true,
+                dataNaoFutura: true
+            },
+            gender: {
+                required: true,
+                range: [1, 4]
+            },
+            birth: {
+                required: true,
+                date: true,
+                dataNaoFutura: true
+            },
             phone: {
                 required: true,
                 minlength: 14,
@@ -115,13 +139,19 @@ $(function () {
                 maxlength: "* Use no máximo 11 caracteres.",
                 pattern: "* Formato inválido. Use apenas letras e números."
             },
+            expedition: {
+                required: "* Obrigatório.",
+                date: "* Data inválida.",
+                dataNaoFutura: "* A data não pode ser superior à data atual."
+            },
             gender: {
                 required: "* Obrigatório.",
                 range: "* Selecione um gênero válido."
             },
             birth: {
                 required: "* Obrigatório.",
-                date: "* Data inválida."
+                date: "* Data inválida.",
+                dataNaoFutura: "* A data não pode ser superior à data atual."
             },
             phone: {
                 required: "* Obrigatório.",
@@ -146,5 +176,87 @@ $(function () {
 
     $form.on("invalid-form.validate", () => {
         alert("Existem campos inválidos. Por favor, revise o formulário.");
+    });
+
+    /**
+     * calcula a idade do documento.
+     * @param {string} date - Data de expedição do documento.
+     * @returns {number} - Idade do documento em anos.
+     */
+    function getDocumentAge(date) {
+
+        const today = new Date();
+        const expedition = new Date(date);
+
+        let years = today.getFullYear() - expedition.getFullYear();
+
+        const month = today.getMonth() - expedition.getMonth();
+
+        if (month < 0 || (month === 0 && today.getDate() < expedition.getDate())) {
+            years--;
+        }
+
+        return years;
+    }
+
+    /**
+     * Exibe o aviso de documento expirado.
+     * @returns {Promise} - Promise que resolve quando o usuário confirma ou cancela.
+     */
+    function showExpeditionWarning() {
+
+        return Swal.fire({
+            icon: 'warning',
+            title: 'Atenção',
+            html: `
+            <p>
+                O documento de identificação informado foi expedido há
+                <strong>5 anos ou mais</strong>.
+            </p>
+
+            <p>
+                Para ingresso no local de prova, será obrigatória a apresentação
+                de documento oficial de identificação com fotografia que permita
+                sua adequada identificação.
+            </p>
+
+            <p class="mb-0">
+                Caso o documento informado não possua fotografia atual ou suficiente
+                para sua identificação, providencie a emissão de um novo documento
+                antes da data da prova.
+            </p>
+        `,
+            confirmButtonText: 'Entendi',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
+    }
+
+    /**
+     * Verifica a idade do documento de identidade e exibe aviso se necessário.
+     */
+    $expedition.on('blur', function () {
+
+        const years = getDocumentAge(this.value);
+
+        // Documento recente: limpa a confirmação
+        if (years < 5) {
+            sessionStorage.removeItem(EXPEDITION_WARNING_KEY);
+            return;
+        }
+
+        // Documento antigo: se já confirmou, não mostra novamente
+        if (sessionStorage.getItem(EXPEDITION_WARNING_KEY)) {
+            return;
+        }
+
+        showExpeditionWarning().then(result => {
+
+            if (result.isConfirmed) {
+                sessionStorage.setItem(EXPEDITION_WARNING_KEY, 'true');
+            }
+
+        });
     });
 });

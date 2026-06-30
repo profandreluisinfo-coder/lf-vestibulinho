@@ -4,12 +4,13 @@ namespace App\Providers;
 
 use App\Helpers\GlobalDataHelper;
 use App\Models\Faq;
-use App\Models\SelectionProcess;
 use App\Models\User;
+use App\View\Composers\UserComposer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,14 +44,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Evita erro caso a tabela ainda não tenha sido criada.
-        if (! Schema::hasTable('selection_processes')) {
+        if (! Schema::hasTable('processes')) {
             return;
         }
 
-        $selectionProcess = SelectionProcess::latest('id')->first();
-
         // Torna variáveis globais acessíveis em todas as views
         GlobalDataHelper::share();
-        
     }
 }

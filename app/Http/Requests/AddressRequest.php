@@ -48,7 +48,7 @@ class AddressRequest extends FormRequest
             // endereço
             'zip' => ['required', 'min:10', 'max:10'],
             'street' => ['required', 'max:60', 'regex:/^[\p{L}0-9\s.,-]+$/u'],
-            'number' => ['required', 'max:10', 'regex:/^[\p{L}0-9\s\/]*$/u'],
+            'home' => ['required', 'max:10', 'regex:/^[\p{L}0-9\s\/]*$/u'],
             'complement' => ['nullable', 'max:20', 'regex:/^[\p{L}0-9\s.,-]+$/u'],
             'burgh' => ['required', 'max:60', 'regex:/^[\p{L}0-9\s.,()\-]+$/u'],
             'city' => ['required', 'max:30', 'regex:/^[a-zA-ZÀ-Úà-ú ]+$/'],
@@ -68,9 +68,9 @@ class AddressRequest extends FormRequest
             'street.max' => '* No máximo :max caracteres',
             'street.regex' => '* Apenas letras, números e espaços',
 
-            'number.required' => '* Obrigatório. Caso não tenha, digite S/N.',
-            'number.max' => '* No máximo :max caracteres',
-            'number.regex' => '* Apenas letras, números e espaços',
+            'home.required' => '* Obrigatório. Caso não tenha, digite S/N.',
+            'home.max' => '* No máximo :max caracteres',
+            'home.regex' => '* Apenas letras, números e espaços',
 
             'complement.max' => '* No máximo :max caracteres',
             'complement.regex' => '* Apenas letras, números e espaços',

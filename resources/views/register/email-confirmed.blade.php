@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Confirmação de e-mail — Vestibulinho ' . $selection_process?->year)
+@section('title', 'Confirmação de e-mail — Vestibulinho ' . $process?->year)
 
 @section('meta_description', 'Área de confirmação de e-mail para candidatos do Vestibulinho.')
 
@@ -18,7 +18,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $selection_process?->year ?? config('app.year') }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $process?->year ?? config('app.year') }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <div class="panel-center">
@@ -27,7 +27,7 @@
         </p>
         <p class="lead-text">
             Agora você pode acessar a Área do Candidato e preencher o formulário de inscrição para o
-            Vestibulinho {{ $selection_process?->year ?? config('app.year') }}.
+            Vestibulinho {{ $process?->year ?? config('app.year') }}.
         </p>
 
         <div class="panel-steps">
@@ -95,7 +95,7 @@
             <p>
                 Acesse a <strong>Área do Candidato</strong> com o e-mail e senha cadastrados
                 para preencher o <strong>formulário de inscrição</strong> do
-                Vestibulinho {{ $selection_process?->year }}.
+                Vestibulinho {{ $process?->year }}.
             </p>
         </div>
 

@@ -16,10 +16,6 @@ class Pne extends Model
         'observations'
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
-
     /**
      * Defina o valor de um determinado atributo no modelo.
      *

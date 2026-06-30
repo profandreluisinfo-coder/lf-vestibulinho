@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SelectionProcess;
+use App\Models\Process;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
-{
-    
+{    
     /**
      * Mostra a página de registro de dados de acesso para o usuário.
      *
@@ -22,9 +21,9 @@ class UserController extends Controller
      */
     public function create(): View | RedirectResponse
     {
-        $selection_process = SelectionProcess::current();
+        $process = Process::current();
 
-        if (empty($selection_process) || !($selection_process?->isInscriptionOpen())) {
+        if (empty($process) || !($process?->isInscriptionOpen())) {
             return alertError('Não é possível efetuar o registro no momento.');
         }
 

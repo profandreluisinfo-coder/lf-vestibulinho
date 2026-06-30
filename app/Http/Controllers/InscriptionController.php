@@ -11,19 +11,17 @@ use App\Http\Requests\PersonalRequest;
 use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Disability;
-use App\Models\Document;
-use App\Models\Gender;
 use App\Models\HealthIssue;
-use App\Models\Nationality;
+use App\Models\Process;
 use App\Models\Resource;
 use App\Models\School;
-use App\Models\SelectionProcess;
 use App\Services\InscriptionService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class InscriptionController extends Controller
@@ -31,24 +29,39 @@ class InscriptionController extends Controller
     public function start(): View
     {
         $user = Auth::user();
+        $process = Process::current();
 
-        $selection_process = SelectionProcess::current();
-
-        if (!$selection_process || !$selection_process?->isInscriptionOpen()) {
+        if (! $process || ! $process?->isInscriptionOpen()) {
             abort(404);
         }
 
-        return view('inscription.start', compact('user'));
+        $displayName = $user?->name && $user?->lgbt?->status === 'accepted' 
+                    ? $user?->lgbt?->name 
+                    : $user?->name;
+        $name = $user?->name;
+        $initials = $this->getInitials($name);
+
+        return view('inscription.start', [
+            'user' => $user,
+            'displayName' => $displayName,
+            'initials' => $initials
+        ]);
     }
-    
-    public function show(): View | RedirectResponse
+
+    public function show(): View|RedirectResponse
     {
         $user = Auth::user();
 
+        $displayName = $user?->name && $user?->lgbt?->status === 'accepted' 
+                    ? $user?->lgbt?->name 
+                    : $user?->name;
+        $name = $user?->name;
+        $initials = $this->getInitials($name);
+        
         // Segurança extra caso acessem direto sem ter inscrição
-        if (!$user->inscription()->exists()) {
+        if (! $user->inscription()->exists()) {
             return redirect()
-                ->route('inscription.step.start')
+                ->route('inscription.start')
                 ->with('warning', 'Você ainda não possui inscrição ativa.');
         }
 
@@ -58,29 +71,39 @@ class InscriptionController extends Controller
             'inscription.exam_result.completedCall',
         ]);
 
-        $inscription  = $user->inscription;
-        $examResult   = $inscription->exam_result;
+        $inscription = $user->inscription;
+        $examResult = $inscription->exam_result;
         $examLocation = $examResult?->examLocation;
 
         $exam = $examResult; // O EXAM REAL — o model completo
 
         $call = $examResult?->completedCall;
 
-        return view('inscription.show', compact('user', 'exam', 'examResult', 'call'));
+        return view('inscription.show', [
+            'user' => $user,
+            'displayName' => $displayName,
+            'initials' => $initials,
+            'exam' => $exam,
+            'examResult' => $examResult,
+            'examLocation' => $examLocation,
+            'call' => $call
+        ]);
+    }
+
+    private function getInitials(?string $name): string
+    {
+        if (!$name) return '';
+        $parts = array_filter(explode(' ', trim($name)));
+        return strtoupper(
+            ($parts[0][0] ?? '') . 
+            ($parts[1][0] ?? '')
+        );
     }
 
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        $nationalities = Nationality::all();
-        $documents = Document::all();
-        $genders = Gender::all();
-
-        return view('inscription.step.personal', [
-            'nationalities' => $nationalities,
-            'documents' => $documents,
-            'genders' => $genders
-        ]);
+        return view('inscription.steps.personal');
     }
 
     // Gravar Dados de Passo 1
@@ -88,7 +111,7 @@ class InscriptionController extends Controller
     {
         $data = $request->except(['_token', 'authorization']);
 
-        if (($data['social_name_option'] ?? null) == "2") {
+        if (($data['social_name_option'] ?? null) == '2') {
             $data['social_name'] = null;
         }
 
@@ -106,12 +129,13 @@ class InscriptionController extends Controller
     // Passo 2: Certidão de Nascimento
     public function certificate(): View|RedirectResponse
     {
-        if (!session('step1_done')) { // Verifica se o passo 1 foi concluído
-            return redirect()->route('inscription.step.personal');
+        if (! session()->get('step1_done')) {
+            return redirect()->route('inscription.step.personal')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('inscription.step.certificate');
+        return view('inscription.steps.certificate');
     }
+
     // Gravar Dados de Passo 2
     public function certificateStore(CertificateRequest $request): Response|RedirectResponse
     {
@@ -124,12 +148,13 @@ class InscriptionController extends Controller
     // Passo 3: Endereço
     public function address(): View|RedirectResponse
     {
-        if (!session('step2_done')) { // Verifica se o passo 2 foi concluído
-            return redirect()->route('inscription.step.certificate');
+        if (! session()->get('step2_done')) {
+            return redirect()->route('inscription.step.certificate')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('inscription.step.address');
+        return view('inscription.steps.address');
     }
+
     // Gravar Dados de Passo 3
     public function addressStore(AddressRequest $request): RedirectResponse
     {
@@ -142,16 +167,17 @@ class InscriptionController extends Controller
     // Passo 4: Dados Acadêmicos
     public function academic(): View|RedirectResponse
     {
-        if (!session('step3_done')) { // Verifica se o passo 3 foi concluído
-            return redirect()->route('inscription.step.address');
+        if (! session()->get('step3_done')) {
+            return redirect()->route('inscription.step.address')->with('warning', 'Complete o passo anterior.');
         }
 
         $schools = School::all();
 
-        return view('inscription.step.academic', [
-            'schools' => $schools
+        return view('inscription.steps.academic', [
+            'schools' => $schools,
         ]);
     }
+
     // Gravar Dados de Passo 4
     public function academicStore(AcademicRequest $request): Response|RedirectResponse
     {
@@ -164,16 +190,17 @@ class InscriptionController extends Controller
     // Passo 5: Dados Familiares
     public function family(): View|RedirectResponse
     {
-        if (!session('step4_done')) { // Verifica se o passo 4 foi concluído
-            return redirect()->route('inscription.step.academic');
+        if (! session()->get('step4_done')) {
+            return redirect()->route('inscription.step.academic')->with('warning', 'Complete o passo anterior.');
         }
 
         $degrees = Degree::all();
 
-        return view('inscription.step.family', [
-            'degrees' => $degrees
+        return view('inscription.steps.family', [
+            'degrees' => $degrees,
         ]);
     }
+
     // Gravar Dados de Passo 5
     public function familyStore(FamilyRequest $request): Response|RedirectResponse
     {
@@ -183,7 +210,7 @@ class InscriptionController extends Controller
             $data['kinship'] = null;
         }
 
-        if ($data['respLegalOption'] == "2") {
+        if ($data['respLegalOption'] == '2') {
             $data['responsible'] = null;
             $data['degree'] = null;
             $data['kinship'] = null;
@@ -199,23 +226,11 @@ class InscriptionController extends Controller
     // Passo 6: Outras Informações
     public function other(): View|RedirectResponse
     {
-        if (!session('step5_done')) { // Verifica se o passo 3 foi concluído
-            return redirect()->route('inscription.step.family');
-        }
-
-        // Array de acessibilidade
-        $options = [
-            '1' => 'Sim',
-            '2' => 'Não',
-        ];
-
         $disabilities = Disability::all();
-        
         $accessibilityResources = Resource::all();
-
         $healthIssues = HealthIssue::all();
 
-        return view('inscription.step.others', compact('options', 'disabilities', 'accessibilityResources', 'healthIssues'));
+        return view('inscription.steps.others', compact('disabilities', 'accessibilityResources', 'healthIssues'));
     }
 
     // Gravar Dados de Passo 6
@@ -250,12 +265,12 @@ class InscriptionController extends Controller
     // Passo 7: Curso Pretendido
     public function course(): View|RedirectResponse
     {
-        if (!session('step1_done') && !session('step2_done') && !session('step3_done') && !session('step4_done') && !session('step5_done') && !session('step6_done')) { // Verifica se o passo 6 foi concluído
-            return redirect()->route('inscription.step.other');
+        if (! session()->get('step6_done')) {
+            return redirect()->route('inscription.step.other')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('inscription.step.course', [
-            'courses' => Course::all()
+        return view('inscription.steps.course', [
+            'courses' => Course::all(),
         ]);
     }
 
@@ -280,11 +295,11 @@ class InscriptionController extends Controller
 
         // Se não houver dados, redireciona para o dashboard
         if (empty($data)) {
-            return redirect()->route('inscription.step.start'); // <= CORRIGIR ROTA
+            return redirect()->route('inscription.start'); // <= CORRIGIR ROTA
         }
 
         // Retorna a view com os dados necessários
-        return view('inscription.step.confirm', array_merge(
+        return view('inscription.steps.confirm', array_merge(
             $steps->all()
         ));
     }
@@ -293,9 +308,8 @@ class InscriptionController extends Controller
     public function inscriptionStore(Request $request, InscriptionService $inscriptionService)
     {
         try {
-
             $request->validate([
-                'agree_terms' => 'accepted'
+                'agree_terms' => 'accepted',
             ]);
 
             $inscriptionService->store(); // Grava os dados através do service
@@ -324,15 +338,16 @@ class InscriptionController extends Controller
                 'status' => [
                     'alert-type' => 'danger',
                     'message' => 'Erro ao salvar os dados. Verifique se todos os campos estão corretos.',
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
             return redirect()->route('failed')->with(
                 'danger',
                 $e->getMessage() === 'Inscrição já realizada.'
                     ? 'Você já se inscreveu.'
-                    : 'Erro inesperado. Por favor, tente novamente.' . $e->getMessage(),
+                    : 'Erro inesperado. Por favor, tente novamente.'.$e->getMessage(),
             );
         }
     }

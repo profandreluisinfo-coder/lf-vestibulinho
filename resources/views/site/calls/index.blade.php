@@ -1,7 +1,7 @@
 @extends('layouts.site.master')
 
 @push('metas')
-    <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $selection_process?->year }}">
+    <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $process?->year }}">
 @endpush
 
 @section('page-title', 'Vestibulinho LF | Convocação para Matrícula')
@@ -110,7 +110,7 @@
 
                                         <caption class="bg-warning text-light px-4">
                                             <strong>
-                                                {{ config('app.name') }} {{ $selection_process?->year }}
+                                                {{ config('app.name') }} {{ $process?->year }}
                                                 - Chamada nº {{ $callNumber }}
                                                 ({{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                                                 às {{ \Carbon\Carbon::parse($time)->format('H:i') }})
@@ -134,7 +134,7 @@
                                                     <td>{{ $call->examResult->inscription->id }}</td>
                                                     <td>{{ $call->examResult->ranking }}º</td>
                                                     <td>
-                                                        {{ ($call->examResult->inscription->user->authorization_accepted == 1) ? $call->examResult->inscription->user->social_name : $call->examResult->inscription->user->name }}
+                                                        {{ ($call->examResult->inscription->user->authorization_accepted == 1) ? $call->examResult->inscription->user->name : $call->examResult->inscription->user->name }}
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($call->date)->format('d/m/Y') }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($call->time)->format('H:i') }}</td>

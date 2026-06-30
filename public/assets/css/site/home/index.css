@@ -759,13 +759,13 @@
 /* ─── FIM FAQ ────────────────────────────────────────────────── */
 
 /* ─── LINKS RÁPIDOS ──────────────────────────────────────── */
-#links-rapidos {
+#documentos {
     background: var(--navy);
     position: relative;
     overflow: hidden;
 }
 
-#links-rapidos::before {
+#documentos::before {
     content: '';
     position: absolute;
     inset: 0;

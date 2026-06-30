@@ -4,7 +4,7 @@
         <div class="row g-4 mb-4">
             <div class="col-lg-4">
                 <div class="brand mb-2">EM Dr. Leandro Franceschini<small>Escola Municipal · Vestibulinho
-                        {{ $selection_process?->year }}</small></div>
+                        {{ $process?->year }}</small></div>
                 <p style="font-size:.82rem;line-height:1.7;" class="mb-3">
                     Oferecendo educação técnica de qualidade e oportunidades reais de crescimento profissional para
                     toda a comunidade.
@@ -37,14 +37,14 @@
                 <h6>Processo Seletivo</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
 
-                    @if ($selection_process?->edital)
+                    @if ($process?->edital)
                         <li>
-                            <a href="{{ asset('storage/' . $selection_process?->edital) }}" target="_blank">
+                            <a href="{{ asset('storage/' . $process?->edital) }}" target="_blank">
                                 Edital
                             </a>
                         </li>
                     @endif
-                    @if ($selection_process?->is_active)
+                    @if ($process?->is_active)
                         <li><a href="{{ route('site.calendar.show') }}">Calendário</a></li>
                     @endif
                     <li><a href="{{ route('site.archives.index') }}">Provas Anteriores</a></li>
@@ -64,12 +64,12 @@
             <div class="col-6 col-lg-2 foot-col">
                 <h6>Candidato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
-                    @if ($selection_process?->isInscriptionOpen())
+                    @if ($process?->isInscriptionOpen())
                         <li><a href="{{ route('register') }}">Registrar-se</a></li>
                     @endif
                     <li><a href="{{ route('login') }}">Área do Candidato</a></li>
                     <li><a href="{{ route('site.faqs.index') }}">FAQ Completo</a></li>
-                    @if ($selection_process?->isInscriptionOpen())
+                    @if ($process?->isInscriptionOpen())
                         <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
                     @endif
                 </ul>

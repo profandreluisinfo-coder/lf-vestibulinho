@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\{ AdminController, ArchiveController, FaqController, EventController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController };
-use App\Http\Controllers\Admin\SelectionProcessController;
+use App\Http\Controllers\Admin\ProcessController;
 use App\Http\Controllers\Auth\{LoginController};
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -62,10 +62,10 @@ Route::middleware([
 
         // Processo Seltivo
         Route::prefix('processo-seletivo')->name('process.')->group(function () {
-            Route::get('detalhes', [SelectionProcessController::class, 'show'])->name('show');
-            Route::get('editar', [SelectionProcessController::class, 'edit'])->name('edit');
-            Route::put('atualizar', [SelectionProcessController::class, 'update'])->name('update');
-            Route::put('ativar/{sp}', [SelectionProcessController::class, 'activate'])->name('activate');
+            Route::get('detalhes', [ProcessController::class, 'show'])->name('show');
+            Route::get('editar', [ProcessController::class, 'edit'])->name('edit');
+            Route::put('atualizar', [ProcessController::class, 'update'])->name('update');
+            Route::put('ativar/{sp}', [ProcessController::class, 'activate'])->name('activate');
         });
 
         // Edital

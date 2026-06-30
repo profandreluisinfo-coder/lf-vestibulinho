@@ -146,7 +146,7 @@
                             <a href="{{ route('admin.process.show') }}" class="step-item text-secondary text-center"
                                 title="Definir Calendário">
                                 <i
-                                    class="bi {{ $selection_process ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+                                    class="bi {{ $process ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
                                 <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
                             </a>
 

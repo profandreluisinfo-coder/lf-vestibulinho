@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Reenvio de E-mail — Vestibulinho ' . $selection_process?->year)
+@section('title', 'Reenvio de E-mail — Vestibulinho ' . $process?->year)
 
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 
@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $selection_process?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Conteúdo central -->
@@ -79,7 +79,7 @@
                 <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                 <span>
                     Use o mesmo e-mail informado durante o seu registro no Vestibulinho
-                    {{ $selection_process?->year ?? config('app.year') }}.
+                    {{ $process?->year ?? config('app.year') }}.
                     Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
                 </span>
             </div>

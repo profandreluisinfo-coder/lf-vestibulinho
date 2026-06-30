@@ -63,7 +63,7 @@
     @foreach ($rooms as $room => $candidates)
       <div class="header">
         {{-- <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola"> --}}
-        <h3>{{ config('app.name') }} {{ $selection_process?->year }}</h3>
+        <h3>{{ config('app.name') }} {{ $process?->year }}</h3>
         <h3>LOCAL: {{ $location }}</h3>
         <h4>SALA: {{ $room }}</h4>
       </div>
@@ -81,7 +81,7 @@
             <tr>
               <th>{{ $candidate->inscription_id }}</td>
               <td style="border: none;">
-                {{ $candidate->social_name ?: $candidate->name }} {{ $candidate->social_name ? '*' : '' }}
+                {{ $candidate->name ?: $candidate->name }} {{ $candidate->name ? '*' : '' }}
               </td>
               <td style="border-bottom: 1px solid #000"></td>
             </tr>

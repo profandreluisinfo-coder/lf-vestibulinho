@@ -58,7 +58,7 @@
           @foreach ($candidates as $candidate)
             <tr>
               <td>{{ $candidate->name }}
-                {{ $candidate->social_name ? ' - Nome Social: ' . $candidate->social_name : '' }}</td>
+                {{ $candidate->name ? ' - Nome Social: ' . $candidate->name : '' }}</td>
               <td>{{ $candidate->inscription_id }}</td>
               {{-- <td>{{ \Carbon\Carbon::parse($candidate->birth)->format('d/m/Y') }}</td> --}}
               <td>{{ $candidate?->pne == 1 ? 'Sim' : 'Não' }}</td>

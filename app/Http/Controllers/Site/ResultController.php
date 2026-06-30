@@ -30,7 +30,7 @@ class ResultController extends Controller
             ->select(
                 'inscriptions.id',
                 'users.name',
-                'users.social_name',
+                'users.name',
                 'users.birth',
                 'exam_results.score',
                 'exam_results.ranking'

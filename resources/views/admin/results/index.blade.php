@@ -72,7 +72,7 @@
                     {{-- Tabela de resultados --}}
                     <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                         <table id="classification" class="table table-striped mb-0 caption-top">
-                            <caption>{{ config('app.name') }} {{ $selection_process?->year }} - Lista de Classificação Geral
+                            <caption>{{ config('app.name') }} {{ $process?->year }} - Lista de Classificação Geral
                             </caption>
                             <thead class="table-success">
                                 <tr>
@@ -96,7 +96,7 @@
                                         data-pcd="{{ $result->pne ? 'pcd' : 'nao' }}">
                                         <th scope="col">{{ $result->ranking }}º</th>
                                         <td>{{ $result->id }}</td>
-                                        <th>{{ $result->authorization_accepted == 1 ? $result->social_name : $result->name }}
+                                        <th>{{ $result->authorization_accepted == 1 ? $result->name : $result->name }}
                                         </th>
                                         <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
                                         <td>{{ $result->score }}</td>

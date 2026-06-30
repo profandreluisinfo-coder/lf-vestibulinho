@@ -22,13 +22,14 @@ use App\Http\Controllers\{
 // 🔒 Rotas que exigem login
 Route::middleware(['auth'])->name('inscription.')->group(function () {
 
+    // Area do candidato: exibe a página com informações sobre como fazer a inscrição
+    Route::get('informacoes', [InscriptionController::class, 'start'])->middleware(NoInscription::class)->name('start'); // Início
+
     // 📝 Passos da inscrição
     Route::middleware(NoInscription::class)
         ->prefix('inscricao')
         ->name('step.')
-        ->group(function () {
-            // Area do candidato: exibe a página com informações sobre como fazer a inscrição
-            Route::get('informacoes', [InscriptionController::class, 'start'])->name('start'); // Início
+        ->group(function () {            
 
             Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
             Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);

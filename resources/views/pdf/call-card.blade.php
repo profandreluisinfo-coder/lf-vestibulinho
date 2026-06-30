@@ -46,10 +46,10 @@
 
 <body>
 
-  <h1>Processo Seletivo {{ $selection_process?->year }} - Convocação para Matrícula</h1>
+  <h1>Processo Seletivo {{ $process?->year }} - Convocação para Matrícula</h1>
 
   <div class="info">
-    <p><strong>Candidato(a):</strong> {{ ($user->authorization_accepted == 1) ? $user->social_name : $user->name }}</p>
+    <p><strong>Candidato(a):</strong> {{ ($user->authorization_accepted == 1) ? $user->name : $user->name }}</p>
     <p><strong>Inscrição:</strong> {{ $user->inscription->id }}</p>
     <p><strong>CPF:</strong> {{ $user->cpf }}</p>
   </div>

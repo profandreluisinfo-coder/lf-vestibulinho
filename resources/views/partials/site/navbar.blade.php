@@ -28,13 +28,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> FAQ</a>
                 </li>
+                @if ($process?->status === 'open')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#links-rapidos">Documentos</a>
+                    <a class="nav-link" href="{{ route('home') }}/#documentos">Documentos</a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a>
                 </li>
-                @if ($selection_process?->status)
+                @if ($process?->status === 'open')
                 <li class="nav-item ms-lg-2">
                     <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
                         <i class="bi bi-person-circle me-1"></i> Área do Candidato

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('selection_process_id')->constrained('selection_processes')->onDelete('cascade');
+            $table->foreignId('process_id')->constrained('processes')->onDelete('cascade');
 
             // Período de inscrições
             $table->date('start')->nullable();

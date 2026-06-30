@@ -107,7 +107,7 @@ class OtherRequest extends FormRequest
                 'nullable',
                 'file',
                 'mimes:pdf',
-                'max:2048', // limite de 2MB
+                'max:5120', // limite de 5MB
             ],
 
             // programas sociais
@@ -117,7 +117,7 @@ class OtherRequest extends FormRequest
                 'nullable',
                 Rule::requiredIf(fn() => $this->input('social_program') == 1),
                 $this->input('social_program') == 1 ? new NisRule() : null,
-                'unique:social_programs,nis'                
+                'unique:users,nis'                
             ],
         ];
     }

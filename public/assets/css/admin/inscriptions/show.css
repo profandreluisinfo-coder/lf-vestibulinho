@@ -1,0 +1,174 @@
+.fi-header {
+    background: var(--grad-navy);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fi-header-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+
+.fi-header-sub {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.fi-active-badge {
+    background: rgba(0, 168, 150, 0.2);
+    color: #00D4BF;
+    border: 1px solid rgba(0, 168, 150, 0.35);
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+}
+
+.fi-section-label {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    padding-left: 2px;
+}
+
+.fi-card {
+    background: #fff;
+    border: 0.5px solid var(--color-light-mid);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.fi-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--color-light);
+    background: #F8FAFD;
+}
+
+.fi-card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.fi-card-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin: 0;
+}
+
+.fi-row {
+    display: flex;
+    align-items: baseline;
+    padding: 8px 16px;
+    gap: 8px;
+    border-bottom: 0.5px solid var(--color-light);
+}
+
+.fi-row:last-child {
+    border-bottom: none;
+}
+
+.fi-row-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-muted);
+    min-width: 120px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.fi-row-value {
+    font-size: 13px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.fi-num-badge {
+    background: var(--grad-teal);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+    font-weight: 800;
+    padding: 6px 14px;
+    font-family: var(--font-heading);
+}
+
+.fi-course-tag {
+    background: var(--color-light);
+    color: var(--color-navy-light);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    display: inline-block;
+}
+
+.fi-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+}
+
+.fi-pill-yes {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.fi-pill-no {
+    background: var(--color-light);
+    color: var(--color-muted);
+}
+
+.fi-pill-warn {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.fi-row-highlight {
+    background: #fffbeb;
+    border-left: 3px solid var(--color-amber) !important;
+    padding-left: 13px !important;
+}
+
+.fi-card-special .fi-card-header {
+    background: #f0fdfa;
+}
+
+.fi-card-special {
+    border-left: 3px solid var(--color-teal);
+}
+
+.fi-phone {
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-left: 8px;
+}

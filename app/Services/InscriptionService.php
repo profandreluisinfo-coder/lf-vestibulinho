@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Mail\SendMail;
 use App\Models\Inscription;
-use App\Models\SelectionProcess;
+use App\Models\Process;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,149 +22,155 @@ class InscriptionService
         $user = Auth::user();
 
         $steps = collect(range(1, 7))
-            ->mapWithKeys(fn($step) => ["step{$step}" => session()->get("step{$step}", [])]);
+            ->mapWithKeys(fn ($step) => ["step{$step}" => session()->get("step{$step}", [])]);
 
         $data = array_merge(...$steps->values()->toArray());
 
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
-
-        // exit();
-        
         DB::transaction(function () use ($user, $data, $steps) {
 
             $user->update([
-                'cpf' => $data['cpf'],
-                'name' => $data['name'],
-                'birth' => $data['birth'],
-                'gender_id' => $data['gender'],
-                'nationality_id' => $data['nationality'],
-                'document_id' => $data['doc_type'],
+                'cpf' => data_get($data, 'cpf'),
+                'name' => data_get($data, 'name'),
+                'birth' => data_get($data, 'birth'),
+                'gender' => data_get($data, 'gender'),
+                'nationality' => data_get($data, 'nationality'),
+                'phone' => data_get($data, 'phone'),
+                'zip' => data_get($data, 'zip'),
+                'street' => data_get($data, 'street'),
+                'home' => data_get($data, 'home'),
+                'complement' => data_get($data, 'complement'),
+                'burgh' => data_get($data, 'burgh'),
+                'city' => data_get($data, 'city'),
+                'state' => data_get($data, 'state'),
+                'nis' => (data_get($data, 'social_program') == '1') ? data_get($data, 'nis') : '',
+                // Corrigido: o formulário envia 'health_description', não 'health_issue'.
+                'health_issue' => (data_get($data, 'health') == '1') ? data_get($data, 'health_description') : '',
+                'role' => 'user',
             ]);
 
-            if (Inscription::where('user_id', $user->id)->where('course_id', $data['course_id'])->exists()) {
+            $sp = Process::latest('id')->first() ?? throw new \Exception('Processo Seletivo não encontrado.');
+
+            if (Inscription::where('user_id', $user->id)->where('process_id', $sp->id)->exists()) {
                 throw new \Exception('Inscrição já realizada.');
             }
 
-            // social_names
-            $user->social_name()->updateOrCreate([],[
-                'name' => $data['social_name'], // nome social
-                'authorization' => data_get($data, 'authorization'),
-            ]);
+            $user->document()->updateOrCreate(
+                [],
+                [
+                    'type' => data_get($data, 'doc_type'),
+                    'number' => data_get($data, 'doc_number'),
+                    'expedition' => data_get($data, 'expedition'),
+                ]
+            );
 
-            // phones
-            $user->phone()->updateOrCreate([],[
-                'number' => '19989092246',
-                // 'number' => $data['phone'],
-            ]);
+            if (data_get($data, 'social_name_option') === '1') {
+                $user->lgbt()->updateOrCreate(
+                    [],
+                    [
+                        'name' => data_get($data, 'social_name'),
+                        'authorization' => data_get($data, 'authorization'),
+                    ]
+                );
+            }
 
-            // certificates
-            $user->certificate()->updateOrCreate([],[
-                'type' => $data['certificateModel'],
-
-                'number' => data_get($data, 'new_number') ?? data_get($data, 'old_number'),
-
-                'fls' => data_get($data, 'fls'),
-                'book' => data_get($data, 'book'),
-                'municipality' => data_get($data, 'municipality'),
-            ]);
-
-            // addresses
-            $user->address()->updateOrCreate([], [
-                'zip' => '13170232',
-                // 'zip' => $data['zip'],
-                'street' => $data['street'],
-                'number' => $data['number'],
-                'complement' => data_get($data, 'complement'),
-                'burgh' => $data['burgh'],
-                'city' => $data['city'],
-                'state' => $data['state'],
-            ]);
+            $user->certificate()->updateOrCreate(
+                [],
+                [
+                    'type' => data_get($data, 'certificateModel'),
+                    'number' => data_get($data, 'new_number') ?? data_get($data, 'old_number'),
+                    'fls' => data_get($data, 'fls'),
+                    'book' => data_get($data, 'book'),
+                    'city' => data_get($data, 'municipality'),
+                ]
+            );
 
             $user->academic()->updateOrCreate([], [
-                'school' => $data['school_name'],
-                'city' => $data['school_city'],
-                'state' => $data['school_state'],
-                'year' => $data['school_year'],
-                'ra' => $data['school_ra'],
+                'school' => data_get($data, 'school_name'),
+                'city' => data_get($data, 'school_city'),
+                'state' => data_get($data, 'school_state'),
+                'year' => data_get($data, 'school_year'),
+                'ra' => data_get($data, 'school_ra'),
             ]);
 
-            // mothers
-            $user->mother()->updateOrCreate([], [
-                'name' => $data['mother'],
-                'phone' => data_get($data, 'mother_phone'),
-            ]);
+            $user->mother()->updateOrCreate(
+                [],
+                [
+                    'name' => data_get($data, 'mother'),
+                    'phone' => data_get($data, 'mother_phone'),
+                ]
+            );
 
-            // fathers
-            $user->father()->updateOrCreate([], [
-                'name' => $data['father'],
-                'phone' => data_get($data, 'father_phone'),
-            ]);
+            if (! empty(data_get($data, 'father'))) {
+                $user->father()->updateOrCreate(
+                    [],
+                    [
+                        'name' => data_get($data, 'father'),
+                        'phone' => data_get($data, 'father_phone'),
+                    ]
+                );
+            }
 
-            // guardians
-            $user->guardian()->updateOrCreate([], [
-                'name' => data_get($data, 'responsible'),
-                'phone' => data_get($data, 'responsible_phone'),
-                'degree' => data_get($data, 'degree'),
-                'kinship' => ($data['degree'] == '8' && !empty(data_get($data, 'kinship')))
-                    ? $data['kinship'] : '',
-            ]);
+            if (data_get($data, 'respLegalOption') === '1') {
+                $degree = data_get($data, 'degree');
 
-            $user->parent_email()->updateOrCreate([],[
-                'email' => $data['parents_email'],
-            ]);
+                $user->guardian()->updateOrCreate(
+                    [],
+                    [
+                        'name' => data_get($data, 'responsible'),
+                        'phone' => data_get($data, 'responsible_phone'),
+                        'degree' => $degree,
+                        'kinship' => ($degree == '8' && ! empty(data_get($data, 'kinship'))) ? data_get($data, 'kinship') : '',
+                    ]
+                );
+            }
 
-            $user->health()->updateOrCreate([],[
-                'problem' => (data_get($data, 'health') == '1') ? data_get($data, 'health_issue') : '',
-            ]);
+            $user->parent_email()->updateOrCreate(
+                [],
+                [
+                    'address' => data_get($data, 'parents_email'),
+                ]
+            );
 
-            $user->pne()->updateOrCreate([],[
-                // 'pne' => $data['pne'],
-                'description' => ($data['pne'] == '1') ? $data['pne_description'] : '',
-                'support' => ($data['pne'] == '1') ? $data['accessibility_description'] : '',
-                'report' => (data_get($data, 'pne') == '1') ? data_get($data, 'pne_report') : '',
-            ]);
+            if (data_get($data, 'pne') === '1') {
+                $pne = data_get($data, 'pne');
 
-            $user->social_program()->updateOrCreate([],[
-                'nis' => '97349155898',
-            ]);
-            // $user->social_program()->updateOrCreate([],[
-            //     'nis' => (data_get($data, 'social_program') == '1') ? data_get($data, 'nis') : '',
-            // ]);
+                $user->pne()->updateOrCreate(
+                    [],
+                    [
+                        'pne' => $pne,
+                        'description' => ($pne == '1') ? data_get($data, 'accessibility_description') : '',
+                        'support' => ($pne == '1') ? data_get($data, 'pne_description') : '',
+                        'report' => ($pne == '1') ? data_get($data, 'pne_report') : '',
+                    ]
+                );
+            }
 
-            $sp = SelectionProcess::latest('id')->first() ?? throw new \Exception('Processo Seletivo não encontrado.');
-
-            // dd($sp);
-
-            Inscription::create([
+            $inscription = Inscription::create([
                 'user_id' => $user->id,
-                'course_id' => $data['course_id'],
-                'selection_process_id' => $sp->id
+                'course_id' => data_get($data, 'course_id'),
+                'process_id' => $sp->id,
             ]);
-            // $inscription = Inscription::create([
-            //     'user_id' => $user->id,
-            //     'course_id' => $data['course_id'],
-            //     'selection_process_id' => $sp->id
-            // ]);
 
-            // $pdf = Pdf::loadView('pdf.inscription', compact('user', 'inscription', $sp->));
-            // $pdf = Pdf::loadView('pdf.inscription', compact('user', 'inscription'));
+            $pdf = Pdf::loadView('inscription.pdf.email', compact('user', 'inscription', 'sp'));
 
-            // $filename = 'comprovante_' . preg_replace('/[^0-9]/', '', $user->cpf) . '.pdf';
-            // $path = storage_path('app/public/' . $filename);
-            // $pdf->save($path);
+            $filename = 'comprovante_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
+            $path = storage_path('app/public/'.$filename);
+            $pdf->save($path);
 
             Mail::to($user->email)->send(new SendMail(
                 subject: 'Confirmação de Inscrição',
-                content: ['name' => $user->social_name ?: $user->name],
+                content: ['name' => $user->name],
                 view: 'emails.register',
-                // attachment: $path
+                attachment: $path
             ));
 
-            // Storage::disk('public')->delete($filename);
+            Storage::disk('public')->delete($filename);
 
-            session()->forget($steps->keys()->toArray());
+            $allKeys = collect(range(1, 7))
+                ->flatMap(fn ($step) => ["step{$step}", "step{$step}_done"])
+                ->toArray();
+
+            session()->forget($allKeys);
         });
     }
 }

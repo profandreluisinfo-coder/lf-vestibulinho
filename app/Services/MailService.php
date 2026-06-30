@@ -26,7 +26,6 @@ class MailService
                 Mail::to($to)->send($message);
             }
 
-            // Log::info("E-mail enviado para: {$to} - Assunto: {$subject}");
             Log::info("E-mail enviado para: {$to} - Assunto: {$subject} - Conteúdo: " . json_encode($content, JSON_UNESCAPED_UNICODE));
 
             return true;

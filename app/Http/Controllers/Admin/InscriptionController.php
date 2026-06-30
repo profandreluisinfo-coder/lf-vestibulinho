@@ -90,34 +90,6 @@ class InscriptionController extends Controller
     }
 
     /**
-     * Exibe a lista de candidatos com deficiência.
-     *
-     * @return View
-     */
-    public function pcd(): View
-    {
-        // Query base
-        $users = User::whereHas('user_detail', fn($q) => $q->where('pne', true))
-            ->whereHas('inscription')
-            ->with(['inscription', 'user_detail'])
-            ->get();
-        // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('admin.inscriptions.pcd', compact('users'));
-    }
-
-    public function socialName(): View
-    {
-        $users = User::whereNotNull('social_name')
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // dados da inscrição na view
-            ->get();
-
-        view()->share('users', $users);
-
-        return view('admin.inscriptions.social-name');
-    }
-
-    /**
      * Exibe a ficha de inscrição de um candidato especificado.
      *
      * @param string $id O ID do candidato, criptografado.
@@ -132,4 +104,36 @@ class InscriptionController extends Controller
 
         return view('admin.inscriptions.show')->with('user', $user);
     }
+
+    /**
+     * Exibe a lista de candidatos com deficiência.
+     *
+     * @return View
+     */
+    public function pcd(): View
+    {
+        // Query base
+        // $users = User::whereHas('pne', fn($q) => $q->where('status', true))
+        $users = User::whereHas('pne')
+            ->whereHas('inscription')
+            ->with(['inscription', 'pne'])
+            ->get();
+            
+        // Não carrega mais os dados aqui, apenas retorna a view vazia
+        return view('admin.inscriptions.pcd', compact('users'));
+    }
+
+    public function socialName(): View
+    {
+        $users = User::whereNotNull('name')
+            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
+            ->with('inscription')     // dados da inscrição na view
+            ->get();
+
+        view()->share('users', $users);
+
+        return view('admin.inscriptions.social-name');
+    }
+
+    
 }

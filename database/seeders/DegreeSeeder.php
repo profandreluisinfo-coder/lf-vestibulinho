@@ -13,13 +13,14 @@ class DegreeSeeder extends Seeder
     public function run(): void
     {
         $degrees = [
-            ['description' => 'Padrasto'],
-            ['description' => 'Madrasta'],
-            ['description' => 'Avô(ó)'],
-            ['description' => 'Tio(a)'],
-            ['description' => 'Irmão(ã)'],
-            ['description' => 'Primo(a)'],
-            ['description' => 'Outro'],
+            ['id' => 1, 'description' => 'Padrasto'],
+            ['id' => 2, 'description' => 'Madrasta'],
+            ['id' => 3, 'description' => 'Avô(ó)'],
+            ['id' => 4, 'description' => 'Tio(a)'],
+            ['id' => 5, 'description' => 'Irmão(ã)'],
+            ['id' => 6, 'description' => 'Primo(a)'],
+            ['id' => 7, 'description' => 'Cunhado(a)'],
+            ['id' => 8, 'description' => 'Outro'],
         ];
 
         foreach ($degrees as $degree) {

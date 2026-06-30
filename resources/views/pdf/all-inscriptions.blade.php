@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h2>{{ config('app.name') }} {{ $selection_process?->year }} - Lista Geral de Inscritos</h2>
+<h2>{{ config('app.name') }} {{ $process?->year }} - Lista Geral de Inscritos</h2>
 
 @if($search)
     <p><strong>Filtro aplicado:</strong> "{{ $search }}"</p>
