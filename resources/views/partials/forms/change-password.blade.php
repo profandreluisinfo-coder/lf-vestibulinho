@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <div class="mb-3 text-end">
                     <button type="button" id="toggleAllPasswords" class="btn btn-sm btn-link text-decoration-none">
-                        <i class="bi bi-eye"></i> Mostrar senhas
+                        <i class="bi bi-eye me-2"></i> Mostrar senhas
                     </button>
                 </div>
                 <form id="change-password" action="{{ route('update.password') }}" method="POST">

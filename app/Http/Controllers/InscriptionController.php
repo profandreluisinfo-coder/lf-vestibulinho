@@ -206,11 +206,11 @@ class InscriptionController extends Controller
     {
         $data = $request->except(['_token']);
 
-        if ($data['degree'] < 8) {
+        if (data_get($data, 'degree') < 8) {
             $data['kinship'] = null;
         }
 
-        if ($data['respLegalOption'] == '2') {
+        if (data_get($data, 'respLegalOption') == '2') {
             $data['responsible'] = null;
             $data['degree'] = null;
             $data['kinship'] = null;
@@ -226,6 +226,10 @@ class InscriptionController extends Controller
     // Passo 6: Outras Informações
     public function other(): View|RedirectResponse
     {
+        if (! session()->get('step5_done')) {
+            return redirect()->route('inscription.step.family')->with('warning', 'Complete o passo anterior.');
+        }
+
         $disabilities = Disability::all();
         $accessibilityResources = Resource::all();
         $healthIssues = HealthIssue::all();
@@ -238,8 +242,8 @@ class InscriptionController extends Controller
     {
         $data = $request->except(['_token', 'pne_report']);
 
-        if ($data['health'] != 1) {
-            $data['health_description'] = null;
+        if (data_get($data, 'health') != 1) {
+            $data['health_issue'] = null;
         }
 
         if ($request->hasFile('pne_report')) {
@@ -247,12 +251,12 @@ class InscriptionController extends Controller
             $data['pne_report'] = $path; // salva só o caminho
         }
 
-        if ($data['pne'] != 1) {
+        if (data_get($data, 'pne') != 1) {
             $data['accessibility_description'] = null;
             $data['pne_description'] = null;
         }
 
-        if ($data['social_program'] != 1) {
+        if (data_get($data, 'social_program') != 1) {
             $data['nis'] = null;
         }
 
@@ -323,11 +327,6 @@ class InscriptionController extends Controller
                         'error',
                         'Um ou mais campos excedem o tamanho permitido. Corrija os dados e tente novamente.'
                     );
-
-                return redirect()->route('failed')->with(
-                    'error',
-                    'Um ou mais campos excedem o tamanho permitido. Corrija os dados e tente novamente.',
-                );
             }
 
             if (app()->environment('local')) {
@@ -347,7 +346,7 @@ class InscriptionController extends Controller
                 'danger',
                 $e->getMessage() === 'Inscrição já realizada.'
                     ? 'Você já se inscreveu.'
-                    : 'Erro inesperado. Por favor, tente novamente.'.$e->getMessage(),
+                    : 'Erro inesperado. Por favor, tente novamente.',
             );
         }
     }

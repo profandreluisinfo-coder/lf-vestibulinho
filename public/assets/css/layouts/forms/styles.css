@@ -1,0 +1,741 @@
+:root {
+
+    /* Primárias */
+    --color-navy: #0B1E3D;
+    --color-navy-mid: #132948;
+    --color-navy-light: #1B3E72;
+
+    /* Destaque */
+    --color-teal: #00A896;
+    --color-teal-dark: #007F72;
+    --color-teal-light: rgba(0, 168, 150, .08);
+
+    /* Ênfase */
+    --color-amber: #F4A261;
+    --color-amber-dark: #E07A3A;
+    --color-amber-light: rgba(244, 162, 97, .10);
+
+    /* Feedback */
+    --color-success: #27ae60;
+    --color-success-dark: #1e8449;
+    --color-danger: #e74c3c;
+    --color-warning: #f0c030;
+
+    /* Neutros */
+    --color-white: #FFFFFF;
+    --color-light: #F6F8FB;
+    --color-light-mid: #E6EBF2;
+    --color-muted: #6B7FA3;
+    --color-muted-light: rgba(107, 127, 163, .35);
+
+    /* Tipografia */
+    --font-heading: 'Sora', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.9rem;
+    --font-size-xs: 0.8rem;
+
+    /* Sombras (bem discretas) */
+    --shadow-sm: 0 1px 2px rgba(11, 30, 61, .05);
+    --shadow-md: 0 2px 10px rgba(11, 30, 61, .06);
+    --shadow-lg: 0 8px 28px rgba(11, 30, 61, .10);
+
+    /* Bordas */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 999px;
+
+    /* Transições */
+    --transition-fast: .15s ease;
+    --transition-base: .2s ease;
+
+    /* Gradientes */
+    --grad-main: linear-gradient(135deg, var(--color-muted) 0%, #4a74b5 60%, #0E4D6B 100%);
+}
+
+/* ─── RESET & BASE ───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    background-color: var(--color-light-mid);
+    color: var(--color-navy);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: var(--font-heading);
+    color: var(--color-navy);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--color-teal-dark);
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-teal);
+}
+
+.text-muted {
+    color: var(--color-muted) !important;
+}
+
+small,
+.small {
+    font-size: var(--font-size-sm);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-white);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-muted-light);
+    border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-teal);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TOPO (forms.blade.php) — barra simples, sem cabeçalho duplicado
+   ───────────────────────────────────────────────────────────── */
+.forms-topbar {
+    padding: 1.25rem 1.25rem 0;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.forms-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-muted);
+    text-decoration: none;
+}
+
+.forms-back-link:hover {
+    color: var(--color-teal-dark);
+}
+
+/* ── Logo + nome do sistema no topo ── */
+.forms-topbar {
+    width: 1140px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between !important;
+    gap: 1rem;
+}
+
+.forms-brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+}
+
+.forms-logo {
+    max-width: 100px;
+    width: 100%;
+    height: auto;
+}
+
+/* .forms-brand-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--color-navy);
+} */
+
+.forms-brand-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--color-navy);
+    padding-left: .6rem;
+    border-left: 2px solid var(--color-light-mid);
+}
+
+.forms-brand-year {
+    color: var(--color-teal);
+}
+
+/* ── Wrapper principal — respiro generoso, coluna única ── */
+.wrapper {
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+    flex: 1;
+}
+
+/* Evita que um .container do Bootstrap dentro do partial do stepper
+   (ou de qualquer outro include) "vaze" pra uma largura maior que o .wrapper */
+.wrapper .container,
+.wrapper .container-sm,
+.wrapper .container-md,
+.wrapper .container-lg,
+.wrapper .container-xl,
+.wrapper .container-xxl,
+.wrapper .container-fluid {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   STEPPER (partials.forms.stepper)
+   ───────────────────────────────────────────────────────────── */
+.stepper-wrapper {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--color-light-mid);
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+/* .stepper-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    position: relative;
+} */
+
+.stepper-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 👈 novo: centraliza a bolinha */
+    flex: 1;
+    position: relative;
+}
+
+/* .stepper-item:not(:last-child)::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--color-light-mid);
+    margin: 0 .5rem;
+    transition: background var(--transition-base);
+} */
+
+.stepper-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    /* 👈 agora a linha "flutua" atrás */
+    top: 50%;
+    left: calc(50% + 14px);
+    right: calc(-50% + 14px);
+    transform: translateY(-50%);
+    height: 1.5px;
+    background: var(--color-light-mid);
+    transition: background var(--transition-base);
+    z-index: 0;
+}
+
+.stepper-link {
+    position: relative;
+    z-index: 1;
+}
+
+.stepper-item.done:not(:last-child)::after {
+    background: var(--color-teal);
+}
+
+.stepper-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.stepper-bubble {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: .78rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-light-mid);
+    background: var(--color-white);
+    color: var(--color-muted);
+    transition: all var(--transition-base);
+}
+
+.stepper-item.done .stepper-bubble {
+    background: var(--color-teal);
+    border-color: var(--color-teal);
+    color: var(--color-white);
+}
+
+.stepper-item.active .stepper-bubble {
+    background: var(--color-white);
+    border-color: var(--color-navy);
+    border-width: 2px;
+    color: var(--color-navy);
+}
+
+.stepper-item.locked {
+    cursor: not-allowed;
+}
+
+.stepper-item.done a.stepper-link:hover .stepper-bubble {
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, .14);
+}
+
+/* Legenda do passo atual — substitui os 8 rótulos lado a lado */
+/* .stepper-current {
+    margin-top: .85rem;
+    padding-left: 2.5rem;
+    font-size: var(--font-size-sm);
+} */
+
+.stepper-current {
+    margin-top: .85rem;
+    text-align: center;
+    /* 👈 substitui o padding-left */
+    font-size: var(--font-size-sm);
+}
+
+.stepper-current-index {
+    color: var(--color-muted);
+    font-weight: 600;
+}
+
+.stepper-current-label {
+    color: var(--color-navy);
+    font-weight: 700;
+    margin-left: .4rem;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   FORMULÁRIOS
+   ───────────────────────────────────────────────────────────── */
+.form-label {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: .4rem;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--color-danger);
+    font-size: .7rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--color-light);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--color-navy);
+    padding: .7rem .9rem;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.form-control::placeholder {
+    color: var(--color-muted-light);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--color-white);
+    border-color: var(--color-teal);
+    box-shadow: none;
+    outline: none;
+}
+
+.form-control.is-valid {
+    border-color: var(--color-success);
+}
+
+.form-control.is-invalid {
+    border-color: var(--color-danger);
+    background-color: var(--color-white);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-teal);
+    border-color: var(--color-teal);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, .15);
+}
+
+.invalid-feedback {
+    font-size: var(--font-size-xs);
+    color: var(--color-danger);
+}
+
+.valid-feedback {
+    font-size: var(--font-size-xs);
+    color: var(--color-success);
+}
+
+/* ── Formulário de cada etapa — agora como um "cartão" delimitado ── */
+#inscription {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 2.25rem 2.25rem 2rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#inscription h5 {
+    font-size: 1.3rem;
+    color: var(--color-navy);
+    border: none !important;
+    margin-bottom: .25rem;
+}
+
+#inscription h6 {
+    font-size: 1.05rem;
+    border: none !important;
+    margin-bottom: .25rem;
+}
+
+#inscription .col-12.border-top {
+    border-color: var(--color-light-mid) !important;
+    padding-top: 1.5rem !important;
+    margin-top: .5rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BOTÕES — flat, sem brilho/elevação
+   ───────────────────────────────────────────────────────────── */
+.btn {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+}
+
+.btn-sm {
+    font-size: var(--font-size-sm);
+    padding: .55rem 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--color-teal);
+    border: none;
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background: var(--color-teal-dark);
+    color: var(--color-white);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, .18);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1.5px solid var(--color-light-mid);
+    color: var(--color-navy);
+}
+
+.btn-secondary:hover {
+    background: var(--color-light);
+    border-color: var(--color-muted-light);
+    color: var(--color-navy);
+}
+
+.btn-success {
+    background: var(--color-success);
+    border: none;
+    color: var(--color-white);
+}
+
+.btn-success:hover {
+    background: var(--color-success-dark);
+    color: var(--color-white);
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    border: none;
+    color: var(--color-white);
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    color: var(--color-white);
+}
+
+
+/* ── Confirmação ── */
+.review-section {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.review-section-header {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .85rem 1.2rem;
+    border-bottom: 1px solid var(--color-light-mid);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--color-navy);
+}
+
+.review-section-header i {
+    color: var(--color-teal);
+    font-size: 1rem;
+}
+
+.review-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: .7rem 1.2rem;
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid var(--color-light-mid);
+}
+
+.review-row:last-child {
+    border-bottom: none;
+}
+
+.review-label {
+    color: var(--color-muted);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.review-value {
+    color: var(--color-navy);
+    text-align: right;
+    word-break: break-word;
+}
+
+.terms-box {
+    background: var(--color-white);
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem;
+}
+
+.terms-box .terms-text {
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+    line-height: 1.6;
+    text-align: justify;
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: .5rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-banner {
+    background: var(--color-light);
+    border-radius: var(--radius-md);
+    padding: .9rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-navy);
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+}
+
+.confirm-banner i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    color: var(--color-teal);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ALERTAS
+   ───────────────────────────────────────────────────────────── */
+.alert {
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    padding: .9rem 1.1rem;
+}
+
+.alert-warning {
+    background: var(--color-amber-light);
+    color: var(--color-amber-dark);
+}
+
+.alert-info {
+    background: var(--color-teal-light);
+    color: var(--color-teal-dark);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MODAL
+   ───────────────────────────────────────────────────────────── */
+.modal-content {
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: var(--color-navy);
+    border-bottom: none;
+    padding: 1.3rem 1.6rem;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--color-white);
+}
+
+.modal-header .btn-close {
+    filter: invert(1) opacity(.7);
+}
+
+.modal-body {
+    padding: 1.6rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--color-light-mid);
+    padding: 1rem 1.6rem;
+    background: var(--color-white);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RODAPÉ (forms.blade.php)
+   ───────────────────────────────────────────────────────────── */
+.forms-footer {
+    text-align: center;
+    border-top: 1px solid var(--color-light-mid);
+    font-size: var(--font-size-xs);
+    color: var(--color-muted);
+    padding: .85rem 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   UTILITÁRIOS — apenas o que está em uso
+   ───────────────────────────────────────────────────────────── */
+.divider-teal {
+    width: 32px;
+    height: 2px;
+    background: var(--color-teal);
+    border-radius: var(--radius-pill);
+    margin-bottom: 1.25rem;
+}
+
+.section-title h4 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--color-navy);
+}
+
+
+@media (max-width: 575.98px) {
+    .stepper-bubble {
+        width: 24px;
+        height: 24px;
+        font-size: .72rem;
+    }
+
+    .stepper-item:not(:last-child)::after {
+        margin: 0 .2rem;
+    }
+
+    .forms-topbar {
+        width: 100%;
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 767.98px) {
+    .wrapper {
+        padding: 1.25rem 1rem 3rem;
+    }
+
+    #inscription {
+        padding: 1.5rem 1.25rem 1.5rem;
+    }
+
+    #inscription h5 {
+        font-size: 1.1rem;
+    }
+}

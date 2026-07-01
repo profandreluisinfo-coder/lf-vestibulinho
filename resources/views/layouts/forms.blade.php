@@ -17,32 +17,40 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/inscription/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/layouts/forms/styles.css') }}">
 
     @stack('styles')
 
     @stack('head-scripts')
 </head>
-</head>
 
-<body>   
+<body>
 
-    <div class="mx-auto text-center">
-        <a href="{{ route('inscription.start') }}" class="icon-link icon-link-hover text-primary link-underline-primary link-offset-3">
-            <i class="bi bi-arrow-left"></i> Voltar para o início
+    <header class="forms-topbar">
+        <a href="{{ route('inscription.start') }}" class="forms-brand">
+            <span class="forms-brand-text"><i class="bi bi-mortarboard fs-5 me-1"></i> Vestibulinho LF <span class="forms-brand-year">2027</span></span>
         </a>
+
+        <a href="{{ route('inscription.start') }}" class="forms-back-link">
+            <i class="bi bi-arrow-left"></i> Voltar ao início
+        </a>
+    </header>
+
+    <div class="wrapper">
+
+        @include('shared.toasts')
+
+        @include('partials.forms.stepper')
+
+        @yield('content')
+
     </div>
-
-    @include('shared.toasts')
-
-    {{-- CONTEÚDO PRINCIPAL --}}
-    @yield('content')
 
     @include('partials.forms.change-password')
 
-    <div class="container small text-muted mt-3 py-2">
+    <footer class="forms-footer">
         &copy; {{ $year }} ala
-    </div>
+    </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

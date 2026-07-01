@@ -3,7 +3,7 @@
 @section('page-title', 'Vestibulinho | Eventos')
 
 @push('styles')
-<style>
+    <style>
         .show-section-label {
             font-size: var(--font-size-sm);
             font-weight: 600;
@@ -76,8 +76,40 @@
         </div>
 
         @if ($process?->exists())
+            {{-- Status do Processo --}}
+            <form id="process-access-form" class="mb-4" action="{{ route('admin.process.activate', $process) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-            <div class="card border-0 mb-4" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
+                <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
+                    <div class="card-body p-4 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+
+                        <div>
+                            <p class="show-section-label mb-1">Status do Processo Seletivo</p>
+                            <p class="mb-0" style="font-size: var(--font-size-sm); color: var(--text-muted);">
+                                Controla se os candidatos podem acessar o processo seletivo no momento.
+                            </p>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="status-pill {{ $process->status === 'open' ? 'status-open' : 'status-closed' }}">
+                                <i class="bi bi-{{ $process->status === 'open' ? 'unlock' : 'lock' }}"></i>
+                                {{ $process->status === 'open' ? 'Aberto' : 'Fechado' }}
+                            </span>
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="process" name="process"
+                                    onchange="activateProcessSelective(this)"
+                                    {{ $process->status === 'open' ? 'checked' : '' }}
+                                    style="width: 2.5em; height: 1.3em; cursor: pointer;">
+                                <label class="form-check-label visually-hidden" for="process">Ativar processo</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
                 <div class="card-body p-4">
 
                     <div class="row g-0">
@@ -90,10 +122,10 @@
                                     <span class="show-field-label">Processo Seletivo</span>
                                     <span class="show-field-value">{{ $process?->year }}</span>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <span class="show-field-label">Ano de Referência</span>
                                     <span class="show-field-value">{{ $process?->year }}</span>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
@@ -122,7 +154,8 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação dos Locais de Prova</span>
-                                    <span class="show-field-value">{{ $event?->location_publish?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->location_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Data de Aplicação</span>
@@ -130,7 +163,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação do Gabarito</span>
-                                    <span class="show-field-value">{{ $event?->answer_publish?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->answer_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -143,11 +177,13 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <span class="show-field-label">Início do Prazo</span>
-                                    <span class="show-field-value">{{ $event?->revision_start?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->revision_start?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Término do Prazo</span>
-                                    <span class="show-field-value">{{ $event?->revision_end?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->revision_end?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +196,8 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação da Classificação Final</span>
-                                    <span class="show-field-value">{{ $event?->result_publish?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->result_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -173,11 +210,13 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <span class="show-field-label">1ª Chamada</span>
-                                    <span class="show-field-value">{{ $event?->enrol_start?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->enrol_start?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Vagas Remanescentes</span>
-                                    <span class="show-field-value">{{ $event?->enrol_remaining?->format('d/m/Y') ?? '—' }}</span>
+                                    <span
+                                        class="show-field-value">{{ $event?->enrol_remaining?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -199,43 +238,7 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Status do Processo --}}
-            <form id="process-access-form" action="{{ route('admin.process.activate', $process) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
-                    <div class="card-body p-4 d-flex align-items-center justify-content-between gap-3 flex-wrap">
-
-                        <div>
-                            <p class="show-section-label mb-1">Status do Processo Seletivo</p>
-                            <p class="mb-0" style="font-size: var(--font-size-sm); color: var(--text-muted);">
-                                Controla se os candidatos podem acessar o processo seletivo no momento.
-                            </p>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-3">
-                            <span class="status-pill {{ $process->status === 'open' ? 'status-open' : 'status-closed' }}">
-                                <i class="bi bi-{{ $process->status === 'open' ? 'unlock' : 'lock' }}"></i>
-                                {{ $process->status === 'open' ? 'Aberto' : 'Fechado' }}
-                            </span>
-                            <div class="form-check form-switch mb-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                    id="process" name="process"
-                                    onchange="activateProcessSelective(this)"
-                                    {{ $process->status === 'open' ? 'checked' : '' }}
-                                    style="width: 2.5em; height: 1.3em; cursor: pointer;">
-                                <label class="form-check-label visually-hidden" for="process">Ativar processo</label>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </form>
-
         @else
-
             <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
                 <div class="card-body p-4 d-flex align-items-start gap-3">
                     <i class="bi bi-info-circle text-muted fs-5 mt-1 flex-shrink-0"></i>
@@ -244,12 +247,12 @@
                             Nenhuma grade de eventos definida
                         </p>
                         <p class="mb-0 text-muted" style="font-size: var(--font-size-sm);">
-                            Use o botão <strong>Definir Eventos</strong> acima para configurar o calendário deste processo seletivo.
+                            Use o botão <strong>Definir Eventos</strong> acima para configurar o calendário deste processo
+                            seletivo.
                         </p>
                     </div>
                 </div>
             </div>
-
         @endif
 
     </div>

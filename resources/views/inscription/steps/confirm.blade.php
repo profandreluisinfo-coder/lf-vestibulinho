@@ -6,8 +6,14 @@
 
 @php
     $degrees = [
-        1 => 'Padrasto', 2 => 'Madrasta', 3 => 'Avô(ó)', 4 => 'Tio(a)',
-        5 => 'Irmão(ã)', 6 => 'Primo(a)', 7 => 'Tio(a)', 8 => 'Outro',
+        1 => 'Padrasto',
+        2 => 'Madrasta',
+        3 => 'Avô(ó)',
+        4 => 'Tio(a)',
+        5 => 'Irmão(ã)',
+        6 => 'Primo(a)',
+        7 => 'Tio(a)',
+        8 => 'Outro',
     ];
 
     $doc = match ($step1['doc_type']) {
@@ -18,26 +24,28 @@
     };
 
     $gender = match ($step1['gender']) {
-        '1' => 'Masculino', '2' => 'Feminino', '3' => 'Outro',
+        '1' => 'Masculino',
+        '2' => 'Feminino',
+        '3' => 'Outro',
         default => 'Prefiro não informar',
     };
 
     $nationality = match ($step1['nationality']) {
-        '1' => 'Brasileira', '2' => 'Brasileira Naturalizada', '3' => 'Estrangeira', '4' => 'Portuguesa (com estatuto de igualdade)',
+        '1' => 'Brasileira',
+        '2' => 'Brasileira Naturalizada',
+        '3' => 'Estrangeira',
+        '4' => 'Portuguesa (com estatuto de igualdade)',
         default => 'Não informado',
     };
 @endphp
 
 @section('content')
-<div class="wrapper">
 
     {{-- Título --}}
     <div class="section-title mb-4">
         <h4><i class="bi bi-check2-all me-2"></i>Revisão da Inscrição</h4>
         <div class="divider-teal"></div>
     </div>
-
-    @include('partials.forms.stepper')
 
     {{-- Banner --}}
     <div class="confirm-banner">
@@ -59,16 +67,16 @@
             <span class="review-value">{{ $step1['name'] }}</span>
         </div>
         @if ($step1['social_name_option'] == 1)
-        <div class="review-row">
-            <span class="review-label">Nome social</span>
-            <span class="review-value d-flex flex-column align-items-end gap-1">
-                {{ $step1['social_name'] }}
-                <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}"
-                   target="_blank" class="small text-decoration-none">
-                    <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
-                </a>
-            </span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Nome social</span>
+                <span class="review-value d-flex flex-column align-items-end gap-1">
+                    {{ $step1['social_name'] }}
+                    <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank"
+                        class="small text-decoration-none">
+                        <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
+                    </a>
+                </span>
+            </div>
         @endif
     </div>
 
@@ -105,27 +113,27 @@
             <i class="bi bi-file-earmark-text"></i> Certidão de Nascimento
         </div>
         @if ($step2['certificateModel'] == '1')
-        <div class="review-row">
-            <span class="review-label">Nº Certidão</span>
-            <span class="review-value">{{ $step2['new_number'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Nº Certidão</span>
+                <span class="review-value">{{ $step2['new_number'] }}</span>
+            </div>
         @else
-        <div class="review-row">
-            <span class="review-label">Folhas</span>
-            <span class="review-value">{{ $step2['fls'] }}</span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Livro</span>
-            <span class="review-value">{{ $step2['book'] }}</span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Nº Certidão</span>
-            <span class="review-value">{{ $step2['old_number'] }}</span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Município</span>
-            <span class="review-value">{{ $step2['municipality'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Folhas</span>
+                <span class="review-value">{{ $step2['fls'] }}</span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Livro</span>
+                <span class="review-value">{{ $step2['book'] }}</span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Nº Certidão</span>
+                <span class="review-value">{{ $step2['old_number'] }}</span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Município</span>
+                <span class="review-value">{{ $step2['municipality'] }}</span>
+            </div>
         @endif
     </div>
 
@@ -158,16 +166,16 @@
             <span class="review-value">{{ $step3['street'] }}</span>
         </div>
         @if ($step3['home'])
-        <div class="review-row">
-            <span class="review-label">Casa/Nº/Bloco</span>
-            <span class="review-value">{{ $step3['home'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Casa/Nº/Bloco</span>
+                <span class="review-value">{{ $step3['home'] }}</span>
+            </div>
         @endif
         @if ($step3['complement'])
-        <div class="review-row">
-            <span class="review-label">Complemento</span>
-            <span class="review-value">{{ $step3['complement'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Complemento</span>
+                <span class="review-value">{{ $step3['complement'] }}</span>
+            </div>
         @endif
         <div class="review-row">
             <span class="review-label">Bairro</span>
@@ -212,39 +220,41 @@
             <span class="review-value">{{ $step5['mother'] }}</span>
         </div>
         @if ($step5['mother_phone'])
-        <div class="review-row">
-            <span class="review-label">Tel. Mãe</span>
-            <span class="review-value">{{ $step5['mother_phone'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Tel. Mãe</span>
+                <span class="review-value">{{ $step5['mother_phone'] }}</span>
+            </div>
         @endif
         @if ($step5['father'])
-        <div class="review-row">
-            <span class="review-label">Pai</span>
-            <span class="review-value">{{ $step5['father'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Pai</span>
+                <span class="review-value">{{ $step5['father'] }}</span>
+            </div>
         @endif
         @if ($step5['father_phone'])
-        <div class="review-row">
-            <span class="review-label">Tel. Pai</span>
-            <span class="review-value">{{ $step5['father_phone'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Tel. Pai</span>
+                <span class="review-value">{{ $step5['father_phone'] }}</span>
+            </div>
         @endif
         @if ($step5['responsible'])
-        <div class="review-row">
-            <span class="review-label">Responsável</span>
-            <span class="review-value">{{ $step5['responsible'] }}</span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Parentesco</span>
-            <span class="review-value">
-                {{ $degrees[$step5['degree']] ?? '' }}
-                @if ($step5['kinship']) — {{ $step5['kinship'] }} @endif
-            </span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Tel. Responsável</span>
-            <span class="review-value">{{ $step5['responsible_phone'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Responsável</span>
+                <span class="review-value">{{ $step5['responsible'] }}</span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Parentesco</span>
+                <span class="review-value">
+                    {{ $degrees[$step5['degree']] ?? '' }}
+                    @if ($step5['kinship'])
+                        — {{ $step5['kinship'] }}
+                    @endif
+                </span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Tel. Responsável</span>
+                <span class="review-value">{{ $step5['responsible_phone'] }}</span>
+            </div>
         @endif
         <div class="review-row">
             <span class="review-label">E-mail responsável</span>
@@ -268,22 +278,22 @@
             </span>
         </div>
         @if ($step6['pne'] == '1')
-        <div class="review-row">
-            <span class="review-label">Descrição</span>
-            <span class="review-value d-flex flex-column align-items-end gap-1">
-                {{ $step6['accessibility_description'] }}
-                <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}"
-                   target="_blank" class="small text-decoration-none">
-                    <i class="bi bi-file-earmark-medical me-1"></i>Ver laudo
-                </a>
-            </span>
-        </div>
-        <div class="review-row">
-            <span class="review-label">Recursos de acessibilidade</span>
-            <span class="review-value d-flex flex-column align-items-end gap-1">
-                {{ $step6['pne_description'] }}
-            </span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Descrição</span>
+                <span class="review-value d-flex flex-column align-items-end gap-1">
+                    {{ $step6['accessibility_description'] }}
+                    <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
+                        class="small text-decoration-none">
+                        <i class="bi bi-file-earmark-medical me-1"></i>Ver laudo
+                    </a>
+                </span>
+            </div>
+            <div class="review-row">
+                <span class="review-label">Recursos de acessibilidade</span>
+                <span class="review-value d-flex flex-column align-items-end gap-1">
+                    {{ $step6['pne_description'] }}
+                </span>
+            </div>
         @endif
     </div>
 
@@ -303,10 +313,10 @@
             </span>
         </div>
         @if ($step6['social_program'] == 1)
-        <div class="review-row">
-            <span class="review-label">NIS</span>
-            <span class="review-value">{{ $step6['nis'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">NIS</span>
+                <span class="review-value">{{ $step6['nis'] }}</span>
+            </div>
         @endif
         <div class="review-row">
             <span class="review-label">Problema de saúde / alergia</span>
@@ -319,10 +329,10 @@
             </span>
         </div>
         @if ($step6['health'] == 1)
-        <div class="review-row">
-            <span class="review-label">Descrição</span>
-            <span class="review-value">{{ $step6['health_issue'] }}</span>
-        </div>
+            <div class="review-row">
+                <span class="review-label">Descrição</span>
+                <span class="review-value">{{ $step6['health_issue'] }}</span>
+            </div>
         @endif
     </div>
 
@@ -372,7 +382,6 @@
         </div>
     </form>
 
-</div>
 @endsection
 
 @push('scripts')

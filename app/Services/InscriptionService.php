@@ -43,8 +43,8 @@ class InscriptionService
                 'city' => data_get($data, 'city'),
                 'state' => data_get($data, 'state'),
                 'nis' => (data_get($data, 'social_program') == '1') ? data_get($data, 'nis') : '',
-                // Corrigido: o formulário envia 'health_description', não 'health_issue'.
-                'health_issue' => (data_get($data, 'health') == '1') ? data_get($data, 'health_description') : '',
+                // O OtherRequest valida e nomeia o campo como 'health_issue' (ver rules()/messages()).
+                'health_issue' => (data_get($data, 'health') == '1') ? data_get($data, 'health_issue') : '',
                 'role' => 'user',
             ]);
 

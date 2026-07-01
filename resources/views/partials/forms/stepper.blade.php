@@ -40,7 +40,7 @@
     }
 @endphp
 
-<div class="stepper-wrapper mb-4">
+<div class="stepper-wrapper">
     <ol class="stepper">
         @foreach ($steps as $number => $step)
             @php
@@ -61,9 +61,9 @@
 
             <li class="{{ $classes }}">
                 @if ($canVisit && !$active)
-                    <a href="{{ route($step['route']) }}" class="stepper-link">
+                    <a href="{{ route($step['route']) }}" class="stepper-link" title="{{ $step['label'] }}">
                     @else
-                        <span class="stepper-link">
+                        <span class="stepper-link" title="{{ $step['label'] }}">
                 @endif
 
                 <span class="stepper-bubble">
@@ -74,10 +74,6 @@
                     @endif
                 </span>
 
-                <span class="stepper-label">
-                    {{ $step['label'] }}
-                </span>
-
                 @if ($canVisit && !$active)
                     </a>
                 @else
@@ -86,4 +82,9 @@
             </li>
         @endforeach
     </ol>
+
+    <p class="stepper-current mb-0">
+        <span class="stepper-current-index">Passo {{ $currentStep }} de {{ count($steps) }}</span>
+        <span class="stepper-current-label">{{ $steps[$currentStep]['label'] }}</span>
+    </p>
 </div>

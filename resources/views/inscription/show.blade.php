@@ -7,24 +7,7 @@
     @include('inscription.partials.navbar')
     
     <div class="wrapper">
-        {{-- ╔══════════════════════════════════════════╗ --}}
-        {{-- ║          MENSAGEM DE BOAS-VINDAS         ║ --}}
-        {{-- ╚══════════════════════════════════════════╝ --}}
-        <div class="welcome-message animate__animated animate__fadeInUp mb-4">
-            <div class="welcome-message-icon">
-                <i class="bi bi-megaphone-fill"></i>
-            </div>
-            <div class="welcome-message-content">
-                <p class="welcome-message-text">
-                    Aqui você pode ver a situação da sua inscrição, saber seu local de prova
-                    e conferir seus resultados.
-                </p>
-                <p class="welcome-message-text mb-0">
-                    Fique atento(a) às mensagens e aos comunicados que enviaremos por aqui!
-                </p>
-            </div>
-        </div>
-
+        
         <div class="alerts-container animate__animated animate__fadeInUp mb-4">
 
             {{-- ╔══════════════════════════════════════════╗ --}}
@@ -80,7 +63,7 @@
                     <div class="candidate-avatar">{{ $initials }}</div>
                     <div>
                         <p class="candidate-name">{{ $displayName }} <i
-                                class="bi bi-check-circle-fill text-success me-2 fs-5"></i></p>
+                                class="bi bi-check-circle-fill text-success me-2 fs-5" title="Inscrição confirmada"></i></p>
                     </div>
                 </div>
 
@@ -223,7 +206,7 @@
                 <form action="{{ route('inscription.receipt.to.pdf') }}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-filetype-pdf me-1"></i> Gerar PDF
+                        <i class="bi bi-filetype-pdf me-1"></i> Inscrição Completa em PDF
                     </button>
                 </form>
 
