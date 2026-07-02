@@ -117,5 +117,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/datatables/pcd.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables/pcd.js') }}"></script>
 @endpush

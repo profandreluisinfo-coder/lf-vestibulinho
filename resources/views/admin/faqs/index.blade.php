@@ -15,7 +15,6 @@
 @section('content')
 
     <div class="container">
-
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Perguntas Frequentes</h5>
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
@@ -49,6 +48,7 @@
                                 {{ $category->category }}
                             </option>
                         @endforeach
+
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-center gap-3">
@@ -67,11 +67,9 @@
                 </div>                
             </div>
 
-
             <div class="accordion accordion-flush" id="faqAccordion">
 
                 @foreach ($faqs as $faq)
-                    {{-- <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}"> --}}
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}"
                         data-category="{{ Str::lower($faq->category?->category) }}">
 
@@ -150,15 +148,13 @@
             <p class="text-danger">
                 <i class="bi bi-info-circle me-1"></i> Nenhuma FaQ cadastrada.
             </p>
-
         @endif
 
-        {{-- ═══ Modal: Nova FaQ ════════════════════════════ --}}
-        <div class="modal fade" id="setNewFAQ"data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="setNewFAQModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal fade" id="setNewFAQ" data-bs-keyboard="false" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-light">
+                    <div class="modal-header text-light">
                         <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar
                             Nova FaQ</h5>
                     </div>
@@ -216,17 +212,15 @@
 @endsection
 
 @push('plugins')
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/faqs/index.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/faqs/filters.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/faqs/sortable.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/faqs/publish.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/faqs/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/faqs/index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/faqs/filters.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/faqs/sortable.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/faqs/delete.js') }}"></script>  
+    <script src="{{ asset('assets/js/swa/faqs/publish.js') }}"></script>
 @endpush

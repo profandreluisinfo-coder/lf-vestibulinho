@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <span class="school text-white">EM Dr. Leandro Franceschini</span>
-                    <span class="sub text-white">Vestibulinho {{ config('app.year') }}</span>
+                    <span class="sub text-white">Vestibulinho LF {{ config('app.year') }}</span>
                 </div>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"

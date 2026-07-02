@@ -64,14 +64,3 @@
         </div>
     </div>
 </div>
-
-
-@push('script')
-    @if (session('open_modal') === 'password')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
-            });
-        </script>
-    @endif
-@endpush

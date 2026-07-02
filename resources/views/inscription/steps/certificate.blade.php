@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Certidão de Nascimento')
+@section('page-title', 'Inscrição - Certidão de Nascimento')
 
 @section('content')
 

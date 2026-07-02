@@ -12,12 +12,12 @@ window.initChangePasswordValidation = function () {
     const $form = $("#change-password");
 
     if (!$form.length) {
-        console.warn('Formulário #change-password não encontrado');
+        // console.warn('Formulário #change-password não encontrado');
         return;
     }
     
     if ($form.data('validator')) {
-        console.warn('Validador já inicializado');
+        // console.warn('Validador já inicializado');
         return;
     }
 
@@ -84,22 +84,22 @@ function initPasswordStrength(inputSelector, formElement) {
     // console.log('Inicializando medidor de força para:', inputSelector);
     
     const inputs = document.querySelectorAll(inputSelector);
-    console.log('Inputs encontrados:', inputs.length);
+    // console.log('Inputs encontrados:', inputs.length);
     
     inputs.forEach(function (input) {
         if (input.dataset.strengthInit) {
-            console.log('Input já inicializado');
+            // console.log('Input já inicializado');
             return;
         }
         input.dataset.strengthInit = true;
 
         const container = input.closest('.mb-3');
         if (!container) {
-            console.warn('Container .mb-3 não encontrado para o input');
+            // console.warn('Container .mb-3 não encontrado para o input');
             return;
         }
 
-        console.log('Container encontrado:', container);
+        // console.log('Container encontrado:', container);
 
         const form = formElement || input.closest('form');
         const submitButton = form ? form[0]?.querySelector('.submit-password') : null;
@@ -143,7 +143,7 @@ function initPasswordStrength(inputSelector, formElement) {
         container.appendChild(strengthText);
         container.appendChild(checklist);
 
-        console.log('Elementos de força criados com sucesso');
+        // console.log('Elementos de força criados com sucesso');
 
         const rules = {
             length: checklist.querySelector('[data-rule="length"]'),
@@ -226,23 +226,23 @@ function initPasswordToggle() {
     const toggleButton = document.getElementById('toggleAllPasswords');
     
     if (!toggleButton) {
-        console.warn('Botão #toggleAllPasswords não encontrado');
+        // console.warn('Botão #toggleAllPasswords não encontrado');
         return;
     }
     
     if (toggleButton.dataset.toggleInit) {
-        console.log('Toggle já inicializado');
+        // console.log('Toggle já inicializado');
         return;
     }
     toggleButton.dataset.toggleInit = true;
 
-    console.log('Toggle encontrado e inicializado');
+    // console.log('Toggle encontrado e inicializado');
 
     toggleButton.addEventListener('click', function () {
         let inputs = document.querySelectorAll('.password-field');
         
         if (inputs.length === 0) {
-            console.warn('Nenhum campo .password-field encontrado');
+            // console.warn('Nenhum campo .password-field encontrado');
             return;
         }
 
@@ -253,9 +253,9 @@ function initPasswordToggle() {
         });
 
         if (showing) {
-            this.innerHTML = '<i class="bi bi-eye"></i> Mostrar senhas';
+            this.innerHTML = '<i class="bi bi-eye me-2"></i> Mostrar senhas';
         } else {
-            this.innerHTML = '<i class="bi bi-eye-slash"></i> Ocultar senhas';
+            this.innerHTML = '<i class="bi bi-eye-slash me-2"></i> Ocultar senhas';
         }
     });
 }

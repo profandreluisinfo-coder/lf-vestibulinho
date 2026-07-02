@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho | Cursos')
+@section('page-title', 'Vestibulinho LF - Cursos')
 
 @section('content')
     <div class="container">
@@ -17,9 +17,9 @@
                 <caption>{{ config('app.name') }} {{ $process?->year }} - Lista de Cursos</caption>
                 <thead class="table-success text-center">
                     <tr>
-                        <th scope="col">Cursos</th>
-                        <th scope="col">Vagas</th>
-                        <th scope="col" class="w-25">Ações</th>
+                        <th scope="col"><i class="bi bi-book me-2"></i> Cursos</th>
+                        <th scope="col"><i class="bi bi-people me-2"></i> Vagas</th>
+                        <th scope="col" class="w-25"><i class="bi bi-gear me-2"></i> Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -53,13 +53,10 @@
                                 </div>
                             </td>
                         </tr>
-
                     @empty
-
                         <tr>
                             <td colspan="3" class="text-center">Nenhum curso cadastrado.</td>
                         </tr>
-
                     @endforelse
 
                 </tbody>
@@ -191,7 +188,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/courses/create.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/ui/courses/details.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/courses/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/courses/create.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/courses/details.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/courses/delete.js') }}"></script>
 @endpush

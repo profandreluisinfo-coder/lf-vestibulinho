@@ -326,9 +326,9 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/calls/create.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/calls/delete.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/calls/finalize.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/calls/create.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/calls/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/calls/finalize.js') }}"></script>
     <!-- Importa o Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Importa o plugin de datalabels -->

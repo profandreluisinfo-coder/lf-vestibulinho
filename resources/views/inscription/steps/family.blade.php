@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Filiação')
+@section('page-title', 'Inscrição - Filiação')
 
 @section('content')
 

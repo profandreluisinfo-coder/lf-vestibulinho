@@ -5,9 +5,9 @@
 @section('content')
 
     @include('inscription.partials.navbar')
-    
+
     <div class="wrapper">
-        
+
         <div class="alerts-container animate__animated animate__fadeInUp mb-4">
 
             {{-- ╔══════════════════════════════════════════╗ --}}
@@ -466,6 +466,8 @@
                 </div>
             @endif
 
-        </div>{{-- wrapper --}}
+        </div>
 
-    @endsection
+    </div>{{-- wrapper --}}
+
+@endsection

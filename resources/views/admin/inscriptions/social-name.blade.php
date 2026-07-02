@@ -121,6 +121,6 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/datatables/social-name.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/ui/registration/popover.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables/social-name.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/registration/popover.js') }}"></script>
 @endpush

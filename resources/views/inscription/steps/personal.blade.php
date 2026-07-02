@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Dados Pessoais')
+@section('page-title', 'Inscrição - Dados Pessoais')
 
 @section('content')
 
@@ -8,9 +8,8 @@
         enctype="multipart/form-data">
         @csrf
 
-        <h5 class="fw-semibold border-bottom pb-1">Dados Pessoais</h5>
+        <h5>Dados Pessoais</h5>
         <div class="form-group col-md-3">
-
             <label for="cpf" class="form-label required">CPF do candidato:</label>
             <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf"
                 value="{{ old('cpf', session('step1.cpf')) }}">
@@ -214,7 +213,7 @@
                 </div>
             @enderror
         </div>
-        <div class="col-12 border-top pt-3">
+        <div class="col-12 pt-3">
             <button type="submit" class="btn btn-primary btn-sm w-auto">Avançar <i
                     class="bi bi-arrow-right-circle ms-2"></i></button>
         </div>
@@ -224,7 +223,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-light">
+                <div class="modal-header text-light">
                     <h5 class="modal-title text-light" id="modalNomeSocialLabel">
                         <i class="bi bi-info-circle me-2"></i> O que é nome social e nome afetivo
                     </h5>

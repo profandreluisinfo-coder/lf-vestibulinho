@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Endereço')
+@section('page-title', 'Inscrição - Endereço')
 
 @section('content')
 

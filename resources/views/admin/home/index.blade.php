@@ -223,11 +223,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
-    {{-- <script src="{{ asset('assets/js/vestibulinho/charts/burghs.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/charts/courses.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/charts/schools.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/charts/genders.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/charts/gender-per-course.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/charts/chart-actions.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/js/charts/burghs.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/courses.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/schools.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/genders.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/gender-per-course.js') }}"></script>
+    <script src="{{ asset('assets/js/charts/chart-actions.js') }}"></script> --}}
     
 @endpush

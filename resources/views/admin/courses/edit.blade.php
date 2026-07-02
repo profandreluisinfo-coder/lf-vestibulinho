@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho | Cursos')
+@section('page-title', 'Vestibulinho LF - Cursos')
 
 @section('content')
 
@@ -91,5 +91,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/courses/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/courses/edit.js') }}"></script>
 @endpush

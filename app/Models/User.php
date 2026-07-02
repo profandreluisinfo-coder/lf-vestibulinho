@@ -190,126 +190,63 @@ class User extends Authenticatable
         return $nationalities[$value] ?? $value;  // Se não encontrar, retorna o valor original
     }
 
-    /**
-     * Remove todos os caracteres não numéricos do atributo 'phone'.
-     *
-     * @param  string  $value  O valor do atributo 'phone'
-     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = Str::of($value)->lower();
+    }
+
     public function setPhoneAttribute($value)
     {
         $this->attributes['phone'] = str_replace(['(', ')', ' ', '-'], '', $value);
     }
 
-    /**
-     * Retorna o valor do atributo 'phone' formatado como (99) 99999-9999.
-     *
-     * @param  string  $value  O valor do atributo 'phone'
-     * @return string O valor do atributo 'phone' formatado como (99) 99999-9999
-     */
     public function getPhoneAttribute($value)
     {
-        // return preg_replace('/(\d{2})(\d{4,5})(\d{4})/', '($1) $2-$3', $value);
         return $this->formatPhone($value);
     }
 
-    /**
-     * Remove todos os caracteres não numéricos do atributo 'zip' (CEP).
-     *
-     * @param  string  $value  O valor do atributo 'zip'
-     */
     public function setZipAttribute($value)
     {
         $this->attributes['zip'] = str_replace(['.', '-'], '', $value);
     }
 
-    /**
-     * Retorna o valor do atributo 'zip' (CEP) formatado como 99.999-99.
-     *
-     * @param  string  $value  O valor do atributo 'zip'
-     * @return string O valor do atributo 'zip' formatado como 99.999-99
-     */
     public function getZipAttribute($value)
     {
         return preg_replace('/(\d{5})(\d{3})/', '$1-$2', $value);
     }
 
-    /**
-     * Converte o valor do atributo 'city' para maiúsculo.
-     *
-     * @param  string  $value  O valor do atributo 'city'
-     * @return $this
-     */
     public function getCityAttribute($value)
     {
         return Str::of($value)->upper();
     }
 
-    /**
-     * Converte o valor do atributo 'state' para maiúsculo.
-     *
-     * @param  string  $value  O valor do atributo 'state'
-     * @return $this
-     */
     public function getStateAttribute($value)
     {
         return Str::of($value)->upper();
     }
 
-    /**
-     * Remove todos os caracteres não numéricos do atributo 'nis'.
-     *
-     * @param  string  $value  O valor do atributo 'nis'
-     * @return void
-     */
     public function setNisAttribute($value)
     {
         $this->attributes['nis'] = str_replace(['.', '-'], '', $value);
     }
 
-    /**
-     * Retorna o valor do atributo 'nis' formatado como 999.99999-9.
-     *
-     * @param  string  $value  O valor do atributo 'nis'
-     * @return string O valor do atributo 'nis' formatado como 999.99999-9
-     */
     public function getNisAttribute($value)
     {
         return preg_replace('/(\d{3})(\d{5})(\d{2})(\d{1})/', '$1.$2.$3-$4', $value);
     }
 
-    /**
-     * Formata o valor do atributo 'telefone' no formato (XX) XXXX-XXXX.
-     * O formato aceita 11 dígitos seguidos de 1 letra ou número.
-     * Se o valor não seguir o formato, ele será retornado sem alterações.
-     *
-     * @param  string  $value  O valor do atributo 'telefone'
-     * @return string O valor do atributo 'telefone' formatado como (XX) XXXX-XXXX
-     */
     private function formatPhone($value)
     {
         return preg_replace('/(\d{2})(\d{4,5})(\d{4})/', '($1) $2-$3', $value);
     }
 
-    /**
-     * Converte o valor para maiúsculas, tratando nulos e espaços.
-     */
     private function toUpper(?string $value): ?string
     {
         return $value ? Str::of(trim($value))->upper() : null;
     }
 
-    /**
-     * Defina o valor de um determinado atributo no modelo.
-     *
-     * Se o valor for uma string vazia, ele será convertido em nulo.
-     *
-     * @param  string  $key
-     * @param  mixed  $value
-     * @return $this
-     */
     public function setAttribute($key, $value)
     {
-        // Se o valor for string vazia, converte para null
         if ($value === '') {
             $value = null;
         }

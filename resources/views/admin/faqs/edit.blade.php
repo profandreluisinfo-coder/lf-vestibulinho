@@ -77,5 +77,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/faqs/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/faqs/edit.js') }}"></script>
 @endpush

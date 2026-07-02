@@ -132,7 +132,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="{{ asset('assets/js/vestibulinho/datatables/users.js') }}"></script>
+    <script src="{{ asset('assets/js/datatables/users.js') }}"></script>
 @endpush
 
 @push('scripts')

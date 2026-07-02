@@ -40,7 +40,7 @@
 
         @include('shared.toasts')
 
-        @include('partials.forms.stepper')
+        @include('inscription.partials.stepper')
 
         @yield('content')
 

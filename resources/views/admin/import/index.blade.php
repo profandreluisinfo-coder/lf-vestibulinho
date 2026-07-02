@@ -111,5 +111,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/import/index.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/import/index.js') }}"></script>
 @endpush

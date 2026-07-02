@@ -146,5 +146,5 @@
         const resetUrl = "{{ route('admin.system.reset') }}";
     </script>
 
-    <script src="{{ asset('assets/js/vestibulinho/swa/system/reset.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/system/reset.js') }}"></script>
 @endpush

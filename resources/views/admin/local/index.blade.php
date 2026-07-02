@@ -189,7 +189,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/exam/create.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/ui/exam/details.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/locations/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/exam/create.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/exam/details.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/locations/delete.js') }}"></script>
 @endpush

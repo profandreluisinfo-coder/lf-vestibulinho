@@ -143,6 +143,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/filters/results/private.js') }}"></script>x
-    <script src="{{ asset('assets/js/vestibulinho/swa/ranking/results.js') }}"></script>
+    <script src="{{ asset('assets/js/filters/results/private.js') }}"></script>x
+    <script src="{{ asset('assets/js/swa/ranking/results.js') }}"></script>
 @endpush

@@ -28,7 +28,6 @@
 <body>
     @include('shared.toasts')
 
-    {{-- CONTEÚDO PRINCIPAL --}}
     @yield('content')
 
     @include('partials.forms.change-password')
@@ -39,7 +38,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
 
@@ -48,6 +47,15 @@
     <script src="{{ asset('assets/js/shared/toasts.js') }}"></script>
     <script type="module" src="{{ asset('assets/js/shared/change-password.js') }}"></script>
     <script src="{{ asset('assets/js/shared/popovers.js') }}"></script>
+
+    @if (session('open_modal') === 'password')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
+            });
+        </script>
+    @endif
+
     @stack('scripts') {{-- scripts  específicos --}}
 </body>
 

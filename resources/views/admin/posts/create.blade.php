@@ -289,6 +289,12 @@
 
 @endsection
 
+@push('plugins')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+@endpush
+
 {{-- =====================================================================
      SCRIPTS
 ====================================================================== --}}

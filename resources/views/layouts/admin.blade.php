@@ -416,6 +416,15 @@
     <script>
         const resetUrl = "{{ route('admin.system.reset') }}";
     </script>
+
+    @if (session('open_modal') === 'password')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                new bootstrap.Modal(document.getElementById('changePasswordModal')).show();
+            });
+        </script>
+    @endif
+    
     <script src="{{ asset('assets/js/swa/system/reset.js') }}"></script>
     <script src="{{ asset('assets/js/admin/export/handler.js') }}"></script>
 </body>

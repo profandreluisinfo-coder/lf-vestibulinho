@@ -14,11 +14,9 @@
         </div>
 
         <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
-
             <div class="me-3 fs-3" aria-hidden="true">
                 <i class="bi bi-info-circle-fill"></i>
             </div>
-
             <div class="flex-grow-1">
                 <h5 class="alert-heading mb-2">Informação Importante</h5>
                 <p class="mb-0">
@@ -29,17 +27,12 @@
                     Em caso de dúvidas, entre em contato com o suporte técnico.
                 </p>
             </div>
-
             <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
-
         </div>
 
         <div class="table-responsive">
-
             <table class="table-striped table caption-top">
-
                 <caption>Lista de Provas do Vestibulinho</caption>
-
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Ano</th>
@@ -49,7 +42,6 @@
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
-
                 <tbody class="table-group-divider">
 
                     @forelse($files as $file)
@@ -102,109 +94,99 @@
                                 </form>
                             </td>
                         </tr>
-
                     @empty
-
                         <tr>
                             <td colspan="5" class="text-center">Nenhuma prova cadastrada</td>
                         </tr>
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
 
-        {{-- Modal para arquivar prova --}}
-        <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="createArchiveModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Arquivar Prova
-                        </h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-
-                                <form id="form-file" action="{{ route('admin.archives.store') }}" method="POST"
-                                    enctype="multipart/form-data" novalidate>
-                                    @csrf
-
-                                    {{-- Ano em que a prova foi aplicada --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="name" name="year"
-                                            class="form-control @error('year') is-invalid @enderror" id="year"
-                                            placeholder="Ano em que a prova foi realizada" value="{{ old('year') }}"
-                                            required>
-                                        <label for="year" class="form-label required">Ano de referência da
-                                            prova:</label>
-                                        @error('year')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Arquivo relacionado --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="file" name="file"
-                                            class="form-control @error('file') is-invalid @enderror" id="file"
-                                            value="{{ old('file') }}" required>
-                                        <label for="file" class="form-label required">Arquivo relacionado à
-                                            prova:</label>
-                                        @error('file')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Gabarito relacionado --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="file" name="answer"
-                                            class="form-control @error('answer') is-invalid @enderror" id="answer"
-                                            value="{{ old('answer') }}">
-                                        <label for="answer" class="form-label required">Gabarito relacionado (Se
-                                            houver)</label></label>
-                                        @error('answer')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-
-                                        <div class="text-end">
-                                            {{-- prettier-ignore --}}
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            <i class="bi bi-check-circle me-1"></i>Salvar
-                                            </button>
-                                        </div>
-                                </form>
-
-                            </div>
+        @if (!empty($files))
+            <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="createArchiveModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-light">
+                            <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Arquivar Prova
+                            </h5>
                         </div>
+                        <div class="modal-body">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                class="bi bi-x-circle me-1"></i>Fechar</button>
+                                    <form id="form-file" action="{{ route('admin.archives.store') }}" method="POST"
+                                        enctype="multipart/form-data" novalidate>
+                                        @csrf
+
+                                        {{-- Ano em que a prova foi aplicada --}}
+                                        <div class="form-floating mb-3">
+                                            <input type="name" name="year"
+                                                class="form-control @error('year') is-invalid @enderror" id="year"
+                                                placeholder="Ano em que a prova foi realizada" value="{{ old('year') }}"
+                                                required>
+                                            <label for="year" class="form-label required">Ano de referência da
+                                                prova:</label>
+                                            @error('year')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+
+                                        {{-- Arquivo relacionado --}}
+                                        <div class="form-floating mb-3">
+                                            <input type="file" name="file"
+                                                class="form-control @error('file') is-invalid @enderror" id="file"
+                                                value="{{ old('file') }}" required>
+                                            <label for="file" class="form-label required">Arquivo relacionado à
+                                                prova:</label>
+                                            @error('file')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+
+                                        {{-- Gabarito relacionado --}}
+                                        <div class="form-floating mb-3">
+                                            <input type="file" name="answer"
+                                                class="form-control @error('answer') is-invalid @enderror" id="answer"
+                                                value="{{ old('answer') }}">
+                                            <label for="answer" class="form-label required">Gabarito relacionado (Se
+                                                houver)</label></label>
+                                            @error('answer')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+
+                                            <div class="text-end">
+                                                {{-- prettier-ignore --}}
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="bi bi-check-circle me-1"></i>Salvar
+                                                </button>
+                                            </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
+                                    class="bi bi-x-circle me-1"></i>Fechar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        @endif  
     </div>
 
 @endsection
 
-@push('plugins')
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-@endpush
-
 @push('scripts')
-    <script src="{{ asset('assets/js/vestibulinho/rules/archives/index.js') }}"></script>
-    <script src="{{ asset('assets/js/vestibulinho/swa/archives/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/archives/index.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/archives/publish.js') }}"></script>  
 @endpush

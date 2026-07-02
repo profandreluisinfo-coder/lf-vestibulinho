@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho | Eventos')
+@section('page-title', 'Vestibulinho LF - Eventos')
 
 @push('styles')
     <style>

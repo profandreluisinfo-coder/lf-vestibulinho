@@ -247,13 +247,6 @@ small,
     gap: 0;
 }
 
-/* .stepper-item {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    position: relative;
-} */
-
 .stepper-item {
     display: flex;
     align-items: center;
@@ -262,15 +255,6 @@ small,
     flex: 1;
     position: relative;
 }
-
-/* .stepper-item:not(:last-child)::after {
-    content: '';
-    flex: 1;
-    height: 1.5px;
-    background: var(--color-light-mid);
-    margin: 0 .5rem;
-    transition: background var(--transition-base);
-} */
 
 .stepper-item:not(:last-child)::after {
     content: '';
@@ -341,16 +325,9 @@ small,
 }
 
 /* Legenda do passo atual — substitui os 8 rótulos lado a lado */
-/* .stepper-current {
-    margin-top: .85rem;
-    padding-left: 2.5rem;
-    font-size: var(--font-size-sm);
-} */
-
 .stepper-current {
     margin-top: .85rem;
     text-align: center;
-    /* 👈 substitui o padding-left */
     font-size: var(--font-size-sm);
 }
 
@@ -645,6 +622,16 @@ small,
 /* ─────────────────────────────────────────────────────────────
    MODAL
    ───────────────────────────────────────────────────────────── */
+/* ── Modais: título de seção interna ── */
+.modal-section-title {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--color-muted);
+  margin-bottom: .6rem;
+}
+
 .modal-content {
     border: 1px solid var(--color-light-mid);
     border-radius: var(--radius-lg);
@@ -660,8 +647,9 @@ small,
 
 .modal-title {
     font-family: var(--font-heading);
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.05rem;
+    line-height: 1.2;
     color: var(--color-white);
 }
 

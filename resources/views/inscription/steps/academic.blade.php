@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Dados Escolares')
+@section('page-title', 'Inscrição - Dados Escolares')
 
 @section('content')
 
@@ -47,7 +47,7 @@
             <label for="school_year" class="form-label required">Ano de conclusão</label>
             <input type="number" name="school_year" id="school_year"
                 class="form-control @error('school_year') is-invalid @enderror"
-                value="{{ old('school_year', session('step4.school_year')) }}" min="2024">
+                value="{{ old('school_year', session('step4.school_year')) }}" min="2025">
             @error('school_year')
                 <div class="invalid-feedback">
                     {{ $message }}

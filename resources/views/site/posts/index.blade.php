@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho - Notícias e Comunicados')
+@section('title', 'Vestibulinho LF - Notícias e Comunicados')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/posts/index.css') }}" />

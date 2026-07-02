@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição | Confirmar Dados')
+@section('page-title', 'Inscrição - Confirmar Dados')
 
 <script src="{{ asset('assets/js/shared/reload.js') }}"></script>
 
