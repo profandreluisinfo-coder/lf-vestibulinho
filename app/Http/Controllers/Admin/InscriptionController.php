@@ -113,7 +113,6 @@ class InscriptionController extends Controller
     public function pcd(): View
     {
         // Query base
-        // $users = User::whereHas('pne', fn($q) => $q->where('status', true))
         $users = User::whereHas('pne')
             ->whereHas('inscription')
             ->with(['inscription', 'pne'])
@@ -125,14 +124,14 @@ class InscriptionController extends Controller
 
     public function socialName(): View
     {
-        $users = User::whereNotNull('name')
-            ->whereHas('inscription') // ou 'inscriptions', dependendo da relação
-            ->with('inscription')     // dados da inscrição na view
-            ->get();
-
-        view()->share('users', $users);
-
-        return view('admin.inscriptions.social-name');
+        $users = auth()->user()->load([
+            'inscription',
+            'lgbt'
+        ]);
+        
+        return view('admin.inscriptions.social-name',[
+            'users' => $users
+        ]);
     }
 
     

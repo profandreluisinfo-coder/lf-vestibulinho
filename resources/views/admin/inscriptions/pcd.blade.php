@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - | Pessoas com Deficiência')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Pessoas com Deficiência')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -11,87 +11,106 @@
 @section('content')
 
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-universal-access me-2"></i>Pessoas com Deficiência</h5>
+        <div class="page-header mb-4">
+            <h4 class="mb-1">
+                <i class="bi bi-universal-access"></i> Pessoas com Deficiência
+            </h4>
+            <small>
+                Candidatos que solicitaram atendimento especializado.
+            </small>
         </div>
-        @if (!$users->isEmpty())
-            <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <div class="d-flex align-items-center fw-semibold">
-                    <i class="bi bi-info-circle fs-5 me-2"></i>
-                    Para encontrar um registro específico, digite na caixa de pesquisa o número da inscrição, ou qualquer parte do nome
-                    do candidato.
-                </div>
             </div>
         @endif
-        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-            <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
-                <caption>Vestibulinho LF - {{ $process?->year }} - Lista de Candidatos com Necessidades Especiais</caption>
-                <thead class="table-success text-center">
-                    <tr>
-                        <th scope="col">Inscrição</th>
-                        <th scope="col">Candidato</th>
-                        <th scope="col">Laudo/Relatório</th>
-                        <th scope="col">Situação</th>
-                        <th scope="col">Observações</th>
-                        <th scope="col">Ações</th>
+
+        @if (session('error'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        <table id="subscribers" class="table table-hover align-middle">
+            <caption>Vestibulinho LF - {{ $process?->year }} - Lista de Candidatos com Necessidades Especiais</caption>
+            <thead class="table-success text-center">
+                <tr>
+                    <th scope="col"><i class="bi bi-hash me-1"></i>Inscrição</th>
+                    <th scope="col"><i class="bi bi-person me-1"></i>Candidato</th>
+                    <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($users as $user)
+                    <tr data-id="{{ $user->id }}">
+                        <th scope="row">{{ $user->inscription?->id }}</th>
+                        <td>
+                            {{ $user->name }}
+
+                            @if ($user->pne->status == 'pending')
+                                <i class="bi bi-hourglass-split text-warning ms-2" data-bs-toggle="popover"
+                                    data-bs-trigger="hover" data-bs-content="Pendente - Aguardando análise"></i>
+                            @elseif($user->pne->status == 'accepted')
+                                <i class="bi bi-check-circle-fill text-success ms-2" data-bs-toggle="popover"
+                                    data-bs-trigger="hover" data-bs-content="Deferido - {{ $user->pne->observations ?? 'Nenhuma observação' }}"></i>
+                            @else
+                                <i class="bi bi-x-circle-fill text-danger ms-2" data-bs-toggle="popover" data-bs-trigger="hover"
+                                    data-bs-content="Indeferido - {{ $user->pne->observations ?? 'Nenhuma observação' }}"></i>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($user->pne->status === 'pending')
+                                <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                    class="btn btn-success btn-sm" title="Deferir">
+                                    <i class="bi bi-check-lg"></i> Deferir
+                                </a>
+
+                                <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    <i class="bi bi-x-lg"></i> Indeferir
+                                </a>
+                            @endif
+
+                            @if ($user->pne->status === 'accepted')
+                                <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    <i class="bi bi-x-lg"></i> Indeferir
+                                </a>
+                            @endif
+
+                            @if ($user->pne->status === 'rejected')
+                                <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                    class="btn btn-success btn-sm" title="Deferir">
+                                    <i class="bi bi-check-lg"></i> Deferir
+                                </a>
+                            @endif
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    @forelse ($users as $user)
-                        <tr>
-                            <th scope="row">{{ $user->inscription?->id }}</th>
-                            <td>{{ $user->name->name }}</td>
-                            <td>
-                                @if ($user->name->hasAuthorization())
-                                    <a href="{{ asset('storage/' . $user->name->authorization) }}"
-                                        class="btn btn-sm btn-link text-decoration-none" target="_blank">
-                                        <i class="bi bi-eye"></i> Visualizar
-                                    </a>
-                                @else
-                                    Não apresentou
-                                @endif
-                            </td>
-                            <td>
-                                @if ($user->user_detail?->pne_report_accepted === null)
-                                    Pendente de análise
-                                @elseif ($user->user_detail?->pne_report_accepted == 1)
-                                    Deferido
-                                @elseif ($user->user_detail?->pne_report_accepted == 2)
-                                    Indeferido                                    
-                                @endif
-                            </td>
-                            <td>
-                                @if ($user->user_detail?->pne_report_rejection_reason)
-                                    {{ $user->user_detail?->pne_report_rejection_reason }}
-                                @endif
-                            </td>
-                            <td>
-                                @if ($user->user_detail?->pne_report && $user->user_detail?->pne_report_accepted === null)
-                                    <button class="btn btn-sm btn-success accept-report"
-                                        data-url="{{ route('admin.deferrals.accept.report', $user->id) }}"
-                                        title="Deferir">
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhum candidato encontrado</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="d-flex flex-wrap align-items-center gap-4 small">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-hourglass-split text-warning me-2 fs-5"></i>
+                <span>Pendente</span>
+            </div>
 
-                                        <i class="bi bi-check me-1"></i> Deferir
-                                    </button>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+                <span>Deferido</span>
+            </div>
 
-                                    <button class="btn btn-sm btn-danger reject-report"
-                                        data-url="{{ route('admin.deferrals.reject.report', $user->id) }}"
-                                        title="Indeferir">
-
-                                        <i class="bi bi-x me-1"></i> Indeferir
-                                    </button>
-                                @endif
-
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Nenhum candidato encontrado</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-x-circle-fill text-danger me-2 fs-5"></i>
+                <span>Indeferido</span>
+            </div>
         </div>
     </div>
 
@@ -117,5 +136,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/datatables/pcd.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/datatables/pcd.js') }}"></script>
 @endpush

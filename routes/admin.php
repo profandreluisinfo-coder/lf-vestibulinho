@@ -1,8 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\{ AdminController, ArchiveController, FaqController, EventController, CourseController, CallController, DeferralController, ExamController, ExportController, ImportController, InscriptionController, LocalController, NoticeController, ResultController, SettingController, UserController, PostController };
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArchiveController;
+use App\Http\Controllers\Admin\CallController;
+use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\DeferralController;
+use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ImportController;
+use App\Http\Controllers\Admin\InscriptionController;
+use App\Http\Controllers\Admin\LocalController;
+use App\Http\Controllers\Admin\NoticeController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProcessController;
-use App\Http\Controllers\Auth\{LoginController};
+use App\Http\Controllers\Admin\ResultController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +30,9 @@ Route::middleware(['guest'])
         Route::get('login', [LoginController::class, 'loginForAdmin'])->name('auth')->middleware('throttle:3,1');
     });
 
-
 Route::middleware([
     'auth',
-    IsAdmin::class
+    IsAdmin::class,
 ])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
@@ -102,7 +116,7 @@ Route::middleware([
             Route::put('publicar/{archive}', [ArchiveController::class, 'publish'])->name('publish');
         });
 
-        // Exportação 
+        // Exportação
         Route::prefix('exportar')->name('export.')->group(function () {
             Route::get('candidatos', [ExportController::class, 'exporToExcel'])->name('excel');
         });
@@ -122,7 +136,7 @@ Route::middleware([
 
         // PDFs
         Route::prefix('pdf')->name('pdf.')->group(function () {
-            Route::get('inscricoes', [PdfController::class, 'allInscriptionsToPdf'])->name('inscriptions');
+            Route::get('inscricoes', [PdfController::class, 'index'])->name('index');
         });
 
         // Chamadas
@@ -160,11 +174,18 @@ Route::middleware([
         });
 
         // Deferimentos
-        Route::prefix('deferimentos')->name('deferrals.')->group(function () {
-            Route::patch('def/{user}/accept-authorization', [DeferralController::class, 'acceptAuthorization'])->name('accept.authorization');
-            Route::patch('def/{user}/reject-authorization', [DeferralController::class, 'rejectAuthorization'])->name('reject.authorization');
-            Route::patch('def/{user}/accept-report', [DeferralController::class, 'acceptReport'])->name('accept.report');
-            Route::patch('def/{user}/reject-report', [DeferralController::class, 'rejectReport'])->name('reject.report');
+        Route::prefix('deferimentos')->name('deferrals.')->group(function () {            
+            Route::get('deferrals/report/{user}/accept', [DeferralController::class, 'showAcceptReport'])
+                ->name('accept.report.form');
+
+            Route::get('deferrals/report/{user}/reject', [DeferralController::class, 'showRejectReport'])
+                ->name('reject.report.form');
+
+            Route::patch('deferrals/report/{user}/accept', [DeferralController::class, 'acceptReport'])
+                ->name('accept.report');
+
+            Route::patch('deferrals/report/{user}/reject', [DeferralController::class, 'rejectReport'])
+                ->name('reject.report');
         });
 
         // Usuários

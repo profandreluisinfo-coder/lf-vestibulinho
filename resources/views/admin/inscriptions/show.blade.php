@@ -53,17 +53,14 @@
                     <div class="fi-row"><span class="fi-row-label">CPF</span><span
                             class="fi-row-value">{{ $user->cpf }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nome</span><span
-                            class="fi-row-value">{{ $user->name }}</span></div>
-                    @if ($user?->name)
-                        <div class="fi-row fi-row-highlight"><span class="fi-row-label">Nome Social</span><span
-                                class="fi-row-value">{{ $user?->name->name }}</span></div>
-                    @endif
+                            class="fi-row-value">{{ $user?->lgbt?->status === 'accepted' ? $user?->lgbt?->name . ' (Nome Social)' : $user->name }}</span>
+                    </div>
                     <div class="fi-row"><span class="fi-row-label">Gênero</span><span
-                            class="fi-row-value">{{ $user->gender->description }}</span></div>
+                            class="fi-row-value">{{ $user->gender }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">E-mail</span><span class="fi-row-value"
                             style="word-break:break-all">{{ $user->email }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Telefone</span><span
-                            class="fi-row-value">{{ $user->phone->number }}</span></div>
+                            class="fi-row-value">{{ $user->phone }}</span></div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -73,11 +70,11 @@
                         <p class="fi-card-title">Documentos Pessoais</p>
                     </div>
                     <div class="fi-row"><span class="fi-row-label">Nacionalidade</span><span
-                            class="fi-row-value">{{ $user->nationality->description }}</span></div>
+                            class="fi-row-value">{{ $user->nationality }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Tipo Doc.</span><span
                             class="fi-row-value">{{ $user->document->type }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nº Documento</span><span
-                            class="fi-row-value">{{ $user->document_number }}</span></div>
+                            class="fi-row-value">{{ $user->document->number }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nascimento</span><span
                             class="fi-row-value">{{ $user->birth }}</span></div>
                 </div>
@@ -93,13 +90,13 @@
             </div>
             <div class="fi-row"><span class="fi-row-label">Certidão Nº</span><span
                     class="fi-row-value">{{ $user->certificate->number }}</span></div>
-            @if ($user->certificate->type !== '1')
+            @if ($user->certificate->type !== 1)
                 <div class="fi-row"><span class="fi-row-label">Folhas</span><span
                         class="fi-row-value">{{ $user->certificate->fls }}</span></div>
                 <div class="fi-row"><span class="fi-row-label">Livro</span><span
                         class="fi-row-value">{{ $user->certificate->book }}</span></div>
                 <div class="fi-row"><span class="fi-row-label">Município</span><span
-                        class="fi-row-value">{{ $user->certificate->municipality }}</span></div>
+                        class="fi-row-value">{{ $user->certificate->city }}</span></div>
             @endif
         </div>
 
@@ -113,8 +110,8 @@
             <div class="fi-row">
                 <span class="fi-row-label">Mãe</span>
                 <span class="fi-row-value">{{ $user->mother->name }}
-                    @if ($user->mother->phone)
-                        <span class="fi-phone">☎ {{ $user->mother->phone }}</span>
+                    @if ($user?->mother?->phone)
+                        <span class="fi-phone">☎ {{ $user?->mother?->phone }}</span>
                     @endif
                 </span>
             </div>
@@ -144,7 +141,7 @@
                 </div>
             @endif
             <div class="fi-row"><span class="fi-row-label">E-mail Família</span><span class="fi-row-value"
-                    style="word-break:break-all">{{ $user->parent_email->email }}</span></div>
+                    style="word-break:break-all">{{ $user->parent_email->address }}</span></div>
         </div>
 
         {{-- Escolaridade + Endereço --}}
@@ -174,82 +171,96 @@
                         <p class="fi-card-title">Endereço</p>
                     </div>
                     <div class="fi-row"><span class="fi-row-label">CEP</span><span
-                            class="fi-row-value">{{ $user->address->zip }}</span></div>
+                            class="fi-row-value">{{ $user->zip }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Rua / Nº</span><span
-                            class="fi-row-value">{{ $user->address->street }}, {{ $user->address->number }}
-                            @if ($user?->address?->complement)
-                                — {{ $user?->address?->complement }}
+                            class="fi-row-value">{{ $user->street }}, {{ $user->number }}
+                            @if ($user?->complement)
+                                — {{ $user?->complement }}
                             @endif
                         </span></div>
                     <div class="fi-row"><span class="fi-row-label">Bairro</span><span
-                            class="fi-row-value">{{ $user->address->burgh }}</span></div>
+                            class="fi-row-value">{{ $user->burgh }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Cidade/UF</span><span
-                            class="fi-row-value">{{ $user->address->city }} / {{ $user->address->state }}</span>
+                            class="fi-row-value">{{ $user->city }} / {{ $user->state }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Complementares --}}
-        <p class="fi-section-label">Informações Complementares</p>
+        @if ($user?->pne || $user?->nis || $user?->health_issue)
+            {{-- Complementares --}}
+            <p class="fi-section-label">Informações Complementares</p>
 
-        <div class="row g-3 mb-4">
+            <div class="row g-3 mb-4">
 
-            @if ($user?->pne)
-                <div class="col-md-6">
-                    <div class="fi-card h-100 fi-card-special">
-                        <div class="fi-card-header">
-                            <div class="fi-card-icon">♿</div>
-                            <p class="fi-card-title">Educação Especial</p>
-                            <div class="ms-auto">
-                                <span class="fi-pill fi-pill-yes">Elegível</span>
+                @if ($user?->pne)
+                    <div class="col-md-6">
+                        <div class="fi-card h-100 fi-card-special">
+                            <div class="fi-card-header">
+                                <div class="fi-card-icon">♿</div>
+                                <p class="fi-card-title">Educação Especial</p>
+                                <div class="ms-auto">
+                                    @if ($user?->pne?->status === 'accepted')
+                                        <span class="fi-pill fi-pill-yes">Elegível</span>
+                                    @elseif ($user?->pne?->status === 'pending')
+                                        <span class="fi-pill fi-pill-warn">Pendente</span>
+                                    @else
+                                        <span class="fi-pill fi-pill-no">Não elegível</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="fi-row">
+                                <span class="fi-row-label">Necessidade</span>
+                                <span class="fi-row-value">{{ $user?->pne?->description }}</span>
+                                <span class="fi-row-value flex-fill"><a
+                                        href="{{ asset('storage/' . $user?->lgbt?->authorization) }}" target="_blank"
+                                        class="small float-end">
+                                        <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
+                                    </a>
+                            </div>
+                            <div class="fi-row">
+                                <span class="fi-row-label">Auxílio</span>
+                                <span class="fi-row-value">{{ $user?->pne?->support }}</span>
                             </div>
                         </div>
-                        <div class="fi-row">
-                            <span class="fi-row-label">Necessidade</span>
-                            <span class="fi-row-value">{{ $user?->pne?->description }}</span>
-                        </div>
-                        <div class="fi-row">
-                            <span class="fi-row-label">Auxílio</span>
-                            <span class="fi-row-value">{{ $user?->pne?->support }}</span>
-                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
 
-            @if ($user?->social_program)
-                <div class="col-md-6">
-                    <div class="fi-card h-100">
-                        <div class="fi-card-header">
-                            <div class="fi-card-icon">🤝</div>
-                            <p class="fi-card-title">Programas Sociais</p>
-                            <div class="ms-auto">
-                                <span class="fi-pill fi-pill-yes">Beneficiário</span>
+                @if ($user?->nis)
+                    <div class="col-md-6">
+                        <div class="fi-card h-100">
+                            <div class="fi-card-header">
+                                <div class="fi-card-icon">🤝</div>
+                                <p class="fi-card-title">Programas Sociais</p>
+                                <div class="ms-auto">
+                                    <span class="fi-pill fi-pill-yes">Beneficiário</span>
+                                </div>
                             </div>
+                            <div class="fi-row"><span class="fi-row-label">NIS</span><span
+                                    class="fi-row-value">{{ $user?->nis }}</span></div>
                         </div>
-                        <div class="fi-row"><span class="fi-row-label">NIS</span><span
-                                class="fi-row-value">{{ $user->social_program->nis }}</span></div>
                     </div>
-                </div>
-            @endif
+                @endif
 
-            @if ($user?->health)
-                <div class="col-12">
-                    <div class="fi-card">
-                        <div class="fi-card-header">
-                            <div class="fi-card-icon">💡</div>
-                            <p class="fi-card-title">Saúde e Alergias</p>
-                            <div class="ms-auto">
-                                <span class="fi-pill fi-pill-warn">Atenção</span>
+                @if ($user?->health_issue)
+                    <div class="col-12">
+                        <div class="fi-card">
+                            <div class="fi-card-header">
+                                <div class="fi-card-icon">💡</div>
+                                <p class="fi-card-title">Saúde e Alergias</p>
+                                <div class="ms-auto">
+                                    <span class="fi-pill fi-pill-warn">Atenção</span>
+                                </div>
                             </div>
+                            <div class="fi-row"><span class="fi-row-label">Descrição</span><span
+                                    class="fi-row-value">{{ $user?->health_issue }}</span></div>
                         </div>
-                        <div class="fi-row"><span class="fi-row-label">Descrição</span><span
-                                class="fi-row-value">{{ $user->health->description }}</span></div>
                     </div>
-                </div>
-            @endif
+                @endif
 
-        </div>
+            </div>
+
+        @endif
 
     </div>
 @endsection

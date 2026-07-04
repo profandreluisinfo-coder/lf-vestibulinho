@@ -14,16 +14,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-gender-trans me-2"></i>Candidatos com Nome Social</h5>
         </div>
-        @if (!$users->isEmpty())
-            <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <div class="d-flex align-items-center fw-semibold">
-                    <i class="bi bi-info-circle fs-5 me-2"></i>
-                    Para encontrar um registro específico, digite na caixa de pesquisa o número da inscrição, ou qualquer parte do nome
-                    do candidato.
-                </div>
-            </div>
-        @endif
+        
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
                 <caption>{{ config('app.name') }} {{ $process?->year }} - Lista de Candidatos com Nome Social</caption>
@@ -41,37 +32,33 @@
                 <tbody class="table-group-divider">
                     @forelse ($users as $user)
                         <tr>
-                            <th scope="row">{{ $user->inscription?->id }}</th>
+                            <th scope="row">{{ $user?->inscription?->id }}</th>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->lgbt->name }}</td>
                             <td>
-                                @if ($user->authorization)
-                                    <a href="{{ asset('storage/' . $user->authorization) }}"
-                                        class="btn btn-sm btn-link text-decoration-none" target="_blank">
-                                        <i class="bi bi-eye"></i> Visualizar
-                                    </a>
-                                @else
-                                    Não apresentou
-                                @endif
+                                <a href="{{ asset('storage/' . $user->lgbt->authorization) }}"
+                                    class="btn btn-sm btn-link text-decoration-none" target="_blank">
+                                    <i class="bi bi-eye"></i> Visualizar
+                                </a>
                             </td>
                             <td>
-                                @if (!$user->authorization)
-                                    Não apresentou
-                                @elseif ($user->authorization_accepted === null)
-                                    Pendente de análise
-                                @elseif ($user->authorization_accepted == 1)
+                                @if ($user->lgbt->status === 'accepted')
                                     Deferido
-                                @elseif ($user->authorization_accepted == 2)
-                                    Indeferido                                    
+                                @elseif ($user->lgbt->status === 'rejected')
+                                    Indeferido
+                                @elseif ($user->lgbt->status === 'pending')
+                                    Pendente de análise
+                                @else
+                                    Indeferido
                                 @endif
                             </td>
                             <td>
-                                @if ($user->authorization_rejection_reason)
-                                    {{ $user->authorization_rejection_reason }}
+                                @if ($user?->lgbt?->observations)
+                                    {{ $user?->lgbt?->observations }}
                                 @endif
                             </td>
                             <td>
-                                @if ($user->authorization && $user->authorization_accepted === null)
+                                @if ($user?->lgbt?->status === 'pending')
                                     <button class="btn btn-sm btn-success accept-social-name mb-1"
                                         data-url="{{ route('admin.deferrals.accept.authorization', $user->id) }}"
                                         title="Deferir">

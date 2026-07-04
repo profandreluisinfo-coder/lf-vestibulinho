@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $process?->year . ' | Inscrições')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Inscrições')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -12,16 +12,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="mb-0"><i class="bi bi-people me-2"></i>Candidatos Inscritos</h5>
-        </div>
-
-        <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <div class="d-flex align-items-center fw-semibold">
-                <i class="bi bi-info-circle fs-5 me-2"></i>
-                Para encontrar um registro específico, digite na caixa de pesquisa o número da inscrição, qualquer parte do nome do
-                candidato ou do CPF.
-            </div>
-        </div>
+        </div>        
 
         <div class="d-flex gap-2 mb-4">
             <button id="pdfButton" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
@@ -35,10 +26,10 @@
                 <caption>Lista Geral de Inscritos</caption>
                 <thead class="table-success text-center">
                     <tr>
-                        <th>Inscrição</th>
-                        <th>Candidato</th>
-                        <th>CPF</th>
-                        <th>Ações</th>
+                        <th><i class="bi bi-hash me-1"></i>Inscrição</th>
+                        <th><i class="bi bi-person me-1"></i>Candidato</th>
+                        <th><i class="bi bi-credit-card me-1"></i>CPF</th>
+                        <th><i class="bi bi-gear me-1"></i>Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -163,7 +154,7 @@
                 `);
 
                 // Monta a URL com o filtro de busca (se houver)
-                let pdfUrl = "{{ route('admin.pdf.inscriptions') }}";
+                let pdfUrl = "{{ route('admin.pdf.index') }}";
                 if (searchValue) {
                     pdfUrl += '?search=' + encodeURIComponent(searchValue);
                 }

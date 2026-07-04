@@ -153,14 +153,14 @@ class InscriptionService
 
             $pdf = Pdf::loadView('inscription.pdf.email', compact('user', 'inscription', 'sp'));
 
-            $filename = 'comprovante_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
+            $filename = 'protocolo_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
             $path = storage_path('app/public/'.$filename);
             $pdf->save($path);
 
             Mail::to($user->email)->send(new SendMail(
-                subject: 'Confirmação de Inscrição',
+                subject: 'Protocolo de Inscrição',
                 content: ['name' => $user->name],
-                view: 'emails.register',
+                view: 'emails.protocol',
                 attachment: $path
             ));
 

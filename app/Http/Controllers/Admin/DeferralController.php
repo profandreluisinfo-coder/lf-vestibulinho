@@ -3,153 +3,157 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTransactionalEmailJob;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DeferralController extends Controller
 {
-    /**
-     * Defere o uso de nome social para um candidato.
-     *
-     * @param User $user O usuário que terá o uso de nome social deferido.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
-     */
-    public function acceptAuthorization(User $user): JsonResponse
+    public function showAcceptReport(User $user): View|RedirectResponse
     {
+        $user->load(['inscription.exam_result', 'pne']);
+
         if ($user->inscription?->exam_result) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível deferir o uso de o nome social, pois este candidato já está inscrito na prova agendada!'
-            ]);
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
-        $user->update(['authorization_accepted' => 1]);
+        if (! $user->pne) {
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Uso de nome social deferido com sucesso!',
-            'data' => [
-                'status' => '<span class="badge bg-success">Deferido</span>',
-                'actions' => ''
-            ]
+        return view('admin.deferrals.report', [
+            'user' => $user,
+            'action' => 'accept',
         ]);
     }
 
     /**
-     * Indefer o uso de nome social para um candidato.
-     *
-     * @param Request $request A requisição HTTP que contém o motivo do indeferimento.
-     * @param User $user O usuário que terá o uso de nome social indeferido.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
+     * Exibe a tela de confirmação de indeferimento do relatório/laudo (com campo de motivo).
      */
-    public function rejectAuthorization(Request $request, User $user): JsonResponse
+    public function showRejectReport(User $user): View|RedirectResponse
     {
+        $user->load(['inscription.exam_result', 'pne']);
+
         if ($user->inscription?->exam_result) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível indeferir o nome social, pois o candidato já está inscrito na prova.'
-            ]);
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
         }
 
-        $user->update([
-            'authorization_accepted' => 2,
-            'authorization_rejection_reason' => $request->reason
-        ]);
+        if (! $user->pne) {
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Uso de nome social indeferido com sucesso.',
-            'data' => [
-                'status' => '<span class="badge bg-danger">Indeferido</span>',
-                'actions' => ''
-            ]
+        return view('admin.deferrals.report', [
+            'user' => $user,
+            'action' => 'reject',
         ]);
     }
 
     /**
-     * Defer o relatório/laudo para um candidato.
-     *
-     * Caso o candidato já esteja inscrito em uma prova agendada, retorna um JSON com status false e uma mensagem de erro.
-     * Caso contrário, atualiza o status do relatório/laudo para "deferido" e retorna um JSON com status true e uma mensagem de sucesso.
-     *
-     * @param User $user O usuário que terá o relatório/laudo deferido.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
-     * @throws \Exception
+     * Processa o deferimento do relatório/laudo.
      */
-    public function acceptReport(User $user): JsonResponse
+    public function acceptReport(string $id): RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'user_detail']);
+        $user = User::find($id);
+        $user->load(['inscription.exam_result', 'pne']);
 
-        if ($user->inscription?->exam_result) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.'
-            ]);
+        if ($user?->inscription?->exam_result) {
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
-        if (!$user->user_detail) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Detalhes do usuário não encontrados.'
-            ]);
+        if (! $user->pne) {
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        $user->user_detail->update([
-            'pne_report_accepted' => 1
+        $user->pne->update([
+            'status' => 'accepted',
+            'observations' => null,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Relatório/laudo deferido com sucesso!',
-            'data' => [
-                'status' => '<span class="badge bg-success">Deferido</span>',
-                'actions' => ''
-            ]
-        ]);
+        $this->sendEmail(
+            to: $user->email,
+            subject: 'Vestibulinho LF - Deferimento de Relatório/Laudo Médico',
+            data: ['name' => $user->name],
+            view: 'emails.deferral.accepted',
+        );
+
+        return redirect()
+            ->route('admin.inscriptions.pcd')
+            ->with('success', 'Relatório/laudo deferido com sucesso!');
     }
 
     /**
-     * Indefer o relatório/laudo para um candidato.
-     *
-     * Caso o candidato já esteja inscrito em uma prova agendada, retorna um JSON com status false e uma mensagem de erro.
-     * Caso contrário, atualiza o status do relatório/laudo para "deferido" e retorna um JSON com status true e uma mensagem de sucesso.
-     *
-     * @param Request $request A requisição HTTP que contém o motivo do indeferimento.
-     * @param User $user O usuário que terá o relatório/laudo indeferido.
-     * @return JsonResponse Com um JSON contendo o status da operação e uma mensagem.
-     * @throws \Exception
+     * Processa o indeferimento do relatório/laudo.
      */
-    public function rejectReport(Request $request, User $user): JsonResponse
+    public function rejectReport(Request $request, string $id): RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'user_detail']);
+        $request->validate([
+            'reason' => 'nullable|string|max:1000',
+        ]);
+
+        $user = User::find($id);
+        $user->load(['inscription.exam_result', 'pne']);
 
         if ($user->inscription?->exam_result) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.'
-            ]);
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
         }
 
-        if (!$user->user_detail) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Detalhes do usuário não encontrados.'
-            ]);
+        if (! $user->pne) {
+            return redirect()
+                ->route('admin.inscriptions.pcd')
+                ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        $user->user_detail->update([
-            'pne_report_accepted' => 2,
-            'pne_report_rejection_reason' => $request->input('reason')
+        $user->pne->update([
+            'status' => 'rejected',
+            'observations' => $request->input('reason'),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Relatório/laudo indeferido com sucesso.',
-            'data' => [
-                'status' => '<span class="badge bg-danger">Indeferido</span>',
-                'actions' => ''
-            ]
-        ]);
+        $this->sendEmail(
+            to: $user->email,
+            subject: 'Vestibulinho LF - Indeferimento de Relatório/Laudo Médico',
+            data: ['name' => $user->name, 'observations' => $user?->pne?->observations],
+            view: 'emails.deferral.rejected',
+        );
+
+        return redirect()
+            ->route('admin.inscriptions.pcd')
+            ->with('success', 'Relatório/laudo indeferido com sucesso. O candidato será notificado por e-mail.');
     }
+
+    private function sendEmail(
+        string $to,
+        string $subject,
+        array $data,
+        string $view,
+        ?string $attachment = null
+    ) {
+        dispatch(
+            new SendTransactionalEmailJob(
+                $to,
+                $subject,
+                $data,
+                $view,
+                $attachment
+            )
+        )->delay(now()->addSeconds(10));
+    }
+
+    // acceptAuthorization / rejectAuthorization permanecem como estão,
+    // ou podem seguir o mesmo padrão depois se fizer sentido.
 }

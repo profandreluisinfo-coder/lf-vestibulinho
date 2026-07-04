@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name')->nullable();
             $table->string('phone', 11)->nullable();
-            $table->foreignId('degree_id')->nullable()->constrained('degrees')->nullOnDelete(); // grau de parentesco
+            $table->string('degree', 45)->nullable(); // grau de parentesco
             $table->string('kinship', 45)->nullable(); // caso 'degree' seja "outro"
             $table->timestamps();
         });

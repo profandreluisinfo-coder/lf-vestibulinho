@@ -13,6 +13,42 @@ use Illuminate\Support\Facades\Response;
 
 class PdfController extends Controller
 {
+    /**
+     * Exporta a lista de inscrições em formato PDF.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $search = $request->get('search');
+
+        $users = User::whereHas('inscription')
+            ->with('inscription')
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->select('users.*')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('users.name', 'like', "%{$search}%")
+                        ->orWhere('users.cpf', 'like', "%{$search}%")
+                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('inscriptions.id', 'asc')
+            ->get();
+
+        if ($users->isEmpty()) {
+            return redirect()->back()->with('warning', 'Nenhuma inscrição encontrada para os critérios informados.');
+        }
+
+        // código de geração de PDF...
+        $pdf = Pdf::loadView('admin.pdf.index', [
+            'users' => $users,
+            'search' => $search,
+        ]);
+
+        return $pdf->download('inscricoes.pdf');
+    }
+
     // Relatório de Alocação
     public function allocationsToPdf(ExamReportService $reportService)
     {
@@ -84,41 +120,7 @@ class PdfController extends Controller
         return $pdf->download($filename);
     }
 
-    /**
-     * Exporta a lista de inscrições em formato PDF.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function allInscriptionsToPdf(Request $request)
-    {
-        $search = $request->get('search');
-
-        $users = User::whereHas('inscription')
-            ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
-            ->select('users.*')
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('users.name', 'like', "%{$search}%")
-                        ->orWhere('users.cpf', 'like', "%{$search}%")
-                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy('inscriptions.id', 'asc')
-            ->get();
-
-        if ($users->isEmpty()) {
-            return redirect()->back()->with('warning', 'Nenhuma inscrição encontrada para os critérios informados.');
-        }
-
-        // código de geração de PDF...
-        $pdf = Pdf::loadView('admin.pdf.all-inscriptions', [
-            'users' => $users,
-            'search' => $search,
-        ]);
-
-        return $pdf->download('inscricoes.pdf');
-    }
+    
 
     /**
      * Gera um PDF com o cartão do local de prova do candidato.
