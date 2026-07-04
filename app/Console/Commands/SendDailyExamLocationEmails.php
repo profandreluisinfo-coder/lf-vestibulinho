@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Setting;
-use App\Models\Calendar;
 use App\Models\ExamResult;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\SendExamLocationMailJob;
+use App\Models\Process;
 
 class SendDailyExamLocationEmails extends Command
 {
@@ -34,7 +34,7 @@ class SendDailyExamLocationEmails extends Command
         Log::info("Acesso liberado! Iniciando processamento de envios...");
 
         // 🔎 Carrega calendário
-        $calendar = Calendar::latest('id')->first() ?? new Calendar();
+        $process = Process::latest('id')->first() ?? new Process();
 
         // 🔎 Busca exam_results ainda não enviados
         $results = ExamResult::whereNull('email_sent_at')
@@ -53,7 +53,7 @@ class SendDailyExamLocationEmails extends Command
 
             SendExamLocationMailJob::dispatch(
                 email: $user->email,
-                subject: 'Local de Prova – Vestibulinho ' . ($process?->year ?? now()->year),
+                subject: 'Local de Prova – Vestibulinho LF ' . ($process?->year ?? now()->year),
                 content: [
                     'name' => $user->name,
                     'date' => $result->exam_date,
@@ -62,7 +62,7 @@ class SendDailyExamLocationEmails extends Command
                     'address' => $result->examLocation->address,
                     'room_number' => $result->room_number,
                 ],
-                view: 'emails.location'
+                view: 'emails.exam.location'
             );
 
             $result->update(['email_sent_at' => now()]);

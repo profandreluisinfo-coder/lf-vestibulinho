@@ -8,7 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Throwable;
 
 class UserService
 {
@@ -37,7 +39,7 @@ class UserService
                     to: $user->email,
                     subject: 'Confirme seu e-mail',
                     data: ['link' => $link],
-                    view: 'emails.verify'
+                    view: 'emails.verify.register'
                 );
 
                 return $user;
@@ -87,7 +89,7 @@ class UserService
             to: $user->email,
             subject: 'E-mail confirmado',
             data: ['process' => $year_process, 'name' => $user?->name ?? 'Candidato'],
-            view: 'emails.confirmation'
+            view: 'emails.verify.token'
         );
 
         return ['success' => true, 'user' => $user];
@@ -125,7 +127,7 @@ class UserService
                     to: $user->email,
                     subject: 'Redefinir senha',
                     data: ['name' => $name, 'link' => $link],
-                    view: 'emails.reset'
+                    view: 'emails.password.forgot'
                 );
             });
 
@@ -146,46 +148,62 @@ class UserService
      *
      * Valida os campos 'token' e 'new_password' e
      * tenta redefinir a senha do usuário com base nas credenciais informadas.
-     * Se a redefinição for bem sucedida, o usuário receberá um e-mail para confirmar o endereço de e-mail.
+     * Se a redefinição for bem sucedida, o usuário receberá um e-mail de confirmação.
      * Caso contrário, será exibido um erro.
      */
     public function resetPassword(string $token, string $newPassword): array
     {
-        $name = '';
+        try {
+            $user = User::where('token', $token)->first();
 
-        $user = User::where('token', $token)->first();
+            if (! $user) {
+                return [
+                    'success' => false,
+                    'message' => 'Token inválido ou expirado.',
+                ];
+            }
 
-        if (! $user) {
+            DB::transaction(function () use ($user, $newPassword): void {
+                $user->password = Hash::make($newPassword);
+                $user->token = null;
+                $user->save();
+            });
+
+            $name = match (true) {
+                empty($user->name) => 'Candidato',
+                $user?->lgbt?->status === 'accepted' => $user->lgbt->name,
+                default => $user->name,
+            };
+
+            try {
+                $this->sendEmail(
+                    to: $user->email,
+                    subject: 'Senha alterada',
+                    data: ['name' => $name],
+                    view: 'emails.password.reset'
+                );
+            } catch (Throwable $exception) {
+                Log::error('Erro ao enviar e-mail de redefinição de senha.', [
+                    'user_id' => $user->id,
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Senha alterada.',
+            ];
+        } catch (Throwable $exception) {
+            Log::error('Erro ao redefinir senha do usuário.', [
+                'token' => $token,
+                'error' => $exception->getMessage(),
+            ]);
+
             return [
                 'success' => false,
-                'message' => 'Token inválido ou expirado.',
+                'message' => 'Não foi possível alterar a senha. Tente novamente.',
             ];
         }
-
-        $user->password = Hash::make($newPassword);
-        $user->token = null;
-
-        $user->save();
-
-        if (empty($user?->name)) {
-            $name = 'Candidato';
-        } elseif ($user?->lgbt?->status === 'accepted') {
-            $name = $user->lgbt->name;
-        } else {
-            $name = $user->name;
-        }
-
-        $this->sendEmail(
-            to: $user->email,
-            subject: 'Senha alterada',
-            data: ['name' => $name],
-            view: 'emails.password-changed'
-        );
-
-        return [
-            'success' => true,
-            'message' => 'Senha alterada.',
-        ];
     }
 
     /**
@@ -242,7 +260,7 @@ class UserService
                 to: $user->email,
                 subject: 'Confirme seu e-mail',
                 data: ['link' => $link],
-                view: 'emails.verify'
+                view: 'emails.verify.register'
             );
         } catch (\Throwable $e) {
             // Desfaz o token para permitir nova tentativa imediata
@@ -284,7 +302,7 @@ class UserService
             to: $user->email,
             subject: 'Senha alterada',
             data: ['name' => $name],
-            view: 'emails.password-changed'
+            view: 'emails.password.reset'
         );
 
         return [

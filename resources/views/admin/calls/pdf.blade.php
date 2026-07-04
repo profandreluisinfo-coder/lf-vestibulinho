@@ -114,12 +114,20 @@
     @foreach ($callListMembers as $call)
         @php
             $user = $call->examResult->inscription->user;
-            $detail = $user->user_detail;
+            
+            // Relacionamentos
+            $lgbt = $user?->lgbt;
+            $pne = $user?->pne;
+            $academic = $user->academic;
+            $document = $user->document;
+            $certificate = $user->certificate;
+            $mother = $user->mother;
+            $father = $user->father;
+            $guardian = $user->guardian;
+            $parent_email = $user->parent_email;
+
             $call_date = $call->date->format('d/m/Y');
-            $doc = trim(explode(' ', $detail?->doc_type)[0]); // pega a primeira palavra do tipo de documento
-            $displayName = ($user->social_name_option && $user->authorization_accepted == 1)
-                ? $user->name    
-                : '';
+            $doc = trim(explode(' ', $document?->type)[0]); // pega a primeira palavra do tipo de documento
         @endphp
 
         <div class="header">
@@ -133,19 +141,19 @@
                 <td class="header-cell" style="width: 20%;">NOME DO ESTUDANTE</td>
                 <td colspan="4" class="tc fs">{{ $user->name }}</td>
                 <td class="header-cell" style="width: auto; text-align: center">CONTATO</td>
-                <td colspan="3" class="tc fs">{{ $detail->phone }}</td>
+                <td colspan="3" class="tc fs">{{ $user->phone }}</td>
             </tr>
 
             <tr>
                 <td class="header-cell">NOME SOCIAL/AFETIVO<br>(DECR. 55588/10)<br>(LEI N° 16.785/18)</td>
-                <td colspan="8" class="tc">{{ $displayName ? $displayName : "---" }}</td>
+                <td colspan="8" class="tc">{{ $lgbt?->status === 'accepted' ? $lgbt?->name : "---" }}</td>
             </tr>
 
             <tr>
                 <td class="header-cell">RA</td>
-                <td colspan="2" class="tc fs">{{ $detail->school_ra }}</td>
+                <td colspan="2" class="tc fs">{{ $academic->ra }}</td>
                 <td class="header-cell tc">{{ $doc }}</td>
-                <td colspan="2" class="tc fs">{{ $detail->nationality === "ESTRANGEIRA" ? "" : $detail->doc_number }}</td>
+                <td colspan="2" class="tc fs">{{ $user->nationality === "ESTRANGEIRA" ? "" : $document->number }}</td>
                 <td class="header-cell tc">CPF</td>
                 <td colspan="2" class="tc fs">{{ $user->cpf }}</td>
             </tr>
@@ -157,7 +165,7 @@
             <tr>
                 <td class="header-cell" rowspan="3" style="width: 20%">CERTIDÃO DE NASCIMENTO</td>
                 <td class="header-cell tc">NOVA</td>
-                <td colspan="4" class="tc fs">{{ $detail?->new_number }}</td>
+                <td colspan="4" class="tc fs">{{ $certificate->type === '1' ? $certificate->number : '---' }}</td>
                 <td class="header-cell tc">DATA NASC.</td>
                 <td colspan="2" class="tc fs">
                     {{ $user->birth }}
@@ -167,11 +175,11 @@
             <tr>
                 <td class="header-cell tc">ANTIGA</td>
                 <td class="header-cell tc">FLS.</td>
-                <td class="tc fs">{{ $detail?->fls ? $detail?->fls : "---" }}</td>
+                <td class="tc fs">{{ $certificate->type === '2' ? $certificate?->fls : "---" }}</td>
                 <td class="header-cell tc">LIVRO</td>
-                <td class="tc fs">{{ $detail?->book ? $detail?->book : "---" }}</td>
+                <td class="tc fs">{{ $certificate->type === '2' ? $certificate?->book : "---" }}</td>
                 <td class="header-cell tc">NÚMERO</td>
-                <td colspan="2" class="tc fs">{{ $detail?->old_number ? $detail?->old_number : "---" }}</td>
+                <td colspan="2" class="tc fs">{{ $certificate->type === '2' ? $certificate?->number : "---" }}</td>
             </tr>
 
             <tr>
@@ -180,17 +188,17 @@
                 <td class="header-cell tc" style="font-size: 10px">SUBDISTRITO</td>
                 <td></td>
                 <td class="header-cell tc">MUNICÍPIO</td>
-                <td colspan="3" class="tc fs">{{ $detail?->municipality ? $detail?->municipality : "---" }}</td>
+                <td colspan="3" class="tc fs">{{ $certificate->city }}</td>
             </tr>
 
             <!-- NACIONALIDADE / RNE -->
             <tr>
                 <td class="header-cell">NACIONALIDADE</td>
-                <td colspan="{{ $detail->nationality === "BRASILEIRA" ? "8" : "2" }}" class="fs">{{ $detail?->nationality }}</td>
-                @if ($detail->nationality === "ESTRANGEIRA")
+                <td colspan="{{ $user->typeOfNationality() === "1" ? "8" : "2" }}" class="fs">{{ $user->nationality }}</td>
+                @if ($user->typeOfNationality() === "3")
                 <td class="header-cell tc">RNE</td>
                 <td colspan="5" class="tc fs">
-                    {{ $detail->doc_number }}
+                    {{ $document->number }}
                   </td>
                 @endif
             </tr>
@@ -200,9 +208,9 @@
                 <td class="header-cell">GÊNERO</td>
                 <td class="tc fs">{{ $user->gender }}</td>
                 <td class="header-cell tc">BOLSA FAMÍLIA</td>
-                <td class="tc fs">{{ $detail?->nis ? 'Sim' : 'Não' }}</td>
+                <td class="tc fs">{{ $user?->nis ? 'Sim' : 'Não' }}</td>
                 <td class="header-cell tc">NIS</td>
-                <td colspan="4" class="tc fs">{{ $detail?->nis ? $detail?->nis : '---' }}</td>
+                <td colspan="4" class="tc fs">{{ $user?->nis ? $user?->nis : '---' }}</td>
             </tr>
 
         </table>
@@ -212,44 +220,44 @@
             <!-- EDUCAÇÃO ESPECIAL -->
             <tr>
                 <td class="header-cell" style="width: 32%">ELEGÍVEL AOS SERVIÇOS DA EDUCAÇÃO ESPECIAL</td>
-                <td class="tc fs">{{ (  $detail?->pne_report_accepted == 1) ? 'Sim' : 'Não' }}</td>
+                <td class="tc fs">{{ ($pne?->status === "accepted") ? 'Sim' : 'Não' }}</td>
                 <td class="header-cell tc">QUAL?</td>
-                <td colspan="5" class="tc fs">{{ (  $detail?->pne_report_accepted == 1) ? $detail?->accessibility : '---' }}</td>
+                <td colspan="5" class="tc fs">{{ ($pne?->status === "accepted") ? $pne?->description : '---' }}</td>
             </tr>
 
             <!-- SAÚDE / ALERGIA -->
             <tr>
                 <td class="header-cell">TEM ALGUM PROBLEMA DE SAÚDE OU ALERGIA</td>
-                <td class="tc fs">{{ $detail?->health ? 'Sim' : 'Não' }}</td>
+                <td class="tc fs">{{ $user?->health_issue ? 'Sim' : 'Não' }}</td>
                 <td class="header-cell tc">QUAL?</td>
-                <td colspan="5" class="tc fs">{{ $detail?->health }}</td>
+                <td colspan="5" class="tc fs">{{ $user?->health_issue }}</td>
             </tr>
         </table>
 
         <table>
             <tr>
                 <td class="header-cell" style="width: 19%;">FILIAÇÃO 1</td>
-                <td class="tc fs">{{ $detail->mother }}</td>
+                <td class="tc fs">{{ $mother->name }}</td>
                 <td class="header-cell" style="width: 15%; text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $detail->mother_phone }}</td>
+                <td class="tc fs">{{ $mother?->phone }}</td>
             </tr>
             <tr>
                 <td class="header-cell">FILIAÇÃO 2</td>
-                <td class="tc fs">{{ $detail?->father }}</td>
+                <td class="tc fs">{{ $father?->name ?? '---' }}</td>
                 <td class="header-cell" style="text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $detail?->father_phone }}</td>
+                <td class="tc fs">{{ $father?->phone ?? '---' }}</td>
             </tr>
             <tr>
                 <td class="header-cell">RESPONSÁVEL PELO ESTUDANTE</td>
-                <td class="tc fs">{{ $detail?->responsible }}</td>
+                <td class="tc fs">{{ $guardian?->name ?? '---' }}</td>
                 <td class="header-cell" style="text-align: center">PARENTESCO</td>
-                <td class="tc fs">{{ $detail?->getDegreeAttribute($detail?->degree) }}</td>
+                <td class="tc fs">{{ $guardian?->degree ?? '---' }}</td>
             </tr>
             <tr>
                 <td class="header-cell">E-MAIL</td>
-                <td class="tc fs">{{ $detail->parents_email }}</td>
+                <td class="tc fs">{{ $parent_email->address }}</td>
                 <td class="header-cell" style="text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $detail?->responsible_phone }}</td>
+                <td class="tc fs">{{ $guardian?->phone ?? '---' }}</td>
             </tr>
         </table>
 
@@ -257,22 +265,22 @@
             <tr>
                 <td class="header-cell" rowspan="3">ENDEREÇO<br>RESIDENCIAL</td>
                 <td class="header-cell" style="width: 15%; text-align: center">RUA/AV.</td>
-                <td colspan="6" class="tc fs">{{ $detail->street }} {{ $detail?->number }}</td>
+                <td colspan="6" class="tc fs">{{ $user->street }} {{ $user?->number }}</td>
             </tr>
             <tr>
                 <td class="header-cell" style="width: 10%; text-align: center">BAIRRO</td>
-                <td colspan="3" class="tc fs">{{ $detail->burgh }}</td>
+                <td colspan="3" class="tc fs">{{ $user->burgh }}</td>
                 </td>
                 <td class="header-cell">COMPLEMENTO</td>
-                <td colspan="2" class="tc fs">{{ $detail?->complement }}</td>
+                <td colspan="2" class="tc fs">{{ $user?->complement ?? '---' }}</td>
             </tr>
             <tr>
                 <td class="header-cell" style="width: 10%; text-align: center">CIDADE</td>
-                <td class="tc fs">{{ $detail->city }}</td>
+                <td class="tc fs">{{ $user->city }}</td>
                 <td class="header-cell" style="width: 8%; text-align: center;">UF</td>
-                <td class="tc fs">{{ $detail->state }}</td>
+                <td class="tc fs">{{ $user->state }}</td>
                 <td class="header-cell" style="width: 10%; text-align: center;">CEP</td>
-                <td colspan="2" class="tc fs">{{ $detail->zip }}</td>
+                <td colspan="2" class="tc fs">{{ $user->zip }}</td>
             </tr>
             <tr>
                 <th rowspan="2" class="header-cell">TRANSPORTE<br>ESCOLAR GRATUITO</td>
@@ -307,15 +315,15 @@
         <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
             <tr>
                 <td class="header-cell" style="width: 25%;">ESCOLA DE CONCLUSÃO E.F.</td>
-                <td colspan="6" style="width: 70%;" class="tc fs">{{ $detail->school_name }}</td>
+                <td colspan="6" style="width: 70%;" class="tc fs">{{ $academic->name }}</td>
             </tr>
             <tr>
                 <td class="header-cell" style="width: 15%;">CIDADE</td>
-                <td colspan="2" class="tc fs">{{ $detail->school_city }}</td>
+                <td colspan="2" class="tc fs">{{ $academic->city }}</td>
                 <td class="header-cell" style="width: 5%; text-align: center">UF</td>
-                <td class="tc fs">{{ $detail->school_state }}</td> <!-- célula para valor de UF -->
+                <td class="tc fs">{{ $academic->state }}</td> <!-- célula para valor de UF -->
                 <td class="header-cell" style="width: 20%;">ANO DE CONCLUSÃO</td>
-                <td class="tc fs">{{ $detail->school_year }}</td> <!-- célula para valor do ano -->
+                <td class="tc fs">{{ $academic->year }}</td> <!-- célula para valor do ano -->
             </tr>
         </table>
         <!-- Mover a tabela para a próxima página na impressão -->
@@ -382,6 +390,24 @@
             </tr>
             <tr>
                 <td>2030</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2031</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2032</td>
                 <td></td>
                 <td></td>
                 <td></td>

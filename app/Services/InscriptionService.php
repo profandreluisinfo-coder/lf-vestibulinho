@@ -160,7 +160,7 @@ class InscriptionService
             Mail::to($user->email)->send(new SendMail(
                 subject: 'Protocolo de Inscrição',
                 content: ['name' => $user->name],
-                view: 'emails.protocol',
+                view: 'emails.inscription.protocol',
                 attachment: $path
             ));
 

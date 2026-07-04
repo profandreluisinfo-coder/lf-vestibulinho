@@ -17,75 +17,84 @@ class CallExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return Call::with('examResult.inscription.user.user_detail')
+        return Call::with([
+            'examResult.inscription.user.lgbt',
+            'examResult.inscription.user.document',
+            'examResult.inscription.user.certificate',
+            'examResult.inscription.user.academic',
+            'examResult.inscription.user.mother',
+            'examResult.inscription.user.father',
+            'examResult.inscription.user.guardian',
+            'examResult.inscription.user.parent_email',
+            'examResult.inscription.user.pne',
+        ])
             ->where('call_number', $this->call_number)
-            ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
+            ->whereHas('callList', fn ($q) => $q->where('status', 'completed'))
             ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')
             ->orderBy('exam_results.ranking')
             ->select('calls.*')
             ->get()
             ->map(function ($call) {
                 $user = $call->examResult->inscription->user;
-                $detail = $user->user_detail;
+                // $detail = $user->user_detail;
 
                 return [
-                    'Inscrição'        => $call->examResult->inscription->id,
-                    'Nome'             => $user->name,
-                    'Nome Social'      => $user->name,
-                    'CPF'              => $user->cpf,
-                    'Nascimento'       => \Carbon\Carbon::parse($user->birth)->format('d/m/Y'),
-                    'Gênero'           => $user->gender,
-                    'E-mail'           => $user->email,
+                    'Inscrição' => $call->examResult->inscription->id,
+                    'Nome' => $user->name,
+                    'Nome Social' => $user?->lgbt?->name,
+                    'CPF' => $user->cpf,
+                    'Nascimento' => $user->birth->format('d/m/Y'),
+                    'Gênero' => $user->gender,
+                    'E-mail' => $user->email,
 
                     // user_details
-                    'Nacionalidade'    => $detail?->nationality,
-                    'Documento'        => $detail?->doc_type,
-                    'Nº Documento'     => $detail?->doc_number,
-                    'Telefone'         => $detail?->phone,
+                    'Nacionalidade' => $user->nationality,
+                    'Documento' => $user->document->type,
+                    'Nº Documento' => $user->document->number,
+                    'Telefone' => $user->phone,
 
                     // Endereço
-                    'CEP'              => $detail?->zip,
-                    'Rua/Avenida'      => $detail?->street,
-                    'Nº'               => $detail?->number,
-                    'Complemento'      => $detail?->complement,
-                    'Bairro'           => $detail?->burgh,
-                    'Cidade'           => $detail?->city,
-                    'Estado'           => $detail?->state,
+                    'CEP' => $user->zip,
+                    'Rua/Avenida' => $user->street,
+                    'Nº' => $user->number,
+                    'Complemento' => $user?->complement ?? '',
+                    'Bairro' => $user->burgh,
+                    'Cidade' => $user->city,
+                    'Estado' => $user->state,
 
                     // Certidão de nascimento
-                    'Certidão Nova'    => $detail?->new_number,
-                    'Certidão Antiga'  => $detail?->old_number,
-                    'Folhas'           => $detail?->fls,
-                    'Livro'            => $detail?->book,
-                    'Município'        => $detail?->municipality,
+                    'Certidão de Nascimento' => $user?->certificate?->number,
+                    'Folhas' => $user?->certificate?->fls ?? '-',
+                    'Livro' => $user?->certificate?->book ?? '-',
+                    'Município' => $user?->certificate?->city ?? '-',
 
                     // Escola
-                    'Escola'           => $detail?->school_name,
-                    'Cidade Escola'    => $detail?->school_city,
-                    'UF Escola'        => $detail?->school_state,
-                    'Ano Conclusão'    => $detail?->school_year,
-                    'RA Escolar'       => $detail?->school_ra,
+                    'Escola' => $user?->academic?->school,
+                    'Cidade Escola' => $user?->academic?->city,
+                    'UF Escola' => $user?->academic?->state,
+                    'Ano Conclusão' => $user?->academic?->year,
+                    'RA Escolar' => $user?->academic?->ra,
 
                     // Responsável
-                    'Mãe'              => $detail?->mother,
-                    'Telefone Mãe'     => $detail?->mother_phone,
-                    'Pai'              => $detail?->father,
-                    'Telefone Pai'     => $detail?->father_phone,
-                    'Responsável'      => $detail?->responsible,
-                    'Parentesco'       => $detail?->degree,
-                    'Outro Parentesco' => $detail?->kinship,
-                    'Tel Resp'    => $detail?->responsible_phone,
-                    'E-mail Pais'      => $detail?->parents_email,
+                    'Mãe' => $user->mother->name,
+                    'Telefone Mãe' => $user?->mother?->phone,
+                    'Pai' => $user?->father?->name,
+                    'Telefone Pai' => $user?->father?->phone,
+                    'Responsável' => $user?->guardian?->name,
+                    'Parentesco' => $user?->guardian?->degree,
+                    'Outro Parentesco' =>  $user?->guardian?->kinship,
+                    'Tel Resp' =>  $user?->guardian?->phone,
+                    'E-mail Pais' => $user->parent_email->address,
 
                     // Saúde
-                    'Alérgico'         => $detail?->health ? 'Sim' : 'Não',
-                    'Alergia'          => $detail?->health,
-                    'Educação Especial'=> $user->pne ? 'Sim' : 'Não',
-                    'Descrição'        => $detail?->accessibility,
+                    'Alérgico' => $user?->health_issue ? 'Sim' : 'Não',
+                    'Alergia' => $user?->health_issue ?? '-',
+                    'Educação Especial' => $user->pne ? 'Sim' : 'Não',
+                    'Descrição' => $user?->pne?->description ?? '-',
 
                     // Programas sociais
-                    'Bolsa Família'     => $detail?->nis ? 'Sim' : 'Não',
-                    'NIS'              => $detail?->nis,
+                    'Bolsa Família' => $user?->nis ? 'Sim' : 'Não',
+                    'NIS' => $user?->nis ?? '-',
                 ];
             });
     }

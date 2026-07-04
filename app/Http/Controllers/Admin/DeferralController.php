@@ -72,7 +72,7 @@ class DeferralController extends Controller
                 ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
-        if (! $user->pne) {
+        if (!$user->pne) {
             return redirect()
                 ->route('admin.inscriptions.pcd')
                 ->with('error', 'Detalhes do usuário não encontrados.');

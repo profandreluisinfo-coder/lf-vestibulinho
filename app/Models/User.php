@@ -190,6 +190,11 @@ class User extends Authenticatable
         return $nationalities[$value] ?? $value;  // Se não encontrar, retorna o valor original
     }
 
+    public function typeOfNationality()
+    {
+        return $this->getRawOriginal('nationality'); // valor bruto
+    }
+
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = Str::of($value)->lower();

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Call;
-use App\Models\Calendar;
 use App\Models\CallList;
 use Illuminate\View\View;
 use App\Models\ExamResult;
@@ -17,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\SendCallNotificationJob;
+use App\Models\Process;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -235,11 +235,13 @@ class CallController extends Controller
             'status' => 'completed'
         ]);
 
-        $actual_calendar = Calendar::getYear();
+        $actual_process = Process::getYear();
 
         $calls = $callList->calls()
             ->with([
-                'examResult.inscription.user'
+                'examResult.inscription.user',
+                'examResult.inscription.user.lgbt',
+                'examResult.inscription.user.pne',
             ])
             ->get();
 
@@ -254,18 +256,18 @@ class CallController extends Controller
 
             $subject = sprintf(
                 'CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s E.M. DR. LEANDRO FRANCESCHINI — CHAMADA %d',
-                $actual_calendar,
+                $actual_process,
                 $callList->number
             );
 
             $content = [
-                'nome' => ($user->authorization_accepted == 1 && !empty($user->name))
-                    ? $user->name
+                'nome' => ($user?->lgbt?->status === 'accepted' && !empty($user->name))
+                    ? $user?->lgbt?->name
                     : $user->name,
 
-                'data' => \Carbon\Carbon::parse($callList->date)->format('d/m/Y'),
+                'data' => $callList->date->format('d/m/Y'),
 
-                'hora' => \Carbon\Carbon::parse($callList->time)->format('H:i'),
+                'hora' => $callList->time->format('H:i'),
 
                 'numero_chamada' => $callList->number,
             ];
@@ -274,7 +276,7 @@ class CallController extends Controller
                 $user->email,
                 $subject,
                 $content,
-                'admin.mail.call'
+                'admin.emails.call' // resources\views\admin\emails\call.blade.php
             );
         }
 
@@ -283,6 +285,7 @@ class CallController extends Controller
             'Chamada finalizada! Os convocados serão notificados por e-mail.'
         );
     }
+
     /**
      * Retorna os dados da chamada para o qual o usuário autenticado foi convocado.
      * Caso o usuário não tenha resultado de exame ou não tenha sido convocado em nenhuma chamada finalizada,
@@ -338,9 +341,18 @@ class CallController extends Controller
      */
     public function pdf($call_number): Response
     {
-        $callListMembers = Call::with('examResult.inscription.user.user_detail')
+        $callListMembers = Call::with([
+            'examResult.inscription.user.lgbt',
+            'examResult.inscription.user.pne',
+            'examResult.inscription.user.document',
+            'examResult.inscription.user.certificate',            
+            'examResult.inscription.user.academic',
+            'examResult.inscription.user.mother',
+            'examResult.inscription.user.father',
+            'examResult.inscription.user.guardian',
+            'examResult.inscription.user.parent_email',            
+        ])
             ->where('call_number', $call_number)
-            // ->whereHas('callList', fn($q) => $q->where('status', 'completed'))
             ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')
             ->orderBy('exam_results.ranking')
             ->select('calls.*')
