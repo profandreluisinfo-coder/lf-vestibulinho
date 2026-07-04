@@ -37,22 +37,22 @@ Route::middleware([
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::get('inicio', [AdminController::class, 'index'])->name('index');
 
         Route::prefix('inscricoes')->name('inscriptions.')->group(function () {
             // Lista de inscrições
-            Route::get('/', [InscriptionController::class, 'index'])->name('index');
-            Route::post('/inscriptions/data', [InscriptionController::class, 'getData'])
+            Route::get('inscricoes', [InscriptionController::class, 'index'])->name('index');
+            Route::post('inscriptions/data', [InscriptionController::class, 'getData'])
                 ->name('get.data');
             // Lista de pessoas com deficiência
-            Route::get('/pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
+            Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
                 ->name('pcd');
-            Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
+            Route::post('pcd-data', [InscriptionController::class, 'getPcd'])
                 ->name('pcd.data');
             // Candidatos com nome social
-            Route::get('/nome-social', [InscriptionController::class, 'lgbts'])
+            Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                 ->name('lgbts');
-            Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
+            Route::get('candidato/{id}', [InscriptionController::class, 'show'])
                 ->name('show');
         });
 

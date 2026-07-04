@@ -44,7 +44,7 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="school_year" class="form-label required">Ano de conclusão</label>
+            <label for="school_year" class="form-label required">Ano em que concluiu (concluirá) o Ensino Fundamental</label>
             <input type="number" name="school_year" id="school_year"
                 class="form-control @error('school_year') is-invalid @enderror"
                 value="{{ old('school_year', session('step4.school_year')) }}" min="2025">

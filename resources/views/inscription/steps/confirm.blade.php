@@ -268,7 +268,7 @@
             <i class="bi bi-universal-access"></i> Educação Especial
         </div>
         <div class="review-row">
-            <span class="review-label">Elegível</span>
+            <span class="review-label">Pessoa com Necessidades Especiais (PNE)</span>
             <span class="review-value">
                 @if ($step6['pne'] == 1)
                     <span class="badge bg-success">Sim</span>

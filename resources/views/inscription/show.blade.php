@@ -76,7 +76,8 @@
 
                     <div class="data-item data-item-name">
                         <div class="data-label">Nome Completo</div>
-                        <div class="data-value">{{ $user->name }}</div>
+                        <div class="data-value">
+                            {{ $user?->lgbt?->status === 'accepted' ? $user?->lgbt?->name : $user->name }}</div>
                     </div>
 
                     <div class="data-item">
@@ -91,7 +92,7 @@
                 </div>
 
                 {{-- Nome Social --}}
-                @if ($user?->lgbt)
+                @if ($user?->lgbt && !($user?->lgbt?->status === 'accepted'))
 
                     <div class="info-block">
                         <div class="info-block-label">
@@ -135,7 +136,7 @@
 
                     <div class="info-block">
                         <div class="info-block-label">
-                            <i class="bi bi-universal-access-circle"></i> Necessidade de Acessibilidade
+                            <i class="bi bi-universal-access-circle"></i> Pessoa com Necessidades Especiais
                         </div>
                         <div class="info-block-row">
                             <div>
@@ -171,6 +172,17 @@
                             @endif
                         </div>
                     </div>
+
+                    @if ($user?->pne?->observations)
+                        <div class="info-block">
+                            <div class="info-block-label">
+                                <i class="bi bi-universal-access-circle"></i> Observações
+                            </div>
+                            <div class="info-block-row">
+                                <span class="text-danger"><i class="bi bi-exclamation-triangle me-2"></i> {{ $user?->pne?->observations }}</span>
+                            </div>
+                        </div>
+                    @endif
 
                 @endif
 

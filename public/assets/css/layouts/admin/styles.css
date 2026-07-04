@@ -8,30 +8,30 @@
     --color-navy: #0B1E3D;
     --color-navy-mid: #132948;
     --color-navy-light: #1B3E72;
-    
+
     /* Cores de Destaque */
     --color-teal: #00A896;
     --color-teal-dark: #007F72;
     --color-teal-light: rgba(0, 168, 150, .10);
-    
+
     /* Cores de Ênfase */
     --color-amber: #F4A261;
     --color-amber-dark: #E07A3A;
     --color-amber-light: rgba(244, 162, 97, .12);
-    
+
     /* Cores de Feedback */
     --color-success: #27ae60;
     --color-success-dark: #1e8449;
     --color-danger: #e74c3c;
     --color-warning: #f0c030;
-    
+
     /* Cores Neutras */
     --color-white: #FFFFFF;
     --color-light: #EEF3FA;
     --color-light-mid: #E2EAF4;
     --color-muted: #6B7FA3;
     --color-muted-light: rgba(107, 127, 163, .45);
-    
+
     /* Cores do Sistema (alias para compatibilidade) */
     --primary-color: var(--color-navy);
     --sidebar-bg: var(--color-navy);
@@ -48,24 +48,24 @@
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-pill: 999px;
-    
+
     /* Sombras */
     --shadow-sm: 0 2px 8px rgba(11, 30, 61, .08);
     --shadow-md: 0 6px 24px rgba(11, 30, 61, .12);
     --shadow-lg: 0 16px 48px rgba(11, 30, 61, .16);
     --shadow-teal: 0 6px 20px rgba(0, 168, 150, .30);
-    
+
     /* Transições */
     --transition-fast: .18s ease;
     --transition-base: .25s ease;
-    
+
     /* Tipografia */
     --font-heading: 'Sora', system-ui, sans-serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
     --font-size-base: 0.925rem;
     --font-size-sm: 0.82rem;
     --font-size-xs: 0.74rem;
-    
+
     /* Gradientes */
     --grad-navy: linear-gradient(135deg, #0B1E3D 0%, #1B3E72 60%, #0E4D6B 100%);
     --grad-teal: linear-gradient(135deg, #00A896 0%, #007F72 100%);
@@ -98,8 +98,18 @@ body {
     overflow-y: scroll !important;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
     font-family: var(--font-heading);
     color: var(--color-navy);
     font-weight: 700;
@@ -591,7 +601,7 @@ i {
 }
 
 /* Botões */
- .btn {
+.btn {
     font-family: var(--font-heading);
     font-weight: 600;
     transition: transform var(--transition-base), box-shadow var(--transition-base);
@@ -752,6 +762,21 @@ i {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    background-color: var(--color-white);
+}
+
+.stepper-container {
+    margin-bottom: 1.5rem;
+}
+
+.progress-container {
+    margin-bottom: 3.5rem;
+}
+
+.stepper-container {
+    background-color: var(--color-white);
+    padding: 1.5rem;
+    border-radius: 12px;
 }
 
 .step-item {
@@ -784,6 +809,7 @@ i {
         align-items: center;
         justify-content: space-between;
         gap: 0;
+        margin-bottom: 2rem;
     }
 
     .step-divider {
@@ -794,9 +820,37 @@ i {
 
 /* Mobile (< 768px) */
 @media (max-width: 768px) {
-    .accordion {
-        width: 100% !important;
-        margin-top: -25px !important;
+
+
+    .stepper-container {
+        margin-bottom: 1.5rem
+    }
+
+    .progress-container {
+        margin-bottom: 2.5rem;
+    }
+
+    .stepper-container {
+        padding: 0.5rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: .2rem
+    }
+
+    .stepper-container,
+    .statistics-container p {
+        font-size: .8rem
+    }
+
+    .statistics-container .card {
+        /* max-height: 100px; */
+        gap: .2rem;
+    }
+
+    .statistics-container .card-body {
+        margin: 0 auto;
+        padding: .6rem !important;
     }
 }
 

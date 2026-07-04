@@ -46,11 +46,10 @@ class CallController extends Controller
         // Filtra os PCDs que ainda não foram convocados
         $pneCandidates = ExamResult::whereNotNull('ranking')
             ->whereNotIn('id', $alreadyCalledIds)
-            ->whereHas('inscription.user.user_detail', function ($query) {
-                $query->where('pne', '=', 1)
-                    ->where('pne_report_accepted', '=', 1);
+            ->whereHas('inscription.user.pne', function ($query) {
+                $query->where('status', '=', 'accepted');
             })
-            ->with(['inscription.user.user_detail'])
+            // ->with(['inscription.user.user_detail'])
             ->orderBy('ranking')
             ->get();
         // Quantidade de convocados por curso

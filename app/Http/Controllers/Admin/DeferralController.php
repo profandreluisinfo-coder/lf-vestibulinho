@@ -87,7 +87,7 @@ class DeferralController extends Controller
             to: $user->email,
             subject: 'Vestibulinho LF - Deferimento de Relatório/Laudo Médico',
             data: [
-                'name' => $user->name
+                'name' => ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name
             ],
             view: 'emails.deferral.pne.accepted',
         );
@@ -130,7 +130,7 @@ class DeferralController extends Controller
             to: $user->email,
             subject: 'Vestibulinho LF - Indeferimento de Relatório/Laudo Médico',
             data: [
-                'name' => $user->name,
+                'name' => ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name,
                 'observations' => $user?->pne?->observations
             ],
             view: 'emails.deferral.pne.rejected',

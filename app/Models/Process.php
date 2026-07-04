@@ -86,7 +86,7 @@ class Process extends Model
      */
     public static function getYear(): ?int
     {
-        $process = self::getActive() ?? self::orderBy('year', 'desc')->first();
+        $process = self::getStatus() === 'open' ?? self::orderBy('year', 'desc')->first();
 
         return $process ? $process?->year : null;
     }

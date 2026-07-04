@@ -75,7 +75,7 @@
 
                 <div class="menu-item">
                     <a href="{{ route('admin.index') }}"
-                        class="menu-link {{ request()->routeIs('admin.*') ? 'active' : '' }}">
+                        class="menu-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
                     </a>
@@ -107,19 +107,12 @@
                     </div>
                 </div>
 
-                <div class="menu-dropdown">
-                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuUsuarios')">
+                <div class="menu-item">
+                    <a href="{{ route('admin.users.index') }}"
+                        class="menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="bi bi-people-fill"></i>
                         <span>Usuários</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.users.*') ? 'show' : '' }}"
-                        id="menuUsuarios">
-                        <a href="{{ route('admin.users.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                            <i class="bi bi-people me-1"></i> Lista de Usuários
-                        </a>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="menu-dropdown">

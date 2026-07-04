@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             LocalSeeder::class,
             CourseSeeder::class,
             PostSeeder::class,
-            SettingsSeeder::class
+            SettingsSeeder::class,
+            ProcessSeeder::class
         ]);
     }
 }

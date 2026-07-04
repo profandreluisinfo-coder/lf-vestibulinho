@@ -55,7 +55,7 @@
         <div class="form-group col-md-6 mt-3 mb-3">
 
             <label for="acessibilidade" class="form-label required">
-                Elegível aos serviços da educação especial?
+                Pretende concorrer às vagas reservadas às Pessoas com Necessidades Especiais (PNE)?
             </label>
 
             <select name="pne" class="form-select @error('pne') is-invalid @enderror" id="accessibility">
@@ -76,7 +76,7 @@
 
         <div class="form-group col-md-6 mt-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
 
-            <label for="descricaoAcessibilidade" class="form-label required">Especifique</label>
+            <label for="descricaoAcessibilidade" class="form-label required">Especifique sua condição</label>
 
             <input list="disabilities" class="form-control @error('accessibility_description') is-invalid @enderror"
                 id="accessibility_description" name="accessibility_description"
@@ -149,8 +149,7 @@
         <div class="form-group col-md-12 mt-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
 
             <label for="pne_description" class="form-label required">
-                A EM Dr. Leandro Franceschini oferece atendimento especializado para quem tem deficiência, transtornos
-                funcionais específicos ou precisa de condições especiais para fazer a prova. Você precisa de algum tipo de
+                Você precisa de algum tipo de
                 atendimento com recurso de acessibilidade para o dia de prova?
             </label>
 

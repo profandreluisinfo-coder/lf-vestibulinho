@@ -31,6 +31,7 @@
   --font-heading: 'Sora', system-ui, sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
   --font-size-base: 1rem;
+  --font-size-lg: 0.92rem;
   --font-size-sm: 0.885rem;
   --font-size-xs: 0.80rem;
 
@@ -579,7 +580,7 @@ small,
   display: flex;
   align-items: flex-start;
   gap: .6rem;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-lg);
   /* font-size: var(--font-size-base); */
   color: var(--color-navy);
 }
@@ -947,6 +948,10 @@ small,
 
   .data-item {
     border-bottom: 1px solid var(--color-light-mid);
+  }
+
+  .data-item-name {
+    grid-column: span 1;
   }
 
   .actions-row {
