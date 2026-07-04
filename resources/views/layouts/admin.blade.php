@@ -138,7 +138,7 @@
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcd') ? 'active' : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>
-                        <a href="{{ route('admin.inscriptions.social.name') }}"
+                        <a href="{{ route('admin.inscriptions.lgbts') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.social.name') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Nome Social
                         </a>

@@ -72,9 +72,10 @@ class InscriptionController extends Controller
 
         // Formatar dados para o DataTables
         $data = $users->map(function ($user) {
+            $name = ($user->lgbt && $user->lgbt->status == 'accepted') ? $user->lgbt->name . ' (LGBTQIA+)' : $user->name;
             return [
                 'inscription_id' => $user->inscription?->id ?? $user->inscription_id,
-                'name' => $user->name,
+                'name' => $name,
                 'cpf' => $user->cpf,
                 'user_id' => $user->id,
                 'actions' => view('admin.inscriptions.inscription-actions', compact('user'))->render()
@@ -119,17 +120,19 @@ class InscriptionController extends Controller
             ->get();
             
         // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('admin.inscriptions.pcd', compact('users'));
+        return view('admin.inscriptions.pcd', [
+            'users' => $users
+        ]);
     }
 
-    public function socialName(): View
+    public function lgbts(): View
     {
-        $users = auth()->user()->load([
-            'inscription',
-            'lgbt'
-        ]);
+        $users = User::whereHas('lgbt')
+            ->whereHas('inscription')
+            ->with(['inscription', 'lgbt'])
+            ->get();
         
-        return view('admin.inscriptions.social-name',[
+        return view('admin.inscriptions.lgbts',[
             'users' => $users
         ]);
     }

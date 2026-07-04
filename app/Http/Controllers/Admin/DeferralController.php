@@ -72,7 +72,7 @@ class DeferralController extends Controller
                 ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
-        if (!$user->pne) {
+        if (! $user->pne) {
             return redirect()
                 ->route('admin.inscriptions.pcd')
                 ->with('error', 'Detalhes do usuário não encontrados.');
@@ -80,14 +80,16 @@ class DeferralController extends Controller
 
         $user->pne->update([
             'status' => 'accepted',
-            'observations' => null,
+            'observations' => 'Autorização deferida pelo administrador',
         ]);
 
         $this->sendEmail(
             to: $user->email,
             subject: 'Vestibulinho LF - Deferimento de Relatório/Laudo Médico',
-            data: ['name' => $user->name],
-            view: 'emails.deferral.accepted',
+            data: [
+                'name' => $user->name
+            ],
+            view: 'emails.deferral.pne.accepted',
         );
 
         return redirect()
@@ -127,13 +129,143 @@ class DeferralController extends Controller
         $this->sendEmail(
             to: $user->email,
             subject: 'Vestibulinho LF - Indeferimento de Relatório/Laudo Médico',
-            data: ['name' => $user->name, 'observations' => $user?->pne?->observations],
-            view: 'emails.deferral.rejected',
+            data: [
+                'name' => $user->name,
+                'observations' => $user?->pne?->observations
+            ],
+            view: 'emails.deferral.pne.rejected',
         );
 
         return redirect()
             ->route('admin.inscriptions.pcd')
             ->with('success', 'Relatório/laudo indeferido com sucesso. O candidato será notificado por e-mail.');
+    }
+
+    public function showAcceptAuthorization(User $user): View|RedirectResponse
+    {
+        $user->load(['inscription.exam_result', 'lgbt']);
+
+        if ($user->inscription?->exam_result) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Não é possível deferir a autorização, pois este candidato já está inscrito em uma prova agendada.');
+        }
+
+        if (! $user->lgbt) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
+
+        return view('admin.deferrals.authorization', [
+            'user' => $user,
+            'action' => 'accept',
+        ]);
+    }
+
+    public function showRejectAuthorization(User $user): View|RedirectResponse
+    {
+        $user->load(['inscription.exam_result', 'lgbt']);
+
+        if ($user->inscription?->exam_result) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Não é possível indeferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
+        }
+
+        if (! $user->lgbt) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
+
+        return view('admin.deferrals.authorization', [
+            'user' => $user,
+            'action' => 'reject',
+        ]);
+    }
+
+    public function acceptAuthorization(User $user): RedirectResponse
+    {
+        $user->load(['inscription.exam_result', 'lgbt']);
+
+        if ($user->inscription?->exam_result) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Não é possível deferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
+        }
+
+        if (! $user->lgbt) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
+
+        try {
+            $user->lgbt->update([
+                'status' => 'accepted',
+                'observations' => 'Autorização deferida pelo administrador',
+            ]);
+
+            $this->sendEmail(
+                to: $user->email,
+                subject: 'Vestibulinho LF - Autorização de Nome Social',
+                data: [
+                    'name' => $user->lgbt->name,
+                ],
+                view: 'emails.deferral.lgbt.accepted',
+            );
+
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('success', 'Autorização de nome social deferida com sucesso. O candidato será notificado por e-mail.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Erro ao deferir a autorização: '.$e->getMessage());
+        }
+    }
+
+    public function rejectAuthorization(Request $request, User $user): RedirectResponse
+    {
+        $user->load(['inscription.exam_result', 'lgbt']);
+
+        if ($user->inscription?->exam_result) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Não é possível indeferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
+        }
+
+        if (! $user->lgbt) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Detalhes do usuário não encontrados.');
+        }
+
+        try {
+            $user->lgbt->update([
+                'status' => 'rejected',
+                'observations' => $request->input('reason'),
+            ]);
+
+            $this->sendEmail(
+                to: $user->email,
+                subject: 'Vestibulinho LF - Autorização de Nome Social',
+                data: [
+                    'name' => $user->name,
+                    'observations' => $user?->lgbt?->observations,
+                ],
+                view: 'emails.deferral.lgbt.rejected',
+            );
+
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('success', 'Autorização de nome social indeferida com sucesso. O candidato será notificado por e-mail.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.inscriptions.lgbts')
+                ->with('error', 'Erro ao indeferir a autorização: '.$e->getMessage());
+        }
     }
 
     private function sendEmail(

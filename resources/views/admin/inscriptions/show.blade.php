@@ -53,7 +53,7 @@
                     <div class="fi-row"><span class="fi-row-label">CPF</span><span
                             class="fi-row-value">{{ $user->cpf }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nome</span><span
-                            class="fi-row-value">{{ $user?->lgbt?->status === 'accepted' ? $user?->lgbt?->name . ' (Nome Social)' : $user->name }}</span>
+                            class="fi-row-value">{{ $user?->lgbt?->status === 'accepted' ? $user?->lgbt?->name . ' (LGBTQIA+)' : $user->name }}</span>
                     </div>
                     <div class="fi-row"><span class="fi-row-label">Gênero</span><span
                             class="fi-row-value">{{ $user->gender }}</span></div>

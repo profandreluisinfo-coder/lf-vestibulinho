@@ -50,8 +50,8 @@ Route::middleware([
             Route::post('/pcd-data', [InscriptionController::class, 'getPcd'])
                 ->name('pcd.data');
             // Candidatos com nome social
-            Route::get('/nome-social', [InscriptionController::class, 'socialName'])
-                ->name('social.name');
+            Route::get('/nome-social', [InscriptionController::class, 'lgbts'])
+                ->name('lgbts');
             Route::get('/candidato/{id}', [InscriptionController::class, 'show'])
                 ->name('show');
         });
@@ -174,7 +174,22 @@ Route::middleware([
         });
 
         // Deferimentos
-        Route::prefix('deferimentos')->name('deferrals.')->group(function () {            
+        Route::prefix('deferimentos')->name('deferrals.')->group(function () {
+
+            // Candidatos que solicitaram o uso de Nome Social
+            Route::get('deferrals/authorization/{user}/accept', [DeferralController::class, 'showAcceptAuthorization'])
+                ->name('accept.authorization.form');
+
+            Route::get('deferrals/authorization/{user}/reject', [DeferralController::class, 'showRejectAuthorization'])
+                ->name('reject.authorization.form');
+
+            Route::patch('deferrals/authorization/{user}/accept', [DeferralController::class, 'acceptAuthorization'])
+                ->name('accept.authorization');
+
+            Route::patch('deferrals/authorization/{user}/reject', [DeferralController::class, 'rejectAuthorization'])
+                ->name('reject.authorization');
+            
+            // Pessoas que apresentaram laudo/relatório médico
             Route::get('deferrals/report/{user}/accept', [DeferralController::class, 'showAcceptReport'])
                 ->name('accept.report.form');
 
