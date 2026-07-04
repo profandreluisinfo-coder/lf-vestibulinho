@@ -6,6 +6,7 @@
      ESTILOS
 ====================================================================== --}}
 @push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/site/posts/create.css') }}">
 @endpush
 
@@ -83,7 +84,7 @@
                             <textarea
                                 id="content"
                                 name="content"
-                                class="form-control @error('content') is-invalid @enderror"
+                                class="form-control summernote @error('content') is-invalid @enderror"
                                 rows="10"
                                 placeholder="Escreva o conteúdo completo aqui..."
                                 required>{{ old('content') }}</textarea>
@@ -242,7 +243,7 @@
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}"
                                         {{ old('category_id') == $cat->id ? 'selected' : '' }}>
-                                        {{ $cat->category }}
+                                        {{ $cat->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -292,7 +293,6 @@
 @push('plugins')
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 @endpush
 
 {{-- =====================================================================

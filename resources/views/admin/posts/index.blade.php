@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Notícias e Comunicados | ' . config('app.name'))
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Notícias e Comunicados')
 
 {{-- =====================================================================
      ESTILOS DA PÁGINA

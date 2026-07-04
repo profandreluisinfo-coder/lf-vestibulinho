@@ -33,7 +33,7 @@ class PostController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.site.posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts'));
     }
 
     // -------------------------------------------------------------------------
@@ -42,10 +42,10 @@ class PostController extends Controller
 
     public function create(): View
     {
-        $categories = Category::orderBy('category')->get();
+        $categories = Category::orderBy('name')->get();
         $types      = [Post::TYPE_NOTICIA, Post::TYPE_INFO];
 
-        return view('admin.site.posts.create', compact('categories', 'types'));
+        return view('admin.posts.create', compact('categories', 'types'));
     }
 
     // -------------------------------------------------------------------------
@@ -94,7 +94,7 @@ class PostController extends Controller
     {
         $post->load(['category', 'author', 'attachments']);
 
-        return view('admin.site.posts.show', compact('post'));
+        return view('admin.posts.show', compact('post'));
     }
 
     // -------------------------------------------------------------------------
@@ -103,12 +103,12 @@ class PostController extends Controller
 
     public function edit(Post $post): View
     {
-        $categories = Category::orderBy('category')->get();
+        $categories = Category::orderBy('name')->get();
         $types      = [Post::TYPE_NOTICIA, Post::TYPE_INFO];
 
         $post->load('attachments');
 
-        return view('admin.site.posts.edit', compact('post', 'categories', 'types'));
+        return view('admin.posts.edit', compact('post', 'categories', 'types'));
     }
 
     // -------------------------------------------------------------------------

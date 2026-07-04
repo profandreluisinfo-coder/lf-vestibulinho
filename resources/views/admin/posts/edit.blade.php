@@ -6,6 +6,7 @@
      ESTILOS  (reaproveita os mesmos tokens do create)
 ====================================================================== --}}
 @push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 <style>
     .form-card {
         background: #fff;
@@ -227,7 +228,7 @@
                             <textarea
                                 id="content"
                                 name="content"
-                                class="form-control @error('content') is-invalid @enderror"
+                                class="form-control summernote @error('content') is-invalid @enderror"
                                 rows="10"
                                 required>{{ old('content', $post->content) }}</textarea>
                             @error('content')
@@ -420,7 +421,7 @@
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}"
                                         {{ old('category_id', $post->category_id) == $cat->id ? 'selected' : '' }}>
-                                        {{ $cat->category }}
+                                        {{ $cat->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -494,11 +495,46 @@
 
 @endsection
 
+@push('plugins')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-pt-BR.min.js"></script>
+@endpush
+
 {{-- =====================================================================
      SCRIPTS
 ====================================================================== --}}
 @push('scripts')
 <script>
+$(document).ready(function () {
+    // Inicializar Summernote
+    $('.summernote').summernote({
+        height: 200,
+        lang: 'pt-BR',
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        placeholder: 'Digite a resposta aqui...',
+        dialogsInBody: true,
+        callbacks: {
+            onInit: function () {
+                // Garantir que o editor funcione dentro do modal
+                $('.note-editor').css('z-index', '9999');
+            },
+            onChange: function (contents) {
+                // Sincronizar automaticamente quando o conteúdo muda
+                $(this).val(contents);
+                // Disparar evento de validação
+                $(this).valid();
+            }
+        }
+    });
+});
 // ── Slug preview dinâmico ─────────────────────────────────────────────
 const titleInput    = document.getElementById('title');
 const slugPreview   = document.getElementById('slug-preview-text');

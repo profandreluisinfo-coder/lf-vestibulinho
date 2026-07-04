@@ -1,3 +1,34 @@
+$(document).ready(function () {
+    // Inicializar Summernote
+    $('.summernote').summernote({
+        height: 200,
+        lang: 'pt-BR',
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        placeholder: 'Digite a resposta aqui...',
+        dialogsInBody: true,
+        callbacks: {
+            onInit: function () {
+                // Garantir que o editor funcione dentro do modal
+                $('.note-editor').css('z-index', '9999');
+            },
+            onChange: function (contents) {
+                // Sincronizar automaticamente quando o conteúdo muda
+                $(this).val(contents);
+                // Disparar evento de validação
+                $(this).valid();
+            }
+        }
+    });
+});
+
 // ── Preview de imagem de capa ─────────────────────────────────────────
 const imageInput    = document.getElementById('image');
 const previewWrap   = document.getElementById('image-preview-wrap');
