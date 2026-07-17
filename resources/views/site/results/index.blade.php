@@ -28,7 +28,7 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
                             <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong>, em conformidade com o item
-                                <strong>5.10</strong> do <a href="{{ asset('storage/' . $process?->edital) }}"
+                                <strong>5.10</strong> do <a href="{{ Storage::url($process?->edital) }}"
                                     class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do
                                 Processo Seletivo {{ $process?->year ?? '' }}, torna pública a classificação geral dos candidatos na prova
                                 objetiva, adotando como critério de desempate a menor idade, conforme disposto no item

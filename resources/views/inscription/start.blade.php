@@ -18,8 +18,8 @@
                 <div class="info-item">
                     <i class="bi bi-check2-circle"></i>
                     <span>
-                        Consulte o @if (file_exists(public_path('storage/' . $process?->edital)))
-                            <a href="{{ asset('storage/' . $process?->edital) }}" target="_blank">edital</a>
+                        Consulte o @if (file_exists(public_path('uploads/' . $process?->edital)))
+                            <a href="{{ Storage::url($process?->edital) }}" target="_blank">edital</a>
                         @endif do processo seletivo antes de iniciar.
                     </span>
                 </div>

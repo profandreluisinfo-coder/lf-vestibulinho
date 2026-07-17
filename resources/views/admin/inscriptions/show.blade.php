@@ -213,7 +213,7 @@
                                 <span class="fi-row-label">Necessidade</span>
                                 <span class="fi-row-value">{{ $user?->pne?->description }}</span>
                                 <span class="fi-row-value flex-fill"><a
-                                        href="{{ asset('storage/' . $user?->lgbt?->authorization) }}" target="_blank"
+                                        href="{{ Storage::url($user?->lgbt?->authorization) }}" target="_blank"
                                         class="small float-end">
                                         <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
                                     </a>

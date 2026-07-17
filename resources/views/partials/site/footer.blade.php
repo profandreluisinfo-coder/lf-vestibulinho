@@ -39,7 +39,7 @@
 
                     @if ($process?->edital)
                         <li>
-                            <a href="{{ asset('storage/' . $process?->edital) }}" target="_blank">
+                            <a href="{{ Storage::url($process?->edital) }}" target="_blank">
                                 Edital
                             </a>
                         </li>

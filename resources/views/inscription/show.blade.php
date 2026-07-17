@@ -105,7 +105,7 @@
                                 </div>
 
                                 @if ($user?->lgbt?->authorization)
-                                    <a class="file-link" href="{{ asset('storage/' . $user?->lgbt?->authorization) }}"
+                                    <a class="file-link" href="{{ Storage::url($user?->lgbt?->authorization) }}"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Visualizar autorização
                                     </a>
@@ -146,7 +146,7 @@
                                 </div>
 
                                 @if ($user?->pne?->report)
-                                    <a class="file-link" href="{{ asset('storage/' . $user->pne?->report) }}"
+                                    <a class="file-link" href="{{ Storage::url($user->pne?->report) }}"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Visualizar laudo médico
                                     </a>

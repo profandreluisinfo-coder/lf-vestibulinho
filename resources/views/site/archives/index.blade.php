@@ -84,9 +84,9 @@
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
                         @if ($process?->isInscriptionOpen())
-                        <a href="{{ route('register') }}" class="btn-inscricao">
-                            <i class="bi bi-pencil-square"></i> Fazer Inscrição
-                        </a>
+                            <a href="{{ route('register') }}" class="btn-inscricao">
+                                <i class="bi bi-pencil-square"></i> Fazer Inscrição
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -169,15 +169,14 @@
 
                                     <!-- Botões -->
                                     <div class="pa-btn-group">
-                                        <a class="pa-btn prova" href="{{ asset('storage/' . $archive->file) }}"
-                                            target="_blank" rel="noopener">
+                                        <a class="pa-btn prova" href="{{ Storage::url($archive->file) }}" target="_blank"
+                                            rel="noopener">
                                             <i class="bi bi-download"></i> Prova
                                         </a>
 
                                         @if ($archive->answer?->file)
-                                            <a class="pa-btn gabarito"
-                                                href="{{ asset('storage/' . $archive->answer->file) }}" target="_blank"
-                                                rel="noopener">
+                                            <a class="pa-btn gabarito" href="{{ Storage::url($archive->answer->file) }}"
+                                                target="_blank" rel="noopener">
                                                 <i class="bi bi-download"></i> Gabarito
                                             </a>
                                         @else

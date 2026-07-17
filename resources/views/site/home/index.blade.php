@@ -416,7 +416,7 @@
 
                 <div class="row g-4">
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-1">
-                        <a href="{{ $process?->status && $process?->edital ? asset('storage/' . $process?->edital) : '#' }}"
+                        <a href="{{ $process?->status && $process?->edital ? Storage::url($process?->edital) : '#' }}"
                             class="quick-card d-block" @if ($process?->status && $process?->edital) target="_blank" @endif>
                             <div class="qc-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
                             <h5>Edital</h5>

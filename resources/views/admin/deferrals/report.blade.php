@@ -27,7 +27,7 @@
 
                     <dt class="col-sm-3">Laudo/Relatório</dt>
                     <dd class="col-sm-9">
-                        <a href="{{ asset('storage/' . $user->pne->report) }}" target="_blank"
+                        <a href="{{ Storage::url($user->pne->report) }}" target="_blank"
                             class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-file-earmark-medical"></i> Abrir laudo
                         </a>

@@ -30,7 +30,7 @@
 
                     <dt class="col-sm-3">Autorização</dt>
                     <dd class="col-sm-9">
-                        <a href="{{ asset('storage/' . $user->lgbt->authorization) }}" target="_blank"
+                        <a href="{{ Storage::url($user->lgbt->authorization) }}" target="_blank"
                             class="btn btn-outline-primary btn-sm">
                             <i class="bi bi-file-earmark-medical"></i> Abrir autorização
                         </a>

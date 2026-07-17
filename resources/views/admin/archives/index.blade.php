@@ -48,13 +48,13 @@
                         <tr>
                             <td scope="row">{{ $file->year }}</td>
                             <td>
-                                <a href="{{ asset('storage/' . $file->file) }}" target="_blank">
+                                <a href="{{ Storage::url($file->file) }}" target="_blank">
                                     Vestibulinho {{ $file->year }} <i class="bi bi-box-arrow-up-right ms-2"></i>
                                 </a>
                             </td>
                             <td>
                                 @if ($file->answer?->file)
-                                    <a href="{{ asset('storage/' . $file->answer->file) }}" target="_blank">
+                                    <a href="{{ Storage::url($file->answer->file) }}" target="_blank">
                                         Gabarito <i class="bi bi-box-arrow-up-right ms-2"></i>
                                     </a>
                                 @else

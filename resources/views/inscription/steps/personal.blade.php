@@ -98,7 +98,7 @@
             <input name="social_name" id="social_name" class="form-control @error('social_name') is-invalid @enderror"
                 value="{{ old('social_name', session('step1.social_name')) }}" aria-describedby="socialName">
             <small id="socialName" class="form-text fst-italic text-muted"><i class="bi bi-info-circle me-1"></i>Leia
-                atentamente o item 4.10 do <a href="{{ asset('storage/' . $process?->edital) }}"
+                atentamente o item 4.10 do <a href="{{ Storage::url($process?->edital) }}"
                     title="Clique aqui para abrir o edital" target="_blank">edital</a>.</small>
 
             @error('name')
