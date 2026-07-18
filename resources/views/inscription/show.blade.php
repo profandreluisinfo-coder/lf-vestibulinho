@@ -127,6 +127,16 @@
                             @endif
 
                         </div>
+
+                        {{-- Modalidade de concorrência (AC x PNE) --}}
+                        @if ($user?->lgbt?->status === 'rejected')
+                            <div class="modality-note modality-ac">
+                                <i class="bi bi-flag-fill"></i>
+                                Pedido indeferido.
+                                @if ($user?->lgbt?->observations) <strong>Motivo:</strong> {{ $user?->lgbt?->observations }}. @endif
+                            </div>
+                        @endif
+
                     </div>
 
                 @endif
@@ -171,18 +181,27 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
 
-                    @if ($user?->pne?->observations)
-                        <div class="info-block">
-                            <div class="info-block-label">
-                                <i class="bi bi-universal-access-circle"></i> Observações
+                        {{-- Modalidade de concorrência (AC x PNE) --}}
+                        @if ($user?->pne?->status === 'accepted')
+                            <div class="modality-note modality-pne">
+                                <i class="bi bi-flag-fill"></i>
+                                Você concorre às vagas destinadas a <strong>Pessoas com Necessidades Especiais
+                                    (PNE)</strong>.
                             </div>
-                            <div class="info-block-row">
-                                <span class="text-danger"><i class="bi bi-exclamation-triangle me-2"></i> {{ $user?->pne?->observations }}</span>
+                        @elseif ($user?->pne?->status === 'pending')
+                            <div class="modality-note modality-pending">
+                                <i class="bi bi-hourglass-split"></i>
+                                Enquanto seu pedido está em análise, você concorre provisoriamente às vagas de
+                                <strong>Ampla Concorrência (AC)</strong>.
                             </div>
-                        </div>
-                    @endif
+                        @else
+                            <div class="modality-note modality-ac">
+                                <i class="bi bi-flag-fill"></i>
+                                Pedido indeferido. @if ($user?->pne?->observations) <strong>Motivo:</strong> {{ $user?->pne?->observations }}. @endif Você concorre às vagas de <strong>Ampla Concorrência (AC)</strong>.
+                            </div>
+                        @endif
+                    </div>
 
                 @endif
 
@@ -251,15 +270,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body p-4">
-
-                                {{-- Candidato --}}
-                                {{-- <div class="info-block mb-3">
-                            <div class="info-block-label"><i class="bi bi-person"></i> Candidato</div>
-                            <div style="font-size:0.95rem; font-weight:600;">
-                                {{ $user->name ?: $user->name }}
-                            </div>
-                        </div> --}}
+                            <div class="modal-body p-4">                               
 
                                 {{-- Local --}}
                                 <div class="info-block mb-3">

@@ -323,7 +323,7 @@
                                 </div>
                                 <p class="detail-note mt-3">
                                     <i class="bi bi-info-circle me-1"></i>
-                                    Levar RG original. Portões fecham às 8h. Chegue com antecedência.
+                                    Levar documento original com foto atual. Portões fecham às 8h. Chegue com antecedência.
                                 </p>
                             </div>
                         </div>

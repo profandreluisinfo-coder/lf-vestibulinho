@@ -861,6 +861,39 @@ small,
   color: var(--color-amber-dark);
 }
 
+/* ── Nota de modalidade de concorrência (AC / PNE) ── */
+.modality-note {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .6rem;
+  padding: .5rem .75rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.modality-note strong {
+  font-weight: 700;
+}
+
+.modality-note.modality-pne {
+  background: rgba(27, 62, 114, .08);
+  color: var(--color-navy-light);
+}
+
+.modality-note.modality-ac {
+  background: rgba(107, 127, 163, .10);
+  /* color: var(--color-muted); */
+  color: var(--color-danger);
+}
+
+.modality-note.modality-pending {
+  background: var(--color-amber-light);
+  color: var(--color-amber-dark);
+}
+
 /* ── Ações ── */
 .actions-row {
   display: flex;

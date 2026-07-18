@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
-                <h6>Processo Seletivo</h6>
+                <h6>Vestibulinho</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
 
                     @if ($process?->edital)

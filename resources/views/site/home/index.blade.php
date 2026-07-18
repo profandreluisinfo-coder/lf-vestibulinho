@@ -217,7 +217,7 @@
                         <div class="tl-node">1</div>
                         <div class="tl-content">
                             <h4><i class="bi bi-search me-2 text-teal"></i>Leia o Edital</h4>
-                            <p>Acesse o edital completo na seção de <a href="#links-rapidos"
+                            <p>Acesse o edital completo na seção de <a href="#documentos"
                                     class="text-decoration-none text-teal">documentos</a>. Leia todas as regras, requisitos
                                 de inscrição, datas e critérios de avaliação.</p>
                         </div>
