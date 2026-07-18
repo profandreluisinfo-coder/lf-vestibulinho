@@ -193,7 +193,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($process?->status && $process?->isInscriptionOpen())
+    @if ($process?->status === 'open' && $process?->isInscriptionOpen())
         {{-- ═══════════════════════ COMO PARTICIPAR ═════════════════════ --}}
         <section id="como-participar">
             <div class="container">
@@ -402,7 +402,7 @@
     </section>
 
     <!-- Verifica se as inscrições estão abertas -->
-    @if ($process?->status && $process?->isInscriptionOpen())
+    @if ($process?->status === 'open' && $process?->isInscriptionOpen())
         {{-- ═══════════════════════ DOCUMENTOS ════════════════════ --}}
         <section id="documentos">
             <div class="container position-relative" style="z-index:1;">

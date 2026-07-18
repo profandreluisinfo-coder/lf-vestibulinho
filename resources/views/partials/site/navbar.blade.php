@@ -19,12 +19,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i>Cursos</a>
                 </li>
+                @if ($process?->status === 'open')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#como-participar">Como Participar</a>
-                </li>
+                </li>                
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#calendario">Calendário</a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> FAQ</a>
                 </li>
