@@ -2,14 +2,14 @@
 <footer>
     <div class="container">
         <div class="row g-4 mb-4">
-            <div class="col-lg-4">
+            <div class="col-lg-4 order-last order-lg-0 text-center text-lg-start">
                 <div class="brand mb-2">EM Dr. Leandro Franceschini<small>Escola Municipal · Vestibulinho
                         {{ $process?->year }}</small></div>
                 <p style="font-size:.82rem;line-height:1.7;" class="mb-3">
                     Oferecendo educação técnica de qualidade e oportunidades reais de crescimento profissional para
                     toda a comunidade.
                 </p>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
                     <a href="https://www.instagram.com/emdrleandrofranceschini/"
                         class="d-flex align-items-center justify-content-center"
                         style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);transition:background .2s;"
@@ -33,7 +33,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-6 col-lg-2 foot-col">
+            <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
                 <h6>Processo Seletivo</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
 
@@ -52,7 +52,7 @@
                     <li><a href="#">Convocação</a></li>
                 </ul>
             </div>
-            <div class="col-6 col-lg-2 foot-col">
+            <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
                 <h6>Cursos</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
                     <li><a href="{{ route('home') }}/#cursos">Administração</a></li>
@@ -61,7 +61,7 @@
                     <li><a href="{{ route('home') }}/#cursos">Seg. do Trabalho</a></li>
                 </ul>
             </div>
-            <div class="col-6 col-lg-2 foot-col">
+            <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
                 <h6>Candidato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
                     @if ($process?->isInscriptionOpen())
@@ -74,7 +74,7 @@
                     @endif
                 </ul>
             </div>
-            <div class="col-6 col-lg-2 foot-col">
+            <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
                 <h6>Contato</h6>
                 <ul class="list-unstyled d-flex flex-column gap-2">
                     <li>
