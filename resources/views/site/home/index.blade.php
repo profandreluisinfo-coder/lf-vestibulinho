@@ -92,6 +92,7 @@
     </section>
 
     <!-- ===== SEÇÃO NOTÍCIAS ===== -->
+    @if ($posts?->count() > 0)
     <section class="news-section" id="noticias">
         <div class="container-lg">
             <div class="section-header">
@@ -158,6 +159,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     {{-- ═══════════════════════ CURSOS ════════════════════════════ --}}
     <section id="cursos">
