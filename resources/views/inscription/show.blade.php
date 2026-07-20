@@ -127,16 +127,6 @@
                             @endif
 
                         </div>
-
-                        {{-- Modalidade de concorrência (AC x PNE) --}}
-                        @if ($user?->lgbt?->status === 'rejected')
-                            <div class="modality-note modality-ac">
-                                <i class="bi bi-flag-fill"></i>
-                                Pedido indeferido.
-                                @if ($user?->lgbt?->observations) <strong>Motivo:</strong> {{ $user?->lgbt?->observations }}. @endif
-                            </div>
-                        @endif
-
                     </div>
 
                 @endif
@@ -184,21 +174,34 @@
 
                         {{-- Modalidade de concorrência (AC x PNE) --}}
                         @if ($user?->pne?->status === 'accepted')
-                            <div class="modality-note modality-pne">
-                                <i class="bi bi-flag-fill"></i>
-                                Você concorre às vagas destinadas a <strong>Pessoas com Necessidades Especiais
-                                    (PNE)</strong>.
+                            <div class="modality-note modality-pne d-flex align-items-start gap-2">
+                                <i class="bi bi-flag-fill mt-1"></i>
+                                <div>
+                                    Você concorre às vagas destinadas a
+                                    <strong>Pessoas com Necessidades Especiais (PNE)</strong>.
+                                </div>
                             </div>
                         @elseif ($user?->pne?->status === 'pending')
-                            <div class="modality-note modality-pending">
-                                <i class="bi bi-hourglass-split"></i>
-                                Enquanto seu pedido está em análise, você concorre provisoriamente às vagas de
-                                <strong>Ampla Concorrência (AC)</strong>.
+                            <div class="modality-note modality-pending d-flex align-items-start gap-2">
+                                <i class="bi bi-hourglass-split mt-1"></i>
+                                <div>
+                                    Enquanto seu pedido está em análise, você concorre provisoriamente às vagas de
+                                    <strong>Ampla Concorrência (AC)</strong>.
+                                </div>
                             </div>
                         @else
-                            <div class="modality-note modality-ac">
-                                <i class="bi bi-flag-fill"></i>
-                                Pedido indeferido. @if ($user?->pne?->observations) <strong>Motivo:</strong> {{ $user?->pne?->observations }}. @endif Você concorre às vagas de <strong>Ampla Concorrência (AC)</strong>.
+                            <div class="modality-note modality-ac d-flex align-items-start gap-2">
+                                <i class="bi bi-flag-fill mt-1"></i>
+                                <div>
+                                    <div>Pedido indeferido.</div>
+                                    @if ($user?->pne?->observations)
+                                        <div class="mt-1"><strong>Motivo:</strong> {{ $user?->pne?->observations }}.
+                                        </div>
+                                    @endif
+                                    <div class="mt-1">Você concorre às vagas de
+                                        <strong>Ampla Concorrência (AC)</strong>.
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     </div>
@@ -206,14 +209,14 @@
                 @endif
 
                 @if ($user->document->isExpeditionOlderThanFiveYears())
-                    <div class="info-block" style="background-color: #fff3cd; border-color: #ffeeba;">
+                    <div class="info-block info-block-warning">
 
                         <div class="info-block-label">
                             <i class="bi bi-exclamation-triangle"></i> Avisos
                         </div>
                         <div class="info-block-row">
                             <div>
-                                <ul>
+                                <ul class="avisos-list">
 
                                     <li>Seu documento de identidade foi expedido há mais de 5 anos
                                         (<strong>{{ $user->document->expedition->format('d/m/Y') }}</strong>). Para
@@ -270,7 +273,15 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body p-4">                               
+                            <div class="modal-body p-4">
+
+                                {{-- Candidato --}}
+                                {{-- <div class="info-block mb-3">
+                            <div class="info-block-label"><i class="bi bi-person"></i> Candidato</div>
+                            <div style="font-size:0.95rem; font-weight:600;">
+                                {{ $user->name ?: $user->name }}
+                            </div>
+                        </div> --}}
 
                                 {{-- Local --}}
                                 <div class="info-block mb-3">
