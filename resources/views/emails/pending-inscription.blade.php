@@ -2,7 +2,7 @@
 
 <p>Verificamos que até o momento você ainda não concluiu sua inscrição no Vestibulinho.</p>
 
-<p>Para participar, acesse sua <a href="{{ $link }}">Área do Candidato</a> e preencha a ficha de inscrição.
+<p>Para participar, acesse a <a href="{{ $link }}">Área do Candidato</a> e preencha a ficha de inscrição.
 </p>
 
 <p>Atenciosamente,<br>

@@ -226,8 +226,8 @@
 
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
 }
 
 .news-card {
@@ -248,11 +248,43 @@
 
 .news-card-image {
     width: 100%;
-    height: 200px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.4rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+.news-card-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDQwIDIwIj48cGF0aCBkPSJNMCAxMCBRMTAgMCAyMCAxMCBUNDAgMTAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjE0IiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==");
+    background-size: 40px 20px;
+    background-repeat: repeat;
+    pointer-events: none;
+}
+
+.news-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-card-image .bi {
+    color: rgba(255, 255, 255, .85);
+}
+
+.news-card-fallback-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .news-card-image-teal {
@@ -264,7 +296,7 @@
 }
 
 .news-card-body {
-    padding: 1.5rem;
+    padding: 1.15rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -291,16 +323,16 @@
     font-family: var(--font-head);
     font-weight: 700;
     color: var(--navy);
-    font-size: 1.15rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
+    font-size: 1.02rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.35;
 }
 
 .news-card-desc {
     color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
     flex-grow: 1;
 }
 
@@ -868,6 +900,10 @@
     .stat-chip .num {
         font-size: 1.4rem;
     }
+
+    .scroll-hint {
+        display: none;
+    }
 }
 
 @media(max-width:575px) {
@@ -881,12 +917,5 @@
     .btn-hero-outline {
         width: 100%;
         justify-content: center;
-    }
-}
-
-/* Responsive global adjustments */
-@media(max-width:575px) {
-    section {
-        padding: 3.5rem 0;
     }
 }

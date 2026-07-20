@@ -79,7 +79,7 @@
             <div class="post-nav-container">
                 <!-- Anterior -->
                 @if($previous)
-                    <a href="{{ route('news.show', $previous->slug) }}" 
+                    <a href="{{ route('site.posts.show', $previous->slug) }}" 
                        class="post-nav-link">
                         <div class="post-nav-label">
                             ← Comunicado Anterior
@@ -94,7 +94,7 @@
 
                 <!-- Próximo -->
                 @if($next)
-                    <a href="{{ route('news.show', $next->slug) }}" 
+                    <a href="{{ route('site.posts.show', $next->slug) }}" 
                        class="post-nav-link post-nav-link-next">
                         <div class="post-nav-label">
                             Próximo Comunicado →

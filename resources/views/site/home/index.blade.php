@@ -119,10 +119,11 @@
                             <div class="news-card-image news-card-image-teal">
 
                                 @if ($post->image)
-                                    <img src="{{ Storage::url($post->image) }}" alt="Imagem da noticia">
-                                @else
-                                    📰
+                                    <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
+                                        onerror="this.remove(); this.parentElement.querySelector('.news-card-fallback-icon').style.display='flex';">
                                 @endif
+                                <i class="bi bi-newspaper news-card-fallback-icon"
+                                    style="{{ $post->image ? 'display:none;' : '' }}"></i>
                             </div>
 
                             <div class="news-card-body">

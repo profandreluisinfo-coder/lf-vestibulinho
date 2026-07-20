@@ -16,7 +16,7 @@ class HomeController extends Controller
         $courses = Course::all();
         
         // Apenas posts publicados
-        $posts = Post::type(Post::TYPE_NOTICIA)->published()->take(3)->get();
+        $posts = Post::type(Post::TYPE_NOTICIA)->published()->take(4)->get();
 
         // Apenas faqs publicados
         $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(5)->get();
