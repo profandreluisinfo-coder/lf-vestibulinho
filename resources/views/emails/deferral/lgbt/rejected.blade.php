@@ -1,5 +1,5 @@
 <p>Prezado(a) candidato(a), {{ $name }}!</p>
-<p>Informamos que o sua autorização para uso de nome social/afetivo foi <strong>indeferida</strong>.</p>
+<p>Informamos que sua autorização para uso de nome social/afetivo foi <strong>indeferida</strong>.</p>
 
 @if ($observations)
 <p>O indeferimento foi motivado por: <strong>{{ $observations }}</strong></p>

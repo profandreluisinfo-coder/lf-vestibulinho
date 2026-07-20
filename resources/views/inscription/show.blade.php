@@ -127,6 +127,19 @@
                             @endif
 
                         </div>
+
+                        @if ($user?->lgbt?->status === 'rejected')
+                            <div class="modality-note modality-ac d-flex align-items-start gap-2">
+                                <i class="bi bi-flag-fill mt-1"></i>
+                                <div>
+                                    <div>Pedido indeferido.</div>
+                                    @if ($user?->lgbt?->observations)
+                                        <div class="mt-1"><strong>Motivo:</strong> {{ $user?->lgbt?->observations }}.
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                 @endif
@@ -273,15 +286,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body p-4">
-
-                                {{-- Candidato --}}
-                                {{-- <div class="info-block mb-3">
-                            <div class="info-block-label"><i class="bi bi-person"></i> Candidato</div>
-                            <div style="font-size:0.95rem; font-weight:600;">
-                                {{ $user->name ?: $user->name }}
-                            </div>
-                        </div> --}}
+                            <div class="modal-body p-4">                                
 
                                 {{-- Local --}}
                                 <div class="info-block mb-3">

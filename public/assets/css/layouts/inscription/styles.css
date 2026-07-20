@@ -797,7 +797,7 @@ small,
 /* ── Blocos de nome social / PNE ── */
 .info-block {
   padding: .85rem 1.25rem;
-  border-bottom: 1px solid var(--color-light-mid);
+  /* border-bottom: 1px solid var(--color-light-mid); */
 }
 
 .info-block-warning {
@@ -991,14 +991,19 @@ small,
   line-height: 1;
 }
 
-/* Mobile: esconde labels, mantém bolinhas */
+/* Mobile: uma coluna, empilhado */
 @media (max-width: 575.98px) {
   .data-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .data-item {
+    border-right: none;
     border-bottom: 1px solid var(--color-light-mid);
+  }
+
+  .data-item:last-child {
+    border-bottom: none;
   }
 
   .data-item-name {
@@ -1029,5 +1034,9 @@ small,
 @media (max-width: 767.98px) {
   .container {
     padding: 0 1rem !important;
+  }
+
+  .avisos-list {
+    text-align: justify;
   }
 }
