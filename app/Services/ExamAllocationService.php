@@ -27,23 +27,29 @@ class ExamAllocationService
             $examTime
         ) {
             // 1. Buscar candidatos
-            $inscriptions = Inscription::with(['user.user_detail'])
+            $inscriptions = Inscription::with([
+                    'user.lgbt',
+                    'user.pne'
+                ])
                 ->whereHas('user', fn($q) => $q->where('role', 'user'))
-                ->whereHas('user.user_detail')
                 ->get();
 
             // 2. Ordenar por nome (com nome social)
             $sorted = $inscriptions->sortBy(function ($i) {
-                $name = $i->user->social_name_option && $i->user->name
-                    ? $i->user->name
+                $name = $i->user?->lgbt && $i->user?->lgbt?->status === 'accepted'
+                    ? $i->user?->lgbt?->name
                     : $i->user->name;
 
                 return Str::ascii($name);
             })->values();
 
             // 3. Separar PNE e não-PNE
-            $pne = $sorted->filter(fn($i) => $i->user->user_detail->pne)->values();
-            $naoPne = $sorted->filter(fn($i) => !$i->user->user_detail->pne)->values();
+            $pne = $sorted->filter(
+                fn ($i) => $i->user?->pne?->status === 'accepted'
+            )->values();
+            $naoPne = $sorted->reject(
+                fn ($i) => $i->user?->pne?->status === 'accepted'
+            )->values();
 
             // 4. Locais
             $locations = ExamLocation::orderBy('id')->get();

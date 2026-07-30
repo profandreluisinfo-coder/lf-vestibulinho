@@ -81,7 +81,7 @@
             <tr>
               <th>{{ $candidate->inscription_id }}</td>
               <td style="border: none;">
-                {{ $candidate->name ?: $candidate->name }} {{ $candidate->name ? '*' : '' }}
+              {{ $candidate->social_name ?? $candidate->name }}
               </td>
               <td style="border-bottom: 1px solid #000"></td>
             </tr>

@@ -23,23 +23,24 @@ class ExamController extends Controller
     public function index(): View
     {
         $candidates = DB::table('exam_results')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id') // obter o número de inscrição
+            ->join('users', 'inscriptions.user_id', '=', 'users.id') // obter os dados do candidato
+            ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
+            ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
             ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
             ->select(
                 'exam_results.room_number',
                 'exam_locations.name as location_name',
                 'users.cpf as candidate_cpf',
                 'users.name as candidate_name',
-                'users.name as candidate_social_name',
-                'user_details.pne as candidate_pne',
+                DB::raw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name END as candidate_social_name"),
+                DB::raw("CASE WHEN pnes.status = 'accepted' THEN 1 ELSE 0 END as candidate_pne"),
                 'exam_results.exam_date as date',
                 'exam_results.exam_time as time',
                 'inscriptions.id as inscription_id' // 👈 aqui entra o número de inscrição
             )
             ->orderBy('exam_results.room_number')
-            ->orderBy('users.name')
+            ->orderByRaw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name ELSE users.name END")
             ->get()
             ->groupBy(function ($item) {
                 return $item->location_name . ' - Sala ' . $item->room_number;
@@ -86,7 +87,9 @@ class ExamController extends Controller
             'accesStatus' => $accesStatus,
             'rooms' => $rooms,
             'examInfo' => $examInfo,
-            'examDate' => DB::table('calendars')->where('id', 1)->value('exam_date'),
+            'examDate' => DB::table('events')
+                ->orderByDesc('id')
+                ->value('exam_date'),
         ]);
 
         return view('admin.exam.create');
