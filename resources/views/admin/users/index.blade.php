@@ -54,10 +54,14 @@
                                 <i class="bi {{ $user->role === 'admin' ? 'bi-person-gear' : 'bi-person-fill' }} fs-5"
                                     data-bs-toggle="popover" data-bs-trigger="hover"
                                     data-bs-content="{{ 
-                                        $user->role === 'admin' ? 'Administrador' : 'Candidato' }}
-                                        {{ $user->lgbt && $user->lgbt->status === 'accepted' ? ' (LGBTQIA+) ' . $user->lgbt->name : '' }}
-                                    ">
+                                        $user->role === 'admin' ? 'Administrador' : 'Candidato' }}">
                                 </i>
+                                @if ($user->lgbt && $user->lgbt->status === 'accepted')
+                                <i class="bi bi-gender-trans fs-5"
+                                    data-bs-toggle="popover" data-bs-trigger="hover"
+                                    data-bs-content="LGBTQIA+">
+                                </i>
+                                @endif
                             </td>
                             <td>
                                 <i class="bi {{ $user->email_verified_at ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5"

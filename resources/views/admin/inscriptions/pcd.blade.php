@@ -48,7 +48,12 @@
                     <tr data-id="{{ $user->id }}">
                         <th scope="row">{{ $user->inscription?->id }}</th>
                         <td>
-                            {{ $user->lgbt->status == 'accepted' ? $user->lgbt->name . ' (LGBTQIA+)' : $user->name }}
+                            @if ($user->lgbt && $user->lgbt->status === 'accepted')
+                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover" data-bs-trigger="hover"
+                                    data-bs-content="LGBTQIA+"></i>
+                            @else
+                                {{ $user->name }}
+                            @endif
 
                             @if ($user->pne->status == 'pending')
                                 <i class="bi bi-hourglass-split text-warning ms-2" data-bs-toggle="popover"
