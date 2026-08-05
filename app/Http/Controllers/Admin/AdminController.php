@@ -13,7 +13,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $process_status = Process::current()->status === "open" ? true : false;
+        $process_status = Process::current()?->status === "open" ? true : false;
         $local_status = ExamResult::hasRecords();
         $ranking_active = ExamResult::hasScores();
         // $inscriptions_count = Inscription::count();
