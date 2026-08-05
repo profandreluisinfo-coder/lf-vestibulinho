@@ -142,7 +142,7 @@ class PdfController extends Controller
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
-        $pdf = Pdf::loadView('admin.pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
 
         return $pdf->stream('cartao-local-prova.pdf');
     }
@@ -167,7 +167,7 @@ class PdfController extends Controller
             return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
         }
 
-        return Pdf::loadView('admin.pdf.test-result-card', compact('examResult', 'user'))
+        return Pdf::loadView('pdf.test-result-card', compact('examResult', 'user'))
             ->setPaper('a4', 'portrait')
             ->download('resultado-da-prova.pdf');
     }

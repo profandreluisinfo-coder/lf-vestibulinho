@@ -14,7 +14,11 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
         return User::where('role', 'user')
             ->whereHas('inscription')
             ->orderBy('name', 'asc')
-            ->with('inscription')
+            ->with([
+                'inscription',
+                'lgbt',
+                'pne',
+            ])
             ->get();
     }
 
@@ -36,7 +40,7 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
             $user->inscription->id ?? '',
             $user->id,
             $user->cpf,
-            $user->authorization_accepted ? $user->name : $user->name,
+            $user?->lgbt?->status === 'accepted' ? $user->lgbt?->name : $user->name,
             // $user->birth ? $user->birth->format('Y-m-d') : '',
             $user->birth,
         ];

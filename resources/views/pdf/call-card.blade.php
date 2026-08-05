@@ -94,8 +94,7 @@
   </div>
   <!-- FIM DO AVISO -->
 
-  <p>Qualquer dúvida, estamos à sua disposição.<br>
-    <strong>Atendimento:</strong> (19) 3873-2605</p>
+  <p>Qualquer dúvida, estamos à sua disposição.<br><strong>Atendimento:</strong> (19) 3873-2605</p>
 
   <p class="signature">EM Dr Leandro Franceschini</p>
 

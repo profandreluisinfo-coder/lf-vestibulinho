@@ -55,8 +55,8 @@ class InscriptionController extends Controller
         $displayName = $user?->name && $user?->lgbt?->status === 'accepted' 
                     ? $user?->lgbt?->name 
                     : $user?->name;
-        $name = $user?->name;
-        $initials = $this->getInitials($name);
+        // $name = $user?->name;
+        $initials = $this->getInitials($displayName);
         
         // Segurança extra caso acessem direto sem ter inscrição
         if (! $user->inscription()->exists()) {

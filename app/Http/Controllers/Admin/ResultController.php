@@ -18,17 +18,18 @@ class ResultController extends Controller
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
 
-        // Busca todos os resultados com user e user_details carregados
+        // Busca todos os resultados com os dados do candidato, nome social e PCD.
         $results = ExamResult::whereNotNull('score')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
+            ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
             ->select(
                 'inscriptions.id',
                 'users.name',
-                'users.name',
+                'lgbts.name as social_name',
                 'users.birth',
-                'user_details.pne',
+                'pnes.id as pne',
                 'exam_results.score',
                 'exam_results.ranking'
             )

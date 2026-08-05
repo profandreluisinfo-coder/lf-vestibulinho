@@ -74,10 +74,10 @@
         <p><strong>Horário:</strong> {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}</p>
     </div>
 
-    @if ($exam->inscription->user->pne)
+    @if ($exam->inscription->user?->pne?->status === 'rejected')
         <div class="pne">
             <strong>Atenção:</strong> Este candidato declarou possuir deficiência e deve ser alocado em sala com
-            acessibilidade.
+            acessibilidade ({{ $exam->inscription->user?->pne?->support }}).
         </div>
     @endif
 
