@@ -52,7 +52,7 @@
             </div>
 
             {{-- Exemplo de outros cards --}}
-            <div class="col-12 col-sm-6 col-lg-3">
+            {{-- <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card shadow-sm h-100">
                     <div class="card-body d-flex flex-column">
 
@@ -134,9 +134,9 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-        </div>
+        </div> <!-- End of row g-4 -->
 
     </div>
 @endsection
