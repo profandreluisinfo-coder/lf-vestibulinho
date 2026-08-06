@@ -57,11 +57,13 @@
 <div class="card">
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" alt="Logo">
-        <h2>Processo Seletivo {{ $process?->year }} - Cartão do Local de Prova</h2>
+        <h2>Vestibulinho LF {{ $process?->year }} - Cartão do Local de Prova</h2>
     </div>
 
     <div class="section">
-        <p><strong>Nome:</strong> {{ ($exam->inscription->user->authorization_accepted == 1) ? $exam->inscription->user->name : $exam->inscription->user->name }}</p>
+        <p><strong>Nome:</strong> {{ $exam->inscription->user->lgbt?->status === 'accepted'
+    ? $exam->inscription->user->lgbt->name
+    : $exam->inscription->user->name }}</p>
         <p><strong>CPF:</strong> {{ $exam->inscription->user->cpf }}</p>
         <p><strong>Local:</strong> {{ $exam->location->name }}</p>
         <p><strong>Endereço:</strong> {{ $exam->location->address }}</p>
@@ -74,7 +76,7 @@
         <p><strong>Horário:</strong> {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}</p>
     </div>
 
-    @if ($exam->inscription->user?->pne?->status === 'rejected')
+    @if ($exam->inscription->user?->pne?->status === 'accepted')
         <div class="pne">
             <strong>Atenção:</strong> Este candidato declarou possuir deficiência e deve ser alocado em sala com
             acessibilidade ({{ $exam->inscription->user?->pne?->support }}).
@@ -85,7 +87,7 @@
         <strong>Instruções:</strong>
         <ul style="margin: 4px 0 0 16px; padding-left: 0;">
             <li>Chegue com 30 minutos de antecedência;</li>
-            <li>Leve documento com foto e caneta esferográfica azul ou preta;</li>
+            <li>Leve documento com foto atual e caneta esferográfica azul ou preta;</li>
             <li>Não será permitido o uso de aparelhos eletrônicos;</li>
         </ul>
     </div>

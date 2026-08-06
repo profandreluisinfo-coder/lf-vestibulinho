@@ -107,7 +107,7 @@
             <tbody>
                 <tr>
                     <th>Número:</th>
-                    <td>{{ $user->inscription->id }}</td>
+                    <td>#{{ $user->inscription->id }}</td>
                 </tr>
                 <tr>
                     <th>Data/Hora:</th>

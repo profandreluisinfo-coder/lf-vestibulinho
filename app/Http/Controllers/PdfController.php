@@ -134,9 +134,16 @@ class PdfController extends Controller
      */
     public function testLocationCardToPdf()
     {
-        $exam = ExamResult::with('location')
-            ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::user()->id))
-            ->first();
+        // $exam = ExamResult::with('location')
+        //     ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::user()->id))
+        //     ->first();
+        $exam = ExamResult::with([
+            'location',
+            'inscription.user.lgbt',
+            'inscription.user.pne',
+        ])
+        ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::id()))
+        ->first();
 
         if (! $exam) {
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
@@ -183,7 +190,8 @@ class PdfController extends Controller
      */
     public function callCardToPdf()
     {
-        $user = Auth::user();
+        // $user = Auth::user();
+        $user = Auth::user()->load(['lgbt', 'inscription.exam_result']);
 
         // Acessar a inscrição e o resultado do exame do usuário autenticado
         $examResult = $user->inscription->exam_result ?? null;
@@ -202,8 +210,9 @@ class PdfController extends Controller
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
-        $pdf = Pdf::loadView('admin.pdf.call-card', [
+        $pdf = Pdf::loadView('pdf.call-card', [
             'user' => $user,
+            'examResult' => $examResult,
             'call' => $call,
             'location' => 'R. Geraldo de Souza, 157/221 - Jardim Sao Carlos, Sumaré - SP, 13170-232',
             'phone' => '(19) 3873-2605',

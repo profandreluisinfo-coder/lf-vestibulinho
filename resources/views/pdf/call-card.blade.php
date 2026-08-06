@@ -46,12 +46,13 @@
 
 <body>
 
-  <h1>Processo Seletivo {{ $process?->year }} - Convocação para Matrícula</h1>
+  <h2>Vestibulinho LF {{ $process?->year }} - Convocação para Matrícula</h2>
 
   <div class="info">
-    <p><strong>Candidato(a):</strong> {{ ($user->authorization_accepted == 1) ? $user->name : $user->name }}</p>
+    <p><strong>Candidato(a):</strong> {{ $user->lgbt?->status === 'accepted' ? $user->lgbt->name : $user->name }}</p>
     <p><strong>Inscrição:</strong> {{ $user->inscription->id }}</p>
     <p><strong>CPF:</strong> {{ $user->cpf }}</p>
+    <p><strong>Classificação:</strong> {{ $examResult->ranking }}º lugar</p>
   </div>
 
   <div class="section-title">Detalhes da Chamada</div>
@@ -72,7 +73,7 @@
   <p>A falta de documentação ou não comparecimento na data e horário estabelecido acarretará na perda da vaga, portanto não se esqueça de comparecer no dia e horário indicado portando todos os documentos previstos no item <strong>7.4</strong> do edital. </p>
   <ol class="docs-list">
     <li>Declaração de Conclusão do Ensino Fundamental ou Histórico Escolar do Ensino Fundamental (Original e 01 cópia);</li>
-    <li>01 foto 3x4;</li>
+    <li>01 foto 3x4 atual;</li>
     <li>Original e 01 cópia do documento de identidade (RG/CIN ou RNE para estrangeiro) atualizado e com foto que identifique o portador;</li>
     <li>Original e 01 cópia do CPF;</li>
     <li>Original e 01 cópia da certidão de nascimento;</li>
