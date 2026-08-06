@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Cadastral do Estudante</title>
+    <title>Vestibulinho LF {{ $process?->year }} - Ficha Cadastral do Estudante</title>
     <style>
         @page {
             /* margin: 5mm; */
@@ -120,10 +120,10 @@
             $pne = $user?->pne;
             $academic = $user->academic;
             $document = $user->document;
-            $certificate = $user->certificate;
+            $certificate = $user?->certificate;
             $mother = $user->mother;
-            $father = $user->father;
-            $guardian = $user->guardian;
+            $father = $user?->father;
+            $guardian = $user?->guardian;
             $parent_email = $user->parent_email;
 
             $call_date = $call->date->format('d/m/Y');
@@ -165,7 +165,7 @@
             <tr>
                 <td class="header-cell" rowspan="3" style="width: 20%">CERTIDÃO DE NASCIMENTO</td>
                 <td class="header-cell tc">NOVA</td>
-                <td colspan="4" class="tc fs">{{ $certificate->type === '1' ? $certificate->number : '---' }}</td>
+                <td colspan="4" class="tc fs">{{ $certificate->type == '1' ? $certificate->number : '---' }}</td>
                 <td class="header-cell tc">DATA NASC.</td>
                 <td colspan="2" class="tc fs">
                     {{ $user->birth }}
@@ -175,11 +175,11 @@
             <tr>
                 <td class="header-cell tc">ANTIGA</td>
                 <td class="header-cell tc">FLS.</td>
-                <td class="tc fs">{{ $certificate->type === '2' ? $certificate?->fls : "---" }}</td>
+                <td class="tc fs">{{ $certificate->type == '2' ? $certificate?->fls : "---" }}</td>
                 <td class="header-cell tc">LIVRO</td>
-                <td class="tc fs">{{ $certificate->type === '2' ? $certificate?->book : "---" }}</td>
+                <td class="tc fs">{{ $certificate->type == '2' ? $certificate?->book : "---" }}</td>
                 <td class="header-cell tc">NÚMERO</td>
-                <td colspan="2" class="tc fs">{{ $certificate->type === '2' ? $certificate?->number : "---" }}</td>
+                <td colspan="2" class="tc fs">{{ $certificate->type == '2' ? $certificate?->number : "---" }}</td>
             </tr>
 
             <tr>
@@ -251,7 +251,7 @@
                 <td class="header-cell">RESPONSÁVEL PELO ESTUDANTE</td>
                 <td class="tc fs">{{ $guardian?->name ?? '---' }}</td>
                 <td class="header-cell" style="text-align: center">PARENTESCO</td>
-                <td class="tc fs">{{ $guardian?->degree ?? '---' }}</td>
+                <td class="tc fs">{{ $guardian?->kinship ?? '---' }}</td>
             </tr>
             <tr>
                 <td class="header-cell">E-MAIL</td>
@@ -315,7 +315,7 @@
         <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
             <tr>
                 <td class="header-cell" style="width: 25%;">ESCOLA DE CONCLUSÃO E.F.</td>
-                <td colspan="6" style="width: 70%;" class="tc fs">{{ $academic->name }}</td>
+                <td colspan="6" style="width: 70%;" class="tc fs">{{ $academic->school }}</td>
             </tr>
             <tr>
                 <td class="header-cell" style="width: 15%;">CIDADE</td>
@@ -406,7 +406,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td>2032</td>
                 <td></td>
                 <td></td>
@@ -414,7 +414,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-            </tr>
+            </tr> --}}
         </table>
 
         <table>

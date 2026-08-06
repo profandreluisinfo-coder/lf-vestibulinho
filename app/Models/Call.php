@@ -156,9 +156,9 @@ class Call extends Model
         }
 
         return self::where('call_list_id', $lastCallListId)
-            ->whereHas('examResult.inscription.user.user_detail', function ($q) {
-                $q->where('pne', true)
-                    ->where('pne_report_accepted', true);
+            ->whereHas('examResult.inscription.user.pne', function ($q) {
+                $q->where('status', 'accepted');
+                    // ->where('pne_report_accepted', true);
             })
             ->count();
     }

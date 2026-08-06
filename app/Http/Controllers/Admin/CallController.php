@@ -36,7 +36,7 @@ class CallController extends Controller
     {
         // Este trecho de código recupera todos os registros de `CallList` do banco de dados, faz o carregamento previsorio das associações relacionadas `calls` e `examResult.inscription.user`, conta o número de `calls` para cada `CallList` e ordena os resultados pela coluna `number`. Os dados resultantes são armazenados na variável `$callLists`.
         $callLists = CallList::withCount('calls')
-            ->with(['calls.examResult.inscription.user'])
+            ->with(['calls.examResult.inscription.user', 'calls.examResult.inscription.user.lgbt'])
             ->orderBy('number')
             ->get();
 
@@ -344,12 +344,12 @@ class CallController extends Controller
             'examResult.inscription.user.lgbt',
             'examResult.inscription.user.pne',
             'examResult.inscription.user.document',
-            'examResult.inscription.user.certificate',            
+            'examResult.inscription.user.certificate',
             'examResult.inscription.user.academic',
             'examResult.inscription.user.mother',
             'examResult.inscription.user.father',
             'examResult.inscription.user.guardian',
-            'examResult.inscription.user.parent_email',            
+            'examResult.inscription.user.parent_email',
         ])
             ->where('call_number', $call_number)
             ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')

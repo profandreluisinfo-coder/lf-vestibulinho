@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' | Vestibulinho LF')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Convocação para matrícula')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -156,10 +156,10 @@
                                                 <tr>
                                                     <td>{{ $call->examResult->ranking }}</td>
                                                     <td>{{ $call->examResult->inscription_id }}</td>
-                                                    <td>{{ ($user->authorization_accepted == 1) ?$user->name : $user->name }}</td>
+                                                    <td>{{ ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name }}</td>
                                                     <td>{{ $user->cpf }}</td>
                                                     <td>
-                                                        @if ($user->user_detail->pne_report_accepted == 1)
+                                                        @if ($user?->pne?->status === 'accepted')
                                                             <span class="badge bg-success" title="Candidato PCD"><i
                                                                     class="bi bi-universal-access"></i></span>
                                                         @endif
@@ -259,7 +259,7 @@
                                     <select name="manual_pcds[]" id="manual_pcds" class="form-select" multiple>
                                         @foreach ($pneCandidates as $candidate)
                                             <option value="{{ $candidate->id }}">
-                                                {{ $candidate->inscription->user->name }} — CPF:
+                                                {{ $candidate->inscription->user?->lgbt?->status === 'accepted' ? $candidate->inscription->user?->lgbt?->name : $candidate->inscription->user->name }} — CPF:
                                                 {{ $candidate->inscription->user->cpf }} —
                                                 Posição: {{ $candidate->ranking }}
                                             </option>
