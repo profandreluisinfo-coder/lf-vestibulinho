@@ -163,7 +163,7 @@
                         </a>
                         <a href="{{ route('admin.archives.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
-                            <i class="bi bi-file-earmark-pdf me-1"></i> Arquivos
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Publicar
                         </a>
                     </div>
                 </div>

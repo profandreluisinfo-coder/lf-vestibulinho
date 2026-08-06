@@ -32,7 +32,7 @@
 
         <div class="table-responsive">
             <table class="table-striped table caption-top">
-                <caption>Lista de Provas do Vestibulinho</caption>
+                <caption>Publicação de Provas do Vestibulinho</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col">Ano</th>
