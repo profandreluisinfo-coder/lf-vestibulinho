@@ -36,10 +36,10 @@
                             <div class="num">{{ $archives->whereNotNull('answer')->count() }}</div>
                             <div class="lbl">Com gabarito</div>
                         </div>
-                        <div class="hero-chip">
+                        {{-- <div class="hero-chip">
                             <div class="num">100%</div>
                             <div class="lbl">Gratuito</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

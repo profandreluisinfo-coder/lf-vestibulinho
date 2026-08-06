@@ -90,10 +90,10 @@
                             <div class="num" id="statCategories">—</div>
                             <div class="lbl">Categorias</div>
                         </div>
-                        <div class="hstat">
+                        {{-- <div class="hstat">
                             <div class="num">100%</div>
                             <div class="lbl">Gratuito</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
