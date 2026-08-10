@@ -13,7 +13,7 @@
         <div class="card shadow-sm">
             <div class="card-body">
 
-                <form id="form-file-edit" action="{{ route('admin.archives.edit', $archive) }}" method="POST"
+                <form id="form-file-edit" action="{{ route('admin.archives.update', $archive) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
