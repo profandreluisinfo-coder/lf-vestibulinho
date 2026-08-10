@@ -23,21 +23,30 @@ function resetSystem() {
             });
 
             fetch(resetUrl, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-                .then(response => response.json())
+                .then(async response => {
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || 'Não foi possível redefinir o sistema.');
+                    }
+
+                    return data;
+                })
                 .then(data => {
                     Swal.fire('Redefinido!', data.message, 'success').then(() => {
-                        window.location.reload();
+                        window.location.href = '/admin/login';
                     });
                 })
                 .catch(error => {
                     console.error(error);
-                    Swal.fire('Ops!', 'Ocorreu um problema ao redefinir o sistema.', 'error');
+                    Swal.fire('Ops!', error.message || 'Ocorreu um problema ao redefinir o sistema.', 'error');
                 });
         }
     });

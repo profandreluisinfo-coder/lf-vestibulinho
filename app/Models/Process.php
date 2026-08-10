@@ -57,7 +57,7 @@ class Process extends Model
         return $this->hasOne(Event::class)->latestOfMany();
     }
 
-    public static function current()
+    public static function current(): ?self
     {
         return self::with('latestEvent')
             ->latest('id')
@@ -66,7 +66,8 @@ class Process extends Model
 
     public function isInscriptionOpen(): bool
     {
-        return $this->latestEvent?->isInscriptionOpen() ?? false;
+        return $this->status === 'open'
+            && ($this->latestEvent?->isInscriptionOpen() ?? false);
     }
 
     public function isInscriptionStarted(): bool
@@ -86,9 +87,13 @@ class Process extends Model
      */
     public static function getYear(): ?int
     {
-        $process = self::getStatus() === 'open' ?? self::orderBy('year', 'desc')->first();
+        $process = self::query()
+            ->where('status', 'open')
+            ->latest('year')
+            ->first()
+            ?? self::query()->latest('year')->first();
 
-        return $process ? $process?->year : null;
+        return $process?->year;
     }
 
     // Limpa o cache automaticamente quando salvar ou excluir

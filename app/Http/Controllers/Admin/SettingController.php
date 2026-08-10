@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Calendar;
 use App\Models\Call;
 use App\Models\CallList;
 use App\Models\Course;
 use App\Models\ExamResult;
-use App\Models\Notice;
+use App\Models\Inscription;
+use App\Models\Process;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -53,19 +53,22 @@ class SettingController extends Controller
     {
         try {
             // Garante que só admin possa resetar o sistema
-            if (!Auth::user()->role === 'admin') {
+            if (Auth::user()?->role !== 'admin') {
                 return response()->json([
                     'success' => false,
                     'message' => 'Acesso negado. Somente administradores podem redefinir o sistema.'
                 ], 403);
             }
 
-            // DESABILITA CHAVES ESTRANGEIRAS
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            // Remove os registros na ordem das dependências, sem desativar FKs.
 
             // Apaga todos os usuários que não são admin
+            Call::query()->delete();
+            ExamResult::query()->delete();
+            Inscription::query()->delete();
+            CallList::query()->delete();
+            Process::query()->delete();
             User::where('role', '!=', 'admin')->delete();
-            // Isso já apaga as inscriptions (e suas dependências) via CASCADE
 
             // Ajusta AUTO_INCREMENT dos users
             $maxUserId = User::max('id');
@@ -82,43 +85,27 @@ class SettingController extends Controller
             // Zera vagas dos cursos
             Course::whereNotNull('vacancies')->update(['vacancies' => 0]);
 
-            // Apaga todos os registros da tabela de calendarios 
-            Calendar::truncate();
+            // Alterar para 'false' campos 'result' e 'location' da tabela de settings
+            Setting::updateOrCreate(
+                ['id' => 1],
+                ['result' => false, 'location' => false]
+            );
 
-            // Apaga todos os registros da tabela de edital
-            Notice::truncate();
-
-            // Apaga todos os registros da tabela de resultados de exames
-            ExamResult::truncate();
-
-            // Apaga todos os registros da tabela de chamadas
-            CallList::truncate();
-
-            // Apaga todos os registros da tabela de chamadas
-            Call::truncate();
-
-            // Alterar para 'false' campos 'calendar', 'notice', 'result' e 'location' da tabela de settings
-            Setting::query()->update([
-                'calendar' => false,
-                'notice' => false,
-                'result' => false,
-                'location' => false,
-            ]);
+            Cache::forget('global_calendar');
+            Cache::forget('global_process');
+            Cache::forget('global_total_inscriptions');
+            Cache::forget('global_users_without_inscription');
+            Cache::forget('global_settings');
+            Cache::forget('calls_exists');
 
             // Apagar os dados de autenticação
             session()->flush();
-
-            // REATIVA CHAVES ESTRANGEIRAS
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
             return response()->json([
                 'success' => true,
                 'message' => 'Sistema redefinido com sucesso. Por favor, faça login novamente. Lembre-se de limpar o cache do navegador.'
             ]);
         } catch (\Throwable $e) {
-
-            // GARANTE que as chaves serão reativadas mesmo se der erro
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
             return response()->json([
                 'success' => false,
