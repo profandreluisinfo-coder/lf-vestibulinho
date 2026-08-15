@@ -37,7 +37,7 @@ class UserService
 
                 $this->sendEmail(
                     to: $user->email,
-                    subject: 'Confirme seu e-mail',
+                    subject: 'Vestibulinho LF ' . Process::current()?->year . ' Confirme seu e-mail',
                     data: ['link' => $link],
                     view: 'emails.verify.register'
                 );
@@ -87,7 +87,7 @@ class UserService
 
         $this->sendEmail(
             to: $user->email,
-            subject: 'E-mail confirmado',
+            subject: 'Vestibulinho LF ' . Process::current()?->year . ' - E-mail confirmado',
             data: ['process' => $year_process, 'name' => $user?->name ?? 'Candidato'],
             view: 'emails.verify.token'
         );
@@ -125,7 +125,7 @@ class UserService
 
                 $this->sendEmail(
                     to: $user->email,
-                    subject: 'Redefinir senha',
+                    subject:  'Vestibulinho LF ' . Process::current()?->year . ' - Redefinir senha',
                     data: ['name' => $name, 'link' => $link],
                     view: 'emails.password.forgot'
                 );
@@ -178,7 +178,7 @@ class UserService
             try {
                 $this->sendEmail(
                     to: $user->email,
-                    subject: 'Senha alterada',
+                    subject:  'Vestibulinho LF ' . Process::current()?->year . ' - Senha alterada',
                     data: ['name' => $name],
                     view: 'emails.password.reset'
                 );
@@ -258,7 +258,7 @@ class UserService
         try {
             $this->sendEmail(
                 to: $user->email,
-                subject: 'Confirme seu e-mail',
+                subject: 'Vestibulinho LF ' . Process::current()?->year . ' - Confirme seu e-mail',
                 data: ['link' => $link],
                 view: 'emails.verify.register'
             );
@@ -300,7 +300,7 @@ class UserService
 
         $this->sendEmail(
             to: $user->email,
-            subject: 'Senha alterada',
+            subject: 'Vestibulinho LF ' . Process::current()?->year . ' - Senha alterada',
             data: ['name' => $name],
             view: 'emails.password.reset'
         );
