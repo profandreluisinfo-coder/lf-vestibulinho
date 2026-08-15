@@ -78,8 +78,6 @@
 
 @section('right-panel')
 
-    @include('alerts.toasts')
-
     <div class="form-card">
 
         <!-- ─── VIEW 1: Formulário ─────────────────────────── -->
