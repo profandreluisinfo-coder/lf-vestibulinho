@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Jobs\SendTransactionalEmailJob;
 use App\Models\Process;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -10,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Throwable;
 
 class UserService
@@ -317,15 +317,17 @@ class UserService
         array $data,
         string $view,
         ?string $attachment = null
-    ) {
-        dispatch(
-            new SendTransactionalEmailJob(
-                $to,
-                $subject,
-                $data,
-                $view,
-                $attachment
-            )
-        )->delay(now()->addSeconds(10));
+    ): void {
+        $sent = app(MailService::class)->send(
+            to: $to,
+            subject: $subject,
+            content: $data,
+            view: $view,
+            attachment: $attachment
+        );
+
+        if (! $sent) {
+            throw new RuntimeException('Não foi possível enviar o e-mail.');
+        }
     }
 }
