@@ -23,7 +23,7 @@
                 <div class="col-lg-7">
                     <div class="hero-badge mb-3">
                         <span class="live-dot"></span>
-                        100% Online · Gratuito
+                        Gratuito · Inscrição 100% Online · Prova Presencial
                     </div>
                     <h1 class="mb-3">
                         <em>Vestibulinho LF</em> {{ $process?->year }}<br>
