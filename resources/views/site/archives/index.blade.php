@@ -19,7 +19,7 @@
                 <div class="col-lg-8">
                     <div class="hero-badge">
                         <span class="live-dot"></span>
-                        Material de Estudo · Processo Seletivo
+                        Material de Estudo · Vestibulinho LF
                     </div>
                     <h1>Provas<br><em>Anteriores</em></h1>
                     <p class="lead">
