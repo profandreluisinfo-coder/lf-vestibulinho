@@ -205,14 +205,15 @@ body {
 .form-card {
     width: 100%;
     max-width: 420px;
+    min-width: 0;
     animation: scaleIn .55s cubic-bezier(.22, .68, 0, 1.2) .1s both;
 }
 
 /* Topo do formulário */
-.form-top {
+/* .form-top {
     margin-top: 16rem;
     margin-bottom: 2rem;
-}
+} */
 
 .form-top .back-link {
     display: inline-flex;
@@ -596,6 +597,16 @@ body {
 }
 
 /* ─── RESPONSIVO ─────────────────────────────────────────── */
+/* Desktop: preserva o formulário centralizado, sem comprimir o conteúdo
+   quando as duas colunas ficam mais estreitas. */
+@media (min-width: 901px) {
+    .panel-right {
+        min-width: 0;
+        padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 4rem);
+    }
+}
+
+/* Tablets: transforma o formulário em uma única coluna confortável. */
 @media (max-width: 900px) {
     .page-wrapper {
         grid-template-columns: 1fr;
@@ -606,22 +617,54 @@ body {
     }
 
     .panel-right {
-        padding: 2.5rem 1.5rem;
-        min-height: 100vh;
+        min-height: 100dvh;
+        padding: clamp(2rem, 6vw, 3.5rem) clamp(1.5rem, 8vw, 4rem);
         align-items: flex-start;
+        overflow-x: hidden;
     }
 
     .form-card {
-        padding-top: 1rem;
+        max-width: 520px;
+        margin-inline: auto;
     }
 }
 
-@media (max-width: 480px) {
+/* Celulares: prioriza área útil e mantém os controles fáceis de tocar. */
+@media (max-width: 600px) {
     .panel-right {
-        padding: 2rem 1.2rem;
+        padding: 1.5rem 1.1rem 2rem;
+    }
+
+    .form-top .back-link {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-top h1 {
+        font-size: clamp(1.4rem, 7vw, 1.55rem);
+    }
+
+    .form-top p {
+        font-size: .84rem;
+    }
+
+    .toggle-pwd-btn {
+        min-height: 38px;
+        padding-inline: .8rem;
+    }
+
+    .form-input {
+        min-height: 46px;
     }
 
     .rules-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Em notebooks baixos e celular na horizontal, o formulário começa no topo
+   para que nada fique acima da área rolável. */
+@media (max-height: 760px) {
+    .panel-right {
+        align-items: flex-start;
     }
 }
