@@ -84,13 +84,17 @@
                         </a>
                     </li>
                     <li><a href="#"><i class="bi bi-telephone me-1"></i>(19) 3873-2605</a></li>
-                    <li><a href="#"><i class="bi bi-geo-alt me-1"></i>Ver endereço</a></li>
+                    <li><a href="https://www.google.com/maps/search/?api=1&query=-22.828069,-47.267148" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="bi bi-geo-alt me-1"></i>Ver endereço
+                        </a></li>
                 </ul>
             </div>
         </div>
         <hr>
         <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <p class="mb-0 text-center text-md-start">© {{ $year }} EM Dr. Leandro Franceschini · Todos os direitos reservados.</p>
+            <p class="mb-0 text-center text-md-start">© {{ $year }} EM Dr. Leandro Franceschini · Todos os
+                direitos reservados.</p>
         </div>
     </div>
 </footer>
