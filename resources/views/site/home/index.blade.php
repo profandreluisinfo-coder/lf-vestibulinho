@@ -49,6 +49,15 @@
                 {{-- Right stats --}}
                 <div class="col-lg-5">
                     <div class="row g-3">
+                        @if ($process?->isInscriptionOpen())
+                            <div class="col-6">
+                                <div class="stat-chip delay-4">
+                                    <div class="num">{{ $process?->year }}</div>
+                                    <div class="lbl">Processo Seletivo</div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="col-6">
                             <div class="stat-chip delay-1">
                                 <div class="num">4</div>
@@ -61,22 +70,15 @@
                                 <div class="lbl">Gratuito</div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="stat-chip delay-3">
-                                <div class="num" style="color:var(--amber);">Online</div>
-                                <div class="lbl">Inscrição Digital</div>
-                            </div>
-                        </div>
 
                         @if ($process?->isInscriptionOpen())
                             <div class="col-6">
-                                <div class="stat-chip delay-4">
-                                    <div class="num">{{ $process?->year }}</div>
-                                    <div class="lbl">Processo Seletivo</div>
+                                <div class="stat-chip delay-3">
+                                    <div class="num" style="color:var(--amber);">Prova</div>
+                                    <div class="lbl"> {{ ucfirst($process?->latestEvent->exam_date->translatedFormat('d/m')) }}</div>
                                 </div>
                             </div>
                         @endif
-
                     </div>
                 </div>
             </div>
