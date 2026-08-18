@@ -28,7 +28,7 @@
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> FAQ</a>
+                    <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> Ajuda</a>
                 </li>
                 @if ($process?->status === 'open')
                 <li class="nav-item">
