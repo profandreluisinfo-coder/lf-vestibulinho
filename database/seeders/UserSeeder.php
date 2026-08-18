@@ -13,16 +13,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin fixo 1
-        User::updateOrCreate(
-            ['email' => 'adm@lf.com'],
-            [
-                'name' => 'André Luís Alves',
-                'cpf' => '12345678901',
-                'role' => 'admin',
-                'password' => Hash::make('123'),
-                'email_verified_at' => now()
-            ]
-        );
+        // User::updateOrCreate(
+        //     ['email' => 'adm@lf.com'],
+        //     [
+        //         'name' => 'André Luís Alves',
+        //         'cpf' => '12345678901',
+        //         'role' => 'admin',
+        //         'password' => Hash::make('123'),
+        //         'email_verified_at' => now()
+        //     ]
+        // );
 
         // Admin fixo 2
         User::updateOrCreate(

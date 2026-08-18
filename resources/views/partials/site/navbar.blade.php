@@ -17,14 +17,14 @@
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i>Cursos</a>
+                    <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i> Cursos</a>
                 </li>
                 @if ($process?->status === 'open')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#como-participar">Como Participar</a>
+                    <a class="nav-link" href="{{ route('home') }}/#como-participar"><i class="bi bi-info-circle me-1"></i> Como Participar</a>
                 </li>                
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#calendario">Calendário</a>
+                    <a class="nav-link" href="{{ route('home') }}/#calendario"><i class="bi bi-calendar-week me-1"></i> Calendário</a>
                 </li>
                 @endif
                 <li class="nav-item">
@@ -32,7 +32,7 @@
                 </li>
                 @if ($process?->status === 'open')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#documentos">Documentos</a>
+                    <a class="nav-link" href="{{ route('home') }}/#documentos"><i class="bi bi-file-earmark me-1"></i> Documentos</a>
                 </li>
                 @endif
                 <li class="nav-item">
