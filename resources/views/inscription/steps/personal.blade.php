@@ -96,10 +96,7 @@
         <div id="socialName" class="form-group col-md-12 d-none">
             <label for="social_name" class="form-label">Nome social/afetivo:</label>
             <input name="social_name" id="social_name" class="form-control @error('social_name') is-invalid @enderror"
-                value="{{ old('social_name', session('step1.social_name')) }}" aria-describedby="socialName">
-            <small id="socialName" class="form-text fst-italic text-muted"><i class="bi bi-info-circle me-1"></i>Leia
-                atentamente o item 4.10 do <a href="{{ Storage::url($process?->edital) }}"
-                    title="Clique aqui para abrir o edital" target="_blank">edital</a>.</small>
+                value="{{ old('social_name', session('step1.social_name')) }}">
 
             @error('name')
                 <div class="invalid-feedback">
