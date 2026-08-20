@@ -1,15 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Configurações para cada grupo de campos dependentes
-    const dependentFields = [{
-        selectId: 'health',
-        fieldId: 'health_issue',
-        showOnValue: '1' // Valor quando "Sim" é selecionado
-    },
-    {
-        selectId: 'social_program',
-        fieldId: 'nis',
-        showOnValue: '1'
-    }
+    const dependentFields = [
+        { selectId: 'accessibility', fieldId: 'accessibility_description', showOnValue: '1' },
+        { selectId: 'accessibility', fieldId: 'pne_report', showOnValue: '1' },
+        { selectId: 'accessibility', fieldId: 'pne_description', showOnValue: '1' }, // já existe: mostra o select
+        { selectId: 'pne_description', fieldId: 'pne_description_detail', showOnValue: '1' } // novo: mostra o campo de texto
     ];
 
     // Função para mostrar/ocultar campos dependentes

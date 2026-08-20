@@ -9,9 +9,10 @@
         3 => ['label' => 'Endereço', 'route' => 'inscription.step.address', 'done_key' => 'step3_done'],
         4 => ['label' => 'Dados Escolares', 'route' => 'inscription.step.academic', 'done_key' => 'step4_done'],
         5 => ['label' => 'Filiação', 'route' => 'inscription.step.family', 'done_key' => 'step5_done'],
-        6 => ['label' => 'Outras Informações', 'route' => 'inscription.step.other', 'done_key' => 'step6_done'],
-        7 => ['label' => 'Curso', 'route' => 'inscription.step.course', 'done_key' => 'step7_done'],
-        8 => ['label' => 'Revisão', 'route' => 'inscription.step.confirm', 'done_key' => 'step8_done'],
+        6 => ['label' => 'Pessoas com Deficiência', 'route' => 'inscription.step.pcd', 'done_key' => 'step6_done'],
+        7 => ['label' => 'Outras Informações', 'route' => 'inscription.step.other', 'done_key' => 'step7_done'],
+        8 => ['label' => 'Curso', 'route' => 'inscription.step.course', 'done_key' => 'step8_done'],
+        9 => ['label' => 'Revisão', 'route' => 'inscription.step.confirm', 'done_key' => 'step9_done'],
     ];
 
     // Passo atual

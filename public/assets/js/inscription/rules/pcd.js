@@ -22,96 +22,86 @@ $(document).ready(function () {
         return true;
     }, "* Use pelo menos de 2 letras");
 
-    // Adiciona o método 'nis' ao jQuery Validator
-    $.validator.addMethod("validateNis", function (value, element) {
-        // Remove caracteres não numéricos
-        const nis = value.replace(/\D/g, '');
-
-        // Verifica se tem 11 dígitos
-        if (nis.length !== 11) return false;
-
-        // Cálculo do dígito verificador
-        const pesos = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-        let soma = 0;
-
-        for (let i = 0; i < 10; i++) {
-            soma += parseInt(nis.charAt(i)) * pesos[i];
-        }
-
-        const resto = soma % 11;
-        const dv = resto <= 1 ? 0 : 11 - resto;
-
-        // Retorna true se o DV for válido
-        return dv === parseInt(nis.charAt(10));
-    }, "* Por favor, insira um NIS/PIS válido."); // Mensagem de erro padrão
-
     $("#inscription").validate({
         rules: {
-            // Alergias
-            health: {
+            // Acessibilidade
+            pne: {
                 required: true,
                 range: [1, 2]
             },
-            health_issue: {
+            accessibility_description: {
                 required: {
                     depends: function () {
-                        return $("#health").val() == 1;
+                        return $("#accessibility").val() == 1;
                     }
                 },
-                // maxlength: validateIfFilled(60),
                 maxlength: {
                     depends: function () {
-                        return $("#health").val() == 1;
+                        return $("#accessibility").val() == 1;
                     },
                     param: 60
                 },
-                // pattern: validateIfFilled(/^[\p{L}0-9\s.,-]+$/u),
                 pattern: {
                     depends: function () {
-                        return $("#health").val() == 1;
+                        return $("#accessibility").val() == 1;
                     },
                     param: /^[\p{L}0-9 ().,-]+$/u
                 },
-
             },
-
-            // Programas sociais
-            social_program: {
-                required: true,
-                range: [1, 2]
-            },
-            nis: {
+            pne_report: {
                 required: {
                     depends: function () {
-                        return $("#social_program").val() == 1;
+                        return $("#accessibility").val() == 1;
                     }
                 },
-                // validateNis: validateIfFilled(),
-                validateNis: {
-                    depends: function () {
-                        return $("#social_program").val() == 1;
-                    }
+                extension: "pdf"
+            },
+
+            // agora é select Sim/Não
+            pne_description: {
+                required: { depends: function () { return $("#accessibility").val() == 1; } },
+                range: [1, 2]
+            },
+
+            // novo campo de especificação
+            pne_description_detail: {
+                required: {
+                    depends: function () { return $("#pne_description").val() == 1; }
+                },
+                maxlength: {
+                    depends: function () { return $("#pne_description").val() == 1; },
+                    param: 60
+                },
+                pattern: {
+                    depends: function () { return $("#pne_description").val() == 1; },
+                    param: /^[\p{L}0-9 ().,-]+$/u
                 }
             }
         },
         messages: {
-            // Alergias
-            health: {
+            // Acessibilidade
+            pne: {
                 required: "* Obrigatório.",
                 range: "* Selecione uma opção válida."
             },
-            health_issue: {
-                required: "* Obrigatório.",
-                maxlength: "* Máximo de 60 caracteres."
+            accessibility_description: {
+                required: "* Descreva a necessidade de acessibilidade.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços.",
             },
-            // Programas sociais
-            social_program: {
-                required: "* Obrigatório.",
-                range: "* Selecione um programa social válido."
+            pne_report: {
+                required: "* O campo de relatório de educação especial é obrigatório",
+                extension: "* Apenas arquivos PDF são permitidos."
             },
-            nis: {
-                required: "* Obrigatório.",
-                validateNis: "* NIS/PIS inválido.",
+            pne_description: {
+                required: "* Informe o serviço de educação especial necessário.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços."
+            },
+            pne_description_detail: {
+                required: "* Descreva o recurso necessário.",
+                maxlength: "* Máximo de 60 caracteres.",
+                pattern: "* Apenas letras, números e espaços."
             }
         },
 

@@ -35,9 +35,9 @@ class InscriptionController extends Controller
             abort(404);
         }
 
-        $displayName = $user?->name && $user?->lgbt?->status === 'accepted' 
-                    ? $user?->lgbt?->name 
-                    : $user?->name;
+        $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
+            ? $user?->lgbt?->name
+            : $user?->name;
         $name = $user?->name;
         $initials = $this->getInitials($name);
 
@@ -52,12 +52,12 @@ class InscriptionController extends Controller
     {
         $user = Auth::user();
 
-        $displayName = $user?->name && $user?->lgbt?->status === 'accepted' 
-                    ? $user?->lgbt?->name 
-                    : $user?->name;
+        $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
+            ? $user?->lgbt?->name
+            : $user?->name;
         // $name = $user?->name;
         $initials = $this->getInitials($displayName);
-        
+
         // Segurança extra caso acessem direto sem ter inscrição
         if (! $user->inscription()->exists()) {
             return redirect()
@@ -95,8 +95,8 @@ class InscriptionController extends Controller
         if (!$name) return '';
         $parts = array_filter(explode(' ', trim($name)));
         return strtoupper(
-            ($parts[0][0] ?? '') . 
-            ($parts[1][0] ?? '')
+            ($parts[0][0] ?? '') .
+                ($parts[1][0] ?? '')
         );
     }
 
@@ -220,11 +220,12 @@ class InscriptionController extends Controller
         session()->put('step5', $data);
         session()->put('step5_done', true); // Marca como concluído
 
-        return redirect()->route('inscription.step.other');
+        return redirect()->route('inscription.step.pcd');
     }
 
-    // Passo 6: Outras Informações
-    public function other(): View|RedirectResponse
+    // NOVO: 
+    // Passo 6: Pessoas com Deficiência (PcD)
+    public function pcd(): View|RedirectResponse
     {
         if (! session()->get('step5_done')) {
             return redirect()->route('inscription.step.family')->with('warning', 'Complete o passo anterior.');
@@ -232,44 +233,75 @@ class InscriptionController extends Controller
 
         $disabilities = Disability::all();
         $accessibilityResources = Resource::all();
-        $healthIssues = HealthIssue::all();
 
-        return view('inscription.steps.others', compact('disabilities', 'accessibilityResources', 'healthIssues'));
+        return view('inscription.steps.pcd', [
+            'disabilities' => $disabilities,
+            'accessibilityResources' => $accessibilityResources,
+        ]);
     }
 
     // Gravar Dados de Passo 6
-    public function otherStore(OtherRequest $request): Response|RedirectResponse
+    public function pcdStore(Request $request): Response|RedirectResponse
     {
         $data = $request->except(['_token', 'pne_report']);
 
-        if (data_get($data, 'health') != 1) {
-            $data['health_issue'] = null;
-        }
-
         if ($request->hasFile('pne_report')) {
             $path = $request->file('pne_report')->store('reports', 'public');
-            $data['pne_report'] = $path; // salva só o caminho
+            $data['pne_report'] = $path;
         }
 
         if (data_get($data, 'pne') != 1) {
             $data['accessibility_description'] = null;
             $data['pne_description'] = null;
+            $data['pne_description_detail'] = null;
+        } elseif (data_get($data, 'pne_description') != 1) {
+            $data['pne_description_detail'] = null;
+        }
+
+        session()->put('step6', $data);
+        session()->put('step6_done', true);
+
+        return redirect()->route('inscription.step.other');
+    }
+
+    // Passo 7: Outras Informações
+    public function other(): View|RedirectResponse
+    {
+        if (! session()->get('step6_done')) {
+            return redirect()->route('inscription.step.pcd')->with('warning', 'Complete o passo anterior.');
+        }
+
+        $healthIssues = HealthIssue::all();
+
+        return view('inscription.steps.others', [
+            'healthIssues' => $healthIssues,
+        ]);
+    }
+
+    // Gravar Dados de Passo 7
+    public function otherStore(OtherRequest $request): Response|RedirectResponse
+    {
+        // $data = $request->except(['_token', 'pne_report']);
+        $data = $request->except(['_token']);
+
+        if (data_get($data, 'health') != 1) {
+            $data['health_issue'] = null;
         }
 
         if (data_get($data, 'social_program') != 1) {
             $data['nis'] = null;
         }
 
-        session()->put('step6', $data);
-        session()->put('step6_done', true); // Marca como concluído
+        session()->put('step7', $data);
+        session()->put('step7_done', true); // Marca como concluído
 
         return redirect()->route('inscription.step.course');
     }
 
-    // Passo 7: Curso Pretendido
+    // Passo 8: Curso Pretendido
     public function course(): View|RedirectResponse
     {
-        if (! session()->get('step6_done')) {
+        if (! session()->get('step7_done')) {
             return redirect()->route('inscription.step.other')->with('warning', 'Complete o passo anterior.');
         }
 
@@ -278,11 +310,11 @@ class InscriptionController extends Controller
         ]);
     }
 
-    // Gravar Dados de Passo 7
+    // Gravar Dados de Passo 8
     public function courseStore(Request $request)
     {
-        session()->put('step7', $request->except(['_token']));
-        session()->put('step7_done', true);
+        session()->put('step8', $request->except(['_token']));
+        session()->put('step8_done', true);
 
         return redirect()->route('inscription.step.confirm');
     }
@@ -291,7 +323,7 @@ class InscriptionController extends Controller
     public function confirm(): View|RedirectResponse
     {
         // Coleta e une todos os dados das etapas
-        $steps = collect(range(1, 7))->mapWithKeys(function ($step) {
+        $steps = collect(range(1, 8))->mapWithKeys(function ($step) {
             return ["step{$step}" => session()->get("step{$step}", [])];
         });
 

@@ -13,7 +13,7 @@
                 <option value="" selected>...</option>
                 @forelse ($courses as $course)
                     <option value="{{ $course->id }}"
-                        {{ old('course_id', session('step7.course_id')) == $course->id ? 'selected' : '' }}>
+                        {{ old('course_id', session('step8.course_id')) == $course->id ? 'selected' : '' }}>
                         {{ $course->description }}
                     </option>
                 @empty

@@ -110,12 +110,23 @@
 
         <!-- Área para anexar autorização do responsável legal -->
         <div id="authorizationDiv" class="form-group col-md-12 d-none">
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div class="alert alert-warning d-flex align-items-start" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 mt-1"></i>
                 <div>
-                    O(a) candidato(a) que desejar utilizar nome social/afetivo neste Processo Seletivo poderá fazê-lo,
-                    desde que obtenha autorização expressa dos responsáveis legais</u>. A autorização deverá ser enviada
-                    em anexo ao formulário de inscrição.
+                    <strong>Autorização do responsável legal</strong><br>
+                    O(a) candidato(a) menor de idade que optar pelo uso de nome social/afetivo neste Processo
+                    Seletivo deverá apresentar autorização expressa de seu pai, mãe ou responsável legal.
+                    <br><br>
+                    <a href="{{ Storage::disk('public')->url('modelos/autorizacao_nome_social_afetivo.pdf') }}"
+                       class="btn btn-outline-primary btn-sm"
+                       target="_blank"
+                       rel="noopener">
+                        <i class="bi bi-download me-1"></i>
+                        Baixar modelo de autorização
+                    </a>
+                    <div class="small text-muted mt-2">
+                        Baixe o modelo, preencha todos os campos, assine e salve-o em PDF para anexá-lo abaixo.
+                    </div>
                 </div>
             </div>
 
@@ -133,13 +144,16 @@
                 </div>
             @endif
 
-            <label for="authorization" class="form-label required">Autorização do responsável legal para uso do nome
-                social.</label>
+            <label for="authorization" class="form-label required">
+                Autorização do responsável legal para uso do nome social/afetivo:
+            </label>
             <input type="file" name="authorization" id="authorization"
                 class="form-control @error('authorization') is-invalid @enderror" aria-describedby="infoAuthorization">
-            <small id="infoAuthorization" class="form-text fst-italic text-muted"><i
-                    class="bi bi-info-circle me-1"></i>Somente arquivos no formato PDF são aceitos. O tamanho máximo é
-                de 5MB.</small>
+            <small id="infoAuthorization" class="form-text fst-italic text-muted">
+                <i class="bi bi-info-circle me-1"></i>
+                Anexe a autorização preenchida e assinada pelo pai, mãe ou responsável legal, exclusivamente em PDF.
+                Tamanho máximo: 5MB.
+            </small>
 
             @error('authorization')
                 <div class="invalid-feedback">{{ $message }}</div>

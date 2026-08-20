@@ -291,7 +291,7 @@
             <div class="review-row">
                 <span class="review-label">Recursos de acessibilidade</span>
                 <span class="review-value d-flex flex-column align-items-end gap-1">
-                    {{ $step6['pne_description'] }}
+                    {{ $step6['pne_description_detail'] }}
                 </span>
             </div>
         @endif
@@ -305,33 +305,33 @@
         <div class="review-row">
             <span class="review-label">Bolsa-Família</span>
             <span class="review-value">
-                @if ($step6['social_program'] == 1)
+                @if ($step7['social_program'] == 1)
                     <span class="badge bg-success">Sim</span>
                 @else
                     <span class="badge bg-danger">Não</span>
                 @endif
             </span>
         </div>
-        @if ($step6['social_program'] == 1)
+        @if ($step7['social_program'] == 1)
             <div class="review-row">
                 <span class="review-label">NIS</span>
-                <span class="review-value">{{ $step6['nis'] }}</span>
+                <span class="review-value">{{ $step7['nis'] }}</span>
             </div>
         @endif
         <div class="review-row">
             <span class="review-label">Problema de saúde / alergia</span>
             <span class="review-value">
-                @if ($step6['health'] == 1)
+                @if ($step7['health'] == 1)
                     <span class="badge bg-success">Sim</span>
                 @else
                     <span class="badge bg-danger">Não</span>
                 @endif
             </span>
         </div>
-        @if ($step6['health'] == 1)
+        @if ($step7['health'] == 1)
             <div class="review-row">
                 <span class="review-label">Descrição</span>
-                <span class="review-value">{{ $step6['health_issue'] }}</span>
+                <span class="review-value">{{ $step7['health_issue'] }}</span>
             </div>
         @endif
     </div>
@@ -343,7 +343,7 @@
         </div>
         <div class="review-row">
             <span class="review-label">Curso</span>
-            <span class="review-value">{{ \App\Models\Course::getDescription($step7['course_id']) }}</span>
+            <span class="review-value">{{ \App\Models\Course::getDescription($step8['course_id']) }}</span>
         </div>
     </div>
 

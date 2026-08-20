@@ -18,7 +18,7 @@ class OtherRequest extends FormRequest
             return false;
         }
 
-        if (session()->has('step1') && session()->has('step2') && session()->has('step3') && session()->has('step4') && session()->has('step5')) {
+        if (session()->has('step1') && session()->has('step2') && session()->has('step3') && session()->has('step4') && session()->has('step5') && session()->has('step6')) {
             return true;
         }
 
@@ -47,8 +47,6 @@ class OtherRequest extends FormRequest
      */
     public function rules(): array
     {
-        $pneRequired = $this->input('pne') == 1;
-        
         return [
             // outras informações
             'health' => ['required', 'in:1,2'],
@@ -67,47 +65,6 @@ class OtherRequest extends FormRequest
                         }
                     }
                 }
-            ],
-            
-            // acessibilidade ou educação especial
-            'pne' => ['required', 'in:1,2'],
-            // descrição da acessibilidade
-            'accessibility_description' => [
-                'nullable',
-                // Rule::requiredIf(fn() => $this->input('pne') == 1),
-                Rule::requiredIf($pneRequired),
-                'max:60',
-                function ($attribute, $value, $fail) {
-                    if ($this->input('pne') == 1) {
-                        $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
-                        if (!preg_match($regex, $value)) {
-                            $fail("* O campo {$attribute} contém caracteres inválidos.");
-                        }
-                    }
-                }
-            ],
-
-            'pne_description' => [
-                'nullable',
-                // Rule::requiredIf(fn() => $this->input('pne') == 1),
-                Rule::requiredIf($pneRequired),
-                'max:60',
-                function ($attribute, $value, $fail) {
-                    if ($this->input('pne') == 1) {
-                        $regex = '/^[\p{L}0-9\s.,()\-]+$/u'; // Letras, números, espaço, ponto, vírgula, hífen
-                        if (!preg_match($regex, $value)) {
-                            $fail("* O campo {$attribute} contém caracteres inválidos.");
-                        }
-                    }
-                }
-            ],
-
-            'pne_report' => [
-                Rule::requiredIf($pneRequired),
-                'nullable',
-                'file',
-                'mimes:pdf',
-                'max:5120', // limite de 5MB
             ],
 
             // programas sociais
@@ -133,23 +90,6 @@ class OtherRequest extends FormRequest
             'nis.min' => '* Número de Identificação Social deve conter, no mínimo, :min caracteres',
             'nis.max' => '* Número de Identificação Social deve conter, no máximo, :max caracteres',
             'nis.unique' => '* Número de Identificação Social já cadastrado',
-
-            // educação especial
-            'pne.required' => '* Informe se possui alguma necessidades especiais',
-            'pne.in' => '* O campo Acessibilidade apresenta uma opção inválida',
-
-            'pne_report.required' => '* O campo de relatório de educação especial é obrigatório',
-            'pne_report.file' => '* O campo de relatório de educação especial deve ser um arquivo PDF',
-            'pne_report.max' => '* O campo de relatório de educação especial deve conter, no máximo, :max KB',
-            'pne_report.mimes' => '* O campo de relatório de educação especial deve ser um arquivo do tipo: :values',
-
-            'accessibility_description.required' => '* O campo de descrição de acessibilidade é obrigatório',
-            'accessibility_description.max' => '* O campo de descrição de acessibilidade deve conter, no máximo, :max caracteres',
-            'accessibility_description.regex' => '* O campo de descrição de acessibilidade deve conter apenas letras, números e espaços.',
-
-            'pne_description.required' => '* O campo de descrição de tipo de ajuda é obrigatório',
-            'pne_description.max' => '* O campo deve conter, no máximo, :max caracteres',
-            'pne_description.regex' => '* O campo de deve conter apenas letras, números e espaços.',
 
             // outras informações
             'health.required' => '* Você deve informar se tem algum problema de saúde ou alergia.',

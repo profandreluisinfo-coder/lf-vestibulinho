@@ -46,6 +46,9 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
             Route::get('filiacao', [InscriptionController::class, 'family'])->name('family');
             Route::post('filiacao', [InscriptionController::class, 'familyStore']);
 
+            Route::get('pcd', [InscriptionController::class, 'pcd'])->name('pcd');
+            Route::post('pcd', [InscriptionController::class, 'pcdStore']);
+
             Route::get('outras-informacoes', [InscriptionController::class, 'other'])->name('other');
             Route::post('outras-informacoes', [InscriptionController::class, 'otherStore']);
 

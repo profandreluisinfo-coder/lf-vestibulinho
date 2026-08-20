@@ -21,7 +21,7 @@ class InscriptionService
     {
         $user = Auth::user();
 
-        $steps = collect(range(1, 7))
+        $steps = collect(range(1, 8))
             ->mapWithKeys(fn ($step) => ["step{$step}" => session()->get("step{$step}", [])]);
 
         $data = array_merge(...$steps->values()->toArray());
@@ -139,7 +139,7 @@ class InscriptionService
                     [
                         'pne' => $pne,
                         'description' => ($pne == '1') ? data_get($data, 'accessibility_description') : '',
-                        'support' => ($pne == '1') ? data_get($data, 'pne_description') : '',
+                        'support' => ($pne == '1') ? data_get($data, 'pne_description_detail') : '',
                         'report' => ($pne == '1') ? data_get($data, 'pne_report') : '',
                     ]
                 );

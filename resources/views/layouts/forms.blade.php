@@ -28,7 +28,7 @@
 
     <header class="forms-topbar">
         <a href="{{ route('inscription.start') }}" class="forms-brand">
-            <span class="forms-brand-text"><i class="bi bi-mortarboard fs-5 me-1"></i> Vestibulinho LF <span class="forms-brand-year">2027</span></span>
+            <span class="forms-brand-text"><i class="bi bi-mortarboard fs-5 me-1"></i> Vestibulinho LF <span class="forms-brand-year">{{ $process?->year }}</span></span>
         </a>
 
         <a href="{{ route('inscription.start') }}" class="forms-back-link">
