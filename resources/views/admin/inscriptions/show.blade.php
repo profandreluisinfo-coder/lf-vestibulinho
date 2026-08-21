@@ -13,7 +13,7 @@
         <div class="fi-header">
             <div>
                 <p class="fi-header-title">Detalhes da Inscrição</p>
-                <p class="fi-header-sub">Processo Seletivo — Visualização Detalhada</p>
+                <p class="fi-header-sub">Processo Seletivo {{ $process?->year }} — Visualização Detalhada</p>
             </div>
             <span class="fi-active-badge">Ativo</span>
         </div>
@@ -35,7 +35,7 @@
                     <span class="fi-course-tag">{{ $user->inscription->course->description }}</span>
                 </div>
                 <div>
-                    <span class="fi-section-label d-block mb-1">Data</span>
+                    <span class="fi-section-label d-block mb-1">Data/Hora</span>
                     <span class="fi-row-value">{{ $user->inscription->created_at->format('d/m/Y H:i') }}</span>
                 </div>
             </div>
@@ -213,7 +213,7 @@
                                 <span class="fi-row-label">Necessidade</span>
                                 <span class="fi-row-value">{{ $user?->pne?->description }}</span>
                                 <span class="fi-row-value flex-fill"><a
-                                        href="{{ Storage::url($user?->lgbt?->authorization) }}" target="_blank"
+                                        href="{{ Storage::url($user?->pne?->report) }}" target="_blank"
                                         class="small float-end">
                                         <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
                                     </a>

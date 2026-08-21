@@ -70,6 +70,11 @@ class UserController extends Controller
             return alertError('Este usuário não pode ser excluído.');
         }
 
+        // Verificar se o usuário possui inscrição associada
+        if ($user?->inscription) {
+            return alertError('Este usuário possui uma inscrição associada e não pode ser excluído.');
+        }
+
         $user->delete();
 
         return alertSuccess(

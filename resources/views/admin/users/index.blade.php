@@ -53,14 +53,12 @@
                             <td>
                                 <i class="bi {{ $user->role === 'admin' ? 'bi-person-gear' : 'bi-person-fill' }} fs-5"
                                     data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="{{ 
-                                        $user->role === 'admin' ? 'Administrador' : 'Candidato' }}">
+                                    data-bs-content="{{ $user->role === 'admin' ? 'Administrador' : 'Candidato' }}">
                                 </i>
                                 @if ($user->lgbt && $user->lgbt->status === 'accepted')
-                                <i class="bi bi-gender-trans fs-5"
-                                    data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="LGBTQIA+">
-                                </i>
+                                    <i class="bi bi-gender-trans fs-5" data-bs-toggle="popover" data-bs-trigger="hover"
+                                        data-bs-content="LGBTQIA+">
+                                    </i>
                                 @endif
                             </td>
                             <td>
@@ -85,28 +83,24 @@
                                 {{ $user->email_verified_at ? $user->email_verified_at->format('d/m/Y') : '-' }}
                             </td>
                             <td>
-                                @if ($user->role === 'user')
-
-                                @if ($user->inscription?->id)
+                                @if ($user->role === 'user' && $user?->inscription)
                                     <a href="{{ route('admin.inscriptions.show', Crypt::encrypt($user->id)) }}"
                                         class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
                                         <i class="bi bi-search"></i> Detalhes
                                     </a>
-                                @endif
+                                @elseif ($user->role === 'guest' || $user->role === 'user' && !$user?->inscription)
+                                    <form id="delete-form-{{ $user->id }}"
+                                        action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
 
-                                <form id="delete-form-{{ $user->id }}"
-                                    action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                        onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
-                                        <i class="bi bi-trash"></i> Excluir
-                                    </button>
-                                </form>
-
-                                @else 
+                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                            onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
+                                            <i class="bi bi-trash"></i> Excluir
+                                        </button>
+                                    </form>
+                                @else
                                     <span class="text-muted">N/A</span>
                                 @endif
                             </td>
