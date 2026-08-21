@@ -109,7 +109,8 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-primary text-light">
-                            <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Arquivar Prova
+                            <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Arquivar
+                                Prova
                             </h5>
                         </div>
                         <div class="modal-body">
@@ -121,13 +122,13 @@
                                         @csrf
 
                                         {{-- Ano em que a prova foi aplicada --}}
-                                        <div class="form-floating mb-3">
-                                            <input type="name" name="year"
+                                        <div class="form-group mb-3">
+                                            <label for="year" class="form-label required">Ano de referência da
+                                                prova:</label>
+                                            <input type="text" name="year"
                                                 class="form-control @error('year') is-invalid @enderror" id="year"
                                                 placeholder="Ano em que a prova foi realizada" value="{{ old('year') }}"
                                                 required>
-                                            <label for="year" class="form-label required">Ano de referência da
-                                                prova:</label>
                                             @error('year')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -136,12 +137,12 @@
                                         </div>
 
                                         {{-- Arquivo relacionado --}}
-                                        <div class="form-floating mb-3">
-                                            <input type="file" name="file"
-                                                class="form-control @error('file') is-invalid @enderror" id="file"
-                                                value="{{ old('file') }}" required>
+                                        <div class="form-group mb-3">
                                             <label for="file" class="form-label required">Arquivo relacionado à
                                                 prova:</label>
+                                            <input type="file" name="file"
+                                                class="form-control @error('file') is-invalid @enderror" id="file"
+                                                required>
                                             @error('file')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
@@ -150,24 +151,23 @@
                                         </div>
 
                                         {{-- Gabarito relacionado --}}
-                                        <div class="form-floating mb-3">
+                                        <div class="form-group mb-3">
+                                            <label for="answer" class="form-label">Gabarito relacionado (Se
+                                                houver)</label>
                                             <input type="file" name="answer"
-                                                class="form-control @error('answer') is-invalid @enderror" id="answer"
-                                                value="{{ old('answer') }}">
-                                            <label for="answer" class="form-label required">Gabarito relacionado (Se
-                                                houver)</label></label>
+                                                class="form-control @error('answer') is-invalid @enderror" id="answer">
                                             @error('answer')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
                                             @enderror
+                                        </div>
 
-                                            <div class="text-end">
-                                                {{-- prettier-ignore --}}
+                                        <div class="text-end">
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <i class="bi bi-check-circle me-1"></i>Salvar
-                                                </button>
-                                            </div>
+                                            </button>
+                                        </div>
                                     </form>
 
                                 </div>
@@ -181,12 +181,12 @@
                     </div>
                 </div>
             </div>
-        @endif  
+        @endif
     </div>
 
 @endsection
 
 @push('scripts')
     <script src="{{ asset('assets/js/rules/archives/index.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/archives/publish.js') }}"></script>  
+    <script src="{{ asset('assets/js/swa/archives/publish.js') }}"></script>
 @endpush

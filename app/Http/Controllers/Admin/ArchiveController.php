@@ -189,7 +189,10 @@ class ArchiveController extends Controller
         $archive = Archive::findOrFail($id);
 
         Storage::disk('public')->delete($archive->file);
-        Storage::disk('public')->delete($archive->answer->file ?? null);
+
+        if ($archive->answer?->file) {
+            Storage::disk('public')->delete($archive->answer->file);
+        }
 
         $archive->delete();
 

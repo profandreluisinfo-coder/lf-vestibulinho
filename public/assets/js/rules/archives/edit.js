@@ -35,7 +35,7 @@ $('#form-file-edit').validate({
     },
     errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
-        element.closest('.form-floating').append(error);
+        element.closest('.form-group').append(error);
     },
     highlight: function (element, errorClass, validClass) {
         $(element).addClass('is-invalid');

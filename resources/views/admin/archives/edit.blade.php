@@ -17,12 +17,12 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    
                     {{-- Ano em que a prova foi aplicada --}}
-                    <div class="form-floating mb-3">
-                        <input type="text" name="year" class="form-control @error('year') is-invalid @enderror"
-                            id="year"
-                            placeholder="Ano em que a prova foi realizada" value="{{ $archive->year }}">
+                    <div class="form-group mb-3">
                         <label for="year" class="form-label required">Ano de referência da prova:</label>
+                        <input type="text" name="year" class="form-control @error('year') is-invalid @enderror"
+                            id="year" placeholder="Ano em que a prova foi realizada" value="{{ $archive->year }}">
                         @error('year')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -31,11 +31,10 @@
                     </div>
 
                     {{-- Arquivo relacionado --}}
-                    <div class="form-floating mb-3">
-                        <input type="file" name="file" class="form-control @error('file') is-invalid @enderror"
-                            id="file"
-                            placeholder="Endereço">
+                    <div class="form-group mb-3">
                         <label for="file" class="form-label required">Arquivo relacionado à prova:</label>
+                        <input type="file" name="file" class="form-control @error('file') is-invalid @enderror"
+                            id="file" placeholder="Endereço">
                         @error('file')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -44,11 +43,11 @@
                     </div>
 
                     {{-- Gabarito relacionado --}}
-                    <div class="form-floating mb-3">
+                    <div class="form-group mb-3">
+                        <label for="answer" class="form-label">Gabarito relacionado à prova (Se houver)</label>
                         <input type="file" name="answer"
                             class="form-control @error('answer') is-invalid @enderror" id="answer"
                             value="{{ old('answer') }}">
-                        <label for="answer" class="form-label required">Gabarito relacionado à prova (Se houver)</label></label>
                         @error('answer')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -58,8 +57,10 @@
 
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
-                        </button>
-                    <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                    </button>
+                    <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
                 </form>
 
             </div>
