@@ -1,13 +1,8 @@
-@extends('layouts.site.master')
+@extends('layouts.site')
 
-@push('metas')
-    <meta name="description" content="Área de perguntas frequentes sobre {{ config('app.name') }} {{ $process?->year }}">
-@endpush
-
-@section('page-title', 'Vestibulinho LF | Convocação para Matrícula')
+@section('title', 'Vestibulinho LF ' . ($process?->year ?? '') . ' - Convocação para Matrícula')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/faqs.css') }}">
     <style>
         .latest-call-icon {
             animation: pulse 1.5s infinite;
@@ -29,10 +24,6 @@
     </style>
 @endpush
 
-@section('body-class', 'bg-light')
-
-@section('has-footer', 'has-footer')
-
 @section('content')
     @php
         $latestKey = collect($calls->keys())
@@ -49,15 +40,12 @@
 
     @endphp
 
-
-    @include('home.navbar')
-
     <section class="calls-wrapper">
 
         <div class="container">
 
             <h2 class="section-title text-center">
-                Convocação para Matrícula
+                Vestibulinho LF {{ $process?->year }} - Convocação para Matrícula
             </h2>
 
             <div class="row">
@@ -169,10 +157,8 @@
 
     </section>
 
-    @include('home.footer')
-
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/filters/calls.js') }}"></script>
+    <script src="{{ asset('assets/js/site/calls/index.js') }}"></script>
 @endpush

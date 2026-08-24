@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Models\Course;
 use App\Models\ExamResult;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 
 class ResultController extends Controller
 {
@@ -19,6 +20,11 @@ class ResultController extends Controller
      */
     public function index()
     {
+
+        if (!Setting::isResultEnabled()) {
+            abort(404);
+        }
+
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
 
@@ -26,7 +32,7 @@ class ResultController extends Controller
         $results = ExamResult::whereNotNull('score')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->join('user_details', 'users.id', '=', 'user_details.user_id')
+            // ->join('user_details', 'users.id', '=', 'user_details.user_id')
             ->select(
                 'inscriptions.id',
                 'users.name',
@@ -44,13 +50,10 @@ class ResultController extends Controller
         // ✅ 2️⃣ Descobre a nota de corte
         $cutoffScore = $lastInLimit ? $lastInLimit->score : 0;
 
-        // envia pra view
-        view()->share([
+        return view('site.results.index', [
             'results' => $results,
             'limit' => $limit,
             'cutoffScore' => $cutoffScore,
         ]);
-
-        return view('site.results.index');
     }
 }

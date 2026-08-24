@@ -6,7 +6,7 @@
      ESTILOS DA PÁGINA
 ====================================================================== --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/admin/site/posts/index.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/admin/posts/index.css') }}">
 @endpush
 
 {{-- =====================================================================
@@ -199,5 +199,5 @@
      SCRIPTS
 ====================================================================== --}}
 @push('scripts')
-<script src="{{ asset('assets/js/admin/site/posts/index.js') }}"></script>
+<script src="{{ asset('assets/js/admin/posts/index.js') }}"></script>
 @endpush

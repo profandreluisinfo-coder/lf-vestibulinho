@@ -29,8 +29,8 @@ Route::middleware(['guest'])->name('site.')->group(function () {
         // Provas anteriores
         Route::get('provas-anteriores', [ArchiveController::class, 'index'])->name('archives.index');
 
-        // Resultados
-        Route::get('resultado-final', [ResultController::class, 'index'])->name('results.index');
+        // Classificação geral
+        Route::get('classificacao-geral', [ResultController::class, 'index'])->name('results.index');
 
         // Chamadas
         Route::get('chamadas', [CallController::class, 'index'])->name('calls.index');

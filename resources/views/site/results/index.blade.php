@@ -1,10 +1,6 @@
 @extends('layouts.site')
 
-@section('page-title', config('app.name') . ' ' . ($process?->year ?? '') . ' | Classificação Geral')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/pages/results.css') }}">
-@endpush
+@section('title', 'Vestibulinho LF ' . ($process?->year ?? '') . ' - Classificação Geral')
 
 @section('content')
 
@@ -22,17 +18,12 @@
                     </nav>
 
                     <h2 class="section-title text-center mb-3">
-                        {{ config('app.name') }} {{ $process?->year ?? '' }} | Classificação Geral
+                        Vestibulinho LF {{ $process?->year ?? '' }} | Classificação Geral
                     </h2>
 
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong>, em conformidade com o item
-                                <strong>5.10</strong> do <a href="{{ Storage::url($process?->edital) }}"
-                                    class="text-decoration-none" title="Leia o edital na íntegra" target="_blank">Edital</a> do
-                                Processo Seletivo {{ $process?->year ?? '' }}, torna pública a classificação geral dos candidatos na prova
-                                objetiva, adotando como critério de desempate a menor idade, conforme disposto no item
-                                <strong>5.11</strong> do mesmo Edital.
+                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a menor idade.
                             </p>
 
                             <div class="row align-items-center mb-3">
@@ -121,5 +112,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/filters/results/public.js') }}"></script>
+    <script src="{{ asset('assets/js/site/results/index.js') }}"></script>
 @endpush

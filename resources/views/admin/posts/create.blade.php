@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Novo Post | ' . config('app.name'))
+@section('page-title', 'Notícias e Comunicados - Novo Post')
 
 {{-- =====================================================================
      ESTILOS
 ====================================================================== --}}
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/site/posts/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/posts/create.css') }}">
 @endpush
 
 {{-- =====================================================================
@@ -299,5 +299,5 @@
      SCRIPTS
 ====================================================================== --}}
 @push('scripts')
-<script src="{{ asset('assets/js/admin/site/posts/create.js') }}"></script>
+<script src="{{ asset('assets/js/admin/posts/create.js') }}"></script>
 @endpush

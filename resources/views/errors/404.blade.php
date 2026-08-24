@@ -36,7 +36,7 @@
             <i class="bi bi-person-circle"></i> Área do Candidato
         </a>
         <a href="{{ route('site.faqs.index') }}#faq" class="err-hint-link">
-            <i class="bi bi-question-circle"></i> FAQ
+            <i class="bi bi-question-circle"></i> Ajuda
         </a>
     </div>
 @endsection
