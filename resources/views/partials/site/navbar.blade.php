@@ -7,7 +7,7 @@
                 <i class="bi bi-mortarboard-fill text-white" style="font-size:1.1rem;"></i>
             </div>
             <div>
-                <span class="school text-white">EM Dr. Leandro Franceschini</span>
+                <span class="school text-white">EM Dr Leandro Franceschini</span>
                 <span class="sub text-white">Vestibulinho</span>
             </div>
         </a>

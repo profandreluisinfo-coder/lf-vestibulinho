@@ -31,7 +31,7 @@
                     </h1>
                     <p class="hero-sub mb-4">
                         4 cursos técnicos gratuitos. Uma oportunidade real de transformar<br class="d-none d-md-block">
-                        seu futuro. EM Dr. Leandro Franceschini — inscrição online e acessível.
+                        seu futuro. EM Dr Leandro Franceschini — inscrição online e acessível.
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
 
