@@ -98,7 +98,7 @@
 
                                         <caption class="bg-warning text-light px-4">
                                             <strong>
-                                                {{ config('app.name') }} {{ $process?->year }}
+                                                Vestibulinho LF  {{ $process?->year }}
                                                 - Chamada nº {{ $callNumber }}
                                                 ({{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                                                 às {{ \Carbon\Carbon::parse($time)->format('H:i') }})

@@ -56,7 +56,7 @@
 
                             <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
                                 <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top" role="table" aria-label="Classificação geral">
-                                    <caption class="text-muted small">{{ config('app.name') }} {{ $process?->year ?? '' }} - Lista de Classificação Geral</caption>
+                                    <caption class="text-muted small">Vestibulinho LF  {{ $process?->year ?? '' }} - Lista de Classificação Geral</caption>
 
                                     <thead class="table-success" role="rowgroup">
                                         <tr>

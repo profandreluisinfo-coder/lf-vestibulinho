@@ -436,14 +436,14 @@
                         </a>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-3">
-                        <a href="#" class="quick-card d-block">
+                        <a href="{{ route('site.results.index') }}" class="quick-card d-block">
                             <div class="qc-icon"><i class="bi bi-bar-chart-fill"></i></div>
                             <h5>Classificação</h5>
                             <p>Resultado e lista de aprovados</p>
                         </a>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-2">
-                        <a href="#" class="quick-card d-block">
+                        <a href="{{ route('site.calls.index') }}" class="quick-card d-block">
                             <div class="qc-icon"><i class="bi bi-bell-fill"></i></div>
                             <h5>Convocação</h5>
                             <p>Chamada para matrícula</p>

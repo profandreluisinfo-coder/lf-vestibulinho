@@ -14,7 +14,7 @@
         <div class="table-responsive">
 
             <table id="courses" class="table-striped table-hover table caption-top">
-                <caption>{{ config('app.name') }} {{ $process?->year }} - Lista de Cursos</caption>
+                <caption>Vestibulinho LF  {{ $process?->year }} - Lista de Cursos</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col"><i class="bi bi-book me-2"></i> Cursos</th>

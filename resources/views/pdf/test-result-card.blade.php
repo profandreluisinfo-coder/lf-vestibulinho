@@ -39,7 +39,7 @@
 <body>
 
   <div style="text-align: center; padding: 30px; font-family: DejaVu Sans, sans-serif;">
-    <h2>{{ config('app.name') }} {{ $process?->year }}</h2>
+    <h2>Vestibulinho LF  {{ $process?->year }}</h2>
     <h1>Resultado da Prova</h1>
     <p>Ano {{ $process?->year }}</p>
 

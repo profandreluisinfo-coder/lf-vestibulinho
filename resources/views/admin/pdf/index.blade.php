@@ -24,7 +24,7 @@
 
 <body>
 
-    <h2>{{ config('app.name') }} {{ $process?->year }} - Lista Geral de Inscritos</h2>
+    <h2>Vestibulinho LF  {{ $process?->year }} - Lista Geral de Inscritos</h2>
 
     @if ($search)
         <p><strong>Filtro aplicado:</strong> "{{ $search }}"</p>

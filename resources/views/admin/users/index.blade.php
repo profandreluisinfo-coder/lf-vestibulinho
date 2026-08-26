@@ -30,9 +30,9 @@
                 </div>
             </div>
         @endif
-        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-            <table id="subscribers" class="table table-striped table-hover freezed-table caption-top align-middle">
-                <caption>{{ config('app.name') }} {{ $process?->year }} - Lista de usuários cadastrados</caption>
+        <div class="table-responsive">
+            <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
+                <caption>Vestibulinho LF {{ $process?->year }} - Lista de usuários cadastrados</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th>E-mail</th>
@@ -134,7 +134,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="{{ asset('assets/js/datatables/users.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/datatables/users.js') }}"></script>
 @endpush
 
 @push('scripts')
