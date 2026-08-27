@@ -19,7 +19,7 @@
                     <h2 class="section-title">Todas as notícias e comunicados</h2>
 
                     <p class="section-lead mt-2">
-                        Confira todas as notícias e comunicados publicados sobre a escola.
+                        Confira todas as notícias e comunicados publicados sobre o Vestibulinho LF.
                     </p>
                 </div>
             </div>

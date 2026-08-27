@@ -90,3 +90,18 @@ section {
     line-height: 1.7;
     max-width: 540px;
 }
+
+.breadcrumb-section {
+    background: var(--light);
+    padding: 1.5rem 0;
+}
+
+.breadcrumb-nav {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.breadcrumb-link {
+    color: var(--teal);
+    text-decoration: none;
+}

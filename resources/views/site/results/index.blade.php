@@ -2,7 +2,28 @@
 
 @section('title', 'Vestibulinho LF ' . ($process?->year ?? '') . ' - Classificação Geral')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/site/results/index.css') }}" />
+@endpush
+
 @section('content')
+
+    <!-- ===== BREADCRUMB ===== -->
+    <section class="breadcrumb-section">
+        <div class="container-lg">
+            <nav class="breadcrumb-nav">
+                <a href="{{ route('home') }}" class="breadcrumb-link">
+                    Home
+                </a>
+                <span> / </span>
+                <a href="{{ route('site.faqs.index') }}" class="breadcrumb-link">
+                    Vestibulinho LF {{ $process?->year ?? '' }}
+                </a>
+                <span> / </span>
+                <span>Classificação Geral</span>
+            </nav>
+        </div>
+    </section>
 
     <section id="results">
 
@@ -10,25 +31,22 @@
 
             <div class="row">
                 <div class="col-12">
-                    <nav aria-label="breadcrumb" class="mb-3">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ url('/') }}">Início</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Classificação Geral</li>
-                        </ol>
-                    </nav>
 
-                    <h2 class="section-title text-center mb-3">
-                        Vestibulinho LF {{ $process?->year ?? '' }} | Classificação Geral
+                    <h2 class="text-center mb-3">
+                        Classificação Geral
                     </h2>
 
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a menor idade.
+                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a
+                                classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a
+                                menor idade.
                             </p>
 
                             <div class="row align-items-center mb-3">
                                 <div class="col-md-6 mb-2 mb-md-0">
-                                    <label for="filter-status" class="form-label fw-semibold me-2">Filtrar por situação:</label>
+                                    <label for="filter-status" class="form-label fw-semibold me-2">Filtrar por
+                                        situação:</label>
                                     <select id="filter-status" class="form-select form-select-sm w-auto d-inline-block">
                                         <option value="all" selected>Todos</option>
                                         <option value="classificado">Classificados</option>
@@ -48,15 +66,19 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     <input type="text" class="form-control" id="search" name="search"
-                                        placeholder="Pesquisar por nome ou inscrição" autocomplete="off" aria-label="Pesquisar">
+                                        placeholder="Pesquisar por nome ou inscrição" autocomplete="off"
+                                        aria-label="Pesquisar">
                                 </div>
                             </div>
 
-                            <div id="results-counter" class="text-end small mb-2 mt-2" aria-live="polite" role="status"></div>
+                            <div id="results-counter" class="text-end small mb-2 mt-2" aria-live="polite" role="status">
+                            </div>
 
                             <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
-                                <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top" role="table" aria-label="Classificação geral">
-                                    <caption class="text-muted small">Vestibulinho LF  {{ $process?->year ?? '' }} - Lista de Classificação Geral</caption>
+                                <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top"
+                                    role="table" aria-label="Classificação geral">
+                                    <caption class="text-muted small">Vestibulinho LF {{ $process?->year ?? '' }} - Lista de
+                                        Classificação Geral</caption>
 
                                     <thead class="table-success" role="rowgroup">
                                         <tr>
@@ -73,10 +95,12 @@
                                         @forelse ($results as $index => $result)
                                             @php
                                                 $isDirectClassified = $result->ranking <= $limit;
-                                                $isTieClassified = !$isDirectClassified && $result->score == $cutoffScore;
+                                                $isTieClassified =
+                                                    !$isDirectClassified && $result->score == $cutoffScore;
                                                 $isClassified = $isDirectClassified || $isTieClassified;
                                             @endphp
-                                            <tr data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}">
+                                            <tr
+                                                data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}">
                                                 <th scope="row">{{ $result->ranking }}º</th>
                                                 <td>{{ $result->id }}</td>
                                                 <td>{{ $result->name ? $result->name : $result->name }}</td>

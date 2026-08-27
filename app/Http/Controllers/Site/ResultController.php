@@ -21,9 +21,9 @@ class ResultController extends Controller
     public function index()
     {
 
-        if (!Setting::isResultEnabled()) {
-            abort(404);
-        }
+        // if (!Setting::isResultEnabled()) {
+        //     abort(404);
+        // }
 
         // determinar o limite de notas de corte
         $limit = Course::sum('vacancies') * 3;
