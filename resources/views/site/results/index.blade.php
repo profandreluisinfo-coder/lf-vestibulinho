@@ -25,7 +25,7 @@
         </div>
     </section>
 
-    <section id="results">
+    <section id="results" class="p-0 mb-5">
 
         <div class="container">
 
