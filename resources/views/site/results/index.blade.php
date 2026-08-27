@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-12">
 
-                    <h2 class="text-center mb-3">
+                    <h2 class="section-title text-center mb-3">
                         Classificação Geral
                     </h2>
 

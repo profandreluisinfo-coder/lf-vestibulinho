@@ -40,7 +40,24 @@
 
     @endphp
 
-    <section class="calls-wrapper">
+    <!-- ===== BREADCRUMB ===== -->
+    <section class="breadcrumb-section">
+        <div class="container-lg">
+            <nav class="breadcrumb-nav">
+                <a href="{{ route('home') }}" class="breadcrumb-link">
+                    Home
+                </a>
+                <span> / </span>
+                <a href="{{ route('site.faqs.index') }}" class="breadcrumb-link">
+                    Vestibulinho LF {{ $process?->year ?? '' }}
+                </a>
+                <span> / </span>
+                <span>Convocação para Matrícula</span>
+            </nav>
+        </div>
+    </section>
+
+    <section class="calls-wrapper p-0 mb-5">
 
         <div class="container">
 
@@ -49,7 +66,7 @@
             </h2>
 
             <div class="row">
-                <div class="col-lg-8 mx-auto">
+                <div class="col-12">
 
                     <p>Total de chamadas: <strong>{{ $calls->count() }}</strong></p>
 
@@ -145,7 +162,7 @@
                         @endforeach
                     @else
                         <div class="alert alert-info text-center">
-                            Nenhuma chamada encontrada.
+                            Nenhum resultado encontrado.
                         </div>
 
                     @endif
