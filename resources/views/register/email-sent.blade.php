@@ -65,9 +65,7 @@
   </div>
 
   <!-- Rodapé -->
-  <div class="panel-footer">
-    © {{ $year ?? date('Y') }} EM Dr. Leandro Franceschini · Todos os direitos reservados
-  </div>
+  @include('partials.auth.footer', ['year' => $process?->year ?? date('Y')])
 
 @endsection
 

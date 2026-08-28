@@ -109,7 +109,7 @@
         <div class="container">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                 <p class="mb-0">
-                    © {{ date('Y') }} EM Dr. Leandro Franceschini · Todos os direitos reservados.
+                    © {{ date('Y') }} ala · EM Dr. Leandro Franceschini · Todos os direitos reservados.
                 </p>
                 <div class="d-flex gap-3">
                     <a href="{{ route('home') }}">Início</a>

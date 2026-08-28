@@ -62,10 +62,7 @@
     </div>
 
     <!-- Rodapé -->
-    <div class="panel-footer">
-        © {{ $year }}
-        EM Dr. Leandro Franceschini
-    </div>
+    @include('partials.auth.footer', ['year' => $process?->year ?? date('Y')])
 
 @endsection
 
