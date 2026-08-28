@@ -50,7 +50,7 @@ class FaqController extends Controller
 
         // Buscar ou criar categoria
         $category = Category::firstOrCreate([
-            'category' => $request->category
+            'name' => $request->category
         ]);
 
         // Buscar maior ordem

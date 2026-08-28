@@ -9,14 +9,17 @@
 @endpush
 
 @section('content')
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-people me-2"></i>Candidatos Inscritos</h5>
-        </div>        
 
-        <div class="d-flex gap-2 mb-4">
-            <button id="pdfButton" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
-                <i class="bi bi-filetype-pdf me-2"></i>
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-people text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Candidatos Inscritos</h6>
+            </div>
+
+            <button id="pdfButton" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-filetype-pdf"></i>
                 <span>Gerar PDF (Todos)</span>
             </button>
         </div>

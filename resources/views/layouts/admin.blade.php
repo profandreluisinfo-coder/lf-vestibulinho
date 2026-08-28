@@ -43,10 +43,10 @@
 
         <nav class="sidebar-menu">
 
-            <!-- ====== SEÇÃO: SITE ====== -->
+            <!-- ====== SEÇÃO: VESTIBULINHO ====== -->
             <div class="menu-section">
                 <div class="menu-section-title">
-                    <i class="bi bi-globe me-2"></i> Site
+                    <i class="bi bi-book-half me-2"></i> Vestibulinho
                 </div>
 
                 <div class="menu-item">
@@ -55,22 +55,6 @@
                         <i class="bi bi-list"></i>
                         <span>Notícias e Comunicados</span>
                     </a>
-                </div>
-
-                {{-- <div class="menu-item">
-                    <a href="{{ route('admin.infos.create') }}"
-                        class="menu-link {{ request()->routeIs('admin.communicates.create') ? 'active' : '' }}">
-                        <i class="bi bi-plus-circle"></i>
-                        <span>Novo comunicado</span>
-                    </a>
-                </div> --}}
-
-            </div>
-
-            <!-- ====== SEÇÃO: VESTIBULINHO ====== -->
-            <div class="menu-section">
-                <div class="menu-section-title">
-                    <i class="bi bi-book-half me-2"></i> Vestibulinho
                 </div>
 
                 <div class="menu-item">
@@ -90,10 +74,9 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.events.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
-                        id="menuVestibulinho">
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.process.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}" id="menuVestibulinho">
                         <a href="{{ route('admin.process.show') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                            class="dropdown-item-custom {{ request()->routeIs('admin.process.*') ? 'active' : '' }}">
                             <i class="bi bi-calendar-event me-1"></i> Eventos
                         </a>
                         <a href="{{ route('admin.courses.index') }}"

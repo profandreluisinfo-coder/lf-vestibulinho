@@ -13,13 +13,18 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-people me-2"></i>Usuários Cadastrados</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-people text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Usuários Cadastrados</h6>
+            </div>
         </div>
+
         <div class="mb-3">
             <label class="text-muted me-2">
                 <input type="checkbox" id="filterVerified" class="form-check-input me-2"> Mostrar apenas e-mails verificados
             </label>
         </div>
+
         @if (!$users->isEmpty())
             <div class="alert alert-info d-flex align-items-center shadow-sm alert-dismissible fade show" role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

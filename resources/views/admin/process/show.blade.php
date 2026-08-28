@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         .show-section-label {
-            font-size: var(--font-size-sm);
+            /* font-size: var(--font-size-sm); */
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
@@ -69,6 +69,7 @@
                 <i class="bi bi-calendar4-week text-muted"></i>
                 <h6 class="mb-0 text-muted fw-normal">Eventos do Processo Seletivo</h6>
             </div>
+            
             <a href="{{ route('admin.process.edit', $process?->id) }}" class="btn btn-sm btn-outline-secondary">
                 <i class="bi bi-pencil-square"></i>
                 {{ $process?->exists() ? 'Editar Eventos' : 'Definir Eventos' }}

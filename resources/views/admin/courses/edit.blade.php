@@ -7,7 +7,10 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-book me-2"></i>Editar Curso</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-book text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Editar Curso</h6>
+            </div>
         </div>
 
         <div class="card shadow-sm">

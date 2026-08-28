@@ -3,10 +3,16 @@
 @section('page-title', 'Vestibulinho LF - Cursos')
 
 @section('content')
+
     <div class="container">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-book me-2"></i>Cursos</h5>
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCourse">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-book text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Cursos</h6>
+            </div>
+
+            <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#setNewCourse">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
@@ -14,7 +20,7 @@
         <div class="table-responsive">
 
             <table id="courses" class="table-striped table-hover table caption-top">
-                <caption>Vestibulinho LF  {{ $process?->year }} - Lista de Cursos</caption>
+                <caption>Vestibulinho LF {{ $process?->year }} - Lista de Cursos</caption>
                 <thead class="table-success text-center">
                     <tr>
                         <th scope="col"><i class="bi bi-book me-2"></i> Cursos</th>
@@ -31,22 +37,23 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                         data-bs-target="#viewCourse"
                                         onclick="showCourseDetails({{ $course->id }}, '{{ addslashes($course->name) }}', '{{ addslashes($course->description) }}', '{{ $course->duration }}', '{{ addslashes($course->info) }}', {{ $course->vacancies }})">
                                         <i class="bi bi-eye" title="Ver Detalhes"></i> Detalhes
                                     </a>
                                     <!-- Editar -->
-                                    <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-course-form-{{ $course->id }}"
-                                        action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" class="d-none">
+                                        action="{{ route('admin.courses.destroy', $course->id) }}" method="POST"
+                                        class="d-none">
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                    <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
                                         <i class="bi bi-trash"></i> Excluir
                                     </button>
@@ -70,7 +77,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo Curso</h5>
+                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-plus-circle me-2"></i>Novo Curso
+                        </h5>
                     </div>
                     <div class="modal-body">
 
@@ -79,7 +87,7 @@
 
                                 <form id="courseForm" action="{{ route('admin.courses.store') }}" method="POST">
                                     @csrf
-                                    
+
                                     <div class="form-group mb-3">
                                         <label for="name" class="form-label required">Nome:</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
