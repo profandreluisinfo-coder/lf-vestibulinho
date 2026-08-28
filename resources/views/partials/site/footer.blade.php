@@ -93,7 +93,7 @@
         </div>
         <hr>
         <div class="bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-            <p class="mb-0 text-center text-md-start">© {{ $year }} EM Dr. Leandro Franceschini · Todos os
+            <p class="mb-0 text-center text-md-start">© {{ $year }} ala · EM Dr. Leandro Franceschini · Todos os
                 direitos reservados.</p>
         </div>
     </div>
