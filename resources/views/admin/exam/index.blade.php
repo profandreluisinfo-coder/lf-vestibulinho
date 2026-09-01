@@ -7,9 +7,13 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-card-list me-2"></i>Candidatos por Sala</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-card-list text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Candidatos por Sala</h6>
+            </div>
+
             <a href="{{ route('admin.exam.create') }}" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Voltar
+                <i class="bi bi-arrow-left"></i> Voltar
             </a>
         </div>
 
@@ -69,16 +73,9 @@
                                         
                                         @empty
 
-                                        @include('components.no-records', [
-                                                    'message' => 'Causas de problemas com a lista de candidatos por sala:',
-                                                    'submessage' => 'Provavelmente nenhuma prova foi agendada.',
-                                                    'action' => true,
-                                                    'actionMessage' =>
-                                                        'Solução: Clique no botão "Voltar" e tente agendar uma prova. Se o problema persistir, entre em contato com o suporte.',
-                                                ])
-
-                                        @endforelse
-
+                                            <tr>
+                                                <td colspan="5" class="text-center">Nenhum candidato nesta sala.</td>
+                                            </tr>
                                     </tbody>
                                 </table>
 

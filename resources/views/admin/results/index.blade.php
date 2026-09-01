@@ -9,11 +9,16 @@
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i>Classificação Geral</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-list-ol text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Classificação Geral</h6>
+            </div>
         </div>
 
         <div class="row">
             <div class="col mx-auto">
+
+                @if (App\Models\ExamResult::hasScores())
 
                 <form id="result-access-form" class="mb-3" action="{{ route('admin.system.publish.result') }}"
                     method="POST">
@@ -29,6 +34,8 @@
                         </label>
                     </div>
                 </form>
+
+                
 
                 {{-- Filtros e legenda --}}
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
@@ -68,6 +75,8 @@
                     <input type="text" class="form-control" id="search" name="search"
                         placeholder="Pesquisar por nome ou inscrição" autocomplete="off">
                 </div>
+
+                @endif
 
                 {{-- Tabela de resultados --}}
                 <div class="table-responsive mt-3">

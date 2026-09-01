@@ -77,11 +77,11 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-sm">
+                    <button type="submit" class="btn btn-outline-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
                     {{-- prettier-ignore --}}
-                    <a href="{{ route('admin.courses.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
+                    <a href="{{ route('admin.courses.index') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</a>
 
                 </form>
 

@@ -8,7 +8,10 @@
 
         {{-- Título da Página --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-upload me-2"></i>Importar Notas</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-upload text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Importar Notas</h6>
+            </div>
         </div>
 
         <div class="progress mb-3 d-none" id="progress-wrapper">
@@ -100,8 +103,8 @@
                     style="width: 0%">0%</div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
-                <i class="bi bi-upload me-2"></i> Importar
+            <button type="submit" class="btn btn-outline-primary btn-sm" id="btn-submit">
+                <i class="bi bi-upload"></i> Importar
             </button>
 
         </form>

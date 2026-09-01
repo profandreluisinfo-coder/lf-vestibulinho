@@ -17,11 +17,14 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula</h5>
-
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-broadcast-pin text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Convocação para matrícula</h6>
+            </div>
+            
             @if (!empty($countResults))
-                <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
-                    <i class="bi bi-plus-circle me-2"></i> Novo
+                <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
+                    <i class="bi bi-plus-circle"></i> Novo
                 </a>
             @endif
 
@@ -29,7 +32,7 @@
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             @if ($callLists->count() > 0)
-            <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
+            <button type="button" class="btn btn-outline-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="bi bi-bar-chart-fill me-2"></i> Convocados por Curso
             </button>
             @endif
@@ -51,8 +54,8 @@
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                    class="bi bi-x-circle me-2"></i>Fechar</button>
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal"><i
+                                    class="bi bi-x-circle"></i>Fechar</button>
                         </div>
 
                     </div>
@@ -95,21 +98,21 @@
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                        <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                             onclick="confirmDelete({{ $callList->id }})">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>
                                     </form>
 
                                     <!-- Botão de detalhes -->
-                                    <button class="btn btn-sm btn-secondary text-white" title="Detalhes"
+                                    <button class="btn btn-sm btn-outline-secondary text-white" title="Detalhes"
                                         data-bs-toggle="collapse" data-bs-target="#details-{{ $callList->id }}"
                                         aria-expanded="false" aria-controls="details-{{ $callList->id }}">
                                         <i class="bi bi-info-circle"></i> Detalhes
                                     </button>
 
                                     <a href="{{ route('admin.calls.pdf', $callList->number) }}"
-                                        class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
+                                        class="btn btn-sm btn-outline-primary text-white" title="Gerar PDF" target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Formulários
                                     </a>
 

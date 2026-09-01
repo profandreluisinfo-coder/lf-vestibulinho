@@ -225,7 +225,7 @@
 
                             {{-- Botões --}}
                             <div class="d-flex gap-2 pt-3 border-top">
-                                <button type="submit" class="btn btn-sm btn-success">
+                                <button type="submit" class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-check-circle"></i>Salvar
                                 </button>
                                 <a href="{{ route('admin.process.show') }}" class="btn btn-sm btn-outline-secondary">

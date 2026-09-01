@@ -7,7 +7,10 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar Arquivos</h5>
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-pencil-square"></i>
+                <h6 class="mb-0 text-muted fw-normal">Editar Arquivos</h6>
+            </div>
         </div>
 
         <div class="card shadow-sm">
@@ -55,10 +58,10 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-sm">
+                    <button type="submit" class="btn btn-outline-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
-                    <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary btn-sm">
+                    <a href="{{ route('admin.archives.index') }}" class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-x-circle me-1"></i>Cancelar
                     </a>
                 </form>
