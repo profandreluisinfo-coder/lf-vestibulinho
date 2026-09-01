@@ -11,13 +11,12 @@
 @section('content')
 
     <div class="container">
-        <div class="page-header mb-4">
-            <h4 class="mb-1">
-                <i class="bi bi-universal-access"></i> Pessoas com Deficiência
-            </h4>
-            <small>
-                Candidatos que solicitaram atendimento especializado.
-            </small>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-universal-access"></i>
+                <h6 class="mb-0 text-muted fw-normal">Pessoas com Deficiência</h6>
+            </div>
         </div>
 
         @if (session('success'))
@@ -69,26 +68,26 @@
                         <td>
                             @if ($user->pne->status === 'pending')
                                 <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
+                                    class="btn btn-sm btn-outline-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
 
                                 <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    class="btn btn-sm btn-outline-danger" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->pne->status === 'accepted')
                                 <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    class="btn btn-sm btn-outline-danger" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->pne->status === 'rejected')
                                 <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
+                                    class="btn btn-sm btn-outline-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
                             @endif

@@ -90,7 +90,7 @@
                             <td>
                                 @if ($user->role === 'user' && $user?->inscription)
                                     <a href="{{ route('admin.inscriptions.show', Crypt::encrypt($user->id)) }}"
-                                        class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
+                                        class="btn btn-sm btn-outline-primary btn-sm" title="Visualizar detalhes">
                                         <i class="bi bi-search"></i> Detalhes
                                     </a>
                                 @elseif ($user->role === 'guest' || $user->role === 'user' && !$user?->inscription)
@@ -100,7 +100,7 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                        <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                             onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>

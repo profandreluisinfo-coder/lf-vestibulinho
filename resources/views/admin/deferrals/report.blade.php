@@ -1,15 +1,16 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - Laudo/Relatório')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Laudo/Relatório')
 
 @section('content')
 
     <div class="container">
-        <div class="page-header mb-4">
-            <h4 class="mb-1">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-file-earmark-medical"></i>
-                {{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} Relatório/Laudo
-            </h4>
+                <h6 class="mb-0 text-muted fw-normal">{{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} Relatório/Laudo</h6>
+            </div>
         </div>
 
         <div class="card">
@@ -43,7 +44,7 @@
                         @csrf
                         @method('PATCH')
 
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-sm btn-outline-success">
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
                         <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-outline-secondary">
@@ -63,10 +64,10 @@
                                 placeholder="Digite aqui a razão..."></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-danger">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-sm btn-outline-secondary">
                             Cancelar
                         </a>
                     </form>

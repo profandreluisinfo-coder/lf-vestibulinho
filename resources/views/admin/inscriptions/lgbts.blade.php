@@ -11,13 +11,12 @@
 @section('content')
 
     <div class="container">
-        <div class="page-header mb-4">
-            <h4 class="mb-1">
-                <i class="bi bi-gender-trans"></i> Candidatos com Nome Social
-            </h4>
-            <small>
-                Candidatos que solicitaram o uso de nome social.
-            </small>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-gender-trans"></i>
+                <h6 class="mb-0 text-muted fw-normal">Candidatos com Nome Social</h6>
+            </div>
         </div>
 
         @if (session('success'))
@@ -66,26 +65,26 @@
                         <td>
                             @if ($user->lgbt->status === 'pending')
                                 <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
+                                    class="btn btn-outline-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
 
                                 <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    class="btn btn-outline-danger btn-sm" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->lgbt->status === 'accepted')
                                 <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
+                                    class="btn btn-outline-danger btn-sm" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->lgbt->status === 'rejected')
                                 <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
+                                    class="btn btn-outline-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
                             @endif

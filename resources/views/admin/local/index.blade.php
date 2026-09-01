@@ -7,8 +7,12 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-geo me-2"></i>Local de Prova</h5>
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-geo text-muted"></i>
+                <h6 class="mb-0 text-muted fw-normal">Locais de Prova</h6>
+            </div>
+
+            <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
@@ -36,7 +40,7 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center">
                                     <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                         data-bs-target="#viewLocal"
                                         onclick="showLocalDetails({{ $local->id }}, '{{ addslashes($local->name) }}', '{{ addslashes($local->address) }}', '{{ $local->rooms_available }}')">
                                         <i class="bi bi-eye me-1" title="Ver Detalhes"></i> Detalhes
@@ -51,17 +55,14 @@
                                     <!-- Botão de excluir -->
                                     <button type="button" title="Excluir"
                                         onclick="confirmLocationDelete({{ $local->id }}, '{{ addslashes($local->name) }}')"
-                                        class="btn btn-sm btn-danger">
+                                        class="btn btn-sm btn-outline-danger">
                                         <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
                                     <!-- Editar -->
-                                    <button type="button" class="btn btn-sm btn-primary" title="Editar">
-                                        <a href="{{ route('admin.local.edit', $local->id) }}"
-                                            class="text-white text-decoration-none">
+                                    <a href="{{ route('admin.local.edit', $local->id) }}"
+                                            class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-pencil-square me-1"></i> Editar
                                         </a>
-                                    </button>
-
                                 </div>
                             </td>
                         </tr>
@@ -135,7 +136,7 @@
                                     </div>
 
                                     {{-- prettier-ignore --}}
-                                <button type="submit" class="btn btn-success btn-sm">
+                                <button type="submit" class="btn btn-outline-success btn-sm">
                                     <i class="bi bi-check-circle me-1"></i>Salvar
                                     </button>
                                 </form>
@@ -145,7 +146,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -171,7 +172,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i>Fechar
                         </button>
                     </div>
