@@ -15,6 +15,7 @@ use App\Models\HealthIssue;
 use App\Models\Process;
 use App\Models\Resource;
 use App\Models\School;
+use App\Models\Template;
 use App\Services\InscriptionService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -22,10 +23,33 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class InscriptionController extends Controller
 {
+    public function downloadAuthorizationTemplate()
+    {
+        $template = Template::getActiveTemplate();
+
+        return $this->previewDocument($template?->file_path);
+    }
+
+    public function previewSessionAuthorization()
+    {
+        return $this->previewDocument(session('step1.authorization'));
+    }
+
+    public function previewAuthorization()
+    {
+        return $this->previewDocument(Auth::user()?->lgbt?->authorization);
+    }
+
+    public function previewReport()
+    {
+        return $this->previewDocument(Auth::user()?->pne?->report);
+    }
+
     public function start(): View
     {
         $user = Auth::user();
@@ -100,10 +124,23 @@ class InscriptionController extends Controller
         );
     }
 
+    private function previewDocument(?string $path)
+    {
+        abort_unless($path && Storage::disk('public')->exists($path), 404);
+
+        return Storage::disk('public')->response($path);
+    }
+
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        return view('inscription.steps.personal');
+        $authorization = Template::getActiveTemplate();
+
+        // dd($authorization);
+
+        return view('inscription.steps.personal', [
+            'authorization' => $authorization,
+        ]);
     }
 
     // Gravar Dados de Passo 1

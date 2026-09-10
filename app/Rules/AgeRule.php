@@ -17,7 +17,7 @@ class AgeRule implements ValidationRule
         $age = $this->calculateAge($value);
 
         if ($age < 14) {
-            $fail('A idade deve ser maior ou igual a 14 anos.');
+            $fail('*A idade deve ser maior ou igual a 14 anos.');
         }
     }
 

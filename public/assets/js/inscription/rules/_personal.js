@@ -53,38 +53,46 @@ $(function () {
         return anos;
     };
 
-    // Verifica se a data de expedição informada é superior a 5 anos.
-    // Função pura: apenas calcula e retorna true/false, sem exibir nenhum alerta.
-    const expedicaoEhAntiga = (valor) => {
-        if (!valor) return false;
+    // Exibe um alerta (SweetAlert2) quando o documento tiver expedição superior a 5 anos,
+    // avisando o candidato sobre a necessidade de um documento com foto atualizada no dia da prova
+    const verificarExpedicaoAntiga = () => {
+        const valor = $expedition.val();
+        if (!valor) return;
 
         // Garante que a data está completa (YYYY-MM-DD, com os 4 dígitos do ano já digitados).
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) return false;
+        // Inputs type="date" podem disparar 'change' com valores parciais enquanto o usuário
+        // ainda está digitando o ano (ex.: "0002-01-01"), então validamos o formato e um ano plausível
+        // antes de calcular qualquer coisa, evitando o alerta aparecer antes do usuário terminar.
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) return;
 
         const anoInformado = parseInt(valor.slice(0, 4), 10);
         const anoAtual = new Date().getFullYear();
-        if (anoInformado < 1900 || anoInformado > anoAtual) return false;
+        if (anoInformado < 1900 || anoInformado > anoAtual) return;
 
         const dataExpedicao = new Date(valor);
-        if (isNaN(dataExpedicao.getTime())) return false;
+        if (isNaN(dataExpedicao.getTime())) return;
 
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
 
-        return anosEntre(dataExpedicao, hoje) > 5;
-    };
+        const anosDesdeExpedicao = anosEntre(dataExpedicao, hoje);
 
-    // Exibe o alerta (SweetAlert2) avisando o candidato sobre a necessidade de um documento
-    // com foto atualizada no dia da prova. É apenas um aviso: não bloqueia a inscrição.
-    const exibirAvisoExpedicaoAntiga = () => {
-        return Swal.fire({
-            icon: 'warning',
-            title: 'Documento com expedição antiga',
-            html: 'A data de expedição informada é superior a <strong>5 anos</strong>.<br><br>' +
-                'Nesse caso, o(a) candidato(a) deverá providenciar um <strong>documento oficial de ' +
-                'identificação com foto atualizada</strong> que permita seu reconhecimento no dia da prova.',
-            confirmButtonText: 'Entendi'
-        });
+        if (anosDesdeExpedicao > 5) {
+            // Evita reexibir o alerta repetidamente para o mesmo valor já confirmado pelo candidato
+            if (sessionStorage.getItem(EXPEDITION_WARNING_KEY) === valor) return;
+
+            // Apenas um aviso: não bloqueia nem impede o candidato de continuar a inscrição.
+            Swal.fire({
+                icon: 'warning',
+                title: 'Documento com expedição antiga',
+                html: 'A data de expedição informada é superior a <strong>5 anos</strong>.<br><br>' +
+                    'Nesse caso, o(a) candidato(a) deverá providenciar um <strong>documento oficial de ' +
+                    'identificação com foto atualizada</strong> que permita seu reconhecimento no dia da prova.',
+                confirmButtonText: 'Entendi'
+            }).then(() => {
+                sessionStorage.setItem(EXPEDITION_WARNING_KEY, valor);
+            });
+        }
     };
 
     // NOVO MÉTODO: Valida que a data de expedição não é anterior à data de nascimento
@@ -221,21 +229,7 @@ $(function () {
                 maxlength: "* Máximo de 15 caracteres."
             }
         },
-        submitHandler: form => {
-            const valor = $expedition.val();
-
-            // Só exibe o aviso se a expedição for antiga e ainda não tiver sido confirmado
-            // pelo candidato para esse mesmo valor nesta sessão.
-            if (expedicaoEhAntiga(valor) && sessionStorage.getItem(EXPEDITION_WARNING_KEY) !== valor) {
-                exibirAvisoExpedicaoAntiga().then(() => {
-                    sessionStorage.setItem(EXPEDITION_WARNING_KEY, valor);
-                    form.submit();
-                });
-                return; // aguarda a confirmação do alerta antes de enviar o formulário
-            }
-
-            form.submit();
-        },
+        submitHandler: form => form.submit(),
         errorPlacement: (error, element) =>
             error.addClass('invalid-feedback').appendTo(element.closest('.form-group')),
         highlight: element => $(element).addClass('is-invalid'),
@@ -253,7 +247,12 @@ $(function () {
 
     $expedition.on('change', function() {
         $(this).valid();
+        verificarExpedicaoAntiga();
     });
+
+    // Verifica também ao carregar a página, caso o campo já venha preenchido
+    // (ex.: candidato retornando a uma etapa anterior da inscrição)
+    verificarExpedicaoAntiga();
 
     // ... resto do código existente ...
 });

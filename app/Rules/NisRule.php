@@ -17,7 +17,7 @@ class NisRule implements ValidationRule
         $nis = preg_replace('/[^0-9]/', '', (string) $value);
 
         if (strlen($nis) != 11 || preg_match('/^([0-9])\1{10}$/', $nis)) {
-            $fail('O :attribute informado é inválido.');
+            $fail('* O :attribute informado é inválido.');
             return;
         }
 
@@ -36,7 +36,7 @@ class NisRule implements ValidationRule
         }
 
         if ((int)$nis[10] !== $digitoVerificador) {
-            $fail('O :attribute informado é inválido.');
+            $fail('* O :attribute informado é inválido.');
         }
     }
 }

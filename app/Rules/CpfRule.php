@@ -14,13 +14,13 @@ class CpfRule implements ValidationRule
     {
         // Garante que o CPF tem exatamente 11 números
         if (!preg_match('/^\d{11}$/', $value)) {
-            $fail('O CPF informado deve conter exatamente 11 dígitos numéricos.');
+            $fail('* O CPF informado deve conter exatamente 11 dígitos numéricos.');
             return;
         }
 
         // Rejeita CPFs com todos os dígitos iguais
         if (preg_match('/^(\d)\1{10}$/', $value)) {
-            $fail('O CPF informado não é válido.');
+            $fail('* O CPF informado não é válido.');
             return;
         }
 
@@ -34,7 +34,7 @@ class CpfRule implements ValidationRule
             $digit = ((10 * $sum) % 11) % 10;
 
             if ((int) $value[$t] !== $digit) {
-                $fail('O CPF informado não é válido.');
+                $fail('*O CPF informado não é válido.');
                 return;
             }
         }

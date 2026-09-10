@@ -114,7 +114,7 @@
                     O(a) candidato(a) menor de idade que optar pelo uso de nome social/afetivo neste Processo
                     Seletivo deverá apresentar autorização expressa de seu pai, mãe ou responsável legal.
                     <br><br>
-                    <a href="{{ Storage::disk('public')->url('modelos/autorizacao_nome_social_afetivo.pdf') }}"
+                    <a href="{{ route('inscription.step.authorization.template') }}"
                        class="btn btn-primary btn-sm"
                        target="_blank"
                        rel="noopener">
@@ -131,7 +131,7 @@
                 <div class="alert alert-info mt-3">
                     <p>
                         <strong>Arquivo já enviado.</strong>
-                        <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank">
+                        <a href="{{ route('inscription.step.authorization.preview') }}" target="_blank">
                             Visualizar PDF
                         </a>
                     </p>

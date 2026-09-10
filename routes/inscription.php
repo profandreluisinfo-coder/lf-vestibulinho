@@ -29,10 +29,14 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
     Route::middleware(NoInscription::class)
         ->prefix('inscricao')
         ->name('step.')
-        ->group(function () {            
+        ->group(function () {
 
             Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
             Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
+            Route::get('modelo-autorizacao', [InscriptionController::class, 'downloadAuthorizationTemplate'])
+                ->name('authorization.template');
+            Route::get('autorizacao-enviada', [InscriptionController::class, 'previewSessionAuthorization'])
+                ->name('authorization.preview');
 
             Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])->name('certificate');
             Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
@@ -87,6 +91,8 @@ Route::middleware(['auth'])->name('inscription.')->group(function () {
 
     Route::prefix('area-do-candidato')->name('user.')->group(function () {
         Route::get('/', [InscriptionController::class, 'show'])->name('show');
+        Route::get('autorizacao', [InscriptionController::class, 'previewAuthorization'])->name('authorization');
+        Route::get('laudo', [InscriptionController::class, 'previewReport'])->name('report');
     });
 });
 

@@ -22,13 +22,13 @@ class CertificateRule implements ValidationRule
 
         // Verifica se tem exatamente 32 dígitos numéricos
         if (strlen($value) !== 32) {
-            $fail("O campo {$attribute} deve conter exatamente 32 dígitos numéricos.");
+            $fail("* O campo {$attribute} deve conter exatamente 32 dígitos numéricos.");
             return;
         }
 
         // Verifica se contém apenas dígitos
         if (!preg_match('/^\d+$/', $value)) {
-            $fail("O campo {$attribute} deve conter apenas dígitos numéricos.");
+            $fail("* O campo {$attribute} deve conter apenas dígitos numéricos.");
             return;
         }
     }

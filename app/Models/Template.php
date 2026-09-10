@@ -16,4 +16,9 @@ class Template extends Model
     {
         return $this->belongsTo(Process::class);
     }
+
+    public static function getActiveTemplate()
+    {
+        return self::where('status', 'inactive')->first();
+    }
 }
