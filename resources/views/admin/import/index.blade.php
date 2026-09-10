@@ -103,7 +103,7 @@
                     style="width: 0%">0%</div>
             </div>
 
-            <button type="submit" class="btn btn-outline-primary btn-sm" id="btn-submit">
+            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
                 <i class="bi bi-upload"></i> Importar
             </button>
 

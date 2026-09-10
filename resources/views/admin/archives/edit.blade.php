@@ -58,10 +58,10 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-outline-success btn-sm">
+                    <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
-                    <a href="{{ route('admin.archives.index') }}" class="btn btn-outline-secondary btn-sm">
+                    <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary btn-sm">
                         <i class="bi bi-x-circle me-1"></i>Cancelar
                     </a>
                 </form>

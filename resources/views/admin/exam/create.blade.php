@@ -12,7 +12,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Agendamento de Prova</h6>
             </div>
             
-            <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
                 <i class="bi bi-calendar2-week"></i>Agendar Prova
             </a>
         </div>
@@ -257,14 +257,14 @@
                             </div>
 
                             {{-- prettier-ignore --}}
-                            <button type="submit" class="btn btn-outline-success btn-sm">
+                            <button type="submit" class="btn btn-success btn-sm">
                             <i class="bi bi-check-circle me-1"></i>Salvar
                             </button>
                         </form>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal"><i
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                                 class="bi bi-x-circle me-1"></i>Fechar</button>
                     </div>
                 </div>

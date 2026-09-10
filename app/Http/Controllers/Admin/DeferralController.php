@@ -7,10 +7,31 @@ use App\Jobs\SendTransactionalEmailJob;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class DeferralController extends Controller
 {
+    public function previewReport(User $user)
+    {
+        $user->loadMissing('pne');
+        $path = $user->pne?->report;
+
+        abort_unless($path && Storage::disk('public')->exists($path), 404);
+
+        return Storage::disk('public')->response($path);
+    }
+
+    public function previewAuthorization(User $user)
+    {
+        $user->loadMissing('lgbt');
+        $path = $user->lgbt?->authorization;
+
+        abort_unless($path && Storage::disk('public')->exists($path), 404);
+
+        return Storage::disk('public')->response($path);
+    }
+
     public function showAcceptReport(User $user): View|RedirectResponse
     {
         $user->load(['inscription.exam_result', 'pne']);

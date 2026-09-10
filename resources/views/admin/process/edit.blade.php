@@ -225,10 +225,10 @@
 
                             {{-- Botões --}}
                             <div class="d-flex gap-2 pt-3 border-top">
-                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                <button type="submit" class="btn btn-sm btn-success">
                                     <i class="bi bi-check-circle"></i>Salvar
                                 </button>
-                                <a href="{{ route('admin.process.show') }}" class="btn btn-sm btn-outline-secondary">
+                                <a href="{{ route('admin.process.show') }}" class="btn btn-sm btn-secondary">
                                     <i class="bi bi-x-circle"></i>Cancelar
                                 </a>
                             </div>

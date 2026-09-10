@@ -12,7 +12,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Cursos</h6>
             </div>
 
-            <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#setNewCourse">
+            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setNewCourse">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
@@ -37,13 +37,13 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
                                         data-bs-target="#viewCourse"
                                         onclick="showCourseDetails({{ $course->id }}, '{{ addslashes($course->name) }}', '{{ addslashes($course->description) }}', '{{ $course->duration }}', '{{ addslashes($course->info) }}', {{ $course->vacancies }})">
                                         <i class="bi bi-eye" title="Ver Detalhes"></i> Detalhes
                                     </a>
                                     <!-- Editar -->
-                                    <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-sm btn-outline-primary">
+                                    <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
                                         <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                     </a>
                                     <!-- Excluir -->
@@ -53,7 +53,7 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
                                         onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
                                         <i class="bi bi-trash"></i> Excluir
                                     </button>

@@ -252,19 +252,19 @@
             <div class="actions-row">
                 <form action="{{ route('inscription.receipt.to.pdf') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                    <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-filetype-pdf me-1"></i> Inscrição Completa em PDF
                     </button>
                 </form>
 
                 @if ($settings->location)
-                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
                         <i class="bi bi-geo-alt me-1"></i> Local de Prova
                     </button>
                 @endif
 
                 @if ($settings->result)
-                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#resultadoDeProva">
                         <i class="bi bi-list-ol me-1"></i> Classificação
                     </button>
@@ -347,7 +347,7 @@
                             </div>
 
                             <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                                <a href="{{ route('inscription.card.exam') }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route('inscription.card.exam') }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-download me-1"></i> Baixar PDF
                                 </a>
                                 <button type="button" class="btn btn-secondary btn-sm"
@@ -401,7 +401,7 @@
                             </div>
 
                             <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                                <a href="{{ route('inscription.card.result') }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route('inscription.card.result') }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
                                 </a>
                                 <button type="button" class="btn btn-secondary btn-sm"
@@ -494,7 +494,7 @@
                             </div>
 
                             <div class="modal-footer" style="border-top:1px solid #fef3c7; gap:8px;">
-                                <a href="{{ route('inscription.card.call') }}" class="btn btn-outline-danger btn-sm">
+                                <a href="{{ route('inscription.card.call') }}" class="btn btn-danger btn-sm">
                                     <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
                                 </a>
                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">

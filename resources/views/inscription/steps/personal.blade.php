@@ -115,7 +115,7 @@
                     Seletivo deverá apresentar autorização expressa de seu pai, mãe ou responsável legal.
                     <br><br>
                     <a href="{{ Storage::disk('public')->url('modelos/autorizacao_nome_social_afetivo.pdf') }}"
-                       class="btn btn-outline-primary btn-sm"
+                       class="btn btn-primary btn-sm"
                        target="_blank"
                        rel="noopener">
                         <i class="bi bi-download me-1"></i>

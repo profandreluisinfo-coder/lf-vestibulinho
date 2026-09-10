@@ -86,7 +86,7 @@
                             <a href="{{ route('home') }}" class="err-btn-primary">
                                 <i class="bi bi-house-fill me-2"></i> Voltar ao Início
                             </a>
-                            <a href="javascript:history.back()" class="err-btn-outline">
+                            <a href="javascript:history.back()" class="err-btn-">
                                 <i class="bi bi-arrow-left me-2"></i> Página Anterior
                             </a>
                         </div>

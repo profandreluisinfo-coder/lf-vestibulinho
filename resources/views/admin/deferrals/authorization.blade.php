@@ -31,8 +31,8 @@
 
                     <dt class="col-sm-3">Autorização</dt>
                     <dd class="col-sm-9">
-                        <a href="{{ Storage::url($user->lgbt->authorization) }}" target="_blank"
-                            class="btn btn-outline-primary btn-sm">
+                        <a href="{{ route('admin.deferrals.preview.authorization', $user) }}" target="_blank"
+                            class="btn btn-primary btn-sm">
                             <i class="bi bi-file-earmark-medical"></i> Abrir autorização
                         </a>
                     </dd>
@@ -47,10 +47,10 @@
                         @csrf
                         @method('PATCH')
 
-                        <button type="submit" class="btn btn-sm btn-outline-success">
+                        <button type="submit" class="btn btn-sm btn-success">
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-outline-secondary">
+                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
                             Cancelar
                         </a>
                     </form>
@@ -67,10 +67,10 @@
                                 placeholder="Digite aqui a razão..."></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <button type="submit" class="btn btn-sm btn-danger">
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-outline-secondary">
+                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
                             Cancelar
                         </a>
                     </form>

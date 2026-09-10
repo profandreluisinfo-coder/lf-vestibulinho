@@ -296,7 +296,7 @@
                                             @endif
                                         </span>
                                         <button type="button"
-                                            class="btn btn-sm btn-outline-danger"
+                                            class="btn btn-sm btn-danger"
                                             onclick="removeAttachment({{ $attachment->id }}, '{{ route('admin.posts.attachments.destroy', [$post, $attachment]) }}')"
                                             title="Remover anexo">
                                             <i class="bi bi-trash3"></i>
@@ -472,11 +472,11 @@
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-floppy me-1"></i> Salvar alterações
                     </button>
-                    <a href="{{ route('admin.posts.index') }}" class="btn btn-outline-secondary w-100">
+                    <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary w-100">
                         <i class="bi bi-arrow-left me-1"></i> Voltar
                     </a>
                     <button type="button"
-                        class="btn btn-outline-danger w-100"
+                        class="btn btn-danger w-100"
                         onclick="confirmDelete('{{ route('admin.posts.destroy', $post) }}')">
                         <i class="bi bi-trash3 me-1"></i> Excluir post
                     </button>

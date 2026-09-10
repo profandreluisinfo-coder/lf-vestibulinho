@@ -68,26 +68,26 @@
                         <td>
                             @if ($user->pne->status === 'pending')
                                 <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-outline-success btn-sm" title="Deferir">
+                                    class="btn btn-sm btn-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
 
                                 <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-outline-danger" title="Indeferir">
+                                    class="btn btn-sm btn-danger" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->pne->status === 'accepted')
                                 <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-outline-danger" title="Indeferir">
+                                    class="btn btn-sm btn-danger" title="Indeferir">
                                     <i class="bi bi-x-lg"></i> Indeferir
                                 </a>
                             @endif
 
                             @if ($user->pne->status === 'rejected')
                                 <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-outline-success btn-sm" title="Deferir">
+                                    class="btn btn-sm btn-success btn-sm" title="Deferir">
                                     <i class="bi bi-check-lg"></i> Deferir
                                 </a>
                             @endif

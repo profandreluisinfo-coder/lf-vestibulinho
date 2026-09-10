@@ -1,22 +1,26 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ArchiveController;
-use App\Http\Controllers\Admin\CallController;
-use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\DeferralController;
-use App\Http\Controllers\Admin\ExamController;
-use App\Http\Controllers\Admin\ExportController;
-use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\ImportController;
-use App\Http\Controllers\Admin\InscriptionController;
-use App\Http\Controllers\Admin\LocalController;
-use App\Http\Controllers\Admin\NoticeController;
-use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\ProcessController;
-use App\Http\Controllers\Admin\ResultController;
-use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\{
+    AdminController,
+    ArchiveController,
+    CallController,
+    CourseController,
+    DeferralController,
+    ExamController, 
+    ExportController,
+    FaqController,
+    ImportController,
+    InscriptionController,
+    LocalController,
+    NoticeController,
+    PostController,
+    ProcessController,
+    ResultController,
+    SettingController,
+    TemplateController,
+    UserController
+};
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -97,6 +101,17 @@ Route::middleware([
             Route::post('salvar', [ExamController::class, 'store'])->name('store');
         });
 
+        // Modelos de documentos
+        Route::prefix('modelos')->name('templates.')->group(function () {
+            Route::get('/', [TemplateController::class, 'index'])->name('index');
+            Route::get('visualizar/{template}', [TemplateController::class, 'preview'])->name('preview');
+            Route::post('salvar', [TemplateController::class, 'store'])->name('store');
+            Route::get('editar/{template}', [TemplateController::class, 'edit'])->name('edit');
+            Route::put('atualizar/{template}', [TemplateController::class, 'update'])->name('update');
+            Route::delete('excluir/{template}', [TemplateController::class, 'destroy'])->name('destroy');
+            Route::put('publicar/{template}', [TemplateController::class, 'publish'])->name('publish');
+        });
+
         // Cursos
         Route::prefix('cursos')->name('courses.')->group(function () {
             Route::get('/', [CourseController::class, 'index'])->name('index');
@@ -175,6 +190,11 @@ Route::middleware([
 
         // Deferimentos
         Route::prefix('deferimentos')->name('deferrals.')->group(function () {
+
+            Route::get('documentos/autorizacao/{user}', [DeferralController::class, 'previewAuthorization'])
+                ->name('preview.authorization');
+            Route::get('documentos/laudo/{user}', [DeferralController::class, 'previewReport'])
+                ->name('preview.report');
 
             // Candidatos que solicitaram o uso de Nome Social
             Route::get('deferrals/authorization/{user}/accept', [DeferralController::class, 'showAcceptAuthorization'])

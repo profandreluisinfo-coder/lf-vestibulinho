@@ -18,7 +18,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Candidatos Inscritos</h6>
             </div>
 
-            <button id="pdfButton" class="btn btn-sm btn-outline-danger">
+            <button id="pdfButton" class="btn btn-sm btn-danger">
                 <i class="bi bi-filetype-pdf"></i>
                 <span>Gerar PDF (Todos)</span>
             </button>

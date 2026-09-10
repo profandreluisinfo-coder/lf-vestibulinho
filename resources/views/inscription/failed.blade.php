@@ -112,7 +112,7 @@
               <i class="bi bi-arrow-left me-2"></i>
               Voltar ao Início
             </a>
-            <button type="button" class="btn btn-outline-secondary px-4" onclick="window.history.back()">
+            <button type="button" class="btn btn-secondary px-4" onclick="window.history.back()">
               <i class="bi bi-arrow-counterclockwise me-2"></i>
               Tentar Novamente
             </button>
@@ -132,7 +132,7 @@
               </p>
             </div>
             <div class="col-md-4 text-md-end">
-              <a href="https://leandrofranceschini.com.br/contato" class="btn btn-outline-primary btn-sm" target="_blank">
+              <a href="https://leandrofranceschini.com.br/contato" class="btn btn-primary btn-sm" target="_blank">
                 <i class="bi bi-headset me-1"></i>
                 Contatar Suporte
               </a>

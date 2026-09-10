@@ -69,7 +69,7 @@
                     <i class="bi bi-funnel me-1"></i> Filtrar
                 </button>
                 @if(request()->hasAny(['search', 'type', 'published']))
-                    <a href="{{ route('admin.posts.index') }}" class="btn btn-outline-secondary btn-sm">
+                    <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary btn-sm">
                         <i class="bi bi-x-lg"></i>
                     </a>
                 @endif
@@ -152,7 +152,7 @@
                                 <form action="{{ route('admin.posts.toggle', $post) }}" method="POST">
                                     @csrf @method('PATCH')
                                     <button type="submit"
-                                        class="btn btn-sm {{ $post->published ? 'btn-outline-warning' : 'btn-outline-success' }}"
+                                        class="btn btn-sm {{ $post->published ? 'btn-warning' : 'btn-success' }}"
                                         title="{{ $post->published ? 'Despublicar' : 'Publicar' }}">
                                         <i class="bi bi-{{ $post->published ? 'eye-slash' : 'eye' }}"></i>
                                     </button>
@@ -160,14 +160,14 @@
 
                                 {{-- Editar --}}
                                 <a href="{{ route('admin.posts.edit', $post) }}"
-                                    class="btn btn-sm btn-outline-primary"
+                                    class="btn btn-sm btn-primary"
                                     title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
 
                                 {{-- Excluir --}}
                                 <button type="button"
-                                    class="btn btn-sm btn-outline-danger"
+                                    class="btn btn-sm btn-danger"
                                     title="Excluir"
                                     onclick="confirmDelete('{{ route('admin.posts.destroy', $post) }}')">
                                     <i class="bi bi-trash3"></i>

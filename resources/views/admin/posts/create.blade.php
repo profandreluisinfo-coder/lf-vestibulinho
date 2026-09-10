@@ -277,7 +277,7 @@
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-floppy me-1"></i> Salvar post
                     </button>
-                    <a href="{{ route('admin.posts.index') }}" class="btn btn-outline-secondary w-100">
+                    <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary w-100">
                         <i class="bi bi-x-lg me-1"></i> Cancelar
                     </a>
                 </div>

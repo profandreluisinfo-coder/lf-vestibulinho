@@ -12,7 +12,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Arquivos</h6>
             </div>
 
-            <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
                 <i class="bi bi-upload me-1"></i> Importar Prova
             </a>
         </div>
@@ -77,14 +77,14 @@
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-outline-{{ $file->status ? 'secondary' : 'success' }} l"
+                                    class="btn btn-sm btn-{{ $file->status ? 'secondary' : 'success' }} l"
                                     title="{{ $file->status ? 'Ocultar' : 'Publicar' }}"
                                     onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
                                     <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
                                     {{ $file->status ? 'Ocultar' : 'Publicar' }}
                                 </button>
 
-                                <a href="{{ route('admin.archives.edit', $file->id) }}" class="btn btn-sm btn-outline-primary l"
+                                <a href="{{ route('admin.archives.edit', $file->id) }}" class="btn btn-sm btn-primary l"
                                     title="Editar">
                                     <i class="bi bi-pencil-square me-1"></i> Editar
                                 </a>
@@ -92,7 +92,7 @@
                                 <form action="{{ route('admin.archives.destroy', $file->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger l" title="Excluir">
+                                    <button type="submit" class="btn btn-sm btn-danger l" title="Excluir">
                                         <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
                                 </form>
@@ -168,7 +168,7 @@
                                         </div>
 
                                         <div class="text-end">
-                                            <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <button type="submit" class="btn btn-success btn-sm">
                                                 <i class="bi bi-check-circle me-1"></i>Salvar
                                             </button>
                                         </div>
@@ -179,7 +179,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal"><i
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
                                     class="bi bi-x-circle me-1"></i>Fechar</button>
                         </div>
                     </div>

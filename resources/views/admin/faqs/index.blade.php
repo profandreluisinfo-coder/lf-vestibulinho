@@ -22,7 +22,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Perguntas Frequentes</h6>
             </div>
 
-            <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
+            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
                 <i class="bi bi-plus-circle me-1"></i> Novo
             </a>
         </div>
@@ -120,13 +120,13 @@
                                             @method('PUT')
                                         </form>
                                         <button type="button"
-                                            class="btn btn-sm btn-outline-{{ $faq->status ? 'warning' : 'success' }}"
+                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}"
                                             title="{{ $faq->status ? 'Não Publicar' : 'Publicar' }}"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i> {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
                                         </button>
 
-                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                         </a>
 
@@ -136,7 +136,7 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                        <button type="button" class="btn btn-sm btn-danger"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>

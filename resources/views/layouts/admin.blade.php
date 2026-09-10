@@ -170,6 +170,21 @@
                     </div>
                 </div>
 
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuModelos')">
+                        <i class="bi bi-file-earmark"></i>
+                        <span>Modelos</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.templates.*']) ? 'show' : '' }}"
+                        id="menuModelos">
+                        <a href="{{ route('admin.templates.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.templates.index') ? 'active' : '' }}">
+                            <i class="bi bi-gender-trans me-1"></i> Nome Social
+                        </a>
+                    </div>
+                </div>
+
                 <div class="menu-item">
                     <a href="{{ route('admin.calls.index') }}"
                         class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">

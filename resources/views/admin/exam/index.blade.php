@@ -12,7 +12,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Candidatos por Sala</h6>
             </div>
 
-            <a href="{{ route('admin.exam.create') }}" class="btn btn-outline-primary btn-sm">
+            <a href="{{ route('admin.exam.create') }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-arrow-left"></i> Voltar
             </a>
         </div>
