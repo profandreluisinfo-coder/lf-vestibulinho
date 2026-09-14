@@ -33,7 +33,7 @@
 
                     @forelse($files as $file)
                         <tr>
-                            <td scope="row">{{ $file->year }}</td>
+                            <td scope="row">{{ $file->id }}</td>
                             <td>
                                 Vestibulinho {{ $file?->process->year }}
                             </td>
@@ -43,11 +43,11 @@
                                 </a>
                             </td>
                             <td><span
-                                    class="badge bg-{{ $file->status === 'active' ? 'success' : 'warning' }}">{{ $file->status === 'active' ? 'publicado' : 'não publicado' }}</span>
+                                    class="badge bg-{{ $file->status === 'active' ? 'success' : 'warning' }}">{{ $file->status === 'active' ? 'ativo' : 'inativo' }}</span>
                             </td>
                             <td class="d-flex align-items-center justify-content-center gap-2">
 
-                                {{-- Botão de publicar (alterar status) --}}
+                                {{-- Botão de Ativar (alterar status) --}}
                                 <form id="archive-form-{{ $file->id }}"
                                     action="{{ route('admin.templates.publish', $file->id) }}" method="POST"
                                     class="d-none">
@@ -56,10 +56,10 @@
                                 </form>
                                 <button type="button"
                                     class="btn btn-sm btn-{{ $file->status === 'active' ? 'secondary' : 'success' }} l"
-                                    title="{{ $file->status === 'active' ? 'Ocultar' : 'Publicar' }}"
+                                    title="{{ $file->status === 'active' ? 'Inativar' : 'Ativar' }}"
                                     onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
                                     <i class="bi bi-{{ $file->status === 'active' ? 'eye-slash' : 'eye' }} me-1"></i>
-                                    {{ $file->status === 'active' ? 'Ocultar' : 'Publicar' }}
+                                    {{ $file->status === 'active' ? 'Inativar' : 'Ativar' }}
                                 </button>
 
                                 <a href="{{ route('admin.templates.edit', $file->id) }}" class="btn btn-sm btn-primary l"
@@ -86,7 +86,7 @@
         </div>
 
         <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="createArchiveModalLabel" aria-hidden="true">
+            aria-labelledby="createArchiveModalLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
@@ -159,6 +159,6 @@
 @endsection
 
 @push('scripts')
-    {{-- <script src="{{ asset('assets/js/rules/templates/index.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/js/swa/templates/publish.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/rules/templates/index.js') }}"></script>
+    <script src="{{ asset('assets/js/swa/templates/publish.js') }}"></script>
 @endpush

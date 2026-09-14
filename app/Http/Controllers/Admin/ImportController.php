@@ -41,6 +41,11 @@ class ImportController extends Controller
         ]);
 
         try {
+            // Verificar se a tabela exam_results está vazia antes de importar
+            if (ExamResult::count() === 0) {
+                return $this->invalidFileResponse('Nenhuma prova foi agendada.');
+            }
+
             $import = new SimpleImport();
             Excel::import($import, $request->file('file'));
 
