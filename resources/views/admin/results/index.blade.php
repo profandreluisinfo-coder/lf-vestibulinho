@@ -2,10 +2,6 @@
 
 @section('page-title', 'Vestibulinho LF')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/results/styles.css') }}">
-@endpush
-
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -135,6 +131,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/filters/results/private.js') }}"></script>x
+    <script src="{{ asset('assets/js/admin/filters/results.js') }}"></script>x
     <script src="{{ asset('assets/js/swa/ranking/results.js') }}"></script>
 @endpush

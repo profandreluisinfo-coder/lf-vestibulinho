@@ -25,12 +25,12 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
     public function headings(): array
     {
         return [
-            'Número da Inscrição',
-            'ID do Candidato',
-            'CPF',
-            'Nome',
-            'Data de Nascimento',
-            'Pontos',
+            'inscription_id',
+            'user_id',
+            'user_cpf',
+            'user_name',
+            'user_birth',
+            'points',
         ];
     }
 
@@ -43,6 +43,7 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
             $user?->lgbt?->status === 'accepted' ? $user->lgbt?->name : $user->name,
             // $user->birth ? $user->birth->format('Y-m-d') : '',
             $user->birth,
+            '',
         ];
     }
 }

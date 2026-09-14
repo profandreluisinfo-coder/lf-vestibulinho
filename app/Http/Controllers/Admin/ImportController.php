@@ -32,10 +32,12 @@ class ImportController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|file',
+            'file' => 'required|file|mimes:xlsx|max:10240',
         ], [
             'file.required' => 'Carregue um arquivo.',
-            'file.file'     => 'O arquivo está corrompido.'
+            'file.file'     => 'O arquivo está corrompido.',
+            'file.mimes'    => 'Envie um arquivo no formato .xlsx.',
+            'file.max'      => 'O arquivo não pode ultrapassar 10 MB.',
         ]);
 
         try {
@@ -45,47 +47,115 @@ class ImportController extends Controller
             $rows = $import->rows->toArray();
 
             if (count($rows) < 2) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Arquivo vazio ou inválido.'
-                ], 422);
+                return $this->invalidFileResponse('Arquivo vazio ou inválido.');
             }
 
-            unset($rows[0]);
+            $expectedHeaders = [
+                'inscription_id',
+                'user_id',
+                'user_cpf',
+                'user_name',
+                'user_birth',
+                'points',
+            ];
+            $headers = array_map(
+                fn ($header) => strtolower(trim((string) $header)),
+                $rows[0] ?? []
+            );
 
-            DB::beginTransaction();
+            if ($headers !== $expectedHeaders) {
+                return $this->invalidFileResponse(
+                    'Cabeçalhos inválidos. Use: ' . implode(', ', $expectedHeaders) . '.'
+                );
+            }
 
-            foreach ($rows as $row) {
+            $updates = [];
+            $errors = [];
 
-                if (!isset($row[0], $row[5])) {
+            foreach (array_slice($rows, 1) as $index => $row) {
+                $line = $index + 2;
+
+                if (count($row) < count($expectedHeaders)) {
+                    $errors[] = "Linha {$line}: todas as seis colunas são obrigatórias.";
                     continue;
                 }
 
                 $inscriptionId = $row[0];
-                $points        = (int) $row[5];
+                $points = $row[5];
 
-                if (!$inscriptionId || !is_numeric($points)) {
+                if (!is_numeric($inscriptionId) || (float) $inscriptionId < 1 || floor((float) $inscriptionId) !== (float) $inscriptionId) {
+                    $errors[] = "Linha {$line}: inscription_id inválido.";
                     continue;
                 }
 
-                ExamResult::where('inscription_id', $inscriptionId)
-                    ->update(['score' => $points]);
+                if (!is_numeric($points) || (float) $points < 0 || floor((float) $points) !== (float) $points) {
+                    $errors[] = "Linha {$line}: points deve ser um número inteiro igual ou maior que zero.";
+                    continue;
+                }
+
+                $normalizedInscriptionId = (int) $inscriptionId;
+
+                if (isset($updates[$normalizedInscriptionId])) {
+                    $errors[] = "Linha {$line}: inscription_id duplicado no arquivo.";
+                    continue;
+                }
+
+                $updates[$normalizedInscriptionId] = (int) $points;
             }
 
-            $this->rankingService->calculate();
-            DB::commit();
+            if ($errors) {
+                return $this->invalidFileResponse(implode(' ', $errors));
+            }
+
+            if (!$updates) {
+                return $this->invalidFileResponse('O arquivo não possui notas válidas para importar.');
+            }
+
+            $inscriptionIds = array_keys($updates);
+            $foundInscriptionIds = ExamResult::whereIn('inscription_id', $inscriptionIds)
+                ->pluck('inscription_id')
+                ->map(fn ($id) => (int) $id)
+                ->all();
+            $missingInscriptionIds = array_values(array_diff($inscriptionIds, $foundInscriptionIds));
+
+            if ($missingInscriptionIds) {
+                return $this->invalidFileResponse(
+                    'Não foram encontrados resultados de prova para as inscrições: ' . implode(', ', $missingInscriptionIds) . '.'
+                );
+            }
+
+            DB::transaction(function () use ($updates) {
+                // Uma importação substitui integralmente as notas e classificações anteriores.
+                ExamResult::query()->update([
+                    'score' => null,
+                    'ranking' => null,
+                ]);
+
+                foreach ($updates as $inscriptionId => $points) {
+                    ExamResult::where('inscription_id', $inscriptionId)
+                        ->update(['score' => $points]);
+                }
+
+                $this->rankingService->calculate();
+            });
 
             return response()->json([
                 'success' => true,
-                'message' => 'Importação concluída com sucesso!'
+                'message' => count($updates) . ' notas importadas e classificadas com sucesso!'
             ]);
         } catch (\Throwable $e) {
-            DB::rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao importar: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    private function invalidFileResponse(string $message)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+        ], 422);
     }
 }

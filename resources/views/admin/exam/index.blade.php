@@ -20,6 +20,7 @@
         <div class="accordion" id="accordionCandidates">
 
             @foreach ($candidates as $roomLabel => $roomCandidates)
+
                 <div class="accordion-item">
 
                     <h2 class="accordion-header" id="heading-{{ md5($roomLabel) }}">
@@ -76,6 +77,8 @@
                                             <tr>
                                                 <td colspan="5" class="text-center">Nenhum candidato nesta sala.</td>
                                             </tr>
+
+                                        @endforelse
                                     </tbody>
                                 </table>
 

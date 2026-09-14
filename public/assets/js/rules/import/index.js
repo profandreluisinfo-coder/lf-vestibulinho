@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     const $form = $('#import-results');
-    const $btn  = $('#btn-submit');
+    const $btn = $('#btn-submit');
     const $progressWrapper = $('#progress-wrapper');
     const $progressBar = $('#progress-bar');
     const originalBtnHtml = $btn.html();
@@ -87,8 +87,11 @@ $(document).ready(function () {
                 );
 
                 // Redireciona após um pequeno delay
+                // setTimeout(() => {
+                //     window.location.href = "admin/importar/notas";
+                // }, 800);
                 setTimeout(() => {
-                    window.location.href = "/importar/notas";
+                    window.location.href = $form.data('redirect');
                 }, 800);
             },
 

@@ -8,6 +8,8 @@ class ExamRankingService
 {
     public function calculate(): void
     {
+        ExamResult::query()->update(['ranking' => null]);
+
         $results = ExamResult::whereNotNull('score')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
@@ -17,6 +19,7 @@ class ExamRankingService
             ->get();
 
         $rank = 1;
+
         foreach ($results as $result) {
             ExamResult::where('id', $result->id)
                 ->update(['ranking' => $rank++]);

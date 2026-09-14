@@ -43,14 +43,13 @@
 
         <div class="mb-3 shadow-sm border border-warning-subtle rounded d-flex flex-column mb-3">
 
-            <div class="p-3 mb-3">O arquivo deve conter obrigatoriamente os seguintes cabeçalhos, na seguinte
-                ordem:
+            <div class="p-3 mb-3">Na planilha de notas a importar, o arquivo deve conter obrigatoriamente os seguintes cabeçalhos, na seguinte ordem:
             </div>
 
             <div class="table-responsive">
                 <table class="table table-sm">
                     <caption class="py-2 px-3 text-muted" style="font-size:12px;"><i
-                            class="bi bi-info-circle me-2"></i>Modelo de cabeçalhos esperados</caption>
+                            class="bi bi-info-circle me-2"></i>Modelo de cabeçalho esperado</caption>
                     <thead class="table-light">
                         <tr>
                             <th scope="col">inscription_id</th>
@@ -61,7 +60,7 @@
                             <th scope="col">points</th>
                         </tr>
                     </thead>
-                    <tbody class="table-group-divider">
+                    {{-- <tbody class="table-group-divider">
                         <tr>
                             <td>1</td>
                             <td>10</td>
@@ -70,7 +69,7 @@
                             <td>01/01/2010</td>
                             <td>58</td>
                         </tr>
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
 
@@ -86,8 +85,9 @@
 
         </div>
 
-        <form id="import-results" class="mb-3" action="{{ route('admin.import.home') }}" method="POST"
-            enctype="multipart/form-data">
+        {{-- <form id="import-results" class="mb-3" action="{{ route('admin.import.home') }}" method="POST" --}}
+            {{-- enctype="multipart/form-data"> --}}
+            <form id="import-results" action="{{ route('admin.import.import') }}" data-redirect="{{ route('admin.results.index') }}">
             @csrf
 
             <div class="form-group mb-3">
