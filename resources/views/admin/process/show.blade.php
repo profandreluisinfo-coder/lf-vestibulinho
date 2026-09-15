@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - Eventos')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Eventos')
 
 @push('styles')
     <style>
@@ -88,7 +88,7 @@
                         <div>
                             <p class="show-section-label mb-1">Status do Processo Seletivo</p>
                             <p class="mb-0" style="font-size: var(--font-size-sm); color: var(--text-muted);">
-                                Controla se os candidatos podem acessar o processo seletivo no momento.
+                                Controla se os candidatos podem se inscrever no processo seletivo no momento.
                             </p>
                         </div>
 

@@ -62,7 +62,7 @@
                 <i class="bi bi-arrow-left"></i> Voltar ao site
             </a>
             <h1>Registrar<br>Dados de Acesso</h1>
-            <p>Crie seu acesso para acompanhar o Vestibulinho 2025 pela Área do Candidato.</p>
+            <p>Crie seu acesso para acompanhar o Vestibulinho {{ $process?->year }} pela Área do Candidato.</p>
         </div>
 
         <!-- Toggle senhas -->

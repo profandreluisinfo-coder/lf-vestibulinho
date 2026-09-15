@@ -18,7 +18,7 @@ class CourseSeeder extends Seeder
                 'delay' => 1,
                 'card' => 'cc-admin',
                 'icone' => 'briefcase-fill',
-                'description' => 'TÉCNICO EM ADMINISTRAÇÃO - NOTURNO - 4 ANOS',
+                'description' => 'TÉCNICO EM ADMINISTRAÇÃO INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Gestão empresarial, finanças, recursos humanos e organização de processos corporativos.',
                 'vacancies' => 0
@@ -28,7 +28,7 @@ class CourseSeeder extends Seeder
                 'delay' => 2,
                 'card' => 'cc-cont',
                 'icone' => 'calculator-fill',
-                'description' => 'TÉCNICO EM CONTABILIDADE - NOTURNO - 4 ANOS',
+                'description' => 'TÉCNICO EM CONTABILIDADE INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Escrituração contábil, tributos, balanços patrimoniais e análise financeira.',
                 'vacancies' => 0
@@ -38,7 +38,7 @@ class CourseSeeder extends Seeder
                 'delay' => 3,
                 'card' => 'cc-info',
                 'icone' => 'laptop-fill',
-                'description' => 'TÉCNICO EM INFORMÁTICA (ÊNFASE EM PROGRAMAÇÃO PARA WEB) - NOTURNO - 4 ANOS',
+                'description' => 'TÉCNICO EM INFORMÁTICA (ÊNFASE EM PROGRAMAÇÃO PARA WEB) INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Programação, redes, web design e desenvolvimento de sistemas computacionais.',
                 'vacancies' => 0
@@ -48,7 +48,7 @@ class CourseSeeder extends Seeder
                 'delay' => 4,
                 'card' => 'cc-seg',
                 'icone' => 'shield-fill-check',
-                'description' => 'TÉCNICO EM SEGURANÇA DO TRABALHO - NOTURNO - 4 ANOS',
+                'description' => 'TÉCNICO EM SEGURANÇA DO TRABALHO INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Prevenção de acidentes, normas regulamentadoras (NRs) e saúde ocupacional.',
                 'vacancies' => 0

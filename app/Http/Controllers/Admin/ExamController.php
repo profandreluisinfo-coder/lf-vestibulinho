@@ -46,12 +46,9 @@ class ExamController extends Controller
                 return $item->location_name . ' - Sala ' . $item->room_number;
             });
 
-        // Passar para a view
-        view()->share([
+        return view('admin.exam.index', [
             'candidates' => $candidates,
         ]);
-
-        return view('admin.exam.index');
     }
 
     /**

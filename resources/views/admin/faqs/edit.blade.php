@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF')
+@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Editar Pergunta Frequente')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
