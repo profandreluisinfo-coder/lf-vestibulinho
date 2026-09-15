@@ -22,7 +22,10 @@ class FaqController extends Controller
         $categories = Category::all();
         $faqs = Faq::orderBy('order', 'asc')->get();  // Ordenar por 'order'
 
-        return view('admin.faqs.index', compact('categories', 'faqs'));
+        return view('admin.faqs.index', [
+            'categories' => $categories,
+            'faqs' => $faqs
+        ]);
     }
 
     /**

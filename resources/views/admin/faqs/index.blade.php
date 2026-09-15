@@ -69,7 +69,7 @@
                             Não Publicadas
                         </label>
                     </div>
-                </div>                
+                </div>
             </div>
 
             <div class="accordion accordion-flush" id="faqAccordion">
@@ -155,9 +155,8 @@
             </p>
         @endif
 
-        <div class="modal fade" id="setNewFAQ" data-bs-keyboard="false" tabindex="-1"
-            aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+        <div class="modal fade" id="setNewFAQ" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header text-light">
                         <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar
@@ -179,7 +178,9 @@
 
                                         <datalist id="categoriesList">
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->category }}">
+                                                <option value="{{ $category->name }}">
+                                                    {{ $category->name }}
+                                                </option>
                                             @endforeach
                                         </datalist>
 
