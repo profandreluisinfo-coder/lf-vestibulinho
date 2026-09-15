@@ -76,7 +76,7 @@
 
                 @foreach ($faqs as $faq)
                     <div class="accordion-item" data-faq-id="{{ $faq->id }}" data-status="{{ $faq->status }}"
-                        data-category="{{ Str::lower($faq->category?->category) }}">
+                        data-category="{{ Str::lower($faq->category?->name) }}">
 
                         <h2 class="accordion-header" id="heading{{ $faq->id }}">
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
