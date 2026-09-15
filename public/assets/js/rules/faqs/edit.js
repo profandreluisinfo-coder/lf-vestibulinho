@@ -23,6 +23,9 @@ $(document).ready(function () {
     // Validação do formulário
     $('.edit-form').validate({
         rules: {
+            category: {
+                required: true
+            },
             question: {
                 required: true,
                 minlength: 5
@@ -33,13 +36,16 @@ $(document).ready(function () {
             }
         },
         messages: {
+            category: {
+                required: "* Por favor, insira a categoria"
+            },
             question: {
-                required: "Por favor, insira a pergunta",
-                minlength: "A pergunta deve ter pelo menos 5 caracteres"
+                required: "* Por favor, insira a pergunta",
+                minlength: "* A pergunta deve ter pelo menos 5 caracteres"
             },
             answer: {
-                required: "Por favor, insira a resposta",
-                minlength: "A resposta deve ter pelo menos 10 caracteres"
+                required: "* Por favor, insira a resposta",
+                minlength: "* A resposta deve ter pelo menos 10 caracteres"
             }
         },
         errorElement: 'span',

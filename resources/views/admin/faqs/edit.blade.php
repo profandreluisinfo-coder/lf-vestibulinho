@@ -29,12 +29,14 @@
                             Categoria:
                         </label>
 
-                        <input type="text" class="form-control" id="category" name="category" value="{{ $faq->category->category }}"
+                        <input type="text" class="form-control" id="category" name="category" value="{{ $faq->category->name }}"
                             list="categoriesList" aria-describedby="categoryHelp">
 
                         <datalist id="categoriesList">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->category }}">
+                                <option value="{{ $category->name }}">
+                                    {{ $category->name }}
+                                </option>
                             @endforeach
                         </datalist>
 
