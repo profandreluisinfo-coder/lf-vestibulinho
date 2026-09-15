@@ -20,7 +20,7 @@ $(document).ready(function() {
 
                 // Enviar para o servidor
                 $.ajax({
-                    url: '/faq/update-order',
+                    url: 'admin/faq/update-order',
                     method: 'PUT',
                     data: {
                         order: order,
