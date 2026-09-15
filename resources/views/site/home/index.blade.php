@@ -11,7 +11,7 @@
     @php
         $event = $process?->latestEvent;
     @endphp
-    
+
     <section class="hero" id="home">
         <div class="hero-circle hero-circle-1"></div>
         <div class="hero-circle hero-circle-2"></div>
@@ -75,7 +75,8 @@
                             <div class="col-6">
                                 <div class="stat-chip delay-3">
                                     <div class="num" style="color:var(--amber);">Prova</div>
-                                    <div class="lbl"> {{ ucfirst($process?->latestEvent->exam_date->translatedFormat('d/m')) }}</div>
+                                    <div class="lbl">
+                                        {{ ucfirst($process?->latestEvent->exam_date->translatedFormat('d/m')) }}</div>
                                 </div>
                             </div>
                         @endif
@@ -95,73 +96,73 @@
 
     <!-- ===== SEÇÃO NOTÍCIAS ===== -->
     @if ($posts?->count() > 0)
-    <section class="news-section" id="noticias">
-        <div class="container-lg">
-            <div class="section-header">
-                <div class="section-tag">
-                    Notícias e Comunicados
+        <section class="news-section" id="noticias">
+            <div class="container-lg">
+                <div class="section-header">
+                    <div class="section-tag">
+                        Notícias e Comunicados
+                    </div>
+
+                    <h2 class="section-title">
+                        Últimos
+                    </h2>
+
+                    <p class="section-lead">
+                        Acompanhe os acontecimentos, eventos e informações importantes do Vestibulinho.
+                    </p>
                 </div>
 
-                <h2 class="section-title">
-                    Últimos
-                </h2>
+                <div class="news-grid">
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($posts as $post)
+                        <div class="reveal delay-{{ $i++ }}">
+                            <div class="news-card">
+                                <div class="news-card-image news-card-image-teal">
 
-                <p class="section-lead">
-                    Acompanhe os acontecimentos, eventos e informações importantes do Vestibulinho.
-                </p>
-            </div>
+                                    @if ($post->image)
+                                        <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
+                                            onerror="this.remove(); this.parentElement.querySelector('.news-card-fallback-icon').style.display='flex';">
+                                    @endif
+                                    <i class="bi bi-newspaper news-card-fallback-icon"
+                                        style="{{ $post->image ? 'display:none;' : '' }}"></i>
+                                </div>
 
-            <div class="news-grid">
-                @php
-                    $i = 0;
-                @endphp
-                @foreach ($posts as $post)
-                    <div class="reveal delay-{{ $i++ }}">
-                        <div class="news-card">
-                            <div class="news-card-image news-card-image-teal">
+                                <div class="news-card-body">
+                                    <span class="news-card-badge news-card-badge-teal">
+                                        Notícia
+                                    </span>
 
-                                @if ($post->image)
-                                    <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
-                                        onerror="this.remove(); this.parentElement.querySelector('.news-card-fallback-icon').style.display='flex';">
-                                @endif
-                                <i class="bi bi-newspaper news-card-fallback-icon"
-                                    style="{{ $post->image ? 'display:none;' : '' }}"></i>
-                            </div>
+                                    <h3 class="news-card-title">
+                                        {{ $post->title }}
+                                    </h3>
 
-                            <div class="news-card-body">
-                                <span class="news-card-badge news-card-badge-teal">
-                                    Notícia
-                                </span>
+                                    <p class="news-card-desc">
+                                        {{ $post->resume }}
+                                    </p>
 
-                                <h3 class="news-card-title">
-                                    {{ $post->title }}
-                                </h3>
-
-                                <p class="news-card-desc">
-                                    {{ $post->resume }}
-                                </p>
-
-                                <div class="news-card-meta">
-                                    <span class="news-card-date">Há 2 dias</span>
-                                    <a href="{{ route('site.posts.show', $post->slug) }}"
-                                        class="news-card-link news-card-link-teal">
-                                        Ler mais →
-                                    </a>
+                                    <div class="news-card-meta">
+                                        <span class="news-card-date">Há 2 dias</span>
+                                        <a href="{{ route('site.posts.show', $post->slug) }}"
+                                            class="news-card-link news-card-link-teal">
+                                            Ler mais →
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
 
-            <!-- CTA Notícias -->
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
-                    Ver Todos <i class="bi bi-arrow-right ms-2"></i>
-                </a>
+                <!-- CTA Notícias -->
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
+                        Ver Todos <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
     {{-- ═══════════════════════ CURSOS ════════════════════════════ --}}
@@ -382,6 +383,37 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-8">
+                    <div class="faq-item reveal delay-1">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            O que devo fazer antes de efetuar minha inscrição?
+                            <div class="faq-icon"><i class="bi bi-plus-lg"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            Acesse o edital completo na seção de <a href="#documentos"
+                                class="text-decoration-none text-teal">documentos</a> e leia todas as regras, requisitos de
+                            inscrição, datas e critérios de avaliação. Certifique-se de ter todos os documentos necessários
+                            em mãos antes de iniciar sua inscrição. Acesse <a href="{{ route('register') }}"
+                                class="text-decoration-none text-teal">o formulário de registro</a>, cadastre seu endereço
+                            de e-mail e senha e siga as instruções para validar seus dados de acesso. Somente após a
+                            validação desse procedimento será possível acessar a <a href="{{ route('login') }}" class="text-decoration-none text-teal">Área do
+                                Candidato</a> e realizar sua inscrição.
+                        </div>
+                    </div>
+
+                    <div class="faq-item reveal delay-1">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Não recebi o e-mail de confirmação do registro. O que fazer?
+                            <div class="faq-icon"><i class="bi bi-plus-lg"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            Acesse <a href="{{ route('resend.email') }}" class="text-decoration-none text-teal">o
+                                formulário
+                                de reenvio</a> de e-mail de confirmação, informe o endereço de e-mail cadastrado e clique em
+                            <strong>"Reenviar E-mail de Verificação"</strong>. Verifique sua caixa de spam ou
+                            lixo eletrônico. Se ainda assim não receber, contate a secretaria da escola.
+                        </div>
+                    </div>
+
                     @foreach ($faqs as $faq)
                         <div class="faq-item reveal delay-1">
                             <div class="faq-question" onclick="toggleFaq(this)">

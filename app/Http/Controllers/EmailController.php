@@ -52,8 +52,8 @@ class EmailController extends Controller
     {
         $process = Process::current();
 
-        if (!$process || !($process?->isInscriptionOpen())) {
-            abort(404);
+        if (!$process || !$process?->isInscriptionEnded()) {
+            return redirect()->route('home');
         }
 
         return view('register.resend-email');

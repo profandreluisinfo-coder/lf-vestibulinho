@@ -101,7 +101,7 @@
             <!-- Título -->
             <h1>Vestibulinho<br>{{ $process?->year }}</h1>
             <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique
-                em "Ainda não tem registro?" para se cadastrar.</p>
+                em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
         </div>
 
         <!-- Alerta de erro (hidden por padrão) -->

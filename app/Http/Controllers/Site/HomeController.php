@@ -19,7 +19,7 @@ class HomeController extends Controller
         $posts = Post::type(Post::TYPE_NOTICIA)->published()->take(4)->get();
 
         // Apenas faqs publicados
-        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(5)->get();
+        $faqs = Faq::where('status', true)->orderBy('order', 'asc')->limit(2)->get();
 
         return view('site.home.index', compact('courses', 'posts', 'faqs'));
     }
