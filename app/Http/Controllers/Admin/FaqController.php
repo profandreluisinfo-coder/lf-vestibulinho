@@ -141,7 +141,7 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return alertSuccess('success', 'FAQ atualizada com sucesso!');
+        return alertSuccess('FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
