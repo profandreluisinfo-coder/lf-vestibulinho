@@ -68,9 +68,7 @@ class FaqController extends Controller
             'order' => $maxOrder + 1,
         ]);
 
-        return redirect()
-            ->route('admin.faqs.index')
-            ->with('success', 'FAQ criada com sucesso!');
+        return alertSuccess('success', 'FAQ criada com sucesso!');
     }
 
     /**
@@ -143,7 +141,7 @@ class FaqController extends Controller
             'answer' => $request->answer
         ]);
 
-        return redirect()->route('admin.faqs.index')->with('success', 'FAQ atualizada com sucesso!');
+        return alertSuccess('success', 'FAQ atualizada com sucesso!');
     }
 
     public function destroy(Faq $faq)
@@ -156,7 +154,7 @@ class FaqController extends Controller
         $faq->delete();
         // $faq->forceDelete();
 
-        return redirect()->route('admin.faqs.index')->with('success', 'FAQ excluida com sucesso!');
+        return alertSuccess('success', 'FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
@@ -169,6 +167,6 @@ class FaqController extends Controller
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return redirect()->route('admin.faqs.index')->with('success', 'Status da FAQ atualizado com sucesso!');
+        return alertSuccess('success', 'Status da FAQ atualizado com sucesso!');
     }
 }
