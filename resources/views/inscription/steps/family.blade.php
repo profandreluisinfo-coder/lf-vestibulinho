@@ -10,7 +10,7 @@
         <h5 class="fw-semibold border-bottom pb-1">Filiação</h5>
 
         <div class="form-group col-sm-8">
-            <label for="mae" class="form-label required">Nome Completo da Mãe</label>
+            <label for="mae" class="form-label">Nome Completo da Mãe</label>
             <input type="text" class="form-control @error('mother') is-invalid @enderror" id="mother" name="mother"
                 value="{{ old('mother', session('step5.mother')) }}">
             @error('mother')

@@ -290,7 +290,7 @@
     <div class="no-break">
         <div class="section-title">Informações Complementares</div>
 
-        <table>
+        {{-- <table>
             <thead>
                 <tr>
                     <th colspan="2">Educação Especial</th>
@@ -324,7 +324,7 @@
                     @endif
                 @endif
             </tbody>
-        </table>
+        </table> --}}
 
         <table>
             <thead>

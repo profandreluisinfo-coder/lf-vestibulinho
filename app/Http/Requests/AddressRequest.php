@@ -50,7 +50,7 @@ class AddressRequest extends FormRequest
             'street' => ['required', 'max:60', 'regex:/^[\p{L}0-9\s.,-]+$/u'],
             'home' => ['required', 'max:10', 'regex:/^[\p{L}0-9\s\/]*$/u'],
             'complement' => ['nullable', 'max:20', 'regex:/^[\p{L}0-9\s.,-]+$/u'],
-            'burgh' => ['required', 'max:60', 'regex:/^[\p{L}0-9\s.,()\-]+$/u'],
+            'burgh' => ['required', 'max:60', 'regex:/\A[\p{L}0-9 .,()\-]+\z/u'],
             'city' => ['required', 'max:30', 'regex:/^[a-zA-ZÀ-Úà-ú ]+$/'],
             'state' => ['required', 'max:32'],
         ];

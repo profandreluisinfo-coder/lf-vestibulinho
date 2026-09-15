@@ -370,7 +370,7 @@
             </table>
 
             <!-- EDUCAÇÃO ESPECIAL -->
-            @if ($user->pne)
+            {{-- @if ($user->pne)
             <table class="table no-break">
                 <thead>
                     <tr>
@@ -396,7 +396,7 @@
                     </tr>
                 </tbody>
             </table>
-            @endif
+            @endif --}}
 
             <!-- PROGRAMAS SOCIAIS -->
             @if ($user->social_program)

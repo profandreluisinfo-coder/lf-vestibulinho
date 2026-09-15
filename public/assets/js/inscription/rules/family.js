@@ -58,7 +58,7 @@ $(document).ready(function () {
         ignore: ":hidden",
         rules: {
             mother: {
-                required: true,
+                // required: true,
                 maxlength: 60,
                 pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
                 noSequences: true,
@@ -67,7 +67,7 @@ $(document).ready(function () {
                 normalizer: value => $.trim(value)
             },
             mother_phone: {
-                required: { depends: dependsOnRespOption2 },
+                // required: { depends: dependsOnRespOption2 },
                 normalizer: value => $.trim(value)
             },
             father: validateIfFilled({

@@ -58,7 +58,7 @@ class FamilyRequest extends FormRequest
     {
         return [
             // filiação
-            'mother' => ['required', 'max:60', new NameRule()],
+            'mother' => ['nullable', 'max:60', new NameRule()],
             'father' => ['nullable', 'max:60', new NameRule()],
 
             //responsável legal (informar ou não)
@@ -102,7 +102,7 @@ class FamilyRequest extends FormRequest
     {
         return [
             // filiação e responsável legal
-            'mother.required' => '* Obrigatório',
+            // 'mother.required' => '* Obrigatório',
             'mother.max' => '* No máximo :max caracteres',
 
             'father.max' => '* No máximo :max caracteres',

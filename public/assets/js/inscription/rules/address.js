@@ -77,8 +77,8 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 60,
                 pattern: /^[a-zA-ZÀ-ÿ0-9 ()]*$/,
-                noSequences: true,
-                wordLength: true
+                // noSequences: true,
+                // wordLength: true
             },
             city: {
                 required: true,
