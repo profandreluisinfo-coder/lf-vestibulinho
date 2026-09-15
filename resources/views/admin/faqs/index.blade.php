@@ -49,8 +49,8 @@
                         <option value="">Todas as categorias</option>
 
                         @foreach ($categories as $category)
-                            <option value="{{ Str::lower($category->category) }}">
-                                {{ $category->category }}
+                            <option value="{{ Str::lower($category->name) }}">
+                                {{ $category->name }}
                             </option>
                         @endforeach
 
