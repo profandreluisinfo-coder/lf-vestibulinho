@@ -310,7 +310,7 @@
                             </div>
                             <span class="cal-badge badge-close">Prazo</span>
                         </div>
-                        <div class="cal-card mb-3 reveal delay-3">
+                        {{-- <div class="cal-card mb-3 reveal delay-3">
                             <div class="cal-date" style="background:#7B3FA0;">
                                 <div class="day">{{ $event?->location_publish?->format('d') }}</div>
                                 <div class="mon">
@@ -321,7 +321,7 @@
                                 <p>Local e horário de prova disponíveis na Área do Candidato.</p>
                             </div>
                             <span class="cal-badge badge-event">Evento</span>
-                        </div>
+                        </div> --}}
                         <div class="cal-card mb-3 reveal delay-2">
                             <div class="cal-date" style="background:#C0392B;">
                                 <div class="day">{{ $event?->exam_date?->format('d') }}</div>
@@ -346,7 +346,7 @@
                             <span class="cal-badge"
                                 style="background:rgba(224,122,58,.15);color:var(--amber2);">Resultado</span>
                         </div>
-                        <div class="cal-card reveal delay-4">
+                        {{-- <div class="cal-card reveal delay-4">
                             <div class="cal-date" style="background:var(--teal);">
                                 <div class="day">{{ $event?->enrol_start?->format('d') }}</div>
                                 <div class="mon">{{ ucfirst($event?->enrol_start?->translatedFormat('M')) }}
@@ -357,7 +357,7 @@
                                 <p>Candidatos convocados devem realizar a matrícula presencialmente.</p>
                             </div>
                             <span class="cal-badge badge-open">Matrícula</span>
-                        </div>
+                        </div> --}}
                         <div class="text-center mt-4 reveal delay-4">
                             <a href="{{ route('site.process.show') }}" class="btn-faq-more">
                                 Ver todas as datas do Vestibulinho <i class="bi bi-arrow-right ms-1"></i>
