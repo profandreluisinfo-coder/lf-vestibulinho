@@ -14,14 +14,14 @@ class ExportController extends Controller
     {
         // Verificar se existem inscrições antes de exportar
         if (!Inscription::exists()) {
-            return redirect()->route('admin.index')->with('error', 'Nenhuma inscrição encontrada.');
+            return alertError('Nenhuma inscrição encontrada.');
         }
 
         // Verificar se existe prova agendada
-        // if (ExamResult::exists()) {
-        //     return redirect()->route('admin.index')->with('error', 'Não é possível exportar os candidatos, pois não existe uma prova agendada.');
-        // }
-        
+        if (ExamResult::count() === 0) {
+            return alertError('Não é possível exportar os dados dos candidatos, pois no momentonão existe uma prova agendada.');
+        }
+
         return Excel::download(new UsersWithInscriptionsExport, 'candidatos.xlsx');
     }
 }

@@ -52,17 +52,17 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
+                                    <!-- Editar -->
+                                    <a href="{{ route('admin.local.edit', $local->id) }}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="bi bi-pencil-square me-1"></i> Editar
+                                        </a>                                        
                                     <!-- Botão de excluir -->
                                     <button type="button" title="Excluir"
                                         onclick="confirmLocationDelete({{ $local->id }}, '{{ addslashes($local->name) }}')"
                                         class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash me-1"></i> Excluir
                                     </button>
-                                    <!-- Editar -->
-                                    <a href="{{ route('admin.local.edit', $local->id) }}"
-                                            class="btn btn-sm btn-primary">
-                                            <i class="bi bi-pencil-square me-1"></i> Editar
-                                        </a>
                                 </div>
                             </td>
                         </tr>
