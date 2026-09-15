@@ -59,7 +59,7 @@
                             <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
                         <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                            <i class="bi bi-arrow-left me-1"></i> Voltar
                         </a>
                     </div>
                 </form>

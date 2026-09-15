@@ -229,7 +229,7 @@
                                     <i class="bi bi-check-circle"></i>Salvar
                                 </button>
                                 <a href="{{ route('admin.process.show') }}" class="btn btn-sm btn-secondary">
-                                    <i class="bi bi-x-circle"></i>Cancelar
+                                    <i class="bi bi-arrow-left"></i> Voltar
                                 </a>
                             </div>
 
