@@ -1,5 +1,5 @@
-@import url("../auth/base.css");
-@import url("../auth/buttons.css");
+@import url("./base.css");
+@import url("./buttons.css");
 
 /* ─── LAYOUT ──────────────────────────────────────────────── */
 .page-wrapper {

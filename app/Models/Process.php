@@ -75,6 +75,11 @@ class Process extends Model
         return $this->latestEvent?->isInscriptionStarted() ?? false;
     }
 
+    /**
+     * Verifica se o período de inscrição do processo seletivo terminou.
+     *
+     * @return bool
+     */
     public function isInscriptionEnded(): bool
     {
         return $this->latestEvent?->isInscriptionEnded() ?? false;

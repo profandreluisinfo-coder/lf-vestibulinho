@@ -27,7 +27,7 @@
         </p>
         <p class="lead-text">
             Agora você pode acessar a Área do Candidato e preencher o formulário de inscrição para o
-            Vestibulinho {{ $process?->year ?? config('app.year') }}.
+            Vestibulinho LF {{ $process?->year }}.
         </p>
 
         <div class="panel-steps">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    @include('partials.auth.footer', ['year' => $process?->year ?? date('Y')])
+    @include('partials.auth.footer', ['year' => $process?->year])
 
 @endsection
 
@@ -91,9 +91,9 @@
                 <i class="bi bi-arrow-right-circle-fill"></i> Próximo passo
             </div>
             <p>
-                Acesse a <strong>Área do Candidato</strong> com o e-mail e senha cadastrados
-                para preencher o <strong>formulário de inscrição</strong> do
-                Vestibulinho {{ $process?->year }}.
+                Acesse a <em>Área do Candidato</em> com o e-mail e senha cadastrados
+                para preencher o <em>formulário de inscrição</em> do
+                Vestibulinho LF {{ $process?->year }}.
             </p>
         </div>
 

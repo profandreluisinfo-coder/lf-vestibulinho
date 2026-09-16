@@ -1,11 +1,11 @@
 @extends('layouts.auth')
 
-@section('title', 'Recuperar Senha — Vestibulinho LF')
+@section('title', 'Recuperar Senha — Vestibulinho LF' . $process?->year)
 
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/pass/forgot.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/auth/forgot.css') }}">
 @endpush
 
 @section('left-panel')
@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho LF {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Centro -->
@@ -86,9 +86,9 @@
             <div class="info-box">
                 <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                 <span>
-                    Use o mesmo e-mail informado durante o seu registro no Vestibulinho
+                    Use o mesmo e-mail informado durante o seu registro no Vestibulinho LF
                     {{ $process?->year }}.
-                    Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
+                    Verifique também a pasta de <em>spam</em> caso não encontre o e-mail.
                 </span>
             </div>
 

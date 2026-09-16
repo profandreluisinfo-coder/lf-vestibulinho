@@ -253,7 +253,7 @@
                 <form action="{{ route('inscription.receipt.to.pdf') }}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-filetype-pdf me-1"></i> Inscrição Completa em PDF
+                        <i class="bi bi-filetype-pdf me-1"></i> Protocolo de Inscrição
                     </button>
                 </form>
 
@@ -274,8 +274,8 @@
         </div>
 
         {{-- ╔══════════════════════════════════════════╗ --}}
-            {{-- ║          MODAL — LOCAL DE PROVA          ║ --}}
-            {{-- ╚══════════════════════════════════════════╝ --}}
+        {{-- ║          MODAL — LOCAL DE PROVA          ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
             @if ($settings->location && $exam)
                 <div class="modal fade" id="localDeProva" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">

@@ -5,7 +5,7 @@
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/auth/register.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/user/create.css') }}">
 @endpush
 
 @section('left-panel')
@@ -212,5 +212,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/auth/register.js') }}"></script>
+    <script src="{{ asset('assets/js/user/create.js') }}"></script>
 @endpush

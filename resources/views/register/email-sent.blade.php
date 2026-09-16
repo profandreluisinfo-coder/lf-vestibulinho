@@ -19,7 +19,7 @@
   <div class="panel-brand">
     <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
     <h2>EM Dr. Francisco de Souza</h2>
-    <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
+    <p>Vestibulinho LF {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
   </div>
 
   <!-- Centro -->
@@ -99,7 +99,7 @@
         Um <em>link</em> de verificação foi enviado para o endereço de e-mail informado no
         momento do cadastro. Verifique sua caixa de entrada, incluindo a pasta de <em>spam</em>,
         e siga as instruções contidas na mensagem para confirmar seu endereço de e-mail.
-        O acesso à <strong>Área do Candidato</strong> será liberado somente após a conclusão
+        O acesso à <em>Área do Candidato</em> será liberado somente após a conclusão
         dessa confirmação.
       </p>
     </div>

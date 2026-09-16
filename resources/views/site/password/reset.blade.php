@@ -1,11 +1,11 @@
 @extends('layouts.auth')
 
-@section('title', 'Redefinir Senha — Vestibulinho LF')
+@section('title', 'Redefinir Senha — Vestibulinho LF' . $process?->year)
 
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/pass/reset.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/auth/reset.css') }}">
 @endpush
 
 @section('left-panel')

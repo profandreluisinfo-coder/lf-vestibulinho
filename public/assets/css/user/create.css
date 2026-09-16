@@ -1,5 +1,5 @@
-@import url("base.css");
-@import url("buttons.css");
+@import url("../auth/base.css");
+@import url("../auth/buttons.css");
 
 :root {
     --card-bg: #FFFFFF;

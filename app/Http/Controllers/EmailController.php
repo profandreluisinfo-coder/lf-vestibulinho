@@ -52,7 +52,7 @@ class EmailController extends Controller
     {
         $process = Process::current();
 
-        if (!$process || !$process?->isInscriptionEnded()) {
+        if (!$process || $process?->isInscriptionEnded()) {
             return redirect()->route('home');
         }
 
