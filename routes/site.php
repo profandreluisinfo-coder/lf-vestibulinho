@@ -3,12 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Site\{
-    HomeController, 
-    PostController, 
-    ArchiveController, 
-    ResultController, 
-    CallController, 
-    FaqController, 
+    HomeController,
+    PostController,
+    ArchiveController,
+    ResultController,
+    CallController,
+    FaqController,
     ProcessController
 };
 
@@ -16,7 +16,9 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });
 
-Route::middleware(['guest'])->name('site.')->group(function () {
+Route::middleware(['guest'])
+    ->name('site.')
+    ->group(function () {
 
         // Postagens públicas
         Route::prefix('posts')
@@ -41,4 +43,4 @@ Route::middleware(['guest'])->name('site.')->group(function () {
         // Calendário
         Route::get('calendario', [ProcessController::class, 'show'])
             ->name('process.show');
-});
+    });

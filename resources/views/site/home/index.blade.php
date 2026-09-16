@@ -30,7 +30,7 @@
                         Sua carreira começa<br>aqui.
                     </h1>
                     <p class="hero-sub mb-4">
-                        4 cursos técnicos gratuitos. Uma oportunidade real de transformar<br class="d-none d-md-block">
+                        4 cursos técnicos gratuitos integrados ao ensino médio. Uma oportunidade real de <br class="d-none d-md-block">transformar
                         seu futuro. EM Dr Leandro Franceschini — inscrição online e acessível.
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
@@ -172,7 +172,7 @@
                 <div class="section-tag justify-content-center">Oferta Acadêmica</div>
                 <h2 class="section-title mb-3">Escolha seu <span>Curso Técnico</span></h2>
                 <p class="section-lead mx-auto text-center">
-                    Todos os cursos são gratuitos, presenciais e emitem certificado de técnico. Escolha sua área e
+                    Todos os cursos são gratuitos, presenciais, integrados ao ensino médio e emitem certificado de técnico. Escolha sua área e
                     construa sua carreira.
                 </p>
             </div>
@@ -234,7 +234,7 @@
                                     registro</a>,
                                 informe seu e-mail e crie uma senha de acesso. Você receberá um e-mail de confirmação.
                                 Clique no <i>link</i> recebido no e-mail para validar seu cadastro. <strong
-                                    class="text-danger">Sem essa confirmação não será possível realizar a
+                                    class="text-danger">Sem essa confirmação não será possível realizar sua
                                     inscrição.</strong></p>
                         </div>
                     </div>
@@ -244,15 +244,14 @@
                             <h4><i class="bi bi-clipboard-fill me-2 text-teal"></i>Faça sua Inscrição</h4>
                             <p>Após confirmar seu e-mail, acesse a <a href="{{ route('login') }}"
                                     class="text-decoration-none text-teal">Área do Candidato</a>, preencha o formulário de
-                                inscrição com suas informações pessoais, acadêmicas e demais dados solicitados. Confirme os
-                                dados e guarde o número de inscrição gerado.</p>
+                                inscrição com suas informações pessoais, acadêmicas e demais dados solicitados.</p>
                         </div>
                     </div>
                     <div class="tl-item reveal-right">
                         <div class="tl-node amber-node">4</div>
                         <div class="tl-content">
                             <h4><i class="bi bi-book-fill me-2 text-amber"></i>Estude e Prepare-se</h4>
-                            <p>Acesse as provas anteriores disponíveis aqui no site para se preparar.</p>
+                            <p>Acesse as <a href="{{ route('site.archives.index') }}" class="text-amber">provas anteriores</a> disponíveis aqui no site para se preparar.</p>
                         </div>
                     </div>
                     <div class="tl-item reveal-left">
@@ -260,7 +259,7 @@
                         <div class="tl-content">
                             <h4><i class="bi bi-pen-fill me-2 text-teal"></i>Realize a Prova</h4>
                             <p>Compareça no dia, horário e local indicados no cartão de confirmação. Leve documento com foto
-                                original.</p>
+                                original e atual.</p>
                         </div>
                     </div>
                     <div class="tl-item reveal-right">
@@ -460,6 +459,20 @@
                             <p>Regras e regulamento completo</p>
                         </a>
                     </div>
+                    <div class="col-6 col-md-4 col-lg-2 reveal delay-4">
+                        <a href="{{ route('register') }}" class="quick-card d-block">
+                            <div class="qc-icon"><i class="bi bi-person-plus-fill"></i></div>
+                            <h5>Registrar-se</h5>
+                            <p>Cadastre seus dados de acesso agora</p>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2 reveal delay-3">
+                        <a href="{{ route('login') }}" class="quick-card d-block">
+                            <div class="qc-icon"><i class="bi bi-person-badge-fill"></i></div>
+                            <h5>Área do Candidato</h5>
+                            <p>Acompanhe sua inscrição</p>
+                        </a>
+                    </div>
                     <div class="col-6 col-md-4 col-lg-2 reveal delay-2">
                         <a href="{{ route('site.archives.index') }}" class="quick-card d-block">
                             <div class="qc-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
@@ -479,20 +492,6 @@
                             <div class="qc-icon"><i class="bi bi-bell-fill"></i></div>
                             <h5>Convocação</h5>
                             <p>Chamada para matrícula</p>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2 reveal delay-3">
-                        <a href="{{ route('login') }}" class="quick-card d-block">
-                            <div class="qc-icon"><i class="bi bi-person-badge-fill"></i></div>
-                            <h5>Área do Candidato</h5>
-                            <p>Acompanhe sua inscrição</p>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2 reveal delay-4">
-                        <a href="{{ route('register') }}" class="quick-card d-block">
-                            <div class="qc-icon"><i class="bi bi-person-plus-fill"></i></div>
-                            <h5>Registrar-se</h5>
-                            <p>Cadastre seus dados de acesso agora</p>
                         </a>
                     </div>
                 </div>
