@@ -26,51 +26,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // ── Scroll reveal ──────────────────────────────────────────
-        const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-        const revealObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    revealObs.unobserve(e.target);
-                }
-            });
-        }, {
-            threshold: 0.15
-        });
-        revealEls.forEach(el => revealObs.observe(el));
 
-        // ── Sticky navbar shadow ────────────────────────────────────
-        window.addEventListener('scroll', () => {
-            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
-        });
+    @stack('consts')
 
-        // ── Active nav link on scroll ───────────────────────────────
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.navbar-custom .nav-link[href^="#"]');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(sec => {
-                if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
-            });
-            navLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-            });
-        });
-
-        // ── Mostrar erro ───────────────────────────────────────────
-        function showError(msg) {
-            const alert = document.getElementById('alertError');
-            document.getElementById('alertMsg').textContent = msg;
-            alert.classList.remove('hidden');
-            alert.style.animation = 'none';
-            requestAnimationFrame(() => {
-                alert.style.animation = 'shake .4s ease';
-            });
-        }
-    </script>
+    <script src="{{ asset('assets/js/site/home/scroll-reveal.js') }}"></script>
     <script src="{{ asset('assets/js/shared/toasts.js') }}"></script>
+
     @stack('scripts')
 </body>
 

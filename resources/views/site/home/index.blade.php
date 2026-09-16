@@ -36,7 +36,7 @@
                     <div class="hero-actions d-flex flex-wrap gap-3">
 
                         @if ($process?->status && $process?->isInscriptionOpen())
-                            <a href="{{ route('login') }}" class="btn-hero-primary">
+                            <a href="{{ route('login') }}" class="btn-hero-primary js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Inscrever-se Agora
                             </a>
                         @endif
@@ -210,7 +210,7 @@
                         </p>
                     </div>
                     <div class="col-lg-6 reveal delay-2 text-lg-end">
-                        <a href="{{ route('login') }}" class="btn-faq-more">
+                        <a href="{{ route('login') }}" class="btn-faq-more js-inscription-link">
                             <i class="bi bi-pencil-fill"></i> Iniciar Inscrição
                         </a>
                     </div>
@@ -516,7 +516,7 @@
 
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <div class="pulse-wrap">
-                            <a href="{{ route('login') }}" class="btn-cta-main">
+                            <a href="{{ route('login') }}" class="btn-cta-main js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
                         </div>
@@ -527,7 +527,17 @@
     @endif
 @endsection
 
+{{-- ── Constantes JS específicas desta página ───────────────────────────── --}}
+@push('consts')
+    <script>
+        const loginUrl = @json(route('login'));
+        const registerUrl = @json(route('register'));
+    </script>
+@endpush
+
 {{-- ── JS específico desta página ───────────────────────────── --}}
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/home/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
 @endpush
