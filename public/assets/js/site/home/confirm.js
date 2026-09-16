@@ -19,7 +19,21 @@ document.querySelectorAll('.js-inscription-link').forEach((link) => {
                 confirmButtonColor: '#0d6efd',
                 cancelButtonColor: '#6c757d',
                 reverseButtons: true,
-            }).then((result) => redirect(result.isConfirmed));
+                allowOutsideClick: true,
+                allowEscapeKey: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    redirect(true);
+                    return;
+                }
+
+                if (result.dismiss === Swal.DismissReason.cancel) {
+                    redirect(false);
+                    return;
+                }
+
+                // Fechou clicando fora, ESC, ou no X: cancela a operação, não faz nada.
+            });
 
             return;
         }

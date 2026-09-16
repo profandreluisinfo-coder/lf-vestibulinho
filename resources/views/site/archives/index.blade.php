@@ -84,7 +84,7 @@
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
                         @if ($process?->isInscriptionOpen())
-                            <a href="{{ route('register') }}" class="btn-inscricao">
+                            <a href="{{ route('register') }}" class="btn-inscricao js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição
                             </a>
                         @endif
@@ -223,7 +223,7 @@
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <div class="pulse-wrap">
-                            <a href="{{ route('register') }}" class="btn-cta-main">
+                            <a href="{{ route('register') }}" class="btn-cta-main js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
                         </div>
@@ -235,6 +235,16 @@
 
 @endsection
 
+{{-- ── Constantes JS específicas desta página ───────────────────────────── --}}
+@push('consts')
+    <script>
+        const loginUrl = @json(route('login'));
+        const registerUrl = @json(route('register'));
+    </script>
+@endpush
+
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/archives/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
 @endpush
