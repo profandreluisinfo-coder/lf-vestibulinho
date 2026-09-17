@@ -215,10 +215,12 @@
         <div class="review-section-header">
             <i class="bi bi-people"></i> Filiação / Responsável Legal
         </div>
+        @if ($step5['mother'])
         <div class="review-row">
             <span class="review-label">Mãe</span>
             <span class="review-value">{{ $step5['mother'] }}</span>
         </div>
+        @endif
         @if ($step5['mother_phone'])
             <div class="review-row">
                 <span class="review-label">Tel. Mãe</span>

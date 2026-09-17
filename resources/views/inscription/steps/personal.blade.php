@@ -107,26 +107,7 @@
 
         <!-- Área para anexar autorização do responsável legal -->
         <div id="authorizationDiv" class="form-group col-md-12 d-none">
-            <div class="alert alert-warning d-flex align-items-start" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 mt-1"></i>
-                <div>
-                    <strong>Autorização do responsável legal</strong><br>
-                    O(a) candidato(a) menor de idade que optar pelo uso de nome social/afetivo neste Processo
-                    Seletivo deverá apresentar autorização expressa de seu pai, mãe ou responsável legal.
-                    <br><br>
-                    <a href="{{ route('inscription.step.authorization.template') }}"
-                       class="btn btn-primary btn-sm"
-                       target="_blank"
-                       rel="noopener">
-                        <i class="bi bi-download me-1"></i>
-                        Baixar modelo de autorização
-                    </a>
-                    <div class="small text-muted mt-2">
-                        Baixe o modelo, preencha todos os campos, assine e salve-o em PDF para anexá-lo abaixo.
-                    </div>
-                </div>
-            </div>
-
+            
             @if (session('step1.authorization'))
                 <div class="alert alert-info mt-3">
                     <p>

@@ -57,15 +57,13 @@ $(document).ready(function () {
     $("#inscription").validate({
         ignore: ":hidden",
         rules: {
-            mother: {
-                // required: true,
+            mother: validateIfFilled({
                 maxlength: 60,
                 pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
                 noSequences: true,
                 wordLength: true,
-                minWords: true,
-                normalizer: value => $.trim(value)
-            },
+                minWords: true
+            }),
             mother_phone: {
                 // required: { depends: dependsOnRespOption2 },
                 normalizer: value => $.trim(value)
