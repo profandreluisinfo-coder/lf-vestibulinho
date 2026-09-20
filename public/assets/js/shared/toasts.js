@@ -40,9 +40,12 @@ function showToasts() {
             badge
         };
 
+        // const toast = new bootstrap.Toast(toastEl, {
+        //     autohide: true,
+        //     delay: 3000
+        // });
         const toast = new bootstrap.Toast(toastEl, {
-            autohide: true,
-            delay: 3000
+            autohide: false
         });
 
         toast.show();
