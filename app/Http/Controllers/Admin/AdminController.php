@@ -103,7 +103,7 @@ class AdminController extends Controller
             ->get();
 
         if ($cursos->isEmpty()) {
-            return redirect()->back()->with('error', 'Não há dados disponíveis para exportação.');
+            return alertError('Não há dados disponíveis para exportação.');
         }
 
         $pdf = Pdf::loadView('admin.exports.courses_pdf', compact('cursos'));
@@ -116,7 +116,7 @@ class AdminController extends Controller
         $export = new CoursesExport;
 
         if ($export->collection()->isEmpty()) {
-            return back()->with('error', 'Não há dados para exportar.');
+            return alertError('Não há dados para exportar.');
         }
 
         return Excel::download($export, 'candidatos_por_curso.xlsx');
@@ -136,7 +136,7 @@ class AdminController extends Controller
             });
 
         if ($sexos->isEmpty()) {
-            return redirect()->back()->with('error', 'Não há dados disponíveis para exportação.');
+            return alertError('Não há dados disponíveis para exportação.');
         }
 
         $pdf = Pdf::loadView('admin.exports.genders_pdf', compact('sexos'));
@@ -149,9 +149,9 @@ class AdminController extends Controller
         $export = new GendersExport;
 
         if ($export->collection()->isEmpty()) {
-            return back()->with('error', 'Não há dados para exportar.');
+            return alertError('Não há dados para exportar.');
         }
-        
-        return Excel::download(new GendersExport, 'candidatos_por_sexo.xlsx');
+
+        return Excel::download($export, 'candidatos_por_sexo.xlsx');
     }
 }
