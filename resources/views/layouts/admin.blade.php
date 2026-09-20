@@ -38,7 +38,7 @@
         <div class="sidebar-brand" onclick="toggleSidebarCollapse()">
             <!-- IMAGEM PARA RECOLHER/EXPANDIR -->
             <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
-            <h4>Vestibulinho LF  {{ $process?->year }}</h4>
+            <h4>Vestibulinho LF {{ $process?->year }}</h4>
         </div>
 
         <nav class="sidebar-menu">
@@ -74,7 +74,8 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.process.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}" id="menuVestibulinho">
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.process.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
+                        id="menuVestibulinho">
                         <a href="{{ route('admin.process.show') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.process.*') ? 'active' : '' }}">
                             <i class="bi bi-calendar-event me-1"></i> Eventos
@@ -271,7 +272,7 @@
     </header>
 
     <!-- Conteúdo -->
-    <main class="main-content">
+    <main class="main-content">     
 
         @include('shared.toasts')
 
@@ -415,7 +416,7 @@
             });
         </script>
     @endif
-    
+
     <script src="{{ asset('assets/js/swa/system/reset.js') }}"></script>
     <script src="{{ asset('assets/js/admin/export/handler.js') }}"></script>
 </body>

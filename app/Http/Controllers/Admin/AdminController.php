@@ -115,8 +115,9 @@ class AdminController extends Controller
     {
         $export = new CoursesExport;
 
-        if ($export->collection()->isEmpty()) {
-            return alertError('Não há dados para exportar.');
+        if (!$export->collection()->isEmpty()) {
+            // return alertError('Não há dados para exportar.');
+            return back()->with('error', 'Não há dados para exportar.');
         }
 
         return Excel::download($export, 'candidatos_por_curso.xlsx');

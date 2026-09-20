@@ -1,62 +1,79 @@
-<div class="toast-container position-fixed end-0 p-3 z-3">
+ @if (session('success'))
+     <div class="container">
+         <div class="alert alert-success alert-dismissible fade show" role="alert">
+             <i class="bi bi-check-circle"></i> {{ session('success') }}
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+     </div>
+ @endif
 
-    @php
-        $alertMap = [
-            'error' => [
-                'class' => 'danger',
-                'title' => 'Erro!',
-                'icon' => 'exclamation-octagon-fill',
-                'silent' => true,
-                'animation' => 'shakeX',
-            ],
-            'warning' => [
-                'class' => 'warning',
-                'title' => 'Atenção!',
-                'icon' => 'exclamation-triangle-fill',
-                'silent' => false,
-                'animation' => 'pulse',
-            ],
-            'success' => [
-                'class' => 'success',
-                'title' => 'Sucesso!',
-                'icon' => 'check-circle-fill',
-                'silent' => false,
-                'animation' => 'bounceIn',
-            ],
-            'info' => [
-                'class' => 'info',
-                'title' => 'Informação',
-                'icon' => 'info-circle-fill',
-                'silent' => true,
-                'animation' => 'fadeIn',
-            ],
-        ];
-    @endphp
+ @if (session('error'))
+     <div class="container">
+         <div class="alert alert-danger alert-dismissible fade show" role="alert">
+             <i class="bi bi-exclamation-triangle me-2"></i> {{ session('error') }}
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+     </div>
+ @endif
+ <div class="toast-container position-fixed end-0 p-3 z-3">
 
-    @foreach ($alertMap as $key => $alert)
-        @if (session($key) && (!$alert['silent'] || config('app.debug')))
-            <div class="toast animate__animated animate__{{ $alert['animation'] }} align-items-center text-bg-{{ $alert['class'] }} 
+     @php
+         $alertMap = [
+             'error' => [
+                 'class' => 'danger',
+                 'title' => 'Erro!',
+                 'icon' => 'exclamation-octagon-fill',
+                 'silent' => true,
+                 'animation' => 'shakeX',
+             ],
+             'warning' => [
+                 'class' => 'warning',
+                 'title' => 'Atenção!',
+                 'icon' => 'exclamation-triangle-fill',
+                 'silent' => false,
+                 'animation' => 'pulse',
+             ],
+             'success' => [
+                 'class' => 'success',
+                 'title' => 'Sucesso!',
+                 'icon' => 'check-circle-fill',
+                 'silent' => false,
+                 'animation' => 'bounceIn',
+             ],
+             'info' => [
+                 'class' => 'info',
+                 'title' => 'Informação',
+                 'icon' => 'info-circle-fill',
+                 'silent' => true,
+                 'animation' => 'fadeIn',
+             ],
+         ];
+     @endphp
+
+     @foreach ($alertMap as $key => $alert)
+         @if (session($key) && (!$alert['silent'] || config('app.debug')))
+             <div class="toast animate__animated animate__{{ $alert['animation'] }} align-items-center text-bg-{{ $alert['class'] }} 
                         border-0 shadow mb-2 show animate__animated animate__fadeInDown"
-                role="alert" data-message="{{ session($key) }}" data-type="{{ $key }}">
+                 role="alert" data-message="{{ session($key) }}" data-type="{{ $key }}">
 
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <strong>
-                            <i
-                                class="bi bi-{{ $alert['icon'] }} 
+                 <div class="d-flex">
+                     <div class="toast-body">
+                         <strong>
+                             <i
+                                 class="bi bi-{{ $alert['icon'] }} 
                                animate__animated animate__tada me-1"></i>
-                            {{ $alert['title'] }}
-                        </strong>
-                        <div class="small">
-                            {{ session($key) }}
-                        </div>
-                    </div>
+                             {{ $alert['title'] }}
+                         </strong>
+                         <div class="small">
+                             {{ session($key) }}
+                         </div>
+                     </div>
 
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                        data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        @endif
-    @endforeach
+                     <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                         data-bs-dismiss="toast"></button>
+                 </div>
+             </div>
+         @endif
+     @endforeach
 
-</div>
+ </div>
