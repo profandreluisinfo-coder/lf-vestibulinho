@@ -102,6 +102,10 @@ class AdminController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        if ($cursos->isEmpty()) {
+            return redirect()->back()->with('error', 'Não há dados disponíveis para exportação.');
+        }
+
         $pdf = Pdf::loadView('admin.exports.courses_pdf', compact('cursos'));
 
         return $pdf->download('candidatos_por_curso.pdf');
@@ -109,7 +113,13 @@ class AdminController extends Controller
 
     public function exportCoursesExcel()
     {
-        return Excel::download(new CoursesExport, 'candidatos_por_curso.xlsx');
+        $export = new CoursesExport;
+
+        if ($export->collection()->isEmpty()) {
+            return back()->with('error', 'Não há dados para exportar.');
+        }
+
+        return Excel::download($export, 'candidatos_por_curso.xlsx');
     }
 
     public function exportGendersPdf()
@@ -125,6 +135,10 @@ class AdminController extends Controller
                 return $row;
             });
 
+        if ($sexos->isEmpty()) {
+            return redirect()->back()->with('error', 'Não há dados disponíveis para exportação.');
+        }
+
         $pdf = Pdf::loadView('admin.exports.genders_pdf', compact('sexos'));
 
         return $pdf->download('candidatos_por_sexo.pdf');
@@ -132,6 +146,12 @@ class AdminController extends Controller
 
     public function exportGendersExcel()
     {
+        $export = new GendersExport;
+
+        if ($export->collection()->isEmpty()) {
+            return back()->with('error', 'Não há dados para exportar.');
+        }
+        
         return Excel::download(new GendersExport, 'candidatos_por_sexo.xlsx');
     }
 }
