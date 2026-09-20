@@ -17,7 +17,7 @@ $(document).ready(function () {
             vacancies: {
                 required: true,
                 number: true,
-                min: 1,
+                min: 0,
                 max: 120
             }
             // info: {
