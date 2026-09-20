@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\BurghsExport;
 use App\Exports\CoursesExport;
+use App\Exports\GenderPerCourseExport;
 use App\Exports\GendersExport;
+use App\Exports\SchoolsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\ExamResult;
@@ -25,38 +28,39 @@ class AdminController extends Controller
         // $calls_exists = Call::first() ?? new Call();
 
         // Candidatos por bairro
-        $bairros = DB::table('users')
-            ->select('burgh', DB::raw('COUNT(*) as total'))
-            ->groupBy('burgh')
+        $burghs = DB::table('users')
+            ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
+            ->select('users.burgh', DB::raw('COUNT(DISTINCT users.id) as total'))
+            ->groupBy('users.burgh')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
 
         // // Candidatos por curso
-        $cursos = DB::table('inscriptions')
+        $courses = DB::table('inscriptions')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
             ->select('courses.name as curso', DB::raw('COUNT(inscriptions.id) as total'))
             ->groupBy('courses.name')
             ->orderByDesc('total')
-            ->limit(10)
             ->get();
 
         // // Escolas de origem (top 10)
-        $escolas = DB::table('academics')
-            ->select('school', DB::raw('COUNT(*) as total'))
-            ->groupBy('school')
+        $schools = DB::table('academics')
+            ->join('inscriptions', 'inscriptions.user_id', '=', 'academics.user_id')
+            ->select('academics.school', DB::raw('COUNT(DISTINCT academics.user_id) as total'))
+            ->groupBy('academics.school')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
 
-        $sexos = DB::table('users')
+        $genders = DB::table('users')
             ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
             ->select('gender', DB::raw('COUNT(users.id) as total'))
             ->groupBy('gender')
             ->orderBy('gender')
             ->get();
 
-        $sexoPorCurso = DB::table('inscriptions')
+        $genderPerCourse = DB::table('inscriptions')
             ->join('users', 'users.id', '=', 'inscriptions.user_id')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
             ->select(
@@ -80,11 +84,11 @@ class AdminController extends Controller
         $steps_pct = round(($steps_done / $steps_total) * 100);
 
         return view('admin.home.index', [
-            'bairros' => $bairros,
-            'cursos' => $cursos,
-            'escolas' => $escolas,
-            'sexos' => $sexos,
-            'sexoPorCurso' => $sexoPorCurso,
+            'bairros' => $burghs,
+            'cursos' => $courses,
+            'escolas' => $schools,
+            'sexos' => $genders,
+            'sexoPorCurso' => $genderPerCourse,
             'local_status' => $local_status,
             'ranking_active' => $ranking_active,
             'steps_done' => $steps_done,
@@ -95,18 +99,18 @@ class AdminController extends Controller
 
     public function exportCoursesPdf()
     {
-        $cursos = DB::table('inscriptions')
+        $courses = DB::table('inscriptions')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
-            ->select('courses.name as curso', DB::raw('COUNT(inscriptions.id) as total'))
+            ->select('courses.name as course', DB::raw('COUNT(inscriptions.id) as total'))
             ->groupBy('courses.name')
             ->orderByDesc('total')
             ->get();
 
-        if ($cursos->isEmpty()) {
+        if ($courses->isEmpty()) {
             return alertError('Não há dados disponíveis para exportação.');
         }
 
-        $pdf = Pdf::loadView('admin.exports.courses_pdf', compact('cursos'));
+        $pdf = Pdf::loadView('admin.exports.courses_pdf', compact('courses'));
 
         return $pdf->download('candidatos_por_curso.pdf');
     }
@@ -115,9 +119,8 @@ class AdminController extends Controller
     {
         $export = new CoursesExport;
 
-        if (!$export->collection()->isEmpty()) {
-            // return alertError('Não há dados para exportar.');
-            return back()->with('error', 'Não há dados para exportar.');
+        if ($export->collection()->isEmpty()) {
+            return alertError('Não há dados para exportar.');
         }
 
         return Excel::download($export, 'candidatos_por_curso.xlsx');
@@ -125,7 +128,7 @@ class AdminController extends Controller
 
     public function exportGendersPdf()
     {
-        $sexos = DB::table('users')
+        $genders = DB::table('users')
             ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
             ->select('gender', DB::raw('COUNT(users.id) as total'))
             ->groupBy('gender')
@@ -136,11 +139,11 @@ class AdminController extends Controller
                 return $row;
             });
 
-        if ($sexos->isEmpty()) {
+        if ($genders->isEmpty()) {
             return alertError('Não há dados disponíveis para exportação.');
         }
 
-        $pdf = Pdf::loadView('admin.exports.genders_pdf', compact('sexos'));
+        $pdf = Pdf::loadView('admin.exports.genders_pdf', compact('genders'));
 
         return $pdf->download('candidatos_por_sexo.pdf');
     }
@@ -154,5 +157,99 @@ class AdminController extends Controller
         }
 
         return Excel::download($export, 'candidatos_por_sexo.xlsx');
+    }
+
+    public function exportGenderPerCoursePdf()
+    {
+        $genderPerCourse = DB::table('inscriptions')
+            ->join('users', 'users.id', '=', 'inscriptions.user_id')
+            ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
+            ->select(
+                'courses.name as course',
+                DB::raw("SUM(CASE WHEN users.gender = 1 THEN 1 ELSE 0 END) as masculino"),
+                DB::raw("SUM(CASE WHEN users.gender = 2 THEN 1 ELSE 0 END) as feminino")
+            )
+            ->groupBy('courses.name')
+            ->orderBy('courses.name')
+            ->get();
+
+        if ($genderPerCourse->isEmpty()) {
+            return alertError('Não há dados disponíveis para exportação.');
+        }
+
+        $pdf = Pdf::loadView('admin.exports.gender_per_course_pdf', compact('genderPerCourse'));
+
+        return $pdf->download('candidatos_por_curso_e_sexo.pdf');
+    }
+
+    public function exportGenderPerCourseExcel()
+    {
+        $export = new GenderPerCourseExport;
+
+        if ($export->collection()->isEmpty()) {
+            return alertError('Não há dados para exportar.');
+        }
+
+        return Excel::download($export, 'candidatos_por_curso_e_sexo.xlsx');
+    }
+
+    public function exportBurghsPdf()
+    {
+        $burghs = DB::table('users')
+            ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
+            ->select('users.burgh', DB::raw('COUNT(DISTINCT users.id) as total'))
+            ->groupBy('users.burgh')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        if ($burghs->isEmpty()) {
+            return alertError('Não há dados disponíveis para exportação.');
+        }
+
+        $pdf = Pdf::loadView('admin.exports.burghs_pdf', compact('burghs'));
+
+        return $pdf->download('bairros_com_mais_candidatos.pdf');
+    }
+
+    public function exportBurghsExcel()
+    {
+        $export = new BurghsExport;
+
+        if ($export->collection()->isEmpty()) {
+            return alertError('Não há dados para exportar.');
+        }
+
+        return Excel::download($export, 'bairros_com_mais_candidatos.xlsx');
+    }
+
+    public function exportSchoolsPdf()
+    {
+        $schools = DB::table('academics')
+            ->join('inscriptions', 'inscriptions.user_id', '=', 'academics.user_id')
+            ->select('academics.school', DB::raw('COUNT(DISTINCT academics.user_id) as total'))
+            ->groupBy('academics.school')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        if ($schools->isEmpty()) {
+            return alertError('Não há dados disponíveis para exportação.');
+        }
+
+        $pdf = Pdf::loadView('admin.exports.schools_pdf', compact('schools'));
+
+        return $pdf->download('escolas_de_origem.pdf');
+    }
+
+    public function exportSchoolsExcel()
+    {
+        $export = new SchoolsExport;
+
+        if ($export->collection()->isEmpty()) {
+            return alertError('Não há dados para exportar.');
+        }
+
+        return Excel::download($export, 'escolas_de_origem.xlsx');
     }
 }

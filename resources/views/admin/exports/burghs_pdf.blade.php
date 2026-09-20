@@ -8,22 +8,23 @@
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #999; padding: 6px 10px; text-align: left; }
         th { background-color: #f2f2f2; }
+        td.numero { text-align: center; }
     </style>
 </head>
 <body>
-    <h2>Vestibulinho LF {{ $process?->year }} - Candidatos por Sexo</h2>
+    <h2>Vestibulinho LF {{ $process->year }} - 10 Bairros com Mais Candidatos</h2>
     <table>
         <thead>
             <tr>
-                <th>Sexo</th>
-                <th>Total de Inscritos</th>
+                <th>Bairro</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($genders as $gender)
+            @foreach ($burghs as $burgh)
                 <tr>
-                    <td>{{ $gender->gender }}</td>
-                    <td>{{ $gender->total }}</td>
+                    <td>{{ $burgh->burgh }}</td>
+                    <td class="numero">{{ $burgh->total }}</td>
                 </tr>
             @endforeach
         </tbody>

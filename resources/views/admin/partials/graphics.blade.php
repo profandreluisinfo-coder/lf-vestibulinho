@@ -2,9 +2,10 @@
     <h5>📊 Estatísticas e Relatórios</h5>
 
     <p class="text-muted small mb-3">
-        Clique em um card para visualizar o gráfico detalhado, ou use os botões de exportação para baixar o relatório em PDF ou Excel.
+        Clique em um card para visualizar o gráfico detalhado, ou use os botões de exportação para baixar o relatório em
+        PDF ou Excel.
     </p>
-    
+
     <div class="row g-3">
 
         {{-- Card 1: Inscritos por Curso --}}
@@ -47,30 +48,58 @@
 
         {{-- Card 3: Inscritos por Curso e Sexo --}}
         <div class="col-4 col-sm-6 col-lg-2">
-            <div class="card shadow-sm h-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalSexoPorCurso">
-                <div class="card-body text-center py-4">
+            <div class="card shadow-sm h-100 d-flex flex-column">
+                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
+                    data-bs-target="#modalSexoPorCurso">
                     <i class="bi bi-bar-chart-steps fs-2 text-warning mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Curso e Sexo</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                    <a href="{{ route('admin.export.gender-course.pdf') }}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.export.gender-course.excel') }}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </a>
                 </div>
             </div>
         </div>
 
+
         {{-- Card 4: Bairros --}}
         <div class="col-4 col-sm-6 col-lg-2">
-            <div class="card shadow-sm h-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalBairros">
-                <div class="card-body text-center py-4">
+            <div class="card shadow-sm h-100 d-flex flex-column">
+                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
+                    data-bs-target="#modalBairros">
                     <i class="bi bi-geo-alt-fill fs-2 text-danger mb-2"></i>
                     <p class="mb-0 fw-semibold">Bairros com Mais Candidatos</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                    <a href="{{ route('admin.export.burghs.pdf') }}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.export.burghs.excel') }}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </a>
                 </div>
             </div>
         </div>
 
         {{-- Card 5: Escolas --}}
         <div class="col-4 col-sm-6 col-lg-2">
-            <div class="card shadow-sm h-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalEscolas">
-                <div class="card-body text-center py-4">
+            <div class="card shadow-sm h-100 d-flex flex-column">
+                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
+                    data-bs-target="#modalEscolas">
                     <i class="bi bi-building fs-2 text-secondary mb-2"></i>
                     <p class="mb-0 fw-semibold">Escolas de Origem</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                    <a href="{{ route('admin.export.schools.pdf') }}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.export.schools.excel') }}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </a>
                 </div>
             </div>
         </div>

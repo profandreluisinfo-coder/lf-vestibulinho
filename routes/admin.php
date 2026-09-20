@@ -190,17 +190,35 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
                     ->name('excel');
-                Route::get('/cursos/pdf', [AdminController::class, 'exportCoursesPdf'])
+                Route::get('cursos/pdf', [AdminController::class, 'exportCoursesPdf'])
                     ->name('courses.pdf');
 
-                Route::get('/cursos/excel', [AdminController::class, 'exportCoursesExcel'])
+                Route::get('cursos/excel', [AdminController::class, 'exportCoursesExcel'])
                     ->name('courses.excel');
 
-                Route::get('/sexos/pdf', [AdminController::class, 'exportGendersPdf'])
+                Route::get('sexos/pdf', [AdminController::class, 'exportGendersPdf'])
                     ->name('genders.pdf');
 
-                Route::get('/sexos/excel', [AdminController::class, 'exportGendersExcel'])
+                Route::get('sexos/excel', [AdminController::class, 'exportGendersExcel'])
                     ->name('genders.excel');
+
+                Route::get('sexo-por-curso/pdf', [AdminController::class, 'exportGenderPerCoursePdf'])
+                    ->name('gender-course.pdf');
+
+                Route::get('sexo-por-curso/excel', [AdminController::class, 'exportGenderPerCourseExcel'])
+                    ->name('gender-course.excel');
+
+                Route::get('bairros/pdf', [AdminController::class, 'exportBurghsPdf'])
+                    ->name('burghs.pdf');
+
+                Route::get('bairros/excel', [AdminController::class, 'exportBurghsExcel'])
+                    ->name('burghs.excel');
+
+                Route::get('escolas/pdf', [AdminController::class, 'exportSchoolsPdf'])
+                    ->name('schools.pdf');
+
+                Route::get('escolas/excel', [AdminController::class, 'exportSchoolsExcel'])
+                    ->name('schools.excel');
             });
 
         // Importação

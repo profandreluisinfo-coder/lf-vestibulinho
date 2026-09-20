@@ -42,10 +42,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($cursos as $curso)
+            @foreach ($courses as $course)
                 <tr>
-                    <td>{{ $curso->curso }}</td>
-                    <td>{{ $curso->total }}</td>
+                    <td>{{ $course->course }}</td>
+                    <td>{{ $course->total }}</td>
                 </tr>
             @endforeach
         </tbody>
