@@ -17,6 +17,12 @@
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
                 <div class="col-lg-8">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb faq-breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Provas Anteriores</li>
+                        </ol>
+                    </nav>
                     <div class="hero-badge">
                         <span class="live-dot"></span>
                         Material de Estudo · Vestibulinho LF
