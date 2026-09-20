@@ -1,24 +1,46 @@
 <div class="statistics-container">
-    <h5>📊 Estatísticas</h5>
+    <h5>📊 Estatísticas e Relatórios</h5>
 
+    <p class="text-muted small mb-3">
+        Clique em um card para visualizar o gráfico detalhado, ou use os botões de exportação para baixar o relatório em PDF ou Excel.
+    </p>
+    
     <div class="row g-3">
 
         {{-- Card 1: Inscritos por Curso --}}
         <div class="col-4 col-sm-6 col-lg-2">
-            <div class="card shadow-sm h-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalCursos">
-                <div class="card-body text-center py-4">
+            <div class="card shadow-sm h-100 d-flex flex-column">
+                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalCursos"
+                    title="Visualizar gráfico">
                     <i class="bi bi-bar-chart-fill fs-2 text-primary mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Curso</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                    <a href="{{ route('admin.export.courses.pdf') }}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.export.courses.excel') }}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </a>
                 </div>
             </div>
         </div>
 
         {{-- Card 2: Inscritos por Sexo --}}
         <div class="col-4 col-sm-6 col-lg-2">
-            <div class="card shadow-sm h-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalSexos">
-                <div class="card-body text-center py-4">
+            <div class="card shadow-sm h-100 d-flex flex-column">
+                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
+                    data-bs-target="#modalSexos">
                     <i class="bi bi-pie-chart-fill fs-2 text-success mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Sexo</p>
+                </div>
+                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                    <a href="{{ route('admin.export.genders.pdf') }}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.export.genders.excel') }}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i> Excel
+                    </a>
                 </div>
             </div>
         </div>

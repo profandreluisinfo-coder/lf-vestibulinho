@@ -190,6 +190,17 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
                     ->name('excel');
+                Route::get('/cursos/pdf', [AdminController::class, 'exportCoursesPdf'])
+                    ->name('courses.pdf');
+
+                Route::get('/cursos/excel', [AdminController::class, 'exportCoursesExcel'])
+                    ->name('courses.excel');
+
+                Route::get('/sexos/pdf', [AdminController::class, 'exportGendersPdf'])
+                    ->name('genders.pdf');
+
+                Route::get('/sexos/excel', [AdminController::class, 'exportGendersExcel'])
+                    ->name('genders.excel');
             });
 
         // Importação

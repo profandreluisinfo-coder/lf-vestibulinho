@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CoursesExport;
+use App\Exports\GendersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\ExamResult;
 use App\Models\Process;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-// use App\Models\Setting;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -87,5 +91,47 @@ class AdminController extends Controller
             'steps_total' => $steps_total,
             'steps_pct' => $steps_pct
         ]);
+    }
+
+    public function exportCoursesPdf()
+    {
+        $cursos = DB::table('inscriptions')
+            ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
+            ->select('courses.name as curso', DB::raw('COUNT(inscriptions.id) as total'))
+            ->groupBy('courses.name')
+            ->orderByDesc('total')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.exports.courses_pdf', compact('cursos'));
+
+        return $pdf->download('candidatos_por_curso.pdf');
+    }
+
+    public function exportCoursesExcel()
+    {
+        return Excel::download(new CoursesExport, 'candidatos_por_curso.xlsx');
+    }
+
+    public function exportGendersPdf()
+    {
+        $sexos = DB::table('users')
+            ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
+            ->select('gender', DB::raw('COUNT(users.id) as total'))
+            ->groupBy('gender')
+            ->orderBy('gender')
+            ->get()
+            ->map(function ($row) {
+                $row->gender = User::GENDERS[$row->gender] ?? $row->gender;
+                return $row;
+            });
+
+        $pdf = Pdf::loadView('admin.exports.genders_pdf', compact('sexos'));
+
+        return $pdf->download('candidatos_por_sexo.pdf');
+    }
+
+    public function exportGendersExcel()
+    {
+        return Excel::download(new GendersExport, 'candidatos_por_sexo.xlsx');
     }
 }

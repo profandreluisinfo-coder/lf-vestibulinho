@@ -14,6 +14,13 @@ class User extends Authenticatable
 {
     use HasFactory; // traits
 
+    const GENDERS = [
+        '1' => 'MASCULINO',
+        '2' => 'FEMININO',
+        '3' => 'OUTRO',
+        '4' => 'PREFIRO NÃO INFORMAR',
+    ];
+
     /**
      * Os atributos que são atribuíveis (definidos) em massa.
      *
@@ -168,14 +175,15 @@ class User extends Authenticatable
 
     public function getGenderAttribute($value)
     {
-        $genders = [
-            '1' => 'MASCULINO',
-            '2' => 'FEMININO',
-            '3' => 'OUTRO',
-            '4' => 'PREFIRO NÃO INFORMAR',
-        ];
+        // $genders = [
+        //     '1' => 'MASCULINO',
+        //     '2' => 'FEMININO',
+        //     '3' => 'OUTRO',
+        //     '4' => 'PREFIRO NÃO INFORMAR',
+        // ];
 
-        return $genders[$value] ?? $value;  // Se não encontrar, retorna o valor original
+        // return $genders[$value] ?? $value;
+        return self::GENDERS[$value] ?? $value;
     }
 
     public function getNationalityAttribute($value)
