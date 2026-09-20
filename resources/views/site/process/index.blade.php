@@ -545,7 +545,7 @@
                         Comece agora — leva menos de 5 minutos.</p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <div class="pulse-wrap">
-                            <a href="{{ route('login') }}" class="btn-cta-main">
+                            <a href="{{ route('login') }}" class="btn-cta-main js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
                         </div>
@@ -558,5 +558,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/process/index.js') }}"></script>
+    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
 @endpush
