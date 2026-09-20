@@ -35,11 +35,6 @@ class FamilyRequest extends FormRequest
             if (is_string($value)) {
                 $sanitized[$key] = trim($value); // Remove espaços
                 $sanitized[$key] = mb_strtoupper($value, 'UTF-8');
-
-                // if ($key !== 'email') {
-                //     $sanitized[$key] = mb_strtoupper($sanitized[$key]); // Converte para maiúsculas
-                // }
-
             } else {
                 $sanitized[$key] = $value; // Mantém o valor original se não for string
             }
@@ -57,12 +52,34 @@ class FamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // filiação
-            'mother' => ['nullable', 'max:60', new NameRule()],
-            'father' => ['nullable', 'max:60', new NameRule()],
+            // filiação: nome da mãe/pai é obrigatório se o telefone correspondente foi informado
+            'mother' => [
+                'nullable',
+                Rule::requiredIf(fn() => filled($this->input('mother_phone'))),
+                'max:60',
+                new NameRule(),
+            ],
+            'father' => [
+                'nullable',
+                Rule::requiredIf(fn() => filled($this->input('father_phone'))),
+                'max:60',
+                new NameRule(),
+            ],
 
-            //responsável legal (informar ou não)
-            'respLegalOption' => ['required', 'in:1,2'],
+            //responsável legal (informar ou não) — obrigatório indicar respOption1 (1)
+            // quando nem mãe nem pai foram informados
+            'respLegalOption' => [
+                'required',
+                'in:1,2',
+                function ($attribute, $value, $fail) {
+                    $motherEmpty = blank($this->input('mother'));
+                    $fatherEmpty = blank($this->input('father'));
+
+                    if ($motherEmpty && $fatherEmpty && $value != 1) {
+                        $fail('* Como nenhum dos pais foi informado, é necessário indicar um responsável legal.');
+                    }
+                },
+            ],
 
             // nome do responsável legal
             'responsible' => [
@@ -102,9 +119,10 @@ class FamilyRequest extends FormRequest
     {
         return [
             // filiação e responsável legal
-            // 'mother.required' => '* Obrigatório',
+            'mother.required' => '* Obrigatório, pois o telefone da mãe foi informado.',
             'mother.max' => '* No máximo :max caracteres',
 
+            'father.required' => '* Obrigatório, pois o telefone do pai foi informado.',
             'father.max' => '* No máximo :max caracteres',
 
             'respLegalOption.required' => '* Obrigatório',

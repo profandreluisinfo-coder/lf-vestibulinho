@@ -184,7 +184,7 @@
                             <div class="icon-wrap"><i class="bi bi-{{ $course->icone }}"></i></div>
                             <h3>{{ $course->name }}</h3>
                             <p>{{ $course->info }}</p>
-                            @if ($course?->vacancies && $process?->status)
+                            @if ($course?->vacancies && $process?->status === 'open')
                                 <span class="tag-vagas">
                                     <i class="bi bi-people-fill me-1"></i>{{ $course?->vacancies }} Vagas disponíveis
                                 </span>
