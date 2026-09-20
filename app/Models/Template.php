@@ -19,6 +19,6 @@ class Template extends Model
 
     public static function getActiveTemplate()
     {
-        return self::where('status', 'inactive')->first();
+        return self::where('status', 'active')->first();
     }
 }

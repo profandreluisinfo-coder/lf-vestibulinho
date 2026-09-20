@@ -56,7 +56,7 @@ class TemplateController extends Controller
             . '_' . time()
             . '.' . $file->getClientOriginalExtension();
         // Salva no disco 'public' na pasta modelos
-        $pathForArchive = $file->storeAs('modelos', $fileNameArchive, 'public');
+        $pathForArchive = $file->storeAs('templates', $fileNameArchive, 'public');
 
         // Salva no banco apenas o caminho relativo
         Template::create([
@@ -107,7 +107,7 @@ class TemplateController extends Controller
             $fileNameArchive = $vest->year . '_' . pathinfo($originalNameForArchive, PATHINFO_FILENAME)
                 . '_' . time()
                 . '.' . $file->getClientOriginalExtension();
-            $pathForArchive = $file->storeAs('modelos', $fileNameArchive, 'public');
+            $pathForArchive = $file->storeAs('templates', $fileNameArchive, 'public');
 
             // Atualiza o caminho do arquivo no banco
             $template->file_path = $pathForArchive;

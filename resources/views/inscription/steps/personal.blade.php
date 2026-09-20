@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form id="inscription" class="row g-4" action="{{ route('inscription.step.personal') }}" method="POST"
+    <form id="inscription" class="row g-4 inscription-form" action="{{ route('inscription.step.personal') }}" method="POST"
         enctype="multipart/form-data">
         @csrf
 
@@ -107,7 +107,7 @@
 
         <!-- Área para anexar autorização do responsável legal -->
         <div id="authorizationDiv" class="form-group col-md-12 d-none">
-            
+
             @if (session('step1.authorization'))
                 <div class="alert alert-info mt-3">
                     <p>
@@ -206,8 +206,15 @@
             @enderror
         </div>
         <div class="col-12 pt-3">
-            <button type="submit" class="btn btn-primary btn-sm w-auto">Avançar <i
-                    class="bi bi-arrow-right-circle ms-2"></i></button>
+            <button type="submit" class="btn btn-primary btn-sm w-auto">
+                <span class="btn-text">
+                    <i class="bi bi-arrow-right-circle me-2"></i> Avançar
+                </span>
+                <span class="btn-spinner d-none">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Processando...
+                </span>
+            </button>
         </div>
     </form>
 

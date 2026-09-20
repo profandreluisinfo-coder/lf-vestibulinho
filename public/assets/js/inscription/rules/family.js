@@ -25,6 +25,16 @@ $(document).ready(function () {
         return value.trim().split(/\s+/).every(word => !/^(\S)\1+$/.test(word));
     }, "* Sequência de palavras inválida");
 
+    // Exige responsável legal (respOption1) quando nem mãe nem pai foram informados
+    $.validator.addMethod("requiresLegalResponsible", function (value, element) {
+        const motherEmpty = $.trim($('#mother').val()) === "";
+        const fatherEmpty = $.trim($('#father').val()) === "";
+        if (motherEmpty && fatherEmpty) {
+            return value == "1";
+        }
+        return true;
+    }, "* Como nenhum dos pais foi informado, é necessário indicar um responsável legal.");
+
     // Função de validação condicional para campos opcionais
     function validateIfFilled(rules) {
         const result = {};
@@ -46,6 +56,10 @@ $(document).ready(function () {
     const dependsOnRespOption1 = () => $('#respOption1').is(':checked');
     const dependsOnRespOption2 = () => $('#respOption2').is(':checked');
 
+    // Dependências: nome é obrigatório se o telefone correspondente foi informado
+    const dependsOnMotherPhone = () => $.trim($('#mother_phone').val()) !== "";
+    const dependsOnFatherPhone = () => $.trim($('#father_phone').val()) !== "";
+
     // Atualiza validação ao mudar a escolha de responsável
     $('#respOption1, #respOption2').change(function () {
         $('#responsible').valid();
@@ -54,30 +68,52 @@ $(document).ready(function () {
         $('#degree').valid();
     });
 
+    // Revalida o nome da mãe/pai assim que o respectivo telefone é preenchido/alterado
+    $('#mother_phone').on('input change blur', function () {
+        $('#mother').valid();
+    });
+    $('#father_phone').on('input change blur', function () {
+        $('#father').valid();
+    });
+
+    // Revalida a exigência de responsável legal assim que mãe ou pai forem alterados
+    $('#mother, #father').on('input change blur', function () {
+        $('#respOption1').valid();
+    });
+
     $("#inscription").validate({
         ignore: ":hidden",
         rules: {
-            mother: validateIfFilled({
-                maxlength: 60,
-                pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
-                noSequences: true,
-                wordLength: true,
-                minWords: true
-            }),
+            mother: {
+                required: { depends: dependsOnMotherPhone },
+                ...validateIfFilled({
+                    maxlength: 60,
+                    pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                    noSequences: true,
+                    wordLength: true,
+                    minWords: true
+                })
+            },
             mother_phone: {
-                // required: { depends: dependsOnRespOption2 },
                 normalizer: value => $.trim(value)
             },
-            father: validateIfFilled({
-                maxlength: 60,
-                pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
-                noSequences: true,
-                wordLength: true,
-                minWords: true
-            }),
+            father: {
+                required: { depends: dependsOnFatherPhone },
+                ...validateIfFilled({
+                    maxlength: 60,
+                    pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                    noSequences: true,
+                    wordLength: true,
+                    minWords: true
+                })
+            },
+            father_phone: {
+                normalizer: value => $.trim(value)
+            },
             respLegalOption: {
                 required: true,
-                range: [1, 2]
+                range: [1, 2],
+                requiresLegalResponsible: true
             },
             responsible: {
                 required: { depends: dependsOnRespOption1 },
@@ -118,17 +154,19 @@ $(document).ready(function () {
         },
         messages: {
             mother: {
-                required: "* Obrigatório.",
+                required: "* Obrigatório, pois o telefone da mãe foi informado.",
                 maxlength: "* Máximo de 60 caracteres.",
                 pattern: "* Apenas letras, acentos e espaços."
             },
             father: {
+                required: "* Obrigatório, pois o telefone do pai foi informado.",
                 maxlength: "* Máximo de 60 caracteres.",
                 pattern: "* Apenas letras, acentos e espaços."
             },
             respLegalOption: {
                 required: "* Por favor, selecione uma opção.",
-                range: "* Selecione uma opção válida."
+                range: "* Selecione uma opção válida.",
+                requiresLegalResponsible: "* Como nenhum dos pais foi informado, é necessário indicar um responsável legal."
             },
             responsible: {
                 required: "* Obrigatório.",

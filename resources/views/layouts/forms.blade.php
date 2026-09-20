@@ -28,11 +28,12 @@
 
     <header class="forms-topbar">
         <a href="{{ route('inscription.start') }}" class="forms-brand">
-            <span class="forms-brand-text"><i class="bi bi-mortarboard fs-5 me-1"></i> Vestibulinho LF <span class="forms-brand-year">{{ $process?->year }}</span></span>
+            <span class="forms-brand-text"><i class="bi bi-mortarboard fs-5 me-1"></i> Vestibulinho LF <span
+                    class="forms-brand-year">{{ $process?->year }}</span></span>
         </a>
 
         <a href="{{ route('inscription.start') }}" class="forms-back-link">
-            <i class="bi bi-arrow-left"></i> Voltar ao início
+            <i class="bi bi-arrow-left"></i> Início
         </a>
     </header>
 
@@ -64,6 +65,38 @@
     <script type="module" src="{{ asset('assets/js/shared/change-password.js') }}"></script>
     <script src="{{ asset('assets/js/shared/popovers.js') }}"></script>
     @stack('scripts') {{-- scripts  específicos --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form.inscription-form').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (!btn) return;
+
+                    if (btn.dataset.submitting === 'true') {
+                        e.preventDefault();
+                        return;
+                    }
+                    btn.dataset.submitting = 'true';
+                    btn.disabled = true;
+
+                    const text = btn.querySelector('.btn-text');
+                    const spinner = btn.querySelector('.btn-spinner');
+                    if (text) text.classList.add('d-none');
+                    if (spinner) spinner.classList.remove('d-none');
+
+                    // Escape hatch: reverte o estado se o servidor demorar demais a responder
+                    setTimeout(function() {
+                        if (btn.dataset.submitting === 'true') {
+                            btn.disabled = false;
+                            btn.dataset.submitting = 'false';
+                            if (text) text.classList.remove('d-none');
+                            if (spinner) spinner.classList.add('d-none');
+                        }
+                    }, 15000); // 15s
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

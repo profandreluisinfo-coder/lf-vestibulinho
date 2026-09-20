@@ -116,7 +116,7 @@ class PdfController extends Controller
         $cpfSanitizado = preg_replace('/[^0-9]/', '', Auth::user()->cpf);
 
         // Monta o nome do arquivo
-        $filename = 'comprovante_'.$cpfSanitizado.'.pdf';
+        $filename = 'Protocolo_'.$cpfSanitizado.'.pdf';
 
         // Retorna o PDF diretamente como download
         return $pdf->download($filename);
@@ -265,6 +265,6 @@ class PdfController extends Controller
 
         $cpfSanitizado = preg_replace('/\D/', '', $user->cpf);
 
-        return $pdf->download("Inscricao_{$cpfSanitizado}.pdf");
+        return $pdf->download("Protocolo_{$cpfSanitizado}.pdf");
     }
 }

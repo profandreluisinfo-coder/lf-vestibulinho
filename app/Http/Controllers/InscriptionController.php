@@ -28,32 +28,33 @@ use Illuminate\View\View;
 
 class InscriptionController extends Controller
 {
-    public function downloadAuthorizationTemplate()
-    {
-        $template = Template::getActiveTemplate();
+    // public function downloadAuthorizationTemplate()
+    // {
+    //     $template = Template::getActiveTemplate();
 
-        return $this->previewDocument($template?->file_path);
-    }
+    //     return $this->previewDocument($template?->file_path);
+    // }
 
-    public function previewSessionAuthorization()
-    {
-        return $this->previewDocument(session('step1.authorization'));
-    }
+    // public function previewSessionAuthorization()
+    // {
+    //     return $this->previewDocument(session('step1.authorization'));
+    // }
 
-    public function previewAuthorization()
-    {
-        return $this->previewDocument(Auth::user()?->lgbt?->authorization);
-    }
+    // public function previewAuthorization()
+    // {
+    //     return $this->previewDocument(Auth::user()?->lgbt?->authorization);
+    // }
 
-    public function previewReport()
-    {
-        return $this->previewDocument(Auth::user()?->pne?->report);
-    }
+    // public function previewReport()
+    // {
+    //     return $this->previewDocument(Auth::user()?->pne?->report);
+    // }
 
     public function start(): View
     {
         $user = Auth::user();
         $process = Process::current();
+        $template = Template::getActiveTemplate();
 
         if (! $process || ! $process?->isInscriptionOpen()) {
             abort(404);
@@ -68,7 +69,8 @@ class InscriptionController extends Controller
         return view('inscription.start', [
             'user' => $user,
             'displayName' => $displayName,
-            'initials' => $initials
+            'initials' => $initials,
+            'template' => $template
         ]);
     }
 
@@ -124,23 +126,32 @@ class InscriptionController extends Controller
         );
     }
 
-    private function previewDocument(?string $path)
-    {
-        abort_unless($path && Storage::disk('public')->exists($path), 404);
+    // private function previewDocument(?string $path)
+    // {
+    //     abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+    //     return Storage::disk('public')->response($path);
+    // }
+
+    public function confirmInstructions(Request $request)
+    {
+        $request->validate([
+            'confirmed' => 'required|boolean',
+        ]);
+
+        session(['instructions_confirmed' => $request->boolean('confirmed')]);
+
+        return response()->json(['success' => true]);
     }
 
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        $authorization = Template::getActiveTemplate();
+        // $authorization = Template::getActiveTemplate();
 
         // dd($authorization);
 
-        return view('inscription.steps.personal', [
-            'authorization' => $authorization,
-        ]);
+        return view('inscription.steps.personal');
     }
 
     // Gravar Dados de Passo 1

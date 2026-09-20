@@ -3,11 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsResultEnabled
+class EnsureInstructionsConfirmed
 {
     /**
      * Handle an incoming request.
@@ -16,8 +15,9 @@ class IsResultEnabled
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Setting::isResultEnabled()) {
-            abort(404);
+        if (! session('instructions_confirmed')) {
+            return redirect()->route('inscription.start')
+                ->with('error', 'Você precisa confirmar que leu as instruções antes de continuar.');
         }
         
         return $next($request);

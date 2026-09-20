@@ -7,7 +7,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class isLocationEnabled
+class IsLocationEnabled
 {
     /**
      * Handle an incoming request.

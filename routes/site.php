@@ -12,33 +12,36 @@ use App\Http\Controllers\Site\{
     ProcessController
 };
 
-Route::middleware(['guest'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-});
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
-Route::middleware(['guest'])
-    ->name('site.')
+Route::name('site.')
     ->group(function () {
-
         // Postagens públicas
         Route::prefix('posts')
             ->name('posts.')
             ->group(function () {
-                Route::get('', [PostController::class, 'index'])->name('index');
-                Route::get('{slug}', [PostController::class, 'show'])->name('show');
+                Route::get('', [PostController::class, 'index'])
+                    ->name('index');
+                Route::get('{slug}', [PostController::class, 'show'])
+                    ->name('show');
             });
 
         // Provas anteriores
-        Route::get('provas-anteriores', [ArchiveController::class, 'index'])->name('archives.index');
+        Route::get('provas-anteriores', [ArchiveController::class, 'index'])
+            ->name('archives.index');
 
         // Classificação geral
-        Route::get('classificacao-geral', [ResultController::class, 'index'])->name('results.index');
+        Route::get('classificacao-geral', [ResultController::class, 'index'])
+            ->name('results.index');
 
         // Chamadas
-        Route::get('chamadas', [CallController::class, 'index'])->name('calls.index');
+        Route::get('chamadas', [CallController::class, 'index'])
+            ->name('calls.index');
 
         // Perguntas frequentes
-        Route::get('perguntas-frequentes', [FaqController::class, 'index'])->name('faqs.index');
+        Route::get('perguntas-frequentes', [FaqController::class, 'index'])
+            ->name('faqs.index');
 
         // Calendário
         Route::get('calendario', [ProcessController::class, 'show'])

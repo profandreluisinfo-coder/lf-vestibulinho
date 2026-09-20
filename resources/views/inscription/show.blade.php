@@ -104,8 +104,8 @@
                                     {{ $user?->lgbt?->name }}
                                 </div>
 
-                                @if ($user?->lgbt?->authorization)
-                                    <a class="file-link" href="{{ route('inscription.user.authorization') }}"
+                                @if ($user?->lgbt?->authorization && Storage::disk('public')->exists($user?->lgbt?->authorization))
+                                    <a class="file-link" href="{{ Storage::url($user?->lgbt?->authorization) }}"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Visualizar autorização
                                     </a>
@@ -158,8 +158,8 @@
                                     {{ $user?->pne?->support }}
                                 </div>
 
-                                @if ($user?->pne?->report)
-                                    <a class="file-link" href="{{ route('inscription.user.report') }}"
+                                @if ($user?->pne?->report && Storage::disk('public')->exists($user?->pne?->report))
+                                    <a class="file-link" href="{{ Storage::url($user?->pne?->report) }}"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Visualizar laudo médico
                                     </a>

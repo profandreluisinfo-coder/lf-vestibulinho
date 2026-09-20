@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form id="inscription" class="row g-4" action="{{ route('inscription.step.certificate') }}" method="POST">
+    <form id="inscription" class="row g-4 inscription-form" action="{{ route('inscription.step.certificate') }}" method="POST">
         @csrf
 
         <h5 class="fw-semibold border-bottom pb-1">Certidão de Nascimento</h5>
@@ -106,7 +106,14 @@
                 <a href="{{ route('inscription.step.personal') }}" class="text-decoration-none ms-2">Voltar</a>
             </button>
 
-            <button type="submit" class="btn btn-sm btn-primary ms-2">Avançar <i class="bi bi-arrow-right-circle ms-2"></i>
+            <button type="submit" class="btn btn-primary btn-sm w-auto">
+                <span class="btn-text">
+                    <i class="bi bi-arrow-right-circle me-2"></i> Avançar
+                </span>
+                <span class="btn-spinner d-none">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Processando...
+                </span>
             </button>
         </div>
     </form>

@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\{
-    // IsAdmin,
-    isLocationEnabled,
-    isResultEnabled,
+    EnsureInstructionsConfirmed,
+    IsLocationEnabled,
+    IsResultEnabled,
     NotAdmin,
     WithInscription,
     NoInscription
@@ -20,80 +20,102 @@ use App\Http\Controllers\{
 };
 
 // 🔒 Rotas que exigem login
-Route::middleware(['auth'])->name('inscription.')->group(function () {
+Route::middleware(['auth', NotAdmin::class])
+    ->name('inscription.')
+    ->group(function () {
 
-    // Area do candidato: exibe a página com informações sobre como fazer a inscrição
-    Route::get('informacoes', [InscriptionController::class, 'start'])->middleware(NoInscription::class)->name('start'); // Início
+        // Area do candidato: exibe a página com informações sobre como fazer a inscrição
+        Route::get('informacoes', [InscriptionController::class, 'start'])
+            ->middleware(NoInscription::class)
+            ->name('start'); // Início
 
-    // 📝 Passos da inscrição
-    Route::middleware(NoInscription::class)
-        ->prefix('inscricao')
-        ->name('step.')
-        ->group(function () {
+        Route::post('confirm-instructions', [InscriptionController::class, 'confirmInstructions'])
+            ->name('confirm-instructions');
+        // 📝 Passos da inscrição
+        Route::middleware([NoInscription::class, EnsureInstructionsConfirmed::class])
+            ->prefix('inscricao')
+            ->name('step.')
+            ->group(function () {
 
-            Route::get('dados-pessoais', [InscriptionController::class, 'personal'])->name('personal');
-            Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
-            Route::get('modelo-autorizacao', [InscriptionController::class, 'downloadAuthorizationTemplate'])
-                ->name('authorization.template');
-            Route::get('autorizacao-enviada', [InscriptionController::class, 'previewSessionAuthorization'])
-                ->name('authorization.preview');
+                Route::get('dados-pessoais', [InscriptionController::class, 'personal'])
+                    ->name('personal');
+                Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
+                Route::get('modelo-autorizacao', [InscriptionController::class, 'downloadAuthorizationTemplate'])
+                    ->name('authorization.template');
+                Route::get('autorizacao-enviada', [InscriptionController::class, 'previewSessionAuthorization'])
+                    ->name('authorization.preview');
 
-            Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])->name('certificate');
-            Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
+                Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])
+                    ->name('certificate');
+                Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
 
-            Route::get('endereco', [InscriptionController::class, 'address'])->name('address');
-            Route::post('endereco', [InscriptionController::class, 'addressStore']);
+                Route::get('endereco', [InscriptionController::class, 'address'])
 
-            Route::get('dados-escolares', [InscriptionController::class, 'academic'])->name('academic');
-            Route::post('dados-escolares', [InscriptionController::class, 'academicStore']);
+                    ->name('address');
+                Route::post('endereco', [InscriptionController::class, 'addressStore']);
 
-            Route::get('filiacao', [InscriptionController::class, 'family'])->name('family');
-            Route::post('filiacao', [InscriptionController::class, 'familyStore']);
+                Route::get('dados-escolares', [InscriptionController::class, 'academic'])
+                    ->name('academic');
 
-            Route::get('pcd', [InscriptionController::class, 'pcd'])->name('pcd');
-            Route::post('pcd', [InscriptionController::class, 'pcdStore']);
+                Route::post('dados-escolares', [InscriptionController::class, 'academicStore']);
 
-            Route::get('outras-informacoes', [InscriptionController::class, 'other'])->name('other');
-            Route::post('outras-informacoes', [InscriptionController::class, 'otherStore']);
+                Route::get('filiacao', [InscriptionController::class, 'family'])
+                    ->name('family');
+                Route::post('filiacao', [InscriptionController::class, 'familyStore']);
 
-            Route::get('curso', [InscriptionController::class, 'course'])->name('course');
-            Route::post('curso', [InscriptionController::class, 'courseStore']);
+                Route::get('pcd', [InscriptionController::class, 'pcd'])
+                    ->name('pcd');
+                Route::post('pcd', [InscriptionController::class, 'pcdStore']);
 
-            Route::get('confirmar-dados', [InscriptionController::class, 'confirm'])->name('confirm');
+                Route::get('outras-informacoes', [InscriptionController::class, 'other'])
+                    ->name('other');
+                Route::post('outras-informacoes', [InscriptionController::class, 'otherStore']);
 
-            Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])->name('finalize');
+                Route::get('curso', [InscriptionController::class, 'course'])
+                    ->name('course');
+                Route::post('curso', [InscriptionController::class, 'courseStore']);
+
+                Route::get('confirmar-dados', [InscriptionController::class, 'confirm'])
+                    ->name('confirm');
+
+                Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])
+                    ->name('finalize');
+            });
+
+        Route::middleware(WithInscription::class)->group(function () {
+
+            Route::prefix('cartao')
+                ->name('card.')
+                ->group(function () {
+                    // PDF Cartão do local de prova
+                    Route::get('meu-local', [PdfController::class, 'testLocationCardToPdf'])
+                        ->middleware([IsLocationEnabled::class])
+                        ->name('exam');
+
+                    // PDF Cartão do resultado da Prova
+                    Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])                    
+                        ->middleware([IsResultEnabled::class])
+                        ->name('result');
+
+                    // PDF Cartão de chamada
+                    Route::get('chamada', [PdfController::class, 'callCardToPdf'])->name('call');
+                });
+
+            Route::prefix('comprovante')
+                ->name('receipt.')
+                ->group(function () {
+                    // PDF Comprovante de inscrição
+                    Route::post('inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])
+                        ->name('to.pdf');
+                });
         });
 
-    Route::middleware(WithInscription::class)->group(function () {
-
-        Route::prefix('cartao')
-            ->name('card.')
-            ->group(function () {
-                // PDF Cartão do local de prova
-                Route::get('meu-local', [PdfController::class, 'testLocationCardToPdf'])
-                    ->name('exam')
-                    ->middleware([isLocationEnabled::class]);
-
-                // PDF Cartão do resultado da Prova
-                Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])->name('result')->middleware([isResultEnabled::class]);
-
-                // PDF Cartão de chamada
-                Route::get('chamada', [PdfController::class, 'callCardToPdf'])->name('call');
-            });
-
-        Route::prefix('comprovante')
-            ->name('receipt.')
-            ->group(function () {
-                // PDF Comprovante de inscrição
-                Route::post('inscricao', [PdfController::class, 'inscriptionReceiptToPdf'])->name('to.pdf');
+        Route::prefix('area-do-candidato')
+            ->name('user.')->group(function () {
+                Route::get('/', [InscriptionController::class, 'show'])
+                    ->name('show');
             });
     });
 
-    Route::prefix('area-do-candidato')->name('user.')->group(function () {
-        Route::get('/', [InscriptionController::class, 'show'])->name('show');
-        Route::get('autorizacao', [InscriptionController::class, 'previewAuthorization'])->name('authorization');
-        Route::get('laudo', [InscriptionController::class, 'previewReport'])->name('report');
-    });
-});
-
-Route::get('erro', fn() => view('inscription.failed'))->name('failed');
+Route::get('erro', fn() => view('inscription.failed'))
+    ->name('failed');

@@ -153,7 +153,7 @@ class InscriptionService
 
             $pdf = Pdf::loadView('inscription.pdf.email', compact('user', 'inscription', 'sp'));
 
-            $filename = 'protocolo_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
+            $filename = 'Protocolo_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
             $path = storage_path('app/public/'.$filename);
             $pdf->save($path);
 

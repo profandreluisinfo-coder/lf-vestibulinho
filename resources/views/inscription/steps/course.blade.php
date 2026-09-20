@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form id="inscription" class="row g-4" action="{{ route('inscription.step.course') }}" method="POST">
+    <form id="inscription" class="row g-4 inscription-form" action="{{ route('inscription.step.course') }}" method="POST">
         @csrf
         <h6 class="fw-semibold border-bottom pb-1">Pesquisa de intenção de curso:</h6>
         <div class="form-group col-md-12 mb-4 mt-4">
@@ -44,8 +44,15 @@
                 <i class="bi bi-arrow-left-circle me-2"></i>
                 <a href="{{ route('inscription.step.other') }}" class="text-decoration-none">Voltar</a>
             </button>
-            <button type="submit" class="btn btn-sm btn-primary ms-2 w-auto">Avançar <i
-                    class="bi bi-arrow-right-circle ms-2"></i></button>
+            <button type="submit" class="btn btn-primary btn-sm w-auto">
+                <span class="btn-text">
+                    <i class="bi bi-arrow-right-circle me-2"></i> Avançar
+                </span>
+                <span class="btn-spinner d-none">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Processando...
+                </span>
+            </button>
         </div>
     </form>
 
