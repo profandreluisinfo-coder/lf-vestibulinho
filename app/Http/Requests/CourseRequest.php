@@ -26,7 +26,7 @@ class CourseRequest extends FormRequest
             // 'description' => 'required',
             // 'duration' => 'required|numeric|min:1',
             // 'info' => 'required',
-            'vacancies' => 'required|numeric|min:1'
+            'vacancies' => 'required|numeric|min:0'
         ];
     }
 
