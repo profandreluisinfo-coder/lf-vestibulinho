@@ -6,17 +6,17 @@
         PDF ou Excel.
     </p>
 
-    <div class="row g-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3 justify-content-center">
 
         {{-- Card 1: Inscritos por Curso --}}
-        <div class="col-4 col-sm-6 col-lg-2">
+        <div class="col">
             <div class="card shadow-sm h-100 d-flex flex-column">
                 <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalCursos"
                     title="Visualizar gráfico">
                     <i class="bi bi-bar-chart-fill fs-2 text-primary mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Curso</p>
                 </div>
-                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
                     <a href="{{ route('admin.export.courses.pdf') }}" class="btn btn-outline-danger btn-sm">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
@@ -28,14 +28,14 @@
         </div>
 
         {{-- Card 2: Inscritos por Sexo --}}
-        <div class="col-4 col-sm-6 col-lg-2">
+        <div class="col">
             <div class="card shadow-sm h-100 d-flex flex-column">
                 <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
                     data-bs-target="#modalSexos">
                     <i class="bi bi-pie-chart-fill fs-2 text-success mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Sexo</p>
                 </div>
-                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
                     <a href="{{ route('admin.export.genders.pdf') }}" class="btn btn-outline-danger btn-sm">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
@@ -47,14 +47,14 @@
         </div>
 
         {{-- Card 3: Inscritos por Curso e Sexo --}}
-        <div class="col-4 col-sm-6 col-lg-2">
+        <div class="col">
             <div class="card shadow-sm h-100 d-flex flex-column">
                 <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
                     data-bs-target="#modalSexoPorCurso">
                     <i class="bi bi-bar-chart-steps fs-2 text-warning mb-2"></i>
                     <p class="mb-0 fw-semibold">Inscritos por Curso e Sexo</p>
                 </div>
-                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
                     <a href="{{ route('admin.export.gender-course.pdf') }}" class="btn btn-outline-danger btn-sm">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
@@ -67,14 +67,14 @@
 
 
         {{-- Card 4: Bairros --}}
-        <div class="col-4 col-sm-6 col-lg-2">
+        <div class="col">
             <div class="card shadow-sm h-100 d-flex flex-column">
                 <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
                     data-bs-target="#modalBairros">
                     <i class="bi bi-geo-alt-fill fs-2 text-danger mb-2"></i>
                     <p class="mb-0 fw-semibold">Bairros com Mais Candidatos</p>
                 </div>
-                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
                     <a href="{{ route('admin.export.burghs.pdf') }}" class="btn btn-outline-danger btn-sm">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
@@ -86,14 +86,14 @@
         </div>
 
         {{-- Card 5: Escolas --}}
-        <div class="col-4 col-sm-6 col-lg-2">
+        <div class="col">
             <div class="card shadow-sm h-100 d-flex flex-column">
                 <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
                     data-bs-target="#modalEscolas">
                     <i class="bi bi-building fs-2 text-secondary mb-2"></i>
                     <p class="mb-0 fw-semibold">Escolas de Origem</p>
                 </div>
-                <div class="d-flex gap-2 justify-content-center pb-3 px-3">
+                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
                     <a href="{{ route('admin.export.schools.pdf') }}" class="btn btn-outline-danger btn-sm">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
