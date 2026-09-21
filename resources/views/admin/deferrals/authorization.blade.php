@@ -31,10 +31,12 @@
 
                     <dt class="col-sm-3">Autorização</dt>
                     <dd class="col-sm-9">
-                        <a href="{{ route('admin.deferrals.preview.authorization', $user) }}" target="_blank"
-                            class="btn btn-primary btn-sm">
-                            <i class="bi bi-file-earmark-medical"></i> Abrir autorização
-                        </a>
+                        @if ($user?->lgbt && Storage::disk('public')->exists($user->lgbt?->authorization))
+                            <a href="{{ Storage::url($user->lgbt?->authorization) }}" target="_blank"
+                                class="btn btn-primary btn-sm">
+                                <i class="bi bi-file-earmark-medical"></i> Abrir autorização
+                            </a>
+                        @endif
                     </dd>
                 </dl>
 
@@ -71,7 +73,7 @@
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
                         <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
-                            Cancelar
+                            <i class="bi bi-arrow-left"></i> Voltar
                         </a>
                     </form>
 

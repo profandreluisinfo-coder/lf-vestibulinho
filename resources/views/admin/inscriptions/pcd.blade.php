@@ -39,6 +39,7 @@
                 <tr>
                     <th scope="col"><i class="bi bi-hash me-1"></i>Inscrição</th>
                     <th scope="col"><i class="bi bi-person me-1"></i>Candidato</th>
+                    <th scope="col"><i class="bi bi-clipboard-check me-1"></i>Status</th>
                     <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
                 </tr>
             </thead>
@@ -53,7 +54,8 @@
                             @else
                                 {{ $user->name }}
                             @endif
-
+                        </td>
+                        <td class="text-center">
                             @if ($user->pne->status == 'pending')
                                 <i class="bi bi-hourglass-split text-warning ms-2" data-bs-toggle="popover"
                                     data-bs-trigger="hover" data-bs-content="Pendente - Aguardando análise"></i>

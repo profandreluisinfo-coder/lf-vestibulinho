@@ -28,10 +28,12 @@
 
                     <dt class="col-sm-3">Laudo/Relatório</dt>
                     <dd class="col-sm-9">
-                        <a href="{{ route('admin.deferrals.preview.report', $user) }}" target="_blank"
-                            class="btn btn-primary btn-sm">
-                            <i class="bi bi-file-earmark-medical"></i> Abrir laudo
-                        </a>
+                        @if ($user?->pne && Storage::disk('public')->exists($user->pne?->report))
+                            <a href="{{ Storage::url($user->pne?->report) }}" target="_blank"
+                                class="btn btn-primary btn-sm">
+                                <i class="bi bi-file-earmark-medical"></i> Abrir laudo
+                            </a>
+                        @endif
                     </dd>
                 </dl>
 
@@ -68,7 +70,7 @@
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
                         <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-sm btn-secondary">
-                            Cancelar
+                            <i class="bi bi-arrow-left"></i> Voltar
                         </a>
                     </form>
 
