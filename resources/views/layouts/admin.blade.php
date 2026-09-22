@@ -32,6 +32,9 @@
 </head>
 
 <body>
+    @php
+        $exam_results_count = \App\Models\ExamResult::count();
+    @endphp
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
 
@@ -130,7 +133,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.local.*', 'admin.exam.*', 'admin.archives.*', 'admin.export.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.local.*', 'admin.exam.*', 'admin.archives.*']) ? 'show' : '' }}"
                         id="menuProvas">
                         <a href="{{ route('admin.local.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.local.index') ? 'active' : '' }}">
@@ -140,11 +143,7 @@
                             class="dropdown-item-custom {{ request()->routeIs('admin.exam.create') ? 'active' : '' }}">
                             <i class="bi bi-calendar2-week me-1"></i> Agendar
                         </a>
-                        <a href="javascript:void(0)" id="exportLink"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
-                            <i class="bi bi-file-excel me-1"></i> Planilha de Notas
-                        </a>
+                        
                         <a href="{{ route('admin.archives.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
                             <i class="bi bi-file-earmark-pdf me-1"></i> Publicar
@@ -158,8 +157,15 @@
                         <span>Resultados</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.import.*', 'admin.results.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*', 'admin.results.*']) ? 'show' : '' }}"
                         id="menuResultados">
+                        @if ($exam_results_count > 0)
+                            <a href="javascript:void(0)" id="exportLink"
+                                class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
+                                onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
+                                <i class="bi bi-file-excel me-1"></i> Planilha de Notas
+                            </a>
+                        @endif
                         <a href="{{ route('admin.import.home') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
                             <i class="bi bi-upload me-1"></i> Importar Notas

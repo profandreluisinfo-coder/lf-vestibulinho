@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\ExamResult;
 use App\Models\Process;
+use App\Models\Setting;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,8 @@ class AdminController extends Controller
         $local_status = ExamResult::hasRecords();
         $ranking_active = ExamResult::hasScores();
         // $inscriptions_count = Inscription::count();
-        // $settings = Setting::first() ?? new Setting();
+        $settings_location = Setting::first()?->location ?? new Setting();
+        $settings_result = Setting::first()?->result ?? new Setting();
         // $calls_exists = Call::first() ?? new Call();
 
         // Candidatos por bairro
@@ -73,6 +75,8 @@ class AdminController extends Controller
             ->get();
 
         $steps_done = collect([
+            $settings_location,
+            $settings_result,
             $process_status,
             $local_status,
             $ranking_active
@@ -84,6 +88,7 @@ class AdminController extends Controller
         $steps_pct = round(($steps_done / $steps_total) * 100);
 
         return view('admin.home.index', [
+            'process_status' => $process_status,
             'bairros' => $burghs,
             'cursos' => $courses,
             'escolas' => $schools,

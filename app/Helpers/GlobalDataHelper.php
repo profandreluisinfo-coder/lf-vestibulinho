@@ -42,7 +42,7 @@ class GlobalDataHelper
         $calls_exists = Cache::remember(
             'calls_exists',
             60,
-            fn () => class_exists(\App\Models\Call::class) ? Call::exists() : false
+            fn () => class_exists(Call::class) ? Call::exists() : false
         );
 
         $year = now()->year;
