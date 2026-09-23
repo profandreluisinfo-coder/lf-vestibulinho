@@ -204,9 +204,16 @@
                     <div class="menu-section-title">Sistema</div>
                     <div class="menu-item">
                         <a href="{{ route('admin.system.index') }}"
-                            class="menu-link {{ request()->routeIs('admin.system.*') ? 'active' : '' }}">
+                            class="menu-link {{ request()->routeIs('admin.system.index') ? 'active' : '' }}">
                             <i class="bi bi-gear"></i>
                             <span>Configurações</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ route('admin.system.backups.index') }}"
+                            class="menu-link {{ request()->routeIs('admin.system.backups.index') ? 'active' : '' }}">
+                            <i class="bi bi-hdd"></i>
+                            <span>Backups</span>
                         </a>
                     </div>
                     <div class="menu-item p-0">
