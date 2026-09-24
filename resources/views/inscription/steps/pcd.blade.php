@@ -14,7 +14,7 @@
         <div class="form-group col-md-6 mt-3 mb-3">
 
             <label for="acessibilidade" class="form-label required">
-                Pretende concorrer às vagas reservadas às Pessoas com Deficiência (PcD)?
+                Pretende concorrer às vagas reservadas às Pessoas com Deficiência?
             </label>
 
             <select name="pne" class="form-select @error('pne') is-invalid @enderror" id="accessibility">
@@ -55,52 +55,6 @@
                     {{ $message }}
                 </div>
             @enderror
-
-        </div>
-
-        <!-- Área para anexar laudo/relatório de avaliação médico -->
-        <div class="form-group col-md-12" {{ $selectedPne == 1 ? '' : 'd-none' }}>
-
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <div>
-                    O(A) candidato(a) que, no ato da inscrição, declarar possuir necessidades especiais deverá apresentar
-                    laudo ou relatório de avaliação médica que ateste a natureza e o grau da condição informada, bem como a
-                    compatibilidade com as medidas de acessibilidade solicitadas. O documento deverá ser anexado
-                    obrigatoriamente ao formulário de inscrição, sob pena de indeferimento do pedido.
-                </div>
-            </div>
-
-            <label for="report" class="form-label required">Anexe o laudo/relatório de avaliação médico</label>
-            <input type="file" name="pne_report" id="pne_report"
-                class="form-control @error('pne_report') is-invalid @enderror" aria-describedby="infoPneReport">
-            <small id="infoPneReport" class="form-text fst-italic text-muted"><i class="bi bi-info-circle me-1"></i>Somente
-                arquivos no formato PDF são aceitos. O tamanho máximo é de 5MB.</small>
-
-            @error('pne_report')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-
-            @if (session('step6.pne_report'))
-                <div class="alert alert-info mt-3 d-flex align-items-start">
-                    <i class="bi bi-file-earmark-pdf-fill fs-4 me-3 flex-shrink-0"></i>
-
-                    <div class="flex-grow-1">
-                        <div class="mb-2">
-                            <strong>Arquivo enviado anteriormente.</strong>
-                            <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
-                                class="ms-2">
-                                Visualizar PDF <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </div>
-
-                        <p class="mb-0 text-secondary-emphasis">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Caso deseje avançar com a inscrição a partir deste ponto, deverá substituir o arquivo anexado.
-                        </p>
-                    </div>
-                </div>
-            @endif
 
         </div>
 
@@ -153,6 +107,52 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
+        <!-- Área para anexar laudo/relatório de avaliação médico -->
+        <div class="form-group col-md-12" {{ $selectedPne == 1 ? '' : 'd-none' }}>
+
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>
+                    O(A) candidato(a) que, no ato da inscrição, declarar possuir necessidades especiais deverá apresentar
+                    laudo ou relatório de avaliação médica que ateste a natureza e o grau da condição informada, bem como a
+                    compatibilidade com as medidas de acessibilidade solicitadas. O documento deverá ser anexado
+                    obrigatoriamente ao formulário de inscrição, sob pena de indeferimento do pedido.
+                </div>
+            </div>
+
+            <label for="report" class="form-label required">Anexe o laudo/relatório de avaliação médico</label>
+            <input type="file" name="pne_report" id="pne_report"
+                class="form-control @error('pne_report') is-invalid @enderror" aria-describedby="infoPneReport">
+            <small id="infoPneReport" class="form-text fst-italic text-muted"><i class="bi bi-info-circle me-1"></i>Somente
+                arquivos no formato PDF são aceitos. O tamanho máximo é de 5MB.</small>
+
+            @error('pne_report')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+
+            @if (session('step6.pne_report'))
+                <div class="alert alert-info mt-3 d-flex align-items-start">
+                    <i class="bi bi-file-earmark-pdf-fill fs-4 me-3 flex-shrink-0"></i>
+
+                    <div class="flex-grow-1">
+                        <div class="mb-2">
+                            <strong>Arquivo enviado anteriormente.</strong>
+                            <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
+                                class="ms-2">
+                                Visualizar PDF <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+                        </div>
+
+                        <p class="mb-0 text-secondary-emphasis">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Caso deseje avançar com a inscrição a partir deste ponto, deverá substituir o arquivo anexado.
+                        </p>
+                    </div>
+                </div>
+            @endif
+
+        </div>        
 
         <div class="col-12 border-top pt-3">
             <button type="button" class="btn btn-sm btn-secondary">
