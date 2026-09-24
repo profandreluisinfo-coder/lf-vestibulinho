@@ -112,7 +112,7 @@
                 <div class="alert alert-info mt-3">
                     <p>
                         <strong>Arquivo já enviado.</strong>
-                        <a href="{{ route('inscription.step.authorization.preview') }}" target="_blank">
+                        <a href="{{ Storage::url(session('step1.authorization')) }}" target="_blank">
                             Visualizar PDF
                         </a>
                     </p>

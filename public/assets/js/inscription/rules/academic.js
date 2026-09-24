@@ -58,7 +58,7 @@ $(document).ready(function () {
             school_ra: {
                 required: true,
                 pattern: /^\d{3}\.\d{3}\.\d{3}-[A-Za-z0-9]{1}$/,
-                noSimplePatterns: true
+                // noSimplePatterns: true
             },
             school_city: {
                 required: true,

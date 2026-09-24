@@ -35,7 +35,8 @@
             <label for="registroAcademico" class="form-label required">Registro Acadêmico - RA </label>
             <input type="text" name="school_ra" id="school_ra"
                 class="form-control @error('school_ra') is-invalid @enderror"
-                value="{{ old('school_ra', session('step4.school_ra')) }}">
+                value="{{ old('school_ra', session('step4.school_ra')) }}" aria-describedby="raHelp">
+            <small id="raHelp" class="text-muted fst-italic"><i class="bi bi-info-circle"></i> Caso não tenha registro acadêmico, digite "000.000.000-0".</small>
             @error('school_ra')
                 <div class="invalid-feedback">
                     {{ $message }}

@@ -138,7 +138,7 @@
                     <div class="flex-grow-1">
                         <div class="mb-2">
                             <strong>Arquivo enviado anteriormente.</strong>
-                            <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
+                            <a href="{{ Storage::url(session('step6.pne_report')) }}" target="_blank"
                                 class="ms-2">
                                 Visualizar PDF <i class="bi bi-box-arrow-up-right ms-1"></i>
                             </a>

@@ -71,7 +71,7 @@
                 <span class="review-label">Nome social</span>
                 <span class="review-value d-flex flex-column align-items-end gap-1">
                     {{ $step1['social_name'] }}
-                    <a href="{{ Storage::disk('public')->url(session('step1.authorization')) }}" target="_blank"
+                    <a href="{{ Storage::url(session('step1.authorization')) }}" target="_blank"
                         class="small text-decoration-none">
                         <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
                     </a>
@@ -284,7 +284,7 @@
                 <span class="review-label">Descrição</span>
                 <span class="review-value d-flex flex-column align-items-end gap-1">
                     {{ $step6['accessibility_description'] }}
-                    <a href="{{ Storage::disk('public')->url(session('step6.pne_report')) }}" target="_blank"
+                    <a href="{{ Storage::url(session('step6.pne_report')) }}" target="_blank"
                         class="small text-decoration-none">
                         <i class="bi bi-file-earmark-medical me-1"></i>Ver laudo
                     </a>

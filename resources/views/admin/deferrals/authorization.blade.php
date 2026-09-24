@@ -53,7 +53,7 @@
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
                         <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
-                            Cancelar
+                            <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
 
@@ -73,7 +73,7 @@
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
                         <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Voltar
+                            <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
 
