@@ -285,14 +285,23 @@ Route::prefix('admin')
         Route::prefix('sistema')
             ->name('system.')
             ->group(function () {
-                Route::get('redefinir-dados', [SettingController::class, 'index'])->name('index');
-                Route::post('resetar', [SettingController::class, 'reset'])->name('reset');
-                Route::post('liberar-acesso-local', [SettingController::class, 'location'])->name('publish.location');
-                Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])->name('publish.result');
+                Route::get('redefinir-dados', [SettingController::class, 'index'])
+                    ->name('index');
+                Route::post('resetar', [SettingController::class, 'reset'])
+                    ->name('reset');
+                Route::post('liberar-acesso-local', [SettingController::class, 'location'])
+                    ->name('publish.location');
+                Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])
+                    ->name('publish.result');
                 // Route::put('liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
-                Route::get('backups', [SettingController::class, 'listBackups'])->name('backups.index');
-                Route::get('backups/{filename}/download', [SettingController::class, 'downloadBackup'])->name('backups.download');
-                Route::delete('backups/{filename}', [SettingController::class, 'deleteBackup'])->name('backups.delete');
+                Route::post('backups/gerar', [SettingController::class, 'createBackup'])
+                    ->name('backups.store');
+                Route::get('backups', [SettingController::class, 'listBackups'])
+                    ->name('backups.index');
+                Route::get('backups/{filename}/download', [SettingController::class, 'downloadBackup'])
+                    ->name('backups.download');
+                Route::delete('backups/{filename}', [SettingController::class, 'deleteBackup'])
+                    ->name('backups.delete');
             });
 
         // Deferimentos

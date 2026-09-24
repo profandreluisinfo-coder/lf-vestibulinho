@@ -36,6 +36,87 @@ class SettingController extends Controller
     }
 
     /**
+     * Gera um backup manual, sob demanda (botão na tela de backups).
+     */
+    public function createBackup()
+    {
+        try {
+            $fileName = $this->generateBackup();
+
+            Log::info('Backup manual gerado', ['filename' => $fileName]);
+
+            return redirect()
+                ->route('admin.backups.index')
+                ->with('success', "Backup \"$fileName\" gerado com sucesso.");
+        } catch (\Throwable $e) {
+            Log::error('Erro ao gerar backup manual', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->route('admin.system.backups.index')
+                ->with('error', $this->limparUtf8($e->getMessage()));
+        }
+    }
+
+    /**
+     * Gera um backup completo do banco de dados (.sql) e salva na pasta de backups.
+     * Retorna o nome do arquivo gerado.
+     *
+     * @throws \Exception se o mysqldump falhar
+     */
+    private function generateBackup(): string
+    {
+        // Dados de conexão (pega automaticamente do seu .env)
+        $host = config('database.connections.mysql.host');
+        $port = config('database.connections.mysql.port');
+        $db = config('database.connections.mysql.database');
+        $user = config('database.connections.mysql.username');
+        $password = config('database.connections.mysql.password');
+
+        // Nome do arquivo com data e hora
+        $fileName = 'backup_completo_' . now()->format('Y-m-d_H-i-s') . '.sql';
+
+        // Caminho real do arquivo, sempre consistente com o disco 'local'
+        $completePath = Storage::disk('local')->path('backups/' . $fileName);
+
+        // Garante que a pasta "backups" existe
+        $backupDir = Storage::disk('local')->path('backups');
+        if (!File::exists($backupDir)) {
+            File::makeDirectory($backupDir, 0755, true, true);
+        }
+
+        // Monta o comando do mysqldump
+        $comand = [
+            env('MYSQLDUMP_PATH', 'mysqldump'),
+            '-h',
+            $host,
+            '-P',
+            $port,
+            '-u',
+            $user,
+            "--password={$password}",
+            $db,
+        ];
+
+        // Executa o comando e salva SOMENTE a saída normal (o SQL de verdade)
+        $process = new SymfonyProcess($comand);
+        $process->setTimeout(300);
+        $process->run(function ($type, $output) use ($completePath) {
+            if ($type === SymfonyProcess::OUT) {
+                file_put_contents($completePath, $output, FILE_APPEND);
+            }
+        });
+
+        if (!$process->isSuccessful()) {
+            $erro = $this->limparUtf8($process->getErrorOutput());
+            throw new \Exception('Falha ao gerar o backup: ' . $erro);
+        }
+
+        return $fileName;
+    }
+
+    /**
      * Redefine o sistema
      *
      * Garante que só admin possa resetar o sistema.
@@ -61,59 +142,7 @@ class SettingController extends Controller
             }
 
             // ===== BACKUP COMPLETO DO BANCO (antes de apagar qualquer coisa) =====
-
-            // Dados de conexão (pega automaticamente do seu .env)
-            $host = config('database.connections.mysql.host');
-            $port = config('database.connections.mysql.port');
-            $db = config('database.connections.mysql.database');
-            $user = config('database.connections.mysql.username');
-            $password = config('database.connections.mysql.password');
-
-            // Nome do arquivo com data e hora
-            $fileName = 'backup_completo_' . now()->format('Y-m-d_H-i-s') . '.sql';
-
-            // Caminho completo onde o arquivo vai ser salvo
-            // $completePath = storage_path('app/backups/' . $fileName);
-            $completePath = Storage::disk('local')->path('backups/' . $fileName);
-
-            // Garante que a pasta "backups" existe
-            // Storage::disk('local')->makeDirectory('backups');
-            // Garante que a pasta "backups" existe (cria com força, se precisar)
-            $backupDir = storage_path('app/backups');
-
-            if (!File::exists($backupDir)) {
-                File::makeDirectory($backupDir, 0755, true, true);
-            }
-
-            // Monta o comando do mysqldump
-            $comand = [
-                env('MYSQLDUMP_PATH', 'mysqldump'), // usa o caminho do .env, ou "mysqldump" como reserva
-                '-h',
-                $host,
-                '-P',
-                $port,
-                '-u',
-                $user,
-                "--password={$password}",
-                $db,
-            ];
-
-            // Executa o comando e salva SOMENTE a saída normal (o SQL de verdade) no arquivo
-            $process = new SymfonyProcess($comand);
-            $process->setTimeout(300); // 5 minutos, pra bancos grandes
-            $process->run(function ($type, $output) use ($completePath) {
-                // Só grava no arquivo se for saída normal (stdout)
-                if ($type === SymfonyProcess::OUT) {
-                    file_put_contents($completePath, $output, FILE_APPEND);
-                }
-                // Se for erro/aviso (stderr), simplesmente ignora aqui
-            });
-
-            if (!$process->isSuccessful()) {
-                // Limpa o texto de erro pra evitar caracteres inválidos quebrando o JSON
-                $erro = $this->limparUtf8($process->getErrorOutput());
-                throw new \Exception('Falha ao gerar o backup: ' . $erro);
-            }
+            $this->generateBackup();
 
             // ===== FIM DO BACKUP — a partir daqui, começa a remoção dos dados =====
 

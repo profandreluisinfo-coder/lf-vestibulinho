@@ -245,7 +245,7 @@
                     <i class="bi bi-info-circle text-muted fs-5 mt-1 flex-shrink-0"></i>
                     <div>
                         <p class="fw-semibold mb-1" style="color: var(--text-dark); font-size: var(--font-size-sm);">
-                            Nenhuma grade de eventos definida
+                            Nenhuma grade de eventos foi definida.
                         </p>
                         <p class="mb-0 text-muted" style="font-size: var(--font-size-sm);">
                             Use o botão <strong>Definir Eventos</strong> acima para configurar o calendário deste processo

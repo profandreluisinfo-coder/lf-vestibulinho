@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', 'Painel Administrativo | Vestibulinho LF')</title>
+    <title>@yield('page-title', 'Painel Administrativo | Vestibulinho LF' . ' ' . $process?->year)</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -201,19 +201,19 @@
                 </div>
 
                 <div class="menu-section">
-                    <div class="menu-section-title">Sistema</div>
-                    <div class="menu-item">
-                        <a href="{{ route('admin.system.index') }}"
-                            class="menu-link {{ request()->routeIs('admin.system.index') ? 'active' : '' }}">
-                            <i class="bi bi-gear"></i>
-                            <span>Configurações</span>
-                        </a>
-                    </div>
+                    <div class="menu-section-title">Sistema</div>                    
                     <div class="menu-item">
                         <a href="{{ route('admin.system.backups.index') }}"
                             class="menu-link {{ request()->routeIs('admin.system.backups.index') ? 'active' : '' }}">
                             <i class="bi bi-hdd"></i>
-                            <span>Backups</span>
+                            <span>Backup</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ route('admin.system.index') }}"
+                            class="menu-link {{ request()->routeIs('admin.system.index') ? 'active' : '' }}">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                            <span>Redefinir</span>
                         </a>
                     </div>
                     <div class="menu-item p-0">
