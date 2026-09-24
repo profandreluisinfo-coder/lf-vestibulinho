@@ -46,7 +46,7 @@ class SettingController extends Controller
             Log::info('Backup manual gerado', ['filename' => $fileName]);
 
             return redirect()
-                ->route('admin.backups.index')
+                ->route('admin.system.backups.index')
                 ->with('success', "Backup \"$fileName\" gerado com sucesso.");
         } catch (\Throwable $e) {
             Log::error('Erro ao gerar backup manual', [
@@ -246,17 +246,6 @@ class SettingController extends Controller
         return $bytes . ' bytes';
     }
 
-    // public function downloadBackup($fileName)
-    // {
-    //     $caminho = 'backups/' . $fileName;
-
-    //     if (!Storage::disk('local')->exists($caminho)) {
-    //         abort(404, 'Backup não encontrado.');
-    //     }
-
-    //     return Storage::disk('local')->download($caminho);
-    // }
-
     /**
      * Baixa um arquivo de backup específico.
      */
@@ -293,27 +282,6 @@ class SettingController extends Controller
             ->route('admin.system.backups.index') // troque pelo nome da sua rota de listagem
             ->with('success', 'Backup excluído com sucesso.');
     }
-
-    /**
-     * Altera o status de um arquivo de edital.
-     *
-     * Este método alterna o status de um arquivo de edital da pasta 'notices' no banco de dados.
-     * Se o arquivo estiver publicado, ele será despublicado e vice-versa.
-     *
-     * @param \App\Models\Notice $notice Arquivo de edital a ser publicado/despublicado.
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    // public function notice(): RedirectResponse
-    // {
-    //     $setting = Setting::firstOrCreate(['id' => 1]);
-
-    //     $setting->notice = !$setting->notice; // alterna o valor
-    //     $setting->save();
-
-    //     Cache::forget('global_settings'); // MUITO IMPORTANTE!
-
-    //     return alertSuccess('Status alterado com sucesso!', 'admin.notices.index');
-    // }
 
     /**
      * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
