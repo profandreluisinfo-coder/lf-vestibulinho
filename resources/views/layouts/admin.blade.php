@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', 'Painel Administrativo | Vestibulinho LF' . ' ' . $process?->year)</title>
+    <title>@yield('page-title', 'Painel Administrativo') — Vestibulinho LF {{ $process?->year }}</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -24,7 +24,7 @@
     @stack('datatable-styles')
 
     {{-- Estilos --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/admin/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/styles.css') }}">
 
     @stack('styles')
 
@@ -108,19 +108,53 @@
                         <span>Inscrições</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.*') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.index') ? 'show' : '' }}"
                         id="menuInscricoes">
                         <a href="{{ route('admin.inscriptions.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
                             <i class="bi bi-people me-1"></i> Candidatos
                         </a>
+                    </div>
+                </div>
+
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuAnalises')">
+                        <i class="bi bi-clipboard-check"></i>
+                        <span>Análises</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcd') || request()->routeIs('admin.inscriptions.lgbts') ? 'show' : '' }}"
+                        id="menuAnalises">
                         <a href="{{ route('admin.inscriptions.pcd') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcd') ? 'active' : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>
                         <a href="{{ route('admin.inscriptions.lgbts') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.social.name') ? 'active' : '' }}">
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Nome Social
+                        </a>
+                    </div>
+                </div>
+
+                <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuRelatorios')">
+                        <i class="bi bi-clipboard-data"></i>
+                        <span>Relatórios</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.reports.*') ? 'show' : '' }}"
+                        id="menuRelatorios">
+                        {{-- <a href="{{ route('admin.reports.stats') }}" --}}
+                        <a href=""
+                            {{-- class="dropdown-item-custom {{ request()->routeIs('admin.reports.stats') ? 'active' : '' }}"> --}}
+                            class="dropdown-item-custom {{ 'tesste' ? 'active' : '' }}">
+                            <i class="bi bi-pie-chart me-1"></i> Estatísticas Gerais
+                        </a>
+                        {{-- <a href="{{ route('admin.reports.ranking') }}" --}}
+                        <a href=""
+                            {{-- class="dropdown-item-custom {{ request()->routeIs('admin.reports.ranking') ? 'active' : '' }}"> --}}
+                            class="dropdown-item-custom {{ 'teste' ? 'active' : '' }}">
+                            <i class="bi bi-trophy me-1"></i> Ranking de Classificação
                         </a>
                     </div>
                 </div>
@@ -143,7 +177,7 @@
                             class="dropdown-item-custom {{ request()->routeIs('admin.exam.create') ? 'active' : '' }}">
                             <i class="bi bi-calendar2-week me-1"></i> Agendar
                         </a>
-                        
+
                         <a href="{{ route('admin.archives.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
                             <i class="bi bi-file-earmark-pdf me-1"></i> Publicar
@@ -201,7 +235,7 @@
                 </div>
 
                 <div class="menu-section">
-                    <div class="menu-section-title">Sistema</div>                    
+                    <div class="menu-section-title">Sistema</div>
                     <div class="menu-item">
                         <a href="{{ route('admin.system.backups.index') }}"
                             class="menu-link {{ request()->routeIs('admin.system.backups.index') ? 'active' : '' }}">
@@ -285,7 +319,7 @@
     </header>
 
     <!-- Conteúdo -->
-    <main class="main-content">     
+    <main class="main-content">
 
         @include('shared.toasts')
 

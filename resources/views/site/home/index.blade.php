@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho ' . $process?->year . ' · EM Dr. Leandro Franceschini')
+@section('title', 'EM Dr. Leandro Franceschini')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/home/index.css') }}" />

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('city', 45);
             $table->string('state', 2);
             $table->year('year');
-            $table->string('ra', 20)->unique();
+            $table->string('ra', 20)->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('academic');
+        Schema::dropIfExists('academics');
     }
 };

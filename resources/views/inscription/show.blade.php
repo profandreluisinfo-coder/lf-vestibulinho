@@ -154,8 +154,8 @@
                         <div class="info-block-row">
                             <div>
                                 <div style="font-size:0.9rem; font-weight:500;">
-                                    {{ $user?->pne?->description }} -
-                                    {{ $user?->pne?->support }}
+                                    Descrição: {{ $user?->pne?->description }} -
+                                    Requer: {{ $user?->pne?->support }}
                                 </div>
 
                                 @if ($user?->pne?->report && Storage::disk('public')->exists($user?->pne?->report))
@@ -188,16 +188,15 @@
                         {{-- Modalidade de concorrência (AC x PNE) --}}
                         @if ($user?->pne?->status === 'accepted')
                             <div class="modality-note modality-pne d-flex align-items-start gap-2">
-                                <i class="bi bi-flag-fill mt-1"></i>
-                                <div>
+                                <div><i class="bi bi-flag-fill mt-1"></i>
                                     Você concorre às vagas destinadas a
                                     <strong>Pessoas com Necessidades Especiais (PNE)</strong>.
                                 </div>
                             </div>
                         @elseif ($user?->pne?->status === 'pending')
                             <div class="modality-note modality-pending d-flex align-items-start gap-2">
-                                <i class="bi bi-hourglass-split mt-1"></i>
-                                <div>
+                                
+                                <div><i class="bi bi-info-circle mt-1"></i>
                                     Enquanto seu pedido está em análise, você concorre provisoriamente às vagas de
                                     <strong>Ampla Concorrência (AC)</strong>.
                                 </div>

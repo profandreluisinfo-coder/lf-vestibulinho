@@ -40,11 +40,7 @@ Route::middleware(['auth', NotAdmin::class])
                 Route::get('dados-pessoais', [InscriptionController::class, 'personal'])
                     ->name('personal');
                 Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
-                Route::get('modelo-autorizacao', [InscriptionController::class, 'downloadAuthorizationTemplate'])
-                    ->name('authorization.template');
-                Route::get('autorizacao-enviada', [InscriptionController::class, 'previewSessionAuthorization'])
-                    ->name('authorization.preview');
-
+                
                 Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])
                     ->name('certificate');
                 Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
@@ -77,6 +73,9 @@ Route::middleware(['auth', NotAdmin::class])
 
                 Route::get('confirmar-dados', [InscriptionController::class, 'confirm'])
                     ->name('confirm');
+                
+                Route::get('documento/{tipo}', [InscriptionController::class, 'showDocument'])
+                    ->name('document');
 
                 Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])
                     ->name('finalize');
@@ -93,7 +92,7 @@ Route::middleware(['auth', NotAdmin::class])
                         ->name('exam');
 
                     // PDF Cartão do resultado da Prova
-                    Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])                    
+                    Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])
                         ->middleware([IsResultEnabled::class])
                         ->name('result');
 

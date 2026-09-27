@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Provas Anteriores — Vestibulinho · EM Dr. Leandro Franceschini')
+@section('title', 'Provas Anteriores')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/archives/index.css') }}" />

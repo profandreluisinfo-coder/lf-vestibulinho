@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', $post->title . ' - EM Dr Leandro Franceschini')
+@section('title', $post?->title)
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/posts/show.css') }}" />

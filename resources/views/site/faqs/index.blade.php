@@ -4,7 +4,7 @@
 @extends('layouts.site')
 
 {{-- ── Título da página ──────────────────────────────────────── --}}
-@section('title', 'Vestibulinho LF - Perguntas Frequentes')
+@section('title', 'Perguntas Frequentes')
 
 {{-- ── CSS específico desta página ──────────────────────────── --}}
 @push('styles')

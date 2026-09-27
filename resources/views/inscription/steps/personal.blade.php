@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição - Dados Pessoais')
+@section('page-title', 'Dados Pessoais')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         @csrf
 
         <h5>Dados Pessoais</h5>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
             <label for="cpf" class="form-label required">CPF do candidato:</label>
             <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf"
                 value="{{ old('cpf', session('step1.cpf')) }}">
@@ -20,7 +20,7 @@
                 </div>
             @enderror
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label for="name" class="form-label required">Nome completo:</label>
             <input name="name" id="name" class="form-control @error('name') is-invalid @enderror"
                 value="{{ old('name', session('step1.name')) }}">
@@ -157,8 +157,8 @@
                 </div>
             @enderror
         </div>
-        <div class="form-group col-md-3">
-            <label for="doc_type" class="form-label required">Tipo de documento:</label>
+        <div class="form-group col-md-4">
+            <label for="doc_type" class="form-label required">Documento (tipo):</label>
             @php
                 $selectedDocType = old('doc_type', session('step1.doc_type'));
             @endphp
@@ -171,8 +171,8 @@
                 </option>
             </select>
         </div>
-        <div class="form-group col-md-3">
-            <label for="doc_number" class="form-label required">Nº do documento:</label>
+        <div class="form-group col-md-2">
+            <label for="doc_number" class="form-label required">Documento (nº):</label>
             <input type="text" class="form-control @error('doc_number') is-invalid @enderror" id="doc_number"
                 name="doc_number" minlength="7" maxlength="11"
                 value="{{ old('doc_number', session('step1.doc_number')) }}">
@@ -184,7 +184,7 @@
             @enderror
         </div>
         <div class="form-group col-md-3">
-            <label for="expedition_date" class="form-label required">Data de expedição:</label>
+            <label for="expedition_date" class="form-label required">Documento (expedição):</label>
             <input type="date" class="form-control @error('expedition') is-invalid @enderror" id="expedition"
                 name="expedition" value="{{ old('expedition', session('step1.expedition')) }}">
 
@@ -270,7 +270,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/inscription/rules/personal.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/inscription/personal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const socialNameOption1 = document.getElementById('radioYes');

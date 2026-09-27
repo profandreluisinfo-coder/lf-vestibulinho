@@ -20,6 +20,13 @@
                     <dt class="col-sm-3">Candidato</dt>
                     <dd class="col-sm-9">{{ $user->name }}</dd>
 
+                    @if ($user?->lgbt && $user->lgbt?->status === "accepted")
+
+                    <dt class="col-sm-3">Nome Social</dt>
+                    <dd class="col-sm-9 text-primary fw-bold">{{ $user->lgbt?->name }}</dd>
+
+                    @endif
+
                     <dt class="col-sm-3">Inscrição</dt>
                     <dd class="col-sm-9">{{ $user->inscription?->id }}</dd>
 

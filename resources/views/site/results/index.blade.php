@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho LF ' . ($process?->year ?? '') . ' - Classificação Geral')
+@section('title', 'Classificação Geral')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/results/index.css') }}" />

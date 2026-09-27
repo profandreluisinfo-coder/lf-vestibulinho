@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição - Pessoas com Deficiência (PcD)')
+@section('page-title', 'Pessoas com Deficiência (PcD)')
 
 @section('content')
 
@@ -174,6 +174,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/inscription/ui/pcd.js') }}"></script>
-    <script src="{{ asset('assets/js/inscription/rules/pcd.js') }}"></script>
+    <script src="{{ asset('assets/js/ui/inscription/pcd.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/inscription/pcd.js') }}"></script>
 @endpush

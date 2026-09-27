@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição - Pesquisa de Interação de Curso')
+@section('page-title', 'Pesquisa de Interação de Curso')
 
 @section('content')
 
@@ -59,5 +59,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/inscription/rules/course.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/inscription/course.js') }}"></script>
 @endpush

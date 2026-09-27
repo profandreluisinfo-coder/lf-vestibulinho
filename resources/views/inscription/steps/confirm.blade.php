@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição - Confirmar Dados')
+@section('page-title', 'Confirmar Dados')
 
 <script src="{{ asset('assets/js/shared/reload.js') }}"></script>
 
@@ -378,7 +378,7 @@
             <a href="{{ route('inscription.step.course') }}" class="btn btn-secondary btn-sm">
                 <i class="bi bi-arrow-left-circle me-1"></i> Voltar
             </a>
-            <button type="button" class="btn btn-success btn-sm" onclick="confirmFinalize()">
+            <button type="button" class="btn btn-primary btn-sm w-auto" onclick="confirmFinalize()">
                 Confirmar inscrição <i class="bi bi-check-circle ms-1"></i>
             </button>
         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Recuperar Senha — Vestibulinho LF' . $process?->year)
+@section('title', 'Recuperação de Senha')
 
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 

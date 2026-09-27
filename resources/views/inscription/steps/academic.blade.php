@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Inscrição - Dados Escolares')
+@section('page-title', 'Dados Escolares')
 
 @section('content')
 
@@ -143,5 +143,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/inscription/rules/academic.js') }}"></script>
+    <script src="{{ asset('assets/js/rules/inscription/academic.js') }}"></script>
 @endpush

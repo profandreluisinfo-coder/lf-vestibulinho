@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Registrar Dados de Acesso — Vestibulinho LF')
+@section('title', 'Registro de Dados de Acesso')
 
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 

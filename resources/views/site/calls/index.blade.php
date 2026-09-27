@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho LF ' . ($process?->year ?? '') . ' - Convocação para Matrícula')
+@section('title', 'Convocação para Matrícula')
 
 @push('styles')
     <style>

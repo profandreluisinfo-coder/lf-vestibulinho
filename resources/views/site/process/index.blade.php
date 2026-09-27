@@ -1,6 +1,6 @@
 @extends('layouts.site')
 
-@section('title', 'Vestibulinho LF · Calendário')
+@section('title', 'Calendário')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/process/index.css') }}" />

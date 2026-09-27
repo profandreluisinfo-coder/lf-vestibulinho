@@ -10,14 +10,14 @@
 
     @stack('metas')
 
-    <title>@yield('page-title', 'Vestibulinho LF')</title>
+    <title>Vestibulinho LF {{ $process?->year }} - Inscrição - @yield('page-title')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <link rel="stylesheet" href="{{ asset('assets/css/layouts/forms/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/forms/styles.css') }}">
 
     @stack('styles')
 

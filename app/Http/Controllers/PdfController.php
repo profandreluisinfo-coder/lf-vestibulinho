@@ -122,8 +122,6 @@ class PdfController extends Controller
         return $pdf->download($filename);
     }
 
-    
-
     /**
      * Gera um PDF com o cartão do local de prova do candidato.
      *
