@@ -154,7 +154,7 @@
                         <div class="info-block-row">
                             <div>
                                 <div style="font-size:0.9rem; font-weight:500;">
-                                    Descrição: {{ $user?->pne?->description }} -
+                                    Condição: {{ $user?->pne?->description }} -
                                     Requer: {{ $user?->pne?->support }}
                                 </div>
 

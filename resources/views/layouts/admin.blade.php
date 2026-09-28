@@ -127,11 +127,11 @@
                         id="menuAnalises">
                         <a href="{{ route('admin.inscriptions.pcd') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcd') ? 'active' : '' }}">
-                            <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
+                            <i class="bi bi-universal-access me-1"></i> Laudos/Relatórios
                         </a>
                         <a href="{{ route('admin.inscriptions.lgbts') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
-                            <i class="bi bi-gender-trans me-1"></i> Nome Social
+                            <i class="bi bi-gender-trans me-1"></i> Autorizações
                         </a>
                     </div>
                 </div>

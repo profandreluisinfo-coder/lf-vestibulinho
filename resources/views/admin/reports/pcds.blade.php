@@ -12,10 +12,10 @@
                 <h6 class="mb-0 text-muted fw-normal">Pessoas com Deficiência</h6>
             </div>
 
-            <button id="pdfButton" class="btn btn-sm btn-danger">
+            <a id="pdfButton" href="{{ route('admin.reports.pcds.pdf') }}" class="btn btn-sm btn-danger">
                 <i class="bi bi-filetype-pdf"></i>
                 <span>Gerar PDF</span>
-            </button>
+            </a>
         </div>
 
         <div class="table-responsive">
@@ -25,21 +25,24 @@
                     <tr>
                         <th><i class="bi bi-hash me-1"></i>Inscrição</th>
                         <th><i class="bi bi-person me-1"></i>Candidato</th>
+                        <th><i class="bi bi-credit-card me-1"></i>CPF</th>
                         <th>Condição</th>
                         <th>Requer</th>
-                        <th><i class="bi bi-credit-card me-1"></i>CPF</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     @forelse ($pcds as $pcd)
                         <tr>
                             <td class="text-center">{{ $pcd->user->inscription->id ?? '-' }}</td>
-                            <td>{{ $pcd->user->name ?? '-' }}</td>
+                            <td>{{ $pcd->user->lgbt?->status === 'accepted' ? $pcd->user->lgbt?->name : $pcd->user->name }}
+                            </td>
                             <td class="text-center">{{ $pcd->user->cpf ?? '-' }}</td>
+                            <td>{{ $pcd->description }}</td>
+                            <td>{{ $pcd->support }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center text-muted py-4">
+                            <td colspan="5" class="text-center text-muted py-4">
                                 Nenhum candidato encontrado.
                             </td>
                         </tr>

@@ -70,7 +70,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Eventos do Processo Seletivo</h6>
             </div>
             
-            <a href="{{ route('admin.process.edit', $process?->id) }}" class="btn btn-sm btn-secondary">
+            <a href="{{ route('admin.process.edit', $process?->id) }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-pencil-square"></i>
                 {{ $process?->exists() ? 'Editar Eventos' : 'Definir Eventos' }}
             </a>

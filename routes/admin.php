@@ -289,6 +289,8 @@ Route::prefix('admin')
                 ->name('pcds');
                 Route::get('lgbts', [ReportController::class, 'lgbts'])
                 ->name('lgbts');
+                Route::get('pcd/pdf', [ReportController::class, 'pcdsToPdf'])
+                ->name('pcds.pdf');
             });
         // Sistema
         Route::prefix('sistema')
