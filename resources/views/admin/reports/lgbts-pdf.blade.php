@@ -10,25 +10,23 @@
 </head>
 <body>
     <h4 class="line">Vestibulinho LF {{ $process?->year}}</h4>
-    <h4>Candidatos com Deficiência e Laudo/Relatório Médico Aprovado</h4>
+    <h4>Candidatos com uso de Nome Social Aprovado</h4>
     <table>
         <thead>
             <tr>
                 <th>Inscrição</th>
                 <th>Candidato</th>
+                <th>Nome Social</th>
                 <th>CPF</th>
-                <th>Condição</th>
-                <th>Requer</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($pcds as $pcd)
+            @foreach ($lgbts as $lgbt)
                 <tr>
-                    <td>{{ $pcd->user->inscription->id }}</td>
-                    <td>{{ $pcd->user->lgbt?->status === 'accepted' ? $pcd->user->lgbt->name : $pcd->user->name }}</td>
-                    <td>{{ $pcd->user->cpf }}</td>
-                    <td>{{ $pcd->description }}</td>
-                    <td>{{ $pcd->support }}</td>
+                    <td>{{ $lgbt->user->inscription->id }}</td>
+                    <td>{{ $lgbt->user->name }}</td>
+                    <td>{{ $lgbt->name }}</td>
+                    <td>{{ $lgbt->user->cpf }}</td>
                 </tr>
             @endforeach
         </tbody>

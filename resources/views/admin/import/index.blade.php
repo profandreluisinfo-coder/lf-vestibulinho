@@ -27,7 +27,7 @@
             <div class="alert alert-success d-flex flex-row align-items-center mb-3">
                 <small class="text-success fw-semibold">
                     <i class="bi bi-check-circle me-2"></i>
-                    {{ $count }} notas importadas com sucesso! <a href="{{ route('admin.results.index') }}">
+                    {{ $count }} notas importadas com sucesso! <a href="{{ route('admin.reports.classification') }}">
                         Ver resultados →
                     </a>
                 </small>

@@ -275,13 +275,6 @@ Route::prefix('admin')
                 Route::delete('excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
             });
 
-        // Resultados
-        Route::prefix('resultados')
-            ->name('results.')
-            ->group(function () {
-                Route::get('notas-e-classificacao', [ResultController::class, 'index'])
-                ->name('index');
-            });
         Route::prefix('relatorios')
             ->name('reports.')
             ->group(function(){
@@ -289,8 +282,12 @@ Route::prefix('admin')
                 ->name('pcds');
                 Route::get('lgbts', [ReportController::class, 'lgbts'])
                 ->name('lgbts');
-                Route::get('pcd/pdf', [ReportController::class, 'pcdsToPdf'])
+                Route::get('lgbts/pdf', [ReportController::class, 'lgbtsToPdf'])
+                ->name('lgbts.pdf');
+                Route::get('pcds/pdf', [ReportController::class, 'pcdsToPdf'])
                 ->name('pcds.pdf');
+                Route::get('notas-e-classificacao', [ReportController::class, 'classification'])
+                ->name('classification');
             });
         // Sistema
         Route::prefix('sistema')

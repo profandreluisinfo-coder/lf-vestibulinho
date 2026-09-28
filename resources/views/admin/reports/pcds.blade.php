@@ -33,10 +33,10 @@
                 <tbody class="table-group-divider">
                     @forelse ($pcds as $pcd)
                         <tr>
-                            <td class="text-center">{{ $pcd->user->inscription->id ?? '-' }}</td>
+                            <td class="text-center">{{ $pcd->user->inscription?->id }}</td>
                             <td>{{ $pcd->user->lgbt?->status === 'accepted' ? $pcd->user->lgbt?->name : $pcd->user->name }}
                             </td>
-                            <td class="text-center">{{ $pcd->user->cpf ?? '-' }}</td>
+                            <td class="text-center">{{ $pcd->user->cpf }}</td>
                             <td>{{ $pcd->description }}</td>
                             <td>{{ $pcd->support }}</td>
                         </tr>
@@ -58,6 +58,3 @@
     </div>
 
 @endsection
-
-@push('scripts')
-@endpush

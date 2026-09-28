@@ -165,7 +165,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.reports.*', 'admin.results.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.reports.*']) ? 'show' : '' }}"
                         id="menuRelatorios">
                         {{-- <a href="{{ route('admin.reports.stats') }}" --}}
                         <a href="{{ route('admin.reports.pcds')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.pcds') ? 'active' : '' }}">
@@ -174,8 +174,8 @@
                         <a href="{{ route('admin.reports.lgbts')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.lgbts') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Nome Social
                         </a>
-                        <a href="{{ route('admin.results.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.results.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.reports.classification') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
                             <i class="bi bi-list-ol me-1"></i> Classificação
                         </a>
                     </div>
@@ -206,8 +206,6 @@
                         </a>
                     </div>
                 </div>
-
-                
 
                 <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuModelos')">
@@ -368,7 +366,7 @@
                         </a>
                     </div>
                     <div class="col-6">
-                        <a href="{{ route('admin.results.index') }}" class="offcanvas-card">
+                        <a href="{{ route('admin.reports.classification') }}" class="offcanvas-card">
                             <div class="offcanvas-card-icon" style="background: #fef3c7; color: #f59e0b;">
                                 <i class="bi bi-bar-chart-line"></i>
                             </div>
@@ -395,7 +393,7 @@
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                     </a>
-                    <a href="{{ route('admin.results.index') }}"
+                    <a href="{{ route('admin.reports.classification') }}"
                         class="list-group-item list-group-item-action border-0 px-0">
                         <i class="bi bi-list-ol me-2"></i>Ver Classificação
                     </a>
