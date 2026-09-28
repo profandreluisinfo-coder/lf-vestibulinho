@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\{
     NoticeController,
     PostController,
     ProcessController,
+    ReportController,
     ResultController,
     SettingController,
     TemplateController,
@@ -278,9 +279,17 @@ Route::prefix('admin')
         Route::prefix('resultados')
             ->name('results.')
             ->group(function () {
-                Route::get('notas-e-classificacao', [ResultController::class, 'index'])->name('index');
+                Route::get('notas-e-classificacao', [ResultController::class, 'index'])
+                ->name('index');
             });
-
+        Route::prefix('relatorios')
+            ->name('reports.')
+            ->group(function(){
+                Route::get('pcds', [ReportController::class, 'pcds'])
+                ->name('pcds');
+                Route::get('lgbts', [ReportController::class, 'lgbts'])
+                ->name('lgbts');
+            });
         // Sistema
         Route::prefix('sistema')
             ->name('system.')

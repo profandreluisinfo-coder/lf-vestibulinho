@@ -137,24 +137,46 @@
                 </div>
 
                 <div class="menu-dropdown">
+                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
+                        <i class="bi bi-database"></i>
+                        <span>Dados</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
+                        id="menuResultados">
+                        @if ($exam_results_count > 0)
+                            <a href="javascript:void(0)" id="exportLink"
+                                class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
+                                onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
+                                <i class="bi bi-file-excel me-1"></i> Planilha de Notas
+                            </a>
+                        @endif
+                        <a href="{{ route('admin.import.home') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
+                            <i class="bi bi-upload me-1"></i> Importar Notas
+                        </a>
+                    </div>
+                </div>
+
+                <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuRelatorios')">
                         <i class="bi bi-clipboard-data"></i>
                         <span>Relatórios</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.reports.*') ? 'show' : '' }}"
+
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.reports.*', 'admin.results.*']) ? 'show' : '' }}"
                         id="menuRelatorios">
                         {{-- <a href="{{ route('admin.reports.stats') }}" --}}
-                        <a href=""
-                            {{-- class="dropdown-item-custom {{ request()->routeIs('admin.reports.stats') ? 'active' : '' }}"> --}}
-                            class="dropdown-item-custom {{ 'tesste' ? 'active' : '' }}">
-                            <i class="bi bi-pie-chart me-1"></i> Estatísticas Gerais
+                        <a href="{{ route('admin.reports.pcds')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.pcds') ? 'active' : '' }}">
+                            <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>
-                        {{-- <a href="{{ route('admin.reports.ranking') }}" --}}
-                        <a href=""
-                            {{-- class="dropdown-item-custom {{ request()->routeIs('admin.reports.ranking') ? 'active' : '' }}"> --}}
-                            class="dropdown-item-custom {{ 'teste' ? 'active' : '' }}">
-                            <i class="bi bi-trophy me-1"></i> Ranking de Classificação
+                        <a href="{{ route('admin.reports.lgbts')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.lgbts') ? 'active' : '' }}">
+                            <i class="bi bi-gender-trans me-1"></i> Nome Social
+                        </a>
+                        <a href="{{ route('admin.results.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.results.index') ? 'active' : '' }}">
+                            <i class="bi bi-list-ol me-1"></i> Classificação
                         </a>
                     </div>
                 </div>
@@ -185,31 +207,7 @@
                     </div>
                 </div>
 
-                <div class="menu-dropdown">
-                    <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
-                        <i class="bi bi-bar-chart-line"></i>
-                        <span>Resultados</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*', 'admin.results.*']) ? 'show' : '' }}"
-                        id="menuResultados">
-                        @if ($exam_results_count > 0)
-                            <a href="javascript:void(0)" id="exportLink"
-                                class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
-                                onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
-                                <i class="bi bi-file-excel me-1"></i> Planilha de Notas
-                            </a>
-                        @endif
-                        <a href="{{ route('admin.import.home') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
-                            <i class="bi bi-upload me-1"></i> Importar Notas
-                        </a>
-                        <a href="{{ route('admin.results.index') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.results.index') ? 'active' : '' }}">
-                            <i class="bi bi-list-ol me-1"></i> Classificação
-                        </a>
-                    </div>
-                </div>
+                
 
                 <div class="menu-dropdown">
                     <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuModelos')">
