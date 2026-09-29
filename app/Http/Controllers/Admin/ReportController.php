@@ -5,13 +5,37 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\ExamResult;
+use App\Models\Inscription;
 use App\Models\Lgbt;
 use App\Models\Pne;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ReportController extends Controller
 {
+    public function registrantsByCourse(): View
+    {
+        $inscriptions = Inscription::with(['course', 'user'])
+            ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
+            ->orderBy('courses.name')
+            ->select('inscriptions.*')
+            ->get();
+        
+        // Candidatos por curso
+        $courses = DB::table('inscriptions')
+            ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
+            ->select('courses.name as curso', DB::raw('COUNT(inscriptions.id) as total'))
+            ->groupBy('courses.name')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('admin.reports.registrants-by-course', [
+            'inscriptions' => $inscriptions,
+            'cursos' => $courses
+        ]);
+    }
+
     public function lgbts(): View
     {
         $lgbts = Lgbt::where('status', 'accepted')

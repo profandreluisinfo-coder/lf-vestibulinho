@@ -10,8 +10,8 @@ $(document).ready(function () {
         lengthChange: true,
         pageLength: 25,
         lengthMenu: [
-            [10, 25, 50, 100, 500],
-            [10, 25, 50, 100, 500]
+            [10, 25, 50, 100, 500, -1],
+            [10, 25, 50, 100, 500, "Todos"]
         ],
         ordering: true,
         info: true,

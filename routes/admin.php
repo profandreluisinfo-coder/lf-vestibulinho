@@ -278,6 +278,8 @@ Route::prefix('admin')
         Route::prefix('relatorios')
             ->name('reports.')
             ->group(function(){
+                Route::get('inscritos-por-curso', [ReportController::class, 'registrantsByCourse'])
+                ->name('registrants.by.course');
                 Route::get('pcds', [ReportController::class, 'pcds'])
                 ->name('pcds');
                 Route::get('lgbts', [ReportController::class, 'lgbts'])

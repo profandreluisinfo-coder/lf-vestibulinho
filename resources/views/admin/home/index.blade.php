@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - Painel Administrativo')
+@section('page-title', 'Painel Administrativo')
 
 @push('styles')
     <style>

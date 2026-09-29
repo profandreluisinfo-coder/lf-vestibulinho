@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', 'Painel Administrativo') — Vestibulinho LF {{ $process?->year }}</title>
+    <title>Vestibulinho LF {{ $process?->year }} - @yield('page-title')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -167,7 +167,7 @@
 
                     <div class="dropdown-menu-custom {{ request()->routeIs(['admin.reports.*']) ? 'show' : '' }}"
                         id="menuRelatorios">
-                        {{-- <a href="{{ route('admin.reports.stats') }}" --}}
+                        <a href={{ route('admin.reports.registrants.by.course') }} class="dropdown-item-custom {{ request()->routeIs('admin.reports.registrants.by.course') ? 'active' : '' }}"> Candidatos por Curso</a>
                         <a href="{{ route('admin.reports.pcds')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.pcds') ? 'active' : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
                         </a>

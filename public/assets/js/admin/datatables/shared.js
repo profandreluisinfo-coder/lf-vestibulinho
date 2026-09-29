@@ -1,7 +1,10 @@
 $(document).ready(function () {
-    var table = $('#subscribers').DataTable({
+
+    $('#subscribers').DataTable({
         language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
+            emptyTable: "Nenhum candidato encontrado.",
+            zeroRecords: "Nenhum candidato encontrado para essa busca."
         },
         buttons: ["excel", "pdf", "print", "colvis"],
         responsive: true,
@@ -17,12 +20,4 @@ $(document).ready(function () {
         dom: 'lBfrtip'
     });
 
-    // Filtro personalizado
-    $('#filterVerified').on('change', function () {
-        if (this.checked) {
-            table.column(2).search('Sim').draw();
-        } else {
-            table.column(2).search('').draw();
-        }
-    });
 });

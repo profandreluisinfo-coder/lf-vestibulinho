@@ -38,7 +38,7 @@ class AdminController extends Controller
             ->limit(10)
             ->get();
 
-        // // Candidatos por curso
+        // Candidatos por curso
         $courses = DB::table('inscriptions')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
             ->select('courses.name as curso', DB::raw('COUNT(inscriptions.id) as total'))
