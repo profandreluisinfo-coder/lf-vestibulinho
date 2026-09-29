@@ -20,8 +20,8 @@
             margin-bottom: 12px;
         }
 
-        .line { 
-            border-bottom: 1px solid black; 
+        .line {
+            border-bottom: 1px solid black;
         }
 
         table {
@@ -44,34 +44,81 @@
 
 <body>
 
-    <h1 class="line">Vestibulinho LF {{ $process?->year}} - Relatório Geral - {{ $type === 'summary' ? 'Resumo' : 'Lista de candidatos' }}</h1>
+    <h1 class="line">Vestibulinho LF {{ $selectedProcess?->year ?? $process?->year }} - Relatório Geral -
+        {{ $type === 'summary' ? 'Resumo' : 'Lista de candidatos' }}</h1>
     <div class="data">Gerado em {{ now()->format('d/m/Y H:i') }}</div>
 
     @if ($type === 'summary')
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Grupo</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($summary as $row)
+        @if ($groupBy === 'course_gender')
+
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ $row->grupo }}</td>
-                        <td>{{ $row->total }}</td>
+                        <th>Curso</th>
+                        <th>Masculino</th>
+                        <th>Feminino</th>
+                        <th>Outro</th>
+                        <th>Prefiro não informar</th>
+                        <th>Total</th>
                     </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Total geral</th>
-                    <th>{{ $summary->sum('total') }}</th>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($summary as $row)
+                        <tr>
+                            <td>{{ $row->grupo }}</td>
+                            <td>{{ $row->masculino }}</td>
+                            <td>{{ $row->feminino }}</td>
+                            <td>{{ $row->outro }}</td>
+                            <td>{{ $row->nao_informado }}</td>
+                            <td>{{ $row->total }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total geral</th>
+                        <th>{{ $summary->sum('masculino') }}</th>
+                        <th>{{ $summary->sum('feminino') }}</th>
+                        <th>{{ $summary->sum('outro') }}</th>
+                        <th>{{ $summary->sum('nao_informado') }}</th>
+                        <th>{{ $summary->sum('total') }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        @else
+            <table>
+                <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($summary as $row)
+                        <tr>
+                            <td>{{ $row->grupo }}</td>
+                            <td>{{ $row->total }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total geral</th>
+                        <th>{{ $summary->sum('total') }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        @endif
     @else
+        @php
+            $statusLabels = [
+                'pending' => 'PENDENTE',
+                'accepted' => 'ACEITO',
+                'rejected' => 'REJEITADO',
+            ];
+        @endphp
+
         <table>
             <thead>
                 <tr>
@@ -90,8 +137,8 @@
                         <td>{{ $inscription->course->name }}</td>
                         <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
                         <td>{{ $inscription->user->gender }}</td>
-                        <td>{{ $inscription->user->pne?->status ?? '—' }}</td>
-                        <td>{{ $inscription->user->lgbt?->status ?? '—' }}</td>
+                        <td>{{ $statusLabels[$inscription->user->pne?->status] ?? '—' }}</td>
+                        <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
                     </tr>
                 @endforeach
             </tbody>

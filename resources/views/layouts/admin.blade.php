@@ -34,7 +34,7 @@
 <body>
     @php
         $exam_results_count = \App\Models\ExamResult::count();
-        $especificosAtivo = request()->routeIs(['admin.reports.pcds', 'admin.reports.lgbts']);
+        // $especificosAtivo = request()->routeIs(['admin.reports.pcds', 'admin.reports.lgbts']);
     @endphp
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">

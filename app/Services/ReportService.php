@@ -48,6 +48,11 @@ class ReportService
             });
         }
 
+        // Processo/ano
+        if (! empty($filters['process_id'])) {
+            $query->where('inscriptions.process_id', $filters['process_id']);
+        }
+
         return $query;
     }
 
@@ -73,6 +78,10 @@ class ReportService
     // RELATÓRIO TIPO RESUMO
     public function summary(array $filters, string $groupBy): Collection
     {
+        if ($groupBy === 'course_gender') {
+            return $this->courseByGender($filters);
+        }
+
         // Lista permitida: só estes agrupamentos existem
         $columns = [
             'course'  => 'courses.name',
