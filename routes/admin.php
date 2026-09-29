@@ -277,19 +277,27 @@ Route::prefix('admin')
 
         Route::prefix('relatorios')
             ->name('reports.')
-            ->group(function(){
+            ->group(function () {
+
+
+                Route::get('geral', [ReportController::class, 'general'])
+                    ->name('general');
+                Route::get('geral/pdf', [ReportController::class, 'generalPdf'])
+                    ->name('general.pdf');
+
+
                 Route::get('inscritos-por-curso', [ReportController::class, 'registrantsByCourse'])
-                ->name('registrants.by.course');
+                    ->name('registrants.by.course');
                 Route::get('pcds', [ReportController::class, 'pcds'])
-                ->name('pcds');
+                    ->name('pcds');
                 Route::get('lgbts', [ReportController::class, 'lgbts'])
-                ->name('lgbts');
+                    ->name('lgbts');
                 Route::get('lgbts/pdf', [ReportController::class, 'lgbtsToPdf'])
-                ->name('lgbts.pdf');
+                    ->name('lgbts.pdf');
                 Route::get('pcds/pdf', [ReportController::class, 'pcdsToPdf'])
-                ->name('pcds.pdf');
+                    ->name('pcds.pdf');
                 Route::get('notas-e-classificacao', [ReportController::class, 'classification'])
-                ->name('classification');
+                    ->name('classification');
             });
         // Sistema
         Route::prefix('sistema')

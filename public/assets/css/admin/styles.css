@@ -305,6 +305,57 @@ i {
     padding-left: calc(1rem - 3px);
 }
 
+/* ===== Submenu "Específicos" ===== */
+.submenu-toggle-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    margin-bottom: 2px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: #94a3b8;
+    font-family: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.submenu-toggle-custom:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+/* Quando uma página filha está ativa: só destaca o texto,
+   o item filho já mostra a barra azul */
+.submenu-toggle-custom.active {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.submenu-chevron {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.submenu-toggle-custom[aria-expanded="true"] .submenu-chevron {
+    transform: rotate(180deg);
+}
+
+.submenu-custom {
+    display: none;
+    margin-left: 16px;
+    padding-left: 8px;
+    border-left: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.submenu-custom.show {
+    display: block;
+}
+
 .sidebar form {
     padding: 0 16px;
     margin-bottom: 4px;

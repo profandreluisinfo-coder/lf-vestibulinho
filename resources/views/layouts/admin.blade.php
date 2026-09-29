@@ -34,6 +34,7 @@
 <body>
     @php
         $exam_results_count = \App\Models\ExamResult::count();
+        $especificosAtivo = request()->routeIs(['admin.reports.pcds', 'admin.reports.lgbts']);
     @endphp
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
@@ -165,20 +166,39 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.reports.*']) ? 'show' : '' }}"
-                        id="menuRelatorios">
-                        <a href={{ route('admin.reports.registrants.by.course') }} class="dropdown-item-custom {{ request()->routeIs('admin.reports.registrants.by.course') ? 'active' : '' }}"> Candidatos por Curso</a>
-                        <a href="{{ route('admin.reports.pcds')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.pcds') ? 'active' : '' }}">
-                            <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
-                        </a>
-                        <a href="{{ route('admin.reports.lgbts')}}" class="dropdown-item-custom {{ request()->routeIs('admin.reports.lgbts') ? 'active' : '' }}">
-                            <i class="bi bi-gender-trans me-1"></i> Nome Social
-                        </a>
-                        <a href="{{ route('admin.reports.classification') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
-                            <i class="bi bi-list-ol me-1"></i> Classificação
-                        </a>
-                    </div>
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.reports.*') ? 'show' : '' }}"
+    id="menuRelatorios">
+
+    @php
+        $isGeneral = request()->routeIs('admin.reports.general');
+        $hasShortcut = request()->hasAny(['type', 'group_by', 'pcd', 'social_name']);
+    @endphp
+
+    <a href="{{ route('admin.reports.general') }}"
+        class="dropdown-item-custom {{ $isGeneral && ! $hasShortcut ? 'active' : '' }}">
+        <i class="bi bi-funnel me-1"></i> Relatório Geral
+    </a>
+
+    <a href="{{ route('admin.reports.general', ['type' => 'summary', 'group_by' => 'course']) }}"
+        class="dropdown-item-custom {{ $isGeneral && request('type') === 'summary' && request('group_by') === 'course' ? 'active' : '' }}">
+        <i class="bi bi-bar-chart me-1"></i> Candidatos por Curso
+    </a>
+
+    <a href="{{ route('admin.reports.general', ['pcd' => 'all']) }}"
+        class="dropdown-item-custom {{ $isGeneral && request('pcd') === 'all' ? 'active' : '' }}">
+        <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
+    </a>
+
+    <a href="{{ route('admin.reports.general', ['social_name' => 'all']) }}"
+        class="dropdown-item-custom {{ $isGeneral && request('social_name') === 'all' ? 'active' : '' }}">
+        <i class="bi bi-gender-trans me-1"></i> Nome Social
+    </a>
+
+    <a href="{{ route('admin.reports.classification') }}"
+        class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
+        <i class="bi bi-list-ol me-1"></i> Classificação
+    </a>
+</div>
                 </div>
 
                 <div class="menu-dropdown">

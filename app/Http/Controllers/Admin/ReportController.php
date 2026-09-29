@@ -8,12 +8,60 @@ use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\Lgbt;
 use App\Models\Pne;
+use App\Services\ReportService;
+use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ReportController extends Controller
 {
+    // route: admin.reports.general
+    public function general(Request $request, ReportService $service): View
+    {
+        $filters = $request->validate([
+            'type'        => ['nullable', 'in:list,summary'],
+            'group_by'    => ['nullable', 'in:course,gender,school,process'],
+            'course_id'   => ['nullable', 'exists:courses,id'],
+            'gender'      => ['nullable', 'in:1,2,3,4'],
+            'pcd'         => ['nullable', 'in:all,pending,accepted,rejected'],
+            'social_name' => ['nullable', 'in:all,pending,accepted,rejected'],
+            'school'      => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $type = $filters['type'] ?? 'list';
+
+        return view('admin.reports.general', [
+            'type'         => $type,
+            'inscriptions' => $type === 'list' ? $service->candidatesList($filters) : null,
+            'summary'      => $type === 'summary' ? $service->summary($filters, $filters['group_by'] ?? 'course') : null,
+            'courses'      => Course::orderBy('name')->get(),
+        ]);
+    }
+
+    public function generalPdf(Request $request, ReportService $service)
+    {
+        $filters = $request->validate([
+            'type'        => ['nullable', 'in:list,summary'],
+            'group_by'    => ['nullable', 'in:course,gender,school,process'],
+            'course_id'   => ['nullable', 'exists:courses,id'],
+            'gender'      => ['nullable', 'in:1,2,3,4'],
+            'pcd'         => ['nullable', 'in:all,pending,accepted,rejected'],
+            'social_name' => ['nullable', 'in:all,pending,accepted,rejected'],
+            'school'      => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $type = $filters['type'] ?? 'list';
+
+        $pdf = Pdf::loadView('admin.reports.general-pdf', [
+            'type'         => $type,
+            'inscriptions' => $type === 'list' ? $service->candidatesListAll($filters) : null,
+            'summary'      => $type === 'summary' ? $service->summary($filters, $filters['group_by'] ?? 'course') : null,
+        ]);
+
+        return $pdf->stream('relatorio-geral.pdf');
+    }
+
     public function registrantsByCourse(): View
     {
         $inscriptions = Inscription::with(['course', 'user'])
@@ -21,7 +69,7 @@ class ReportController extends Controller
             ->orderBy('courses.name')
             ->select('inscriptions.*')
             ->get();
-        
+
         // Candidatos por curso
         $courses = DB::table('inscriptions')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')

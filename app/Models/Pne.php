@@ -15,7 +15,7 @@ class Pne extends Model
         'status',
         'observations'
     ];
-
+    
     /**
      * Defina o valor de um determinado atributo no modelo.
      *

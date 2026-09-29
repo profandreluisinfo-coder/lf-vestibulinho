@@ -47,9 +47,7 @@
                 </tbody>
             </table>
 
-            <div class="d-flex justify-content-center mt-3">
-                {{ $lgbts->links() }}
-            </div>
+            
         </div>
 
     </div>

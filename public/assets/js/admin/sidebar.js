@@ -93,6 +93,19 @@ function toggleDropdown(id) {
     }
 }
 
+/**
+ * Toggle de submenus (dentro de um dropdown)
+ * Não interfere no dropdown pai
+ */
+function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    if (!submenu) return;
+
+    const button = submenu.previousElementSibling;
+    const isOpen = submenu.classList.toggle('show');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 // ==================== INICIALIZAÇÃO ====================
 
 document.addEventListener('DOMContentLoaded', function () {
