@@ -85,9 +85,7 @@
 
         </div>
 
-        {{-- <form id="import-results" class="mb-3" action="{{ route('admin.import.home') }}" method="POST" --}}
-            {{-- enctype="multipart/form-data"> --}}
-            <form id="import-results" action="{{ route('admin.import.import') }}" data-redirect="{{ route('admin.results.index') }}">
+            <form id="import-results" action="{{ route('admin.import.import') }}" data-redirect="{{ route('admin.reports.classification') }}">
             @csrf
 
             <div class="form-group mb-3">

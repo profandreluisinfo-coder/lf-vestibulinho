@@ -283,7 +283,7 @@ Route::prefix('admin')
                 Route::get('geral/pdf', [ReportController::class, 'generalPdf'])
                     ->name('general.pdf');
                 Route::get('notas-e-classificacao', [ReportController::class, 'classification'])
-                    ->name('classification');
+                    ->name('classification'); // admin.reports.classification
             });
         // Sistema
         Route::prefix('sistema')
