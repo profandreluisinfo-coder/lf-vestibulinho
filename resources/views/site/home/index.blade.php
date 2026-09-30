@@ -382,7 +382,7 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="faq-item reveal delay-1">
+                    {{-- <div class="faq-item reveal delay-1">
                         <div class="faq-question" onclick="toggleFaq(this)">
                             O que devo fazer antes de efetuar minha inscrição?
                             <div class="faq-icon"><i class="bi bi-plus-lg"></i></div>
@@ -397,9 +397,9 @@
                             validação desse procedimento será possível acessar a <a href="{{ route('login') }}" class="text-decoration-none text-teal">Área do
                                 Candidato</a> e realizar sua inscrição.
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div class="faq-item reveal delay-1">
+                    {{-- <div class="faq-item reveal delay-1">
                         <div class="faq-question" onclick="toggleFaq(this)">
                             Não recebi o e-mail de confirmação do registro. O que fazer?
                             <div class="faq-icon"><i class="bi bi-plus-lg"></i></div>
@@ -411,7 +411,7 @@
                             <strong>"Reenviar E-mail de Verificação"</strong>. Verifique sua caixa de spam ou
                             lixo eletrônico. Se ainda assim não receber, contate a secretaria da escola.
                         </div>
-                    </div>
+                    </div> --}}
 
                     @foreach ($faqs as $faq)
                         <div class="faq-item reveal delay-1">
