@@ -8,6 +8,13 @@
 
 @section('content')
 
+@php
+    // Define o tipo do post uma única vez e reaproveita na página toda
+    $isComunicado = $post->type === \App\Models\Post::TYPE_INFO;
+    $typeLabel    = $isComunicado ? 'Comunicado' : 'Notícia';
+    $badgeClass   = $isComunicado ? 'news-card-badge-navy' : 'news-card-badge-teal';
+@endphp
+
 <!-- ===== BREADCRUMB ===== -->
 <section class="post-breadcrumb-section">
     <div class="container-lg">
@@ -16,7 +23,7 @@
                 Home
             </a>
             <span> / </span>
-            <a href="{{ route('site.faqs.index') }}" class="post-breadcrumb-link">
+            <a href="{{ route('site.posts.index') }}" class="post-breadcrumb-link">
                 Notícias e Comunicados
             </a>
             <span> / </span>
@@ -25,20 +32,15 @@
     </div>
 </section>
 
-<!-- ===== COMUNICADO ===== -->
+<!-- ===== NOTÍCIA / COMUNICADO ===== -->
 <section class="post-section">
     <div class="container-lg">
         <div class="post-container">
-            <!-- Header do Comunicado -->
+
+            <!-- Cabeçalho -->
             <div class="post-header">
-                <span class="news-card-badge news-card-badge-navy post-badge">
-                    @if($post->type === 'oficial')
-                        Comunicado Oficial
-                    @elseif($post->type === 'importante')
-                        Comunicado Importante
-                    @else
-                        Comunicado
-                    @endif
+                <span class="news-card-badge {{ $badgeClass }} post-badge">
+                    {{ $typeLabel }}
                 </span>
 
                 <h1 class="section-title post-title">
@@ -47,23 +49,25 @@
 
                 <div class="post-info-container">
                     <div>
-                        <strong class="post-info-label">Publicado em:</strong> 
-                        {{ $post->published_at->format('d \d\e M \d\e Y') }}
+                        <strong class="post-info-label">Publicado em:</strong>
+                        {{ $post->published_at->translatedFormat('d \d\e F \d\e Y') }}
                     </div>
-                    <div>
-                        <strong class="post-info-label">Por:</strong> 
-                        {{ $post->author->name }}
-                    </div>
+
+                    @if ($post->author)
+                        <div>
+                            <strong class="post-info-label">Por:</strong>
+                            {{ $post->author->name }}
+                        </div>
+                    @endif
                 </div>
 
                 <div class="post-divider"></div>
             </div>
 
-            <!-- Imagem do Comunicado -->
-            @if($post->image)
+            <!-- Imagem -->
+            @if ($post->image)
                 <div class="post-image-container">
-                    <img src="{{ Storage::url($post->image) }}"
-                        alt="Imagem do Comunicado">
+                    <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}">
                 </div>
             @endif
 
@@ -72,17 +76,57 @@
                 {!! $post->content !!}
             </div>
 
-            <!-- Divider -->
+            <!-- Link relacionado (coluna "url") -->
+            @if ($post->url && \Illuminate\Support\Str::startsWith($post->url, ['http://', 'https://']))
+                <div class="post-link-container">
+                    <a href="{{ $post->url }}"
+                       class="post-external-link"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-box-arrow-up-right"></i>
+                        Acessar link relacionado
+                    </a>
+                </div>
+            @endif
+
+            <!-- Arquivos anexos -->
+            @if ($post->attachments->isNotEmpty())
+                <div class="post-attachments">
+                    <h2 class="post-attachments-title">
+                        <i class="bi bi-paperclip"></i> Arquivos para download
+                    </h2>
+
+                    <ul class="post-attachments-list">
+                        @foreach ($post->attachments as $attachment)
+                            <li>
+                                <a href="{{ Storage::url($attachment->path) }}"
+                                   class="post-attachment-link"
+                                   target="_blank" rel="noopener">
+                                    <i class="bi {{ $attachment->mime_type === 'application/pdf' ? 'bi-file-earmark-pdf-fill' : 'bi-file-earmark-fill' }}"></i>
+                                    <span class="post-attachment-name">{{ $attachment->name }}</span>
+
+                                    @if ($attachment->size)
+                                        <small class="post-attachment-size">
+                                            {{ number_format($attachment->size / 1024, 0, ',', '.') }} KB
+                                        </small>
+                                    @endif
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Divisor -->
             <div class="post-divider"></div>
 
-            <!-- Navegação entre news -->
+            <!-- Navegação entre posts -->
             <div class="post-nav-container">
                 <!-- Anterior -->
-                @if($previous)
-                    <a href="{{ route('site.posts.show', $previous->slug) }}" 
+                @if ($previous)
+                    <a href="{{ route('site.posts.show', $previous->slug) }}"
                        class="post-nav-link">
                         <div class="post-nav-label">
-                            ← Comunicado Anterior
+                            ← Anterior
                         </div>
                         <div class="post-nav-title">
                             {{ \Illuminate\Support\Str::limit($previous->title, 50) }}
@@ -93,11 +137,11 @@
                 @endif
 
                 <!-- Próximo -->
-                @if($next)
-                    <a href="{{ route('site.posts.show', $next->slug) }}" 
+                @if ($next)
+                    <a href="{{ route('site.posts.show', $next->slug) }}"
                        class="post-nav-link post-nav-link-next">
                         <div class="post-nav-label">
-                            Próximo Comunicado →
+                            Próximo →
                         </div>
                         <div class="post-nav-title">
                             {{ \Illuminate\Support\Str::limit($next->title, 50) }}
@@ -111,7 +155,7 @@
             <!-- Voltar -->
             <div class="post-back-container">
                 <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
-                    <i class="bi bi-arrow-left me-2"></i> Voltar para notícias
+                    <i class="bi bi-arrow-left me-2"></i> Voltar para notícias e comunicados
                 </a>
             </div>
         </div>

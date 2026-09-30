@@ -9,35 +9,30 @@ class PostController extends Controller
 {
     public function index()
     {
-        // Apenas posts publicados
-        $posts = Post::type(Post::TYPE_NOTICIA)->published()->paginate(10);
+        $posts = Post::published()
+            ->latest()
+            ->paginate(10);
 
         return view('site.posts.index', compact('posts'));
     }
 
     public function show(string $slug)
     {
-        $post = Post::type(Post::TYPE_NOTICIA)
-            ->published()
+        $post = Post::published()
+            ->with('attachments')
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $previous = Post::type(Post::TYPE_NOTICIA)
-            ->published()
+        $previous = Post::published()
             ->where('published_at', '<', $post->published_at)
             ->orderByDesc('published_at')
             ->first();
 
-        $next = Post::type(Post::TYPE_NOTICIA)
-            ->published()
+        $next = Post::published()
             ->where('published_at', '>', $post->published_at)
             ->orderBy('published_at')
             ->first();
 
-        return view('site.posts.show', compact(
-            'post',
-            'previous',
-            'next'
-        ));
+        return view('site.posts.show', compact('post', 'previous', 'next'));
     }
 }

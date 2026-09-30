@@ -30,7 +30,8 @@
                         Sua carreira começa<br>aqui.
                     </h1>
                     <p class="hero-sub mb-4">
-                        4 cursos técnicos gratuitos integrados ao ensino médio. Uma oportunidade real de <br class="d-none d-md-block">transformar
+                        4 cursos técnicos gratuitos integrados ao ensino médio. Uma oportunidade real de <br
+                            class="d-none d-md-block">transformar
                         seu futuro. EM Dr Leandro Franceschini — inscrição online e acessível.
                     </p>
                     <div class="hero-actions d-flex flex-wrap gap-3">
@@ -131,7 +132,7 @@
 
                                 <div class="news-card-body">
                                     <span class="news-card-badge news-card-badge-teal">
-                                        Notícia
+                                        {{ $post->type === 'comunicado' ? 'Comunicado' : 'Notícia' }}
                                     </span>
 
                                     <h3 class="news-card-title">
@@ -143,7 +144,7 @@
                                     </p>
 
                                     <div class="news-card-meta">
-                                        <span class="news-card-date">Há 2 dias</span>
+                                        <span class="news-card-date">{{ $post->published_at->diffForHumans() }}</span>
                                         <a href="{{ route('site.posts.show', $post->slug) }}"
                                             class="news-card-link news-card-link-teal">
                                             Ler mais →
@@ -172,7 +173,8 @@
                 <div class="section-tag justify-content-center">Oferta Acadêmica</div>
                 <h2 class="section-title mb-3">Escolha seu <span>Curso Técnico</span></h2>
                 <p class="section-lead mx-auto text-center">
-                    Todos os cursos são gratuitos, presenciais, integrados ao ensino médio e emitem certificado de técnico. Escolha sua área e
+                    Todos os cursos são gratuitos, presenciais, integrados ao ensino médio e emitem certificado de técnico.
+                    Escolha sua área e
                     construa sua carreira.
                 </p>
             </div>
@@ -251,7 +253,8 @@
                         <div class="tl-node amber-node">4</div>
                         <div class="tl-content">
                             <h4><i class="bi bi-book-fill me-2 text-amber"></i>Estude e Prepare-se</h4>
-                            <p>Acesse as <a href="{{ route('site.archives.index') }}" class="text-amber">provas anteriores</a> disponíveis aqui no site para se preparar.</p>
+                            <p>Acesse as <a href="{{ route('site.archives.index') }}" class="text-amber">provas
+                                    anteriores</a> disponíveis aqui no site para se preparar.</p>
                         </div>
                     </div>
                     <div class="tl-item reveal-left">
@@ -394,7 +397,8 @@
                             em mãos antes de iniciar sua inscrição. Acesse <a href="{{ route('register') }}"
                                 class="text-decoration-none text-teal">o formulário de registro</a>, cadastre seu endereço
                             de e-mail e senha e siga as instruções para validar seus dados de acesso. Somente após a
-                            validação desse procedimento será possível acessar a <a href="{{ route('login') }}" class="text-decoration-none text-teal">Área do
+                            validação desse procedimento será possível acessar a <a href="{{ route('login') }}"
+                                class="text-decoration-none text-teal">Área do
                                 Candidato</a> e realizar sua inscrição.
                         </div>
                     </div>
