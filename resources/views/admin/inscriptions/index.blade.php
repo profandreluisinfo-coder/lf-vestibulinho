@@ -23,23 +23,20 @@
                 <span>Gerar PDF (Todos)</span>
             </button>
         </div>
-
-        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-            <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
-                <caption>Lista Geral de Inscritos</caption>
-                <thead class="table-success text-center">
-                    <tr>
-                        <th><i class="bi bi-hash me-1"></i>Inscrição</th>
-                        <th><i class="bi bi-person me-1"></i>Candidato</th>
-                        <th><i class="bi bi-credit-card me-1"></i>CPF</th>
-                        <th><i class="bi bi-gear me-1"></i>Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <!-- Os dados serão carregados via AJAX -->
-                </tbody>
-            </table>
-        </div>
+        <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
+            <caption>Lista Geral de Inscritos</caption>
+            <thead class="table-success text-center">
+                <tr>
+                    <th><i class="bi bi-hash me-1"></i>Inscrição</th>
+                    <th><i class="bi bi-person me-1"></i>Candidato</th>
+                    <th><i class="bi bi-credit-card me-1"></i>CPF</th>
+                    <th><i class="bi bi-gear me-1"></i>Ações</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <!-- Os dados serão carregados via AJAX -->
+            </tbody>
+        </table>
     </div>
 @endsection
 
