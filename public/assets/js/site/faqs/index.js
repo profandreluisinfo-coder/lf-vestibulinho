@@ -46,6 +46,12 @@ const CAT_CONFIG = {
         color: '#007F72',
         bg: 'rgba(0,127,114,.1)'
     },
+    convocacao: {
+        label: 'Convocação',
+        icon: 'bi-megaphone-fill',
+        color: '#F4A261',
+        bg: 'rgba(244,162,97,.12)'
+    }
 };
 
 function getCatConfig(cat) {
@@ -55,9 +61,14 @@ function getCatConfig(cat) {
     };
 }
 
+/* Deriva as categorias únicas a partir dos dados e ordena
+   alfabeticamente pelo label (pt-BR). Categorias sem config
+   conhecida caem em getCatConfig() e ainda assim são ordenadas
+   corretamente. */
 const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
     .filter(cat => cat)
-    .map(cat => ({ id: cat, ...getCatConfig(cat) }));
+    .map(cat => ({ id: cat, ...getCatConfig(cat) }))
+    .sort((a, b) => a.label.localeCompare(b.label, 'pt-BR', { sensitivity: 'base' }));
     
 /* ═══════════════════════════════════════════════════════════════
    ESTADO
