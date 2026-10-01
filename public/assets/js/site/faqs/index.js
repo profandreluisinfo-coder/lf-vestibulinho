@@ -67,12 +67,28 @@ function getCatConfig(cat) {
     };
 }
 
-/* Percorre CAT_CONFIG na ordem declarada (exceto _default) e
-   mantém apenas categorias que realmente existem no FAQ_DATA. */
-const CATEGORIES = Object.keys(CAT_CONFIG)
-    .filter(id => id !== '_default')
-    .filter(id => FAQ_DATA.some(f => f.cat === id))
-    .map(id => ({ id, ...CAT_CONFIG[id] }));
+const CAT_ORDER = [
+    'geral',
+    'inscricao',
+    'prova',
+    'resultado',
+    'convocacao',
+    'matricula',
+    'escola',
+    'cursos'
+];
+
+const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
+    .filter(cat => cat)
+    .map(cat => ({ id: cat, ...getCatConfig(cat) }))
+    .sort((a, b) => {
+        const ia = CAT_ORDER.indexOf(a.id);
+        const ib = CAT_ORDER.indexOf(b.id);
+        if (ia === -1 && ib === -1) return a.label.localeCompare(b.label, 'pt-BR');
+        if (ia === -1) return 1;
+        if (ib === -1) return -1;
+        return ia - ib;
+    });
     
 /* ═══════════════════════════════════════════════════════════════
    ESTADO
