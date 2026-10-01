@@ -167,7 +167,7 @@
         </div>
     </div>
 
-    @if ($process?->informations?->isInscriptionOpen())
+    @if ($process && $process->isInscriptionOpen())
         <!-- ═══════════════════════ CTA ══════════════════════════════ -->
         <section id="faq-cta">
             <div class="container text-center position-relative" style="z-index:1;">
@@ -185,7 +185,7 @@
                     </p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <div class="pulse-wrap">
-                            <a href="{{ route('register') }}" class="btn-cta-main">
+                            <a href="{{ route('register') }}" class="btn-cta-main js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
                             </a>
                         </div>
@@ -201,4 +201,6 @@
         const FAQ_DATA = {!! $faqsJson !!};
     </script>
     <script src="{{ asset('assets/js/site/faqs/index.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
 @endpush
