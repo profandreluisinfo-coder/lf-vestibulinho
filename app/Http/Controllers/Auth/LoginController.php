@@ -24,7 +24,7 @@ class LoginController extends Controller
     {
         $process = Process::current();
         
-        if (!$process?->status) {
+        if (!$process?->status && !$process->isInscriptionOpen()) {
             return alertError('O período de inscrições para o Processo Seletivo ainda não foi definido. Por favor, aguarde!', 'home');
         }
 
