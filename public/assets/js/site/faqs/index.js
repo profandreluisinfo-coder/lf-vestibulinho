@@ -10,12 +10,6 @@ const CAT_CONFIG = {
         color: '#6C757D',
         bg: 'rgba(108,117,125,.12)'
     },
-    geral: {
-        label: 'Geral',
-        icon: 'bi-question-circle-fill',
-        color: '#E07A3A',
-        bg: 'rgba(224,122,58,.12)'
-    },
     inscricao: {
         label: 'Inscrição',
         icon: 'bi-pencil-fill',
@@ -28,15 +22,21 @@ const CAT_CONFIG = {
         color: '#F4A261',
         bg: 'rgba(244,162,97,.12)'
     },
-    cursos: {
-        label: 'Cursos',
-        icon: 'bi-mortarboard-fill',
-        color: '#1B3E72',
-        bg: 'rgba(27,62,114,.1)'
-    },
     resultado: {
         label: 'Resultado',
         icon: 'bi-trophy-fill',
+        color: '#E07A3A',
+        bg: 'rgba(224,122,58,.12)'
+    },
+    convocacao: {
+        label: 'Convocação',
+        icon: 'bi-megaphone-fill',
+        color: '#F4A261',
+        bg: 'rgba(244,162,97,.12)'
+    },
+    geral: {
+        label: 'Geral',
+        icon: 'bi-question-circle-fill',
         color: '#E07A3A',
         bg: 'rgba(224,122,58,.12)'
     },
@@ -46,12 +46,18 @@ const CAT_CONFIG = {
         color: '#007F72',
         bg: 'rgba(0,127,114,.1)'
     },
-    convocacao: {
-        label: 'Convocação',
-        icon: 'bi-megaphone-fill',
-        color: '#F4A261',
-        bg: 'rgba(244,162,97,.12)'
-    }
+    escola: {
+        label: 'Escola',
+        icon: 'bi-building-fill',
+        color: '#1B3E72',
+        bg: 'rgba(27,62,114,.1)'
+    },
+    cursos: {
+        label: 'Cursos',
+        icon: 'bi-mortarboard-fill',
+        color: '#1B3E72',
+        bg: 'rgba(27,62,114,.1)'
+    },
 };
 
 function getCatConfig(cat) {
@@ -61,14 +67,12 @@ function getCatConfig(cat) {
     };
 }
 
-/* Deriva as categorias únicas a partir dos dados e ordena
-   alfabeticamente pelo label (pt-BR). Categorias sem config
-   conhecida caem em getCatConfig() e ainda assim são ordenadas
-   corretamente. */
-const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
-    .filter(cat => cat)
-    .map(cat => ({ id: cat, ...getCatConfig(cat) }))
-    .sort((a, b) => a.label.localeCompare(b.label, 'pt-BR', { sensitivity: 'base' }));
+/* Percorre CAT_CONFIG na ordem declarada (exceto _default) e
+   mantém apenas categorias que realmente existem no FAQ_DATA. */
+const CATEGORIES = Object.keys(CAT_CONFIG)
+    .filter(id => id !== '_default')
+    .filter(id => FAQ_DATA.some(f => f.cat === id))
+    .map(id => ({ id, ...CAT_CONFIG[id] }));
     
 /* ═══════════════════════════════════════════════════════════════
    ESTADO
