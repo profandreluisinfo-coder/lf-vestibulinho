@@ -75,7 +75,7 @@ const CAT_ORDER = [
     'convocacao',
     'matricula',
     'escola',
-    'cursos'
+    // 'cursos'
 ];
 
 const CATEGORIES = [...new Set(FAQ_DATA.map(f => f.cat))]
