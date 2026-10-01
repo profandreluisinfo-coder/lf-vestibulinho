@@ -68,7 +68,7 @@ class FaqController extends Controller
             'order' => $maxOrder + 1,
         ]);
 
-        return alertSuccess('success', 'FAQ criada com sucesso!');
+        return alertSuccess('FAQ criada com sucesso!');
     }
 
     /**
@@ -154,7 +154,7 @@ class FaqController extends Controller
         $faq->delete();
         // $faq->forceDelete();
 
-        return alertSuccess('success', 'FAQ excluida com sucesso!');
+        return alertSuccess('FAQ excluida com sucesso!');
     }
 
     public function publish(Faq $faq)
@@ -167,6 +167,6 @@ class FaqController extends Controller
         $faq->status = !$faq->status; // Alterna entre publicado (true) e não publicado (false)
         $faq->save();
 
-        return alertSuccess('success', 'Status da FAQ atualizado com sucesso!');
+        return alertSuccess('Status da FAQ atualizado com sucesso!');
     }
 }
