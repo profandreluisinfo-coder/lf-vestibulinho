@@ -54,18 +54,18 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="{{ route('admin.posts.index') }}"
-                        class="menu-link {{ request()->routeIs('admin.posts.index') ? 'active' : '' }}">
-                        <i class="bi bi-list"></i>
-                        <span>Notícias e Comunicados</span>
-                    </a>
-                </div>
-
-                <div class="menu-item">
                     <a href="{{ route('admin.index') }}"
                         class="menu-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
                         <i class="bi bi-house-door"></i>
                         <span>Início</span>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="{{ route('admin.posts.index') }}"
+                        class="menu-link {{ request()->routeIs('admin.posts.index') ? 'active' : '' }}">
+                        <i class="bi bi-list"></i>
+                        <span>Notícias e Comunicados</span>
                     </a>
                 </div>
 
