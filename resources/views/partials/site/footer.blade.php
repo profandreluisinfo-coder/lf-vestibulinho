@@ -48,8 +48,8 @@
                         <li><a href="{{ route('site.calendar.show') }}">Calendário</a></li>
                     @endif
                     <li><a href="{{ route('site.archives.index') }}">Provas Anteriores</a></li>
-                    <li><a href="{{ route('site.results.index') }}">Classificação</a></li>
-                    <li><a href="{{ route('site.calls.index') }}">Convocação</a></li>
+                    <li><a href="{{ $settings->isResultEnabled() ? route('site.results.index') : '#' }}">Classificação</a></li>
+                    <li><a href="{{ $calls_exists ? route('site.calls.index') : '#' }}">Convocação</a></li>
                 </ul>
             </div>
             <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
