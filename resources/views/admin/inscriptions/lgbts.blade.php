@@ -38,9 +38,10 @@
             <thead class="table-success text-center">
                 <tr>
                     <th scope="col"><i class="bi bi-hash me-1"></i>Inscrição</th>
-                    <th scope="col"><i class="bi bi-person me-1"></i>Candidato</th>
+                    <th scope="col"><i class="bi bi-person me-1"></i>Nome de Registro</th>
+                    <th scope="col"><i class="bi bi-gender-trans me-1"></i>Nome Social</th>
                     <th scope="col"><i class="bi bi-file-earmark-medical me-1"></i>Autorização</th>
-                    <th scope="col"><i class="bi bi-clipboard-check me-1"></i>Status</th>
+                    <th scope="col"><i class="bi bi-search me-1"></i>Análise</th>
                     <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
                 </tr>
             </thead>
@@ -55,6 +56,9 @@
                             @else
                                 {{ $user->name }}
                             @endif
+                        </td>
+                        <td class="text-center">
+                                {{ $user->lgbt->name ? $user->lgbt->name : '-' }}
                         </td>
                         <td class="text-center">
                             @if ($user->lgbt->authorization)

@@ -268,45 +268,26 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Inscrição</th>
                         <th>Candidato</th>
+                        <th>Gênero</th>
+                        <th>Nome Social</th>
+                        <th>Situação</th>
                         <th>Curso</th>
                         <th>Escola</th>
-                        <th>Gênero</th>
                         <th>PCD</th>
-                        <th>Nome Social</th>
+                        <th>Condição</th>
+                        <th>Requer</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($inscriptions as $inscription)
                         <tr>
+                            <td>{{ $inscription->id }}</td>
                             <td>{{ $inscription->user->name }}</td>
-                            <td>{{ $inscription->course->name }}</td>
-                            <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
                             <td>{{ $inscription->user->gender }}</td>
-                            <td>
-                                @switch($inscription->user->pne?->status)
-                                    @case('pending')
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-hourglass-split me-1"></i> Pendente
-                                        </span>
-                                    @break
-
-                                    @case('accepted')
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Aceito
-                                        </span>
-                                    @break
-
-                                    @case('rejected')
-                                        <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Rejeitado
-                                        </span>
-                                    @break
-
-                                    @default
-                                        —
-                                @endswitch
-                            </td>
+                            <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
                             <td>
                                 @switch($inscription->user->lgbt?->status)
                                     @case('pending')
@@ -331,10 +312,38 @@
                                         —
                                 @endswitch
                             </td>
+                            <td>{{ $inscription->course->name }}</td>
+                            <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
+                            <td>
+                                @switch($inscription->user->pne?->status)
+                                    @case('pending')
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-hourglass-split me-1"></i> Pendente
+                                        </span>
+                                    @break
+
+                                    @case('accepted')
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Aceito
+                                        </span>
+                                    @break
+
+                                    @case('rejected')
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-x-circle-fill me-1"></i> Rejeitado
+                                        </span>
+                                    @break
+
+                                    @default
+                                        —
+                                @endswitch
+                            </td>
+                            <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
+                            <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
                         </tr>
                         @empty
                             <tr>
-                                <td colspan="6">Nenhum candidato encontrado.</td>
+                                <td colspan="10">Nenhum candidato encontrado.</td>
                             </tr>
                         @endforelse
                     </tbody>

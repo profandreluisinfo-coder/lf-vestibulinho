@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Relatório Geral</title>
+    <title>Vestibulinho LF {{ $selectedProcess?->year ?? $process?->year }} - Relatório Geral</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -122,23 +122,31 @@
         <table>
             <thead>
                 <tr>
+                    <th>Inscrição</th>
                     <th>Candidato</th>
+                    <th>Gênero</th>
+                    <th>Nome Social</th>
+                    <th>Situação</th>
                     <th>Curso</th>
                     <th>Escola</th>
-                    <th>Gênero</th>
                     <th>PCD</th>
-                    <th>Nome Social</th>
+                    <th>Condição</th>
+                    <th>Requer</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($inscriptions as $inscription)
                     <tr>
+                        <td>{{ $inscription->id }}</td>
                         <td>{{ $inscription->user->name }}</td>
+                        <td>{{ $inscription->user->gender }}</td>
+                        <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
+                        <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
                         <td>{{ $inscription->course->name }}</td>
                         <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
-                        <td>{{ $inscription->user->gender }}</td>
                         <td>{{ $statusLabels[$inscription->user->pne?->status] ?? '—' }}</td>
-                        <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
+                        <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
+                        <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -39,8 +39,9 @@
                 <tr>
                     <th scope="col"><i class="bi bi-hash me-1"></i>Inscrição</th>
                     <th scope="col"><i class="bi bi-person me-1"></i>Candidato</th>
+                    <th scope="col"><i class="bi bi-universal-access me-1"></i>Condição Informada</th>
                     <th scope="col"><i class="bi bi-file-earmark-medical me-1"></i>Laudo/Relatório</th>
-                    <th scope="col"><i class="bi bi-clipboard-check me-1"></i>Status</th>
+                    <th scope="col"><i class="bi bi-search me-1"></i>Análise</th>
                     <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
                 </tr>
             </thead>
@@ -57,6 +58,9 @@
                             @endif
                         </td>
                         <td class="text-center">
+                            {{ $user->pne->description ? $user->pne->description : '-' }}
+                        </td>
+                        <td class="text-center">
                             @if ($user->pne->report)
                                 <a href="{{ Storage::url($user->pne->report) }}" target="_blank" class="btn btn-outline-primary btn-sm" title="Visualizar Laudo/Relatório">
                                     <i class="bi bi-file-earmark-medical"></i> Visualizar
@@ -64,7 +68,7 @@
                             @else
                                 <span class="text-muted">Nenhum arquivo</span>
                             @endif
-                        </td>
+                        </td>                        
                         <td class="text-center">
                             @if ($user->pne->status == 'pending')
                                 <i class="bi bi-hourglass-split text-warning ms-2" data-bs-toggle="popover"
