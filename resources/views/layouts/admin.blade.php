@@ -128,7 +128,7 @@
                         <span>Análises</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.inscriptions.lgbts') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.inscriptions.lgbts') || request()->routeIs('admin.inscriptions.resources') ? 'show' : '' }}"
                         id="menuAnalises">
                         <a href="{{ route('admin.inscriptions.pcds') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') ? 'active' : '' }}">
@@ -138,10 +138,10 @@
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Autorizações
                         </a>
-                        <a href="{{ route('admin.inscriptions.resources') }}"
+                        {{-- <a href="{{ route('admin.inscriptions.resources') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.resources') ? 'active' : '' }}">
                             <i class="bi bi-folder2-open me-1"></i> Recursos
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
 
