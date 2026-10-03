@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
@@ -9,6 +10,10 @@ use Illuminate\Support\Str;
 
 class Lgbt extends Model
 {
+    // Valores gravados na coluna `status` (definidos em Admin\DeferralController)
+    public const STATUS_ACCEPTED = 'accepted';
+    public const STATUS_REJECTED = 'rejected';
+
     protected $fillable = [
         'user_id',
         'name',
@@ -53,6 +58,18 @@ class Lgbt extends Model
     private function toUpper(?string $value): ?string
     {
         return $value ? Str::of(trim($value))->upper() : null;
+    }
+
+    /** Autorizações de nome social deferidas. */
+    public function scopeAccepted(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_ACCEPTED);
+    }
+
+    /** Autorizações de nome social indeferidas. */
+    public function scopeRejected(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_REJECTED);
     }
 
     public function user(): BelongsTo

@@ -27,7 +27,7 @@ class CallController extends Controller
 
         // verificar se 'calls' é uma coleção vazia
         if ($calls->isEmpty()) {
-            abort(404);
+            return redirect()->back();
         }
 
         return view('site.calls.index', compact('calls'));

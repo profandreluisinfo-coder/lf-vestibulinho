@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,10 +14,16 @@ class Inscription extends Model
 {
     use HasFactory;
 
+    // Valores gravados na coluna `status`. A deferida pode estar gravada como
+    // 'approved' ou 'accepted'; se só um deles for usado, deixe apenas esse.
+    public const STATUSES_APPROVED = ['approved', 'accepted'];
+    public const STATUS_REJECTED = 'rejected';
+
     protected $fillable = [
         'user_id',
         'course_id',
-        'process_id'
+        'process_id',
+        'status',
     ];
 
     protected function casts(): array
@@ -94,6 +101,26 @@ class Inscription extends Model
     public function process(): BelongsTo
     {
         return $this->belongsTo(Process::class);
+    }
+
+    // ── Scopes ───────────────────────────────────────────────
+
+    /** Inscrições deferidas. */
+    public function scopeApproved(Builder $query): Builder
+    {
+        return $query->whereIn('status', self::STATUSES_APPROVED);
+    }
+
+    /** Inscrições indeferidas. */
+    public function scopeRejected(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_REJECTED);
+    }
+
+    /** Inscrições de um processo seletivo. */
+    public function scopeForProcess(Builder $query, ?int $processId): Builder
+    {
+        return $query->where('process_id', $processId);
     }
 
     // 🔹 Limpa o cache automaticamente quando salvar ou excluir

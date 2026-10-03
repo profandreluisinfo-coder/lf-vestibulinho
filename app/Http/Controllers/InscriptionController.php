@@ -17,7 +17,7 @@ use App\Models\Resource;
 use App\Models\School;
 use App\Models\Template;
 use App\Services\InscriptionService;
-use App\Support\DocumentServer;
+// use App\Support\DocumentServer;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -103,13 +103,6 @@ class InscriptionController extends Controller
                 ($parts[1][0] ?? '')
         );
     }
-
-    // private function previewDocument(?string $path)
-    // {
-    //     abort_unless($path && Storage::disk('public')->exists($path), 404);
-
-    //     return Storage::disk('public')->response($path);
-    // }
 
     public function confirmInstructions(Request $request)
     {
@@ -245,7 +238,6 @@ class InscriptionController extends Controller
         return redirect()->route('inscription.step.pcd');
     }
 
-    // NOVO: 
     // Passo 6: Pessoas com Deficiência (PcD)
     public function pcd(): View|RedirectResponse
     {

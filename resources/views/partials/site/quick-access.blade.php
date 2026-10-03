@@ -1,30 +1,24 @@
-{{-- ═══════════════ ACESSO RÁPIDO ═══════════════
-     Colocar logo depois do <section class="hero"> em home/index.blade.php:
-         @include('partials.site.quick-access')
-     Fica fora de qualquer @if de inscrição: os links continuam úteis
-     depois de 31/10 (listas, classificação, convocação).
---}}
+{{-- ═══════════════ ACESSO RÁPIDO ═══════════════ --}}
 @php
     // Process::isInscriptionOpen() já inclui status === 'open'
     $inscricoesAbertas = (bool) $process?->isInscriptionOpen();
     $hasPublications = Route::has('site.publications.index');
-    $hasCalls = Route::has('site.calls.index');
 
     // A ordem aqui é a ordem na tela. Para esconder um card, use 'show' => false.
     $quickLinks = [
         [
             'show' => $hasPublications,
             'href' => $hasPublications ? route('site.publications.index') : '#',
-            'icon' => 'megaphone-fill',
-            'title' => 'Listas e comunicados',
-            'desc' => 'Deferidas, indeferidas e avisos',
+            'icon' => 'card-checklist',
+            'title' => 'Publicações',
+            'desc' => 'Listas de deferidos e indeferidos',
         ],
         [
             'show' => true,
-            'href' => route('login'),
-            'icon' => 'person-badge-fill',
-            'title' => 'Área do Candidato',
-            'desc' => 'Acompanhe sua inscrição',
+            'href' => route('site.results.index'),
+            'icon' => 'file-earmark-text-fill',
+            'title' => 'Recursos',
+            'desc' => 'Listas de resultados de análises de recursos',
         ],
         [
             'show' => (bool) $process?->edital,
@@ -49,8 +43,8 @@
             'desc' => 'Resultado e lista de aprovados',
         ],
         [
-            'show' => $hasCalls,
-            'href' => $hasCalls ? route('site.calls.index') : '#',
+            'show' => true,
+            'href' => route('site.calls.index'),
             'icon' => 'bell-fill',
             'title' => 'Convocação',
             'desc' => 'Chamada para matrícula',

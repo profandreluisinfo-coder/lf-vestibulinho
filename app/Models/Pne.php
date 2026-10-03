@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pne extends Model
 {
+    // Valores gravados na coluna `status` (definidos em Admin\DeferralController)
+    public const STATUS_ACCEPTED = 'accepted';
+    public const STATUS_REJECTED = 'rejected';
+
     protected $fillable = [
         'user_id',
         'description',
@@ -33,6 +38,18 @@ class Pne extends Model
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    /** Laudos/relatórios médicos deferidos. */
+    public function scopeAccepted(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_ACCEPTED);
+    }
+
+    /** Laudos/relatórios médicos indeferidos. */
+    public function scopeRejected(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_REJECTED);
     }
 
     public function user(): BelongsTo

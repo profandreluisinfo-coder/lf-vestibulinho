@@ -2,7 +2,7 @@
 
     <!-- Etapa 1 -->
     <a href="{{ route('admin.process.show') }}" class="step-item text-secondary text-center" title="Definir Calendário">
-        <i class="bi {{ $process ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+        <i class="bi {{ $events_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
         <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
     </a>
 
@@ -27,7 +27,7 @@
     <div class="step-divider"></div>
 
     <!-- Etapa 5 -->
-    <a href="{{ route('admin.system.publish.result') }}" class="step-item text-secondary text-center">
+    <a href="{{ route('admin.reports.classification') }}" class="step-item text-secondary text-center">
         <i
             class="bi {{ $settings->isResultEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
         <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>

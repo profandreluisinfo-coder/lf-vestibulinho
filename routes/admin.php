@@ -1,27 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{
-    AdminController,
-    ArchiveController,
-    CallController,
-    CourseController,
-    DeferralController,
-    ExamController,
-    ExportController,
-    FaqController,
-    ImportController,
-    InscriptionController,
-    LocalController,
-    NoticeController,
-    PostController,
-    ProcessController,
-    ReportController,
-    ResultController,
-    SettingController,
-    TemplateController,
-    UserController
-};
-
+use App\Http\Controllers\Admin\{ AdminController, ArchiveController, CallController, CourseController, DeferralController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController };
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -188,6 +167,16 @@ Route::prefix('admin')
                     ->name('publish');
             });
 
+        // Publicações (liberação das listas públicas)
+        Route::prefix('publicacoes')
+            ->name('publications.')
+            ->group(function () {
+                Route::get('/', [PublicationController::class, 'index'])
+                    ->name('index');
+                Route::patch('{list}', [PublicationController::class, 'toggle'])
+                    ->name('toggle');
+            });
+
         // Exportação
         Route::prefix('exportar')
             ->name('export.')
@@ -315,11 +304,6 @@ Route::prefix('admin')
         Route::prefix('deferimentos')
             ->name('deferrals.')
             ->group(function () {
-
-                Route::get('documentos/autorizacao/{user}', [DeferralController::class, 'previewAuthorization'])
-                    ->name('preview.authorization');
-                Route::get('documentos/laudo/{user}', [DeferralController::class, 'previewReport'])
-                    ->name('preview.report');
 
                 // Candidatos que solicitaram o uso de Nome Social
                 Route::get('deferrals/authorization/{user}/accept', [DeferralController::class, 'showAcceptAuthorization'])

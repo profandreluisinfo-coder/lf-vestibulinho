@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\ExamResult;
-use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ResultController extends Controller
 {
     /**
      * Mostra a lista de resultados na página de resultados do site com base na nota de corte
-     *
-     * @param int $limit Número de vagas que uma nota de corte tem
-     * @param ExamResult[] $results Resultados da nota de corte com base na nota de corte
-     * @param int $cutoffScore Pontuação de corte para decidir se uma nota é de corte ou não
-     *
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View|RedirectResponse
     {
 
         if (!Setting::isResultEnabled()) {
-            abort(404);
+            return redirect()->back();
         }
 
         // determinar o limite de notas de corte

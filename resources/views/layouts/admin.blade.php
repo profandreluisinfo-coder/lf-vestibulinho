@@ -78,7 +78,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </button>
 
-                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.process.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*']) ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs(['admin.process.*', 'admin.courses.*', 'admin.notices.*', 'admin.faqs.*', 'admin.publications.*']) ? 'show' : '' }}"
                         id="menuVestibulinho">
                         <a href="{{ route('admin.process.show') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.process.*') ? 'active' : '' }}">
@@ -91,6 +91,10 @@
                         <a href="{{ route('admin.faqs.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
                             <i class="bi bi-question-circle me-1"></i> FAQs
+                        </a>
+                        <a href="{{ route('admin.publications.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.publications.*') ? 'active' : '' }}">
+                            <i class="bi bi-megaphone me-1"></i> Publicações
                         </a>
                     </div>
                 </div>
