@@ -44,7 +44,7 @@ Route::name('site.')
             ->name('publications.')
             ->controller(PublicationController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index');
+                // Route::get('/', 'index')->name('index');
 
                 // Inscrições
                 Route::get('inscricoes-deferidas', 'inscriptions')

@@ -14,8 +14,8 @@
             'desc' => 'Listas de deferidos e indeferidos',
         ],
         [
-            'show' => true,
-            'href' => route('site.results.index'),
+            'show' => false, // Desativado temporariamente
+            'href' => '#',
             'icon' => 'file-earmark-text-fill',
             'title' => 'Recursos',
             'desc' => 'Listas de resultados de análises de recursos',
@@ -37,14 +37,15 @@
         ],
         [
             'show' => true,
-            'href' => route('site.results.index'),
+            'href' => '#',
             'icon' => 'bar-chart-fill',
             'title' => 'Classificação',
             'desc' => 'Resultado e lista de aprovados',
         ],
         [
             'show' => true,
-            'href' => route('site.calls.index'),
+            // 'href' => route('site.calls.index'),
+            'href' => '#',
             'icon' => 'bell-fill',
             'title' => 'Convocação',
             'desc' => 'Chamada para matrícula',
