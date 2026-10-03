@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/home/index.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/site/home/quick-access.css') }}" />
 @endpush
 
 @section('content')
@@ -14,15 +15,23 @@
         $posts = $posts ?? collect();
         $faqs = $faqs ?? collect();
         $courses = $courses ?? collect();
-        $hasCalendarDates = $event !== null && collect([
-            $event->start,
-            $event->end,
-            $event->location_publish,
-            $event->exam_date,
-            $event->result_publish,
-        ])->contains(fn ($date) => $date !== null);
+        $hasCalendarDates =
+            $event !== null &&
+            collect([
+                $event->start,
+                $event->end,
+                $event->location_publish,
+                $event->exam_date,
+                $event->result_publish,
+            ])->contains(fn($date) => $date !== null);
+        $inscriptionLabel = match (true) {
+            $process?->isInscriptionEnded() => 'Inscrições encerradas',
+            !$process?->isInscriptionStarted() => 'Inscrições em breve',
+            default => 'Inscrições indisponíveis',
+        };
     @endphp
 
+    <!-- ===== HERO ===== -->
     <section class="hero" id="home">
         <div class="hero-circle hero-circle-1"></div>
         <div class="hero-circle hero-circle-2"></div>
@@ -53,7 +62,7 @@
                             </a>
                         @else
                             <span class="btn-hero-primary" aria-disabled="true">
-                                <i class="bi bi-info-circle"></i> Inscrições indisponíveis
+                                <i class="bi bi-info-circle"></i> {{ $inscriptionLabel }}
                             </span>
                         @endif
 
@@ -111,6 +120,8 @@
         </div>
     </section>
 
+    @include('partials.site.quick-access')
+
     <!-- ===== SEÇÃO NOTÍCIAS ===== -->
     @if ($posts->isNotEmpty())
         <section class="news-section" id="noticias">
@@ -138,12 +149,11 @@
                             <div class="news-card">
                                 <div class="news-card-image news-card-image-teal">
                                     @if ($hasImage)
-                                        <img
-                                            src="{{ Storage::url($post->image) }}"
-                                            alt="{{ $post->title }}"
+                                        <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
                                             onerror="this.remove(); const fallback = this.parentElement.querySelector('.news-card-fallback-icon'); if (fallback) { fallback.classList.remove('d-none'); }">
                                     @endif
-                                    <i class="bi bi-newspaper news-card-fallback-icon @if ($hasImage) d-none @endif" aria-hidden="true"></i>
+                                    <i class="bi bi-newspaper news-card-fallback-icon @if ($hasImage) d-none @endif"
+                                        aria-hidden="true"></i>
                                 </div>
 
                                 <div class="news-card-body">
@@ -160,7 +170,8 @@
                                     </p>
 
                                     <div class="news-card-meta">
-                                        <span class="news-card-date">{{ $post->published_at?->diffForHumans() ?? '—' }}</span>
+                                        <span
+                                            class="news-card-date">{{ $post->published_at?->diffForHumans() ?? '—' }}</span>
                                         <a href="{{ route('site.posts.show', $post->slug) }}"
                                             class="news-card-link news-card-link-teal">
                                             Ler mais →
@@ -339,7 +350,8 @@
                             <div class="cal-card mb-3 reveal delay-3">
                                 <div class="cal-date" style="background:#7B3FA0;">
                                     <div class="day">{{ $event->location_publish->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($event->location_publish->translatedFormat('M')) }}</div>
+                                    <div class="mon">{{ ucfirst($event->location_publish->translatedFormat('M')) }}
+                                    </div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Divulgação dos Locais de Prova</h5>
@@ -373,7 +385,8 @@
                                     <h5>Divulgação da Classificação</h5>
                                     <p>Lista de classificados publicada no site e na Área do Candidato.</p>
                                 </div>
-                                <span class="cal-badge" style="background:rgba(224,122,58,.15);color:var(--amber2);">Resultado</span>
+                                <span class="cal-badge"
+                                    style="background:rgba(224,122,58,.15);color:var(--amber2);">Resultado</span>
                             </div>
                         @endif
 
@@ -457,66 +470,7 @@
     </section>
 
     {{-- ═══════════════════════ DOCUMENTOS ════════════════════ --}}
-    <section id="documentos">
-        <div class="container position-relative" style="z-index:1;">
-            <div class="text-center mb-5 reveal">
-                <div class="section-tag justify-content-center" style="color:var(--amber);">
-                    <span style="background:var(--amber);"></span>Documentos e Acesso
-                </div>
-                <h2 class="section-title mb-3" style="color:#fff;">Tudo que você <span
-                        style="color:var(--teal);">precisa</span> em um lugar</h2>
-                <p class="section-lead mx-auto text-center" style="color:rgba(255,255,255,.6);">Acesse documentos,
-                    resultados e sua área pessoal de candidato diretamente por aqui.</p>
-            </div>
 
-            <div class="row g-4">
-                @if ($process?->edital)
-                    <div class="col-6 col-md-4 col-lg-2 reveal delay-1">
-                        <a href="{{ Storage::url($process->edital) }}" class="quick-card d-block" target="_blank" rel="noopener noreferrer">
-                            <div class="qc-icon"><i class="bi bi-file-earmark-text-fill"></i></div>
-                            <h5>Edital</h5>
-                            <p>Regras e regulamento completo</p>
-                        </a>
-                    </div>
-                @endif
-                <div class="col-6 col-md-4 col-lg-2 reveal delay-4">
-                    <a href="{{ route('register') }}" class="quick-card d-block">
-                        <div class="qc-icon"><i class="bi bi-person-plus-fill"></i></div>
-                        <h5>Registrar-se</h5>
-                        <p>Cadastre seus dados de acesso agora</p>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 reveal delay-3">
-                    <a href="{{ route('login') }}" class="quick-card d-block">
-                        <div class="qc-icon"><i class="bi bi-person-badge-fill"></i></div>
-                        <h5>Área do Candidato</h5>
-                        <p>Acompanhe sua inscrição</p>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 reveal delay-2">
-                    <a href="{{ route('site.archives.index') }}" class="quick-card d-block">
-                        <div class="qc-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
-                        <h5>Provas Anteriores</h5>
-                        <p>Treine com edições passadas</p>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 reveal delay-3">
-                    <a href="{{ route('site.results.index') }}" class="quick-card d-block">
-                        <div class="qc-icon"><i class="bi bi-bar-chart-fill"></i></div>
-                        <h5>Classificação</h5>
-                        <p>Resultado e lista de aprovados</p>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 reveal delay-2">
-                    <a href="{{ route('site.calls.index') }}" class="quick-card d-block">
-                        <div class="qc-icon"><i class="bi bi-bell-fill"></i></div>
-                        <h5>Convocação</h5>
-                        <p>Chamada para matrícula</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     {{-- ═══════════════════════ CTA INSCRIÇÃO ════════════════════ --}}
     @if ($isInscriptionOpen && $event?->end)

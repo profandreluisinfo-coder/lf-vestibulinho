@@ -1,16 +1,8 @@
 <?php
 
+use App\Http\Controllers\Site\{ HomeController, PostController, ArchiveController, ResultController, CallController, FaqController, ProcessController };
+use App\Http\Controllers\Site\PublicationController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Site\{
-    HomeController,
-    PostController,
-    ArchiveController,
-    ResultController,
-    CallController,
-    FaqController,
-    ProcessController
-};
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
@@ -46,4 +38,7 @@ Route::name('site.')
         // Calendário
         Route::get('calendario', [ProcessController::class, 'show'])
             ->name('process.show');
+
+        // Publicações
+        // Route::get('publicacoes', [PublicationController::class, 'index'])->name('publications.index');
     });

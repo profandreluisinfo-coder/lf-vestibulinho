@@ -20,10 +20,12 @@
                     <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i>
                         Cursos</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#como-participar"><i
-                            class="bi bi-info-circle me-1"></i> Como Participar</a>
-                </li>
+                @if ($process?->isInscriptionOpen())
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('home') }}/#como-participar"><i
+                                class="bi bi-info-circle me-1"></i> Como Participar</a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#calendario"><i class="bi bi-calendar-week me-1"></i>
                         Calendário</a>
