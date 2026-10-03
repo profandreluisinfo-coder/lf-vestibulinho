@@ -115,7 +115,7 @@ class InscriptionController extends Controller
      *
      * @return View
      */
-    public function pcd(): View
+    public function pcds(): View
     {
         // Query base
         $users = User::whereHas('pne')
@@ -124,7 +124,7 @@ class InscriptionController extends Controller
             ->get();
 
         // Não carrega mais os dados aqui, apenas retorna a view vazia
-        return view('admin.inscriptions.pcd', [
+        return view('admin.inscriptions.pcds', [
             'users' => $users
         ]);
     }
@@ -137,6 +137,15 @@ class InscriptionController extends Controller
             ->get();
 
         return view('admin.inscriptions.lgbts', [
+            'users' => $users
+        ]);
+    }
+
+    public function resources(): View
+    {
+        $users = User::whereHas('inscription')->get();
+
+        return view('admin.inscriptions.resources', [
             'users' => $users
         ]);
     }

@@ -10,7 +10,11 @@
 
     @php
         $event = $process?->latestEvent;
+        $isInscriptionOpen = $process?->isInscriptionOpen() ?? false;
+        $isInscriptionEnded = $process?->isInscriptionEnded() ?? false;
+        $isInscriptionStarted = $process?->isInscriptionStarted() ?? false;
     @endphp
+
     <!-- ═══════════════════════ PAGE HERO ════════════════════════ -->
     <section class="cal-hero">
         <div class="hero-circle hero-circle-1"></div>
@@ -28,11 +32,10 @@
                     </nav>
                     <div class="hero-badge mb-3" style="animation:fadeDown .8s ease both;">
                         <span class="live-dot"></span>
-                        Datas Importantes · Processo Seletivo
+                        Datas Importantes · Vestibulinho {{ $process?->year ?? '' }}
                     </div>
                     <h1 class="cal-hero-title mb-3">
-                        Calendário do<br><em>Processo Seletivo</em><br>
-                        <span class="year-chip">{{ $process?->year }}</span>
+                        Calendário do<br><em>Vestibulinho {{ $process?->year ?? '' }}</em><br>
                     </h1>
                     <p class="hero-sub mb-0">
                         Todas as datas e prazos do Vestibulinho em um único lugar.<br class="d-none d-md-block">
@@ -40,7 +43,7 @@
                     </p>
                 </div>
                 <div class="col-lg-5">
-                    @if ($process?->isInscriptionOpen())
+                    @if ($isInscriptionOpen)
                         <div class="status-card status-open">
                             <div class="status-icon"><i class="bi bi-check-circle-fill"></i></div>
                             <div>
@@ -51,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                    @elseif($process?->isInscriptionEnded())
+                    @elseif($isInscriptionEnded)
                         <div class="status-card status-closed">
                             <div class="status-icon"><i class="bi bi-x-circle-fill"></i></div>
                             <div>
@@ -59,7 +62,7 @@
                                 <div class="status-detail">O período de inscrições foi concluído.</div>
                             </div>
                         </div>
-                    @elseif($process?->isInscriptionStarted() === false && $event?->start)
+                    @elseif($isInscriptionStarted === false && $event?->start)
                         <div class="status-card status-soon">
                             <div class="status-icon"><i class="bi bi-clock-fill"></i></div>
                             <div>
@@ -92,7 +95,7 @@
                 <div class="empty-state text-center reveal">
                     <div class="empty-icon"><i class="bi bi-calendar-x"></i></div>
                     <h3>Calendário não disponível</h3>
-                    <p>O calendário do processo seletivo ainda não foi publicado. Volte em breve.</p>
+                    <p>O calendário do Vestibulinho {{ $process?->year ?? '' }} ainda não foi publicado. Volte em breve.</p>
                     <a href="{{ route('home') }}" class="btn-faq-more mt-3">
                         <i class="bi bi-arrow-left me-1"></i> Voltar ao início
                     </a>
@@ -103,7 +106,7 @@
                     <div class="text-center mb-5 reveal">
                         <div class="section-tag justify-content-center">Visão Geral</div>
                         <h2 class="section-title mb-2">Linha do <span>Tempo</span></h2>
-                        <p class="section-lead mx-auto text-center">Acompanhe o fluxo completo do processo seletivo.</p>
+                        <p class="section-lead mx-auto text-center">Acompanhe o fluxo completo do Vestibulinho {{ $process?->year ?? '' }}.</p>
                     </div>
 
                     <div class="timeline-flow">
@@ -114,8 +117,8 @@
                                     'icon' => 'bi-person-lines-fill',
                                     'color' => 'teal',
                                     'date' => $event?->formatPeriod($event?->start, $event?->end),
-                                    'active' => $process?->isInscriptionOpen(),
-                                    'done' => $process?->isInscriptionEnded(),
+                                    'active' => $isInscriptionOpen,
+                                    'done' => $isInscriptionEnded,
                                 ],
                                 [
                                     'label' => 'Local da Prova',
@@ -186,7 +189,7 @@
                 <div class="text-center mb-5 reveal">
                     <div class="section-tag justify-content-center">Detalhamento</div>
                     <h2 class="section-title mb-2">Todas as <span>Datas</span></h2>
-                    <p class="section-lead mx-auto text-center">Informações completas de cada etapa do processo seletivo.
+                    <p class="section-lead mx-auto text-center">Informações completas de cada etapa do Vestibulinho {{ $process?->year ?? '' }}.
                     </p>
                 </div>
 
@@ -195,16 +198,16 @@
                     {{-- Inscrições --}}
                     <div class="col-lg-10 reveal delay-1">
                         <div
-                            class="detail-card detail-teal {{ $process?->isInscriptionOpen() ? 'detail-active' : ($process?->isInscriptionEnded() ? 'detail-done' : '') }}">
+                            class="detail-card detail-teal {{ $isInscriptionOpen ? 'detail-active' : ($isInscriptionEnded ? 'detail-done' : '') }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal-bg"><i class="bi bi-person-lines-fill"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 01</span>
                                     <h3>Inscrições</h3>
-                                    @if ($process?->isInscriptionOpen())
+                                    @if ($isInscriptionOpen)
                                         <span class="detail-badge badge-open"><span class="live-dot me-1"></span>Aberto
                                             agora</span>
-                                    @elseif($process?->isInscriptionEnded())
+                                    @elseif($isInscriptionEnded)
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Encerrado</span>
                                     @else
@@ -241,7 +244,7 @@
                                     Inscrições realizadas exclusivamente pelo portal online. Acesse a <strong>Área do
                                         Candidato</strong> para se inscrever.
                                 </p>
-                                @if ($process?->isInscriptionOpen())
+                                @if ($isInscriptionOpen)
                                     <a href="{{ route('login') }}" class="btn-detail-cta mt-3">
                                         <i class="bi bi-pencil-square me-1"></i> Inscrever-se Agora
                                     </a>
@@ -531,7 +534,7 @@
     </section>
 
     <!-- ═══════════════════════ CTA ═══════════════════════════════ -->
-    @if ($process?->isInscriptionOpen())
+    @if ($isInscriptionOpen)
         <section id="candidato-cta">
             <div class="container text-center position-relative" style="z-index:1;">
                 <div class="reveal">

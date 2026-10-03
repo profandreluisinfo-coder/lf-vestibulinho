@@ -56,7 +56,7 @@
                         <button type="submit" class="btn btn-sm btn-success">
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
@@ -76,7 +76,7 @@
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcd') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>

@@ -38,13 +38,13 @@ class DeferralController extends Controller
 
         if ($user->inscription?->exam_result) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
         if (! $user->pne) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
@@ -63,13 +63,13 @@ class DeferralController extends Controller
 
         if ($user->inscription?->exam_result) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
         }
 
         if (! $user->pne) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
@@ -89,13 +89,13 @@ class DeferralController extends Controller
 
         if ($user?->inscription?->exam_result) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
         }
 
         if (! $user->pne) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
@@ -114,7 +114,7 @@ class DeferralController extends Controller
         );
 
         return redirect()
-            ->route('admin.inscriptions.pcd')
+            ->route('admin.inscriptions.pcds')
             ->with('success', 'Relatório/laudo deferido com sucesso!');
     }
 
@@ -132,13 +132,13 @@ class DeferralController extends Controller
 
         if ($user->inscription?->exam_result) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
         }
 
         if (! $user->pne) {
             return redirect()
-                ->route('admin.inscriptions.pcd')
+                ->route('admin.inscriptions.pcds')
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
@@ -158,7 +158,7 @@ class DeferralController extends Controller
         );
 
         return redirect()
-            ->route('admin.inscriptions.pcd')
+            ->route('admin.inscriptions.pcds')
             ->with('success', 'Relatório/laudo indeferido com sucesso. O candidato será notificado por e-mail.');
     }
 

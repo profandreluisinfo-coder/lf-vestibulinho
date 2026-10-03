@@ -15,6 +15,11 @@
      CONTEÚDO PRINCIPAL
 ══════════════════════════════════════════════════════════════ --}}
 @section('content')
+
+    @php
+        $isInscriptionOpen = $process?->isInscriptionOpen() ?? false;
+    @endphp
+
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
     <section class="faq-hero">
         <div class="hero-circle hero-c1"></div>
@@ -167,7 +172,7 @@
         </div>
     </div>
 
-    @if ($process && $process->isInscriptionOpen())
+    @if ($isInscriptionOpen)
         <!-- ═══════════════════════ CTA ══════════════════════════════ -->
         <section id="faq-cta">
             <div class="container text-center position-relative" style="z-index:1;">
@@ -197,8 +202,8 @@
 @endsection
 
 @push('scripts')
-    <script>
-        const FAQ_DATA = {!! $faqsJson !!};
+    <<script>
+        const FAQ_DATA = {{ Illuminate\Support\Js::from($faqs) }};
     </script>
     <script src="{{ asset('assets/js/site/faqs/index.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

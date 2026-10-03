@@ -10,21 +10,19 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
-{    
+{
     /**
-     * Mostra a página de registro de dados de acesso para o usuário.
+     * Exibe a página de registro dos dados de acesso.
      *
-     * Caso o calendário do Processo Seletivo esteja aberto, a página de registro será exibida.
-     * Caso contrário, o usuário será redirecionado para a página de início.
-     *
-     * @return View|RedirectResponse
+     * A página só é exibida enquanto as inscrições estiverem abertas.
+     * Caso contrário, o usuário será redirecionado para a página inicial.
      */
     public function create(): View | RedirectResponse
     {
         $process = Process::current();
 
-        if (empty($process) || !($process?->isInscriptionOpen())) {
-            return alertError('Não é possível efetuar o registro no momento.');
+        if (!$process?->isInscriptionOpen()) {
+            return redirect()->route('home');
         }
 
         return view('user.create');

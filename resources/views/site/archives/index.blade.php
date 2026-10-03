@@ -8,6 +8,10 @@
 
 @section('content')
 
+    @php
+        $isInscriptionOpen = $process?->isInscriptionOpen() ?? false;
+    @endphp
+
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
     <section class="pa-hero">
         <div class="hero-circle hc1"></div>
@@ -42,10 +46,6 @@
                             <div class="num">{{ $archives->whereNotNull('answer')->count() }}</div>
                             <div class="lbl">Com gabarito</div>
                         </div>
-                        {{-- <div class="hero-chip">
-                            <div class="num">100%</div>
-                            <div class="lbl">Gratuito</div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                             </div>
                             <span>Os arquivos estão em PDF. Você pode imprimir ou resolver diretamente no tablet.</span>
                         </div>
-                        @if ($process?->isInscriptionOpen())
+                        @if ($isInscriptionOpen)
                             <a href="{{ route('register') }}" class="btn-inscricao js-inscription-link">
                                 <i class="bi bi-pencil-square"></i> Fazer Inscrição
                             </a>
@@ -210,7 +210,7 @@
     </div>
 
     <!-- ═══════════════════════ CTA ══════════════════════════════ -->
-    @if ($process?->isInscriptionOpen())
+    @if ($isInscriptionOpen)
         <section id="pa-cta">
             <div class="container text-center position-relative" style="z-index:1;">
                 <div class="reveal">

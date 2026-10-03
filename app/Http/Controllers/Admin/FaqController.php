@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 
 class FaqController extends Controller
 {
@@ -63,7 +64,7 @@ class FaqController extends Controller
         Faq::create([
             'category_id' => $category->id,
             'question' => $request->question,
-            'answer' => $request->answer,
+            'answer' => Purifier::clean($request->answer, 'faq'),
             'user_id' => Auth::id(),
             'order' => $maxOrder + 1,
         ]);
@@ -138,7 +139,7 @@ class FaqController extends Controller
         $faq->update([
             'category_id' => $category->id,
             'question' => $request->question,
-            'answer' => $request->answer
+            'answer' => Purifier::clean($request->answer, 'faq')
         ]);
 
         return alertSuccess('FAQ atualizada com sucesso!');

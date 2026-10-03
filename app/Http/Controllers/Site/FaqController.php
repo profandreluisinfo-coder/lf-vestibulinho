@@ -2,34 +2,30 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Models\Faq;
 use App\Http\Controllers\Controller;
+use App\Models\Faq;
+use Illuminate\Contracts\View\View;
+use Mews\Purifier\Facades\Purifier;
 
 class FaqController extends Controller
 {
     /**
-     * Mostra a lista de perguntas frequentes do sistema publicamente.
-     * Caso não haja nenhuma pergunta, redireciona para a página inicial do sistema.
-     * Compartilha a variável $faqs com a view.
-     *
-     * @return \Illuminate\Http\Response
+     * Exibe publicamente as perguntas frequentes.
      */
-    public function index()
+    public function index(): View
     {
         $faqs = Faq::with('category')
             ->where('status', true)
             ->orderBy('order')
             ->get()
             ->map(fn($faq) => [
-                'id'  => $faq->id,
+                'id' => $faq->id,
                 'cat' => $faq->category?->normalized_name,
-                'q'   => $faq->question,
-                'a'   => $faq->answer,
-            ]);
+                'q' => $faq->question,
+                'a' => Purifier::clean($faq->answer ?? '', 'faq'),
+            ])
+            ->values();
 
-        // Converte para JSON mantendo HTML não escapado
-        $faqsJson = json_encode($faqs->toArray(), 2048 | 64); // JSON_UNESCAPED_HTML | JSON_UNESCAPED_SLASHES
-
-        return view('site.faqs.index', compact('faqsJson'));
+        return view('site.faqs.index', compact('faqs'));
     }
 }

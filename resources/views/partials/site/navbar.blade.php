@@ -17,34 +17,34 @@
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i> Cursos</a>
+                    <a class="nav-link" href="{{ route('home') }}/#cursos"><i class="bi bi-mortarboard me-1"></i>
+                        Cursos</a>
                 </li>
-                @if ($process?->status === 'open')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#como-participar"><i class="bi bi-info-circle me-1"></i> Como Participar</a>
-                </li>                
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#calendario"><i class="bi bi-calendar-week me-1"></i> Calendário</a>
+                    <a class="nav-link" href="{{ route('home') }}/#como-participar"><i
+                            class="bi bi-info-circle me-1"></i> Como Participar</a>
                 </li>
-                @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i> Ajuda</a>
+                    <a class="nav-link" href="{{ route('home') }}/#calendario"><i class="bi bi-calendar-week me-1"></i>
+                        Calendário</a>
                 </li>
-                @if ($process?->status === 'open')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#documentos"><i class="bi bi-file-earmark me-1"></i> Documentos</a>
+                    <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i>
+                        Ajuda</a>
                 </li>
-                @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i> Provas Anteriores</a>
+                    <a class="nav-link" href="{{ route('home') }}/#documentos"><i class="bi bi-file-earmark me-1"></i>
+                        Documentos</a>
                 </li>
-                @if ($process?->status === 'open')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i>
+                        Provas Anteriores</a>
+                </li>
                 <li class="nav-item ms-lg-2">
                     <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
                         <i class="bi bi-person-circle me-1"></i> Área do Candidato
                     </a>
                 </li>
-                @endif
             </ul>
         </div>
     </div>

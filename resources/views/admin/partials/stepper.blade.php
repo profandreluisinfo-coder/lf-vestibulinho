@@ -2,7 +2,7 @@
 
     <!-- Etapa 1 -->
     <a href="{{ route('admin.process.show') }}" class="step-item text-secondary text-center" title="Definir Calendário">
-        <i class="bi {{ $process_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+        <i class="bi {{ $process ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
         <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
     </a>
 

@@ -53,8 +53,8 @@ Route::prefix('admin')
                 Route::post('inscriptions/data', [InscriptionController::class, 'getData'])
                     ->name('get.data');
                 // Lista de pessoas com deficiência
-                Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcd'])
-                    ->name('pcd');
+                Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcds'])
+                    ->name('pcds');
                 Route::post('pcd-data', [InscriptionController::class, 'getPcd'])
                     ->name('pcd.data');
                 // Candidatos com nome social
@@ -62,6 +62,9 @@ Route::prefix('admin')
                     ->name('lgbts');
                 Route::get('candidato/{id}', [InscriptionController::class, 'show'])
                     ->name('show');
+                // Recursos de candidatos
+                Route::get('recursos', [InscriptionController::class, 'resources'])
+                    ->name('resources');
             });
 
         Route::resource('posts', PostController::class);

@@ -21,7 +21,6 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $process_status = Process::current()?->status === "open" ? true : false;
         $local_status = ExamResult::hasRecords();
         $ranking_active = ExamResult::hasScores();
         // $inscriptions_count = Inscription::count();
@@ -77,7 +76,6 @@ class AdminController extends Controller
         $steps_done = collect([
             $settings_location,
             $settings_result,
-            $process_status,
             $local_status,
             $ranking_active
         ])
@@ -88,7 +86,6 @@ class AdminController extends Controller
         $steps_pct = round(($steps_done / $steps_total) * 100);
 
         return view('admin.home.index', [
-            'process_status' => $process_status,
             'bairros' => $burghs,
             'cursos' => $courses,
             'escolas' => $schools,
