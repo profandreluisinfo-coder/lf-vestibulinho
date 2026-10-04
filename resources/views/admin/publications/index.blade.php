@@ -24,7 +24,7 @@
         <div class="alert alert-warning small" role="alert">
             <i class="bi bi-exclamation-triangle me-1"></i>
             Depois de liberada, a lista acompanha as análises <strong>em tempo real</strong>: se você deferir ou
-            indeferir um pedido (ou um recurso), a mudança aparece no site na hora. Confira as análises antes de
+            indeferir um pedido, a mudança aparece no site na hora. Confira as análises antes de
             liberar.
         </div>
 
