@@ -51,8 +51,8 @@
                         <th scope="row">{{ $user->inscription?->id }}</th>
                         <td>
                             @if ($user->lgbt && $user->lgbt->status === 'accepted')
-                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="LGBTQIA+"></i>
+                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover"
+                                    data-bs-trigger="hover" data-bs-content="LGBTQIA+"></i>
                             @else
                                 {{ $user->name }}
                             @endif
@@ -62,51 +62,70 @@
                         </td>
                         <td class="text-center">
                             @if ($user->pne->report)
-                                <a href="{{ Storage::url($user->pne->report) }}" target="_blank" class="btn btn-outline-primary btn-sm" title="Visualizar Laudo/Relatório">
+                                <a href="{{ Storage::url($user->pne->report) }}" target="_blank"
+                                    class="btn btn-outline-primary btn-sm" title="Visualizar Laudo/Relatório">
                                     <i class="bi bi-file-earmark-medical"></i> Visualizar
                                 </a>
                             @else
                                 <span class="text-muted">Nenhum arquivo</span>
                             @endif
-                        </td>                        
+                        </td>
                         <td class="text-center">
                             @if ($user->pne->status == 'pending')
                                 <i class="bi bi-hourglass-split text-warning ms-2" data-bs-toggle="popover"
                                     data-bs-trigger="hover" data-bs-content="Pendente - Aguardando análise"></i>
                             @elseif($user->pne->status == 'accepted')
                                 <i class="bi bi-check-circle-fill text-success ms-2" data-bs-toggle="popover"
-                                    data-bs-trigger="hover" data-bs-content="Deferido - {{ $user?->pne?->observations ?? 'Nenhuma observação' }}"></i>
+                                    data-bs-trigger="hover"
+                                    data-bs-content="Deferido - {{ $user?->pne?->observations ?? 'Nenhuma observação' }}"></i>
                             @else
-                                <i class="bi bi-x-circle-fill text-danger ms-2" data-bs-toggle="popover" data-bs-trigger="hover"
+                                <i class="bi bi-x-circle-fill text-danger ms-2" data-bs-toggle="popover"
+                                    data-bs-trigger="hover"
                                     data-bs-content="Indeferido - {{ $user?->pne?->observations ?? 'Nenhuma observação' }}"></i>
                             @endif
                         </td>
                         <td>
-                            @if ($user->pne->status === 'pending')
-                                <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-success btn-sm" title="Deferir">
-                                    <i class="bi bi-check-lg"></i> Deferir
-                                </a>
+                            <div class="d-flex gap-2 flex-wrap">
+                                @if ($user->pne->status === 'pending')
+                                    <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                        class="btn btn-sm btn-success" title="Deferir">
+                                        <i class="bi bi-check-lg"></i> Deferir
+                                    </a>
 
-                                <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-danger" title="Indeferir">
-                                    <i class="bi bi-x-lg"></i> Indeferir
-                                </a>
-                            @endif
+                                    <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                        class="btn btn-sm btn-danger" title="Indeferir">
+                                        <i class="bi bi-x-lg"></i> Indeferir
+                                    </a>
+                                @endif
 
-                            @if ($user->pne->status === 'accepted')
-                                <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-danger" title="Indeferir">
-                                    <i class="bi bi-x-lg"></i> Indeferir
-                                </a>
-                            @endif
+                                @if ($user->pne->status === 'accepted')
+                                    <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                        class="btn btn-sm btn-danger" title="Indeferir">
+                                        <i class="bi bi-x-lg"></i> Indeferir
+                                    </a>
+                                @endif
 
-                            @if ($user->pne->status === 'rejected')
-                                <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
-                                    class="btn btn-sm btn-success btn-sm" title="Deferir">
-                                    <i class="bi bi-check-lg"></i> Deferir
-                                </a>
-                            @endif
+                                @if ($user->pne->status === 'rejected')
+                                    <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                        class="btn btn-sm btn-success" title="Deferir">
+                                        <i class="bi bi-check-lg"></i> Deferir
+                                    </a>
+
+                                    @php($appeal = $user->appeals->firstWhere('type', 'pne'))
+
+                                    @if ($appeal)
+                                        <a href="{{ route('admin.appeals.show', $appeal) }}"
+                                            class="btn btn-sm btn-outline-secondary" title="Ver recurso">
+                                            <i class="bi bi-folder2-open"></i> Ver recurso
+                                        </a>
+                                    @elseif (!$user->inscription?->exam_result)
+                                        <a href="{{ route('admin.appeals.create', [$user->id, 'pne']) }}"
+                                            class="btn btn-sm btn-warning" title="Registrar recurso">
+                                            <i class="bi bi-folder-plus"></i> Registrar recurso
+                                        </a>
+                                    @endif
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -116,7 +135,7 @@
                 @endforelse
             </tbody>
         </table>
-        
+
         @include('admin.partials.legends')
     </div>
 

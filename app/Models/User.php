@@ -61,6 +61,19 @@ class User extends Authenticatable
     }
 
     // Relacionamentos
+    public function appeals(): HasMany
+    {
+        return $this->hasMany(Appeal::class);
+    }
+
+    /**
+     * Retorna o recurso do candidato para um tipo ('pne' ou 'lgbt').
+     */
+    public function appealOf(string $type): ?Appeal
+    {
+        return $this->appeals->firstWhere('type', $type);
+    }
+
     public function lgbt(): HasOne
     {
         return $this->hasOne(Lgbt::class);
@@ -135,7 +148,7 @@ class User extends Authenticatable
         }
 
         return Call::where('exam_result_id', $result->id)
-            ->whereHas('callList', fn ($query) => $query->where('status', 'completed'))
+            ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
             ->exists();
     }
 
@@ -269,7 +282,7 @@ class User extends Authenticatable
 
     protected static function booted()
     {
-        static::saved(fn () => Cache::forget('global_users_without_inscription'));
-        static::deleted(fn () => Cache::forget('global_users_without_inscription'));
+        static::saved(fn() => Cache::forget('global_users_without_inscription'));
+        static::deleted(fn() => Cache::forget('global_users_without_inscription'));
     }
 }

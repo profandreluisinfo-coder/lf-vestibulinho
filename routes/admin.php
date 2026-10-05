@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ AdminController, ArchiveController, CallController, CourseController, DeferralController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController };
+use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, DeferralController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController};
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -343,5 +343,34 @@ Route::prefix('admin')
                 // Route::put('editar/{user}', [UserController::class, 'update'])->name('update');
                 Route::delete('excluir/{user}', [UserController::class, 'destroy'])
                     ->name('destroy');
+            });
+        // Recursos (PcD e Nome Social)
+        Route::prefix('recursos')
+            ->name('appeals.')
+            ->group(function () {
+                Route::get('/', [AppealController::class, 'index'])
+                    ->name('index');
+
+                Route::get('registrar/{user}/{type}', [AppealController::class, 'create'])
+                    ->whereIn('type', ['pne', 'lgbt'])
+                    ->name('create');
+
+                Route::post('registrar/{user}/{type}', [AppealController::class, 'store'])
+                    ->whereIn('type', ['pne', 'lgbt'])
+                    ->name('store');
+
+                Route::get('{appeal}', [AppealController::class, 'show'])
+                    ->whereNumber('appeal')
+                    ->name('show');
+
+                Route::delete('{appeal}', [AppealController::class, 'destroy'])
+                    ->whereNumber('appeal')
+                    ->name('destroy');
+
+                Route::patch('{appeal}/deferir', [AppealController::class, 'accept'])
+                    ->name('accept');
+
+                Route::patch('{appeal}/indeferir', [AppealController::class, 'reject'])
+                    ->name('reject');
             });
     });

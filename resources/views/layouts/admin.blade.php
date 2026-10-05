@@ -128,20 +128,31 @@
                         <span>Análises</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.inscriptions.lgbts') || request()->routeIs('admin.inscriptions.resources') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') ||
+                    request()->routeIs('admin.inscriptions.lgbts') ||
+                    request()->routeIs('admin.deferrals.report.*') ||
+                    request()->routeIs('admin.appeals.*')
+                        ? 'show'
+                        : '' }}"
                         id="menuAnalises">
+
                         <a href="{{ route('admin.inscriptions.pcds') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') ? 'active' : '' }}">
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.deferrals.report.*')
+                                ? 'active'
+                                : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Laudos/Relatórios
                         </a>
+
                         <a href="{{ route('admin.inscriptions.lgbts') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
                             <i class="bi bi-gender-trans me-1"></i> Autorizações
                         </a>
-                        <a href="{{ route('admin.inscriptions.resources') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.resources') ? 'active' : '' }}">
+
+                        <a href="{{ route('admin.appeals.index') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.appeals.*') ? 'active' : '' }}">
                             <i class="bi bi-folder2-open me-1"></i> Recursos
                         </a>
+
                     </div>
                 </div>
 
@@ -175,38 +186,38 @@
                     </button>
 
                     <div class="dropdown-menu-custom {{ request()->routeIs('admin.reports.*') ? 'show' : '' }}"
-    id="menuRelatorios">
+                        id="menuRelatorios">
 
-    @php
-        $isGeneral = request()->routeIs('admin.reports.general');
-        $hasShortcut = request()->hasAny(['type', 'group_by', 'pcd', 'social_name']);
-    @endphp
+                        @php
+                            $isGeneral = request()->routeIs('admin.reports.general');
+                            $hasShortcut = request()->hasAny(['type', 'group_by', 'pcd', 'social_name']);
+                        @endphp
 
-    <a href="{{ route('admin.reports.general') }}"
-        class="dropdown-item-custom {{ $isGeneral && ! $hasShortcut ? 'active' : '' }}">
-        <i class="bi bi-funnel me-1"></i> Relatório Geral
-    </a>
+                        <a href="{{ route('admin.reports.general') }}"
+                            class="dropdown-item-custom {{ $isGeneral && !$hasShortcut ? 'active' : '' }}">
+                            <i class="bi bi-funnel me-1"></i> Relatório Geral
+                        </a>
 
-    <a href="{{ route('admin.reports.general', ['type' => 'summary', 'group_by' => 'course']) }}"
-        class="dropdown-item-custom {{ $isGeneral && request('type') === 'summary' && request('group_by') === 'course' ? 'active' : '' }}">
-        <i class="bi bi-bar-chart me-1"></i> Candidatos por Curso
-    </a>
+                        <a href="{{ route('admin.reports.general', ['type' => 'summary', 'group_by' => 'course']) }}"
+                            class="dropdown-item-custom {{ $isGeneral && request('type') === 'summary' && request('group_by') === 'course' ? 'active' : '' }}">
+                            <i class="bi bi-bar-chart me-1"></i> Candidatos por Curso
+                        </a>
 
-    <a href="{{ route('admin.reports.general', ['pcd' => 'all']) }}"
-        class="dropdown-item-custom {{ $isGeneral && request('pcd') === 'all' ? 'active' : '' }}">
-        <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
-    </a>
+                        <a href="{{ route('admin.reports.general', ['pcd' => 'all']) }}"
+                            class="dropdown-item-custom {{ $isGeneral && request('pcd') === 'all' ? 'active' : '' }}">
+                            <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência
+                        </a>
 
-    <a href="{{ route('admin.reports.general', ['social_name' => 'all']) }}"
-        class="dropdown-item-custom {{ $isGeneral && request('social_name') === 'all' ? 'active' : '' }}">
-        <i class="bi bi-gender-trans me-1"></i> Nome Social
-    </a>
+                        <a href="{{ route('admin.reports.general', ['social_name' => 'all']) }}"
+                            class="dropdown-item-custom {{ $isGeneral && request('social_name') === 'all' ? 'active' : '' }}">
+                            <i class="bi bi-gender-trans me-1"></i> Nome Social
+                        </a>
 
-    <a href="{{ route('admin.reports.classification') }}"
-        class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
-        <i class="bi bi-list-ol me-1"></i> Classificação
-    </a>
-</div>
+                        <a href="{{ route('admin.reports.classification') }}"
+                            class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
+                            <i class="bi bi-list-ol me-1"></i> Classificação
+                        </a>
+                    </div>
                 </div>
 
                 <div class="menu-dropdown">

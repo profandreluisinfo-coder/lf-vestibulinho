@@ -51,18 +51,19 @@
                         <th scope="row">{{ $user->inscription?->id }}</th>
                         <td>
                             @if ($user->lgbt && $user->lgbt->status === 'accepted')
-                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="LGBTQIA+"></i>
+                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover"
+                                    data-bs-trigger="hover" data-bs-content="LGBTQIA+"></i>
                             @else
                                 {{ $user->name }}
                             @endif
                         </td>
                         <td class="text-center">
-                                {{ $user->lgbt->name ? $user->lgbt->name : '-' }}
+                            {{ $user->lgbt->name ? $user->lgbt->name : '-' }}
                         </td>
                         <td class="text-center">
                             @if ($user->lgbt->authorization)
-                                <a href="{{ Storage::url($user->lgbt->authorization) }}" target="_blank" class="btn btn-outline-primary btn-sm" title="Visualizar Autorização">
+                                <a href="{{ Storage::url($user->lgbt->authorization) }}" target="_blank"
+                                    class="btn btn-outline-primary btn-sm" title="Visualizar Autorização">
                                     <i class="bi bi-file-earmark-medical"></i> Visualizar
                                 </a>
                             @else
@@ -84,31 +85,47 @@
                             @endif
                         </td>
                         <td>
-                            @if ($user->lgbt->status === 'pending')
-                                <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
-                                    <i class="bi bi-check-lg"></i> Deferir
-                                </a>
+                            <div class="d-flex gap-2 flex-wrap">
+                                @if ($user->lgbt->status === 'pending')
+                                    <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
+                                        class="btn btn-success btn-sm" title="Deferir">
+                                        <i class="bi bi-check-lg"></i> Deferir
+                                    </a>
 
-                                <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
-                                    <i class="bi bi-x-lg"></i> Indeferir
-                                </a>
-                            @endif
+                                    <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
+                                        class="btn btn-danger btn-sm" title="Indeferir">
+                                        <i class="bi bi-x-lg"></i> Indeferir
+                                    </a>
+                                @endif
 
-                            @if ($user->lgbt->status === 'accepted')
-                                <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
-                                    class="btn btn-danger btn-sm" title="Indeferir">
-                                    <i class="bi bi-x-lg"></i> Indeferir
-                                </a>
-                            @endif
+                                @if ($user->lgbt->status === 'accepted')
+                                    <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
+                                        class="btn btn-danger btn-sm" title="Indeferir">
+                                        <i class="bi bi-x-lg"></i> Indeferir
+                                    </a>
+                                @endif
 
-                            @if ($user->lgbt->status === 'rejected')
-                                <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
-                                    class="btn btn-success btn-sm" title="Deferir">
-                                    <i class="bi bi-check-lg"></i> Deferir
-                                </a>
-                            @endif
+                                @if ($user->lgbt->status === 'rejected')
+                                    <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
+                                        class="btn btn-success btn-sm" title="Deferir">
+                                        <i class="bi bi-check-lg"></i> Deferir
+                                    </a>
+
+                                    @php($appeal = $user->appeals->firstWhere('type', 'lgbt'))
+
+                                    @if ($appeal)
+                                        <a href="{{ route('admin.appeals.show', $appeal) }}"
+                                            class="btn btn-sm btn-outline-secondary" title="Ver recurso">
+                                            <i class="bi bi-folder2-open"></i> Ver recurso
+                                        </a>
+                                    @elseif (!$user->inscription?->exam_result)
+                                        <a href="{{ route('admin.appeals.create', [$user->id, 'lgbt']) }}"
+                                            class="btn btn-sm btn-warning" title="Registrar recurso">
+                                            <i class="bi bi-folder-plus"></i> Registrar recurso
+                                        </a>
+                                    @endif
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -118,7 +135,7 @@
                 @endforelse
             </tbody>
         </table>
-        
+
         @include('admin.partials.legends')
     </div>
 

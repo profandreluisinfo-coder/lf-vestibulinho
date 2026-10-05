@@ -139,6 +139,8 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @include('inscription.partials.appeal', ['type' => 'lgbt'])
                         @endif
                     </div>
 
@@ -191,6 +193,9 @@
                                 <div><i class="bi bi-flag-fill mt-1"></i>
                                     Você concorre às vagas destinadas a
                                     <strong>Pessoas com Necessidades Especiais (PNE)</strong>.
+                                    @if ($user->appealOf('pne')?->isAccepted())
+                                        <div class="mt-1"><i class="bi bi-check-circle-fill"></i> Deferido após recurso.</div>
+                                    @endif
                                 </div>
                             </div>
                         @elseif ($user?->pne?->status === 'pending')
@@ -215,6 +220,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @include('inscription.partials.appeal', ['type' => 'pne'])
                         @endif
                     </div>
 
