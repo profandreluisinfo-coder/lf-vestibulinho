@@ -13,6 +13,10 @@
     $isComunicado = $post->type === \App\Models\Post::TYPE_INFO;
     $typeLabel    = $isComunicado ? 'Comunicado' : 'Notícia';
     $badgeClass   = $isComunicado ? 'news-card-badge-navy' : 'news-card-badge-teal';
+
+    // Lista de origem (usada no breadcrumb e no botão "Voltar")
+    $listaRoute = $isComunicado ? route('site.notices.index') : route('site.news.index');
+    $listaLabel = $isComunicado ? 'Comunicados' : 'Notícias';
 @endphp
 
 <!-- ===== BREADCRUMB ===== -->
@@ -23,8 +27,8 @@
                 Home
             </a>
             <span> / </span>
-            <a href="{{ route('site.posts.index') }}" class="post-breadcrumb-link">
-                Notícias e Comunicados
+            <a href="{{ $listaRoute }}" class="post-breadcrumb-link">
+                {{ $listaLabel }}
             </a>
             <span> / </span>
             <span>{{ $post->title }}</span>
@@ -154,8 +158,8 @@
 
             <!-- Voltar -->
             <div class="post-back-container">
-                <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
-                    <i class="bi bi-arrow-left me-2"></i> Voltar para notícias e comunicados
+                <a href="{{ $listaRoute }}" class="btn-hero-primary">
+                    <i class="bi bi-arrow-left me-2"></i> Voltar para {{ mb_strtolower($listaLabel) }}
                 </a>
             </div>
         </div>

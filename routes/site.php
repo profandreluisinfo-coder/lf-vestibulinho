@@ -9,6 +9,13 @@ Route::get('/', [HomeController::class, 'index'])
 
 Route::name('site.')
     ->group(function () {
+        Route::get('noticias', [PostController::class, 'index'])
+            ->defaults('type', \App\Models\Post::TYPE_NOTICIA)
+            ->name('news.index');
+
+        Route::get('comunicados', [PostController::class, 'index'])
+            ->defaults('type', \App\Models\Post::TYPE_INFO)
+            ->name('notices.index');
         // Postagens públicas
         Route::prefix('posts')
             ->name('posts.')
@@ -44,7 +51,7 @@ Route::name('site.')
             ->name('publications.')
             ->controller(PublicationController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index');// NÃO ESQUECER DE LIBERAR ESTA ROTA
+                Route::get('/', 'index')->name('index'); // NÃO ESQUECER DE LIBERAR ESTA ROTA
 
                 // Inscrições
                 Route::get('inscricoes-deferidas', 'inscriptions')

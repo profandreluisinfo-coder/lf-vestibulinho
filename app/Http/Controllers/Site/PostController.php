@@ -7,13 +7,15 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(?string $type = null)
     {
         $posts = Post::published()
+            ->with('category')
+            ->when($type, fn($query) => $query->type($type))
             ->latest()
             ->paginate(10);
 
-        return view('site.posts.index', compact('posts'));
+        return view('site.posts.index', compact('posts', 'type'));
     }
 
     public function show(string $slug)

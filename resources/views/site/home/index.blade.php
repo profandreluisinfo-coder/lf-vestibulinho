@@ -128,7 +128,7 @@
             <div class="container-lg">
                 <div class="section-header">
                     <div class="section-tag">
-                        Notícias e Comunicados
+                        Notícias
                     </div>
 
                     <h2 class="section-title">
@@ -158,7 +158,8 @@
 
                                 <div class="news-card-body">
                                     <span class="news-card-badge news-card-badge-teal">
-                                        {{ $post->type === 'comunicado' ? 'Comunicado' : 'Notícia' }}
+                                        {{-- {{ $post->type === 'comunicado' ? 'Comunicado' : 'Notícia' }} --}}
+                                        Notícia
                                     </span>
 
                                     <h3 class="news-card-title">
@@ -185,7 +186,7 @@
 
                 <!-- CTA Notícias -->
                 <div style="text-align: center; margin-top: 3rem;">
-                    <a href="{{ route('site.posts.index') }}" class="btn-hero-primary">
+                    <a href="{{ route('site.news.index') }}" class="btn-hero-primary">
                         Ver Todos <i class="bi bi-arrow-right ms-2"></i>
                     </a>
                 </div>

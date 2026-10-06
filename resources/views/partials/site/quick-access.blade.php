@@ -14,6 +14,13 @@
             'desc' => 'Listas de deferidos e indeferidos',
         ],
         [
+            'show' => true,
+            'href' => route('site.notices.index'),
+            'icon' => 'megaphone-fill',
+            'title' => 'Comunicados',
+            'desc' => 'Avisos e comunicados importantes',
+        ],
+        [
             'show' => false, // Desativado temporariamente
             'href' => '#',
             'icon' => 'file-earmark-text-fill',

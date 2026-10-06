@@ -17,7 +17,7 @@ class HomeController extends Controller
         $courses = Course::all();
 
         // Apenas posts publicados
-        $posts = Post::published()
+        $posts = Post::noticias()->published()
             ->latest()
             ->paginate(10);
 
