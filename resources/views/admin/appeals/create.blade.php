@@ -44,7 +44,7 @@
                     <dd class="col-sm-9">{{ $original->observations ?? '-' }}</dd>
                 </dl>
 
-                <form method="POST" action="{{ route('admin.appeals.store', [$user->id, $type]) }}">
+                <form method="POST" action="{{ route('admin.appeals.store', [$user->id, $type]) }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -74,6 +74,43 @@
                                 Nenhum protocolo registrado ainda.
                             </div>
                         @endif
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="allegations" class="form-label">Alegações do recurso (opcional)</label>
+                        <textarea name="allegations" id="allegations" rows="3"
+                            class="form-control @error('allegations') is-invalid @enderror"
+                            placeholder="Digite as alegações do candidato sobre o recurso">{{ old('allegations') }}</textarea>
+
+                        @error('allegations')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observations" class="form-label">Observações (decisão)</label>
+                        <textarea name="observations" id="observations" rows="3"
+                            class="form-control @error('observations') is-invalid @enderror"
+                            placeholder="Digite a decisão sobre o recurso">{{ old('observations') }}</textarea>
+
+                        @error('observations')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="path" class="form-label">Arquivo do recurso (opcional)</label>
+                        <input type="file" name="path" id="path"
+                            class="form-control @error('path') is-invalid @enderror">
+
+                        @error('path')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
+                        <div class="form-text">
+                            <i class="bi bi-info-circle"></i>
+                            O arquivo deve estar em formato PDF, imagens (jpg, png, etc.) ou documentos (doc, docx) e ter no máximo 2 MB.
+                        </div>
                     </div>
 
                     <p>O recurso será registrado como <strong>em análise</strong>. Depois, você poderá deferir ou

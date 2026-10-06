@@ -41,13 +41,13 @@
                 {{-- Dados do recurso --}}
                 <dl class="row mb-4">
                     <dt class="col-sm-3">Candidato</dt>
-                    <dd class="col-sm-9">{{ $user->name }}</dd>
+                    <dd class="col-sm-9"><span class="fw-medium">{{ $user->name }}</span></dd>
 
                     <dt class="col-sm-3">Inscrição</dt>
                     <dd class="col-sm-9">{{ $user->inscription?->id }}</dd>
 
                     <dt class="col-sm-3">Protocolo</dt>
-                    <dd class="col-sm-9">{{ $appeal->protocol }}</dd>
+                    <dd class="col-sm-9"><span class="badge bg-secondary">{{ $appeal->protocol }}</span></dd>
 
                     <dt class="col-sm-3">Registrado em</dt>
                     <dd class="col-sm-9">{{ $appeal->created_at->format('d/m/Y H:i') }}</dd>
@@ -55,6 +55,24 @@
                     <dt class="col-sm-3">Situação do recurso</dt>
                     <dd class="col-sm-9">
                         <span class="badge {{ $appeal->badgeClass() }}">{{ $appeal->statusLabel() }}</span>
+                    </dd>
+
+                    <dt class="col-sm-3">Alegações do recurso</dt>
+                    <dd class="col-sm-9">{{ $appeal->allegations ?? '-' }}</dd>
+
+                    <dt class="col-sm-3">Observações do recurso</dt>
+                    <dd class="col-sm-9">{{ $appeal->observations ?? '-' }}</dd>
+
+                    {{-- Arquivo do recurso --}}
+                    <dt class="col-sm-3">Arquivo do recurso</dt>
+                    <dd class="col-sm-9">
+                        @if ($appeal->path && Storage::disk('public')->exists($appeal->path))
+                            <a href="{{ Storage::url($appeal->path) }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="bi bi-file-earmark-medical"></i> Abrir arquivo do recurso
+                            </a>
+                        @else
+                            <span class="text-muted">Nenhum arquivo</span>
+                        @endif
                     </dd>
 
                     @unless ($appeal->isPending())
@@ -72,7 +90,7 @@
                 </dl>
 
                 {{-- Pedido original --}}
-                <h6 class="text-muted fw-normal mb-3">Pedido original</h6>
+                <h6 class="text-muted fw-semibold border-top border-bottom pb-2 pt-3 mb-3">Pedido original</h6>
 
                 <dl class="row mb-4">
                     @if ($appeal->type === 'pne')
@@ -80,7 +98,7 @@
                         <dd class="col-sm-9">{{ $original?->description ?? '-' }}</dd>
 
                         <dt class="col-sm-3">Apoio solicitado</dt>
-                        <dd class="col-sm-9">{{ $original?->support ?? '-' }}</dd>
+                        <dd class="col-sm-9">{{ $original?->support ?? 'Não Informado' }}</dd>
                     @else
                         <dt class="col-sm-3">Nome Social</dt>
                         <dd class="col-sm-9 text-primary fw-bold">{{ $original?->name ?? '-' }}</dd>
@@ -103,7 +121,6 @@
 
                 {{-- Decisão: só aparece enquanto o recurso está em análise --}}
                 @if ($appeal->isPending())
-
                     <form method="POST" action="{{ route('admin.appeals.accept', $appeal) }}">
                         @csrf
                         @method('PATCH')
@@ -123,17 +140,16 @@
 
                         <p>Ao <strong>deferir</strong>, o pedido do candidato também passa a <strong>Deferido</strong>.
                             Ao <strong>indeferir</strong>, o pedido continua como está.
-                            <strong>Nos dois casos, o candidato será notificado por e-mail.</strong></p>
+                            <strong>Nos dois casos, o candidato será notificado por e-mail.</strong>
+                        </p>
 
                         <button type="submit" class="btn btn-sm btn-success"
-                            formaction="{{ route('admin.appeals.accept', $appeal) }}"
-                            onclick="return confirm('Confirma o deferimento do recurso? O pedido do candidato também será deferido.')">
+                            formaction="{{ route('admin.appeals.accept', $appeal) }}" data-swal-action="defer">
                             <i class="bi bi-check-lg"></i> Deferir recurso
                         </button>
 
                         <button type="submit" class="btn btn-sm btn-danger"
-                            formaction="{{ route('admin.appeals.reject', $appeal) }}"
-                            onclick="return confirm('Confirma o indeferimento do recurso?')">
+                            formaction="{{ route('admin.appeals.reject', $appeal) }}" data-swal-action="reject">
                             <i class="bi bi-x-lg"></i> Indeferir recurso
                         </button>
 
@@ -145,24 +161,22 @@
                     {{-- Exclusão: só enquanto o recurso está em análise --}}
                     <hr class="my-4">
 
-                    <form method="POST" action="{{ route('admin.appeals.destroy', $appeal) }}"
-                        onsubmit="return confirm('Excluir este recurso? Depois você poderá registrá-lo de novo.')">
+                    <form method="POST" action="{{ route('admin.appeals.destroy', $appeal) }}" class="delete-appeal-form">
                         @csrf
                         @method('DELETE')
 
-                        <p class="text-muted mb-2">Registrou este recurso por engano? Exclua para registrá-lo de novo.</p>
+                        <p class="text-muted mb-2">
+                            Registrou este recurso por engano? Exclua para registrá-lo de novo.
+                        </p>
 
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             <i class="bi bi-trash"></i> Excluir recurso
                         </button>
                     </form>
-
                 @else
-
                     <a href="{{ route('admin.appeals.index') }}" class="btn btn-sm btn-secondary">
                         <i class="bi bi-arrow-left"></i> Voltar
                     </a>
-
                 @endif
 
             </div>
@@ -170,3 +184,109 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            /*
+             * Deferir / Indeferir
+             */
+            document.querySelectorAll('[data-swal-action]').forEach(button => {
+
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const form = this.closest('form');
+                    const action = this.dataset.swalAction;
+
+                    if (action === 'defer') {
+
+                        Swal.fire({
+                            title: 'Deferir recurso?',
+                            text: 'O recurso será deferido e o pedido do candidato também será deferido. O candidato será notificado por e-mail.',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sim, deferir',
+                            cancelButtonText: 'Cancelar',
+                            reverseButtons: true
+                        }).then(result => {
+
+                            if (result.isConfirmed) {
+                                form.action = this.formAction;
+                                form.submit();
+                            }
+
+                        });
+
+                    }
+
+                    if (action === 'reject') {
+
+                        const observations = form.querySelector('#observations');
+
+                        if (!observations.value.trim()) {
+
+                            Swal.fire({
+                                title: 'Observações obrigatórias',
+                                text: 'Informe as observações antes de indeferir o recurso.',
+                                icon: 'warning',
+                                confirmButtonText: 'Entendi'
+                            }).then(() => {
+                                observations.focus();
+                            });
+
+                            return;
+                        }
+
+                        Swal.fire({
+                            title: 'Indeferir recurso?',
+                            text: 'O recurso será indeferido. O candidato será notificado por e-mail.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sim, indeferir',
+                            cancelButtonText: 'Cancelar',
+                            reverseButtons: true
+                        }).then(result => {
+
+                            if (result.isConfirmed) {
+                                form.action = this.formAction;
+                                form.submit();
+                            }
+
+                        });
+                    }
+                });
+            });
+
+
+            /*
+             * Excluir recurso
+             */
+            document.querySelectorAll('.delete-appeal-form').forEach(form => {
+
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: 'Excluir recurso?',
+                        text: 'Depois da exclusão, você poderá registrar este recurso novamente.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, excluir',
+                        cancelButtonText: 'Cancelar',
+                        reverseButtons: true
+                    }).then(result => {
+
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+                });
+
+            });
+
+        });
+    </script>
+@endpush

@@ -43,6 +43,7 @@ class Appeal extends Model
         'allegations',
         'status',
         'observations',
+        'path',
         'decided_by',
         'decided_at',
     ];

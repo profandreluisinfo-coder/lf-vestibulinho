@@ -11,6 +11,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AppealController extends Controller
 {
@@ -80,17 +82,41 @@ class AppealController extends Controller
         }
 
         $data = $request->validate([
-            'protocol' => 'required|string|max:30',
+            'protocol' => 'nullable|string|max:30|unique:appeals,protocol',
+            'allegations' => 'nullable|string|max:2000',
+            'observations' => 'required|string|max:2000',
+            'path' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
+        ], [
+            'protocol.unique' => 'Este número de protocolo já foi usado em outro recurso.',
+            'path.mimes' => 'O arquivo deve ser PDF, imagem (jpg, png) ou documento (doc, docx).',
+            'path.max' => 'O arquivo deve ter no máximo 10 MB.',
         ]);
+
+        // Se o protocolo não foi preenchido, o sistema gera um
+        $protocol = filled($data['protocol'] ?? null)
+            ? $data['protocol']
+            : $this->generateProtocol();
+
+        // Guarda o arquivo (se foi enviado)
+        $path = $request->hasFile('path')
+            ? $request->file('path')->store("appeals/{$user->id}", 'public')
+            : null;
 
         try {
             Appeal::create([
                 'user_id' => $user->id,
                 'type' => $type,
-                'protocol' => $data['protocol'],
+                'protocol' => $protocol,
+                'allegations' => $data['allegations'] ?? null,
+                'observations' => $data['observations'],
+                'path' => $path,
             ]);
         } catch (UniqueConstraintViolationException $e) {
-            // Duplo clique: o recurso já foi gravado um instante antes
+            // Se o recurso não foi gravado, apaga o arquivo para não sobrar lixo
+            if ($path) {
+                Storage::disk('public')->delete($path);
+            }
+
             return redirect()
                 ->route($this->listRoute($type))
                 ->with('error', 'Este candidato já possui recurso registrado para este pedido.');
@@ -98,7 +124,19 @@ class AppealController extends Controller
 
         return redirect()
             ->route('admin.appeals.index')
-            ->with('success', 'Recurso registrado com sucesso!');
+            ->with('success', "Recurso registrado com sucesso! Protocolo: {$protocol}");
+    }
+
+    /**
+     * Gera um protocolo automático (REC-ANO-XXXXXX) que ainda não exista.
+     */
+    private function generateProtocol(): string
+    {
+        do {
+            $protocol = 'REC-' . now()->year . '-' . strtoupper(Str::random(6));
+        } while (Appeal::where('protocol', $protocol)->exists());
+
+        return $protocol;
     }
 
     /**
@@ -145,7 +183,8 @@ class AppealController extends Controller
      */
     public function destroy(Appeal $appeal): RedirectResponse
     {
-        // Apaga só se ainda estiver pendente (confere e apaga no mesmo comando)
+        $path = $appeal->path;
+
         $deleted = Appeal::whereKey($appeal->id)
             ->where('status', Appeal::STATUS_PENDING)
             ->delete();
@@ -154,6 +193,10 @@ class AppealController extends Controller
             return redirect()
                 ->route('admin.appeals.show', $appeal)
                 ->with('error', 'Só é possível excluir um recurso que ainda está em análise.');
+        }
+
+        if ($path) {
+            Storage::disk('public')->delete($path);
         }
 
         return redirect()
