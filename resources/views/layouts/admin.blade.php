@@ -120,7 +120,7 @@
                         id="menuInscricoes">
                         <a href="{{ route('admin.inscriptions.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
-                            <i class="bi bi-people me-1"></i> Candidatos Inscritos
+                            <i class="bi bi-people me-1"></i> Candidatos
                         </a>
                     </div>
                 </div>
