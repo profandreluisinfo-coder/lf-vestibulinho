@@ -159,7 +159,7 @@
 
                     @include('admin.partials.field', ['name' => 'guardian[name]', 'label' => 'Responsável legal', 'value' => $user->guardian?->name, 'max' => 255])
                     @include('admin.partials.field', ['name' => 'guardian[phone]', 'label' => 'Telefone do responsável', 'value' => $user->guardian?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
-                    @include('admin.partials.field', ['name' => 'guardian[degree]', 'label' => 'Grau de parentesco', 'value' => $user->guardian?->getRawOriginal('degree'), 'options' => $degrees])
+                    @include('admin.partials.field', ['name' => 'guardian[degree_id]', 'label' => 'Grau de parentesco', 'value' => $user->guardian?->degree_id, 'options' => $degrees, 'col' => 'col-md-6'])
 
                     {{-- Só aparece quando o parentesco é "Outro" (8) --}}
                     <div class="col-md-6" id="guardian-kinship-wrapper">
