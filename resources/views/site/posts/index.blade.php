@@ -59,8 +59,7 @@
                                         'financeiro' => 'bi-cash-stack',
                                         'local' => 'bi-geo-alt-fill',
                                     ];
-                                    $categoryType = $post->category?->type ?? 'info';
-                                    $icone = $iconeMap[$categoryType] ?? 'bi-megaphone-fill';
+                                    $icone = $iconeMap[$post->category->type] ?? 'bi-megaphone-fill';
 
                                     $labelMap = [
                                         'info' => 'Informativo',
@@ -85,13 +84,13 @@
                                         'financeiro' => 'Financeiro',
                                         'local' => 'Local de Prova',
                                     ];
-                                    $label = $labelMap[$categoryType] ?? 'Aviso';
+                                    $label = $labelMap[$post->category->type] ?? 'Aviso';
                                 @endphp
 
                                 <a href="{{ route('site.posts.show', $post->slug) }}"
                                     class="posts-item delay-{{ ($loop->index % 4) + 1 }}">
 
-                                    <div class="posts-icon type-{{ $categoryType }}">
+                                    <div class="posts-icon type-{{ $post->category->type ?? 'info' }}">
                                         <i class="bi {{ $icone }}"></i>
                                     </div>
 
@@ -107,7 +106,7 @@
                                                 <i class="bi bi-calendar3 me-1"></i>
                                                 {{ $post->published_at?->format('d/m/Y') ?? $post->created_at->format('d/m/Y') }}
                                             </span>
-                                            <span class="posts-badge badge-{{ $categoryType }}">
+                                            <span class="posts-badge badge-{{ $post->category->type ?? 'info' }}">
                                                 {{ $label }}
                                             </span>
                                         </div>
