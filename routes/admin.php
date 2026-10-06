@@ -39,8 +39,12 @@ Route::prefix('admin')
                 // Candidatos com nome social
                 Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                     ->name('lgbts');
-                Route::get('candidato/{id}', [InscriptionController::class, 'show'])
-                    ->name('show');
+                // Route::get('candidato/{id}', [InscriptionController::class, 'show'])
+                //     ->name('show');
+                // Route::get('candidato/{user}/editar', [UserController::class, 'edit'])
+                //     ->name('edit');
+                // Route::put('candidato/{user}/editar', [UserController::class, 'update'])
+                //     ->name('update');
                 // Recursos de candidatos
                 Route::get('recursos', [InscriptionController::class, 'resources'])
                     ->name('resources');
@@ -338,9 +342,13 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('/', [UserController::class, 'index'])
                     ->name('index');
-                // Route::post('salvar', [UserController::class, 'store'])->name('store');
-                // Route::get('editar/{user}', [UserController::class, 'edit'])->name('edit');
-                // Route::put('editar/{user}', [UserController::class, 'update'])->name('update');
+                Route::get('detalhes/{user}', [UserController::class, 'show'])
+                    ->name('show');
+                Route::get('cadastrar', [UserController::class, 'create'])
+                    ->name('create');
+                Route::post('salvar', [UserController::class, 'store'])->name('store');
+                Route::get('editar/{user}', [UserController::class, 'edit'])->name('edit');
+                Route::put('editar/{user}', [UserController::class, 'update'])->name('update');
                 Route::delete('excluir/{user}', [UserController::class, 'destroy'])
                     ->name('destroy');
             });

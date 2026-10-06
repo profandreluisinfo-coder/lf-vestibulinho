@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\Controller;
 
 class InscriptionController extends Controller
@@ -92,22 +91,6 @@ class InscriptionController extends Controller
             'recordsFiltered' => $totalFiltered,
             'data' => $data
         ]);
-    }
-
-    /**
-     * Exibe a ficha de inscrição de um candidato especificado.
-     *
-     * @param string $id O ID do candidato, criptografado.
-     *
-     * @return View A view com a ficha de inscri o do candidato.
-     */
-    public function show($id): View
-    {
-        $id = Crypt::decrypt($id);
-
-        $user = User::find($id);
-
-        return view('admin.inscriptions.show')->with('user', $user);
     }
 
     /**

@@ -221,19 +221,21 @@ class InscriptionController extends Controller
     {
         $data = $request->except(['_token']);
 
-        if (data_get($data, 'degree') < 8) {
-            $data['kinship'] = null;
+        // Sem responsável legal: limpa todos os campos relacionados
+        if (data_get($data, 'respLegalOption') == '2') {
+            $data['responsible']       = null;
+            $data['responsible_phone'] = null;
+            $data['degree_id']         = null;
+            $data['kinship']           = null;
         }
 
-        if (data_get($data, 'respLegalOption') == '2') {
-            $data['responsible'] = null;
-            $data['degree'] = null;
+        // 'kinship' só faz sentido quando degree_id = 8 (OUTRO)
+        if (data_get($data, 'degree_id') != 8) {
             $data['kinship'] = null;
-            $data['responsible_phone'] = null;
         }
 
         session()->put('step5', $data);
-        session()->put('step5_done', true); // Marca como concluído
+        session()->put('step5_done', true);
 
         return redirect()->route('inscription.step.pcd');
     }

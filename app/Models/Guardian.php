@@ -2,41 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 
 class Guardian extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'name',
         'phone',
         'degree_id',
         'kinship',
-        'phone'
     ];
 
-    /**
-     * Defina o valor de um determinado atributo no modelo.
-     *
-     * Se o valor for uma string vazia, ele será convertido em nulo.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function setAttribute($key, $value)
-    {
-        // Se o valor for string vazia, converte para null
-        if ($value === "") {
-            $value = null;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
+    // ---------------------------------------------------------------------
     // Relacionamentos
+    // ---------------------------------------------------------------------
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -47,83 +32,63 @@ class Guardian extends Model
         return $this->belongsTo(Degree::class);
     }
 
-    // Acessors e Mutators
-    
-    /**
-     * Retorna o valor do atributo 'degree' (Grau de Parentesco) formatado com o nome da formação de grau.
-     *
-     * @param string $value    O valor do atributo 'degree'
-     * @return string    O valor do atributo 'degree' formatado com o nome da formação de grau.
-     */
-    public function getDegreeAttribute($value)
-    {
-        $degrees = [
-            '1' => 'PADRASTO',
-            '2' => 'MADRASTA',
-            '3' => 'AVÔ(Ó)',
-            '4' => 'TIO(A)',
-            '5' => 'IRMÃO(Ã)',
-            '6' => 'PRIMO(A)',
-            '7' => 'TIO(A)',
-            '8' => 'OUTRO',
-        ];
+    // ---------------------------------------------------------------------
+    // Mutators
+    // ---------------------------------------------------------------------
 
-        return $degrees[$value] ?? $value;  // Se não encontrar, retorna o valor original
-    }
-    
     /**
      * Converte o valor do atributo 'name' para maiúsculo.
-     *
-     * @param string $value    O valor do atributo 'name'
-     * @return $this
      */
-    public function setNameAttribute($value)
+    public function setNameAttribute($value): void
     {
-        $this->attributes['name'] = $this->toUpper($value);
-    }
-
-    /**
-     * Converte o valor para maiúsculas, tratando nulos e espaços.
-     *
-     * @param  string|null  $value
-     * @return string|null
-     */
-    private function toUpper(?string $value): ?string
-    {
-        return $value ? Str::of(trim($value))->upper() : null;
+        $this->attributes['name'] = $value
+            ? mb_strtoupper(trim($value))
+            : null;
     }
 
     /**
      * Remove todos os caracteres não numéricos do atributo 'phone'.
-     *
-     * @param string $value    O valor do atributo 'phone'
      */
-    public function setPhoneAttribute($value)
+    public function setPhoneAttribute($value): void
     {
-        $this->attributes['phone'] = str_replace(['(', ')', ' ', '-'], '', $value);
+        $this->attributes['phone'] = $value
+            ? preg_replace('/\D/', '', $value)
+            : null;
     }
 
     /**
-     * Retorna o valor do atributo 'phone' formatado como (99) 99999-9999.
-     *
-     * @param string $value    O valor do atributo 'phone'
-     * @return string    O valor do atributo 'phone' formatado como (99) 99999-9999
+     * Normaliza 'kinship': string vazia vira null.
      */
-    public function getPhoneAttribute($value)
+    public function setKinshipAttribute($value): void
     {
-        return $this->formatPhone($value);
+        $this->attributes['kinship'] = ($value !== null && trim($value) !== '')
+            ? trim($value)
+            : null;
     }
 
+    // ---------------------------------------------------------------------
+    // Acessor
+    // ---------------------------------------------------------------------
+
     /**
-     * Formata o valor do atributo 'telefone' no formato (XX) XXXX-XXXX.
-     * O formato aceita 11 dígitos seguidos de 1 letra ou número.
-     * Se o valor não seguir o formato, ele será retornado sem alterações.
-     *
-     * @param string $value    O valor do atributo 'telefone'
-     * @return string    O valor do atributo 'telefone' formatado como (XX) XXXX-XXXX
+     * Retorna o telefone formatado (celular ou fixo).
      */
-    private function formatPhone($value)
+    public function getPhoneAttribute($value): ?string
     {
-        return preg_replace('/(\d{2})(\d{4,5})(\d{4})/', '($1) $2-$3', $value);
-    }    
+        if (!$value) {
+            return $value;
+        }
+
+        $digits = preg_replace('/\D/', '', $value);
+
+        if (strlen($digits) === 11) {
+            return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $digits);
+        }
+
+        if (strlen($digits) === 10) {
+            return preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1) $2-$3', $digits);
+        }
+
+        return $value;
+    }
 }

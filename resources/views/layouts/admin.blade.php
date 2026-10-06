@@ -113,11 +113,14 @@
                         <span>Inscrições</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.index') ? 'show' : '' }}"
+                    <div class="dropdown-menu-custom {{ 
+                            request()->routeIs('admin.inscriptions.index') ||
+                            request()->routeIs('admin.inscriptions.show') ? 'show' : '' 
+                        }}"
                         id="menuInscricoes">
                         <a href="{{ route('admin.inscriptions.index') }}"
                             class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
-                            <i class="bi bi-people me-1"></i> Inscrições
+                            <i class="bi bi-people me-1"></i> Candidatos Inscritos
                         </a>
                     </div>
                 </div>

@@ -1,14 +1,26 @@
 $(document).ready(function () {
 
-    // Validação de domínio de e-mail inválido
+    const OTHER_DEGREE_ID = '8';
+    const NAME_PATTERN = /^[a-zA-ZÀ-ÿ ()]*$/;
+
+    // Domínios de e-mail inválidos (mesma lista do FamilyRequest.php)
+    const INVALID_DOMAINS = [
+        '@gmail.com.br', '@test.com', '@fakeemail.com', '@invalid.com',
+        '@example.com', '@example.com.br', '@email.com', '@email.com.br',
+        '@educacaosumare.com', '@hotmail.com.br', '@outlook.com.br'
+    ];
+
+    // Validação de domínio de e-mail inválido (sem diferenciar maiúsculas/minúsculas,
+    // pois o servidor converte o e-mail para minúsculas antes de validar)
     $.validator.addMethod("isValidDomainName", function (value, element) {
-        const invalidDomains = [
-            '@gmail.com.br', '@test.com', '@fakeemail.com', '@invalid.com',
-            '@example.com', '@example.com.br', '@email.com', '@email.com.br',
-            '@educacaosumare.com', '@hotmail.com.br', '@outlook.com.br'
-        ];
-        return !invalidDomains.some(domain => value.endsWith(domain));
+        const email = value.trim().toLowerCase();
+        return !INVALID_DOMAINS.some(domain => email.endsWith(domain));
     }, "* O domínio de e-mail informado é inválido.");
+
+    // Confirmação de e-mail (servidor: 'confirmed', após converter para minúsculas)
+    $.validator.addMethod("emailConfirmation", function (value, element) {
+        return value.trim().toLowerCase() === $.trim($('#parents_email').val()).toLowerCase();
+    }, "* Os e-mails não coincidem.");
 
     // Validação de cada palavra ter ao menos 2 letras
     $.validator.addMethod("wordLength", function (value, element) {
@@ -54,18 +66,28 @@ $(document).ready(function () {
 
     // Dependências das opções de responsável
     const dependsOnRespOption1 = () => $('#respOption1').is(':checked');
-    const dependsOnRespOption2 = () => $('#respOption2').is(':checked');
 
     // Dependências: nome é obrigatório se o telefone correspondente foi informado
     const dependsOnMotherPhone = () => $.trim($('#mother_phone').val()) !== "";
     const dependsOnFatherPhone = () => $.trim($('#father_phone').val()) !== "";
 
-    // Atualiza validação ao mudar a escolha de responsável
-    $('#respOption1, #respOption2').change(function () {
-        $('#responsible').valid();
-        $('#mother_phone').valid();
-        $('#responsible_phone').valid();
-        $('#degree').valid();
+    /**
+     * Última linha de defesa antes de enviar: garante que campos de um bloco
+     * oculto não sejam enviados com valores "fantasmas" (ex.: autofill do
+     * navegador, botão Voltar/bfcache). Espelha o prepareForValidation() do servidor.
+     */
+    function sanitizeHiddenFields() {
+        if (!dependsOnRespOption1()) {
+            $('#responsible, #responsible_phone, #degree_id, #kinship').val('');
+        } else if ($('#degree_id').val() !== OTHER_DEGREE_ID) {
+            $('#kinship').val('');
+        }
+    }
+
+    // Ao trocar "Sim/Não", só precisamos revalidar a exigência de responsável legal.
+    // (Os campos do bloco ficam ocultos/ignorados ou são validados quando o usuário interagir.)
+    $('#respOption1, #respOption2').on('change', function () {
+        $('#respOption1').valid();
     });
 
     // Revalida o nome da mãe/pai assim que o respectivo telefone é preenchido/alterado
@@ -81,6 +103,10 @@ $(document).ready(function () {
         $('#respOption1').valid();
     });
 
+    // Radios ficam em .form-check (o erro não é "irmão" do input): destaca o grupo todo
+    const getTargets = (element) =>
+        element.type === 'radio' ? $('input[name="' + element.name + '"]') : $(element);
+
     $("#inscription").validate({
         ignore: ":hidden",
         rules: {
@@ -88,7 +114,7 @@ $(document).ready(function () {
                 required: { depends: dependsOnMotherPhone },
                 ...validateIfFilled({
                     maxlength: 60,
-                    pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                    pattern: NAME_PATTERN,
                     noSequences: true,
                     wordLength: true,
                     minWords: true
@@ -101,7 +127,7 @@ $(document).ready(function () {
                 required: { depends: dependsOnFatherPhone },
                 ...validateIfFilled({
                     maxlength: 60,
-                    pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                    pattern: NAME_PATTERN,
                     noSequences: true,
                     wordLength: true,
                     minWords: true
@@ -118,7 +144,7 @@ $(document).ready(function () {
             responsible: {
                 required: { depends: dependsOnRespOption1 },
                 maxlength: 60,
-                pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                pattern: NAME_PATTERN,
                 noSequences: true,
                 wordLength: true,
                 minWords: true,
@@ -128,15 +154,17 @@ $(document).ready(function () {
                 required: { depends: dependsOnRespOption1 },
                 normalizer: value => $.trim(value)
             },
-            degree: {
+            degree_id: {
                 required: { depends: dependsOnRespOption1 },
                 range: [1, 8]
             },
             kinship: {
+                // Servidor: obrigatório quando há responsável legal E degree_id = 8
                 required: {
-                    depends: () => $("#degree").val() == "8"
+                    depends: () => dependsOnRespOption1() && $("#degree_id").val() === OTHER_DEGREE_ID
                 },
-                pattern: /^[a-zA-ZÀ-ÿ ()]*$/,
+                maxlength: 45,
+                pattern: NAME_PATTERN,
                 normalizer: value => $.trim(value)
             },
             parents_email: {
@@ -148,7 +176,7 @@ $(document).ready(function () {
             parents_email_confirmation: {
                 required: true,
                 email: true,
-                equalTo: "#parents_email",
+                emailConfirmation: true,
                 normalizer: value => $.trim(value)
             }
         },
@@ -173,16 +201,14 @@ $(document).ready(function () {
                 maxlength: "* Máximo de 60 caracteres.",
                 pattern: "* Use apenas letras, acentos e espaços."
             },
-            degree: {
+            degree_id: {
                 required: "* Obrigatório.",
                 range: "* Selecione um grau de parentesco válido."
             },
             kinship: {
-                required: "* Obrigatório.",
+                required: "* Descreva o grau de parentesco quando selecionar \"Outro\".",
+                maxlength: "* Máximo de 45 caracteres.",
                 pattern: "* Apenas letras, acentos e espaços."
-            },
-            mother_phone: {
-                required: "* Obrigatório."
             },
             responsible_phone: {
                 required: "* Obrigatório."
@@ -194,21 +220,25 @@ $(document).ready(function () {
             parents_email_confirmation: {
                 required: "* Obrigatório.",
                 email: "* E-mail inválido.",
-                equalTo: "* Os emails não coincidem."
+                emailConfirmation: "* Os e-mails não coincidem."
             }
         },
         submitHandler: function (form) {
+            sanitizeHiddenFields();
             form.submit();
         },
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
+            if (element.attr('type') === 'radio') {
+                error.addClass('d-block');
+            }
             element.closest('.form-group').append(error);
         },
         highlight: function (element) {
-            $(element).addClass('is-invalid');
+            getTargets(element).addClass('is-invalid');
         },
         unhighlight: function (element) {
-            $(element).removeClass('is-invalid');
+            getTargets(element).removeClass('is-invalid');
         }
     });
 

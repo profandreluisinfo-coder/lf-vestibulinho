@@ -164,7 +164,7 @@
 
         <div class="header-info">
             <div><strong>Nº da Inscrição:</strong> {{ $inscription->id }}</div>
-            <div><strong>Data:</strong> {{ $inscription->created_at->format('d/m/Y') }}</div>
+            <div><strong>Data:</strong> {{ $inscription->created_at->format('d/m/Y H:i:s') }}</div>
         </div>
 
         <div class="card-body">
@@ -187,7 +187,7 @@
                     </tr>
                     <tr>
                         <th>Data de nascimento</th>
-                        <td>{{ $user->birth }}</td>
+                        <td>{{ $user->birth->format('d/m/Y') }}</td>
                     </tr>
                     <tr>
                         <th>Gênero</th>
@@ -206,11 +206,12 @@
                 <tbody>
                     <tr>
                         <th>Nacionalidade</th>
-                        <td>{{ $user->nationality}}</td>
+                        <td>{{ $user->nationality }}</td>
                     </tr>
                     <tr>
                         <th>Documento</th>
-                        <td>{{ $user->document->type }} - Nº {{ $user->document->number }} - Expedição: {{ $user->document->expedition->format('d/m/Y') }}</td>
+                        <td>{{ $user->document->type }} - Nº {{ $user->document->number }} - Expedição:
+                            {{ $user->document->expedition->format('d/m/Y') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -229,16 +230,14 @@
                     </tr>
 
                     @if ($user->certificate->type != 1)
-                    
-                    <tr>
-                        <th>Detalhes</th>
-                        <td>
-                            Folha: {{ $user->certificate->fls }},
-                            Livro: {{ $user->certificate->book }},
-                            Município: {{ $user->certificate->municipality }}
-                        </td>
-                    </tr>
-                    
+                        <tr>
+                            <th>Detalhes</th>
+                            <td>
+                                Folha: {{ $user->certificate->fls }},
+                                Livro: {{ $user->certificate->book }},
+                                Município: {{ $user->certificate->municipality }}
+                            </td>
+                        </tr>
                     @endif
 
                 </tbody>
@@ -354,7 +353,8 @@
                         </tr>
                         <tr>
                             <th>Parentesco</th>
-                            <td>{{ $user->guardian->degree }}
+                            <td>
+                                {{ $user->guardian->degree?->description }}
                                 @if ($user->guardian->kinship)
                                     ({{ $user->guardian->kinship }})
                                 @endif
@@ -369,67 +369,38 @@
                 </tbody>
             </table>
 
-            <!-- EDUCAÇÃO ESPECIAL -->
-            {{-- @if ($user->pne)
-            <table class="table no-break">
-                <thead>
-                    <tr>
-                        <th colspan="2">Educação Especial</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Necessita de atendimento especial</th>
-                        <td>
-                            SIM - {{ $user->pne->description }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Necessita de recursos especiais para realização da prova</th>
-                        <td>
-                            @if ($user->pne->support)
-                                SIM - {{ $user->pne->support }}
-                            @else
-                                NÃO
-                            @endif
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            @endif --}}
-
             <!-- PROGRAMAS SOCIAIS -->
             @if ($user->social_program)
-            <table class="table no-break">
-                <thead>
-                    <tr>
-                        <th colspan="2">Programas Sociais</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Bolsa Família</th>
-                        <td>SIM - NIS: {{ $user->nis }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="table no-break">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Programas Sociais</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Bolsa Família</th>
+                            <td>SIM - NIS: {{ $user->nis }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             @endif
 
             <!-- SAÚDE -->
             @if ($user->health)
-            <table class="table no-break">
-                <thead>
-                    <tr>
-                        <th colspan="2">Saúde</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Problemas de saúde/alergias</th>
-                        <td>SIM - {{ $user->health_issue }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="table no-break">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Saúde</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Problemas de saúde/alergias</th>
+                            <td>SIM - {{ $user->health_issue }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             @endif
 
         </div>

@@ -111,7 +111,7 @@
                 </tr>
                 <tr>
                     <th>Data/Hora:</th>
-                    <td>{{ $user?->inscription?->created_at?->format('d/m/Y H:i:s') ?? '-' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($user?->inscription?->created_at)->format('d/m/Y H:i:s') ?? '-' }}</td>
                 </tr>
             </tbody>
         </table>
@@ -135,7 +135,7 @@
                 </tr>
                 <tr>
                     <th>Nascimento:</th>
-                    <td>{{ $user->birth }}</td>
+                    <td>{{ \Carbon\Carbon::parse($user->birth)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <th>Gênero:</th>
@@ -157,7 +157,7 @@
                 </tr>
                 <tr>
                     <th>Documento:</th>
-                    <td>{{ $user->document->type }}<br>Nº: {{ $user->document->number }}</td>
+                    <td>{{ $user->document->type }}<br>Nº: {{ $user->document->number }}<br>Expedição: {{ \Carbon\Carbon::parse($user->document->expedition)->format('d/m/Y') }}</td>
                 </tr>
                 <tr>
                     <th>Certidão de Nascimento:</th>
@@ -273,7 +273,7 @@
                     </tr>
                     <tr>
                         <th>Parentesco:</th>
-                        <td>{{ $user?->guardian?->degree }}
+                        <td>{{ $user?->guardian?->degree?->description }}
                             ({{ $user?->guardian?->kinship ? $user?->guardian?->kinship : '' }})
                         </td>
                     </tr>
@@ -289,42 +289,6 @@
     <!-- INFORMAÇÕES COMPLEMENTARES -->
     <div class="no-break">
         <div class="section-title">Informações Complementares</div>
-
-        {{-- <table>
-            <thead>
-                <tr>
-                    <th colspan="2">Educação Especial</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Portador de necessidades especiais?</th>
-                    <td>{{ $user?->pne ? 'SIM' : 'NÃO' }}</td>
-                </tr>
-                @if ($user?->pne)
-                    <tr>
-                        <th>Descrição:</th>
-                        <td>
-                            {{ $user?->pne?->description }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Necessita de recursos de acessibilidade para a realização da prova?</th>
-                        <td>
-                            {{ $user?->pne?->support ? 'SIM' : 'NÃO' }}
-                        </td>
-                    </tr>
-                    @if ($user?->pne?->support)
-                        <tr>
-                            <th>Descrição dos recursos de acessibilidade:</th>
-                            <td>
-                                {{ $user?->pne?->support }}
-                            </td>
-                        </tr>
-                    @endif
-                @endif
-            </tbody>
-        </table> --}}
 
         <table>
             <thead>

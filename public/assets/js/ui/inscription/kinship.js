@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const select = document.getElementById('degree');
+    const select = document.getElementById('degree_id');   // ← mudou
     const otherDiv = document.getElementById('other_relationship');
 
     if (!select || !otherDiv) return;
@@ -17,10 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Ao carregar
     toggleOtherField(select.value);
 
-    // Ao mudar
     select.addEventListener('change', function () {
         toggleOtherField(this.value);
     });

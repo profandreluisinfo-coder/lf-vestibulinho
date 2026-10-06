@@ -89,7 +89,7 @@
                         </td>
                         <td>
                             @if ($user->role === 'user' && $user?->inscription)
-                                <a href="{{ route('admin.inscriptions.show', Crypt::encrypt($user->id)) }}"
+                                <a href="{{ route('admin.users.show', $user->id) }}"
                                     class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
                                     <i class="bi bi-search"></i> Detalhes
                                 </a>

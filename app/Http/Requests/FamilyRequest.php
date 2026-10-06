@@ -8,6 +8,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class FamilyRequest extends FormRequest
 {
+    /** ID do grau de parentesco "OUTRO" (tabela degrees). */
+    private const OTHER_DEGREE_ID = '8';
+
+    /** Domínios de e-mail inválidos (mesma lista do family.js do cliente). */
+    private const INVALID_EMAIL_DOMAINS = [
+        '@gmail.com.br', '@test.com', '@fakeemail.com', '@invalid.com',
+        '@example.com', '@example.com.br', '@email.com', '@email.com.br',
+        '@educacaosumare.com', '@hotmail.com.br', '@outlook.com.br',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,22 +36,57 @@ class FamilyRequest extends FormRequest
         return !auth()->user()->hasInscription();
     }
 
-    public function prepareForValidation()
+    /**
+     * Normaliza os dados ANTES de validar:
+     *  1) trim + caixa alta (e-mails ficam em caixa baixa);
+     *  2) descarta valores "fantasmas" do responsável legal quando a opção
+     *     não é "Sim" (campos que o cliente apenas ocultou);
+     *  3) descarta 'kinship' quando o grau de parentesco não é "OUTRO".
+     */
+    protected function prepareForValidation(): void
     {
+        $emailFields = ['parents_email', 'parents_email_confirmation'];
+        $ignored     = ['_token', '_method'];
+
         $sanitized = [];
 
         foreach ($this->all() as $key => $value) {
-            // Aplica manipulação aos valores apenas se forem strings
-            if (is_string($value)) {
-                $sanitized[$key] = trim($value); // Remove espaços
-                $sanitized[$key] = mb_strtoupper($value, 'UTF-8');
-            } else {
-                $sanitized[$key] = $value; // Mantém o valor original se não for string
+            if (in_array($key, $ignored, true)) {
+                continue;
             }
+
+            if (is_string($value)) {
+                $value = trim($value);
+                $value = in_array($key, $emailFields, true)
+                    ? mb_strtolower($value, 'UTF-8')
+                    : mb_strtoupper($value, 'UTF-8');
+            }
+
+            $sanitized[$key] = $value;
         }
 
-        // Substitui os valores originais pelos sanitizados
+        // 2) Sem responsável legal: zera todo o bloco
+        if (($sanitized['respLegalOption'] ?? null) !== '1') {
+            $sanitized['responsible']       = null;
+            $sanitized['responsible_phone'] = null;
+            $sanitized['degree_id']         = null;
+            $sanitized['kinship']           = null;
+        }
+
+        // 3) 'kinship' só existe quando degree_id = OUTRO
+        if ((string) ($sanitized['degree_id'] ?? '') !== self::OTHER_DEGREE_ID) {
+            $sanitized['kinship'] = null;
+        }
+
         $this->merge($sanitized);
+    }
+
+    /**
+     * O usuário optou por informar um responsável legal?
+     */
+    private function hasLegalResponsible(): bool
+    {
+        return (string) $this->input('respLegalOption') === '1';
     }
 
     /**
@@ -66,7 +111,7 @@ class FamilyRequest extends FormRequest
                 new NameRule(),
             ],
 
-            //responsável legal (informar ou não) — obrigatório indicar respOption1 (1)
+            // responsável legal (informar ou não) — obrigatório informar (1)
             // quando nem mãe nem pai foram informados
             'respLegalOption' => [
                 'required',
@@ -75,43 +120,64 @@ class FamilyRequest extends FormRequest
                     $motherEmpty = blank($this->input('mother'));
                     $fatherEmpty = blank($this->input('father'));
 
-                    if ($motherEmpty && $fatherEmpty && $value != 1) {
+                    if ($motherEmpty && $fatherEmpty && (string) $value !== '1') {
                         $fail('* Como nenhum dos pais foi informado, é necessário indicar um responsável legal.');
                     }
                 },
             ],
 
             // nome do responsável legal
+            // (se respLegalOption != 1, prepareForValidation() já o transformou em null)
             'responsible' => [
                 'nullable',
-                Rule::requiredIf(fn() => $this->input('respLegalOption') == 1),
+                Rule::requiredIf(fn() => $this->hasLegalResponsible()),
                 'max:60',
-                $this->input('respLegalOption') == 1 ? new NameRule() : null,
+                new NameRule(),
             ],
 
             // grau de parentesco
-            'degree' => [
+            'degree_id' => [
                 'nullable',
-                Rule::requiredIf(fn() => $this->input('respLegalOption') == 1),
-                'in:1,2,3,4,5,6,7,8',
+                Rule::requiredIf(fn() => $this->hasLegalResponsible()),
+                'integer',
+                'exists:degrees,id',
             ],
 
-            // descrição do grau de parentesco
+            // descrição do grau de parentesco (somente quando "OUTRO")
             'kinship' => [
-                'nullable'
+                'nullable',
+                Rule::requiredIf(fn() => $this->hasLegalResponsible()
+                    && (string) $this->input('degree_id') === self::OTHER_DEGREE_ID),
+                'string',
+                'max:45',
+                'regex:/^[a-zA-ZÀ-ÿ ()]*$/u', // mesmo padrão do cliente
             ],
 
-            // telefone dos pais ou responsável legal 
+            // telefone dos pais ou responsável legal
             'mother_phone' => ['nullable'],
             'father_phone' => ['nullable'],
 
             'responsible_phone' => [
                 'nullable',
-                Rule::requiredIf(fn() => $this->input('respLegalOption') == 1)
+                Rule::requiredIf(fn() => $this->hasLegalResponsible()),
             ],
 
-            // e-mail dos pais ou responsável legal 
-            'parents_email' => ['required', 'email', 'confirmed'],
+            // e-mail dos pais ou responsável legal
+            'parents_email' => [
+                'required',
+                'email',
+                'confirmed',
+                function ($attribute, $value, $fail) {
+                    $email = mb_strtolower(trim((string) $value), 'UTF-8');
+
+                    foreach (self::INVALID_EMAIL_DOMAINS as $domain) {
+                        if (str_ends_with($email, $domain)) {
+                            $fail('* O domínio de e-mail informado é inválido.');
+                            return;
+                        }
+                    }
+                },
+            ],
         ];
     }
 
@@ -127,20 +193,24 @@ class FamilyRequest extends FormRequest
 
             'respLegalOption.required' => '* Obrigatório',
             'respLegalOption.in' => '* Opção inválida',
+
             'responsible.max' => '* No máximo :max caracteres',
             'responsible.required' => '* Obrigatório',
 
-            'degree.required' => '* Obrigatório',
-            'degree.in' => '* Opção inválida',
+            'degree_id.required' => '* Obrigatório',
+            'degree_id.integer' => '* O grau de parentesco selecionado é inválido.',
+            'degree_id.exists' => '* O grau de parentesco selecionado é inválido.',
 
-            'kinship.required' => '* Obrigatório',
+            // Rule::requiredIf() é convertida em "required", por isso a chave é kinship.required
+            'kinship.required' => '* Descreva o grau de parentesco quando selecionar "Outro".',
+            'kinship.max' => '* No máximo :max caracteres',
+            'kinship.regex' => '* Apenas letras, acentos e espaços.',
 
             'responsible_phone.required' => '* Obrigatório',
-            'responsible_phone.min' => '* No mínimo :min caracteres',
-            'responsible_phone.max' => '* No máximo :max caracteres',
 
             'parents_email.required' => '* Obrigatório',
             'parents_email.email' => '* E-mail inválido',
+            'parents_email.confirmed' => '* Os e-mails não coincidem.',
         ];
     }
 }

@@ -22,9 +22,15 @@ class InscriptionService
         $user = Auth::user();
 
         $steps = collect(range(1, 8))
-            ->mapWithKeys(fn ($step) => ["step{$step}" => session()->get("step{$step}", [])]);
+            ->mapWithKeys(fn($step) => ["step{$step}" => session()->get("step{$step}", [])]);
 
         $data = array_merge(...$steps->values()->toArray());
+
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+
+        // exit;
 
         DB::transaction(function () use ($user, $data, $steps) {
 
@@ -111,15 +117,13 @@ class InscriptionService
             }
 
             if (data_get($data, 'respLegalOption') === '1') {
-                $degree = data_get($data, 'degree');
-
                 $user->guardian()->updateOrCreate(
                     [],
                     [
-                        'name' => data_get($data, 'responsible'),
-                        'phone' => data_get($data, 'responsible_phone'),
-                        'degree' => $degree,
-                        'kinship' => ($degree == '8' && ! empty(data_get($data, 'kinship'))) ? data_get($data, 'kinship') : '',
+                        'name'      => data_get($data, 'responsible'),
+                        'phone'     => data_get($data, 'responsible_phone'),
+                        'degree_id' => data_get($data, 'degree_id'),
+                        'kinship'   => data_get($data, 'kinship'),
                     ]
                 );
             }
@@ -151,10 +155,16 @@ class InscriptionService
                 'process_id' => $sp->id,
             ]);
 
+//             dd(
+//     get_debug_type($user->birth),
+//     get_debug_type($user->document?->expedition),
+//     get_debug_type($inscription->created_at),
+// );
+
             $pdf = Pdf::loadView('inscription.pdf.email', compact('user', 'inscription', 'sp'));
 
-            $filename = 'Protocolo_'.preg_replace('/[^0-9]/', '', (string) $user->cpf).'.pdf';
-            $path = storage_path('app/public/'.$filename);
+            $filename = 'Protocolo_' . preg_replace('/[^0-9]/', '', (string) $user->cpf) . '.pdf';
+            $path = storage_path('app/public/' . $filename);
             $pdf->save($path);
 
             Mail::to($user->email)->send(new SendMail(
@@ -167,7 +177,7 @@ class InscriptionService
             Storage::disk('public')->delete($filename);
 
             $allKeys = collect(range(1, 7))
-                ->flatMap(fn ($step) => ["step{$step}", "step{$step}_done"])
+                ->flatMap(fn($step) => ["step{$step}", "step{$step}_done"])
                 ->toArray();
 
             session()->forget($allKeys);

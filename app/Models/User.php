@@ -21,6 +21,13 @@ class User extends Authenticatable
         '4' => 'PREFIRO NÃO INFORMAR',
     ];
 
+    const NATIONALITIES = [
+        '1' => 'BRASILEIRA',
+        '2' => 'BRASILEIRA NATURALIZADA',
+        '3' => 'ESTRANGEIRA',
+        '4' => 'PORTUGUESA (COM ESTATUTO DE IGUALDADE)',
+    ];
+
     /**
      * Os atributos que são atribuíveis (definidos) em massa.
      *
@@ -55,6 +62,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'birth' => 'date',
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
         ];
@@ -169,11 +177,6 @@ class User extends Authenticatable
         $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
     }
 
-    public function getBirthAttribute($value)
-    {
-        return Carbon::parse($value)->format('d/m/Y');
-    }
-
     public function getAgeAttribute(): ?int
     {
         $birth = $this->getRawOriginal('birth');
@@ -188,27 +191,13 @@ class User extends Authenticatable
 
     public function getGenderAttribute($value)
     {
-        // $genders = [
-        //     '1' => 'MASCULINO',
-        //     '2' => 'FEMININO',
-        //     '3' => 'OUTRO',
-        //     '4' => 'PREFIRO NÃO INFORMAR',
-        // ];
-
         // return $genders[$value] ?? $value;
         return self::GENDERS[$value] ?? $value;
     }
 
     public function getNationalityAttribute($value)
     {
-        $nationalities = [
-            '1' => 'BRASILEIRA',
-            '2' => 'BRASILEIRA NATURALIZADA',
-            '3' => 'ESTRANGEIRA',
-            '4' => 'PORTUGUESA (COM ESTATUTO DE IGUALDADE)',
-        ];
-
-        return $nationalities[$value] ?? $value;  // Se não encontrar, retorna o valor original
+        return self::NATIONALITIES[$value] ?? $value;
     }
 
     public function typeOfNationality()

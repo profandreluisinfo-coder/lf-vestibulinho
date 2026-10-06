@@ -18,6 +18,19 @@
             <span class="fi-active-badge">Ativo</span>
         </div>
 
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-pencil-square me-1"></i>Editar dados do candidato
+            </a>
+        </div>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         {{-- Inscrição --}}
         <p class="fi-section-label">Dados da Inscrição</p>
         <div class="fi-card mb-4">
@@ -82,8 +95,10 @@
                             class="fi-row-value">{{ $user->document->type }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nº Documento</span><span
                             class="fi-row-value">{{ $user->document->number }}</span></div>
+                    <div class="fi-row"><span class="fi-row-label">Expedição</span><span
+                            class="fi-row-value">{{ \Carbon\Carbon::parse($user->document->expedition)->format('d/m/Y') }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Nascimento</span><span
-                            class="fi-row-value">{{ $user->birth }}</span></div>
+                            class="fi-row-value">{{ \Carbon\Carbon::parse($user->birth)->format('d/m/Y') }}</span></div>
                 </div>
             </div>
         </div>
@@ -139,7 +154,7 @@
                 </div>
                 <div class="fi-row fi-row-highlight">
                     <span class="fi-row-label">Parentesco</span>
-                    <span class="fi-row-value">{{ $user?->guardian?->degree }}
+                    <span class="fi-row-value">{{ $user?->guardian?->degree?->description }}
                         @if ($user?->guardian?->kinship)
                             — {{ $user?->guardian?->kinship }}
                         @endif

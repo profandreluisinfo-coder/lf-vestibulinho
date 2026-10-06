@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 
 class Document extends Model
 {
+    const TYPES = [
+        '1' => 'RG -  Registro Geral',
+        '2' => 'CIN - Carteira de Identidade Nacional',
+        '3' => 'RNM - Registro Nacional Migratório',
+    ];
+
     protected $fillable = [
         'user_id',
         'type',
@@ -28,13 +34,7 @@ class Document extends Model
 
     public function getTypeAttribute($value)
     {
-        $types = [
-            '1' => 'RG -  Registro Geral',
-            '2' => 'CIN - Carteira de Identidade Nacional',
-            '3' => 'RNM - Registro Nacional Migratório',
-        ];
-
-        return Str::of($types[$value])->upper() ?? $value;  // Se não encontrar, retorna o valor original
+        return self::TYPES[$value] ?? $value;
     }
 
     /**

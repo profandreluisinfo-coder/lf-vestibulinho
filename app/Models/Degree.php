@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+// A tabela degrees é apenas uma tabela de domínio/lookup para popular o <select> na view. O Guardian não tem relacionamento Eloquent com Degree — ele apenas armazena o valor selecionado
+
 class Degree extends Model
 {
     protected $fillable = [

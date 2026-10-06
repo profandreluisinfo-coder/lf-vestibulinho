@@ -95,7 +95,7 @@
         </div>
         <div class="review-row">
             <span class="review-label">Nº Documento</span>
-            <span class="review-value">{{ $step1['doc_number'] }}</span>
+            <span class="review-value">{{ $step1['doc_number'] }} - Expedição: {{ \Carbon\Carbon::parse($step1['expedition'])->format('d/m/Y') }}</span>
         </div>
         <div class="review-row">
             <span class="review-label">Nascimento</span>
@@ -247,7 +247,7 @@
             <div class="review-row">
                 <span class="review-label">Parentesco</span>
                 <span class="review-value">
-                    {{ $degrees[$step5['degree']] ?? '' }}
+                    {{ $degrees[$step5['degree_id']] ?? '' }}
                     @if ($step5['kinship'])
                         — {{ $step5['kinship'] }}
                     @endif
