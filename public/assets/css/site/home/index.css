@@ -225,9 +225,16 @@
 }
 
 .news-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1.5rem;
+}
+
+.news-grid > * {
+    flex: 0 0 auto;
+    width: 300px;
+    max-width: 100%;
 }
 
 .news-card {

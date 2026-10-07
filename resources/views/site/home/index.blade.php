@@ -141,7 +141,7 @@
                 </div>
 
                 <div class="news-grid">
-                    @foreach ($posts as $post)
+                    @foreach ($posts->take(6) as $post)
                         @php
                             $hasImage = filled($post->image);
                         @endphp
@@ -158,7 +158,6 @@
 
                                 <div class="news-card-body">
                                     <span class="news-card-badge news-card-badge-teal">
-                                        {{-- {{ $post->type === 'comunicado' ? 'Comunicado' : 'Notícia' }} --}}
                                         Notícia
                                     </span>
 

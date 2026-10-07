@@ -12,7 +12,7 @@ class PostController extends Controller
         $posts = Post::published()
             ->with('category')
             ->when($type, fn($query) => $query->type($type))
-            ->latest()
+            ->latest('published_at')
             ->paginate(10);
 
         return view('site.posts.index', compact('posts', 'type'));

@@ -16,10 +16,11 @@ class HomeController extends Controller
         // Obter todos os cursos
         $courses = Course::all();
 
-        // Apenas posts publicados
+        // Apenas posts publicados (máximo de 6 na home)
         $posts = Post::noticias()->published()
-            ->latest()
-            ->paginate(10);
+            ->latest('published_at')
+            ->limit(6)
+            ->get();
 
         // Apenas FAQs publicados
         $faqs = Faq::where('status', true)
