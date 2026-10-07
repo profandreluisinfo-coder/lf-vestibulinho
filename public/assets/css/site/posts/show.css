@@ -158,6 +158,19 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* ─── Vídeo relacionado ──────────────────────────────────── */
+.post-video-container {
+    margin: 2rem 0;
+}
+
+.post-video-container iframe,
+.post-video-container video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 8px;
+}
+
 /* ─── Link relacionado ──────────────────────────────────── */
 .post-link-container {
     margin-top: 2rem;

@@ -80,6 +80,20 @@
                 {!! $post->content !!}
             </div>
 
+            <!-- Vídeo (quando a url for um vídeo) -->
+@if ($post->video)
+    <div class="post-video-container">
+        @if ($post->video['type'] === 'iframe')
+            <iframe src="{{ $post->video['src'] }}"
+                    title="{{ $post->title }}"
+                    loading="lazy"
+                    allowfullscreen></iframe>
+        @else
+            <video controls preload="metadata" src="{{ $post->video['src'] }}"></video>
+        @endif
+    </div>
+@endif
+
             <!-- Link relacionado (coluna "url") -->
             @if ($post->url && \Illuminate\Support\Str::startsWith($post->url, ['http://', 'https://']))
                 <div class="post-link-container">

@@ -80,6 +80,47 @@ class Post extends Model
         return $this->hasMany(Attachment::class);
     }
 
+    // ⬇️ COLE AQUI ⬇️
+    // Detecta se a url é um vídeo (YouTube, Vimeo ou arquivo direto)
+    public function getVideoAttribute(): ?array
+    {
+        $url = $this->url;
+
+        if (!$url || !Str::startsWith($url, ['http://', 'https://'])) {
+            return null;
+        }
+
+        $host = preg_replace('/^www\./', '', strtolower(parse_url($url, PHP_URL_HOST) ?? ''));
+        $path = parse_url($url, PHP_URL_PATH) ?? '';
+
+        // YouTube
+        if (in_array($host, ['youtube.com', 'm.youtube.com', 'youtu.be'])) {
+            if ($host === 'youtu.be') {
+                $id = ltrim($path, '/');
+            } else {
+                parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $query);
+                $id = $query['v'] ?? '';
+            }
+
+            if (preg_match('/^[\w-]{11}$/', $id)) {
+                return ['type' => 'iframe', 'src' => "https://www.youtube.com/embed/{$id}"];
+            }
+        }
+
+        // Vimeo
+        if ($host === 'vimeo.com' && preg_match('#^/(\d+)#', $path, $m)) {
+            return ['type' => 'iframe', 'src' => "https://player.vimeo.com/video/{$m[1]}"];
+        }
+
+        // Arquivo de vídeo direto
+        $extensao = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (in_array($extensao, ['mp4', 'webm', 'ogg'])) {
+            return ['type' => 'file', 'src' => $url];
+        }
+
+        return null;
+    }
+
     // Scope para registros publicados
     public function scopePublished(Builder $query): Builder
     {
