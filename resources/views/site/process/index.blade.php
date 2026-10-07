@@ -245,7 +245,7 @@
                                         Candidato</strong> para se inscrever.
                                 </p>
                                 @if ($isInscriptionOpen)
-                                    <a href="{{ route('login') }}" class="btn-detail-cta mt-3">
+                                    <a href="{{ route('login') }}" class="btn-detail-cta js-inscription-link mt-3">
                                         <i class="bi bi-pencil-square me-1"></i> Inscrever-se Agora
                                     </a>
                                 @endif
@@ -560,8 +560,8 @@
 
 @endsection
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@push('scripts')    
     <script src="{{ asset('assets/js/site/process/index.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
 @endpush
