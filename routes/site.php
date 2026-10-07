@@ -16,6 +16,7 @@ Route::name('site.')
         Route::get('comunicados', [PostController::class, 'index'])
             ->defaults('type', \App\Models\Post::TYPE_INFO)
             ->name('notices.index');
+
         // Postagens públicas
         Route::prefix('posts')
             ->name('posts.')
@@ -51,7 +52,7 @@ Route::name('site.')
             ->name('publications.')
             ->controller(PublicationController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index'); // NÃO ESQUECER DE LIBERAR ESTA ROTA
+                Route::get('/', 'index')->name('index');
 
                 // Inscrições
                 Route::get('inscricoes-deferidas', 'inscriptions')
@@ -70,5 +71,16 @@ Route::name('site.')
                     ->defaults('status', 'approved')->name('medical-reports.approved');
                 Route::get('laudos-indeferidos', 'medicalReports')
                     ->defaults('status', 'rejected')->name('medical-reports.rejected');
+
+                // Resultado dos recursos
+                Route::get('recursos-nome-social-deferidos', 'appealsSocialNames')
+                    ->defaults('status', 'approved')->name('appeals.social-names.approved');
+                Route::get('recursos-nome-social-indeferidos', 'appealsSocialNames')
+                    ->defaults('status', 'rejected')->name('appeals.social-names.rejected');
+
+                Route::get('recursos-laudos-deferidos', 'appealsMedicalReports')
+                    ->defaults('status', 'approved')->name('appeals.medical-reports.approved');
+                Route::get('recursos-laudos-indeferidos', 'appealsMedicalReports')
+                    ->defaults('status', 'rejected')->name('appeals.medical-reports.rejected');
             });
     });

@@ -73,6 +73,42 @@
                     ],
                 ],
             ],
+            [
+                'title' => 'Recursos de nome social',
+                'icon' => 'arrow-repeat',
+                'cards' => [
+                    [
+                        'status' => 'approved',
+                        'title' => 'Recursos de nome social deferidos',
+                        'desc' => 'Recursos aceitos, por protocolo',
+                        'route' => 'site.publications.appeals.social-names.approved',
+                    ],
+                    [
+                        'status' => 'rejected',
+                        'title' => 'Recursos de nome social indeferidos',
+                        'desc' => 'Recursos não aceitos, por protocolo',
+                        'route' => 'site.publications.appeals.social-names.rejected',
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Recursos de laudos e relatórios médicos',
+                'icon' => 'arrow-repeat',
+                'cards' => [
+                    [
+                        'status' => 'approved',
+                        'title' => 'Recursos de laudos e relatórios deferidos',
+                        'desc' => 'Recursos aceitos, por protocolo',
+                        'route' => 'site.publications.appeals.medical-reports.approved',
+                    ],
+                    [
+                        'status' => 'rejected',
+                        'title' => 'Recursos de laudos e relatórios indeferidos',
+                        'desc' => 'Recursos não aceitos, por protocolo',
+                        'route' => 'site.publications.appeals.medical-reports.rejected',
+                    ],
+                ],
+            ],
         ];
     @endphp
 

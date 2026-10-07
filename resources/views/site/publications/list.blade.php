@@ -10,7 +10,7 @@
 
 @section('content')
     @php
-        $total = $inscriptions->count();
+        $total = $numbers->count();
     @endphp
 
     <section class="breadcrumb-section">
@@ -38,7 +38,7 @@
                 </p>
                 @if ($released)
                     <span class="pub-count">
-                        <i class="bi bi-list-ol"></i> {{ $total }} {{ $total === 1 ? 'inscrição' : 'inscrições' }}
+                        <i class="bi bi-list-ol"></i> {{ $total }} {{ $total === 1 ? $unitOne : $unitMany }}
                     </span>
                 @endif
             </div>
@@ -58,21 +58,21 @@
                             </div>
                         @elseif ($total > 0)
                             <p class="pub-panel-hint">
-                                Os candidatos são identificados pelo número de inscrição.
+                                {{ $identifiedBy }}
                                 Use a busca do navegador (Ctrl + F) para localizar o seu.
                             </p>
 
                             <ul class="pub-numbers {{ $approved ? 'is-approved' : 'is-rejected' }}">
-                                @foreach ($inscriptions as $inscription)
-                                    {{-- AJUSTE: troque id pelo campo/formatação do número de inscrição que o candidato vê --}}
-                                    <li>{{ $inscription->id }}</li>
+                                @foreach ($numbers as $number)
+                                    {{-- Só o identificador público (número de inscrição ou protocolo). Nada além disso. --}}
+                                    <li>{{ $number }}</li>
                                 @endforeach
                             </ul>
                         @else
                             <div class="pub-empty">
                                 <i class="bi bi-inbox"></i>
-                                <h3>Nenhuma inscrição nesta lista</h3>
-                                <p>Esta lista ainda não possui inscrições publicadas.</p>
+                                <h3>Nenhum registro nesta lista</h3>
+                                <p>Esta lista ainda não possui registros publicados.</p>
                             </div>
                         @endif
                     </div>

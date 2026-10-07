@@ -19,6 +19,11 @@ class Setting extends Model
         'social-names.rejected' => ['group' => 'Nome social', 'icon' => 'person-vcard', 'label' => 'Nome social indeferidos'],
         'medical-reports.approved' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios deferidos'],
         'medical-reports.rejected' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios indeferidos'],
+        // Resultado dos recursos (model Appeal)
+        'appeals.social-names.approved' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social deferidos'],
+        'appeals.social-names.rejected' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social indeferidos'],
+        'appeals.medical-reports.approved' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios deferidos'],
+        'appeals.medical-reports.rejected' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios indeferidos'],
     ];
 
     protected $attributes = [
