@@ -275,7 +275,7 @@ class CallController extends Controller
                 $user->email,
                 $subject,
                 $content,
-                'admin.emails.call' // resources\views\admin\emails\call.blade.php
+                'emails.call.convocation'
             );
         }
 

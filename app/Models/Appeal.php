@@ -131,6 +131,18 @@ class Appeal extends Model
         return $this->status === self::STATUS_REJECTED;
     }
 
+    /** Retorna true se o recurso é do tipo Laudo/Relatório (PcD). */
+    public function isPne(): bool
+    {
+        return $this->type === self::TYPE_PNE;
+    }
+
+    /** Retorna true se o recurso é do tipo Nome Social (LGBT). */
+    public function isLgbt(): bool
+    {
+        return $this->type === self::TYPE_LGBT;
+    }
+
     /** Nome do tipo em português (Laudo/Relatório ou Nome Social). */
     public function typeLabel(): string
     {

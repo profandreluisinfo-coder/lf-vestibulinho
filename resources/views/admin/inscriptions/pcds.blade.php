@@ -39,9 +39,9 @@
                 <tr>
                     <th scope="col"><i class="bi bi-hash me-1"></i>Inscrição</th>
                     <th scope="col"><i class="bi bi-person me-1"></i>Candidato</th>
-                    <th scope="col"><i class="bi bi-universal-access me-1"></i>Condição Informada</th>
-                    <th scope="col"><i class="bi bi-file-earmark-medical me-1"></i>Laudo/Relatório</th>
-                    <th scope="col"><i class="bi bi-search me-1"></i>Análise</th>
+                    <th scope="col"><i class="bi bi-universal-access me-1"></i>Condição</th>
+                    <th scope="col"><i class="bi bi-file-earmark-medical me-1"></i>Relatório</th>
+                    <th scope="col"><i class="bi bi-search me-1"></i>Status</th>
                     <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
                 </tr>
             </thead>
@@ -51,8 +51,7 @@
                         <th scope="row">{{ $user->inscription?->id }}</th>
                         <td>
                             @if ($user->lgbt && $user->lgbt->status === 'accepted')
-                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover"
-                                    data-bs-trigger="hover" data-bs-content="LGBTQIA+"></i>
+                                {{ $user->lgbt->name }}</i>
                             @else
                                 {{ $user->name }}
                             @endif
@@ -87,26 +86,26 @@
                         <td>
                             <div class="d-flex gap-2 flex-wrap">
                                 @if ($user->pne->status === 'pending')
-                                    <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.accept.report.form', $user->id) }}"
                                         class="btn btn-sm btn-success" title="Deferir">
                                         <i class="bi bi-check-lg"></i> Deferir
                                     </a>
 
-                                    <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.reject.report.form', $user->id) }}"
                                         class="btn btn-sm btn-danger" title="Indeferir">
                                         <i class="bi bi-x-lg"></i> Indeferir
                                     </a>
                                 @endif
 
                                 @if ($user->pne->status === 'accepted')
-                                    <a href="{{ route('admin.deferrals.reject.report.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.reject.report.form', $user->id) }}"
                                         class="btn btn-sm btn-danger" title="Indeferir">
                                         <i class="bi bi-x-lg"></i> Indeferir
                                     </a>
                                 @endif
 
                                 @if ($user->pne->status === 'rejected')
-                                    <a href="{{ route('admin.deferrals.accept.report.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.accept.report.form', $user->id) }}"
                                         class="btn btn-sm btn-success" title="Deferir">
                                         <i class="bi bi-check-lg"></i> Deferir
                                     </a>

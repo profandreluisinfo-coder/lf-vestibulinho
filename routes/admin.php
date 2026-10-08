@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, DeferralController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController};
+use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController};
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -304,35 +304,35 @@ Route::prefix('admin')
                     ->name('backups.delete');
             });
 
-        // Deferimentos
-        Route::prefix('deferimentos')
-            ->name('deferrals.')
+        // Análises
+        Route::prefix('analises')
+            ->name('analyses.')
             ->group(function () {
 
                 // Candidatos que solicitaram o uso de Nome Social
-                Route::get('deferrals/authorization/{user}/accept', [DeferralController::class, 'showAcceptAuthorization'])
-                    ->name('accept.authorization.form');
+                Route::get('nome-social/{user}/deferir', [AnalyseController::class, 'showAcceptAuthorization'])
+                    ->name('accept.social.name.form');
 
-                Route::get('deferrals/authorization/{user}/reject', [DeferralController::class, 'showRejectAuthorization'])
-                    ->name('reject.authorization.form');
+                Route::get('nome-social/{user}/indeferir', [AnalyseController::class, 'showRejectAuthorization'])
+                    ->name('reject.social.name.form');
 
-                Route::patch('deferrals/authorization/{user}/accept', [DeferralController::class, 'acceptAuthorization'])
-                    ->name('accept.authorization');
+                Route::patch('nome-social/{user}/deferir', [AnalyseController::class, 'acceptAuthorization'])
+                    ->name('accept.social.name');
 
-                Route::patch('deferrals/authorization/{user}/reject', [DeferralController::class, 'rejectAuthorization'])
-                    ->name('reject.authorization');
+                Route::patch('nome-social/{user}/indeferir', [AnalyseController::class, 'rejectAuthorization'])
+                    ->name('reject.social.name');
 
                 // Pessoas que apresentaram laudo/relatório médico
-                Route::get('deferrals/report/{user}/accept', [DeferralController::class, 'showAcceptReport'])
+                Route::get('relatorio/{user}/deferir', [AnalyseController::class, 'showAcceptReport'])
                     ->name('accept.report.form');
 
-                Route::get('deferrals/report/{user}/reject', [DeferralController::class, 'showRejectReport'])
+                Route::get('relatorio/{user}/indeferir', [AnalyseController::class, 'showRejectReport'])
                     ->name('reject.report.form');
 
-                Route::patch('deferrals/report/{user}/accept', [DeferralController::class, 'acceptReport'])
+                Route::patch('relatorio/{user}/deferir', [AnalyseController::class, 'acceptReport'])
                     ->name('accept.report');
 
-                Route::patch('deferrals/report/{user}/reject', [DeferralController::class, 'rejectReport'])
+                Route::patch('relatorio/{user}/indeferir', [AnalyseController::class, 'rejectReport'])
                     ->name('reject.report');
             });
 
@@ -370,6 +370,10 @@ Route::prefix('admin')
                 Route::get('{appeal}', [AppealController::class, 'show'])
                     ->whereNumber('appeal')
                     ->name('show');
+
+                Route::get('{appeal}/pdf', [AppealController::class, 'pdf'])
+                    ->whereNumber('appeal')
+                    ->name('pdf');
 
                 Route::delete('{appeal}', [AppealController::class, 'destroy'])
                     ->whereNumber('appeal')

@@ -10,6 +10,7 @@
         // Arquivo do pedido original (laudo ou autorização de nome social)
         $file = $appeal->type === 'pne' ? $original?->report : $original?->authorization;
         $fileLabel = $appeal->type === 'pne' ? 'Abrir laudo' : 'Abrir autorização';
+        $status = $appeal->isPending();
     @endphp
 
     <div class="container">
@@ -19,6 +20,11 @@
                 <i class="bi bi-folder2-open"></i>
                 <h6 class="mb-0 text-muted fw-normal">Recurso - {{ $appeal->typeLabel() }}</h6>
             </div>
+            @if (! $status)
+                <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
+                </a>
+            @endif
         </div>
 
         @if (session('success'))
@@ -161,15 +167,16 @@
                     {{-- Exclusão: só enquanto o recurso está em análise --}}
                     <hr class="my-4">
 
-                    <form method="POST" action="{{ route('admin.appeals.destroy', $appeal) }}" class="delete-appeal-form">
+                    <form method="POST" action="{{ route('admin.appeals.destroy', $appeal) }}">
                         @csrf
                         @method('DELETE')
 
                         <p class="text-muted mb-2">
-                            Registrou este recurso por engano? Exclua para registrá-lo de novo.
+                            Registrou este recurso por engano? <span class="text-danger">Exclua para registrá-lo de
+                                novo.</span>
                         </p>
 
-                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" data-swal-action="delete">
                             <i class="bi bi-trash"></i> Excluir recurso
                         </button>
                     </form>
@@ -189,104 +196,78 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            /*
-             * Deferir / Indeferir
-             */
-            document.querySelectorAll('[data-swal-action]').forEach(button => {
+            // Textos e cores de cada ação
+            const acoes = {
+                defer: {
+                    title: 'Deferir este recurso?',
+                    text: 'O pedido do candidato também ficará como Deferido e ele será notificado por e-mail.',
+                    icon: 'question',
+                    confirmButtonText: 'Sim, deferir',
+                    confirmButtonColor: '#198754'
+                },
+                reject: {
+                    title: 'Indeferir este recurso?',
+                    text: 'O pedido continuará como está e o candidato será notificado por e-mail com o seu parecer.',
+                    icon: 'warning',
+                    confirmButtonText: 'Sim, indeferir',
+                    confirmButtonColor: '#dc3545'
+                },
+                delete: {
+                    title: 'Excluir este recurso?',
+                    text: 'Esta ação não pode ser desfeita.',
+                    icon: 'warning',
+                    confirmButtonText: 'Sim, excluir',
+                    confirmButtonColor: '#dc3545'
+                }
+            };
 
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
+            document.querySelectorAll('[data-swal-action]').forEach(function(botao) {
+                botao.addEventListener('click', function(e) {
+                    e.preventDefault(); // segura o envio até o usuário confirmar
 
-                    const form = this.closest('form');
-                    const action = this.dataset.swalAction;
+                    const tipo = botao.dataset.swalAction;
+                    const config = acoes[tipo];
+                    const form = botao.form;
 
-                    if (action === 'defer') {
+                    if (!config) return;
 
-                        Swal.fire({
-                            title: 'Deferir recurso?',
-                            text: 'O recurso será deferido e o pedido do candidato também será deferido. O candidato será notificado por e-mail.',
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sim, deferir',
-                            cancelButtonText: 'Cancelar',
-                            reverseButtons: true
-                        }).then(result => {
+                    // Para indeferir, o parecer é obrigatório
+                    if (tipo === 'reject') {
+                        const campo = document.getElementById('observations');
 
-                            if (result.isConfirmed) {
-                                form.action = this.formAction;
-                                form.submit();
-                            }
-
-                        });
-
-                    }
-
-                    if (action === 'reject') {
-
-                        const observations = form.querySelector('#observations');
-
-                        if (!observations.value.trim()) {
-
+                        if (!campo.value.trim()) {
+                            campo.classList.add('is-invalid');
                             Swal.fire({
-                                title: 'Observações obrigatórias',
-                                text: 'Informe as observações antes de indeferir o recurso.',
-                                icon: 'warning',
+                                icon: 'info',
+                                title: 'Falta o parecer',
+                                text: 'Escreva as observações para poder indeferir o recurso.',
                                 confirmButtonText: 'Entendi'
-                            }).then(() => {
-                                observations.focus();
+                            }).then(function() {
+                                campo.focus();
                             });
-
                             return;
                         }
-
-                        Swal.fire({
-                            title: 'Indeferir recurso?',
-                            text: 'O recurso será indeferido. O candidato será notificado por e-mail.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sim, indeferir',
-                            cancelButtonText: 'Cancelar',
-                            reverseButtons: true
-                        }).then(result => {
-
-                            if (result.isConfirmed) {
-                                form.action = this.formAction;
-                                form.submit();
-                            }
-
-                        });
                     }
-                });
-            });
-
-
-            /*
-             * Excluir recurso
-             */
-            document.querySelectorAll('.delete-appeal-form').forEach(form => {
-
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
 
                     Swal.fire({
-                        title: 'Excluir recurso?',
-                        text: 'Depois da exclusão, você poderá registrar este recurso novamente.',
-                        icon: 'warning',
+                        title: config.title,
+                        text: config.text,
+                        icon: config.icon,
                         showCancelButton: true,
-                        confirmButtonText: 'Sim, excluir',
+                        confirmButtonText: config.confirmButtonText,
+                        confirmButtonColor: config.confirmButtonColor,
                         cancelButtonText: 'Cancelar',
-                        reverseButtons: true
-                    }).then(result => {
-
-                        if (result.isConfirmed) {
-                            form.submit();
+                        reverseButtons: true,
+                        focusCancel: true
+                    }).then(function(resultado) {
+                        if (resultado.isConfirmed) {
+                            // Envia o formulário usando o botão clicado,
+                            // assim o formaction (accept/reject) é respeitado
+                            form.requestSubmit(botao);
                         }
-
                     });
                 });
-
             });
-
         });
     </script>
 @endpush

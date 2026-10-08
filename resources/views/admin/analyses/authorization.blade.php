@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Laudo/Relatório')
+@section('page-title', 'Análise de Recurso - Autorização de Nome Social')
 
 @section('content')
 
@@ -9,7 +9,8 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-file-earmark-medical"></i>
-                <h6 class="mb-0 text-muted fw-normal">{{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} Relatório/Laudo</h6>
+                <h6 class="mb-0 text-muted fw-normal">{{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} Autorização de
+                    Nome Social</h6>
             </div>
         </div>
 
@@ -20,67 +21,60 @@
                     <dt class="col-sm-3">Candidato</dt>
                     <dd class="col-sm-9">{{ $user->name }}</dd>
 
-                    @if ($user?->lgbt && $user->lgbt?->status === "accepted")
-
                     <dt class="col-sm-3">Nome Social</dt>
                     <dd class="col-sm-9 text-primary fw-bold">{{ $user->lgbt?->name }}</dd>
-
-                    @endif
 
                     <dt class="col-sm-3">Inscrição</dt>
                     <dd class="col-sm-9">{{ $user->inscription?->id }}</dd>
 
                     <dt class="col-sm-3">Observações</dt>
-                    <dd class="col-sm-9">{{ $user->pne?->observations ?? '-' }}</dd>
+                    <dd class="col-sm-9">{{ $user->lgbt?->observations ?? '-' }}</dd>
 
-                    <dt class="col-sm-3">Laudo/Relatório</dt>
+                    <dt class="col-sm-3">Autorização</dt>
                     <dd class="col-sm-9">
-                        @if ($user?->pne && Storage::disk('public')->exists($user->pne?->report))
-                            <a href="{{ Storage::url($user->pne?->report) }}" target="_blank"
+                        @if ($user?->lgbt && Storage::disk('public')->exists($user->lgbt?->authorization))
+                            <a href="{{ Storage::url($user->lgbt?->authorization) }}" target="_blank"
                                 class="btn btn-primary btn-sm">
-                                <i class="bi bi-file-earmark-medical"></i> Abrir laudo
+                                <i class="bi bi-file-earmark-medical"></i> Abrir autorização
                             </a>
                         @endif
                     </dd>
                 </dl>
 
                 @if ($action === 'accept')
+                    <p>Confirma o <strong>deferimento</strong> da autorização de uso de nome social deste candidato?
+                        <strong>O candidato será notificado por e-mail.</strong>
+                    </p>
 
-                    <p>Confirma o <strong>deferimento</strong> do relatório/laudo deste candidato?
-                        O candidato será notificado por e-mail.</p>
-
-                    <form method="POST" action="{{ route('admin.deferrals.accept.report', $user->id) }}">
+                    <form method="POST" action="{{ route('admin.analyses.accept.social.name', $user->id) }}"
+                        data-confirm-action="accept">
                         @csrf
                         @method('PATCH')
 
                         <button type="submit" class="btn btn-sm btn-success">
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
-
                 @else
-
-                    <form method="POST" action="{{ route('admin.deferrals.reject.report', $user->id) }}">
+                    <form method="POST" action="{{ route('admin.analyses.reject.social.name', $user->id) }}" data-confirm-action="reject">
                         @csrf
                         @method('PATCH')
 
                         <div class="mb-3">
                             <label for="reason" class="form-label">Razão do indeferimento (opcional)</label>
-                            <textarea name="reason" id="reason" class="form-control" rows="4"
-                                placeholder="Digite aqui a razão..."></textarea>
+                            <textarea name="reason" id="reason" class="form-control" rows="4" placeholder="Digite aqui a razão..."></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route('admin.inscriptions.lgbts') }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
-
                 @endif
 
             </div>
@@ -88,3 +82,7 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/swa/analyses/confirm.js') }}"></script>
+@endpush

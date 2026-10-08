@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Jobs\SendTransactionalEmailJob;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class DeferralController extends Controller
+class AnalyseController extends Controller
 {
     public function showAcceptReport(User $user): View|RedirectResponse
     {
@@ -27,7 +27,7 @@ class DeferralController extends Controller
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        return view('admin.deferrals.report', [
+        return view('admin.analyses.report', [
             'user' => $user,
             'action' => 'accept',
         ]);
@@ -52,7 +52,7 @@ class DeferralController extends Controller
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        return view('admin.deferrals.report', [
+        return view('admin.analyses.report', [
             'user' => $user,
             'action' => 'reject',
         ]);
@@ -89,7 +89,7 @@ class DeferralController extends Controller
             data: [
                 'name' => ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name
             ],
-            view: 'emails.deferral.pne.accepted',
+            view: 'emails.analyses.pne.accepted',
         );
 
         return redirect()
@@ -133,7 +133,7 @@ class DeferralController extends Controller
                 'name' => ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name,
                 'observations' => $user?->pne?->observations
             ],
-            view: 'emails.deferral.pne.rejected',
+            view: 'emails.analyses.pne.rejected',
         );
 
         return redirect()
@@ -157,7 +157,7 @@ class DeferralController extends Controller
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        return view('admin.deferrals.authorization', [
+        return view('admin.analyses.authorization', [
             'user' => $user,
             'action' => 'accept',
         ]);
@@ -179,7 +179,7 @@ class DeferralController extends Controller
                 ->with('error', 'Detalhes do usuário não encontrados.');
         }
 
-        return view('admin.deferrals.authorization', [
+        return view('admin.analyses.authorization', [
             'user' => $user,
             'action' => 'reject',
         ]);
@@ -213,7 +213,7 @@ class DeferralController extends Controller
                 data: [
                     'name' => $user->lgbt->name,
                 ],
-                view: 'emails.deferral.lgbt.accepted',
+                view: 'emails.analyses.lgbt.accepted',
             );
 
             return redirect()
@@ -255,7 +255,7 @@ class DeferralController extends Controller
                     'name' => $user->name,
                     'observations' => $user?->lgbt?->observations,
                 ],
-                view: 'emails.deferral.lgbt.rejected',
+                view: 'emails.analyses.lgbt.rejected',
             );
 
             return redirect()
@@ -285,5 +285,4 @@ class DeferralController extends Controller
             )
         )->delay(now()->addSeconds(10));
     }
-
 }

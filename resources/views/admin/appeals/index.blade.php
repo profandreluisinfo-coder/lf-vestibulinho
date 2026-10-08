@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title', 'Recursos')
-    
+
 @section('content')
 
     <div class="container">
@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-folder2-open text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Recursos de Candidatos</h6>
+                <h6 class="mb-0 text-muted fw-normal">Lista de Recursos</h6>
             </div>
         </div>
 
@@ -83,7 +83,16 @@
                                 {{ $appeal->user->name }}
                             @endif
                         </td>
-                        <td class="text-center">{{ $appeal->typeLabel() }}</td>
+                        @php
+                            $isPne = $appeal->isPne();
+                        @endphp
+
+                        <td class="text-center">
+                            <i class="bi {{ $isPne ? 'bi-universal-access' : 'bi-gender-trans' }}" title="Descrição"
+                                data-bs-toggle="popover" data-bs-trigger="hover"
+                                data-bs-content="{{ $isPne ? 'PCD' : 'LGBTQIA+' }}">
+                            </i>
+                        </td>
                         <td class="text-center">
                             <span class="badge {{ $appeal->badgeClass() }}">{{ $appeal->statusLabel() }}</span>
                         </td>
@@ -103,8 +112,8 @@
                                     <i class="bi bi-search"></i> Analisar
                                 </a>
                             @else
-                                <a href="{{ route('admin.appeals.show', $appeal) }}"
-                                    class="btn btn-sm btn-outline-primary" title="Ver recurso">
+                                <a href="{{ route('admin.appeals.show', $appeal) }}" class="btn btn-sm btn-outline-primary"
+                                    title="Ver recurso">
                                     <i class="bi bi-eye"></i> Ver
                                 </a>
                             @endif

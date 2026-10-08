@@ -133,14 +133,14 @@
                     </button>
                     <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') ||
                     request()->routeIs('admin.inscriptions.lgbts') ||
-                    request()->routeIs('admin.deferrals.report.*') ||
+                    request()->routeIs('admin.analyses.*') ||
                     request()->routeIs('admin.appeals.*')
                         ? 'show'
                         : '' }}"
                         id="menuAnalises">
 
                         <a href="{{ route('admin.inscriptions.pcds') }}"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.deferrals.report.*')
+                            class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.analyses.report.*')
                                 ? 'active'
                                 : '' }}">
                             <i class="bi bi-universal-access me-1"></i> Laudos/Relatórios

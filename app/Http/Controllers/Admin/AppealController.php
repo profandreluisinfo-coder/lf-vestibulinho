@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppealController extends Controller
 {
@@ -84,7 +85,7 @@ class AppealController extends Controller
         $data = $request->validate([
             'protocol' => 'nullable|string|max:30|unique:appeals,protocol',
             'allegations' => 'nullable|string|max:2000',
-            'observations' => 'required|string|max:2000',
+            'observations' => 'nullable|string|max:2000',
             'path' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ], [
             'protocol.unique' => 'Este número de protocolo já foi usado em outro recurso.',
@@ -108,7 +109,7 @@ class AppealController extends Controller
                 'type' => $type,
                 'protocol' => $protocol,
                 'allegations' => $data['allegations'] ?? null,
-                'observations' => $data['observations'],
+                'observations' => $data['observations'] ?? null,
                 'path' => $path,
             ]);
         } catch (UniqueConstraintViolationException $e) {
@@ -150,6 +151,24 @@ class AppealController extends Controller
             'appeal' => $appeal,
             'original' => $appeal->user->{$appeal->type},
         ]);
+    }
+
+    /**
+     * Gera o PDF do recurso.
+     */
+    public function pdf(Appeal $appeal)
+    {
+        $appeal->load(['user.inscription', 'user.pne', 'user.lgbt', 'decider']);
+
+        $pdf = Pdf::loadView('admin.appeals.pdf', [
+            'appeal'   => $appeal,
+            'original' => $appeal->user->{$appeal->type},
+        ]);
+
+        $arquivo = 'recurso-' . Str::slug($appeal->protocol) . '.pdf';
+
+        // stream abre no navegador; use download() para baixar direto
+        return $pdf->stream($arquivo);
     }
 
     /**

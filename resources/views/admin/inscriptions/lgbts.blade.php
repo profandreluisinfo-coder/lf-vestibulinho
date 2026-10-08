@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Nome Social')
+@section('page-title', 'Nome Social')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -41,7 +41,7 @@
                     <th scope="col"><i class="bi bi-person me-1"></i>Nome de Registro</th>
                     <th scope="col"><i class="bi bi-gender-trans me-1"></i>Nome Social</th>
                     <th scope="col"><i class="bi bi-file-earmark-medical me-1"></i>Autorização</th>
-                    <th scope="col"><i class="bi bi-search me-1"></i>Análise</th>
+                    <th scope="col"><i class="bi bi-search me-1"></i>Status</th>
                     <th scope="col"><i class="bi bi-gear me-1"></i>Ação</th>
                 </tr>
             </thead>
@@ -51,8 +51,7 @@
                         <th scope="row">{{ $user->inscription?->id }}</th>
                         <td>
                             @if ($user->lgbt && $user->lgbt->status === 'accepted')
-                                {{ $user->lgbt->name }} <i class="bi bi-gender-trans text-success" data-bs-toggle="popover"
-                                    data-bs-trigger="hover" data-bs-content="LGBTQIA+"></i>
+                                {{ $user->lgbt->name }}</i>
                             @else
                                 {{ $user->name }}
                             @endif
@@ -87,26 +86,26 @@
                         <td>
                             <div class="d-flex gap-2 flex-wrap">
                                 @if ($user->lgbt->status === 'pending')
-                                    <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.accept.social.name.form', $user->id) }}"
                                         class="btn btn-success btn-sm" title="Deferir">
                                         <i class="bi bi-check-lg"></i> Deferir
                                     </a>
 
-                                    <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.reject.social.name.form', $user->id) }}"
                                         class="btn btn-danger btn-sm" title="Indeferir">
                                         <i class="bi bi-x-lg"></i> Indeferir
                                     </a>
                                 @endif
 
                                 @if ($user->lgbt->status === 'accepted')
-                                    <a href="{{ route('admin.deferrals.reject.authorization.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.reject.social.name.form', $user->id) }}"
                                         class="btn btn-danger btn-sm" title="Indeferir">
                                         <i class="bi bi-x-lg"></i> Indeferir
                                     </a>
                                 @endif
 
                                 @if ($user->lgbt->status === 'rejected')
-                                    <a href="{{ route('admin.deferrals.accept.authorization.form', $user->id) }}"
+                                    <a href="{{ route('admin.analyses.accept.social.name.form', $user->id) }}"
                                         class="btn btn-success btn-sm" title="Deferir">
                                         <i class="bi bi-check-lg"></i> Deferir
                                     </a>
@@ -162,4 +161,5 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/admin/datatables/lgbts.js') }}"></script>
+    
 @endpush

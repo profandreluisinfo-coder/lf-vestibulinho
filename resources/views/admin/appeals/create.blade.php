@@ -44,7 +44,8 @@
                     <dd class="col-sm-9">{{ $original->observations ?? '-' }}</dd>
                 </dl>
 
-                <form method="POST" action="{{ route('admin.appeals.store', [$user->id, $type]) }}" enctype="multipart/form-data">
+                <form id="appeal-form" method="POST" action="{{ route('admin.appeals.store', [$user->id, $type]) }}"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -77,7 +78,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="allegations" class="form-label">Alegações do recurso (opcional)</label>
+                        <label for="allegations" class="form-label">Alegações do candidato (opcional)</label>
                         <textarea name="allegations" id="allegations" rows="3"
                             class="form-control @error('allegations') is-invalid @enderror"
                             placeholder="Digite as alegações do candidato sobre o recurso">{{ old('allegations') }}</textarea>
@@ -88,10 +89,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="observations" class="form-label">Observações (decisão)</label>
+                        <label for="observations" class="form-label">Observações do administrador (opcional)</label>
                         <textarea name="observations" id="observations" rows="3"
-                            class="form-control @error('observations') is-invalid @enderror"
-                            placeholder="Digite a decisão sobre o recurso">{{ old('observations') }}</textarea>
+                            class="form-control @error('observations') is-invalid @enderror" placeholder="Digite suas observações sobre o recurso">{{ old('observations') }}</textarea>
 
                         @error('observations')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="path" class="form-label">Arquivo do recurso (opcional)</label>
+                        <label for="path" class="form-label">Arquivo do recurso apresentado pelo candidato (opcional)</label>
                         <input type="file" name="path" id="path"
                             class="form-control @error('path') is-invalid @enderror">
 
@@ -109,7 +109,8 @@
 
                         <div class="form-text">
                             <i class="bi bi-info-circle"></i>
-                            O arquivo deve estar em formato PDF, imagens (jpg, png, etc.) ou documentos (doc, docx) e ter no máximo 2 MB.
+                            O arquivo deve estar em formato PDF, imagens (jpg, png, etc.) ou documentos (doc, docx) e ter no
+                            máximo 2 MB.
                         </div>
                     </div>
 
@@ -122,10 +123,45 @@
                     <a href="{{ $cancelRoute }}" class="btn btn-sm btn-secondary">
                         <i class="bi bi-x-lg"></i> Cancelar
                     </a>
-                </form>
+                    </form>
 
             </div>
         </div>
     </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('appeal-form');
+
+            if (!form) return;
+
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                Swal.fire({
+                    title: 'Confirmar registro do recurso?',
+                    text: 'O recurso será registrado como "em análise". Depois, você poderá deferir ou indeferir.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#198754',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sim, registrar',
+                    cancelButtonText: 'Cancelar',
+                    reverseButtons: true,
+                    focusCancel: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        HTMLFormElement.prototype.submit.call(form);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
