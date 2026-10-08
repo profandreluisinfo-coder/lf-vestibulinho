@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Convocação para matrícula')
+@section('page-title', 'Convocação para matrícula')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">

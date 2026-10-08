@@ -10,7 +10,7 @@
 
     @stack('metas')
 
-    <title>@yield('page-title', 'Vestibulinho LF')</title>
+    <title>EM Dr. Leandro Franceschini — Vestibulinho {{ $process?->year }} - @yield('page-title')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">

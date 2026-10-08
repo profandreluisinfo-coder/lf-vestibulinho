@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' | Editar Local de Prova')
+@section('page-title', 'Editar Local de Prova')
 
 @section('content')
 

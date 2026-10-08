@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - Detalhes da Inscrição')
+@section('page-title', 'Detalhes da Inscrição')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/inscriptions/show.css') }}">

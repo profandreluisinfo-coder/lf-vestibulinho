@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Editar Post | ' . config('app.name'))
+@section('page-title', 'Editar Post')
 
 {{-- =====================================================================
      ESTILOS  (reaproveita os mesmos tokens do create)

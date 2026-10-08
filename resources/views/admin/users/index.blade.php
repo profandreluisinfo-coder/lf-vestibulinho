@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' | Usuários Cadastrados')
+@section('page-title', 'Lista de Usuários Cadastrados')
 
 @push('datatable-styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">

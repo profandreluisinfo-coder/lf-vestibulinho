@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Editar Processo Seletivo')
+@section('page-title', 'Editar Eventos do Vestibulinho')
 
 @push('styles')
 <style>
@@ -36,7 +36,7 @@
 
         <div class="d-flex align-items-center gap-2 mb-4">
             <i class="bi bi-calendar4-week text-muted"></i>
-            <h6 class="mb-0 text-muted fw-normal">Editar Processo Seletivo — Vestibulinho</h6>
+            <h6 class="mb-0 text-muted fw-normal">Editar Eventos do Vestibulinho</h6>
         </div>
 
         <div class="row">

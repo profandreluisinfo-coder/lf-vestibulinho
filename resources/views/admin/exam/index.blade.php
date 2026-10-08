@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', config('app.name') . ' ' . $process?->year . ' | Provas')
+@section('page-title', 'Candidatos por Sala')
 
 @section('content')
 

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Inscrições')
+@section('page-title', 'Lista de Recursos')
 
 @section('content')
 
@@ -11,11 +11,6 @@
                 <i class="bi bi-folder2-open text-muted"></i>
                 <h6 class="mb-0 text-muted fw-normal">Lista de Recursos</h6>
             </div>
-
-            {{-- <button id="pdfButton" class="btn btn-sm btn-danger">
-                <i class="bi bi-filetype-pdf"></i>
-                <span>Gerar PDF (Todos)</span>
-            </button> --}}
         </div>
         <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
             <caption>Lista Geral de Inscritos</caption>

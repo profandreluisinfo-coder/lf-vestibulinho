@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Análise de Recurso - Laudo/Relatório')
+@section('page-title', 'Análise de Recurso - Laudo/Relatório Médico')
 
 @section('content')
 

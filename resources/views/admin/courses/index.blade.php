@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF - Cursos')
+@section('page-title', 'Lista de Cursos')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-book text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Cursos</h6>
+                <h6 class="mb-0 text-muted fw-normal">Lista de Cursos</h6>
             </div>
 
             <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setNewCourse">

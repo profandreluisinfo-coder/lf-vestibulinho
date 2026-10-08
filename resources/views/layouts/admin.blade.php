@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Vestibulinho LF {{ $process?->year }} - @yield('page-title')</title>
+    <title>Vestibulinho {{ $process?->year }} - @yield('page-title')</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 

@@ -49,27 +49,26 @@
                                         </span>
                                     </td>
                                     <td class="text-end" style="width: 160px;">
-<form method="POST"
-      action="{{ route('admin.publications.toggle', $key) }}"
-      class="d-inline js-confirm-action"
-      data-confirm-title="{{ $isPublic ? 'Ocultar lista?' : 'Liberar lista?' }}"
-      data-confirm-text="{{ $isPublic
-          ? 'Esta lista deixará de ser exibida publicamente no site.'
-          : 'Esta lista será disponibilizada publicamente no site.' }}"
-      data-confirm-button="{{ $isPublic ? 'Sim, ocultar' : 'Sim, liberar' }}"
-      data-confirm-icon="{{ $isPublic ? 'warning' : 'question' }}">
-    @csrf
-    @method('PATCH')
+                                        <form method="POST" action="{{ route('admin.publications.toggle', $key) }}"
+                                            class="d-inline js-confirm-action"
+                                            data-confirm-title="{{ $isPublic ? 'Ocultar lista?' : 'Liberar lista?' }}"
+                                            data-confirm-text="{{ $isPublic
+                                                ? 'Esta lista deixará de ser exibida publicamente no site.'
+                                                : 'Esta lista será disponibilizada publicamente no site.' }}"
+                                            data-confirm-button="{{ $isPublic ? 'Sim, ocultar' : 'Sim, liberar' }}"
+                                            data-confirm-icon="{{ $isPublic ? 'warning' : 'question' }}">
+                                            @csrf
+                                            @method('PATCH')
 
-    <button type="submit"
-        class="btn btn-sm {{ $isPublic ? 'btn-outline-secondary' : 'btn-success' }}">
-        @if ($isPublic)
-            <i class="bi bi-eye-slash"></i> Ocultar
-        @else
-            <i class="bi bi-broadcast"></i> Liberar
-        @endif
-    </button>
-</form>
+                                            <button type="submit"
+                                                class="btn btn-sm {{ $isPublic ? 'btn-outline-secondary' : 'btn-success' }}">
+                                                @if ($isPublic)
+                                                    <i class="bi bi-eye-slash"></i> Ocultar
+                                                @else
+                                                    <i class="bi bi-broadcast"></i> Liberar
+                                                @endif
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -82,35 +81,35 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.js-confirm-action').forEach(function (form) {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.js-confirm-action').forEach(function(form) {
 
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
 
-                const title = form.dataset.confirmTitle;
-                const text = form.dataset.confirmText;
-                const confirmButton = form.dataset.confirmButton;
-                const icon = form.dataset.confirmIcon || 'question';
+                    const title = form.dataset.confirmTitle;
+                    const text = form.dataset.confirmText;
+                    const confirmButton = form.dataset.confirmButton;
+                    const icon = form.dataset.confirmIcon || 'question';
 
-                Swal.fire({
-                    title: title,
-                    text: text,
-                    icon: icon,
-                    showCancelButton: true,
-                    confirmButtonText: confirmButton,
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true,
-                    focusCancel: true
-                }).then(function (result) {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: icon,
+                        showCancelButton: true,
+                        confirmButtonText: confirmButton,
+                        cancelButtonText: 'Cancelar',
+                        reverseButtons: true,
+                        focusCancel: true
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
-            });
 
+            });
         });
-    });
-</script>
+    </script>
 @endpush

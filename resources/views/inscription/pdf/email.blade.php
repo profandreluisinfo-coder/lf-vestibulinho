@@ -355,10 +355,10 @@
                             <th>Parentesco</th>
                             <td>
                                 {{ $user->guardian->degree?->description }}
-                                @if ($user->guardian->kinship)
-                                    ({{ $user->guardian->kinship }})
+                                @if ($user->guardian?->kinship)
+                                    ({{ $user->guardian?->kinship }})
                                 @endif
-                                | Telefone: {{ $user->guardian->phone }}
+                                | Telefone: {{ $user->guardian?->phone }}
                             </td>
                         </tr>
                     @endif

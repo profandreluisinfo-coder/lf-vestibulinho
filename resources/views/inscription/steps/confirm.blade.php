@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Confirmar Dados')
+@section('page-title', 'Confirme seus dados')
 
 <script src="{{ asset('assets/js/shared/reload.js') }}"></script>
 

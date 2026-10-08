@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . config('app.year') . ' - Modelos de Autorização de Uso de Nome Social')
+@section('page-title', 'Modelos de Autorização de Uso de Nome Social')
 
 @section('content')
 

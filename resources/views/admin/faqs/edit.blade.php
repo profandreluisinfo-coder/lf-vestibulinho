@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Editar Pergunta Frequente')
+@section('page-title', 'Editar Pergunta Frequente')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
@@ -11,7 +11,7 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar</h5>
+            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Editar Pergunta Frequente</h5>
         </div>
 
         <div class="card shadow-sm">

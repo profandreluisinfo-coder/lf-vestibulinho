@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Vestibulinho LF - Erro na Inscrição')
+@section('page-title', 'Erro na Inscrição')
 
 @section('content')
 

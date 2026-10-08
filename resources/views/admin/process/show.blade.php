@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Eventos')
+@section('page-title', 'Lista de Eventos')
 
 @push('styles')
     <style>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Configurações do Sistema')
+@section('page-title', 'Configurações do Sistema')
 
 @push('styles')
     <style>

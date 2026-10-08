@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Área Administrativa — Vestibulinho {{ $process?->year }}')
+@section('title', 'Login')
 
 @section('meta_description', 'Área de acesso exclusivo para administradores.')
 

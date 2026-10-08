@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' - Backups do Sistema')
+@section('page-title', 'Backups do Sistema')
 
 @section('content')
     <div class="container">

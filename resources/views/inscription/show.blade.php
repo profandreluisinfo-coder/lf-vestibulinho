@@ -1,6 +1,6 @@
 @extends('layouts.inscription')
 
-@section('page-title', 'Vestibulinho LF ' . $process?->year . ' | Área do Candidato')
+@section('page-title', 'Área do Candidato')
 
 @section('content')
 

@@ -1,6 +1,6 @@
 @extends('layouts.forms')
 
-@section('page-title', 'Pesquisa de Interação de Curso')
+@section('page-title', 'Pesquisa de Intenção de Curso')
 
 @section('content')
 

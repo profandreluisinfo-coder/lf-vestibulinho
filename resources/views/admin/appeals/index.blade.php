@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Recursos')
+@section('page-title', 'Lista de Recursos')
 
 @section('content')
 
