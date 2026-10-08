@@ -11,6 +11,7 @@
 @section('content')
     @php
         $total = $numbers->count();
+        $isAppeal = $total > 0 && is_array($numbers->first());
     @endphp
 
     <section class="breadcrumb-section">
@@ -50,7 +51,7 @@
                     </a>
 
                     <div class="pub-panel reveal">
-                        @if (! $released)
+                        @if (!$released)
                             <div class="pub-empty">
                                 <i class="bi bi-hourglass-split"></i>
                                 <h3>Lista ainda não divulgada</h3>
@@ -62,12 +63,32 @@
                                 Use a busca do navegador (Ctrl + F) para localizar o seu.
                             </p>
 
-                            <ul class="pub-numbers {{ $approved ? 'is-approved' : 'is-rejected' }}">
-                                @foreach ($numbers as $number)
-                                    {{-- Só o identificador público (número de inscrição ou protocolo). Nada além disso. --}}
-                                    <li>{{ $number }}</li>
-                                @endforeach
-                            </ul>
+                            @if ($isAppeal)
+                                <div class="pub-table-wrap">
+                                    <table class="pub-table {{ $approved ? 'is-approved' : 'is-rejected' }}">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Protocolo</th>
+                                                <th scope="col">Inscrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($numbers as $row)
+                                                <tr>
+                                                    <td>{{ $row['protocol'] }}</td>
+                                                    <td>{{ $row['inscription'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <ul class="pub-numbers {{ $approved ? 'is-approved' : 'is-rejected' }}">
+                                    @foreach ($numbers as $number)
+                                        <li>{{ $number }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         @else
                             <div class="pub-empty">
                                 <i class="bi bi-inbox"></i>

@@ -244,6 +244,43 @@
     color: var(--navy);
 }
 
+/* Tabela das listas de recursos */
+.pub-table-wrap {
+    overflow-x: auto;
+}
+
+.pub-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pub-table th,
+.pub-table td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+}
+
+.pub-table th {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid var(--teal);
+}
+
+.pub-table.is-rejected th {
+    border-bottom-color: var(--amber2);
+}
+
+.pub-table td {
+    border-bottom: 1px solid var(--light);
+    font-variant-numeric: tabular-nums;
+}
+
+.pub-table tbody tr:nth-child(even) {
+    background: var(--light);
+}
+
 @media (max-width: 575px) {
     .pub-panel {
         padding: 1rem;

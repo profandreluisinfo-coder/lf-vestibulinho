@@ -35,7 +35,7 @@ class PublicationController extends Controller
             ],
             'identifiedBy' => 'Os candidatos são identificados pelo número de inscrição.',
             'unit' => ['inscrição', 'inscrições'],
-        ], fn (string $status, ?int $processId) => ($status === 'approved'
+        ], fn(string $status, ?int $processId) => ($status === 'approved'
             ? Inscription::approved()
             : Inscription::rejected())
             ->forProcess($processId)
@@ -55,9 +55,9 @@ class PublicationController extends Controller
             ],
             'identifiedBy' => 'Os candidatos são identificados pelo número de inscrição.',
             'unit' => ['inscrição', 'inscrições'],
-        ], fn (string $status, ?int $processId) => Inscription::query()
+        ], fn(string $status, ?int $processId) => Inscription::query()
             ->forProcess($processId)
-            ->whereHas('user.lgbt', fn ($q) => $status === 'approved' ? $q->accepted() : $q->rejected())
+            ->whereHas('user.lgbt', fn($q) => $status === 'approved' ? $q->accepted() : $q->rejected())
             ->orderBy('id')
             ->pluck('id'));
     }
@@ -74,9 +74,9 @@ class PublicationController extends Controller
             ],
             'identifiedBy' => 'Os candidatos são identificados pelo número de inscrição.',
             'unit' => ['inscrição', 'inscrições'],
-        ], fn (string $status, ?int $processId) => Inscription::query()
+        ], fn(string $status, ?int $processId) => Inscription::query()
             ->forProcess($processId)
-            ->whereHas('user.pne', fn ($q) => $status === 'approved' ? $q->accepted() : $q->rejected())
+            ->whereHas('user.pne', fn($q) => $status === 'approved' ? $q->accepted() : $q->rejected())
             ->orderBy('id')
             ->pluck('id'));
     }
@@ -93,9 +93,10 @@ class PublicationController extends Controller
                 'approved' => 'Recursos de nome social aceitos',
                 'rejected' => 'Recursos de nome social não aceitos',
             ],
-            'identifiedBy' => 'Os recursos são identificados pelo número de protocolo.',
+            // 'identifiedBy' => 'Os recursos são identificados pelo número de protocolo.',
+            'identifiedBy' => 'Os recursos são identificados pelo número de protocolo e pelo número de inscrição.',
             'unit' => ['recurso', 'recursos'],
-        ], fn (string $status, ?int $processId) => $this->appealProtocols(Appeal::TYPE_LGBT, $status, $processId));
+        ], fn(string $status, ?int $processId) => $this->appealProtocols(Appeal::TYPE_LGBT, $status, $processId));
     }
 
     /** Recursos de laudos e relatórios médicos deferidos ou indeferidos. */
@@ -108,9 +109,10 @@ class PublicationController extends Controller
                 'approved' => 'Recursos de laudos e relatórios médicos aceitos',
                 'rejected' => 'Recursos de laudos e relatórios médicos não aceitos',
             ],
-            'identifiedBy' => 'Os recursos são identificados pelo número de protocolo.',
+            // 'identifiedBy' => 'Os recursos são identificados pelo número de protocolo.',
+            'identifiedBy' => 'Os recursos são identificados pelo número de protocolo e pelo número de inscrição.',
             'unit' => ['recurso', 'recursos'],
-        ], fn (string $status, ?int $processId) => $this->appealProtocols(Appeal::TYPE_PNE, $status, $processId));
+        ], fn(string $status, ?int $processId) => $this->appealProtocols(Appeal::TYPE_PNE, $status, $processId));
     }
 
     // ── Apoio ──────────────────────────────────────────────────────────────
@@ -123,12 +125,27 @@ class PublicationController extends Controller
     {
         return Appeal::query()
             ->ofType($type)
-            ->when($status === 'approved', fn ($q) => $q->accepted(), fn ($q) => $q->rejected())
-            // O recurso não guarda o processo: vem da inscrição do candidato.
-            ->whereHas('user.inscription', fn ($q) => $q->forProcess($processId))
+            ->when($status === 'approved', fn($q) => $q->accepted(), fn($q) => $q->rejected())
+            ->whereHas('user.inscription', fn($q) => $q->forProcess($processId))
+            ->with(['user.inscription' => fn($q) => $q->forProcess($processId)])
+            ->select('id', 'user_id', 'protocol')
             ->orderBy('protocol')
-            ->pluck('protocol');
+            ->get()
+            ->map(fn($appeal) => [
+                'protocol' => $appeal->protocol,
+                'inscription' => $appeal->user->inscription->id,
+            ]);
     }
+    // private function appealProtocols(string $type, string $status, ?int $processId): Collection
+    // {
+    //     return Appeal::query()
+    //         ->ofType($type)
+    //         ->when($status === 'approved', fn ($q) => $q->accepted(), fn ($q) => $q->rejected())
+    //         // O recurso não guarda o processo: vem da inscrição do candidato.
+    //         ->whereHas('user.inscription', fn ($q) => $q->forProcess($processId))
+    //         ->orderBy('protocol')
+    //         ->pluck('protocol');
+    // }
 
     /**
      * Monta a página de uma lista de identificadores públicos.
