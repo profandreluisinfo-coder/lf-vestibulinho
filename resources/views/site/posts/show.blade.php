@@ -8,6 +8,13 @@
 
 @section('content')
 
+@if (!empty($isPreview))
+    <div class="alert alert-warning text-center mb-0" role="status">
+        <i class="bi bi-eye me-1"></i>
+        Pré-visualização administrativa — esta postagem ainda não foi publicada.
+    </div>
+@endif
+
 @php
     // Define o tipo do post uma única vez e reaproveita na página toda
     $isComunicado = $post->type === \App\Models\Post::TYPE_INFO;
@@ -71,7 +78,7 @@
             <!-- Imagem -->
             @if ($post->image)
                 <div class="post-image-container">
-                    <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}">
+                    <img src="{{ $previewImageUrl ?? Storage::url($post->image) }}" alt="{{ $post->title }}">
                 </div>
             @endif
 
@@ -116,6 +123,17 @@
                     <ul class="post-attachments-list">
                         @foreach ($post->attachments as $attachment)
                             <li>
+                                @if (!empty($isPreview))
+                                    <span class="post-attachment-link">
+                                        <i class="bi {{ $attachment->mime_type === 'application/pdf' ? 'bi-file-earmark-pdf-fill' : 'bi-file-earmark-fill' }}"></i>
+                                        <span class="post-attachment-name">{{ $attachment->name }}</span>
+                                        @if ($attachment->size)
+                                            <small class="post-attachment-size">
+                                                {{ number_format($attachment->size / 1024, 0, ',', '.') }} KB
+                                            </small>
+                                        @endif
+                                    </span>
+                                @else
                                 <a href="{{ Storage::url($attachment->path) }}"
                                    class="post-attachment-link"
                                    target="_blank" rel="noopener">
@@ -128,6 +146,7 @@
                                         </small>
                                     @endif
                                 </a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

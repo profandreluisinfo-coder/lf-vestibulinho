@@ -274,6 +274,13 @@
 
                 {{-- Ações --}}
                 <div class="d-flex flex-column gap-2">
+                    <button type="submit"
+                        class="btn btn-outline-primary w-100"
+                        formaction="{{ route('admin.posts.preview.new') }}"
+                        formmethod="POST"
+                        formtarget="_blank">
+                        <i class="bi bi-eye me-1"></i> Pré-visualizar
+                    </button>
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-floppy me-1"></i> Salvar post
                     </button>

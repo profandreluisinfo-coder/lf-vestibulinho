@@ -50,6 +50,10 @@ Route::prefix('admin')
                     ->name('resources');
             });
 
+        Route::post('posts/preview', [PostController::class, 'previewNew'])
+            ->name('posts.preview.new');
+        Route::post('posts/{post}/preview', [PostController::class, 'previewExisting'])
+            ->name('posts.preview');
         Route::resource('posts', PostController::class);
 
         Route::delete('posts/{post}/attachments/{attachment}', [PostController::class, 'destroyAttachment'])

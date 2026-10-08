@@ -54,19 +54,7 @@ class PostController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate([
-            'title'         => ['required', 'string', 'max:255'],
-            'resume'        => ['nullable', 'string', 'max:255'],
-            'content'       => ['required', 'string'],
-            'type'          => ['required', 'in:' . Post::TYPE_NOTICIA . ',' . Post::TYPE_INFO],
-            'category_id'   => ['nullable', 'exists:categories,id'],
-            'url'           => ['nullable', 'url', 'max:255'],
-            'published'     => ['boolean'],
-            'published_at'  => ['nullable', 'date'],
-            'image'         => ['nullable', 'image', 'max:2048'],
-            'attachments'   => ['nullable', 'array'],
-            'attachments.*' => ['file', 'max:10240'],
-        ]);
+        $data = $request->validate($this->postValidationRules());
 
         DB::transaction(function () use ($data, $request) {
             if ($request->hasFile('image')) {
@@ -84,6 +72,16 @@ class PostController extends Controller
 
         return redirect()->route('admin.posts.index')
             ->with('success', 'Post criado com sucesso.');
+    }
+
+    public function previewNew(Request $request): View
+    {
+        return $this->renderPreview($request);
+    }
+
+    public function previewExisting(Request $request, Post $post): View
+    {
+        return $this->renderPreview($request, $post);
     }
 
     // -------------------------------------------------------------------------
@@ -117,19 +115,7 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post): RedirectResponse
     {
-        $data = $request->validate([
-            'title'         => ['required', 'string', 'max:255'],
-            'resume'        => ['nullable', 'string', 'max:255'],
-            'content'       => ['required', 'string'],
-            'type'          => ['required', 'in:' . Post::TYPE_NOTICIA . ',' . Post::TYPE_INFO],
-            'category_id'   => ['nullable', 'exists:categories,id'],
-            'url'           => ['nullable', 'url', 'max:255'],
-            'published'     => ['boolean'],
-            'published_at'  => ['nullable', 'date'],
-            'image'         => ['nullable', 'image', 'max:2048'],
-            'attachments'   => ['nullable', 'array'],
-            'attachments.*' => ['file', 'max:10240'],
-        ]);
+        $data = $request->validate($this->postValidationRules());
 
         DB::transaction(function () use ($data, $request, $post) {
             if ($request->hasFile('image')) {
@@ -213,6 +199,69 @@ class PostController extends Controller
     // -------------------------------------------------------------------------
     // Helpers privados
     // -------------------------------------------------------------------------
+
+    private function postValidationRules(): array
+    {
+        return [
+            'title'         => ['required', 'string', 'max:255'],
+            'resume'        => ['nullable', 'string', 'max:255'],
+            'content'       => ['required', 'string'],
+            'type'          => ['required', 'in:' . Post::TYPE_NOTICIA . ',' . Post::TYPE_INFO],
+            'category_id'   => ['nullable', 'exists:categories,id'],
+            'url'           => ['nullable', 'url', 'max:255'],
+            'published'     => ['boolean'],
+            'published_at'  => ['nullable', 'date'],
+            'image'         => ['nullable', 'image', 'max:2048'],
+            'attachments'   => ['nullable', 'array'],
+            'attachments.*' => ['file', 'max:10240'],
+        ];
+    }
+
+    private function renderPreview(Request $request, ?Post $existingPost = null): View
+    {
+        $data = $request->validate($this->postValidationRules());
+
+        $preview = new Post([
+            'title'       => $data['title'],
+            'slug'        => Str::slug($data['title']),
+            'resume'      => $data['resume'] ?? null,
+            'content'     => $data['content'],
+            'url'         => $data['url'] ?? null,
+            'type'        => $data['type'],
+            'category_id' => $data['category_id'] ?? null,
+        ]);
+        $preview->published_at = $data['published_at'] ?? now();
+        $preview->image = $existingPost?->image;
+        $preview->setRelation('author', $existingPost?->author ?? Auth::user());
+
+        $previewImageUrl = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $previewImageUrl = 'data:' . $image->getMimeType() . ';base64,'
+                . base64_encode(file_get_contents($image->getRealPath()));
+            $preview->image = 'preview';
+        } elseif ($preview->image) {
+            $previewImageUrl = Storage::disk('public')->url($preview->image);
+        }
+
+        $attachments = $existingPost?->attachments()->get() ?? collect();
+        foreach ($request->file('attachments', []) as $file) {
+            $attachments->push(new Attachment([
+                'name'      => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+                'size'      => $file->getSize(),
+            ]));
+        }
+        $preview->setRelation('attachments', $attachments);
+
+        return view('site.posts.show', [
+            'post'            => $preview,
+            'previous'        => null,
+            'next'            => null,
+            'isPreview'       => true,
+            'previewImageUrl' => $previewImageUrl,
+        ]);
+    }
 
     /**
      * Persiste os arquivos enviados como anexos de um post.

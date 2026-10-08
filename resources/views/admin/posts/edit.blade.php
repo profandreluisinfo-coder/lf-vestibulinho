@@ -469,6 +469,14 @@
 
                 {{-- Ações --}}
                 <div class="d-flex flex-column gap-2">
+                    <button type="submit"
+                        id="preview-post"
+                        class="btn btn-outline-primary w-100"
+                        formaction="{{ route('admin.posts.preview', $post) }}"
+                        formmethod="POST"
+                        formtarget="_blank">
+                        <i class="bi bi-eye me-1"></i> Pré-visualizar
+                    </button>
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-floppy me-1"></i> Salvar alterações
                     </button>
@@ -505,6 +513,14 @@
 ====================================================================== --}}
 @push('scripts')
 <script>
+document.getElementById('preview-post').addEventListener('click', function () {
+    const methodOverride = document.querySelector('#post-form input[name="_method"]');
+    if (!methodOverride) return;
+
+    methodOverride.disabled = true;
+    window.setTimeout(() => { methodOverride.disabled = false; }, 0);
+});
+
 $(document).ready(function () {
     // Inicializar Summernote
     $('.summernote').summernote({
