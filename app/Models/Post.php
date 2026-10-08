@@ -80,7 +80,6 @@ class Post extends Model
         return $this->hasMany(Attachment::class);
     }
 
-    // ⬇️ COLE AQUI ⬇️
     // Detecta se a url é um vídeo (YouTube, Vimeo ou arquivo direto)
     public function getVideoAttribute(): ?array
     {

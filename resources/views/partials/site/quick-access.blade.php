@@ -1,10 +1,16 @@
 {{-- ═══════════════ ACESSO RÁPIDO ═══════════════ --}}
 @php
-    // Process::isInscriptionOpen() já inclui status === 'open'
     $inscricoesAbertas = (bool) $process?->isInscriptionOpen();
     $hasPublications = Route::has('site.publications.index');
 
-    // A ordem aqui é a ordem na tela. Para esconder um card, use 'show' => false.
+    $totalComunicados = \App\Models\Post::comunicados()->published()->count();
+    $totalPublicacoes = count(
+        array_intersect(
+            \App\Models\Setting::releasedPublications(),
+            array_keys(\App\Models\Setting::PUBLICATION_LISTS),
+        ),
+    );
+
     $quickLinks = [
         [
             'show' => $hasPublications,
@@ -12,6 +18,8 @@
             'icon' => 'card-checklist',
             'title' => 'Publicações',
             'desc' => 'Listas de deferidos e indeferidos',
+            'badge' => $totalPublicacoes ?: null,
+            'badge_title' => "{$totalPublicacoes} lista(s) liberada(s)",
         ],
         [
             'show' => true,
@@ -19,13 +27,8 @@
             'icon' => 'megaphone-fill',
             'title' => 'Comunicados',
             'desc' => 'Avisos e comunicados importantes',
-        ],
-        [
-            'show' => false, // Desativado temporariamente
-            'href' => '#',
-            'icon' => 'file-earmark-text-fill',
-            'title' => 'Recursos',
-            'desc' => 'Listas de resultados de análises de recursos',
+            'badge' => $totalComunicados ?: null,
+            'badge_title' => "{$totalComunicados} comunicado(s) importante(s)",
         ],
         [
             'show' => (bool) $process?->edital,
@@ -41,6 +44,7 @@
             'icon' => 'person-plus-fill',
             'title' => 'Registrar-se',
             'desc' => 'Crie seu acesso',
+            'badge' => '',
         ],
         [
             'show' => true,
@@ -48,6 +52,7 @@
             'icon' => 'bar-chart-fill',
             'title' => 'Classificação',
             'desc' => 'Resultado e lista de aprovados',
+            'badge' => '',
         ],
         [
             'show' => true,
@@ -56,6 +61,7 @@
             'icon' => 'bell-fill',
             'title' => 'Convocação',
             'desc' => 'Chamada para matrícula',
+            'badge' => '',
         ],
         [
             'show' => true,
@@ -63,6 +69,7 @@
             'icon' => 'journal-bookmark-fill',
             'title' => 'Provas Anteriores',
             'desc' => 'Treine com edições passadas',
+            'badge' => '',
         ],
     ];
 @endphp
@@ -77,6 +84,10 @@
                     <span class="qa-icon"><i class="bi bi-{{ $link['icon'] }}"></i></span>
                     <span class="qa-title">{{ $link['title'] }}</span>
                     <span class="qa-desc">{{ $link['desc'] }}</span>
+                    @if (!empty($link['badge']))
+                        <span class="badge bg-secondary"
+                            title="{{ $link['badge_title'] ?? '' }}">{{ $link['badge'] }}</span>
+                    @endif
                 </a>
             @endforeach
         </nav>
