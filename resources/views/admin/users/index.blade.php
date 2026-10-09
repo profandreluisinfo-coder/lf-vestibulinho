@@ -45,7 +45,7 @@
                     <th>Verificado</th>
                     <th>Inscrição</th>
                     <th>Registro</th>
-                    <th>Verificado</th>
+                    <th>Validação</th>
                     <th>Ações</th>
                 </tr>
             </thead>
