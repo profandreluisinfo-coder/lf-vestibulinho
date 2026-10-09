@@ -28,12 +28,5 @@
             </tbody>
         </table>
     </div>
+
 @endsection
-
-@push('plugins')
-    
-@endpush
-
-@push('scripts')
-    
-@endpush

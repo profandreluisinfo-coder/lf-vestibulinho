@@ -1,7 +1,7 @@
 /* ==================== 1. DESIGN TOKENS (VARIÁVEIS) ==================== */
 :root {
     /* Dimensões */
-    --sidebar-width: 300px;
+    --sidebar-width: 320px;
     --topbar-height: 60px;
 
     /* Cores Primárias */
@@ -162,7 +162,7 @@ i {
 .sidebar-brand {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     padding: 10px;
@@ -171,7 +171,7 @@ i {
 
 .sidebar-brand img {
     width: 36px;
-    height: 36px;
+    height: auto;
     flex-shrink: 0;
     cursor: pointer;
     transition: transform 0.2s ease;

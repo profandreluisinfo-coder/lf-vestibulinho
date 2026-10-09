@@ -105,6 +105,8 @@
                     @endforelse
                 </tbody>
             </table>
+
+            {{ $files->links('pagination::bootstrap-5') }}
         </div>
 
         @if (!empty($files))

@@ -28,7 +28,7 @@ class ArchiveController extends Controller
     public function index(): View
     {
         // Obter todos os arquivos de prova
-        $files = Archive::orderBy('year', 'desc')->get();
+        $files = Archive::orderBy('year', 'desc')->paginate(20);
 
         return view('admin.archives.index', compact('files'));
     }

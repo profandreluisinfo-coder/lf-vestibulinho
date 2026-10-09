@@ -33,7 +33,7 @@ $(document).ready(function () {
         responsive: true,
         autoWidth: true,
         lengthChange: true,
-        pageLength: 25,
+        pageLength: 10,
         lengthMenu: [
             [10, 25, 50, 100, 500],
             [10, 25, 50, 100, 500]

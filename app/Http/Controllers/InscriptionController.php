@@ -17,7 +17,6 @@ use App\Models\Resource;
 use App\Models\School;
 use App\Models\Template;
 use App\Services\InscriptionService;
-// use App\Support\DocumentServer;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

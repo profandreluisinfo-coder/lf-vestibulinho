@@ -160,6 +160,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/datatables/lgbts.js') }}"></script>
-    
+    <script src="{{ asset('assets/js/admin/datatables/shared.js') }}"></script>
 @endpush
