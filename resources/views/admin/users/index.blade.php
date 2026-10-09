@@ -44,8 +44,8 @@
                     <th>Tipo</th>
                     <th>Verificado</th>
                     <th>Inscrição</th>
-                    <th>Registrado em</th>
-                    <th>E-mail verificado em</th>
+                    <th>Registro</th>
+                    <th>Verificado</th>
                     <th>Ações</th>
                 </tr>
             </thead>
