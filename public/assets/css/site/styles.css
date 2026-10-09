@@ -33,13 +33,14 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: clip;
 }
 
 body {
     font-family: var(--font-body);
     background: var(--light);
     color: var(--navy);
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 h1,
@@ -412,5 +413,17 @@ footer .bottom p {
 @media(max-width:575px) {
     section {
         padding: 3.5rem 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .reveal-left,
+    .reveal-right {
+        transform: translateY(30px); /* só sobe, sem empurrar para os lados */
+    }
+
+    .reveal-left.visible,
+    .reveal-right.visible {
+        transform: translateY(0);
     }
 }
