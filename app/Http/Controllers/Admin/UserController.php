@@ -61,9 +61,9 @@ class UserController extends Controller
     /**
      * Exibe a ficha de inscrição de um candidato especificado.
      *
-     * @param string $id O ID do candidato, criptografado.
+     * @param string $id O ID do candidato.
      *
-     * @return View A view com a ficha de inscri o do candidato.
+     * @return View A view com a ficha de inscrição do candidato.
      */
     public function show($id): View
     {
