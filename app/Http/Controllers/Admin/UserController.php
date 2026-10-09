@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $users = User::all();
+        $users = User::where('role', 'user')->get();
 
         return view('admin.users.index', compact('users'));
     }

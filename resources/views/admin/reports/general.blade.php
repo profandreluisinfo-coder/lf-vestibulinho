@@ -131,8 +131,8 @@
                     <option value="">Todos os candidatos</option>
                     <option value="all" @selected(request('pcd') == 'all')>Somente PCDs</option>
                     <option value="pending" @selected(request('pcd') == 'pending')>PCD: Pendente</option>
-                    <option value="accepted" @selected(request('pcd') == 'accepted')>PCD: Aceito</option>
-                    <option value="rejected" @selected(request('pcd') == 'rejected')>PCD: Rejeitado</option>
+                    <option value="accepted" @selected(request('pcd') == 'accepted')>PCD: Deferido</option>
+                    <option value="rejected" @selected(request('pcd') == 'rejected')>PCD: Indeferido</option>
                 </select>
             </div>
 
@@ -147,10 +147,10 @@
                         Nome Social: Pendente
                     </option>
                     <option value="accepted" @selected(request('social_name') == 'accepted')>
-                        Nome Social: Aceito
+                        Nome Social: Deferido
                     </option>
                     <option value="rejected" @selected(request('social_name') == 'rejected')>
-                        Nome Social: Rejeitado
+                        Nome Social: Indeferido
                     </option>
                 </select>
             </div>
@@ -298,13 +298,13 @@
 
                                     @case('accepted')
                                         <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Aceito
+                                            <i class="bi bi-check-circle-fill me-1"></i> Deferido
                                         </span>
                                     @break
 
                                     @case('rejected')
                                         <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Rejeitado
+                                            <i class="bi bi-x-circle-fill me-1"></i> Indeferido
                                         </span>
                                     @break
 
@@ -324,13 +324,13 @@
 
                                     @case('accepted')
                                         <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Aceito
+                                            <i class="bi bi-check-circle-fill me-1"></i> Deferido
                                         </span>
                                     @break
 
                                     @case('rejected')
                                         <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Rejeitado
+                                            <i class="bi bi-x-circle-fill me-1"></i> Indeferido
                                         </span>
                                     @break
 
