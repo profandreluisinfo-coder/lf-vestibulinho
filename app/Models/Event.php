@@ -205,13 +205,7 @@ class Event extends Model
     {
         return $date ? $date->format('d/m/Y') : '—';
     }
-    // public function formatDate($attribute): string
-    // {
-    //     return $this->$attribute
-    //         ? $this->$attribute->format('d/m/Y')
-    //         : '—';
-    // }
-
+    
     /**
      * Formata um período de tempo com as datas de início e término no formato 'd/m/Y' e retorna como string.
      *
@@ -226,9 +220,14 @@ class Event extends Model
     }
 
     // Limpa o cache automaticamente quando salvar ou excluir
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::saved(fn() => Cache::forget('global_calendar'));
-        static::deleted(fn() => Cache::forget('global_calendar'));
+        $clearCache = function () {
+            Cache::forget('global_calendar');
+            Cache::forget('global_event');
+        };
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
     }
 }

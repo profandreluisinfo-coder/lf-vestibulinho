@@ -104,7 +104,12 @@ class Process extends Model
     // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {
-        static::saved(fn() => Cache::forget('global_process'));
-        static::deleted(fn() => Cache::forget('global_process'));
+        $clearCache = function () {
+            Cache::forget('global_process');
+            Cache::forget('global_inscription_open');
+        };
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
     }
 }

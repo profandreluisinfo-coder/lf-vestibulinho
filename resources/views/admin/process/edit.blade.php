@@ -28,10 +28,7 @@
 @endpush
 
 @section('content')
-    @php
-        $event = $process?->latestEvent;
-    @endphp
-
+   
     <div class="container">
 
         <div class="d-flex align-items-center gap-2 mb-4">

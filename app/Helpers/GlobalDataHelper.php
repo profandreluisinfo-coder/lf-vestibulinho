@@ -18,37 +18,51 @@ class GlobalDataHelper
         $process = Cache::remember(
             'global_process',
             300,
-            fn () => Process::current()
+            fn() => Process::current()
+        );
+
+        $event = Cache::remember(
+            'global_events',
+            300,
+            fn() => $process?->latestEvent
+        );
+
+        $isInscriptionOpen = Cache::remember(
+            'global_inscription_open',
+            300,
+            fn() => $process?->isInscriptionOpen() ?? false
         );
 
         $totalInscriptions = Cache::remember(
             'global_total_inscriptions',
             300,
-            fn () => Inscription::count('id')
+            fn() => Inscription::count('id')
         );
 
         $usersWithoutInscription = Cache::remember(
             'global_users_without_inscription',
             300,
-            fn () => User::where('role', 'user')->doesntHave('inscription')->count()
+            fn() => User::where('role', 'user')->doesntHave('inscription')->count()
         );
 
         $settings = Cache::remember(
             'global_settings',
             300,
-            fn () => Setting::latest('id')->first()
+            fn() => Setting::latest('id')->first()
         );
 
         $calls_exists = Cache::remember(
             'calls_exists',
             60,
-            fn () => class_exists(Call::class) ? Call::exists() : false
+            fn() => class_exists(Call::class) ? Call::exists() : false
         );
 
         $year = now()->year;
 
         View::composer('*', function ($view) use (
+            $event,
             $process,
+            $isInscriptionOpen,
             $totalInscriptions,
             $usersWithoutInscription,
             $settings,
@@ -56,7 +70,9 @@ class GlobalDataHelper
             $calls_exists
         ) {
             $view->with([
+                'event' => $event,
                 'process' => $process,
+                'isInscriptionOpen' => $isInscriptionOpen,
                 'totalInscriptions' => $totalInscriptions,
                 'usersWithoutInscription' => $usersWithoutInscription,
                 'settings' => $settings,

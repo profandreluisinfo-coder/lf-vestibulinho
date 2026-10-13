@@ -16,10 +16,6 @@
 ══════════════════════════════════════════════════════════════ --}}
 @section('content')
 
-    @php
-        $isInscriptionOpen = $process?->isInscriptionOpen() ?? false;
-    @endphp
-
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
     <section class="faq-hero">
         <div class="hero-circle hero-c1"></div>
@@ -174,30 +170,7 @@
 
     @if ($isInscriptionOpen)
         <!-- ═══════════════════════ CTA ══════════════════════════════ -->
-        <section id="faq-cta">
-            <div class="container text-center position-relative" style="z-index:1;">
-                <div class="reveal">
-                    <div class="section-tag justify-content-center" style="color:var(--teal);">
-                        <span style="background:var(--teal);"></span>Pronto para começar?
-                    </div>
-                    <h2
-                        style="font-family:var(--font-head);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#fff;margin-bottom:1rem;">
-                        Sua vaga no <span style="color:var(--amber);">curso técnico gratuito</span> espera por você
-                    </h2>
-                    <p
-                        style="color:rgba(255,255,255,.65);font-size:1rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.7;">
-                        Tire todas as suas dúvidas, leia o edital e garanta sua inscrição antes do prazo.
-                    </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <div class="pulse-wrap">
-                            <a href="{{ route('register') }}" class="btn-cta-main js-inscription-link">
-                                <i class="bi bi-pencil-square"></i> Fazer Inscrição Agora
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        @include('partials.site.cta')
     @endif
 @endsection
 
