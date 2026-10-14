@@ -113,8 +113,8 @@
                                 </a>
                             @else
                                 <a href="{{ route('admin.appeals.show', $appeal) }}" class="btn btn-sm btn-outline-primary"
-                                    title="Ver recurso">
-                                    <i class="bi bi-eye"></i> Ver
+                                    title="Visualizar recurso">
+                                    <i class="bi bi-eye"></i> Visualizar
                                 </a>
                             @endif
                         </td>
