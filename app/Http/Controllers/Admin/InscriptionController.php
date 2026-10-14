@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Models\Inscription;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class InscriptionController extends Controller
 {
@@ -131,5 +133,23 @@ class InscriptionController extends Controller
         return view('admin.inscriptions.resources', [
             'users' => $users
         ]);
+    }
+
+    public function pdf(string $type, int $id)
+    {
+        $relation = $type === 'pcd' ? 'pne' : 'lgbt';
+
+        $inscription = Inscription::with("user.$relation")
+            ->where('user_id', $id)
+            ->firstOrFail();
+
+        $title = match ($type) {
+            'pcd'  => 'Pessoa com Deficiência',
+            'lgbt' => 'Candidato com Nome Social',
+        };
+
+        $pdf = Pdf::loadView('admin.inscriptions.pdf', compact('inscription', 'title', 'type'));
+
+        return $pdf->stream("{$inscription->user->name}.pdf");
     }
 }

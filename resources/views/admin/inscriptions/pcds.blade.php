@@ -63,7 +63,7 @@
                             @if ($user->pne->report)
                                 <a href="{{ Storage::url($user->pne->report) }}" target="_blank"
                                     class="btn btn-outline-primary btn-sm" title="Visualizar Laudo/Relatório">
-                                    <i class="bi bi-file-earmark-medical"></i> Visualizar
+                                    <i class="bi bi-search"></i> Visualizar
                                 </a>
                             @else
                                 <span class="text-muted">Nenhum arquivo</span>
@@ -85,6 +85,11 @@
                         </td>
                         <td>
                             <div class="d-flex gap-2 flex-wrap">
+                                <a href="{{ route('admin.inscriptions.pdf', ['type' => 'pcd', 'id' => $user->id]) }}"
+                                    class="btn btn-sm btn-primary" title="Imprimir dados do candidato..." target="_blank">
+                                    <i class="bi bi-printer"></i> Imprimir
+                                </a>
+
                                 @if ($user->pne->status === 'pending')
                                     <a href="{{ route('admin.analyses.accept.report.form', $user->id) }}"
                                         class="btn btn-sm btn-success" title="Deferir">

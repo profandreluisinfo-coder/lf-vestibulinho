@@ -63,7 +63,7 @@
                             @if ($user->lgbt->authorization)
                                 <a href="{{ Storage::url($user->lgbt->authorization) }}" target="_blank"
                                     class="btn btn-outline-primary btn-sm" title="Visualizar Autorização">
-                                    <i class="bi bi-file-earmark-medical"></i> Visualizar
+                                    <i class="bi bi-search"></i> Visualizar
                                 </a>
                             @else
                                 <span class="text-muted">Nenhum arquivo</span>
@@ -85,6 +85,11 @@
                         </td>
                         <td>
                             <div class="d-flex gap-2 flex-wrap">
+                                <a href="{{ route('admin.inscriptions.pdf', ['type' => 'lgbt', 'id' => $user->id]) }}"
+                                    class="btn btn-sm btn-primary" title="Imprimir dados do candidato..." target="_blank">
+                                    <i class="bi bi-printer"></i> Imprimir
+                                </a>
+
                                 @if ($user->lgbt->status === 'pending')
                                     <a href="{{ route('admin.analyses.accept.social.name.form', $user->id) }}"
                                         class="btn btn-success btn-sm" title="Deferir">

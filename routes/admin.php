@@ -39,6 +39,11 @@ Route::prefix('admin')
                 // Candidatos com nome social
                 Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                     ->name('lgbts');
+                Route::get('pdf/{type}/{id}', [InscriptionController::class, 'pdf'])
+                    ->whereIn('type', ['pcd', 'lgbt'])
+                    ->whereNumber('id')
+                    ->name('pdf');
+
                 // Route::get('candidato/{id}', [InscriptionController::class, 'show'])
                 //     ->name('show');
                 // Route::get('candidato/{user}/editar', [UserController::class, 'edit'])
