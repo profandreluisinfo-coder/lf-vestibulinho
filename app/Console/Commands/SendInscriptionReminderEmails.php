@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendExamLocationMailJob;
+use App\Jobs\SendInscriptionReminderMailJob;
 use App\Models\Process;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -32,7 +32,7 @@ class SendInscriptionReminderEmails extends Command
         $limit = (int) $this->option('limit');
 
         $users = User::query()
-            ->where('role', 'guest')
+            ->where('role', 'user')
             ->whereNotNull('email_verified_at')
             ->where('email_verified_at', '<=', now()->subDays($days))
             // sem inscrição neste processo seletivo
@@ -53,22 +53,17 @@ class SendInscriptionReminderEmails extends Command
         }
 
         foreach ($users as $user) {
-            SendExamLocationMailJob::dispatch(
-                email: $user->email,
+            SendInscriptionReminderMailJob::dispatch(
+                userId: $user->id,
+                processId: $process->id,
                 subject: 'Complete sua inscrição – Vestibulinho LF ' . $process->year,
-                content: [
-                    'name' => $user->name,
-                    'end'  => $event->end,
-                    'url'  => config('app.url'),
-                ],
-                view: 'emails.inscription.reminder'
+                end: $event->end,
+                url: config('app.url'),
             );
-
-            User::whereKey($user->id)->update(['inscription_reminder_sent_at' => now()]);
         }
 
-        Log::info("Lembretes de inscrição enviados: {$users->count()}.");
-        $this->info("Enviados {$users->count()} lembretes.");
+        Log::info("Lembretes de inscrição disparados: {$users->count()}.");
+        $this->info("Disparados {$users->count()} lembretes.");
 
         return Command::SUCCESS;
     }

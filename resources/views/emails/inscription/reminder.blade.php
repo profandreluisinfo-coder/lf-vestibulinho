@@ -1,7 +1,7 @@
 <p>Olá, {{ $content['name'] ?? 'candidato(a)' }}!</p>
 
 <p>
-    Notamos que você confirmou seu e-mail no site do Vestibulinho LF {{ $process->year }},
+    Notamos que você confirmou seu e-mail no site do Vestibulinho LF,
     mas até o momento <strong>ainda não concluiu sua inscrição</strong>.
 </p>
 
