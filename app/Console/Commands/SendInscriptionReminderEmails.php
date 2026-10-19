@@ -12,7 +12,7 @@ class SendInscriptionReminderEmails extends Command
 {
     protected $signature = 'emails:send-inscription-reminders
                             {--days=3 : Dias mínimos desde a confirmação do e-mail}
-                            {--limit=200 : Máximo de e-mails por execução}';
+                            {--limit=50 : Máximo de e-mails por execução}';
 
     protected $description = 'Lembra por e-mail quem confirmou o cadastro há X dias e ainda não fez a inscrição.';
 
