@@ -407,7 +407,7 @@
                     <div class="section-tag">Dúvidas Comuns</div>
                     <h2 class="section-title mb-3">Perguntas <span>Frequentes</span></h2>
                     <p class="section-lead">Selecionamos as dúvidas mais comuns dos candidatos. Não encontrou o que
-                        procurava? Acesse a página completa de FAQ.</p>
+                        procurava? Acesse a <a href="{{ route('site.faqs.index') }}" class="text-decoration-none text-teal">página completa</a> de FAQ.</p>
                 </div>
             </div>
 
