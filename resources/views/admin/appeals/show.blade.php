@@ -20,11 +20,11 @@
                 <i class="bi bi-folder2-open"></i>
                 <h6 class="mb-0 text-muted fw-normal">Recurso - {{ $appeal->typeLabel() }}</h6>
             </div>
-            @if (! $status)
-                <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
+            {{-- @if (! $status) --}}
+                <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-printer"></i> Imprimir
                 </a>
-            @endif
+            {{-- @endif --}}
         </div>
 
         @if (session('success'))

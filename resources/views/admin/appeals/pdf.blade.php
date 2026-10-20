@@ -1,24 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf-8">
     <title>Recurso {{ $appeal->protocol }}</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #222; }
-        h1 { font-size: 18px; margin: 0 0 4px; }
-        h2 { font-size: 13px; margin: 20px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #999; color: #444; }
-        .sub { color: #666; margin-bottom: 16px; }
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 5px 0; vertical-align: top; }
-        td.rotulo { width: 30%; font-weight: bold; color: #444; }
-        .rodape { margin-top: 30px; font-size: 10px; color: #888; text-align: center; }
+        @page {
+            margin: 30px 40px;
+        }
+
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 18px;
+            margin: 0 0 4px;
+        }
+
+        h2 {
+            font-size: 14px;
+            border-bottom: 1px solid #999;
+            padding-bottom: 4px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        td.rotulo {
+            width: 30%;
+            font-weight: bold;
+            background: #f0f0f0;
+        }
+
+        .assinaturas {
+            width: 100%;
+            margin-top: 80px;
+            page-break-inside: avoid;
+        }
+
+        .assinaturas td {
+            border: none;
+            width: 50%;
+            text-align: center;
+            padding: 0 25px;
+        }
+
+        .linha {
+            border-top: 1px solid #222;
+            padding-top: 4px;
+        }
+
+        .rodape {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 10px;
+            color: #777;
+        }
     </style>
 </head>
+
 <body>
 
     <h1>Recurso - {{ $appeal->typeLabel() }}</h1>
     <div class="sub">Protocolo {{ $appeal->protocol }}</div>
-
+    @if ($appeal->type === 'pne')
+        <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de atendimento especializado para
+            realização da prova, na condição de pessoa com deficiência (PcD).</p>
+    @else
+    <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de uso de nome social/afetivo.</p>
+    @endif
     <h2>Dados do recurso</h2>
     <table>
         <tr>
@@ -81,7 +152,19 @@
         </tr>
     </table>
 
+    <table class="assinaturas">
+        <tr>
+            <td>
+                <div class="linha">Diretor(a)</div>
+            </td>
+            <td>
+                <div class="linha">Coordenador(a) Pedagógico(a)</div>
+            </td>
+        </tr>
+    </table>
+
     <div class="rodape">Gerado em {{ now()->format('d/m/Y H:i') }}</div>
 
 </body>
+
 </html>
