@@ -29,12 +29,14 @@ class Post extends Model
         'user_id',
         'published',
         'published_at',
+        'scheduled_at',
     ];
 
     // $casts - Conversão de tipos (boolean, datetime)
     protected $casts = [
         'published' => 'boolean',
         'published_at' => 'datetime',
+        'scheduled_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

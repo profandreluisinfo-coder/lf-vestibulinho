@@ -60,6 +60,7 @@
                 <select name="published" class="form-select form-select-sm">
                     <option value="">Todos</option>
                     <option value="1" @selected(request('published') === '1')>Publicado</option>
+                    <option value="scheduled" @selected(request('published') === 'scheduled')>Agendado</option>
                     <option value="0" @selected(request('published') === '0')>Rascunho</option>
                 </select>
             </div>
@@ -142,10 +143,16 @@
                                 <span class="badge-type badge-{{ $post->type }}">
                                     {{ $post->type === 'noticia' ? 'Notícia' : 'Comunicado' }}
                                 </span>
-                                <span class="badge-type {{ $post->published ? 'badge-published' : 'badge-unpublished' }}">
-                                    {{ $post->published ? 'Publicado' : 'Rascunho' }}
+                                <span class="badge-type {{ $post->published ? 'badge-published' : ($post->scheduled_at ? 'bg-info text-dark' : 'badge-unpublished') }}">
+                                    {{ $post->published ? 'Publicado' : ($post->scheduled_at ? 'Agendado' : 'Rascunho') }}
                                 </span>
                             </div>
+                            @if(!$post->published && $post->scheduled_at)
+                                <small class="text-muted d-block mt-1">
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    {{ $post->scheduled_at->format('d/m/Y H:i') }}
+                                </small>
+                            @endif
 
                             <div class="post-actions">
                                 {{-- Toggle publicação --}}
@@ -153,7 +160,7 @@
                                     @csrf @method('PATCH')
                                     <button type="submit"
                                         class="btn btn-sm {{ $post->published ? 'btn-warning' : 'btn-success' }}"
-                                        title="{{ $post->published ? 'Despublicar' : 'Publicar' }}">
+                                        title="{{ $post->published ? 'Despublicar' : ($post->scheduled_at ? 'Publicar agora' : 'Publicar') }}">
                                         <i class="bi bi-{{ $post->published ? 'eye-slash' : 'eye' }}"></i>
                                     </button>
                                 </form>

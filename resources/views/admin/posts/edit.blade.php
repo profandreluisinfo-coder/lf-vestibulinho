@@ -345,8 +345,8 @@
                     <div class="form-card-header">
                         <i class="bi bi-send"></i>
                         <h6>Publicação</h6>
-                        <span class="ms-auto post-status-badge {{ $post->published ? 'bg-success text-white' : 'bg-secondary text-white' }}">
-                            {{ $post->published ? 'Publicado' : 'Rascunho' }}
+                        <span class="ms-auto post-status-badge {{ $post->published ? 'bg-success text-white' : ($post->scheduled_at ? 'bg-info text-dark' : 'bg-secondary text-white') }}">
+                            {{ $post->published ? 'Publicado' : ($post->scheduled_at ? 'Agendado' : 'Rascunho') }}
                         </span>
                     </div>
                     <div class="form-card-body">
@@ -387,6 +387,20 @@
                                     Publicado
                                 </label>
                             </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="scheduled_at" class="form-label">Agendar publicação</label>
+                            <input type="datetime-local"
+                                id="scheduled_at"
+                                name="scheduled_at"
+                                class="form-control @error('scheduled_at') is-invalid @enderror"
+                                min="{{ now()->format('Y-m-d\TH:i') }}"
+                                value="{{ old('scheduled_at', $post->scheduled_at?->format('Y-m-d\TH:i')) }}">
+                            @error('scheduled_at')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">Se preenchido, o post será publicado automaticamente nesta data e horário.</div>
                         </div>
 
                         <div class="mb-0" id="published-at-wrap">
@@ -676,7 +690,19 @@ function togglePublishedAt() {
     publishedAtWrap.style.display = publishedSwitch.checked ? 'block' : 'none';
 }
 
-publishedSwitch.addEventListener('change', togglePublishedAt);
+const scheduledAtInput = document.getElementById('scheduled_at');
+
+publishedSwitch.addEventListener('change', function () {
+    if (this.checked) scheduledAtInput.value = '';
+    togglePublishedAt();
+});
+scheduledAtInput.addEventListener('input', function () {
+    if (this.value) {
+        publishedSwitch.checked = false;
+        togglePublishedAt();
+    }
+});
+if (scheduledAtInput.value) publishedSwitch.checked = false;
 togglePublishedAt();
 
 // ── Remoção de anexo existente (AJAX) ─────────────────────────────────

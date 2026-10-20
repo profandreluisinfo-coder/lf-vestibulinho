@@ -210,6 +210,20 @@
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="scheduled_at" class="form-label">Agendar publicação</label>
+                            <input type="datetime-local"
+                                id="scheduled_at"
+                                name="scheduled_at"
+                                class="form-control @error('scheduled_at') is-invalid @enderror"
+                                min="{{ now()->format('Y-m-d\TH:i') }}"
+                                value="{{ old('scheduled_at') }}">
+                            @error('scheduled_at')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">Se preenchido, o post será publicado automaticamente nesta data e horário.</div>
+                        </div>
+
                         {{-- Data de publicação --}}
                         <div class="mb-0" id="published-at-wrap">
                             <label for="published_at" class="form-label">Data de publicação</label>
@@ -307,4 +321,16 @@
 ====================================================================== --}}
 @push('scripts')
 <script src="{{ asset('assets/js/admin/posts/create.js') }}"></script>
+<script>
+const publishNowSwitch = document.getElementById('published');
+const scheduledAtInput = document.getElementById('scheduled_at');
+
+if (scheduledAtInput.value) publishNowSwitch.checked = false;
+publishNowSwitch.addEventListener('change', function () {
+    if (this.checked) scheduledAtInput.value = '';
+});
+scheduledAtInput.addEventListener('input', function () {
+    if (this.value) publishNowSwitch.checked = false;
+});
+</script>
 @endpush

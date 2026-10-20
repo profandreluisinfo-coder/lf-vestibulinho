@@ -24,7 +24,15 @@ class PostController extends Controller
     {
         $posts = Post::with(['category', 'author'])
             ->when($request->filled('type'),      fn ($q) => $q->type($request->type))
-            ->when($request->filled('published'),  fn ($q) => $q->published())
+            ->when($request->filled('published'), function ($query) use ($request) {
+                if ($request->published === '1') {
+                    $query->published();
+                } elseif ($request->published === 'scheduled') {
+                    $query->where('published', false)->whereNotNull('scheduled_at');
+                } elseif ($request->published === '0') {
+                    $query->where('published', false)->whereNull('scheduled_at');
+                }
+            })
             ->when($request->filled('search'),     fn ($q) => $q->where(function ($q) use ($request) {
                 $q->where('title',  'like', "%{$request->search}%")
                   ->orWhere('resume', 'like', "%{$request->search}%");
@@ -55,6 +63,7 @@ class PostController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate($this->postValidationRules());
+        $data = $this->applyPublicationState($data, $request);
 
         DB::transaction(function () use ($data, $request) {
             if ($request->hasFile('image')) {
@@ -63,8 +72,6 @@ class PostController extends Controller
 
             // O slug é gerado automaticamente pelo boot() do model ao criar
             $data['user_id']   = Auth::id();
-            $data['published'] = $request->boolean('published');
-
             $post = Post::create($data);
 
             $this->storeAttachments($request, $post);
@@ -116,6 +123,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post): RedirectResponse
     {
         $data = $request->validate($this->postValidationRules());
+        $data = $this->applyPublicationState($data, $request);
 
         DB::transaction(function () use ($data, $request, $post) {
             if ($request->hasFile('image')) {
@@ -129,8 +137,6 @@ class PostController extends Controller
             if ($data['title'] !== $post->title) {
                 $data['slug'] = $this->uniqueSlug($data['title'], $post->id);
             }
-
-            $data['published'] = $request->boolean('published');
 
             $post->update($data);
 
@@ -189,6 +195,7 @@ class PostController extends Controller
             'published'    => $publishing,
             // published_at é datetime no model — now() ou null
             'published_at' => $publishing ? now() : null,
+            'scheduled_at' => null,
         ]);
 
         $status = $publishing ? 'publicado' : 'despublicado';
@@ -211,10 +218,30 @@ class PostController extends Controller
             'url'           => ['nullable', 'url', 'max:255'],
             'published'     => ['boolean'],
             'published_at'  => ['nullable', 'date'],
+            'scheduled_at'  => ['nullable', 'date', 'after:now'],
             'image'         => ['nullable', 'image', 'max:2048'],
             'attachments'   => ['nullable', 'array'],
             'attachments.*' => ['file', 'max:10240'],
         ];
+    }
+
+    private function applyPublicationState(array $data, Request $request): array
+    {
+        $data['scheduled_at'] = $data['scheduled_at'] ?? null;
+
+        if ($data['scheduled_at']) {
+            $data['published'] = false;
+            $data['published_at'] = null;
+
+            return $data;
+        }
+
+        $data['published'] = $request->boolean('published');
+        $data['published_at'] = $data['published']
+            ? ($data['published_at'] ?? now())
+            : null;
+
+        return $data;
     }
 
     private function renderPreview(Request $request, ?Post $existingPost = null): View
