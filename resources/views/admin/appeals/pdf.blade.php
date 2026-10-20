@@ -53,6 +53,26 @@
             background: #f0f0f0;
         }
 
+        .parecer td {
+            border: none;
+            padding: 6px 8px;
+        }
+
+        .caixa {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #222;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .motivo {
+            border: 1px solid #ccc;
+            height: 110px;
+            margin-top: 6px;
+        }
+
         .assinaturas {
             width: 100%;
             margin-top: 80px;
@@ -82,7 +102,7 @@
 
 <body>
 
-    <h1>Recurso - {{ $appeal->typeLabel() }}</h1>
+    <h1>Vestibulinho LF {{ $process->year }} - Recurso - {{ $appeal->typeLabel() }}</h1>
     <div class="sub">Protocolo {{ $appeal->protocol }}</div>
     @if ($appeal->type === 'pne')
         <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de atendimento especializado para
@@ -151,6 +171,20 @@
             <td>{{ $original?->observations ?? '-' }}</td>
         </tr>
     </table>
+
+    <h2>Parecer</h2>
+    <table class="parecer">
+        <tr>
+            <td>
+                <span class="caixa"></span> Deferido
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="caixa"></span> Indeferido
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin-bottom: 0;"><strong>Motivo:</strong></p>
+    <div class="motivo"></div>
 
     <table class="assinaturas">
         <tr>
