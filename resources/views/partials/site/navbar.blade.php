@@ -34,10 +34,10 @@
                     <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i>
                         Ajuda</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}/#documentos"><i class="bi bi-file-earmark me-1"></i>
                         Documentos</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i>
                         Provas Anteriores</a>
