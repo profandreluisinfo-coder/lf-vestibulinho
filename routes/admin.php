@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController};
+use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -146,20 +147,29 @@ Route::prefix('admin')
                     ->name('publish');
             });
 
-        // Cursos
+        // Cursos: dados permanentes
         Route::prefix('cursos')
             ->name('courses.')
+            ->controller(CourseController::class)
             ->group(function () {
-                Route::get('/', [CourseController::class, 'index'])
-                    ->name('index');
-                Route::post('salvar', [CourseController::class, 'store'])
-                    ->name('store');
-                Route::get('editar/{course}', [CourseController::class, 'edit'])
-                    ->name('edit');
-                Route::put('atualizar/{course}', [CourseController::class, 'update'])
-                    ->name('update');
-                Route::delete('excluir/{course}', [CourseController::class, 'destroy'])
-                    ->name('destroy');
+                Route::get('/', 'index')->name('index');
+                Route::post('salvar', 'store')->name('store');
+                Route::get('editar/{course}', 'edit')->name('edit');
+                Route::put('atualizar/{course}', 'update')->name('update');
+                Route::delete('excluir/{course}', 'destroy')->name('destroy');
+            });
+
+        // Cursos por vestibulinho: vagas e associações
+        Route::prefix('cursos-vestibulinhos')
+            ->name('course-processes.')
+            ->controller(CourseProcessController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('criar', 'create')->name('create');
+                Route::post('salvar', 'store')->name('store');
+                Route::get('editar/{courseProcess}', 'edit')->name('edit');
+                Route::put('atualizar/{courseProcess}', 'update')->name('update');
+                Route::delete('excluir/{courseProcess}', 'destroy')->name('destroy');
             });
 
         // Arquivos

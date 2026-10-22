@@ -2,7 +2,7 @@
 function confirmCourseDelete(id, name) {
     Swal.fire({
         title: 'Tem certeza?',
-        text: ` Excluir o curso "${name}"? Essa ação não poderá ser desfeita.`,
+        text: ` Essa ação não poderá ser desfeita.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
