@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Faq;
 use App\Models\Post;
+use App\Models\Process;
 use Mews\Purifier\Facades\Purifier;
 
 // Site
@@ -13,8 +14,12 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $process = Process::orderByDesc('year')->first();
+
         // Obter todos os cursos
-        $courses = Course::all();
+        $courses = $process
+            ? $process->courses()->orderBy('courses.name')->get()
+            : collect();
 
         // Apenas posts publicados (máximo de 6 na home)
         $posts = Post::noticias()->published()

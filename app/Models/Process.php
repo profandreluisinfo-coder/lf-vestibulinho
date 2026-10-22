@@ -23,6 +23,13 @@ class Process extends Model
         ];
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_process')
+            ->withPivot('id', 'vacancies')
+            ->withTimestamps();
+    }
+
     /**
      * Defina o valor de um determinado atributo no modelo.
      *
@@ -84,7 +91,7 @@ class Process extends Model
     {
         return $this->latestEvent?->isInscriptionEnded() ?? false;
     }
-    
+
     /**
      * Retorna o ano do processo seletivo ativo ou do processo seletivo mais recente.
      *

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
 use App\Models\Course;
+use App\Models\Process;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CourseController extends Controller
@@ -16,46 +19,107 @@ class CourseController extends Controller
     public function index(): View
     {
         // Obter todos os cursos
-        $courses = Course::all();
+        $courses = Course::with('processes')->get();
+        $processes = Process::select('id', 'year')->get();
 
-        return view('admin.courses.index', compact('courses'));
+        return view('admin.courses.index', compact('courses', 'processes'));
     }
 
     /**
-     * Exibe o formulário para criar um novo curso.
+     * Cria um novo curso.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CourseRequest $request): RedirectResponse
+
+    public function store(Request $request): RedirectResponse
     {
-        // Course::create($request->validated());
-        Course::create([
-            'vacancies' => $request->vacancies,
-            'description' => $request->description,
-            'name' => $request->name,
-            'duration' => $request->duration,
-            'info' => $request->info
+        $data = $request->validate([
+            'name'          => ['required', 'string', 'max:255'],
+            'description'   => ['nullable', 'string'],
+            'duration'      => ['nullable', 'string', 'max:255'],
+            'info'          => ['nullable', 'string'],
+            'selective_id'  => ['required', 'exists:processes,id'],
+            'vacancies'     => ['required', 'integer', 'min:0'],
         ]);
 
-        return alertSuccess('Curso registrado com sucesso!', 'admin.courses.index');
+        DB::transaction(function () use ($data) {
+            $course = Course::create([
+                'name'        => $data['name'],
+                'description' => $data['description'] ?? null,
+                'duration'    => $data['duration'] ?? null,
+                'info'        => $data['info'] ?? null,
+            ]);
+
+            $course->processes()->attach($data['selective_id'], [
+                'vacancies' => $data['vacancies'],
+            ]);
+        });
+
+        return alertSuccess(
+            'Curso registrado com sucesso!'
+        );
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): View
+    public function edit(Course $course): View
     {
-        return view('admin.courses.edit', ['course' => Course::findOrFail($id)]);
+        $processes = Process::orderByDesc('year')->get();
+
+        $selectedProcessId = $course->processes()
+            ->orderByDesc('processes.year')
+            ->value('processes.id');
+
+        $vacancies = $selectedProcessId
+            ? $course->processes()
+            ->where('processes.id', $selectedProcessId)
+            ->first()
+            ?->pivot->vacancies
+            : null;
+
+        return view('admin.courses.edit', compact(
+            'course',
+            'processes',
+            'selectedProcessId',
+            'vacancies'
+        ));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CourseRequest $request, string $id): RedirectResponse
+    public function update(Request $request, Course $course): RedirectResponse
     {
-        Course::where('id', $id)->update($request->only(['vacancies']));
+        $data = $request->validate([
+            'name'        => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'duration'    => ['nullable', 'string', 'max:255'],
+            'info'        => ['nullable', 'string'],
+            'process_id'  => ['required', 'exists:processes,id'],
+            'vacancies'   => ['required', 'integer', 'min:0'],
+        ]);
 
-        return alertSuccess('Curso editado com sucesso!', 'admin.courses.index');
+        DB::transaction(function () use ($data, $course) {
+            // Atualiza os dados permanentes do curso.
+            $course->update([
+                'name'        => $data['name'],
+                'description' => $data['description'] ?? null,
+                'duration'    => $data['duration'] ?? null,
+                'info'        => $data['info'] ?? null,
+            ]);
+
+            // Atualiza a associação com o processo e a quantidade de vagas.
+            $course->processes()->syncWithoutDetaching([
+                $data['process_id'] => [
+                    'vacancies' => $data['vacancies'],
+                ],
+            ]);
+        });
+
+        return alertSuccess(
+            'Curso atualizado com sucesso!'
+        );
     }
 
     /**

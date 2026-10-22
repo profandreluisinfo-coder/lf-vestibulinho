@@ -24,7 +24,7 @@
                     <div class="form-group mb-3">
                         <label for="name" class="form-label required">Nome:</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
-                            name="name" value="{{ $course->name }}" disabled>
+                            name="name" value="{{ $course->name }}">
                         @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -35,7 +35,7 @@
                     <div class="form-group mb-3">
                         <label for="description" class="form-label required">Descrição:</label>
                         <input type="text" class="form-control @error('description') is-invalid @enderror"
-                            id="description" name="description" value="{{ $course->description }}" disabled>
+                            id="description" name="description" value="{{ $course->description }}">
                         @error('description')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -47,7 +47,7 @@
                     <div class="form-group mb-3">
                         <label for="duration" class="form-label required">Duração:</label>
                         <input type="text" class="form-control @error('duration') is-invalid @enderror" id="duration"
-                            name="duration" value="{{ $course->duration }}" disabled>
+                            name="duration" value="{{ $course->duration }}">
                         @error('duration')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -55,25 +55,49 @@
                         @enderror
                     </div>
 
+                    {{-- Vagas --}}
                     <div class="form-group mb-3">
                         <label for="vacancies" class="form-label required">Vagas:</label>
+
                         <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
-                            name="vacancies" value="{{ $course->vacancies }}">
+                            name="vacancies" value="{{ old('vacancies', $vacancies) }}" min="0" required>
+
                         @error('vacancies')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="info" class="form-label required">Perfil profissional do egresso:</label>
                         <input type="text" class="form-control @error('info') is-invalid @enderror" id="info"
-                            name="info" value="{{ $course->info }}" disabled>
+                            name="info" value="{{ $course->info }}">
                         @error('info')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
+                        @enderror
+                    </div>
+
+                    {{-- Processo Seletivo --}}
+                    <div class="form-group mb-3">
+                        <label for="process_id" class="form-label required">
+                            Vestibulinho:
+                        </label>
+
+                        <select name="process_id" id="process_id"
+                            class="form-select @error('process_id') is-invalid @enderror" required>
+
+                            <option value="">Selecione</option>
+
+                            @foreach ($processes as $item)
+                                <option value="{{ $item->id }}" @selected(old('process_id', $selectedProcessId) == $item->id)>
+                                    {{ $item->year }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('process_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 

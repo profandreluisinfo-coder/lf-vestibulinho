@@ -2,14 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Course;
+use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $courses = [
@@ -21,7 +18,6 @@ class CourseSeeder extends Seeder
                 'description' => 'TÉCNICO EM ADMINISTRAÇÃO INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Gestão empresarial, finanças, recursos humanos e organização de processos corporativos.',
-                'vacancies' => 0
             ],
             [
                 'name' => 'Contabilidade',
@@ -31,7 +27,6 @@ class CourseSeeder extends Seeder
                 'description' => 'TÉCNICO EM CONTABILIDADE INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Escrituração contábil, tributos, balanços patrimoniais e análise financeira.',
-                'vacancies' => 0
             ],
             [
                 'name' => 'Informática',
@@ -41,7 +36,6 @@ class CourseSeeder extends Seeder
                 'description' => 'TÉCNICO EM INFORMÁTICA (ÊNFASE EM PROGRAMAÇÃO PARA WEB) INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Programação, redes, web design e desenvolvimento de sistemas computacionais.',
-                'vacancies' => 0
             ],
             [
                 'name' => 'Segurança do Trabalho',
@@ -51,13 +45,12 @@ class CourseSeeder extends Seeder
                 'description' => 'TÉCNICO EM SEGURANÇA DO TRABALHO INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
                 'duration' => 4,
                 'info' => 'Prevenção de acidentes, normas regulamentadoras (NRs) e saúde ocupacional.',
-                'vacancies' => 0
             ],
         ];
 
         foreach ($courses as $course) {
             Course::updateOrCreate(
-                ['name' => $course['name']], // critério de unicidade
+                ['name' => $course['name']],
                 $course
             );
         }

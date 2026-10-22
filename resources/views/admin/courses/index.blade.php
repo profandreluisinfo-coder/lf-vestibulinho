@@ -19,50 +19,80 @@
 
         <div class="table-responsive">
 
-            <table id="courses" class="table-striped table-hover table caption-top">
-                <caption>Vestibulinho LF {{ $process?->year }} - Lista de Cursos</caption>
+            <table id="courses" class="table table-striped table-hover caption-top">
+                <caption>Lista de Cursos por Vestibulinho</caption>
+
                 <thead class="table-success text-center">
                     <tr>
-                        <th scope="col"><i class="bi bi-book me-2"></i> Cursos</th>
-                        <th scope="col"><i class="bi bi-people me-2"></i> Vagas</th>
-                        <th scope="col" class="w-25"><i class="bi bi-gear me-2"></i> Ações</th>
+                        <th scope="col">Vestibulinho</th>
+                        <th scope="col">Curso</th>
+                        <th scope="col">Vagas</th>
+                        <th scope="col" class="w-25">Ações</th>
                     </tr>
                 </thead>
+
                 <tbody class="table-group-divider">
 
                     @forelse ($courses as $course)
-                        <tr>
-                            <td class="w-25">{{ $course->name }}</td>
-                            <td>{{ $course->vacancies }}</td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#viewCourse"
-                                        onclick="showCourseDetails({{ $course->id }}, '{{ addslashes($course->name) }}', '{{ addslashes($course->description) }}', '{{ $course->duration }}', '{{ addslashes($course->info) }}', {{ $course->vacancies }})">
-                                        <i class="bi bi-eye" title="Ver Detalhes"></i> Detalhes
-                                    </a>
-                                    <!-- Editar -->
-                                    <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-pencil-square" title="Editar"></i> Editar
-                                    </a>
-                                    <!-- Excluir -->
-                                    <form id="delete-course-form-{{ $course->id }}"
-                                        action="{{ route('admin.courses.destroy', $course->id) }}" method="POST"
-                                        class="d-none">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                        onclick="confirmCourseDelete({{ $course->id }}, '{{ addslashes($course->name) }}')">
-                                        <i class="bi bi-trash"></i> Excluir
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($course->processes as $item)
+                            <tr>
+                                <td class="text-center">{{ $item->year }}</td>
+
+                                <td>{{ $course->name }}</td>
+
+                                <td class="text-center">
+                                    {{ $item->pivot->vacancies }}
+                                </td>
+
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        {{-- Detalhes --}}
+                                        <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#viewCourse"
+                                            onclick="showCourseDetails(
+                                    {{ $course->id }},
+                                    {{ Js::from($course->name) }},
+                                    {{ Js::from($course->description) }},
+                                    {{ Js::from($course->duration) }},
+                                    {{ Js::from($course->info) }},
+                                    {{ $item->pivot->vacancies }}
+                                )">
+                                            <i class="bi bi-eye" title="Ver Detalhes"></i>
+                                            Detalhes
+                                        </a>
+
+                                        <a href="{{ route('admin.courses.edit', $course->id) }}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="bi bi-pencil-square"></i> Editar
+                                        </a>
+
+                                        {{-- Excluir --}}
+                                        <form id="delete-course-form-{{ $course->id }}"
+                                            action="{{ route('admin.courses.destroy', $course->id) }}" method="POST"
+                                            class="d-none">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+
+                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
+                                            onclick="confirmCourseDelete(
+                                    {{ $course->id }},
+                                    {{ Js::from($course->name) }}
+                                )">
+                                            <i class="bi bi-trash"></i>
+                                            Excluir
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center">Nenhum curso cadastrado.</td>
+                            <td colspan="4" class="text-center">
+                                Nenhum curso cadastrado.
+                            </td>
                         </tr>
                     @endforelse
 
@@ -135,13 +165,29 @@
                                     {{-- Vacancies --}}
                                     <div class="form-group mb-3">
                                         <label for="vacancies" class="form-label required">Vagas:</label>
-                                        <input type="number" min="1" max="120"
+                                        <input type="number"
                                             class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
                                             name="vacancies" value="{{ old('vacancies') }}">
                                         @error('vacancies')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
+                                        @enderror
+                                    </div>
+                                    {{-- Processo Seletivo --}}
+                                    <div class="form-group mb-3">
+                                        <label for="selectives" class="form-label required">Vestibulinho:</label>
+                                        <select name="selective_id" id="selective_id"
+                                            class="form-select @error('selective_id') is-invalid @enderror">
+                                            <option value="">Selecione</option>
+                                            @foreach ($processes as $item)
+                                                <option value="{{ $item->id }}" @selected(old('selective_id') == $item->id)>
+                                                    {{ $item->year }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('selective_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <button type="submit" class="btn btn-success btn-sm">

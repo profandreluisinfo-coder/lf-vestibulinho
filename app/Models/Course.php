@@ -19,7 +19,7 @@ class Course extends Model
         'info',
         'vacancies'
     ];
-    
+
     public $timestamps = false;
 
     /**
@@ -99,5 +99,12 @@ class Course extends Model
     public function inscriptions(): HasMany
     {
         return $this->hasMany(Inscription::class);
+    }
+
+    public function processes()
+    {
+        return $this->belongsToMany(Process::class, 'course_process')
+            ->withPivot('id', 'vacancies')
+            ->withTimestamps();
     }
 }
