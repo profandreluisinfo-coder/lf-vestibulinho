@@ -278,7 +278,7 @@
                         <th>PCD</th>
                         <th>Condição</th>
                         <th>Requer</th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
@@ -346,13 +346,13 @@
                                 <td colspan="10">Nenhum candidato encontrado.</td>
                             </tr>
                         @endforelse
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
 
-                {{ $inscriptions->links() }}
+                {{-- {{ $inscriptions->links() }} --}}
 
             @endif
 
-        </div>
+    </div>
 
     @endsection

@@ -20,7 +20,7 @@ class ReportController extends Controller
     {
         $filters = $request->validate([
             'type'        => ['nullable', 'in:list,summary'],
-            'group_by' => ['nullable', 'in:course,gender,school,process,course_gender'],
+            'group_by'    => ['nullable', 'in:course,gender,school,process,course_gender'],
             'course_id'   => ['nullable', 'exists:courses,id'],
             'gender'      => ['nullable', 'in:1,2,3,4'],
             'pcd'         => ['nullable', 'in:all,pending,accepted,rejected'],
