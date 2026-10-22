@@ -320,8 +320,14 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.other')->with('warning', 'Complete o passo anterior.');
         }
 
+        $process = Process::orderByDesc('year')->first();
+
+        $courses = $process
+            ? $process->courses()->orderBy('courses.name')->get()
+            : collect();
+
         return view('inscription.steps.course', [
-            'courses' => Course::all(),
+            'courses' => $courses,
         ]);
     }
 

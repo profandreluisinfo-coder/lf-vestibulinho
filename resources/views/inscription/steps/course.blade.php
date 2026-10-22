@@ -14,7 +14,7 @@
                 @forelse ($courses as $course)
                     <option value="{{ $course->id }}"
                         {{ old('course_id', session('step8.course_id')) == $course->id ? 'selected' : '' }}>
-                        {{ $course->description }}
+                        {{ $course->description }} - {{ $course->pivot->vacancies }} vagas
                     </option>
                 @empty
                     <option value="">Nenhum curso disponível</option>
