@@ -268,6 +268,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Ano</th>
                         <th>Inscrição</th>
                         <th>Candidato</th>
                         <th>Gênero</th>
@@ -284,6 +285,7 @@
                 <tbody>
                     @forelse ($inscriptions as $inscription)
                         <tr>
+                            <td>{{ $inscription->process->year }}</td>
                             <td>{{ $inscription->id }}</td>
                             <td>{{ $inscription->user->name }}</td>
                             <td>{{ $inscription->user->gender }}</td>

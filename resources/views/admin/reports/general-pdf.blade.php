@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <title>Vestibulinho LF {{ $selectedProcess?->year ?? $process?->year }} - Relatório Geral</title>
     <style>
+        @page {
+            margin: 10mm;
+        }
+
         body {
+            margin: 0;
             font-family: DejaVu Sans, sans-serif;
             font-size: 11px;
         }
@@ -117,36 +122,49 @@
                 'accepted' => 'ACEITO',
                 'rejected' => 'REJEITADO',
             ];
+
+            $temNomeSocial = $inscriptions->contains(fn ($i) => filled($i->user->lgbt?->name));
+            $temPcd = $inscriptions->contains(fn ($i) => filled($i->user->pne?->status));
         @endphp
 
         <table>
             <thead>
                 <tr>
+                    <th>Ano</th>
                     <th>Inscrição</th>
                     <th>Candidato</th>
                     <th>Gênero</th>
+                @if ($temNomeSocial)
                     <th>Nome Social</th>
                     <th>Situação</th>
+                @endif
                     <th>Curso</th>
                     <th>Escola</th>
+                @if ($temPcd)
                     <th>PCD</th>
                     <th>Condição</th>
                     <th>Requer</th>
+                @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($inscriptions as $inscription)
                     <tr>
+                        <td>{{ $inscription->process->year }}</td>
                         <td>{{ $inscription->id }}</td>
                         <td>{{ $inscription->user->name }}</td>
                         <td>{{ $inscription->user->gender }}</td>
+                    @if ($temNomeSocial)
                         <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
                         <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
+                    @endif
                         <td>{{ $inscription->course->name }}</td>
                         <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
+                    @if ($temPcd)
                         <td>{{ $statusLabels[$inscription->user->pne?->status] ?? '—' }}</td>
                         <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
                         <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
+                    @endif
                     </tr>
                 @endforeach
             </tbody>
