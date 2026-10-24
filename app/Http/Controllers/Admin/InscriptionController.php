@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Inscription;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -113,34 +114,42 @@ class InscriptionController extends Controller
     }
 
     /**
-     * Exibe a lista de candidatos com deficiência.
-     *
-     * @return View
+     * Candidatos com deficiência (PcD).
      */
     public function pcds(): View
     {
-        // Query base
-        $users = User::whereHas('pne')
-            ->whereHas('inscription')
-            ->with(['inscription', 'pne'])
-            ->get();
-
-        // Não carrega mais os dados aqui, apenas retorna a view vazia
         return view('admin.inscriptions.pcds', [
-            'users' => $users
+            'users' => $this->candidatesWith('pne', 'pne'),
         ]);
     }
 
+    /**
+     * Candidatos com solicitação de nome social.
+     */
     public function lgbts(): View
     {
-        $users = User::whereHas('lgbt')
-            ->whereHas('inscription')
-            ->with(['inscription', 'lgbt'])
-            ->get();
-
         return view('admin.inscriptions.lgbts', [
-            'users' => $users
+            'users' => $this->candidatesWith('lgbt', 'lgbt'),
         ]);
+    }
+
+    /**
+     * Usuários com inscrição e com a relação informada, já com tudo que a view usa.
+     *
+     * @param  string  $relation  Relação principal (pne ou lgbt)
+     * @param  string  $appealType  Tipo de recurso correspondente
+     */
+    private function candidatesWith(string $relation, string $appealType): Collection
+    {
+        return User::whereHas($relation)
+            ->whereHas('inscription')
+            ->with([
+                'inscription',
+                $relation,
+                'lgbt', // a view de PcD mostra o nome social quando deferido
+                'appeals' => fn($query) => $query->where('type', $appealType),
+            ])
+            ->get();
     }
 
     public function resources(): View
