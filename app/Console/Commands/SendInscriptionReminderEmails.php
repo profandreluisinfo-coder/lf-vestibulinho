@@ -22,7 +22,7 @@ class SendInscriptionReminderEmails extends Command
 
         // Só roda dentro do período de inscrições (status "open" + data atual entre início e fim)
         if (! $process || ! $process->isInscriptionOpen()) {
-            Log::info('Lembretes de inscrição: fora do período de inscrições, nada a enviar.');
+            // Log::info('Lembretes de inscrição: fora do período de inscrições, nada a enviar.');
             $this->info('Fora do período de inscrições.');
             return Command::SUCCESS;
         }
@@ -47,7 +47,7 @@ class SendInscriptionReminderEmails extends Command
             ->get();
 
         if ($users->isEmpty()) {
-            Log::info('Lembretes de inscrição: nenhum candidato pendente.');
+            // Log::info('Lembretes de inscrição: nenhum candidato pendente.');
             $this->info('Nenhum candidato pendente.');
             return Command::SUCCESS;
         }
@@ -62,7 +62,7 @@ class SendInscriptionReminderEmails extends Command
             );
         }
 
-        Log::info("Lembretes de inscrição disparados: {$users->count()}.");
+        // Log::info("Lembretes de inscrição disparados: {$users->count()}.");
         $this->info("Disparados {$users->count()} lembretes.");
 
         return Command::SUCCESS;
