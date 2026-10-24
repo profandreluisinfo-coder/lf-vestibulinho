@@ -8,6 +8,11 @@ use Illuminate\Support\Str;
 
 class Certificate extends Model
 {
+    const TYPES = [
+        '1' => 'new',
+        '2' => 'old'
+    ];
+
     protected $fillable = [
         'user_id',
         'type',
@@ -20,6 +25,11 @@ class Certificate extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getTypeAttribute($value)
+    {
+        return self::TYPES[$value] ?? $value;
     }
 
     /**

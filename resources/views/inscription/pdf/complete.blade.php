@@ -163,7 +163,7 @@
                     <th>Certidão de Nascimento:</th>
                     <td>
                         Nº: {{ $user->certificate->number }}
-                        @if ($user->certificate->type !== '1')
+                        @if ($user->certificate->type === 'old')
                             | Folha: {{ $user?->certificate?->fls }} | Livro: {{ $user?->certificate?->book }}
                             | Município: {{ $user?->certificate?->city }}
                         @endif

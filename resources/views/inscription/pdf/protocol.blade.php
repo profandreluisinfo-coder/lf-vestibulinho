@@ -229,7 +229,7 @@
                         <td>{{ $user->certificate->number }}</td>
                     </tr>
 
-                    @if ($user->certificate->type != 1)
+                    @if ($user->certificate->type === 'old')
                         <tr>
                             <th>Detalhes</th>
                             <td>
