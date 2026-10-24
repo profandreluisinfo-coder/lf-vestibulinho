@@ -350,7 +350,7 @@
     </div>
 
     {{-- Termos + Finalizar --}}
-    <form id="finalize-inscription" action="{{ route('inscription.step.finalize') }}" method="POST" class="mt-4">
+    <form id="finalize-inscription" action="{{ route('inscription.store') }}" method="POST" class="mt-4">
         @csrf
 
         <div class="terms-box mb-4">
@@ -378,7 +378,7 @@
             <a href="{{ route('inscription.step.course') }}" class="btn btn-secondary btn-sm">
                 <i class="bi bi-arrow-left-circle me-1"></i> Voltar
             </a>
-            <button type="button" class="btn btn-primary btn-sm w-auto" onclick="confirmFinalize()">
+            <button type="button" class="btn btn-primary btn-sm w-auto" onclick="confirmInscription()">
                 Confirmar inscrição <i class="bi bi-check-circle ms-1"></i>
             </button>
         </div>

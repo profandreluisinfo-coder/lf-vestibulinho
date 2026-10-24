@@ -1,4 +1,4 @@
-function confirmFinalize() {
+function confirmInscription() {
 
   const agree = document.getElementById('agree_terms');
 

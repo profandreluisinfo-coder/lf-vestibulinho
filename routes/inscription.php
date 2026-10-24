@@ -34,51 +34,46 @@ Route::middleware(['auth', NotAdmin::class])
         // 📝 Passos da inscrição
         Route::middleware([NoInscription::class, EnsureInstructionsConfirmed::class])
             ->prefix('inscricao')
-            ->name('step.')
             ->group(function () {
 
                 Route::get('dados-pessoais', [InscriptionController::class, 'personal'])
-                    ->name('personal');
+                    ->name('step.personal');
                 Route::post('dados-pessoais', [InscriptionController::class, 'personalStore']);
-                
+
                 Route::get('certidao-nascimento', [InscriptionController::class, 'certificate'])
-                    ->name('certificate');
+                    ->name('step.certificate');
                 Route::post('certidao-nascimento', [InscriptionController::class, 'certificateStore']);
 
                 Route::get('endereco', [InscriptionController::class, 'address'])
-
-                    ->name('address');
+                    ->name('step.address');
                 Route::post('endereco', [InscriptionController::class, 'addressStore']);
 
                 Route::get('dados-escolares', [InscriptionController::class, 'academic'])
-                    ->name('academic');
+                    ->name('step.academic');
 
                 Route::post('dados-escolares', [InscriptionController::class, 'academicStore']);
 
                 Route::get('filiacao', [InscriptionController::class, 'family'])
-                    ->name('family');
+                    ->name('step.family');
                 Route::post('filiacao', [InscriptionController::class, 'familyStore']);
 
                 Route::get('pcd', [InscriptionController::class, 'pcd'])
-                    ->name('pcd');
+                    ->name('step.pcd');
                 Route::post('pcd', [InscriptionController::class, 'pcdStore']);
 
                 Route::get('outras-informacoes', [InscriptionController::class, 'other'])
-                    ->name('other');
+                    ->name('step.other');
                 Route::post('outras-informacoes', [InscriptionController::class, 'otherStore']);
 
                 Route::get('curso', [InscriptionController::class, 'course'])
-                    ->name('course');
+                    ->name('step.course');
                 Route::post('curso', [InscriptionController::class, 'courseStore']);
 
                 Route::get('confirmar-dados', [InscriptionController::class, 'confirm'])
-                    ->name('confirm');
-                
-                Route::get('documento/{tipo}', [InscriptionController::class, 'showDocument'])
-                    ->name('document');
+                    ->name('step.confirm');
 
-                Route::post('finalizar', [InscriptionController::class, 'inscriptionStore'])
-                    ->name('finalize');
+                Route::post('finalizar', [InscriptionController::class, 'store'])
+                    ->name('store');
             });
 
         Route::middleware(WithInscription::class)->group(function () {

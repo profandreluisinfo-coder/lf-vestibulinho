@@ -362,7 +362,7 @@ class InscriptionController extends Controller
     }
 
     // Gravar Dados de Passo 8
-    public function inscriptionStore(Request $request, InscriptionService $inscriptionService)
+    public function store(Request $request, InscriptionService $inscriptionService)
     {
         try {
             $request->validate([
@@ -393,7 +393,7 @@ class InscriptionController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            // Log::error($e->getMessage());
 
             return redirect()->route('failed')->with(
                 'danger',

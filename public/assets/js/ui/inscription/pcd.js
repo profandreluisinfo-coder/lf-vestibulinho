@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { selectId: 'accessibility', fieldId: 'accessibility_description', showOnValue: '1' },
         { selectId: 'accessibility', fieldId: 'pne_report', showOnValue: '1' },
         { selectId: 'accessibility', fieldId: 'pne_description', showOnValue: '1' }, // já existe: mostra o select
-        { selectId: 'pne_description', fieldId: 'pne_description_detail', showOnValue: '1' } // novo: mostra o campo de texto
+        { selectId: 'pne_description', fieldId: 'pne_description_detail', showOnValue: '1', requiresPne: true } // novo: mostra o campo de texto
     ];
 
     // Função para mostrar/ocultar campos dependentes
@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const parentDiv = field.closest('.form-group'); // Encontra o div pai que contém o campo
 
             if (select && field && parentDiv) {
-                if (select.value === config.showOnValue) {
+                const meetsPneRequirement = !config.requiresPne || document.getElementById('accessibility')?.value === '1';
+
+                if (select.value === config.showOnValue && meetsPneRequirement) {
                     parentDiv.classList.remove('d-none');
                     field.disabled = false; // Habilita o campo para envio
                 } else {

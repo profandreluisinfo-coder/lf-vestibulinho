@@ -35,7 +35,7 @@
 
         <div class="form-group col-md-6 mt-3 {{ $selectedPne == 1 ? '' : 'd-none' }}">
 
-            <label for="descricaoAcessibilidade" class="form-label required">Especifique sua condição</label>
+            <label for="descricaoAcessibilidade" class="form-label required">Especifique sua condição:</label>
 
             <input list="disabilities" class="form-control @error('accessibility_description') is-invalid @enderror"
                 id="accessibility_description" name="accessibility_description"

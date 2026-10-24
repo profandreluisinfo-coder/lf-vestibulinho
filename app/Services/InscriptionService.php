@@ -26,12 +26,6 @@ class InscriptionService
 
         $data = array_merge(...$steps->values()->toArray());
 
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
-
-        // exit;
-
         DB::transaction(function () use ($user, $data, $steps) {
 
             $user->update([
@@ -155,13 +149,7 @@ class InscriptionService
                 'process_id' => $sp->id,
             ]);
 
-//             dd(
-//     get_debug_type($user->birth),
-//     get_debug_type($user->document?->expedition),
-//     get_debug_type($inscription->created_at),
-// );
-
-            $pdf = Pdf::loadView('inscription.pdf.email', compact('user', 'inscription', 'sp'));
+            $pdf = Pdf::loadView('inscription.pdf.protocol', compact('user', 'inscription', 'sp'));
 
             $filename = 'Protocolo_' . preg_replace('/[^0-9]/', '', (string) $user->cpf) . '.pdf';
             $path = storage_path('app/public/' . $filename);
