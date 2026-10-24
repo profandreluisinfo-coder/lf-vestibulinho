@@ -32,6 +32,10 @@ Route::prefix('admin')
                     ->name('index');
                 Route::post('inscriptions/data', [InscriptionController::class, 'getData'])
                     ->name('get.data');
+
+                Route::get('detalhes/{user}', [InscriptionController::class, 'show'])
+                    ->name('show');
+
                 // Lista de pessoas com deficiência
                 Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcds'])
                     ->name('pcds');
@@ -44,13 +48,8 @@ Route::prefix('admin')
                     ->whereIn('type', ['pcd', 'lgbt'])
                     ->whereNumber('id')
                     ->name('pdf');
-
-                // Route::get('candidato/{id}', [InscriptionController::class, 'show'])
-                //     ->name('show');
-                // Route::get('candidato/{user}/editar', [UserController::class, 'edit'])
-                //     ->name('edit');
-                // Route::put('candidato/{user}/editar', [UserController::class, 'update'])
-                //     ->name('update');
+                Route::get('editar/{user}', [InscriptionController::class, 'edit'])->name('edit');
+                Route::put('editar/{user}', [InscriptionController::class, 'update'])->name('update');
                 // Recursos de candidatos
                 Route::get('recursos', [InscriptionController::class, 'resources'])
                     ->name('resources');
@@ -361,13 +360,9 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('/', [UserController::class, 'index'])
                     ->name('index');
-                Route::get('detalhes/{user}', [UserController::class, 'show'])
-                    ->name('show');
                 Route::get('cadastrar', [UserController::class, 'create'])
                     ->name('create');
-                Route::post('salvar', [UserController::class, 'store'])->name('store');
-                Route::get('editar/{user}', [UserController::class, 'edit'])->name('edit');
-                Route::put('editar/{user}', [UserController::class, 'update'])->name('update');
+                Route::post('salvar', [UserController::class, 'store'])->name('store');                
                 Route::delete('excluir/{user}', [UserController::class, 'destroy'])
                     ->name('destroy');
             });

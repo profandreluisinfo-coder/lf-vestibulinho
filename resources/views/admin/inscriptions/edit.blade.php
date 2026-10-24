@@ -48,14 +48,6 @@
 @section('content')
     <div class="container">
 
-        {{-- Header --}}
-        <div class="fi-header">
-            <div>
-                <p class="fi-header-title">Editar Candidato</p>
-                <p class="fi-header-sub">Processo Seletivo {{ $process?->year }} — {{ $user->name }}</p>
-            </div>
-        </div>
-
         {{-- Resumo de erros --}}
         @if ($errors->any())
             <div class="alert alert-danger" role="alert">
@@ -64,7 +56,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('admin.users.update', $user) }}" novalidate>
+        <form method="POST" action="{{ route('admin.inscriptions.update', $user) }}" novalidate>
             @csrf
             @method('PUT')
 
@@ -122,7 +114,7 @@
                     <p class="fi-card-title">Certidão</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'certificate[type]', 'label' => 'Modelo', 'value' => $user->certificate?->type, 'options' => $certificateTypes, 'required' => true, 'col' => 'col-md-4'])
+                    @include('admin.partials.field', ['name' => 'certificate[type]', 'label' => 'Modelo', 'value' => $user->certificate?->getRawOriginal('type'), 'options' => $certificateTypes, 'required' => true, 'col' => 'col-md-4'])
                     @include('admin.partials.field', ['name' => 'certificate[number]', 'label' => 'Número', 'value' => $user->certificate?->number, 'required' => true, 'max' => 32, 'col' => 'col-md-8'])
 
                     {{-- Só aparece para certidão ANTIGA (tipo 2) --}}
@@ -251,8 +243,8 @@
 
             {{-- ===================== BOTÕES ===================== --}}
             <div class="d-flex justify-content-end gap-2 mb-5">
-                <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-secondary">
-                    <i class="bi bi-x-lg me-1"></i>Cancelar
+                <a href="{{ route('admin.inscriptions.show', $user) }}" class="btn btn-sm btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Voltar
                 </a>
                 <button type="submit" class="btn btn-sm btn-primary">
                     <i class="bi bi-check-lg me-1"></i>Salvar alterações

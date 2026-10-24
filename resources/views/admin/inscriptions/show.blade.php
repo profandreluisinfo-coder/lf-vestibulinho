@@ -9,17 +9,8 @@
 @section('content')
     <div class="container">
 
-        {{-- Header --}}
-        <div class="fi-header">
-            <div>
-                <p class="fi-header-title">Detalhes da Inscrição</p>
-                <p class="fi-header-sub">Processo Seletivo {{ $process?->year }} — Visualização Detalhada</p>
-            </div>
-            <span class="fi-active-badge">Ativo</span>
-        </div>
-
         <div class="d-flex justify-content-end mb-3">
-            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary">
+            <a href="{{ route('admin.inscriptions.edit', $user) }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-pencil-square me-1"></i>Editar dados do candidato
             </a>
         </div>
@@ -70,9 +61,9 @@
                     </div>
 
                     @if ($user?->lgbt?->status === 'accepted')
-                    <div class="fi-row"><span class="fi-row-label">Nome Social</span><span
-                            class="fi-row-value text-primary fw-bold">{{ $user?->lgbt?->name }}</span>
-                    </div>
+                        <div class="fi-row"><span class="fi-row-label">Nome Social</span><span
+                                class="fi-row-value text-primary fw-bold">{{ $user?->lgbt?->name }}</span>
+                        </div>
                     @endif
 
                     <div class="fi-row"><span class="fi-row-label">Gênero</span><span
@@ -96,7 +87,8 @@
                     <div class="fi-row"><span class="fi-row-label">Nº Documento</span><span
                             class="fi-row-value">{{ $user->document->number }}</span></div>
                     <div class="fi-row"><span class="fi-row-label">Expedição</span><span
-                            class="fi-row-value">{{ \Carbon\Carbon::parse($user->document->expedition)->format('d/m/Y') }}</span></div>
+                            class="fi-row-value">{{ \Carbon\Carbon::parse($user->document->expedition)->format('d/m/Y') }}</span>
+                    </div>
                     <div class="fi-row"><span class="fi-row-label">Nascimento</span><span
                             class="fi-row-value">{{ \Carbon\Carbon::parse($user->birth)->format('d/m/Y') }}</span></div>
                 </div>
@@ -112,7 +104,7 @@
             </div>
             <div class="fi-row"><span class="fi-row-label">Certidão Nº</span><span
                     class="fi-row-value">{{ $user->certificate->number }}</span></div>
-            @if ($user->certificate->type !== 1)
+            @if ($user->certificate->type == 'old')
                 <div class="fi-row"><span class="fi-row-label">Folhas</span><span
                         class="fi-row-value">{{ $user->certificate->fls }}</span></div>
                 <div class="fi-row"><span class="fi-row-label">Livro</span><span
@@ -234,9 +226,8 @@
                             <div class="fi-row">
                                 <span class="fi-row-label">Necessidade</span>
                                 <span class="fi-row-value">{{ $user?->pne?->description }}</span>
-                                <span class="fi-row-value flex-fill"><a
-                                        href="{{ Storage::url($user?->pne?->report) }}" target="_blank"
-                                        class="small float-end">
+                                <span class="fi-row-value flex-fill"><a href="{{ Storage::url($user?->pne?->report) }}"
+                                        target="_blank" class="small float-end">
                                         <i class="bi bi-file-earmark-check me-1"></i>Ver autorização
                                     </a>
                             </div>
@@ -279,6 +270,13 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- ===================== BOTÕES ===================== --}}
+                <div class="d-flex justify-content-end gap-2 mb-5">
+                    <a href="{{ route('admin.inscriptions.index') }}" class="btn btn-sm btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Voltar
+                    </a>
+                </div>
 
             </div>
 

@@ -43,7 +43,6 @@
                     <th>E-mail</th>
                     <th>Tipo</th>
                     <th>Verificado</th>
-                    <th>Inscrição</th>
                     <th>Registro</th>
                     <th>Validação</th>
                     <th>Ações</th>
@@ -73,15 +72,6 @@
                             <span class="d-none">{{ $user->email_verified_at ? 'Sim' : 'Não' }}</span>
                         </td>
                         <td>
-                            @if ($user->role !== 'admin')
-                                <i class="bi {{ $user->inscription?->id ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5"
-                                    data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="{{ $user->inscription?->id ? 'Sim' : 'Não' }}"></i>
-                            @else
-                                <span class="text-muted">N/A</span>
-                            @endif
-                        </td>
-                        <td>
                             {{ $user->created_at->format('d/m/Y') }}
                         </td>
                         <td>
@@ -89,7 +79,7 @@
                         </td>
                         <td>
                             @if ($user->role === 'user' && $user?->inscription)
-                                <a href="{{ route('admin.users.show', $user->id) }}"
+                                <a href="{{ route('admin.inscriptions.show', $user->id) }}"
                                     class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
                                     <i class="bi bi-search"></i> Detalhes
                                 </a>
