@@ -32,66 +32,83 @@ class InscriptionController extends Controller
      */
     public function getData(Request $request): JsonResponse
     {
-        // Captura os parâmetros do DataTables
-        $draw = $request->input('draw');
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $searchValue = $request->input('search.value');
-        $orderColumnIndex = $request->input('order.0.column', 0);
-        $orderDir = $request->input('order.0.dir', 'asc');
+        $draw              = $request->input('draw');
+        $start             = $request->input('start');
+        $length            = $request->input('length');
+        $searchValue       = $request->input('search.value');
+        $orderColumnIndex  = $request->input('order.0.column', 0);
+        $orderDir          = $request->input('order.0.dir', 'asc');
 
         // Mapeamento de colunas para ordenação
-        $columns = ['inscriptions.id', 'users.name', 'users.cpf'];
+        $columns     = ['inscriptions.id', 'users.name', 'users.cpf', 'processes.year'];
         $orderColumn = $columns[$orderColumnIndex] ?? 'inscriptions.id';
 
-        // Query base
-        $query = User::whereHas('inscription')
-            ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
-            ->select('users.*', 'inscriptions.id as inscription_id');
+        // ─────────────────────────────────────────────────────────
+        // 1) Query BASE (sem joins) — usada somente para contagem
+        // ─────────────────────────────────────────────────────────
+        $baseQuery = User::whereHas('inscription');
 
-        // Aplicar busca se houver
+        // Aplica a busca na base (para o totalFiltered respeitar o filtro)
         if (!empty($searchValue)) {
-            $query->where(function ($q) use ($searchValue) {
+            $baseQuery->where(function ($q) use ($searchValue) {
                 $q->where('users.name', 'like', "%{$searchValue}%")
                     ->orWhere('users.cpf', 'like', "%{$searchValue}%")
-                    ->orWhere('inscriptions.id', 'like', "%{$searchValue}%");
+                    ->orWhereHas('inscription', function ($qi) use ($searchValue) {
+                        $qi->where('inscriptions.id', 'like', "%{$searchValue}%");
+                    })
+                    ->orWhereHas('inscription.process', function ($qp) use ($searchValue) {
+                        $qp->where('processes.year', 'like', "%{$searchValue}%");
+                    });
             });
         }
 
-        // Total de registros (sem filtro)
-        $totalRecords = User::whereHas('inscription')->count();
+        // Totais — como $baseQuery NÃO tem join, o COUNT(*) nunca duplica.
+        // (clone garante que o count não "consuma" a query para o próximo uso)
+        $totalRecords  = User::whereHas('inscription')->count();
+        $totalFiltered = (clone $baseQuery)->count();
 
-        // Total de registros filtrados
-        $totalFiltered = $query->count();
+        // ─────────────────────────────────────────────────────────
+        // 2) Query de DADOS — clona a base e adiciona joins + select
+        // ─────────────────────────────────────────────────────────
+        $query = (clone $baseQuery)
+            ->with(['inscription.process'])
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->leftJoin('processes', 'inscriptions.process_id', '=', 'processes.id')
+            ->select(
+                'users.*',
+                'inscriptions.id as inscription_id',
+                'processes.year as process_year'
+            );
 
-        // Aplicar ordenação e paginação
         $users = $query->orderBy($orderColumn, $orderDir)
             ->skip($start)
             ->take($length)
             ->get();
 
-        // Formatar dados para o DataTables
+        // ─────────────────────────────────────────────────────────
+        // 3) Formatação para o DataTables
+        // ─────────────────────────────────────────────────────────
         $data = $users->map(function ($user) {
             $name = ($user?->lgbt && $user?->lgbt?->status == 'accepted')
                 ? $user?->lgbt?->name . ' <i class="bi bi-gender-trans text-success" data-bs-toggle="popover" data-bs-trigger="hover"
-                                    data-bs-content="LGBTQIA+"></i>'
+                                data-bs-content="LGBTQIA+"></i>'
                 : $user->name;
 
             return [
                 'inscription_id' => $user->inscription?->id ?? $user->inscription_id,
-                'name' => $name,
-                'cpf' => $user->cpf,
-                'user_id' => $user->id,
-                'actions' => view('admin.inscriptions.inscription-actions', compact('user'))->render()
+                'name'           => $name,
+                'cpf'            => $user->cpf,
+                'process_year'   => $user->process_year,
+                'user_id'        => $user->id,
+                'actions'        => view('admin.inscriptions.inscription-actions', compact('user'))->render()
             ];
         });
 
         return response()->json([
-            'draw' => intval($draw),
-            'recordsTotal' => $totalRecords,
+            'draw'            => intval($draw),
+            'recordsTotal'    => $totalRecords,
             'recordsFiltered' => $totalFiltered,
-            'data' => $data
+            'data'            => $data
         ]);
     }
 
