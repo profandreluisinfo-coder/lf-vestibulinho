@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Mail\SendMail;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Collection;
 

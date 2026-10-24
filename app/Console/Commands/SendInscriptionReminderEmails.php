@@ -6,7 +6,7 @@ use App\Jobs\SendInscriptionReminderMailJob;
 use App\Models\Process;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 
 class SendInscriptionReminderEmails extends Command
 {
