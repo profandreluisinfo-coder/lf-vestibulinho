@@ -231,22 +231,18 @@
                     <div class="info-block info-block-warning">
 
                         <div class="info-block-label">
-                            <i class="bi bi-exclamation-triangle"></i> Avisos
+                            Importante
                         </div>
                         <div class="info-block-row">
-                            <div>
-                                <ul class="avisos-list">
-
-                                    <li>Seu documento de identidade foi expedido há mais de 5 anos
+                            <div class="avisos-list">
+                            
+                                Seu documento de identidade foi expedido há mais de 5 anos
                                         (<strong>{{ $user->document->expedition->format('d/m/Y') }}</strong>). Para
                                         realização da prova será
                                         <strong>obrigatória</strong> a apresentação de documento oficial de identificação
                                         com fotografia atual. Caso o documento informado não possua fotografia que permita
                                         sua
                                         adequada identificação, providencie um novo documento antes da data da prova.
-                                    </li>
-
-                                </ul>
                             </div>
                         </div>
                     </div>
