@@ -14,6 +14,8 @@ class ExamReportService
     {
         return DB::table('exam_results')
             ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
+            ->join('processes', 'inscriptions.process_id', '=', 'processes.id')
+            ->join('events', 'processes.id', '=', 'events.process_id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
             ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
             ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
@@ -21,12 +23,14 @@ class ExamReportService
             ->select(
                 'exam_locations.name as location_name',
                 'exam_results.room_number',
+                'exam_results.exam_time',
+                'events.exam_date',
                 'users.name as name',
                 DB::raw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name END as social_name"),
                 'users.cpf',
                 'users.birth',
                 DB::raw("CASE WHEN pnes.status = 'accepted' THEN 1 ELSE 0 END as pne"),
-                'inscriptions.id as inscription_id' // 👈 aqui
+                'inscriptions.id as inscription_id'
             )
             ->orderBy('exam_results.exam_location_id')
             ->orderBy('exam_results.room_number')

@@ -7,7 +7,7 @@
     <div class="sidebar-brand" onclick="toggleSidebarCollapse()">
         <!-- IMAGEM PARA RECOLHER/EXPANDIR -->
         <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo" height="32">
-        <h4>Vestibulinho LF</h4>
+        <h4>Vestibulinho</h4>
     </div>
 
     <nav class="sidebar-menu">

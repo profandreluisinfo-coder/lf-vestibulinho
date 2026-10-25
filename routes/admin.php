@@ -44,15 +44,18 @@ Route::prefix('admin')
                 // Candidatos com nome social
                 Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                     ->name('lgbts');
-                Route::get('pdf/{type}/{id}', [InscriptionController::class, 'pdf'])
-                    ->whereIn('type', ['pcd', 'lgbt'])
-                    ->whereNumber('id')
-                    ->name('pdf');
+                
                 Route::get('editar/{user}', [InscriptionController::class, 'edit'])->name('edit');
                 Route::put('editar/{user}', [InscriptionController::class, 'update'])->name('update');
                 // Recursos de candidatos
-                Route::get('recursos', [InscriptionController::class, 'resources'])
-                    ->name('resources');
+                // Route::get('pdf/{type}/{id}', [InscriptionController::class, 'pdf'])
+                //     ->whereIn('type', ['pcd', 'lgbt'])
+                //     ->whereNumber('id')
+                //     ->name('pdf');
+                // Route::get('recursos', [InscriptionController::class, 'resources'])
+                //     ->name('resources');
+                Route::get('relatorio', [InscriptionController::class, 'pdf'])
+                    ->name('pdf');
             });
 
         Route::post('posts/preview', [PostController::class, 'previewNew'])
@@ -250,19 +253,9 @@ Route::prefix('admin')
         Route::prefix('alocacoes')
             ->name('allocations.')
             ->group(function () {
-                Route::get('alocacao', [PdfController::class, 'allocationsToPdf'])
-                    ->name('allocation');
-                Route::get('salas', [PdfController::class, 'roomsToPdf'])
-                    ->name('rooms');
-                Route::get('assinaturas', [PdfController::class, 'signaturesToPdf'])
-                    ->name('signs');
-            });
-
-        // PDFs
-        Route::prefix('pdf')
-            ->name('pdf.')
-            ->group(function () {
-                Route::get('inscricoes', [PdfController::class, 'index'])->name('index');
+                Route::get('{type}', [PdfController::class, 'listsToPdf'])
+                    ->whereIn('type', ['geral', 'salas', 'assinaturas'])
+                    ->name('lists.pdf');
             });
 
         // Chamadas
@@ -352,6 +345,11 @@ Route::prefix('admin')
 
                 Route::patch('relatorio/{user}/indeferir', [AnalyseController::class, 'rejectReport'])
                     ->name('reject.report');
+
+                Route::get('pdf/{type}/{id}', [AnalyseController::class, 'pdf'])
+                    ->whereIn('type', ['pcd', 'lgbt'])
+                    ->whereNumber('id')
+                    ->name('pdf');
             });
 
         // Usuários
@@ -360,12 +358,10 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('/', [UserController::class, 'index'])
                     ->name('index');
-                Route::get('cadastrar', [UserController::class, 'create'])
-                    ->name('create');
-                Route::post('salvar', [UserController::class, 'store'])->name('store');                
                 Route::delete('excluir/{user}', [UserController::class, 'destroy'])
                     ->name('destroy');
             });
+
         // Recursos (PcD e Nome Social)
         Route::prefix('recursos')
             ->name('appeals.')

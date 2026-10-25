@@ -4,51 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Call;
 use App\Models\ExamResult;
-use App\Models\User;
 use App\Services\ExamReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class PdfController extends Controller
 {
-    /**
-     * Exporta a lista de inscrições em formato PDF.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $search = $request->get('search');
-
-        $users = User::whereHas('inscription')
-            ->with('inscription')
-            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
-            ->select('users.*')
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('users.name', 'like', "%{$search}%")
-                        ->orWhere('users.cpf', 'like', "%{$search}%")
-                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy('inscriptions.id', 'asc')
-            ->get();
-
-        if ($users->isEmpty()) {
-            return redirect()->back()->with('warning', 'Nenhuma inscrição encontrada para os critérios informados.');
-        }
-
-        // código de geração de PDF...
-        $pdf = Pdf::loadView('admin.pdf.index', [
-            'users' => $users,
-            'search' => $search,
-        ]);
-
-        return $pdf->download('inscricoes.pdf');
-    }
-
     // Relatório de Alocação
     public function allocationsToPdf(ExamReportService $reportService)
     {
@@ -60,44 +22,30 @@ class PdfController extends Controller
         return $pdf->stream('relatorio-de-alocacao.pdf');
     }
 
-    // Lista para Salas
-    public function roomsToPdf(ExamReportService $reportService)
-    {
+    public function listsToPdf(
+        string $type,
+        ExamReportService $reportService
+    ) {
+        $views = [
+            'geral'       => 'admin.allocations.general',
+            'salas'       => 'admin.allocations.rooms',
+            'assinaturas' => 'admin.allocations.signatures',
+        ];
+
+        abort_unless(isset($views[$type]), 404);
+
         $allocations = $reportService->getGroupedAllocations();
 
-        $pdf = Pdf::loadView('admin.allocations.rooms', compact('allocations'))
+        $pdf = Pdf::loadView($views[$type], compact('allocations'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('lista-para-salas.pdf');
-    }
+        $filename = match ($type) {
+            'geral'       => 'relatorio-geral-de-alocacao.pdf',
+            'salas'       => 'lista-para-salas.pdf',
+            'assinaturas' => 'lista-de-assinaturas.pdf',
+        };
 
-    // Lista de Assinaturas
-    public function signaturesToPdf()
-    {
-        $allocations = ExamResult::join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
-            ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
-            ->select(
-                'exam_locations.name as location_name',
-                'exam_results.room_number',
-                'users.name as name',
-                \DB::raw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name END as social_name"),
-                'users.cpf',
-                'users.birth',
-                \DB::raw("CASE WHEN pnes.status = 'accepted' THEN 1 ELSE 0 END as pne"),
-                'inscriptions.id as inscription_id' // 👈 aqui
-            )
-            ->orderBy('exam_results.exam_location_id')
-            ->orderBy('exam_results.room_number')
-            ->orderByRaw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name ELSE users.name END")
-            ->get()
-            ->groupBy(['location_name', 'room_number']);
-
-        $pdf = Pdf::loadView('admin.allocations.signatures', compact('allocations'))->setPaper('a4', 'portrait');
-
-        return $pdf->stream('lista-de-assinaturas.pdf');
+        return $pdf->stream($filename);
     }
 
     /**
@@ -116,7 +64,7 @@ class PdfController extends Controller
         $cpfSanitizado = preg_replace('/[^0-9]/', '', Auth::user()->cpf);
 
         // Monta o nome do arquivo
-        $filename = 'Protocolo_'.$cpfSanitizado.'.pdf';
+        $filename = 'Protocolo_' . $cpfSanitizado . '.pdf';
 
         // Retorna o PDF diretamente como download
         return $pdf->download($filename);
@@ -140,8 +88,8 @@ class PdfController extends Controller
             'inscription.user.lgbt',
             'inscription.user.pne',
         ])
-        ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::id()))
-        ->first();
+            ->whereHas('inscription', fn($q) => $q->where('user_id', Auth::id()))
+            ->first();
 
         if (! $exam) {
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
@@ -165,7 +113,7 @@ class PdfController extends Controller
         $user = Auth::user();
         // Verifica se o usuário logado possui resultado de exame
         $examResult = ExamResult::with(['inscription.user'])
-            ->whereHas('inscription', fn ($q) => $q->where('user_id', $user->id))
+            ->whereHas('inscription', fn($q) => $q->where('user_id', $user->id))
             ->first();
 
         if (! $examResult) {
@@ -200,7 +148,7 @@ class PdfController extends Controller
 
         // Verifica se há chamada para esse resultado com lista finalizada
         $call = Call::where('exam_result_id', $examResult->id)
-            ->whereHas('callList', fn ($query) => $query->where('status', 'completed'))
+            ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
             ->with('callList') // carrega os dados da lista de chamada
             ->first();
 

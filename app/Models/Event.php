@@ -77,7 +77,7 @@ class Event extends Model
      *   - start: Data de início do evento (caso tipo period)
      *   - end: Data de término do evento (caso tipo period)
      */
-    public function events(): array
+    public function event(): array
     {
         return [
             [

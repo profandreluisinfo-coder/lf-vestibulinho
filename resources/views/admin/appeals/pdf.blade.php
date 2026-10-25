@@ -15,6 +15,15 @@
             color: #222;
         }
 
+        img {
+            width: 45px
+        }
+
+        .header {
+            margin: 0 auto;
+            text-align: center
+        }
+
         h1 {
             text-align: center;
             font-size: 18px;
@@ -101,14 +110,16 @@
 </head>
 
 <body>
-
-    <h1>Vestibulinho LF {{ $process->year }} - Recurso - {{ $appeal->typeLabel() }}</h1>
-    <div class="sub">Protocolo {{ $appeal->protocol }}</div>
+    <div class="header">
+        <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
+        <h1>Vestibulinho LF {{ $process->year }} - Recurso - {{ $appeal->typeLabel() }}</h1>
+        <div class="sub">Protocolo {{ $appeal->protocol }}</div>
+    </div>
     @if ($appeal->type === 'pne')
         <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de atendimento especializado para
             realização da prova, na condição de pessoa com deficiência (PcD).</p>
     @else
-    <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de uso de nome social/afetivo.</p>
+        <p><b>Ref.:</b> Interposição de recurso contra o indeferimento da solicitação de uso de nome social/afetivo.</p>
     @endif
     <h2>Dados do recurso</h2>
     <table>

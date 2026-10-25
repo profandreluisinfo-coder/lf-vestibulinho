@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Jobs\SendTransactionalEmailJob;
+use App\Models\Inscription;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AnalyseController extends Controller
@@ -284,5 +286,23 @@ class AnalyseController extends Controller
                 $attachment
             )
         )->delay(now()->addSeconds(10));
+    }
+
+    public function pdf(string $type, int $id)
+    {
+        $relation = $type === 'pcd' ? 'pne' : 'lgbt';
+
+        $inscription = Inscription::with("user.$relation")
+            ->where('user_id', $id)
+            ->firstOrFail();
+
+        $title = match ($type) {
+            'pcd'  => 'Pessoa com Deficiência',
+            'lgbt' => 'Candidato com Nome Social',
+        };
+
+        $pdf = Pdf::loadView('admin.analyses.pdf', compact('inscription', 'title', 'type'));
+
+        return $pdf->stream("{$inscription->user->name}.pdf");
     }
 }

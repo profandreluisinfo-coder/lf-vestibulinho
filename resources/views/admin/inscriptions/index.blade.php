@@ -142,7 +142,7 @@
                 `);
 
                 // Monta a URL com o filtro de busca (se houver)
-                let pdfUrl = "{{ route('admin.pdf.index') }}";
+                let pdfUrl = "{{ route('admin.inscriptions.pdf') }}";
                 if (searchValue) {
                     pdfUrl += '?search=' + encodeURIComponent(searchValue);
                 }

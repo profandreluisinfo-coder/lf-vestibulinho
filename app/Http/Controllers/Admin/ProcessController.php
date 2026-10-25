@@ -164,12 +164,12 @@ class ProcessController extends Controller
                 * Atualiza o evento mais recente.
                 * Se ainda não existir evento, cria um novo.
                 */
-                $event = $process->latestEvent;
+                $event = $process->event;
 
                 if ($event) {
                     $event->update($eventData);
                 } else {
-                    $process->events()->create($eventData);
+                    $process->event()->create($eventData);
                 }
 
                 /*

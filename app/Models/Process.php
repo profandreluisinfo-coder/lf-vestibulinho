@@ -53,20 +53,14 @@ class Process extends Model
         return $this->hasMany(Inscription::class);
     }
 
-    public function events(): HasMany
+    public function event(): HasOne
     {
-        return $this->hasMany(Event::class);
-    }
-
-    // Recupera o evento mais recente
-    public function latestEvent(): HasOne
-    {
-        return $this->hasOne(Event::class)->latestOfMany();
+        return $this->hasOne(Event::class);
     }
 
     public static function current(): ?self
     {
-        return self::with('latestEvent')
+        return self::with('event')
             ->latest('id')
             ->first();
     }
@@ -74,12 +68,12 @@ class Process extends Model
     public function isInscriptionOpen(): bool
     {
         return $this->status === 'open'
-            && ($this->latestEvent?->isInscriptionOpen() ?? false);
+            && ($this->event?->isInscriptionOpen() ?? false);
     }
 
     public function isInscriptionStarted(): bool
     {
-        return $this->latestEvent?->isInscriptionStarted() ?? false;
+        return $this->event?->isInscriptionStarted() ?? false;
     }
 
     /**
@@ -89,7 +83,7 @@ class Process extends Model
      */
     public function isInscriptionEnded(): bool
     {
-        return $this->latestEvent?->isInscriptionEnded() ?? false;
+        return $this->event?->isInscriptionEnded() ?? false;
     }
 
     /**

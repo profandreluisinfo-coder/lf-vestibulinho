@@ -27,7 +27,7 @@ class SendInscriptionReminderEmails extends Command
             return Command::SUCCESS;
         }
 
-        $event = $process->latestEvent;
+        $event = $process->event;
         $days  = (int) $this->option('days');
         $limit = (int) $this->option('limit');
 

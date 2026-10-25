@@ -24,7 +24,7 @@ class GlobalDataHelper
         $event = Cache::remember(
             'global_events',
             300,
-            fn() => $process?->latestEvent
+            fn() => $process?->event
         );
 
         $isInscriptionOpen = Cache::remember(

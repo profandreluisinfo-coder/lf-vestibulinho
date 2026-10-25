@@ -164,7 +164,7 @@
                                 <td class="col-actions">
                                     {{-- Ordem fixa: Imprimir, Deferir, Indeferir, Recurso (cada ação fica sempre no mesmo lugar) --}}
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.inscriptions.pdf', ['type' => 'pcd', 'id' => $user->id]) }}"
+                                        <a href="{{ route('admin.analyses.pdf', ['type' => 'pcd', 'id' => $user->id]) }}"
                                             class="btn btn-sm btn-outline-primary" title="Imprimir dados do candidato"
                                             aria-label="Imprimir dados de {{ $user->name }}" target="_blank">
                                             <i class="bi bi-printer" aria-hidden="true"></i>

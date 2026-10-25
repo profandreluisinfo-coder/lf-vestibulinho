@@ -140,9 +140,9 @@ class InscriptionController extends Controller
      *
      * @return View A view com a ficha de inscrição do candidato.
      */
-    public function show($id): View
+    public function show(User $user): View
     {
-        $user = User::find($id);
+        // $user = User::find($id);
 
         return view('admin.inscriptions.show')->with('user', $user);
     }
@@ -419,30 +419,49 @@ class InscriptionController extends Controller
             ->get();
     }
 
-    public function resources(): View
-    {
-        $users = User::whereHas('inscription')->get();
+    // public function resources(): View
+    // {
+    //     $users = User::whereHas('inscription')->get();
 
-        return view('admin.inscriptions.resources', [
-            'users' => $users
+    //     return view('admin.inscriptions.resources', [
+    //         'users' => $users
+    //     ]);
+    // }
+
+    /**
+     * Exporta a lista de inscrições em formato PDF.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pdf(Request $request)
+    {
+        $search = $request->get('search');
+
+        $users = User::whereHas('inscription')
+            ->with('inscription')
+            ->join('inscriptions', 'users.id', '=', 'inscriptions.user_id')
+            ->select('users.*')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('users.name', 'like', "%{$search}%")
+                        ->orWhere('users.cpf', 'like', "%{$search}%")
+                        ->orWhere('inscriptions.id', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('inscriptions.id', 'asc')
+            ->get();
+
+        if ($users->isEmpty()) {
+            return redirect()->back()->with('warning', 'Nenhuma inscrição encontrada para os critérios informados.');
+        }
+
+        // código de geração de PDF...
+        $pdf = Pdf::loadView('admin.inscriptions.pdf', [
+            'users' => $users,
+            'search' => $search,
         ]);
+
+        return $pdf->download('inscricoes.pdf');
     }
 
-    public function pdf(string $type, int $id)
-    {
-        $relation = $type === 'pcd' ? 'pne' : 'lgbt';
-
-        $inscription = Inscription::with("user.$relation")
-            ->where('user_id', $id)
-            ->firstOrFail();
-
-        $title = match ($type) {
-            'pcd'  => 'Pessoa com Deficiência',
-            'lgbt' => 'Candidato com Nome Social',
-        };
-
-        $pdf = Pdf::loadView('admin.inscriptions.pdf', compact('inscription', 'title', 'type'));
-
-        return $pdf->stream("{$inscription->user->name}.pdf");
-    }
 }

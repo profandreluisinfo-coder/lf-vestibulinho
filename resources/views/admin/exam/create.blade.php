@@ -69,28 +69,28 @@
                         <div class="card-body">
 
                             <h5 class="card-title mb-3">
-                                <i class="bi bi-file-earmark-text me-2"></i>Relatórios
+                                <i class="bi bi-file-earmark-text me-2"></i>Listas
                             </h5>
 
                             <div class="card-body">
 
                                 <ul class="list-unstyled mb-0">
                                     <li class="mb-2">
-                                        <a href="{{ route('admin.allocations.allocation') }}" target="_blank"
+                                        <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>Simples Conferência (PDF)
+                                            <i class="bi bi-printer me-2"></i>Geral (PDF)
                                         </a>
                                     </li>
                                     <li class="mb-2">
-                                        <a href="{{ route('admin.allocations.rooms') }}" target="_blank"
+                                        <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>Mural e Salas (PDF)
+                                            <i class="bi bi-printer me-2"></i>Mural e Salas (PDF)
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('admin.allocations.signs') }}" target="_blank"
+                                        <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>Folhas de Assinatura (PDF)
+                                            <i class="bi bi-printer me-2"></i>Folhas de Assinatura (PDF)
                                         </a>
                                     </li>
                                 </ul>

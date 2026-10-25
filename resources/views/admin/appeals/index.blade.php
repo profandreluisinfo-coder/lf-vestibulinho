@@ -106,6 +106,10 @@
                             @endif
                         </td>
                         <td class="text-center">
+                            <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank"
+                                class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
                             @if ($appeal->isPending())
                                 <a href="{{ route('admin.appeals.show', $appeal) }}" class="btn btn-sm btn-success"
                                     title="Analisar recurso">
