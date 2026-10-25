@@ -88,7 +88,7 @@
                                         <label for="start" class="form-label">Data de Início</label>
                                         <input type="date" class="form-control @error('start') is-invalid @enderror"
                                             id="start" name="start"
-                                            value="{{ old('start', $event?->start?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('start', $process?->start?->format('Y-m-d') ?? '') }}">
                                         @error('start')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -97,7 +97,7 @@
                                         <label for="end" class="form-label">Data de Término</label>
                                         <input type="date" class="form-control @error('end') is-invalid @enderror"
                                             id="end" name="end"
-                                            value="{{ old('end', $event?->end?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('end', $process?->end?->format('Y-m-d') ?? '') }}">
                                         @error('end')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -116,7 +116,7 @@
                                         <input type="date"
                                             class="form-control @error('location_publish') is-invalid @enderror"
                                             id="location_publish" name="location_publish"
-                                            value="{{ old('location_publish', $event?->location_publish?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('location_publish', $process?->location_publish?->format('Y-m-d') ?? '') }}">
                                         @error('exam_location_publish')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -125,7 +125,7 @@
                                         <label for="exam_date" class="form-label">Data de Aplicação das Provas</label>
                                         <input type="date" class="form-control @error('exam_date') is-invalid @enderror"
                                             id="exam_date" name="exam_date"
-                                            value="{{ old('exam_date', $event?->exam_date?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('exam_date', $process?->exam_date?->format('Y-m-d') ?? '') }}">
                                         @error('exam_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -135,7 +135,7 @@
                                         <input type="date"
                                             class="form-control @error('answer_publish') is-invalid @enderror"
                                             id="answer_publish" name="answer_publish"
-                                            value="{{ old('answer_publish', $event?->answer_publish?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('answer_publish', $process?->answer_publish?->format('Y-m-d') ?? '') }}">
                                         @error('answer_publish')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -154,7 +154,7 @@
                                         <input type="date"
                                             class="form-control @error('revision_start') is-invalid @enderror"
                                             id="revision_start" name="revision_start"
-                                            value="{{ old('revision_start', $event?->revision_start?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('revision_start', $process?->revision_start?->format('Y-m-d') ?? '') }}">
                                         @error('revision_start')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -164,7 +164,7 @@
                                         <input type="date"
                                             class="form-control @error('revision_end') is-invalid @enderror"
                                             id="revision_end" name="revision_end"
-                                            value="{{ old('revision_end', $event?->revision_end?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('revision_end', $process?->revision_end?->format('Y-m-d') ?? '') }}">
                                         @error('revision_end')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -183,7 +183,7 @@
                                         <input type="date"
                                             class="form-control @error('result_publish') is-invalid @enderror"
                                             id="result_publish" name="result_publish"
-                                            value="{{ old('result_publish', $event?->result_publish?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('result_publish', $process?->result_publish?->format('Y-m-d') ?? '') }}">
                                         @error('result_publish')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -202,7 +202,7 @@
                                         <input type="date"
                                             class="form-control @error('enrol_start') is-invalid @enderror"
                                             id="enrol_start" name="enrol_start"
-                                            value="{{ old('enrol_start', $event?->enrol_start?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('enrol_start', $process?->enrol_start?->format('Y-m-d') ?? '') }}">
                                         @error('enrol_start')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -212,7 +212,7 @@
                                         <input type="date"
                                             class="form-control @error('enrol_remaining') is-invalid @enderror"
                                             id="enrol_remaining" name="enrol_remaining"
-                                            value="{{ old('enrol_remaining', $event?->enrol_remaining?->format('Y-m-d') ?? '') }}">
+                                            value="{{ old('enrol_remaining', $process?->enrol_remaining?->format('Y-m-d') ?? '') }}">
                                         @error('enrol_remaining')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

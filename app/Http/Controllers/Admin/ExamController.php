@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ExamLocation;
+use App\Models\Local;
 use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\Setting;
@@ -112,7 +112,7 @@ class ExamController extends Controller
         }
 
         // Verificar se existem locais cadastrados
-        if (ExamLocation::count() === 0) {
+        if (Local::count() === 0) {
             return redirect()->back()->with(
                 'error',
                 'Não foi possível agendar a prova, pois não existe nenhum local de prova cadastrado.'
@@ -126,7 +126,7 @@ class ExamController extends Controller
         }
 
         // Obter o total de salas cadastradas
-        $totalRooms = ExamLocation::sum('rooms_available');
+        $totalRooms = Local::sum('rooms_available');
         // Obter o total de inscritos
         $totalInscritos = Inscription::count();
 

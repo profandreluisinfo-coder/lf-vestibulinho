@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 
 class Process extends Model
@@ -12,14 +11,43 @@ class Process extends Model
     protected $fillable = [
         'year',
         'edital',
-        'status'
+        'status',
+
+        // Inscrições
+        'start',
+        'end',
+
+        // Prova
+        'location_publish',
+        'exam_date',
+        'exam_time', // * NOVO
+
+        // Gabarito, revisão e resultado
+        'answer_publish',
+        'revision_start',
+        'revision_end',
+        'result_publish',
+
+        // Matrícula
+        'enrol_start',
+        'enrol_remaining',
     ];
 
     protected function casts(): array
     {
         return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime'
+            'start'            => 'date',
+            'end'              => 'date',
+            'location_publish' => 'date',
+            'exam_date'        => 'date',
+            'answer_publish'   => 'date',
+            'revision_start'   => 'date',
+            'revision_end'     => 'date',
+            'result_publish'   => 'date',
+            'enrol_start'      => 'date',
+            'enrol_remaining'  => 'date',
+            'created_at'       => 'datetime',
+            'updated_at'       => 'datetime',
         ];
     }
 
@@ -30,67 +58,124 @@ class Process extends Model
             ->withTimestamps();
     }
 
+    public function inscriptions(): HasMany
+    {
+        return $this->hasMany(Inscription::class);
+    }
+
     /**
-     * Defina o valor de um determinado atributo no modelo.
-     *
-     * Se o valor for uma string vazia, ele será convertido em nulo.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return $this
+     * Converte string vazia em null ao definir atributos.
      */
     public function setAttribute($key, $value)
     {
-        // Se o valor for string vazia, converte para null
         if ($value === "") {
             $value = null;
         }
 
         return parent::setAttribute($key, $value);
     }
-    public function inscriptions(): HasMany
-    {
-        return $this->hasMany(Inscription::class);
-    }
-
-    public function event(): HasOne
-    {
-        return $this->hasOne(Event::class);
-    }
 
     public static function current(): ?self
     {
-        return self::with('event')
-            ->latest('id')
-            ->first();
+        return self::latest('id')->first();
     }
 
     public function isInscriptionOpen(): bool
     {
-        return $this->status === 'open'
-            && ($this->event?->isInscriptionOpen() ?? false);
+        return $this->status === 'open' && $this->isInscriptionPeriod();
+    }
+
+    /**
+     * Hoje está dentro do período de inscrições (inclusive o último dia)?
+     */
+    private function isInscriptionPeriod(): bool
+    {
+        if (!$this->start || !$this->end) {
+            return false;
+        }
+
+        return today()->between($this->start, $this->end);
     }
 
     public function isInscriptionStarted(): bool
     {
-        return $this->event?->isInscriptionStarted() ?? false;
+        return $this->start && today()->gte($this->start);
     }
 
-    /**
-     * Verifica se o período de inscrição do processo seletivo terminou.
-     *
-     * @return bool
-     */
     public function isInscriptionEnded(): bool
     {
-        return $this->event?->isInscriptionEnded() ?? false;
+        return $this->end && today()->gt($this->end);
     }
 
     /**
-     * Retorna o ano do processo seletivo ativo ou do processo seletivo mais recente.
-     *
-     * @return int|null
+     * Itens do calendário (antes era Event::event()).
      */
+    public function calendar(): array
+    {
+        return [
+            [
+                'label' => 'Inscrições',
+                'icon'  => '<i class="bi bi-person-lines-fill me-1"></i>',
+                'type'  => 'period',
+                'start' => $this->start,
+                'end'   => $this->end,
+            ],
+            [
+                'label' => 'Divulgação do local da prova',
+                'icon'  => '<i class="bi bi-geo-alt me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->location_publish,
+            ],
+            [
+                'label' => 'Data da prova',
+                'icon'  => '<i class="bi bi-calendar2-week me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->exam_date,
+            ],
+            [
+                'label' => 'Divulgação do gabarito',
+                'icon'  => '<i class="bi bi-list-check me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->answer_publish,
+            ],
+            [
+                'label' => 'Revisão de prova',
+                'icon'  => '<i class="bi bi-search me-1"></i>',
+                'type'  => 'period',
+                'start' => $this->revision_start,
+                'end'   => $this->revision_end,
+            ],
+            [
+                'label' => 'Resultado final',
+                'icon'  => '<i class="bi bi-list-ol me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->result_publish,
+            ],
+            [
+                'label' => 'Divulgação do Chamamento (1ª Chamada)',
+                'icon'  => '<i class="bi bi-pin-angle me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->enrol_start,
+            ],
+            [
+                'label' => 'Divulgação do Chamamento (Vagas Remanescentes)',
+                'icon'  => '<i class="bi bi-pin-angle me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->enrol_remaining,
+            ],
+        ];
+    }
+
+    public function formatDate($date): string
+    {
+        return $date ? $date->format('d/m/Y') : '—';
+    }
+
+    public function formatPeriod($start, $end): string
+    {
+        return $this->formatDate($start) . ' até ' . $this->formatDate($end);
+    }
+
     public static function getYear(): ?int
     {
         $process = self::query()
@@ -108,6 +193,7 @@ class Process extends Model
         $clearCache = function () {
             Cache::forget('global_process');
             Cache::forget('global_inscription_open');
+            Cache::forget('global_event');
         };
 
         static::saved($clearCache);

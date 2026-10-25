@@ -7,7 +7,7 @@ This project is a Laravel-based web application. It leverages Laravel's MVC arch
 
 ### 1. **Models**
    - Located in `app/Models/`.
-   - Represent database entities such as `User`, `Inscription`, `ExamLocation`, etc.
+   - Represent database entities such as `User`, `Inscription`, `Local`, etc.
    - Follow Laravel's Eloquent ORM conventions.
 
 ### 2. **Controllers**

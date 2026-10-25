@@ -110,11 +110,11 @@ class ProcessController extends Controller
                 * edital_vestibulinho_2026_1718920000.pdf
             */
             $fileName = 'edital_vestibulinho_'
-                .$validated['year']
-                .'_'
-                .time()
-                .'.'
-                .$file->getClientOriginalExtension();
+                . $validated['year']
+                . '_'
+                . time()
+                . '.'
+                . $file->getClientOriginalExtension();
 
             $newEditalPath = $file->storeAs('notices', $fileName, 'public');
 
@@ -122,7 +122,10 @@ class ProcessController extends Controller
                 return alertError('Não foi possível salvar o edital. Tente novamente.');
             }
 
-            $eventData = [
+            $data = [
+                'year' => $validated['year'],
+                'edital' => $newEditalPath,
+
                 'start' => $validated['start'],
                 'end' => $validated['end'],
                 'location_publish' => $validated['location_publish'],
@@ -135,47 +138,19 @@ class ProcessController extends Controller
                 'enrol_remaining' => $validated['enrol_remaining'],
             ];
 
-            DB::transaction(function () use (
-                $validated,
-                $eventData,
-                $newEditalPath
-            ) {
+            DB::transaction(function () use ($data, $newEditalPath) {
                 $process = Process::latest('id')->first();
 
-                /*
-                * Guarda o edital anterior para apagá-lo apenas
-                * depois de atualizar o registro com sucesso.
-                */
+                // Guarda o edital anterior para apagar só depois de atualizar com sucesso
                 $oldEditalPath = $process?->edital;
 
                 if ($process) {
-                    $process->update([
-                        'year' => $validated['year'],
-                        'edital' => $newEditalPath,
-                    ]);
+                    $process->update($data);
                 } else {
-                    $process = Process::create([
-                        'year' => $validated['year'],
-                        'edital' => $newEditalPath,
-                    ]);
+                    Process::create($data);
                 }
 
-                /*
-                * Atualiza o evento mais recente.
-                * Se ainda não existir evento, cria um novo.
-                */
-                $event = $process->event;
-
-                if ($event) {
-                    $event->update($eventData);
-                } else {
-                    $process->event()->create($eventData);
-                }
-
-                /*
-                * Remove o PDF antigo somente após a atualização
-                * do processo seletivo ter funcionado.
-                */
+                // Remove o PDF antigo somente após a atualização ter funcionado
                 if (
                     $oldEditalPath &&
                     $oldEditalPath !== $newEditalPath &&

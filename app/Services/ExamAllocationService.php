@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\ExamLocation;
+use App\Models\Local;
 use App\Models\ExamResult;
 use App\Models\Inscription;
 use Illuminate\Support\Carbon;
@@ -52,7 +52,7 @@ class ExamAllocationService
             )->values();
 
             // 4. Locais
-            $locations = ExamLocation::orderBy('id')->get();
+            $locations = Local::orderBy('id')->get();
 
             if ($locations->isEmpty()) {
                 throw new \Exception('Nenhum local de prova cadastrado.');

@@ -21,12 +21,6 @@ class GlobalDataHelper
             fn() => Process::current()
         );
 
-        $event = Cache::remember(
-            'global_events',
-            300,
-            fn() => $process?->event
-        );
-
         $isInscriptionOpen = Cache::remember(
             'global_inscription_open',
             300,
@@ -60,7 +54,6 @@ class GlobalDataHelper
         $year = now()->year;
 
         View::composer('*', function ($view) use (
-            $event,
             $process,
             $isInscriptionOpen,
             $totalInscriptions,
@@ -70,7 +63,6 @@ class GlobalDataHelper
             $calls_exists
         ) {
             $view->with([
-                'event' => $event,
                 'process' => $process,
                 'isInscriptionOpen' => $isInscriptionOpen,
                 'totalInscriptions' => $totalInscriptions,

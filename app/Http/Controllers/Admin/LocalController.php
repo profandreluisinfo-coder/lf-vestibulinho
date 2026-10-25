@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ExamLocation;
+use App\Models\Local;
 use App\Models\ExamResult;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class LocalController extends Controller
     public function index(): View
     {
         // Obter todos as locais de prova
-        $locations = ExamLocation::all();
+        $locations = Local::all();
 
         return view('admin.local.index', compact('locations'));
     }
@@ -55,7 +55,7 @@ class LocalController extends Controller
             'rooms_available.max' => 'O campo salas disponíveis deve menor ou igual a :max.',
         ]);
 
-        $examLocation = new ExamLocation();
+        $examLocation = new Local();
         $examLocation->name = $this->stringToUpper($data['name']); // Converter para maiúsculas e UTF-8 para evitar problemas com acentuações e caracteres especiais.
         $examLocation->address = $this->stringToUpper($data['address']);
         $examLocation->rooms_available = $data['rooms_available'];
@@ -83,7 +83,7 @@ class LocalController extends Controller
      */
     public function edit($id): View
     {
-        $location = ExamLocation::find($id);
+        $location = Local::find($id);
 
         view()->share([
             'location' => $location,
@@ -102,7 +102,7 @@ class LocalController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $location = ExamLocation::find($id);
+        $location = Local::find($id);
         $location->name = $this->stringToUpper($request->name);
         $location->address = $this->stringToUpper($request->address);
         $location->rooms_available = $request->rooms_available;
@@ -125,7 +125,7 @@ class LocalController extends Controller
     {
         try {
             DB::transaction(function () use ($id) {
-                $examLocation = ExamLocation::findOrFail($id);
+                $examLocation = Local::findOrFail($id);
 
                 ExamResult::where('exam_location_id', $examLocation->id)->delete();
                 $examLocation->delete();

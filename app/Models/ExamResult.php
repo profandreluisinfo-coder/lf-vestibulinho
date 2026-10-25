@@ -62,7 +62,7 @@ class ExamResult extends Model
      */
     public function examLocation()
     {
-        return $this->belongsTo(ExamLocation::class);
+        return $this->belongsTo(Local::class);
     }
     
     /**
@@ -72,7 +72,7 @@ class ExamResult extends Model
  */
 public function location()
 {
-    return $this->belongsTo(ExamLocation::class, 'exam_location_id');
+    return $this->belongsTo(Local::class, 'exam_location_id');
 }
 
 

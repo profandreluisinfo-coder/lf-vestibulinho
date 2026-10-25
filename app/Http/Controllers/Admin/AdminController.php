@@ -20,7 +20,7 @@ class AdminController extends Controller
         $ranking_active = ExamResult::hasScores();
         $result_published = Setting::isResultEnabled();
         $calls_exists = Call::exists();
-        $events_exists = Event::latest()->exists();
+        $events_exists = Process::latest()->exists();
 
         // O total vem do tamanho da lista, então nunca fica fora de sincronia com as etapas
         $steps = [

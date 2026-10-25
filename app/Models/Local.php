@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ExamLocation extends Model
+class Local extends Model
 {
-    protected $table = 'exam_locations';
-
+    protected $table = 'locations';
+    
     protected $fillable = [
         'name',
         'address',

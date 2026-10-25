@@ -119,10 +119,6 @@
                                     <span class="show-field-label">Processo Seletivo</span>
                                     <span class="show-field-value">{{ $process?->year }}</span>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <span class="show-field-label">Ano de Referência</span>
-                                    <span class="show-field-value">{{ $process?->year }}</span>
-                                </div> --}}
                             </div>
                         </div>
 
@@ -134,11 +130,11 @@
                             <div class="row g-3">
                                 <div class="col-md-4">
                                     <span class="show-field-label">Início</span>
-                                    <span class="show-field-value">{{ $event?->start?->format('d/m/Y') ?? '—' }}</span>
+                                    <span class="show-field-value">{{ $process?->start?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Término</span>
-                                    <span class="show-field-value">{{ $event?->end?->format('d/m/Y') ?? '—' }}</span>
+                                    <span class="show-field-value">{{ $process?->end?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -152,16 +148,16 @@
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação dos Locais de Prova</span>
                                     <span
-                                        class="show-field-value">{{ $event?->location_publish?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->location_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Data de Aplicação</span>
-                                    <span class="show-field-value">{{ $event?->exam_date?->format('d/m/Y') ?? '—' }}</span>
+                                    <span class="show-field-value">{{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação do Gabarito</span>
                                     <span
-                                        class="show-field-value">{{ $event?->answer_publish?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->answer_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -175,12 +171,12 @@
                                 <div class="col-md-4">
                                     <span class="show-field-label">Início do Prazo</span>
                                     <span
-                                        class="show-field-value">{{ $event?->revision_start?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->revision_start?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Término do Prazo</span>
                                     <span
-                                        class="show-field-value">{{ $event?->revision_end?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->revision_end?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +190,7 @@
                                 <div class="col-md-4">
                                     <span class="show-field-label">Divulgação da Classificação Final</span>
                                     <span
-                                        class="show-field-value">{{ $event?->result_publish?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->result_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -208,12 +204,12 @@
                                 <div class="col-md-4">
                                     <span class="show-field-label">1ª Chamada</span>
                                     <span
-                                        class="show-field-value">{{ $event?->enrol_start?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->enrol_start?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                                 <div class="col-md-4">
                                     <span class="show-field-label">Vagas Remanescentes</span>
                                     <span
-                                        class="show-field-value">{{ $event?->enrol_remaining?->format('d/m/Y') ?? '—' }}</span>
+                                        class="show-field-value">{{ $process?->enrol_remaining?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
                             </div>
                         </div>

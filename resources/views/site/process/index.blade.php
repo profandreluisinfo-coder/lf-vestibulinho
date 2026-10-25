@@ -9,7 +9,7 @@
 @section('content')
 
     @php
-        $isInscriptionEnded = $process?->isInscriptionEnded() ?? false;
+        $isInscriptionEnded   = $process?->isInscriptionEnded() ?? false;
         $isInscriptionStarted = $process?->isInscriptionStarted() ?? false;
     @endphp
 
@@ -48,7 +48,7 @@
                                 <div class="status-label">Inscrições Abertas</div>
                                 <div class="status-detail">
                                     Encerram em
-                                    <strong>{{ $event?->end?->format('d/m/Y') }}</strong>
+                                    <strong>{{ $process?->end?->format('d/m/Y') }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -60,13 +60,13 @@
                                 <div class="status-detail">O período de inscrições foi concluído.</div>
                             </div>
                         </div>
-                    @elseif($isInscriptionStarted === false && $event?->start)
+                    @elseif($isInscriptionStarted === false && $process?->start)
                         <div class="status-card status-soon">
                             <div class="status-icon"><i class="bi bi-clock-fill"></i></div>
                             <div>
                                 <div class="status-label">Inscrições em Breve</div>
                                 <div class="status-detail">
-                                    Abertura em <strong>{{ $event?->formatDate($event?->start) }}</strong>
+                                    Abertura em <strong>{{ $process?->formatDate($process?->start) }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                     'label' => 'Inscrições',
                                     'icon' => 'bi-person-lines-fill',
                                     'color' => 'teal',
-                                    'date' => $event?->formatPeriod($event?->start, $event?->end),
+                                    'date' => $process?->formatPeriod($process?->start, $process?->end),
                                     'active' => $isInscriptionOpen,
                                     'done' => $isInscriptionEnded,
                                 ],
@@ -122,44 +122,44 @@
                                     'label' => 'Local da Prova',
                                     'icon' => 'bi-geo-alt-fill',
                                     'color' => 'purple',
-                                    'date' => $event?->location_publish?->format('d/m/Y'),
-                                    'active' => $event?->location_publish && now()->isSameDay($event?->location_publish),
-                                    'done' => $event?->location_publish && now()->gt($event?->location_publish),
+                                    'date' => $process?->location_publish?->format('d/m/Y'),
+                                    'active' => $process?->location_publish && now()->isSameDay($process?->location_publish),
+                                    'done' => $process?->location_publish && now()->gt($process?->location_publish),
                                 ],
                                 [
                                     'label' => 'Dia da Prova',
                                     'icon' => 'bi-calendar2-week-fill',
                                     'color' => 'red',
-                                    'date' => $event?->exam_date?->format('d/m/Y'),
-                                    'active' => $event?->exam_date && now()->isSameDay($event?->exam_date),
-                                    'done' => $event?->exam_date && now()->gt($event?->exam_date),
+                                    'date' => $process?->exam_date?->format('d/m/Y'),
+                                    'active' => $process?->exam_date && now()->isSameDay($process?->exam_date),
+                                    'done' => $process?->exam_date && now()->gt($process?->exam_date),
                                 ],
                                 [
                                     'label' => 'Gabarito',
                                     'icon' => 'bi-list-check',
                                     'color' => 'amber',
-                                    'date' => $event?->answer_publish?->format('d/m/Y'),
-                                    'active' => $event?->answer_publish && now()->isSameDay($event?->answer_publish),
-                                    'done' => $event?->answer_publish && now()->gt($event?->answer_publish),
+                                    'date' => $process?->answer_publish?->format('d/m/Y'),
+                                    'active' => $process?->answer_publish && now()->isSameDay($process?->answer_publish),
+                                    'done' => $process?->answer_publish && now()->gt($process?->answer_publish),
                                 ],
                                 [
                                     'label' => 'Resultado',
                                     'icon' => 'bi-list-ol',
                                     'color' => 'orange',
-                                    'date' => $event?->result_publish?->format('d/m/Y'),
-                                    'active' => $event?->result_publish && now()->isSameDay($event?->result_publish),
-                                    'done' => $event?->result_publish && now()->gt($event?->result_publish),
+                                    'date' => $process?->result_publish?->format('d/m/Y'),
+                                    'active' => $process?->result_publish && now()->isSameDay($process?->result_publish),
+                                    'done' => $process?->result_publish && now()->gt($process?->result_publish),
                                 ],
                                 [
                                     'label' => 'Matrícula',
                                     'icon' => 'bi-pin-angle-fill',
                                     'color' => 'teal',
-                                    'date' => $event?->formatPeriod($event?->enrol_start, $event?->enrol_remaining),
+                                    'date' => $process?->formatPeriod($process?->enrol_start, $process?->enrol_remaining),
                                     'active' =>
-                                        $event?->enrol_start &&
-                                        $event?->enrol_remaining &&
-                                        now()->between($event?->enrol_start, $event?->enrol_remaining),
-                                    'done' => $event?->enrol_remaining && now()->gt($event?->enrol_remaining),
+                                        $process?->enrol_start &&
+                                        $process?->enrol_remaining &&
+                                        now()->between($process?->enrol_start, $process?->enrol_remaining),
+                                    'done' => $process?->enrol_remaining && now()->gt($process?->enrol_remaining),
                                 ],
                             ];
                         @endphp
@@ -220,19 +220,19 @@
                                         <div class="date-box">
                                             <div class="date-box-label">Início</div>
                                             <div class="date-box-day">
-                                                {{ $event?->start?->format('d') ?? '—' }}</div>
+                                                {{ $process?->start?->format('d') ?? '—' }}</div>
                                             <div class="date-box-month">
-                                                {{ $event?->start ? ucfirst($event?->start->translatedFormat('F Y')) : '—' }}
+                                                {{ $process?->start ? ucfirst($process?->start->translatedFormat('F Y')) : '—' }}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="date-box date-box-end">
                                             <div class="date-box-label">Encerramento</div>
-                                            <div class="date-box-day">{{ $event?->end?->format('d') ?? '—' }}
+                                            <div class="date-box-day">{{ $process?->end?->format('d') ?? '—' }}
                                             </div>
                                             <div class="date-box-month">
-                                                {{ $event?->end ? ucfirst($event?->end->translatedFormat('F Y')) : '—' }}
+                                                {{ $process?->end ? ucfirst($process?->end->translatedFormat('F Y')) : '—' }}
                                             </div>
                                         </div>
                                     </div>
@@ -254,13 +254,13 @@
                     {{-- Divulgação Local da Prova --}}
                     <div class="col-md-6 col-lg-5 reveal delay-2">
                         <div
-                            class="detail-card detail-purple {{ $event?->location_publish && now()->gt($event?->location_publish) ? 'detail-done' : '' }}">
+                            class="detail-card detail-purple {{ $process?->location_publish && now()->gt($process?->location_publish) ? 'detail-done' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon purple-bg"><i class="bi bi-geo-alt-fill"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 02</span>
                                     <h3>Local da Prova</h3>
-                                    @if ($event?->location_publish && now()->gt($event?->location_publish))
+                                    @if ($process?->location_publish && now()->gt($process?->location_publish))
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Divulgado</span>
                                     @else
@@ -272,13 +272,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->location_publish?->format('d') ?? '—' }}</div>
+                                        {{ $process?->location_publish?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->location_publish ? ucfirst($event?->location_publish->translatedFormat('F')) : '—' }}
+                                            {{ $process?->location_publish ? ucfirst($process?->location_publish->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->location_publish?->format('Y') ?? '' }}</div>
+                                            {{ $process?->location_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">
@@ -292,16 +292,16 @@
                     {{-- Dia da Prova --}}
                     <div class="col-md-6 col-lg-5 reveal delay-3">
                         <div
-                            class="detail-card detail-red {{ $event?->exam_date && now()->gt($event?->exam_date) ? 'detail-done' : '' }}">
+                            class="detail-card detail-red {{ $process?->exam_date && now()->gt($process?->exam_date) ? 'detail-done' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon red-bg"><i class="bi bi-calendar2-week-fill"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 03</span>
                                     <h3>Dia da Prova</h3>
-                                    @if ($event?->exam_date && now()->isSameDay($event?->exam_date))
+                                    @if ($process?->exam_date && now()->isSameDay($process?->exam_date))
                                         <span class="detail-badge badge-open"><span
                                                 class="live-dot me-1"></span>Hoje!</span>
-                                    @elseif($event?->exam_date && now()->gt($event?->exam_date))
+                                    @elseif($process?->exam_date && now()->gt($process?->exam_date))
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Realizada</span>
                                     @else
@@ -313,13 +313,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->exam_date?->format('d') ?? '—' }}</div>
+                                        {{ $process?->exam_date?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->exam_date ? ucfirst($event?->exam_date->translatedFormat('F')) : '—' }}
+                                            {{ $process?->exam_date ? ucfirst($process?->exam_date->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->exam_date?->format('Y') ?? '' }}</div>
+                                            {{ $process?->exam_date?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">
@@ -333,13 +333,13 @@
                     {{-- Gabarito --}}
                     <div class="col-md-6 col-lg-5 reveal delay-2">
                         <div
-                            class="detail-card detail-amber {{ $event?->answer_publish && now()->gt($event?->answer_publish) ? 'detail-done' : '' }}">
+                            class="detail-card detail-amber {{ $process?->answer_publish && now()->gt($process?->answer_publish) ? 'detail-done' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon amber-bg"><i class="bi bi-list-check"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 04</span>
                                     <h3>Gabarito</h3>
-                                    @if ($event?->answer_publish && now()->gt($event?->answer_publish))
+                                    @if ($process?->answer_publish && now()->gt($process?->answer_publish))
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Divulgado</span>
                                     @else
@@ -351,13 +351,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->answer_publish?->format('d') ?? '—' }}</div>
+                                        {{ $process?->answer_publish?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->answer_publish ? ucfirst($event?->answer_publish->translatedFormat('F')) : '—' }}
+                                            {{ $process?->answer_publish ? ucfirst($process?->answer_publish->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->answer_publish?->format('Y') ?? '' }}</div>
+                                            {{ $process?->answer_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">
@@ -386,9 +386,9 @@
                                         <div class="date-box">
                                             <div class="date-box-label">Início</div>
                                             <div class="date-box-day">
-                                                {{ $event?->revision_start?->format('d') ?? '—' }}</div>
+                                                {{ $process?->revision_start?->format('d') ?? '—' }}</div>
                                             <div class="date-box-month">
-                                                {{ $event?->revision_start ? ucfirst($event?->revision_start->translatedFormat('F Y')) : '—' }}
+                                                {{ $process?->revision_start ? ucfirst($process?->revision_start->translatedFormat('F Y')) : '—' }}
                                             </div>
                                         </div>
                                     </div>
@@ -396,9 +396,9 @@
                                         <div class="date-box date-box-end">
                                             <div class="date-box-label">Encerramento</div>
                                             <div class="date-box-day">
-                                                {{ $event?->revision_end?->format('d') ?? '—' }}</div>
+                                                {{ $process?->revision_end?->format('d') ?? '—' }}</div>
                                             <div class="date-box-month">
-                                                {{ $event?->revision_end ? ucfirst($event?->revision_end->translatedFormat('F Y')) : '—' }}
+                                                {{ $process?->revision_end ? ucfirst($process?->revision_end->translatedFormat('F Y')) : '—' }}
                                             </div>
                                         </div>
                                     </div>
@@ -414,13 +414,13 @@
                     {{-- Resultado Final --}}
                     <div class="col-lg-10 reveal delay-1">
                         <div
-                            class="detail-card detail-orange {{ $event?->result_publish && now()->gt($event?->result_publish) ? 'detail-done' : '' }}">
+                            class="detail-card detail-orange {{ $process?->result_publish && now()->gt($process?->result_publish) ? 'detail-done' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon orange-bg"><i class="bi bi-list-ol"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 06</span>
                                     <h3>Resultado Final</h3>
-                                    @if ($event?->result_publish && now()->gt($event?->result_publish))
+                                    @if ($process?->result_publish && now()->gt($process?->result_publish))
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Divulgado</span>
                                     @else
@@ -432,13 +432,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->result_publish?->format('d') ?? '—' }}</div>
+                                        {{ $process?->result_publish?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->result_publish ? ucfirst($event?->result_publish->translatedFormat('F')) : '—' }}
+                                            {{ $process?->result_publish ? ucfirst($process?->result_publish->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->result_publish?->format('Y') ?? '' }}</div>
+                                            {{ $process?->result_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">
@@ -452,13 +452,13 @@
                     {{-- Convocações --}}
                     <div class="col-md-6 col-lg-5 reveal delay-2">
                         <div
-                            class="detail-card detail-teal {{ $event?->enrol_start && now()->gte($event?->enrol_start) ? 'detail-active' : '' }}">
+                            class="detail-card detail-teal {{ $process?->enrol_start && now()->gte($process?->enrol_start) ? 'detail-active' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal-bg"><i class="bi bi-pin-angle-fill"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 07</span>
                                     <h3>1ª Chamada</h3>
-                                    @if ($event?->enrol_start && now()->gte($event?->enrol_start))
+                                    @if ($process?->enrol_start && now()->gte($process?->enrol_start))
                                         <span class="detail-badge badge-open"><span
                                                 class="live-dot me-1"></span>Publicado</span>
                                     @else
@@ -470,13 +470,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->enrol_start?->format('d') ?? '—' }}</div>
+                                        {{ $process?->enrol_start?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->enrol_start ? ucfirst($event?->enrol_start->translatedFormat('F')) : '—' }}
+                                            {{ $process?->enrol_start ? ucfirst($process?->enrol_start->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->enrol_start?->format('Y') ?? '' }}</div>
+                                            {{ $process?->enrol_start?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">
@@ -490,13 +490,13 @@
                     {{-- Vagas Remanescentes --}}
                     <div class="col-md-6 col-lg-5 reveal delay-3">
                         <div
-                            class="detail-card detail-teal {{ $event?->enrol_remaining && now()->gte($event?->enrol_remaining) ? 'detail-active' : '' }}">
+                            class="detail-card detail-teal {{ $process?->enrol_remaining && now()->gte($process?->enrol_remaining) ? 'detail-active' : '' }}">
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal2-bg"><i class="bi bi-pin-angle-fill"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 08</span>
                                     <h3>Vagas Remanescentes</h3>
-                                    @if ($event?->enrol_remaining && now()->gte($event?->enrol_remaining))
+                                    @if ($process?->enrol_remaining && now()->gte($process?->enrol_remaining))
                                         <span class="detail-badge badge-open"><span
                                                 class="live-dot me-1"></span>Publicado</span>
                                     @else
@@ -508,13 +508,13 @@
                             <div class="detail-body">
                                 <div class="date-box-single">
                                     <div class="date-box-single-day">
-                                        {{ $event?->enrol_remaining?->format('d') ?? '—' }}</div>
+                                        {{ $process?->enrol_remaining?->format('d') ?? '—' }}</div>
                                     <div class="date-box-single-rest">
                                         <div class="date-box-single-month">
-                                            {{ $event?->enrol_remaining ? ucfirst($event?->enrol_remaining->translatedFormat('F')) : '—' }}
+                                            {{ $process?->enrol_remaining ? ucfirst($process?->enrol_remaining->translatedFormat('F')) : '—' }}
                                         </div>
                                         <div class="date-box-single-year">
-                                            {{ $event?->enrol_remaining?->format('Y') ?? '' }}</div>
+                                            {{ $process?->enrol_remaining?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
                                 <p class="detail-note mt-3">

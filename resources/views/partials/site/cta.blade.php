@@ -10,7 +10,7 @@
 
             <p class="section-lead mx-auto text-center mb-5">
                 Inscrições encerram em <strong
-                    style="color:var(--amber);">{{ $event->end->translatedFormat('d \d\e F Y') }}</strong>.
+                    style="color:var(--amber);">{{ $process->end->translatedFormat('d \d\e F Y') }}</strong>.
                 Comece agora mesmo — leva menos de 5 minutos.
             </p>
 
