@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, TemplateController, UserController};
+use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
 use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
@@ -22,38 +22,30 @@ Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('inicio', [AdminController::class, 'index'])->name('index');
+        Route::get('inicio', [AdminController::class, 'index'])
+            ->name('index');
+
+        Route::get('graficos', [ChartController::class, 'index'])
+            ->name('charts.index');
 
         Route::prefix('inscricoes')
             ->name('inscriptions.')
             ->group(function () {
-                // Lista de inscrições
                 Route::get('inscricoes', [InscriptionController::class, 'index'])
                     ->name('index');
                 Route::post('inscriptions/data', [InscriptionController::class, 'getData'])
                     ->name('get.data');
-
                 Route::get('detalhes/{user}', [InscriptionController::class, 'show'])
                     ->name('show');
-
-                // Lista de pessoas com deficiência
                 Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcds'])
                     ->name('pcds');
                 Route::post('pcd-data', [InscriptionController::class, 'getPcd'])
                     ->name('pcd.data');
-                // Candidatos com nome social
                 Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                     ->name('lgbts');
                 
                 Route::get('editar/{user}', [InscriptionController::class, 'edit'])->name('edit');
                 Route::put('editar/{user}', [InscriptionController::class, 'update'])->name('update');
-                // Recursos de candidatos
-                // Route::get('pdf/{type}/{id}', [InscriptionController::class, 'pdf'])
-                //     ->whereIn('type', ['pcd', 'lgbt'])
-                //     ->whereNumber('id')
-                //     ->name('pdf');
-                // Route::get('recursos', [InscriptionController::class, 'resources'])
-                //     ->name('resources');
                 Route::get('relatorio', [InscriptionController::class, 'pdf'])
                     ->name('pdf');
             });

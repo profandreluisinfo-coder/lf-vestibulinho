@@ -1,5 +1,5 @@
 <div class="statistics-container">
-    <h5>📊 Estatísticas</h5>
+    <h5>📊 Gráficos</h5>
 
     <p class="text-muted small mb-3">
         Clique em um <i>card</i> para visualizar o gráfico detalhado, ou use os botões de exportação para baixar o relatório em

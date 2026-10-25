@@ -72,21 +72,11 @@
                 </a>
             </div>
             <!-- Gerenciar Inscrições -->
-            <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuInscricoes')">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Inscrições</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.index') || request()->routeIs('admin.inscriptions.show')
-                    ? 'show'
-                    : '' }}"
-                    id="menuInscricoes">
-                    <a href="{{ route('admin.inscriptions.index') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
-                        <i class="bi bi-people me-1"></i> Candidatos
-                    </a>
-                </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.inscriptions.index') }}"
+                    class="menu-link {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
+                    <i class="bi bi-file-earmark-text"></i> Inscrições
+                </a>
             </div>
             <!-- Gerenciar Análises -->
             <div class="menu-dropdown">
@@ -185,6 +175,14 @@
                         <i class="bi bi-list-ol me-1"></i> Classificação
                     </a>
                 </div>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="menu-item">
+                <a href="{{ route('admin.charts.index') }}"
+                    class="menu-link {{ request()->routeIs('admin.charts.index') ? 'active' : '' }}">
+                    <i class="bi bi-graph-up-arrow"></i> Gráficos
+                </a>
             </div>
 
             <div class="menu-dropdown">
