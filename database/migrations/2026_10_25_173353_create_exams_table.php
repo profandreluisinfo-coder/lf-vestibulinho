@@ -8,27 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * Nesse formato a tabela é só a alocação: qual inscrição vai para qual local e sala. 
+     * A data e a hora você obtém pelo processo, e o candidato as vê junto com o local na hora de 
+     * gerar o comprovante ou o e-mail.
      */
     public function up(): void
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            // Inscrição vinculada ao candidato
-            $table->foreignId('inscription_id')->constrained('inscriptions')->onDelete('cascade');
-
-            // Dados da prova
-            $table->date('exam_date');
-            $table->time('exam_time');
-
-            // Local e sala de prova
-            $table->foreignId('exam_location_id')->constrained('exam_locations')->onDelete('restrict');
-            $table->unsignedInteger('room_number')->nullable(); // Ex: sala 1, 2, 3...
-
-            $table->timestamp('email_sent_at')->nullable();
-
-            // Garante que a inscrição tenha apenas uma alocação de prova
-            $table->unique('inscription_id');
+            $table->foreignId('inscription_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('location_id')->constrained();
+            $table->unsignedSmallInteger('room_number');
             $table->timestamps();
+
+            $table->index(['location_id', 'room_number']);
         });
     }
 
