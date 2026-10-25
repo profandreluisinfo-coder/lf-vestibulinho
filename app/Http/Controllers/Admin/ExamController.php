@@ -24,7 +24,7 @@ class ExamController extends Controller
     public function index(ExamReportService $reportService): View
     {
         $candidates = $reportService->getGroupedAllocations();
-
+       
         return view('admin.exam.index', [
             'candidates' => $candidates
         ]);
