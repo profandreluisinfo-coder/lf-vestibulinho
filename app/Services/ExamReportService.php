@@ -13,10 +13,10 @@ class ExamReportService
     public function getGroupedAllocations()
     {
         return DB::table('exam_results')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
+            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id') // obter o número de inscrição
             ->join('processes', 'inscriptions.process_id', '=', 'processes.id')
             ->join('events', 'processes.id', '=', 'events.process_id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
+            ->join('users', 'inscriptions.user_id', '=', 'users.id') // obter os dados do candidato
             ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
             ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
             ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')

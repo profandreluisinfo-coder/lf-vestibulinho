@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Setting;
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use App\Models\ExamLocation;
 use App\Models\ExamResult;
 use App\Models\Inscription;
-use App\Models\ExamLocation;
+use App\Models\Setting;
+use App\Services\ExamAllocationService;
+use App\Services\ExamReportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\ExamAllocationService;
-use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 class ExamController extends Controller
 {
@@ -20,34 +21,12 @@ class ExamController extends Controller
      * @return \Illuminate\View\View
      */
     // public function listSchedule()
-    public function index(): View
+    public function index(ExamReportService $reportService): View
     {
-        $candidates = DB::table('exam_results')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id') // obter o número de inscrição
-            ->join('users', 'inscriptions.user_id', '=', 'users.id') // obter os dados do candidato
-            ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
-            ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
-            ->select(
-                'exam_results.room_number',
-                'exam_locations.name as location_name',
-                'users.cpf as candidate_cpf',
-                'users.name as candidate_name',
-                DB::raw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name END as candidate_social_name"),
-                DB::raw("CASE WHEN pnes.status = 'accepted' THEN 1 ELSE 0 END as candidate_pne"),
-                'exam_results.exam_date as date',
-                'exam_results.exam_time as time',
-                'inscriptions.id as inscription_id' // 👈 aqui entra o número de inscrição
-            )
-            ->orderBy('exam_results.room_number')
-            ->orderByRaw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name ELSE users.name END")
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->location_name . ' - Sala ' . $item->room_number;
-            });
+        $candidates = $reportService->getGroupedAllocations();
 
         return view('admin.exam.index', [
-            'candidates' => $candidates,
+            'candidates' => $candidates
         ]);
     }
 

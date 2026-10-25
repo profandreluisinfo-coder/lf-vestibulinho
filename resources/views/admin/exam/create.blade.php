@@ -78,19 +78,19 @@
                                     <li class="mb-2">
                                         <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-printer me-2"></i>Geral (PDF)
+                                            <i class="bi bi-printer me-2"></i>Geral (Consulta)
                                         </a>
                                     </li>
                                     <li class="mb-2">
                                         <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-printer me-2"></i>Mural e Salas (PDF)
+                                            <i class="bi bi-printer me-2"></i>Mural e Salas
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}" target="_blank"
                                             class="text-decoration-none">
-                                            <i class="bi bi-printer me-2"></i>Folhas de Assinatura (PDF)
+                                            <i class="bi bi-printer me-2"></i>Folhas de Assinatura
                                         </a>
                                     </li>
                                 </ul>

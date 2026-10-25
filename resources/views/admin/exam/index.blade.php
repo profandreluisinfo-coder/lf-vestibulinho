@@ -1,98 +1,130 @@
-@extends('layouts.admin')
+ @extends('layouts.admin')
 
 @section('page-title', 'Candidatos por Sala')
 
 @section('content')
+    <div class="container-fluid">
 
-    <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-card-list text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Candidatos por Sala</h6>
+        {{-- Cabeçalho --}}
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <h5 class="mb-1">
+                    <i class="bi bi-card-list me-2 text-primary"></i>
+                    Candidatos por Sala
+                </h5>
+                <p class="text-muted small mb-0">
+                    Relação de candidatos distribuídos por local e sala de prova.
+                </p>
             </div>
 
-            <a href="{{ route('admin.exam.create') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-arrow-left"></i> Voltar
+            <a href="{{ route('admin.exam.create') }}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>
+                Voltar
             </a>
         </div>
 
-        <div class="accordion" id="accordionCandidates">
+        @forelse ($candidates as $location => $rooms)
 
-            @foreach ($candidates as $roomLabel => $roomCandidates)
+            {{-- Local de prova --}}
+            <div class="card border-0 shadow-sm mb-4">
 
-                <div class="accordion-item">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt text-primary fs-5"></i>
+                        <div>
+                            <h6 class="mb-0">{{ $location }}</h6>
+                            <small class="text-muted">
+                                {{ $rooms->count() }}
+                                {{ $rooms->count() === 1 ? 'sala' : 'salas' }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
 
-                    <h2 class="accordion-header" id="heading-{{ md5($roomLabel) }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse-{{ md5($roomLabel) }}" aria-expanded="false"
-                            aria-controls="collapse-{{ md5($roomLabel) }}">
-                            {{ $roomLabel }} ({{ $roomCandidates->count() }} candidatos)
-                        </button>
-                    </h2>
+                <div class="card-body p-3">
 
-                    <div id="collapse-{{ md5($roomLabel) }}" class="accordion-collapse collapse"
-                        aria-labelledby="heading-{{ md5($roomLabel) }}" data-bs-parent="#accordionCandidates">
+                    <div class="row g-3">
 
-                        <div class="accordion-body">
+                        @foreach ($rooms as $room => $roomCandidates)
 
-                            <div class="table-responsive">
+                            {{-- Sala --}}
+                            <div class="col-12 col-xl-6">
 
-                                <table class="table table-sm table-striped align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th scope="col">Inscrição</th>
-                                            <th scope="col">CPF</th>
-                                            <th scope="col">Nome</th>
-                                            <th scope="col">Nome Social</th>
-                                            <th scope="col" class="text-center">PNE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <div class="card h-100 border">
 
-                                        @forelse ($roomCandidates as $candidate)
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+                                        <div>
+                                            <i class="bi bi-door-open me-2 text-secondary"></i>
+                                            <strong>Sala {{ $room }}</strong>
+                                        </div>
 
-                                            <tr>
-                                                <td>{{ $candidate->inscription_id }}</td>
-                                                <td>{{ $candidate->candidate_cpf }}</td>
-                                                <td>{{ $candidate->candidate_name }}</td>
-                                                <td>
-                                                    @if ($candidate->candidate_social_name)
-                                                        {{ $candidate->candidate_social_name }}
-                                                    @else
-                                                        —
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    @if ($candidate->candidate_pne == 1)
-                                                        SIM
-                                                    @else
-                                                        NÃO
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        
-                                        @empty
+                                        <span class="badge bg-primary rounded-pill">
+                                            {{ $roomCandidates->count() }}
+                                            {{ $roomCandidates->count() === 1 ? 'candidato' : 'candidatos' }}
+                                        </span>
+                                    </div>
 
-                                            <tr>
-                                                <td colspan="5" class="text-center">Nenhum candidato nesta sala.</td>
-                                            </tr>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm align-middle mb-0">
 
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="text-center" style="width: 110px;">
+                                                        Inscrição
+                                                    </th>
+                                                    <th>Nome do candidato</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach ($roomCandidates as $candidate)
+                                                    <tr>
+                                                        <td class="text-center text-muted">
+                                                            {{ $candidate->inscription_id }}
+                                                        </td>
+
+                                                        <td class="text-break">
+                                                            {{ $candidate->social_name ?? $candidate->name }} 
+                                                            @if ($candidate?->pne == 1)<i class="bi bi-person-wheelchair text-primary" title="Pessoa com deficiência"></i>@endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
 
                             </div>
 
-                        </div>
+                        @endforeach
 
                     </div>
 
                 </div>
-            @endforeach
+            </div>
 
-        </div>
+        @empty
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+
+                    <h6 class="mt-3">Nenhum candidato alocado</h6>
+
+                    <p class="text-muted mb-3">
+                        Ainda não existem candidatos distribuídos por sala de prova.
+                    </p>
+
+                    <a href="{{ route('admin.exam.create') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-calendar-check me-1"></i>
+                        Configurar prova
+                    </a>
+                </div>
+            </div>
+
+        @endforelse
 
     </div>
-
 @endsection
