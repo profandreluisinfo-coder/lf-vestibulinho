@@ -16,7 +16,7 @@ class Inscription extends Model
 
     // Valores gravados na coluna `status`. A deferida pode estar gravada como
     // 'approved' ou 'accepted'; se só um deles for usado, deixe apenas esse.
-    public const STATUSES_APPROVED = ['approved', 'accepted'];
+    public const STATUSES_APPROVED = ['approved'];
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
@@ -33,7 +33,7 @@ class Inscription extends Model
             'updated_at' => 'datetime',
         ];
     }
-    
+
     /**
      * Defina o valor de um determinado atributo no modelo.
      *
@@ -52,15 +52,20 @@ class Inscription extends Model
 
         return parent::setAttribute($key, $value);
     }
-    
+
+    public function exam()
+    {
+        return $this->hasOne(Exam::class);
+    }
+
     /**
      * Obtenha o resultado do exame associado à inscrição.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function exam_result(): HasOne
+    public function result(): HasOne
     {
-        return $this->hasOne(ExamResult::class, 'inscription_id');
+        return $this->hasOne(Result::class, 'inscription_id');
     }
 
     /**

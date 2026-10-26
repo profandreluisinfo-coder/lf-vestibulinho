@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 
 class Process extends Model
@@ -58,9 +59,17 @@ class Process extends Model
             ->withTimestamps();
     }
 
+    // Histórico completo do usuário
     public function inscriptions(): HasMany
     {
         return $this->hasMany(Inscription::class);
+    }
+
+    // Inscrição do processo atual
+    public function inscription(): HasOne
+    {
+        return $this->hasOne(Inscription::class)
+            ->where('process_id', Process::current()?->id);
     }
 
     /**
@@ -193,7 +202,8 @@ class Process extends Model
         $clearCache = function () {
             Cache::forget('global_process');
             Cache::forget('global_inscription_open');
-            Cache::forget('global_event');
+            Cache::forget('global_total_inscriptions');
+            Cache::forget('global_users_without_inscription');
         };
 
         static::saved($clearCache);

@@ -1,5 +1,5 @@
 @php
-    $exam_results_count = \App\Models\ExamResult::count();
+    $results_count = \App\Models\Result::count();
 @endphp
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
@@ -121,7 +121,7 @@
                 </button>
                 <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
                     id="menuResultados">
-                    @if ($exam_results_count > 0)
+                    @if ($results_count > 0)
                         <a href="javascript:void(0)" id="exportLink"
                             class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
                             onclick="handleExport(event, '{{ route('admin.export.excel') }}')">

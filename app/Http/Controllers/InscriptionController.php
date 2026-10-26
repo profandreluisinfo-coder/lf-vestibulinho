@@ -27,14 +27,18 @@ use Illuminate\View\View;
 
 class InscriptionController extends Controller
 {
-    public function start(): View
+    public function start(): View|RedirectResponse
     {
-        $user = Auth::user();
-        $process = Process::current();
+        $user     = Auth::user();
+        $process  = Process::current();
         $template = Template::getActiveTemplate();
 
         if (! $process || ! $process?->isInscriptionOpen()) {
             abort(404);
+        }
+
+        if ($user->hasInscription()) {
+            return redirect()->route('inscription.user.show');
         }
 
         $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
@@ -70,26 +74,26 @@ class InscriptionController extends Controller
 
         // Carrega tudo que o painel precisa
         $user->load([
-            'inscription.exam_result.examLocation',
-            'inscription.exam_result.completedCall',
+            'inscription.exam.location',
+            'inscription.result',
+            'inscription.process',
         ]);
 
-        $inscription = $user->inscription;
-        $examResult = $inscription->exam_result;
-        $examLocation = $examResult?->examLocation;
+        $inscription  = $user->inscription;
+        $exam         = $inscription->exam;        // sala (room_number) e local
+        $process      = $inscription->process;     // exam_date e exam_time
+        $result       = $inscription->result;
 
-        $exam = $examResult; // O EXAM REAL — o model completo
 
-        $call = $examResult?->completedCall;
+        // $call: ver em qual model ficou o antigo completedCall (Result?)
 
         return view('inscription.show', [
-            'user' => $user,
+            'user'        => $user,
             'displayName' => $displayName,
-            'initials' => $initials,
-            'exam' => $exam,
-            'examResult' => $examResult,
-            'examLocation' => $examLocation,
-            'call' => $call
+            'initials'    => $initials,
+            'process'     => $process,
+            'result'      => $result,
+            'exam'        => $exam
         ]);
     }
 
@@ -320,7 +324,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.other')->with('warning', 'Complete o passo anterior.');
         }
 
-        $process = Process::orderByDesc('year')->first();
+        $process = Process::current();
 
         $courses = $process
             ? $process->courses()->orderBy('courses.name')->get()
@@ -374,6 +378,10 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.user.show')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
 
+            if ($e->getCode() === '23000') {
+                return redirect()->route('failed')->with('danger', 'Você já se inscreveu.');
+            }
+
             if (str_contains($e->getMessage(), 'SQLSTATE[22001]')) {
                 return redirect()->route('failed')
                     ->with(
@@ -393,7 +401,13 @@ class InscriptionController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            // Log::error($e->getMessage());
+            $message = match ($e->getMessage()) {
+                'Inscrição já realizada.'  => 'Você já se inscreveu.',
+                'Inscrições encerradas.'   => 'O período de inscrições foi encerrado.',
+                default                    => 'Erro inesperado. Por favor, tente novamente.',
+            };
+
+            report($e); // hoje o erro real não é registrado em lugar nenhum
 
             return redirect()->route('failed')->with(
                 'danger',

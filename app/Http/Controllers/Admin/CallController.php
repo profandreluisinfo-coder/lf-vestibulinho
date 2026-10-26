@@ -91,9 +91,9 @@ class CallController extends Controller
      */
     public function store(Request $request): Response | RedirectResponse
     {
-        $exam_results_count = ExamResult::count('ranking');
+        $results_count = ExamResult::count('ranking');
 
-        if ($exam_results_count === 0) {
+        if ($results_count === 0) {
             return alertError('Não é possível criar uma chamada sem resultados de exame.');
         }
 

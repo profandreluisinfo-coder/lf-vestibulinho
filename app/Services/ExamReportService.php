@@ -2,29 +2,39 @@
 
 namespace App\Services;
 
+use App\Models\Process;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ExamReportService
 {
     /**
-     * Retorna alocação de candidatos agrupada por local e número da sala.
+     * Retorna a alocação de candidatos agrupada por local e número da sala.
      * Usado para relatórios detalhados ou resumidos.
+     *
+     * @param  int|null  $processId  Processo seletivo do relatório. Se omitido, usa o atual.
      */
-    public function getGroupedAllocations()
+    public function getGroupedAllocations(?int $processId = null): Collection
     {
-        return DB::table('exam_results')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id') // obter o número de inscrição
+        $processId ??= Process::current()?->id;
+
+        if (! $processId) {
+            return collect();
+        }
+
+        return DB::table('exams')
+            ->join('inscriptions', 'exams.inscription_id', '=', 'inscriptions.id') // número de inscrição
             ->join('processes', 'inscriptions.process_id', '=', 'processes.id')
-            ->join('events', 'processes.id', '=', 'events.process_id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id') // obter os dados do candidato
+            ->join('users', 'inscriptions.user_id', '=', 'users.id') // dados do candidato
             ->leftJoin('lgbts', 'users.id', '=', 'lgbts.user_id')
             ->leftJoin('pnes', 'users.id', '=', 'pnes.user_id')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
+            ->join('locations', 'exams.location_id', '=', 'locations.id')
+            ->where('inscriptions.process_id', $processId)
             ->select(
-                'exam_locations.name as location_name',
-                'exam_results.room_number',
-                'exam_results.exam_time',
-                'events.exam_date',
+                'locations.name as location_name',
+                'exams.room_number',
+                'processes.exam_time',
+                'processes.exam_date',
                 'users.name as name',
                 DB::raw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name END as social_name"),
                 'users.cpf',
@@ -32,8 +42,8 @@ class ExamReportService
                 DB::raw("CASE WHEN pnes.status = 'accepted' THEN 1 ELSE 0 END as pne"),
                 'inscriptions.id as inscription_id'
             )
-            ->orderBy('exam_results.exam_location_id')
-            ->orderBy('exam_results.room_number')
+            ->orderBy('exams.location_id')
+            ->orderBy('exams.room_number')
             ->orderByRaw("CASE WHEN lgbts.status = 'accepted' THEN lgbts.name ELSE users.name END")
             ->get()
             ->groupBy(['location_name', 'room_number']);

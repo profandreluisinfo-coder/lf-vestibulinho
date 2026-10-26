@@ -28,6 +28,16 @@ class InscriptionService
 
         DB::transaction(function () use ($user, $data, $steps) {
 
+            $sp = Process::latest('id')->first() ?? throw new \Exception('Processo Seletivo não encontrado.');
+
+            if (! $sp->isInscriptionOpen()) {
+                throw new \Exception('Inscrições encerradas.');
+            }
+
+            if (Inscription::where('user_id', $user->id)->where('process_id', $sp->id)->exists()) {
+                throw new \Exception('Inscrição já realizada.');
+            }
+
             $user->update([
                 'cpf' => data_get($data, 'cpf'),
                 'name' => data_get($data, 'name'),
@@ -47,12 +57,6 @@ class InscriptionService
                 'health_issue' => (data_get($data, 'health') == '1') ? data_get($data, 'health_issue') : '',
                 'role' => 'user',
             ]);
-
-            $sp = Process::latest('id')->first() ?? throw new \Exception('Processo Seletivo não encontrado.');
-
-            if (Inscription::where('user_id', $user->id)->where('process_id', $sp->id)->exists()) {
-                throw new \Exception('Inscrição já realizada.');
-            }
 
             $user->document()->updateOrCreate(
                 [],
@@ -151,20 +155,24 @@ class InscriptionService
 
             $pdf = Pdf::loadView('inscription.pdf.protocol', compact('user', 'inscription', 'sp'));
 
-            $filename = 'Protocolo_' . preg_replace('/[^0-9]/', '', (string) $user->cpf) . '.pdf';
-            $path = storage_path('app/public/' . $filename);
+            $filename = 'Protocolo_' . $inscription->id . '.pdf';   // sem CPF no nome
+            $disk = Storage::disk('local');                          // disco privado
+            $path = $disk->path($filename);
+
             $pdf->save($path);
 
-            Mail::to($user->email)->send(new SendMail(
-                subject: 'Protocolo de Inscrição',
-                content: ['name' => $user->name],
-                view: 'emails.inscription.protocol',
-                attachment: $path
-            ));
+            try {
+                Mail::to($user->email)->send(new SendMail(
+                    subject: 'Protocolo de Inscrição',
+                    content: ['name' => $user->name],
+                    view: 'emails.inscription.protocol',
+                    attachment: $path
+                ));
+            } finally {
+                $disk->delete($filename);   // apaga mesmo se o envio falhar
+            }
 
-            Storage::disk('public')->delete($filename);
-
-            $allKeys = collect(range(1, 7))
+            $allKeys = collect(range(1, 8))
                 ->flatMap(fn($step) => ["step{$step}", "step{$step}_done"])
                 ->toArray();
 

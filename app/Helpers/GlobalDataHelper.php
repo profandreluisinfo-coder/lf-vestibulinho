@@ -30,7 +30,7 @@ class GlobalDataHelper
         $totalInscriptions = Cache::remember(
             'global_total_inscriptions',
             300,
-            fn() => Inscription::count('id')
+            fn() => Inscription::forProcess(Process::current()?->id)->count()
         );
 
         $usersWithoutInscription = Cache::remember(

@@ -28,8 +28,7 @@ $(document).ready(function () {
                 min: 2
             },
             exam_date: {
-                required: true,
-                date: true
+                required: true
             },
             exam_time: {
                 required: true
@@ -49,8 +48,7 @@ $(document).ready(function () {
                 min: 'O número deve ser maior que 1'
             },
             exam_date: {
-                required: 'Obrigatório',
-                date: 'Data inválida'
+                required: 'Obrigatório'
             },
             exam_time: {
                 required: 'Obrigatório'

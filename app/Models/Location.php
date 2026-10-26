@@ -4,15 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Local extends Model
+class Location extends Model
 {
-    protected $table = 'locations';
-    
     protected $fillable = [
         'name',
         'address',
         'rooms_available',
     ];
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 
     /**
      * Defina o valor de um determinado atributo no modelo.

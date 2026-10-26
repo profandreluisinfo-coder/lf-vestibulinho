@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Local;
-use App\Models\ExamResult;
-use App\Models\Inscription;
+use App\Models\Exam;
 use App\Models\Setting;
 use App\Services\ExamAllocationService;
-use App\Services\ExamReportService;
+use DomainException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ExamController extends Controller
@@ -20,12 +18,40 @@ class ExamController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    // public function listSchedule()
-    public function index(ExamReportService $reportService): View
+    public function index(): View
     {
-        $candidates = $reportService->getGroupedAllocations();
-       
+        $accessStatus = Setting::first() ?? new Setting();
+
+        $candidates = Exam::with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
+            ->orderBy('location_id')
+            ->orderBy('room_number')
+            ->get()
+            ->map(function ($exam) {
+                $user = $exam->inscription->user;
+
+                return (object) [
+                    'location'       => $exam->location->name,
+                    'room'           => $exam->room_number,
+                    'inscription_id' => $exam->inscription_id,
+                    'name'           => $user->name,
+                    'social_name'    => $user->lgbt?->status === 'accepted' ? $user->lgbt->name : null,
+                    'pne'            => $user->pne?->status === 'accepted',
+                ];
+            })
+            ->groupBy('location')
+            ->map(
+                fn($rooms) => $rooms
+                    ->groupBy('room')
+                    ->map(
+                        fn($list) => $list
+                            ->sortBy(fn($c) => Str::lower(Str::ascii($c->social_name ?? $c->name)))
+                            ->values()
+                    )
+            );
+
+
         return view('admin.exam.index', [
+            'accessStatus' => $accessStatus,
             'candidates' => $candidates
         ]);
     }
@@ -37,123 +63,48 @@ class ExamController extends Controller
      */
     public function create(): View
     {
-        $pending = ExamResult::whereNull('email_sent_at')->count();
-
-        $accesStatus = Setting::first() ?? new Setting();
-
-        $rooms = DB::table('exam_results')
-            ->join('exam_locations', 'exam_results.exam_location_id', '=', 'exam_locations.id')
-            ->select(
-                'exam_results.exam_location_id',
-                'exam_locations.name as location_name',
-                'exam_results.room_number',
-                DB::raw('COUNT(*) as qtd')
-            )
-            ->groupBy('exam_results.exam_location_id', 'exam_results.room_number', 'exam_locations.name')
-            ->orderBy('exam_results.room_number')
-            ->get();
-
-        $examInfo = DB::table('exam_results')
-            ->select('exam_date as date', 'exam_time as time')
-            ->first();
-
-        // Passar para a view
-        view()->share([
-            'pending' => $pending,
-            'accesStatus' => $accesStatus,
-            'rooms' => $rooms,
-            'examInfo' => $examInfo,
-            'examDate' => DB::table('events')
-                ->orderByDesc('id')
-                ->value('exam_date'),
-        ]);
-
         return view('admin.exam.create');
     }
 
     /**
-     * Grava as configurações de agendamento de provas.
+     * Grava as configurações de agendamento de provas e aloca os candidatos.
      *
-     * Verifica se existem inscrições e locais cadastrados, e se o número de salas cadastradas é suficiente para alocar os inscritos.
-     * Em seguida, verifica o valor de 'split_locations' e faz a alocação dos inscritos nas salas.
-     *
-     * @param  Request  $request
-     * @param  ExamAllocationService  $service
+     * As regras de capacidade (salas necessárias, limite por local, PNE no primeiro local)
+     * ficam no service; aqui só validamos o formulário e exibimos o erro, se houver.
      */
     public function store(Request $request, ExamAllocationService $service)
     {
         $data = $request->validate([
-            'candidates_per_room' => 'required|numeric|min:1|max:50',
-            'split_locations' => 'required|in:yes,no',
-            'split_from_room' => 'nullable|numeric|min:2',
-            'exam_date' => 'required|date',
-            'exam_time' => 'required|date_format:H:i',
+            'candidates_per_room' => 'required|integer|min:1|max:50',
+            'split_locations'     => 'required|in:yes,no',
+            'split_from_room'     => 'required_if:split_locations,yes|nullable|integer|min:2',
         ], [
-            'candidates_per_room.required' => 'O campo candidatos por sala é obrigatório.',
-            'candidates_per_room.numeric' => 'O campo candidatos por sala deve ser numérico.',
-            'candidates_per_room.min' => 'O campo candidatos por sala deve ser maior do que zero.',
-            'candidates_per_room.max' => 'O campo candidatos por sala deve menor ou igual a :max.',
-            'split_locations.required' => 'O campo dividir locais é obrigatório.',
-            'split_locations.in' => 'O campo dividir locais deve ser sim ou não.',
-            'split_from_room.numeric' => 'O campo dividir locais a partir da sala deve ser numérico.',
-            'split_from_room.min' => 'O campo dividir locais a partir da sala deve ser maior do que zero.',
-            'exam_date.required' => 'O campo data é obrigatório.',
-            'exam_date.date' => 'O campo data deve ser uma data válida.',
-            'exam_time.required' => 'O campo hora é obrigatório.',
-            'exam_time.date_format' => 'O campo hora deve ser uma hora válida.',
+            'candidates_per_room.required' => 'O campo candidatos por sala é obrigatório.',
+            'candidates_per_room.integer'  => 'O campo candidatos por sala deve ser um número inteiro.',
+            'candidates_per_room.min'      => 'O campo candidatos por sala deve ser maior do que zero.',
+            'candidates_per_room.max'      => 'O campo candidatos por sala deve ser menor ou igual a :max.',
+            'split_locations.required'     => 'O campo dividir locais é obrigatório.',
+            'split_locations.in'           => 'O campo dividir locais deve ser sim ou não.',
+            'split_from_room.required_if'  => 'Informe a partir de qual sala os locais serão divididos.',
+            'split_from_room.integer'      => 'O campo dividir locais a partir da sala deve ser um número inteiro.',
+            'split_from_room.min'          => 'O campo dividir locais a partir da sala deve ser no mínimo :min.',
         ]);
 
-        // Verificar se existem inscriçõoes
-        if (Inscription::count() === 0) {
-            return redirect()->back()->with(
-                'error',
-                'Não foi possível agendar a prova, pois não existem inscrições.'
-            );
+        try {
+            $service->allocate($data);
+        } catch (DomainException $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        // Verificar se existem locais cadastrados
-        if (Local::count() === 0) {
-            return redirect()->back()->with(
-                'error',
-                'Não foi possível agendar a prova, pois não existe nenhum local de prova cadastrado.'
-            );
-        }
-
-        if (DB::table('exam_results')->count() > 0) {
-            DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-            DB::table('exam_results')->truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
-        }
-
-        // Obter o total de salas cadastradas
-        $totalRooms = Local::sum('rooms_available');
-        // Obter o total de inscritos
-        $totalInscritos = Inscription::count();
-
-        // Verificar o valor de 'split_locations'
-        if ($data['split_locations'] === 'yes') {
-            // Verificar se o número de locais cadastrados é menor que 2
-            if ($totalRooms < 2) {
-                return redirect()->back()->with(
-                    'error',
-                    'O número de locais cadastrados é insuficente para dividir as salas.'
-                );
-            }
-        }
-
-        // Verificar se o número de salas cadastradas é suficiente para alocar os inscritos
-        if (($totalInscritos / $data['candidates_per_room']) > $totalRooms) {
-            return redirect()->back()->with(
-                'error',
-                'O número de salas cadastradas é insuficiente para alocar os candidatos.'
-            );
-        }
-
-        $service->allocate($data);
-
-        return redirect()->route('admin.exam.index')->with(
-            'success',
-            'Prova agendada com sucesso!'
-        );
+        return alertSuccess('Prova agendada com sucesso!');
     }
+
+
+    // ---------------------------------------------------------------
+    // No controller de locais, no método de cadastro (limite de dois):
+    //
+    // if (Location::count() >= 2) {
+    //     return redirect()->back()->with('error', 'O sistema comporta no máximo dois locais de prova.');
+    // }
+    // ---------------------------------------------------------------
 }

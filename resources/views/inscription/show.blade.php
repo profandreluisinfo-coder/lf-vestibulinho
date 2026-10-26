@@ -13,7 +13,7 @@
             {{-- ╔══════════════════════════════════════════╗ --}}
             {{-- ║         CONVOCAÇÃO PARA MATRÍCULA        ║ --}}
             {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($user->hasConfirmedCall())
+            {{-- @if ($user->hasConfirmedCall())
                 <div class="card-call animate__animated animate__fadeInDown">
                     <div class="card-call-header">
                         <i class="bi bi-megaphone-fill" style="font-size:1.1rem; color:#f59e0b;"></i>
@@ -45,7 +45,7 @@
                         <i class="bi bi-search me-1"></i> Ver detalhes da convocação
                     </button>
                 </div>
-            @endif
+            @endif --}}
 
             {{-- ╔══════════════════════════════════════════╗ --}}
             {{-- ║           RESUMO DA INSCRIÇÃO            ║ --}}
@@ -314,13 +314,13 @@
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                         <div class="call-data-label" style="color:#2b6cb0;">Data</div>
                                         <div class="call-data-value" style="color:#1a365d;">
-                                            {{ \Carbon\Carbon::parse($exam->exam_date)->format('d/m/Y') }}
+                                            {{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}
                                         </div>
                                     </div>
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                         <div class="call-data-label" style="color:#2b6cb0;">Horário</div>
                                         <div class="call-data-value" style="color:#1a365d;">
-                                            {{ \Carbon\Carbon::parse($exam->exam_time)->format('H:i') }}
+                                            {{ \Carbon\Carbon::parse($process->exam_time)->format('H:i') }}
                                         </div>
                                     </div>
                                 </div>
@@ -419,7 +419,7 @@
             {{-- ╔══════════════════════════════════════════╗ --}}
             {{-- ║      MODAL — DETALHES DA CONVOCAÇÃO      ║ --}}
             {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($call && $user->hasConfirmedCall())
+            {{-- @if ($call && $user->hasConfirmedCall())
                 <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -434,7 +434,6 @@
 
                             <div class="modal-body p-4">
 
-                                {{-- Dados da chamada --}}
                                 <div class="call-data-grid mb-3"
                                     style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
                                     <div class="call-data-item">
@@ -455,7 +454,6 @@
                                     </div>
                                 </div>
 
-                                {{-- Local da matrícula --}}
                                 <div class="modal-section-title">Local da Matrícula</div>
                                 <div class="info-block mb-3">
                                     <p class="mb-1" style="font-size:0.88rem; font-weight:600;">
@@ -470,7 +468,6 @@
                                     </p>
                                 </div>
 
-                                {{-- Documentos necessários --}}
                                 <div class="modal-section-title">Documentos necessários (item 7.4 do edital)</div>
                                 <div class="alert alert-warning py-2 px-3 mb-2"
                                     style="border-radius:8px; font-size:0.82rem;">
@@ -507,7 +504,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif --}}
 
     </div>{{-- wrapper --}}
 
