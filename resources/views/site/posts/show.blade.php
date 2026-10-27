@@ -27,6 +27,8 @@
         $facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query(['u' => $shareUrl]);
         $xShareUrl = 'https://twitter.com/intent/tweet?' . http_build_query(['text' => $shareTitle, 'url' => $shareUrl]);
         $linkedinShareUrl = 'https://www.linkedin.com/sharing/share-offsite/?' . http_build_query(['url' => $shareUrl]);
+        $imageAttachments = $post->attachments->filter(fn ($attachment) => \Illuminate\Support\Str::startsWith($attachment->mime_type ?? '', 'image/'));
+        $downloadAttachments = $post->attachments->reject(fn ($attachment) => \Illuminate\Support\Str::startsWith($attachment->mime_type ?? '', 'image/'));
     @endphp
 
     <section class="post-breadcrumb-section">
@@ -107,7 +109,43 @@
                     </div>
                 @endif
 
-                @if ($post->attachments->isNotEmpty())
+                @if ($imageAttachments->isNotEmpty())
+                    <section class="post-gallery" aria-labelledby="post-gallery-title">
+                        <div class="post-attachments-heading">
+                            <span class="post-attachments-icon"><i class="bi bi-images" aria-hidden="true"></i></span>
+                            <div>
+                                <h2 class="post-attachments-title" id="post-gallery-title">Galeria de imagens</h2>
+                                <p>Imagens desta publicação</p>
+                            </div>
+                        </div>
+
+                        <div class="post-gallery-carousel" data-post-gallery>
+                            <button class="post-gallery-control" type="button" data-gallery-previous aria-label="Imagem anterior" aria-controls="post-gallery-track" disabled>
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <div class="post-gallery-viewport" data-gallery-viewport id="post-gallery-track" tabindex="0" role="region" aria-label="Galeria de imagens. Use as setas do teclado para navegar.">
+                                <ul class="post-gallery-list">
+                                    @foreach ($imageAttachments as $index => $attachment)
+                                        @php
+                                            $galleryImageUrl = $attachment->preview_url ?? Storage::url($attachment->path);
+                                        @endphp
+                                        <li class="post-gallery-item">
+                                            <a href="{{ $galleryImageUrl }}" target="_blank" rel="noopener" aria-label="Abrir imagem {{ $index + 1 }}">
+                                                <img src="{{ $galleryImageUrl }}" alt="Imagem {{ $index + 1 }} da publicação: {{ $post->title }}" loading="lazy">
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <button class="post-gallery-control" type="button" data-gallery-next aria-label="Próxima imagem" aria-controls="post-gallery-track" {{ $imageAttachments->count() < 2 ? 'disabled' : '' }}>
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                            <span class="visually-hidden" data-gallery-status aria-live="off"></span>
+                        </div>
+                    </section>
+                @endif
+
+                @if ($downloadAttachments->isNotEmpty())
                     <section class="post-attachments" aria-labelledby="post-attachments-title">
                         <div class="post-attachments-heading">
                             <span class="post-attachments-icon"><i class="bi bi-paperclip" aria-hidden="true"></i></span>
@@ -118,7 +156,7 @@
                         </div>
 
                         <ul class="post-attachments-list">
-                            @foreach ($post->attachments as $attachment)
+                            @foreach ($downloadAttachments as $attachment)
                                 <li>
                                     @if (!empty($isPreview))
                                         <span class="post-attachment-link">
@@ -228,6 +266,76 @@
                     feedback.textContent = 'Não foi possível copiar. Copie o endereço da página.';
                 }
             });
+        });
+    </script>
+@endpush
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('[data-post-gallery]').forEach((gallery) => {
+            const viewport = gallery.querySelector('[data-gallery-viewport]');
+            const previous = gallery.querySelector('[data-gallery-previous]');
+            const next = gallery.querySelector('[data-gallery-next]');
+            const slides = [...gallery.querySelectorAll('.post-gallery-item')];
+            const status = gallery.querySelector('[data-gallery-status]');
+            const slideStep = () => slides[0].offsetWidth + parseFloat(getComputedStyle(slides[0].parentElement).columnGap || 0);
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            let autoplayTimer;
+
+            const updateControls = () => {
+                const index = Math.round(viewport.scrollLeft / slideStep());
+                const atEnd = viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 1;
+                previous.disabled = index <= 0;
+                next.disabled = atEnd;
+                status.textContent = `Imagem ${Math.min(index + 1, slides.length)} de ${slides.length}`;
+
+                if (!autoplayTimer && viewport.scrollWidth > viewport.clientWidth + 1 && !reducedMotion.matches) {
+                    autoplayTimer = window.setInterval(autoplay, 4500);
+                }
+            };
+
+            const move = (direction) => {
+                const index = Math.round(viewport.scrollLeft / slideStep());
+                const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+                const target = Math.max(0, Math.min(maxScroll, (index + direction) * slideStep()));
+                viewport.scrollTo({
+                    left: target,
+                    behavior: reducedMotion.matches ? 'auto' : 'smooth'
+                });
+            };
+
+            function autoplay() {
+                if (reducedMotion.matches || document.hidden || gallery.matches(':hover') || gallery.contains(document.activeElement)) {
+                    return;
+                }
+
+                const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+                if (viewport.scrollLeft >= maxScroll - 2) {
+                    viewport.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    move(1);
+                }
+            }
+
+            previous.addEventListener('click', () => move(-1));
+            next.addEventListener('click', () => move(1));
+            viewport.addEventListener('scroll', updateControls, { passive: true });
+            viewport.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    move(event.key === 'ArrowRight' ? 1 : -1);
+                }
+            });
+            window.addEventListener('resize', updateControls);
+            reducedMotion.addEventListener('change', () => {
+                if (reducedMotion.matches && autoplayTimer) {
+                    window.clearInterval(autoplayTimer);
+                    autoplayTimer = null;
+                } else {
+                    updateControls();
+                }
+            });
+            updateControls();
         });
     </script>
 @endpush

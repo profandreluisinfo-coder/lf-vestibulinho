@@ -309,6 +309,96 @@
     background: #f8fafc;
 }
 
+.post-gallery {
+    margin-top: 2.5rem;
+    padding: clamp(1.1rem, 3vw, 1.75rem);
+    border: 1px solid #e4eaf0;
+    border-radius: 17px;
+    background: #f8fafc;
+}
+
+.post-gallery-list {
+    display: flex;
+    gap: .85rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.post-gallery-carousel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .75rem;
+}
+
+.post-gallery-viewport {
+    min-width: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    outline-offset: 4px;
+}
+
+.post-gallery-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.post-gallery-item {
+    flex: 0 0 calc((100% - 1.7rem) / 3);
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e5ebf1;
+    border-radius: 13px;
+    background: #fff;
+    scroll-snap-align: start;
+}
+
+.post-gallery-item a {
+    display: block;
+    overflow: hidden;
+    background: #eef2f5;
+}
+
+.post-gallery-item img {
+    display: block;
+    width: 100%;
+    max-height: 520px;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #eef2f5;
+    transition: transform .2s ease;
+}
+
+.post-gallery-item a:hover img {
+    transform: scale(1.035);
+}
+
+.post-gallery-control {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+    border: 1px solid #dce4eb;
+    border-radius: 50%;
+    background: #fff;
+    color: #287f83;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.post-gallery-control:hover:not(:disabled) {
+    border-color: #b7d2d2;
+    background: #edf5f5;
+}
+
+.post-gallery-control:disabled {
+    color: #aab3c0;
+    cursor: default;
+}
+
 .post-attachments-heading {
     display: flex;
     align-items: center;
@@ -608,9 +698,37 @@ a.post-attachment-link:hover {
     .post-breadcrumb-link,
     .post-external-link,
     .post-attachment-link,
+    .post-gallery-item img,
+    .post-gallery-control,
     .post-nav-link,
     .post-back-link,
     .post-share-button {
         transition: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-gallery {
+        padding: 1rem .7rem;
+    }
+
+    .post-gallery-carousel {
+        gap: .4rem;
+    }
+
+    .post-gallery-control {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+    }
+
+    .post-gallery-item {
+        flex-basis: 78%;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 760px) {
+    .post-gallery-item {
+        flex-basis: calc((100% - .85rem) / 2);
     }
 }

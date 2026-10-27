@@ -273,11 +273,18 @@ class PostController extends Controller
 
         $attachments = $existingPost?->attachments()->get() ?? collect();
         foreach ($request->file('attachments', []) as $file) {
-            $attachments->push(new Attachment([
+            $attachment = new Attachment([
                 'name'      => $file->getClientOriginalName(),
                 'mime_type' => $file->getMimeType(),
                 'size'      => $file->getSize(),
-            ]));
+            ]);
+
+            if (str_starts_with($file->getMimeType(), 'image/')) {
+                $attachment->preview_url = 'data:' . $file->getMimeType() . ';base64,'
+                    . base64_encode(file_get_contents($file->getRealPath()));
+            }
+
+            $attachments->push($attachment);
         }
         $preview->setRelation('attachments', $attachments);
 
