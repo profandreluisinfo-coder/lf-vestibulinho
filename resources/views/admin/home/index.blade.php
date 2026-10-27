@@ -4,9 +4,9 @@
 
 @section('content')
     <div class="container">
-        <h5>📝 Principais Tarefas</h5>
+        {{-- <h5>📝 Principais Tarefas</h5>
 
-        {{-- @include('admin.partials.stepper')
+        @include('admin.partials.stepper')
 
         @include('admin.partials.progress') --}}
 

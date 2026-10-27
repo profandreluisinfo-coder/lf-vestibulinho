@@ -10,7 +10,14 @@ class Result extends Model
     protected $fillable = [
         'inscription_id',
         'score',
-        'ranking'
+        'ranking',
+        'status',
+        'published_at',
+    ];
+
+    protected $casts = [
+        'status'       => 'boolean',
+        'published_at' => 'datetime',
     ];
 
     public function inscription(): BelongsTo

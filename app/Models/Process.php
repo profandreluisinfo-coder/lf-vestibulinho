@@ -32,23 +32,29 @@ class Process extends Model
         // Matrícula
         'enrol_start',
         'enrol_remaining',
+
+        // Divulgação
+        'location_released_at',
+        'result_released_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'start'            => 'date',
-            'end'              => 'date',
-            'location_publish' => 'date',
-            'exam_date'        => 'date',
-            'answer_publish'   => 'date',
-            'revision_start'   => 'date',
-            'revision_end'     => 'date',
-            'result_publish'   => 'date',
-            'enrol_start'      => 'date',
-            'enrol_remaining'  => 'date',
-            'created_at'       => 'datetime',
-            'updated_at'       => 'datetime',
+            'start'                => 'date',
+            'end'                  => 'date',
+            'location_publish'     => 'date',
+            'exam_date'            => 'date',
+            'answer_publish'       => 'date',
+            'revision_start'       => 'date',
+            'revision_end'         => 'date',
+            'result_publish'       => 'date',
+            'enrol_start'          => 'date',
+            'enrol_remaining'      => 'date',
+            'created_at'           => 'datetime',
+            'updated_at'           => 'datetime',
+            'location_released_at' => 'datetime',
+            'result_released_at'   => 'datetime',
         ];
     }
 
@@ -63,6 +69,11 @@ class Process extends Model
     public function inscriptions(): HasMany
     {
         return $this->hasMany(Inscription::class);
+    }
+
+    public static function current(): ?self
+    {
+        return self::latest('id')->first();
     }
 
     // Inscrição do processo atual
@@ -84,9 +95,20 @@ class Process extends Model
         return parent::setAttribute($key, $value);
     }
 
-    public static function current(): ?self
+    /**
+     * Verifica se os locais de prova foram divulgados.
+     */
+    public function isLocationReleased(): bool
     {
-        return self::latest('id')->first();
+        return $this->location_released_at !== null;
+    }
+
+    /**
+     * Verifica se os resultados da prova foram divulgados.
+     */
+    public function isResultReleased(): bool
+    {
+        return $this->result_released_at !== null;
     }
 
     public function isInscriptionOpen(): bool

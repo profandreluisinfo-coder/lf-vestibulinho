@@ -2,7 +2,7 @@
 
     <!-- Etapa 1 -->
     <a href="{{ route('admin.process.show') }}" class="step-item text-secondary text-center" title="Definir Calendário">
-        <i class="bi {{ $events_exists ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+        <i class="bi {{ $calendar ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
         <p class="mt-2 mb-0 fw-semibold">Definir calendário</p>
     </a>
 
@@ -11,17 +11,8 @@
     <!-- Etapa 3 -->
     <a href="{{ route('admin.exam.create') }}" class="step-item text-secondary text-center" title="Agendar Prova">
         <i
-            class="bi {{ $local_status ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
-        <p class="mt-2 mb-0 fw-semibold">Agendar prova</p>
-    </a>
-
-    <div class="step-divider"></div>
-
-    <!-- Etapa 4 -->
-    <a href="{{ route('admin.import.home') }}" class="step-item text-secondary text-center" title="Importar Notas">
-        <i
-            class="bi {{ $ranking_active ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
-        <p class="mt-2 mb-0 fw-semibold">Importar notas</p>
+            class="bi {{ $location_published ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+        <p class="mt-2 mb-0 fw-semibold">Divulgar Local de Prova</p>
     </a>
 
     <div class="step-divider"></div>
@@ -29,7 +20,7 @@
     <!-- Etapa 5 -->
     <a href="{{ route('admin.reports.classification') }}" class="step-item text-secondary text-center">
         <i
-            class="bi {{ $settings->isResultEnabled() ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
+            class="bi {{ $result_published ? 'bi-check-circle-fill text-success' : 'bi-hourglass-split text-warning' }} fs-3"></i>
         <p class="mt-2 mb-0 fw-semibold">Publicar resultados</p>
     </a>
 
