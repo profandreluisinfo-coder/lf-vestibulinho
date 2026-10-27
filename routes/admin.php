@@ -55,7 +55,6 @@ Route::prefix('admin')
         Route::post('posts/{post}/preview', [PostController::class, 'previewExisting'])
             ->name('posts.preview');
         Route::resource('posts', PostController::class);
-
         Route::delete('posts/{post}/attachments/{attachment}', [PostController::class, 'destroyAttachment'])
             ->name('posts.attachments.destroy');
         Route::patch('posts/{post}/toggle', [PostController::class, 'togglePublished'])
@@ -284,29 +283,6 @@ Route::prefix('admin')
                 Route::get('notas-e-classificacao', [ReportController::class, 'classification'])
                     ->name('classification'); // admin.reports.classification
             });
-        // Sistema
-        Route::prefix('sistema')
-            ->name('system.')
-            ->group(function () {
-                Route::get('redefinir-dados', [SettingController::class, 'index'])
-                    ->name('index');
-                Route::post('resetar', [SettingController::class, 'reset'])
-                    ->name('reset');
-                Route::post('liberar-acesso-local', [SettingController::class, 'location'])
-                    ->name('publish.location');
-                Route::post('liberar-acesso-resultados', [SettingController::class, 'result'])
-                    ->name('publish.result');
-                // Route::put('liberar-acesso-edital', [SettingController::class, 'notice'])->name('publish.notice');
-                Route::post('backups/gerar', [SettingController::class, 'createBackup'])
-                    ->name('backups.store');
-                Route::get('backups', [SettingController::class, 'listBackups'])
-                    ->name('backups.index');
-                Route::get('backups/{filename}/download', [SettingController::class, 'downloadBackup'])
-                    ->name('backups.download');
-                Route::delete('backups/{filename}', [SettingController::class, 'deleteBackup'])
-                    ->name('backups.delete');
-            });
-
         // Análises
         Route::prefix('analises')
             ->name('analyses.')
@@ -386,5 +362,26 @@ Route::prefix('admin')
 
                 Route::patch('{appeal}/indeferir', [AppealController::class, 'reject'])
                     ->name('reject');
+            });
+
+        // Sistema
+        Route::prefix('sistema')
+            ->name('system.')
+            ->group(function () {
+                Route::get('redefinir-dados', [SettingController::class, 'index'])
+                    ->name('index');
+                Route::post('resetar', [SettingController::class, 'reset'])
+                    ->name('reset');
+                Route::post('backups/gerar', [SettingController::class, 'createBackup'])
+                    ->name('backups.store');
+                Route::get('backups', [SettingController::class, 'listBackups'])
+                    ->name('backups.index');
+                Route::get('backups/{filename}/download', [SettingController::class, 'downloadBackup'])
+                    ->name('backups.download');
+                Route::delete('backups/{filename}', [SettingController::class, 'deleteBackup'])
+                    ->name('backups.delete');
+                Route::post('liberacao/{type}', [SettingController::class, 'toggleRelease'])
+                    ->whereIn('type', ['location', 'result'])
+                    ->name('release');
             });
     });

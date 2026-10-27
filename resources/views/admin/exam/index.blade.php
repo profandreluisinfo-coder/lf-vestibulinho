@@ -80,7 +80,7 @@
                             <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                         </h5>
 
-                        <form id="location-access-form" action="{{ route('admin.system.publish.location') }}"
+                        <form id="location-access-form" action="{{ route('admin.system.release', 'location') }}"
                             method="POST">
                             @csrf
 

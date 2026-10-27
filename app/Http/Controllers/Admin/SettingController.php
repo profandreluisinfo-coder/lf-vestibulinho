@@ -284,67 +284,17 @@ class SettingController extends Controller
     }
 
     /**
-     * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
-     *
-     * Caso o acesso seja liberado (location = true),
-     * cria um Job para cada candidato com local de prova definido.
+     * Libera o acesso aos locais e resultados de prova.
      */
-    public function location(Request $request): RedirectResponse
+    public function toggle(string $type)
     {
-        // Define se acesso foi liberado
-        $status = $request->filled('location');
+        abort_unless(in_array($type, ['location', 'result'], true), 404);
 
-        // Atualiza a configuração
-        Setting::updateOrCreate(
-            ['id' => 1],
-            ['location' => $status]
-        );
+        $process = Process::current();
+        $column  = "{$type}_released_at";
 
-        Cache::forget('global_settings'); // MUITO IMPORTANTE!
+        $process->update([$column => $process->$column ? null : now()]);
 
-        // Se bloqueou, simplesmente retorna
-        if (!$status) {
-            return redirect()->back()->with('success', 'Acesso ao local bloqueado com sucesso!');
-        }
-
-        // Se liberou, também não enviamos nada aqui.
-        // Apenas permitimos que o CRON diurno processe o envio
-        // de forma segura e em lotes (300/dia, por exemplo).
-
-        return redirect()->back()->with(
-            'success',
-            'Acesso ao Local liberado! Os e-mails serão enviados automaticamente pelo sistema.'
-        );
-    }
-
-    /**
-     * Atualiza o status de acesso ao resultado e dispara e-mails em fila.
-     *
-     * Caso o acesso seja liberado (result = true),
-     * cria um Job para cada candidato com resultado definido.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function result(Request $request): RedirectResponse
-    {
-        $settings = [
-            'result' => $request->filled('result')
-        ];
-
-        Setting::updateOrCreate(
-            ['id' => 1],
-            [
-                'result' => $settings['result']
-            ]
-        );
-
-        Cache::forget('global_settings'); // MUITO IMPORTANTE!
-
-        if (Setting::first()->result) {
-            return redirect()->back()->with('success', 'Acesso ao resultado liberado com sucesso!');
-        }
-
-        return redirect()->back()->with('success', 'Acesso ao resultado bloqueado com sucesso!');
+        return alertSuccess('Publicação atualizada.');
     }
 }

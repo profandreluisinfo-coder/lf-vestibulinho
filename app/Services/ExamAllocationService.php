@@ -21,6 +21,7 @@ class ExamAllocationService
      * Aloca os candidatos nas salas de prova.
      *
      * Regras:
+     * - não roda depois que o local da prova foi liberado aos candidatos;
      * - só roda depois do encerramento das inscrições do processo atual;
      * - só roda quando não há análise de PNE ou de nome social pendente;
      * - apenas inscrições deferidas do processo seletivo atual;
@@ -49,6 +50,13 @@ class ExamAllocationService
 
             if (! $process) {
                 throw new DomainException('Nenhum processo seletivo cadastrado.');
+            }
+
+            if ($process->isLocationReleased()) {
+                throw new DomainException(
+                    'O local da prova já foi liberado aos candidatos. '
+                    . 'Uma nova alocação trocaria a sala de quem já foi informado.'
+                );
             }
 
             if (! $process->isInscriptionEnded()) {

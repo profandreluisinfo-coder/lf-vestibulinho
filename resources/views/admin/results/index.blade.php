@@ -16,7 +16,7 @@
 
                 @if (App\Models\ExamResult::hasScores())
 
-                <form id="result-access-form" class="mb-3" action="{{ route('admin.system.publish.result') }}"
+                <form id="result-access-form" class="mb-3" action="{{ route('admin.system.release', 'result') }}"
                     method="POST">
                     @csrf
                     <div class="form-check form-switch mt-3">
