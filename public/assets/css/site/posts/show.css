@@ -395,6 +395,77 @@ a.post-attachment-link:hover {
     color: #71879a;
 }
 
+.post-share {
+    margin-top: 2.5rem;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid #e4eaf0;
+    border-radius: 16px;
+    background: #f8fafc;
+}
+
+.post-share-heading h2 {
+    margin: 0;
+    color: #1c3454;
+    font-size: 1.05rem;
+    font-weight: 730;
+}
+
+.post-share-heading p {
+    margin: .25rem 0 1rem;
+    color: #78869a;
+    font-size: .85rem;
+}
+
+.post-share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+}
+
+.post-share-button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .55rem .85rem;
+    border: 1px solid #dce4eb;
+    border-radius: 999px;
+    background: #fff;
+    color: #304760;
+    font: inherit;
+    font-size: .84rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.post-share-button:hover {
+    transform: translateY(-1px);
+    border-color: #b7d2d2;
+    box-shadow: 0 5px 14px rgba(28, 47, 68, .08);
+    color: #1c3454;
+}
+
+.post-share-button .bi {
+    font-size: 1rem;
+}
+
+.post-share-whatsapp .bi { color: #159447; }
+.post-share-facebook .bi { color: #1877f2; }
+.post-share-x .bi { color: #111; }
+.post-share-linkedin .bi { color: #0a66c2; }
+.post-share-copy .bi { color: #287f83; }
+
+.post-share-feedback {
+    display: block;
+    min-height: 1.2em;
+    margin-top: .65rem;
+    color: #287f83;
+    font-size: .82rem;
+}
+
 .post-nav-container {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -538,7 +609,8 @@ a.post-attachment-link:hover {
     .post-external-link,
     .post-attachment-link,
     .post-nav-link,
-    .post-back-link {
+    .post-back-link,
+    .post-share-button {
         transition: none;
     }
 }

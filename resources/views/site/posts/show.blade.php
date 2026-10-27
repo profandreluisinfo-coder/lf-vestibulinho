@@ -21,6 +21,12 @@
         $badgeClass = $isComunicado ? 'news-card-badge-navy' : 'news-card-badge-teal';
         $listaRoute = $isComunicado ? route('site.notices.index') : route('site.news.index');
         $listaLabel = $isComunicado ? 'Comunicados' : 'Notícias';
+        $shareUrl = route('site.posts.show', $post->slug);
+        $shareTitle = $post->title;
+        $whatsappShareUrl = 'https://wa.me/?' . http_build_query(['text' => $shareTitle . ' ' . $shareUrl]);
+        $facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query(['u' => $shareUrl]);
+        $xShareUrl = 'https://twitter.com/intent/tweet?' . http_build_query(['text' => $shareTitle, 'url' => $shareUrl]);
+        $linkedinShareUrl = 'https://www.linkedin.com/sharing/share-offsite/?' . http_build_query(['url' => $shareUrl]);
     @endphp
 
     <section class="post-breadcrumb-section">
@@ -138,6 +144,33 @@
                     </section>
                 @endif
 
+                @if (empty($isPreview))
+                    <section class="post-share" aria-labelledby="post-share-title">
+                        <div class="post-share-heading">
+                            <h2 id="post-share-title">Compartilhe esta publicação</h2>
+                            <p>Ajude outras pessoas a encontrar este conteúdo.</p>
+                        </div>
+                        <div class="post-share-actions">
+                            <a class="post-share-button post-share-whatsapp" href="{{ $whatsappShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp">
+                                <i class="bi bi-whatsapp" aria-hidden="true"></i><span>WhatsApp</span>
+                            </a>
+                            <a class="post-share-button post-share-facebook" href="{{ $facebookShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook">
+                                <i class="bi bi-facebook" aria-hidden="true"></i><span>Facebook</span>
+                            </a>
+                            <a class="post-share-button post-share-x" href="{{ $xShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no X">
+                                <i class="bi bi-twitter-x" aria-hidden="true"></i><span>X</span>
+                            </a>
+                            <a class="post-share-button post-share-linkedin" href="{{ $linkedinShareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no LinkedIn">
+                                <i class="bi bi-linkedin" aria-hidden="true"></i><span>LinkedIn</span>
+                            </a>
+                            <button class="post-share-button post-share-copy" type="button" data-copy-url="{{ $shareUrl }}">
+                                <i class="bi bi-link-45deg" aria-hidden="true"></i><span>Copiar link</span>
+                            </button>
+                        </div>
+                        <span class="post-share-feedback" role="status" aria-live="polite"></span>
+                    </section>
+                @endif
+
                 @if ($previous || $next)
                     <nav class="post-nav-container" aria-label="Outras publicações">
                         @if ($previous)
@@ -167,3 +200,34 @@
     </section>
 
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('.post-share-copy').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const feedback = button.closest('.post-share').querySelector('.post-share-feedback');
+
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(button.dataset.copyUrl);
+                    } else {
+                        const input = document.createElement('textarea');
+                        input.value = button.dataset.copyUrl;
+                        input.setAttribute('readonly', '');
+                        input.style.position = 'fixed';
+                        input.style.opacity = '0';
+                        document.body.appendChild(input);
+                        input.select();
+                        const copied = document.execCommand('copy');
+                        input.remove();
+                        if (!copied) throw new Error('Não foi possível copiar o link.');
+                    }
+
+                    feedback.textContent = 'Link copiado.';
+                } catch (error) {
+                    feedback.textContent = 'Não foi possível copiar. Copie o endereço da página.';
+                }
+            });
+        });
+    </script>
+@endpush
