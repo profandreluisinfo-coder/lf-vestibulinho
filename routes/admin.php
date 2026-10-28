@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocalController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
+use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
 use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
@@ -266,14 +266,14 @@ Route::prefix('admin')
             });
 
         // Local
-        Route::prefix('local')
-            ->name('local.')
+        Route::prefix('location')
+            ->name('location.')
             ->group(function () {
-                Route::get('/', [LocalController::class, 'index'])->name('index');
-                Route::post('salvar', [LocalController::class, 'store'])->name('store');
-                Route::get('editar/{location}', [LocalController::class, 'edit'])->name('edit');
-                Route::put('editar/{location}', [LocalController::class, 'update'])->name('update');
-                Route::delete('excluir/{location}', [LocalController::class, 'destroy'])->name('destroy');
+                Route::get('/', [LocationController::class, 'index'])->name('index');
+                Route::post('salvar', [LocationController::class, 'store'])->name('store');
+                Route::get('editar/{location}', [LocationController::class, 'edit'])->name('edit');
+                Route::put('editar/{location}', [LocationController::class, 'update'])->name('update');
+                Route::delete('excluir/{location}', [LocationController::class, 'destroy'])->name('destroy');
             });
 
         Route::prefix('relatorios')

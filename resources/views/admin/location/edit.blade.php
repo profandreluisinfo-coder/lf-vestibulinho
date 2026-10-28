@@ -16,7 +16,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form id="exam-location" action="{{ route('admin.local.edit', $location->id) }}" method="POST" novalidate>
+            <form id="exam-location" action="{{ route('admin.location.edit', $location->id) }}" method="POST" novalidate>
                 @csrf
                 @method('PUT')
                 
@@ -84,7 +84,7 @@
                     <i class="bi bi-check-circle me-1"></i>Salvar
                 </button>
                 {{-- prettier-ignore --}}
-                <a href="{{ route('admin.local.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
+                <a href="{{ route('admin.location.index') }}" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
 
             </form>
 

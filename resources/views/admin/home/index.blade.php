@@ -158,6 +158,23 @@
             </div>
         </div>
 
+        {{-- Gráfico: inscrições por dia --}}
+        <h2 class="dash-section-title">Inscrições por dia</h2>
+        <div class="card dash-list">
+            <div class="dash-chart-box">
+                @if (count($daily['labels']))
+                    <p class="dash-card-label mb-3">
+                        Total no período: <strong>{{ $daily['total'] }}</strong> inscrições
+                    </p>
+                    <div class="dash-chart" style="height: 260px">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                @else
+                    <p class="dash-card-label mb-0">As inscrições ainda não começaram.</p>
+                @endif
+            </div>
+        </div>
+
         {{-- Andamento do processo --}}
         <h2 class="dash-section-title">Andamento do processo</h2>
         <div class="card dash-list">
@@ -181,7 +198,7 @@
         <h2 class="dash-section-title">Ações rápidas</h2>
         <div class="row g-3">
             <div class="col-12 col-md-4">
-                <a href="{{ route('admin.exam.index') }}" class="dash-action">
+                <a href="{{ route('admin.exam.show') }}" class="dash-action">
                     <i class="bi bi-geo-alt"></i>
                     <span>
                         Locais de prova
@@ -213,9 +230,12 @@
     </div>
 @endsection
 
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+@endpush
+
 @if (count($chart['labels']))
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
         <script>
             const chartData = @json($chart);
             const css = getComputedStyle(document.documentElement);
@@ -292,6 +312,58 @@
                     },
                 },
             });
+        </script>
+    @endpush
+@endif
+
+@if (count($daily['labels']))
+    @push('scripts')
+        <script>
+            (() => {
+                const daily = @json($daily);
+                const css = getComputedStyle(document.documentElement);
+
+                Chart.defaults.font.family = css.getPropertyValue('--font-body').trim();
+
+                new Chart(document.getElementById('dailyChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: daily.labels,
+                        datasets: [{
+                            label: 'Inscrições',
+                            data: daily.values,
+                            backgroundColor: css.getPropertyValue('--color-teal').trim(),
+                            borderRadius: 4,
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxRotation: 0,
+                                    autoSkip: true
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                    },
+                });
+            })();
         </script>
     @endpush
 @endif

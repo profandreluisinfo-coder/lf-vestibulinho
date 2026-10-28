@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Call;
 use App\Models\CallList;
 use Illuminate\View\View;
-use App\Models\ExamResult;
 use App\Exports\CallExport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

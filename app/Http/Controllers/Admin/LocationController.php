@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Local;
-use App\Models\ExamResult;
+use App\Models\Location;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class LocalController extends Controller
+class LocationController extends Controller
 {
     /**
      * Recupera todos os locais de exames e compartilha com a view.
@@ -22,9 +21,9 @@ class LocalController extends Controller
     public function index(): View
     {
         // Obter todos as locais de prova
-        $locations = Local::all();
+        $locations = Location::all();
 
-        return view('admin.local.index', compact('locations'));
+        return view('admin.location.index', compact('locations'));
     }
 
     /**
@@ -55,7 +54,7 @@ class LocalController extends Controller
             'rooms_available.max' => 'O campo salas disponíveis deve menor ou igual a :max.',
         ]);
 
-        $examLocation = new Local();
+        $examLocation = new Location();
         $examLocation->name = $this->stringToUpper($data['name']); // Converter para maiúsculas e UTF-8 para evitar problemas com acentuações e caracteres especiais.
         $examLocation->address = $this->stringToUpper($data['address']);
         $examLocation->rooms_available = $data['rooms_available'];
@@ -63,16 +62,10 @@ class LocalController extends Controller
 
         // Verificar se a operação foi bem-sucedida
         if ($examLocation->wasRecentlyCreated) {
-            return redirect()->back()->with(
-                'success',
-                'Local de exame cadastrado com sucesso!'
-            );
+            return alertSuccess('Local de exame cadastrado com sucesso!');
         }
 
-        return redirect()->back()->with(
-            'danger',
-            'Ocorreu um erro ao cadastrar o local de exame.'
-        );
+        return alertError('Ocorreu um erro ao cadastrar o local de exame.');
     }
 
     /**
@@ -83,13 +76,11 @@ class LocalController extends Controller
      */
     public function edit($id): View
     {
-        $location = Local::find($id);
+        $location = Location::find($id);
 
-        view()->share([
-            'location' => $location,
+        return view('admin.location.edit', [
+            'location' => $location
         ]);
-
-        return view('admin.local.edit');
     }
 
     /**
@@ -102,13 +93,13 @@ class LocalController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $location = Local::find($id);
+        $location = Location::find($id);
         $location->name = $this->stringToUpper($request->name);
         $location->address = $this->stringToUpper($request->address);
         $location->rooms_available = $request->rooms_available;
         $location->save();
 
-        return redirect()->route('admin.local.index')->with(
+        return redirect()->route('admin.location.index')->with(
             'success',
             'Local atualizado com sucesso!'
         );
@@ -121,19 +112,15 @@ class LocalController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Location $location )
     {
         try {
-            DB::transaction(function () use ($id) {
-                $examLocation = Local::findOrFail($id);
+            
+            $location->delete();
 
-                ExamResult::where('exam_location_id', $examLocation->id)->delete();
-                $examLocation->delete();
-            });
-
-            return redirect()->back()->with('success', 'Local excluído com sucesso!');
+            return alertSuccess('Local excluído com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return alertError($e->getMessage());
         }
     }
 

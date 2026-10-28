@@ -193,10 +193,10 @@
                     <i class="bi bi-chevron-down"></i>
                 </button>
 
-                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.local.*', 'admin.exam.*', 'admin.archives.*']) ? 'show' : '' }}"
+                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.location.*', 'admin.exam.*', 'admin.archives.*']) ? 'show' : '' }}"
                     id="menuProvas">
-                    <a href="{{ route('admin.local.index') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.local.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.location.index') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.location.index') ? 'active' : '' }}">
                         <i class="bi bi-geo me-1"></i> Locais
                     </a>
                     <a href="{{ route('admin.exam.create') }}"

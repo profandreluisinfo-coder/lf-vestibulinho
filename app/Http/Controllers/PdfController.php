@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Call;
 use App\Models\Exam;
-use App\Models\ExamResult;
 use App\Models\Lgbt;
 use App\Models\Pne;
 use App\Models\Process;

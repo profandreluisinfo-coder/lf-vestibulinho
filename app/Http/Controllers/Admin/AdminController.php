@@ -8,8 +8,8 @@ use App\Models\Inscription;
 use App\Models\Lgbt;
 use App\Models\Pne;
 use App\Models\Process;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Carbon\CarbonPeriod;
 
 class AdminController extends Controller
 {
@@ -28,8 +28,9 @@ class AdminController extends Controller
         $timeline = $this->timeline($process);
         $alerts   = $this->alerts($process);
         $chart    = $this->courseChart($process);
+        $daily    = $this->dailyChart($process);
 
-        return view('admin.home.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart'));
+        return view('admin.home.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
     }
 
     /**
@@ -201,6 +202,47 @@ class AdminController extends Controller
             'labels'    => $rows->pluck('curso')->all(),
             'inscritos' => $rows->pluck('inscritos')->map(fn($v) => (int) $v)->all(),
             'vagas'     => $rows->pluck('vagas')->map(fn($v) => (int) $v)->all(),
+        ];
+    }
+
+        /**
+     * Inscrições por dia, do início do período até hoje (ou até o fim).
+     */
+    private function dailyChart(?Process $process): array
+    {
+        $empty = ['labels' => [], 'values' => [], 'total' => 0];
+
+        if (!$process || !$process->start) {
+            return $empty;
+        }
+
+        $start = $process->start->copy()->startOfDay();
+        $last  = $process->end ? $process->end->copy() : today();
+        $end   = $last->lt(today()) ? $last : today(); // nunca passa de hoje
+
+        // Inscrições ainda não começaram
+        if ($end->lt($start)) {
+            return $empty;
+        }
+
+        $counts = Inscription::where('process_id', $process->id)
+            ->whereBetween('created_at', [$start, $end->copy()->endOfDay()])
+            ->selectRaw('DATE(created_at) as day, COUNT(*) as total')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $labels = [];
+        $values = [];
+
+        foreach (CarbonPeriod::create($start, $end) as $date) {
+            $labels[] = $date->format('d/m');
+            $values[] = (int) ($counts[$date->toDateString()] ?? 0);
+        }
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+            'total'  => array_sum($values),
         ];
     }
 }

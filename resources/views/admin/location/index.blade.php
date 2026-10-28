@@ -47,13 +47,13 @@
                                     </a>
                                     <!-- Excluir -->
                                     <form id="delete-location-form-{{ $local->id }}"
-                                        action="{{ route('admin.local.destroy', $local->id) }}" method="POST"
+                                        action="{{ route('admin.location.destroy', ['location' => $local]) }}" method="POST"
                                         style="display:none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
                                     <!-- Editar -->
-                                    <a href="{{ route('admin.local.edit', $local->id) }}"
+                                    <a href="{{ route('admin.location.edit', $local->id) }}"
                                             class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil-square me-1"></i> Editar
                                         </a>                                        
@@ -90,7 +90,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
 
-                                <form id="exam-location" action="{{ route('admin.local.store') }}" method="POST" novalidate>
+                                <form id="exam-location" action="{{ route('admin.location.store') }}" method="POST" novalidate>
                                     @csrf
 
                                     {{-- Nome do Local --}}
