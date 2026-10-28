@@ -8,6 +8,7 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/posts/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/posts/attachment-previews.css') }}">
 @endpush
 
 {{-- =====================================================================
@@ -147,6 +148,10 @@
                         @enderror
                         <div class="form-text mb-2">Múltiplos arquivos permitidos. Máximo 10 MB por arquivo.</div>
 
+                        <div id="attachment-image-preview-wrap" class="attachment-image-preview-wrap" hidden>
+                            <h6>Prévia das imagens selecionadas</h6>
+                            <div id="attachment-image-preview" class="attachment-image-preview"></div>
+                        </div>
                         <div id="attachment-list"></div>
 
                     </div>

@@ -1,0 +1,69 @@
+.attachment-image-preview-wrap {
+    margin-top: 1rem;
+}
+
+.attachment-image-preview-wrap h6 {
+    margin-bottom: .75rem;
+    color: var(--color-navy);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.attachment-image-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.attachment-image-card {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-light-mid);
+    border-radius: var(--radius-sm);
+    background: #fff;
+}
+
+.attachment-image-card img {
+    display: block;
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    background: var(--color-light);
+}
+
+.attachment-image-name {
+    display: block;
+    padding: 7px 9px;
+    overflow: hidden;
+    color: var(--text-dark);
+    font-size: var(--font-size-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attachment-image-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-danger);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
+}
+
+@media (max-width: 480px) {
+    .attachment-image-preview {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .attachment-image-card img {
+        height: 120px;
+    }
+}
