@@ -130,7 +130,7 @@
                     </div>
 
                     <h2 class="section-title">
-                        Últimos
+                        Últimas notícias
                     </h2>
 
                     <p class="section-lead">

@@ -225,16 +225,17 @@
 }
 
 .news-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 300px));
+    justify-content: start;
+    align-items: stretch;
     gap: 1.5rem;
 }
 
 .news-grid > * {
-    flex: 0 0 auto;
-    width: 300px;
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
 }
 
 .news-card {
