@@ -21,11 +21,11 @@
                     @csrf
                     <div class="form-check form-switch mt-3">
                         <input class="form-check-input" type="checkbox" id="result" name="result"
-                            onchange="confirmResultAccess(this)" {{ $settings->result != 0 ? 'checked' : '' }}>
+                            onchange="confirmResultAccess(this)" {{ $resultReleased ? 'checked' : '' }}>
                         <label class="form-check-label" for="result">
                             Acesso ao resultado:
-                            <span class="badge bg-{{ $settings->result != 0 ? 'success' : 'danger' }} ms-2">
-                                {{ $settings->result != 0 ? 'Liberado' : 'Bloqueado' }}
+                            <span class="badge bg-{{ $resultReleased ? 'success' : 'danger' }} ms-2">
+                                {{ $resultReleased ? 'Liberado' : 'Bloqueado' }}
                             </span>
                         </label>
                     </div>

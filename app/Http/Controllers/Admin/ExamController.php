@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
-use App\Models\Setting;
 use App\Services\ExamAllocationService;
 use DomainException;
 use Illuminate\Http\Request;
@@ -20,8 +19,6 @@ class ExamController extends Controller
      */
     public function show(): View
     {
-        $accessStatus = Setting::first() ?? new Setting();
-
         $candidates = Exam::with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
             ->orderBy('location_id')
             ->orderBy('room_number')
@@ -51,7 +48,6 @@ class ExamController extends Controller
 
 
         return view('admin.exam.show', [
-            'accessStatus' => $accessStatus,
             'candidates' => $candidates
         ]);
     }

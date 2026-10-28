@@ -9,10 +9,8 @@ use App\Models\Course;
 use App\Models\ExamResult;
 use App\Models\Inscription;
 use App\Models\Process;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +18,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Process\Process as SymfonyProcess;
 
 class SettingController extends Controller
@@ -166,12 +163,6 @@ class SettingController extends Controller
 
             // Zera vagas dos cursos
             Course::whereNotNull('vacancies')->update(['vacancies' => 0]);
-
-            // Alterar para 'false' campos 'result' e 'location' da tabela de settings
-            Setting::updateOrCreate(
-                ['id' => 1],
-                ['result' => false, 'location' => false]
-            );
 
             Cache::forget('global_calendar');
             Cache::forget('global_process');
