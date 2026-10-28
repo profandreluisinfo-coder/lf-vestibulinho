@@ -19,10 +19,6 @@
                 style="width: 0%">0%</div>
         </div>
 
-        @php
-            $count = \App\Models\ExamResult::count('ranking');
-        @endphp
-
         @if ($count > 0)
             <div class="alert alert-success d-flex flex-row align-items-center mb-3">
                 <small class="text-success fw-semibold">
@@ -60,16 +56,6 @@
                             <th scope="col">points</th>
                         </tr>
                     </thead>
-                    {{-- <tbody class="table-group-divider">
-                        <tr>
-                            <td>1</td>
-                            <td>10</td>
-                            <td>123.456.789-00</td>
-                            <td>Maria Aparecida</td>
-                            <td>01/01/2010</td>
-                            <td>58</td>
-                        </tr>
-                    </tbody> --}}
                 </table>
             </div>
 
@@ -85,7 +71,7 @@
 
         </div>
 
-            <form id="import-results" action="{{ route('admin.import.import') }}" data-redirect="{{ route('admin.reports.classification') }}">
+            <form id="import-results" action="{{ route('admin.import.create') }}" data-redirect="{{ route('admin.reports.classification') }}">
             @csrf
 
             <div class="form-group mb-3">

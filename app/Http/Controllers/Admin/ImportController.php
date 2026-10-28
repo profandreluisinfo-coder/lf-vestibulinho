@@ -24,7 +24,7 @@ class ImportController extends Controller
     }
 
     // Exibe o formulário de importação
-    public function home(): View
+    public function index(): View
     {
         return view('admin.import.index');
     }
@@ -32,7 +32,7 @@ class ImportController extends Controller
     /**
      * Importa as notas de um arquivo .xlsx e calcula a classificação.
      */
-    public function import(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx|max:10240',

@@ -161,8 +161,7 @@
                                 </div>
 
                                 @if ($user?->pne?->report && Storage::disk('public')->exists($user?->pne?->report))
-                                    <a class="file-link" href="{{ Storage::url($user?->pne?->report) }}"
-                                        target="_blank">
+                                    <a class="file-link" href="{{ Storage::url($user?->pne?->report) }}" target="_blank">
                                         <i class="bi bi-file-earmark-pdf"></i> Visualizar laudo médico
                                     </a>
                                 @else
@@ -194,13 +193,14 @@
                                     Você concorre às vagas destinadas a
                                     <strong>Pessoas com Necessidades Especiais (PNE)</strong>.
                                     @if ($user->appealOf('pne')?->isAccepted())
-                                        <div class="mt-1"><i class="bi bi-check-circle-fill"></i> Deferido após recurso.</div>
+                                        <div class="mt-1"><i class="bi bi-check-circle-fill"></i> Deferido após recurso.
+                                        </div>
                                     @endif
                                 </div>
                             </div>
                         @elseif ($user?->pne?->status === 'pending')
                             <div class="modality-note modality-pending d-flex align-items-start gap-2">
-                                
+
                                 <div><i class="bi bi-info-circle mt-1"></i>
                                     Enquanto seu pedido está em análise, você concorre provisoriamente às vagas de
                                     <strong>Ampla Concorrência (AC)</strong>.
@@ -235,14 +235,14 @@
                         </div>
                         <div class="info-block-row">
                             <div class="avisos-list">
-                            
+
                                 Seu documento de identidade foi expedido há mais de 5 anos
-                                        (<strong>{{ $user->document->expedition->format('d/m/Y') }}</strong>). Para
-                                        realização da prova será
-                                        <strong>obrigatória</strong> a apresentação de documento oficial de identificação
-                                        com fotografia atual. Caso o documento informado não possua fotografia que permita
-                                        sua
-                                        adequada identificação, providencie um novo documento antes da data da prova.
+                                (<strong>{{ $user->document->expedition->format('d/m/Y') }}</strong>). Para
+                                realização da prova será
+                                <strong>obrigatória</strong> a apresentação de documento oficial de identificação
+                                com fotografia atual. Caso o documento informado não possua fotografia que permita
+                                sua
+                                adequada identificação, providencie um novo documento antes da data da prova.
                             </div>
                         </div>
                     </div>
@@ -261,20 +261,23 @@
 
                 @if ($locationReleased)
                     @if ($exam)
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
-                        <i class="bi bi-geo-alt me-1"></i> Local de Prova
-                    </button>
-                @else
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
+                            <i class="bi bi-geo-alt me-1"></i> Local de Prova
+                        </button>
+                    @else
                         <div class="alert alert-warning">
                             Não encontramos a sua alocação de prova. Entre em contato com a escola.
                         </div>
                     @endif
                 @endif
 
+                {{-- ╔══════════════════════════════════════════╗ --}}
+                {{-- ║     local de prova                       ║ --}}
+                {{-- ╚══════════════════════════════════════════╝ --}}
                 @if ($resultReleased)
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#resultadoDeProva">
-                        <i class="bi bi-list-ol me-1"></i> Classificação
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#resultadoFinal">
+                        <i class="bi bi-list-ol me-1"></i> Ver resultado
                     </button>
                 @endif
             </div>
@@ -284,148 +287,182 @@
         {{-- ╔══════════════════════════════════════════╗ --}}
         {{-- ║          MODAL — LOCAL DE PROVA          ║ --}}
         {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($locationReleased && $exam)
-                <div class="modal fade" id="localDeProva" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                        <div class="modal-content" style="border-radius:12px; border:1px solid #dee2e6;">
+        @if ($locationReleased && $exam)
+            <div class="modal fade" id="localDeProva" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content" style="border-radius:12px; border:1px solid #dee2e6;">
 
-                            <div class="modal-header" style="border-bottom:1px solid #f1f3f5;">
-                                <h5 class="modal-title fw-semibold">
-                                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>Local de Prova
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <div class="modal-header" style="border-bottom:1px solid #f1f3f5;">
+                            <h5 class="modal-title fw-semibold">
+                                <i class="bi bi-geo-alt-fill text-primary me-2"></i>Local de Prova
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body p-4">
+
+                            {{-- Local --}}
+                            <div class="info-block mb-3">
+                                <div class="info-block-label"><i class="bi bi-building"></i> Local</div>
+                                <div style="font-size:0.95rem; font-weight:600; margin-bottom:4px;">
+                                    {{ $exam->location?->name }}
+                                </div>
+                                <div style="font-size:0.82rem; color:#6c757d;">
+                                    {{ $exam->location?->address }}
+                                </div>
                             </div>
 
-                            <div class="modal-body p-4">                                
-
-                                {{-- Local --}}
-                                <div class="info-block mb-3">
-                                    <div class="info-block-label"><i class="bi bi-building"></i> Local</div>
-                                    <div style="font-size:0.95rem; font-weight:600; margin-bottom:4px;">
-                                        {{ $exam->location?->name }}
-                                    </div>
-                                    <div style="font-size:0.82rem; color:#6c757d;">
-                                        {{ $exam->location?->address }}
+                            {{-- Sala / Data / Hora --}}
+                            <div class="call-data-grid"
+                                style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
+                                <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
+                                    <div class="call-data-label" style="color:#2b6cb0;">Sala</div>
+                                    <div class="call-data-value" style="color:#1a365d;">{{ $exam->room_number }}
                                     </div>
                                 </div>
+                                <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
+                                    <div class="call-data-label" style="color:#2b6cb0;">Data</div>
+                                    <div class="call-data-value" style="color:#1a365d;">
+                                        {{ $process->exam_date?->format('d/m/Y') ?? '—' }}
+                                    </div>
+                                </div>
+                                <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
+                                    <div class="call-data-label" style="color:#2b6cb0;">Horário</div>
+                                    <div class="call-data-value" style="color:#1a365d;">
+                                        {{ $process->exam_time ? \Carbon\Carbon::parse($process->exam_time)->format('H:i') : '—' }}
+                                    </div>
+                                </div>
+                            </div>
 
-                                {{-- Sala / Data / Hora --}}
+                            @if ($isPneRoom)
+                                <div class="alert alert-warning py-2 px-3 mt-2"
+                                    style="border-radius:8px; font-size:0.85rem;">
+                                    <i class="bi bi-universal-access-circle me-1"></i>
+                                    <strong>Sala de Atendimento Especializado</strong>
+                                </div>
+                            @endif
+
+                            {{-- Instruções --}}
+                            <div class="mt-3">
+                                <div class="modal-section-title">Instruções</div>
+                                <ul class="docs-list-modern">
+                                    <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
+                                    <li>Leve documento com foto e caneta azul ou preta.</li>
+                                    <li style="color:#991b1b; font-weight:600;">
+                                        <i class="bi bi-ban me-1"></i>
+                                        Não é permitido usar dispositivos eletrônicos durante a prova.
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
+                            <a href="{{ route('inscription.card.exam') }}" class="btn btn-primary btn-sm"
+                                target="_blank">
+                                <i class="bi bi-download me-1"></i> Baixar PDF
+                            </a>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">Fechar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        @endif
+
+
+        {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║       MODAL — RESULTADO DA PROVA         ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║  1. BOTÃO: coloque ao lado do botão do   ║ --}}
+        {{-- ║     local de prova                       ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        @if ($resultReleased)
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                data-bs-target="#resultadoFinal">
+                <i class="bi bi-list-ol me-1"></i> Ver resultado
+            </button>
+        @endif
+
+
+        {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║  2. MODAL: junto do modal do local       ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        @if ($resultReleased)
+            <div class="modal fade" id="resultadoFinal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content" style="border-radius:12px; border:1px solid #dee2e6;">
+
+                        <div class="modal-header" style="border-bottom:1px solid #f1f3f5;">
+                            <h5 class="modal-title fw-semibold">
+                                <i class="bi bi-list-ol text-primary me-2"></i>Resultado final
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body p-4">
+
+                            @if ($result && $result->score !== null && $result->ranking !== null)
+
+                                {{-- Posição e pontuação: todo candidato com nota vê as suas --}}
                                 <div class="call-data-grid"
                                     style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
-                                        <div class="call-data-label" style="color:#2b6cb0;">Sala</div>
-                                        <div class="call-data-value" style="color:#1a365d;">{{ $exam->room_number }}
-                                        </div>
+                                        <div class="call-data-label" style="color:#2b6cb0;">Posição</div>
+                                        <div class="call-data-value" style="color:#1a365d;">{{ $result->ranking }}º</div>
                                     </div>
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
-                                        <div class="call-data-label" style="color:#2b6cb0;">Data</div>
-                                        <div class="call-data-value" style="color:#1a365d;">
-                                            {{ $process->exam_date?->format('d/m/Y') ?? '—' }}
-                                        </div>
-                                    </div>
-                                    <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
-                                        <div class="call-data-label" style="color:#2b6cb0;">Horário</div>
-                                        <div class="call-data-value" style="color:#1a365d;">
-                                            {{ $process->exam_time ? \Carbon\Carbon::parse($process->exam_time)->format('H:i') : '—' }}
-                                        </div>
+                                        <div class="call-data-label" style="color:#2b6cb0;">Pontuação</div>
+                                        <div class="call-data-value" style="color:#1a365d;">{{ $result->score }}</div>
                                     </div>
                                 </div>
 
-                                @if ($isPneRoom)
-                                    <div class="alert alert-warning py-2 px-3 mt-2"
+                                @if ($result->classified)
+                                    <div class="alert alert-success py-2 px-3 mt-3"
                                         style="border-radius:8px; font-size:0.85rem;">
-                                        <i class="bi bi-universal-access-circle me-1"></i>
-                                        <strong>Sala de Atendimento Especializado</strong>
+                                        <i class="bi bi-check-circle-fill me-1"></i>
+                                        <strong>Classificado(a).</strong>
+                                        A convocação para matrícula segue a ordem de classificação e a
+                                        disponibilidade de vagas, conforme o edital.
+                                    </div>
+                                @else
+                                    <div class="alert alert-secondary py-2 px-3 mt-3"
+                                        style="border-radius:8px; font-size:0.85rem;">
+                                        <i class="bi bi-info-circle-fill me-1"></i>
+                                        <strong>Não classificado(a).</strong>
+                                        Sua posição ficou fora do limite de classificação previsto no edital, e o
+                                        candidato não classificado está eliminado do Processo Seletivo.
                                     </div>
                                 @endif
-
-                                {{-- Instruções --}}
-                                <div class="mt-3">
-                                    <div class="modal-section-title">Instruções</div>
-                                    <ul class="docs-list-modern">
-                                        <li>Chegue com <strong>30 minutos de antecedência</strong>.</li>
-                                        <li>Leve documento com foto e caneta azul ou preta.</li>
-                                        <li style="color:#991b1b; font-weight:600;">
-                                            <i class="bi bi-ban me-1"></i>
-                                            Não é permitido usar dispositivos eletrônicos durante a prova.
-                                        </li>
-                                    </ul>
+                            @else
+                                <div class="alert alert-warning py-2 px-3 mb-0"
+                                    style="border-radius:8px; font-size:0.85rem;">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                    Não encontramos um resultado para a sua inscrição. Se você realizou a prova,
+                                    entre em contato com a escola.
                                 </div>
 
-                            </div>
-
-                            <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                                <a href="{{ route('inscription.card.exam') }}" class="btn btn-primary btn-sm" target="_blank">
-                                    <i class="bi bi-download me-1"></i> Baixar PDF
-                                </a>
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    data-bs-dismiss="modal">Fechar</button>
-                            </div>
+                            @endif
 
                         </div>
-                    </div>
-                </div>
-            @endif
 
-
-            {{-- ╔══════════════════════════════════════════╗ --}}
-            {{-- ║       MODAL — RESULTADO DA PROVA         ║ --}}
-            {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($resultReleased)
-                <div class="modal fade" id="resultadoDeProva" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content" style="border-radius:12px; border:none;">
-
-                            <div class="modal-body p-3">
-                                <div class="result-card-modern">
-
-                                    <div class="result-card-header">
-                                        <h5><i class="bi bi-list-ol me-2"></i>Resultado da Prova Objetiva</h5>
-                                        <span class="badge bg-light text-primary">Ano {{ $process?->year }}</span>
-                                    </div>
-
-                                    <div class="result-body">
-                                        <p class="text-muted mb-1"
-                                            style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em;">
-                                            Candidato(a)</p>
-                                        <h5 class="fw-bold mb-1">{{ $displayName }}</h5>
-                                        <p style="font-size:0.82rem; color:#6c757d;">CPF: {{ $user->cpf }}</p>
-
-                                        <hr class="my-3">
-
-                                        <p class="text-muted mb-1" style="font-size:0.8rem;">Nota obtida</p>
-                                        <div class="result-score">{{ $examResult?->score }}</div>
-
-                                        <p class="text-muted mt-3 mb-1" style="font-size:0.8rem;">Classificação Geral</p>
-                                        <div class="result-ranking">{{ $examResult?->ranking }}º</div>
-                                    </div>
-
-                                    <div
-                                        style="padding:0.75rem 1.25rem; background:#f8f9fa; border-top:1px solid #e9ecef; font-size:0.78rem; color:#6c757d; text-align:center; border-radius:0 0 12px 12px;">
-                                        Critério de desempate: idade do candidato (mais jovem tem prioridade).
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                                <a href="{{ route('inscription.card.result') }}" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
-                                </a>
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    data-bs-dismiss="modal">Fechar</button>
-                            </div>
-
+                        <div class="modal-footer" style="border-top:1px solid #f1f3f5;">
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">Fechar</button>
                         </div>
+
                     </div>
                 </div>
-            @endif
+            </div>
+        @endif
 
 
-            {{-- ╔══════════════════════════════════════════╗ --}}
-            {{-- ║      MODAL — DETALHES DA CONVOCAÇÃO      ║ --}}
-            {{-- ╚══════════════════════════════════════════╝ --}}
-            {{-- @if ($call && $user->hasConfirmedCall())
+        {{-- ╔══════════════════════════════════════════╗ --}}
+        {{-- ║      MODAL — DETALHES DA CONVOCAÇÃO      ║ --}}
+        {{-- ╚══════════════════════════════════════════╝ --}}
+        {{-- @if ($call && $user->hasConfirmedCall())
                 <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">

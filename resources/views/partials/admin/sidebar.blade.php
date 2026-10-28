@@ -128,8 +128,8 @@
                         <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                     </a>
 
-                    <a href="{{ route('admin.import.home') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
+                    <a href="{{ route('admin.import.index') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
                         <i class="bi bi-upload me-1"></i> Importar Notas
                     </a>
                 </div>

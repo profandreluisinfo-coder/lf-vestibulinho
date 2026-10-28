@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, NoticeController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
+use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
 use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
@@ -96,21 +96,7 @@ Route::prefix('admin')
                     ->whereIn('type', ['location', 'result'])
                     ->name('release');
             });
-
-        // Edital
-        Route::prefix('edital')
-            ->name('notices.')
-            ->group(function () {
-                Route::get('/', [NoticeController::class, 'index'])
-                    ->name('index');
-                Route::post('salvar', [NoticeController::class, 'store'])
-                    ->name('store');
-                Route::put('atualizar', [NoticeController::class, 'update'])
-                    ->name('update');
-                Route::delete('excluir/{notice}', [NoticeController::class, 'destroy'])
-                    ->name('destroy');
-            });
-
+            
         // Provas
         Route::prefix('prova')
             ->name('exam.')
@@ -237,10 +223,10 @@ Route::prefix('admin')
         Route::prefix('importar')
             ->name('import.')
             ->group(function () {
-                Route::get('notas', [ImportController::class, 'home'])
-                    ->name('home');
-                Route::post('notas', [ImportController::class, 'import'])
-                    ->name('import');
+                Route::get('notas', [ImportController::class, 'index'])
+                    ->name('index');
+                Route::post('notas', [ImportController::class, 'create'])
+                    ->name('create');
             });
 
         // Alocações (PDFs)
