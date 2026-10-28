@@ -277,34 +277,63 @@
 
                 {{-- Anexos existentes --}}
                 @if($post->attachments->isNotEmpty())
+                    @php
+                        $existingImageAttachments = $post->attachments->filter(fn ($attachment) => \Illuminate\Support\Str::startsWith($attachment->mime_type ?? '', 'image/'));
+                        $existingFileAttachments = $post->attachments->reject(fn ($attachment) => \Illuminate\Support\Str::startsWith($attachment->mime_type ?? '', 'image/'));
+                    @endphp
                     <div class="form-card mb-4">
                         <div class="form-card-header">
                             <i class="bi bi-paperclip"></i>
                             <h6>Anexos existentes</h6>
                         </div>
                         <div class="form-card-body">
-                            <div class="d-flex flex-column gap-2">
-                                @foreach($post->attachments as $attachment)
-                                    <div class="existing-attachment" id="att-{{ $attachment->id }}">
-                                        <i class="bi bi-file-earmark-text"></i>
-                                        <span class="att-name" title="{{ $attachment->name }}">
-                                            {{ $attachment->name }}
-                                        </span>
-                                        <span class="att-size">
-                                            {{ $attachment->mime_type }}
-                                            @if($attachment->size)
-                                                · {{ number_format($attachment->size / 1024, 1) }} KB
-                                            @endif
-                                        </span>
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="removeAttachment({{ $attachment->id }}, '{{ route('admin.posts.attachments.destroy', [$post, $attachment]) }}')"
-                                            title="Remover anexo">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
+                            @if($existingImageAttachments->isNotEmpty())
+                                <div class="attachment-image-preview-wrap mb-3">
+                                    <h6>Imagens já anexadas</h6>
+                                    <div class="attachment-image-preview">
+                                        @foreach($existingImageAttachments as $attachment)
+                                            <div class="attachment-image-card" id="att-{{ $attachment->id }}">
+                                                <a class="attachment-image-link" href="{{ Storage::url($attachment->path) }}" target="_blank" rel="noopener">
+                                                    <img src="{{ Storage::url($attachment->path) }}" alt="{{ $attachment->name }}">
+                                                    <span class="attachment-image-name" title="{{ $attachment->name }}">{{ $attachment->name }}</span>
+                                                </a>
+                                                <button type="button"
+                                                    class="attachment-image-remove"
+                                                    onclick="removeAttachment({{ $attachment->id }}, '{{ route('admin.posts.attachments.destroy', [$post, $attachment]) }}')"
+                                                    title="Remover anexo"
+                                                    aria-label="Remover {{ $attachment->name }}">
+                                                    <i class="bi bi-trash3" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
+                            @endif
+
+                            @if($existingFileAttachments->isNotEmpty())
+                                <div class="d-flex flex-column gap-2">
+                                    @foreach($existingFileAttachments as $attachment)
+                                        <div class="existing-attachment" id="att-{{ $attachment->id }}">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                            <span class="att-name" title="{{ $attachment->name }}">
+                                                {{ $attachment->name }}
+                                            </span>
+                                            <span class="att-size">
+                                                {{ $attachment->mime_type }}
+                                                @if($attachment->size)
+                                                    · {{ number_format($attachment->size / 1024, 1) }} KB
+                                                @endif
+                                            </span>
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="removeAttachment({{ $attachment->id }}, '{{ route('admin.posts.attachments.destroy', [$post, $attachment]) }}')"
+                                                title="Remover anexo">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @endif

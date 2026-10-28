@@ -24,6 +24,12 @@
     background: #fff;
 }
 
+.attachment-image-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
 .attachment-image-card img {
     display: block;
     width: 100%;
