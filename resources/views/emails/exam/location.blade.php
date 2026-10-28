@@ -5,7 +5,7 @@
 
   <ul>
       <li><strong>Data:</strong> {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</li>
-      <li><strong>Hora:</strong> {{ $time }}</li>
+      <li><strong>Hora:</strong> {{ \Carbon\Carbon::parse($time)->format('H\hi') }}</li>
       <li><strong>Local:</strong> {{ $location }}</li>
       <li><strong>Endereço:</strong> {{ $address }}</li>
       <li><strong>Sala:</strong> {{ $room_number }}</li>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -148,12 +149,25 @@ class Post extends Model
     }
 
     // Mutator para slug
-    public static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->slug)) {
-                $model->slug = Str::slug($model->title);
+        static::creating(function (Post $post) {
+            if (empty($post->slug)) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+
+        $forget = fn() => Cache::forget('global_total_comunicados');
+
+        static::saved(function (Post $post) use ($forget) {
+            if ($post->type === self::TYPE_INFO || $post->wasChanged('type')) {
+                $forget();
+            }
+        });
+
+        static::deleted(function (Post $post) use ($forget) {
+            if ($post->type === self::TYPE_INFO) {
+                $forget();
             }
         });
     }

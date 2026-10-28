@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Imports\SimpleImport;
-use App\Models\ExamResult;
+use App\Models\Exam;
+use App\Models\Process;
+use App\Models\Result;
 use App\Services\ExamRankingService;
+use DomainException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -27,7 +30,7 @@ class ImportController extends Controller
     }
 
     /**
-     * Importa as notas de um arquivo .xlsx
+     * Importa as notas de um arquivo .xlsx e calcula a classificação.
      */
     public function import(Request $request)
     {
@@ -41,8 +44,23 @@ class ImportController extends Controller
         ]);
 
         try {
-            // Verificar se a tabela exam_results está vazia antes de importar
-            if (ExamResult::count() === 0) {
+            $process = Process::current();
+
+            if (! $process) {
+                return $this->invalidFileResponse('Nenhum processo seletivo cadastrado.');
+            }
+
+            // Reimportar mudaria notas e classificação já visíveis aos candidatos
+            if ($process->isResultReleased()) {
+                return $this->invalidFileResponse(
+                    'O resultado já foi liberado aos candidatos. Retire-o do ar antes de importar novas notas.'
+                );
+            }
+
+            // Candidatos alocados (com prova agendada) neste processo
+            $allocated = Exam::whereHas('inscription', fn ($q) => $q->forProcess($process->id));
+
+            if (! (clone $allocated)->exists()) {
                 return $this->invalidFileResponse('Nenhuma prova foi agendada.');
             }
 
@@ -116,8 +134,10 @@ class ImportController extends Controller
                 return $this->invalidFileResponse('O arquivo não possui notas válidas para importar.');
             }
 
+            // Toda inscrição da planilha precisa ter prova agendada neste processo
             $inscriptionIds = array_keys($updates);
-            $foundInscriptionIds = ExamResult::whereIn('inscription_id', $inscriptionIds)
+            $foundInscriptionIds = (clone $allocated)
+                ->whereIn('inscription_id', $inscriptionIds)
                 ->pluck('inscription_id')
                 ->map(fn ($id) => (int) $id)
                 ->all();
@@ -125,30 +145,60 @@ class ImportController extends Controller
 
             if ($missingInscriptionIds) {
                 return $this->invalidFileResponse(
-                    'Não foram encontrados resultados de prova para as inscrições: ' . implode(', ', $missingInscriptionIds) . '.'
+                    'As inscrições a seguir não têm prova agendada neste processo: '
+                    . implode(', ', $missingInscriptionIds) . '.'
                 );
             }
 
-            DB::transaction(function () use ($updates) {
-                // Uma importação substitui integralmente as notas e classificações anteriores.
-                ExamResult::query()->update([
-                    'score' => null,
-                    'ranking' => null,
-                ]);
+            $withoutScore = (clone $allocated)->count() - count($updates);
+            $now = now();
+            $summary = [];
+
+            DB::transaction(function () use ($updates, $process, $now, &$summary) {
+                // Uma importação substitui integralmente as notas e classificações DESTE processo.
+                Result::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+                    ->update(['score' => null, 'ranking' => null, 'classified' => false]);
+
+                $rows = [];
 
                 foreach ($updates as $inscriptionId => $points) {
-                    ExamResult::where('inscription_id', $inscriptionId)
-                        ->update(['score' => $points]);
+                    $rows[] = [
+                        'inscription_id' => $inscriptionId,
+                        'score'          => $points,
+                        'created_at'     => $now,
+                        'updated_at'     => $now,
+                    ];
                 }
 
-                $this->rankingService->calculate();
+                // exige índice unique em results.inscription_id
+                foreach (array_chunk($rows, 1000) as $batch) {
+                    Result::upsert($batch, ['inscription_id'], ['score', 'updated_at']);
+                }
+
+                $summary = $this->rankingService->calculate($process);
             });
+
+            $message = count($updates) . ' notas importadas. '
+                . "{$summary['classified']} candidatos classificados (limite de {$summary['limit']} pelo edital, "
+                . 'mais os empatados com o último).';
+
+            if ($withoutScore > 0) {
+                $message .= " {$withoutScore} candidato(s) com prova agendada não constam na planilha e ficaram sem nota.";
+            }
+
+            if ($summary['tied'] > 0) {
+                $message .= " Atenção: {$summary['tied']} candidato(s) empatam em nota e idade com outro e dividem a mesma posição.";
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => count($updates) . ' notas importadas e classificadas com sucesso!'
+                'message' => $message,
             ]);
+        } catch (DomainException $e) {
+            return $this->invalidFileResponse($e->getMessage());
         } catch (\Throwable $e) {
+            report($e);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao importar: ' . $e->getMessage()

@@ -7,9 +7,7 @@ use App\Models\Exam;
 use App\Models\Setting;
 use App\Services\ExamAllocationService;
 use DomainException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -20,7 +18,7 @@ class ExamController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(): View
+    public function show(): View
     {
         $accessStatus = Setting::first() ?? new Setting();
 
@@ -52,7 +50,7 @@ class ExamController extends Controller
             );
 
 
-        return view('admin.exam.index', [
+        return view('admin.exam.show', [
             'accessStatus' => $accessStatus,
             'candidates' => $candidates
         ]);
@@ -99,39 +97,5 @@ class ExamController extends Controller
         }
 
         return alertSuccess('Prova agendada com sucesso!');
-    }
-
-    /**
-     * Atualiza o status de acesso ao local de prova e dispara e-mails em fila.
-     *
-     * Caso o acesso seja liberado (location = true),
-     * cria um Job para cada candidato com local de prova definido.
-     */
-    public function location(Request $request): RedirectResponse
-    {
-        // Define se acesso foi liberado
-        $status = $request->filled('location');
-
-        // Atualiza a configuração
-        Setting::updateOrCreate(
-            ['id' => 1],
-            ['location' => $status]
-        );
-
-        Cache::forget('global_settings'); // MUITO IMPORTANTE!
-
-        // Se bloqueou, simplesmente retorna
-        if (!$status) {
-            return redirect()->back()->with('success', 'Acesso ao local bloqueado com sucesso!');
-        }
-
-        // Se liberou, também não enviamos nada aqui.
-        // Apenas permitimos que o CRON diurno processe o envio
-        // de forma segura e em lotes (300/dia, por exemplo).
-
-        return redirect()->back()->with(
-            'success',
-            'Acesso ao Local liberado! Os e-mails serão enviados automaticamente pelo sistema.'
-        );
     }
 }

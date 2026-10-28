@@ -82,9 +82,9 @@
         </script>
     @endif
 
-    @if (request()->routeIs('admin.export.excel'))
+    {{-- @if (request()->routeIs('admin.export.excel')) --}}
         <script src="{{ asset('assets/js/admin/export/handler.js') }}"></script>
-    @endif
+    {{-- @endif --}}
 
 </body>
 

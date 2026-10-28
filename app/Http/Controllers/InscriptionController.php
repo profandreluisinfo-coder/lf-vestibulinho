@@ -12,6 +12,7 @@ use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Disability;
 use App\Models\HealthIssue;
+use App\Models\Pne;
 use App\Models\Process;
 use App\Models\Resource;
 use App\Models\School;
@@ -74,14 +75,14 @@ class InscriptionController extends Controller
 
         // Carrega tudo que o painel precisa
         $user->load([
-            'inscription.exam.location',
-            'inscription.result',
-            'inscription.process',
-        ]);
+            'pne', 
+            'inscription.exam.location', 
+            'inscription.result', 
+            'inscription.process'
+            ]);
 
         $inscription  = $user->inscription;
         $exam         = $inscription->exam;        // sala (room_number) e local
-        $process      = $inscription->process;     // exam_date e exam_time
         $result       = $inscription->result;
 
 
@@ -91,9 +92,9 @@ class InscriptionController extends Controller
             'user'        => $user,
             'displayName' => $displayName,
             'initials'    => $initials,
-            'process'     => $process,
             'result'      => $result,
-            'exam'        => $exam
+            'exam'        => $exam,
+            'isPneRoom'   => $user->pne?->status === Pne::STATUS_ACCEPTED,
         ]);
     }
 

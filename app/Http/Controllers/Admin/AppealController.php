@@ -237,16 +237,6 @@ class AppealController extends Controller
                 return 'Este recurso já foi decidido.';
             }
 
-            // Deferir muda o pedido original e quebraria a alocação já feita.
-            // (Indeferir não muda nada, por isso continua permitido.)
-            if ($status === Appeal::STATUS_ACCEPTED) {
-                $appeal->user->loadMissing('inscription.exam_result');
-
-                if ($appeal->user->inscription?->exam_result) {
-                    return 'Não é possível deferir o recurso, pois o candidato já está alocado em uma prova.';
-                }
-            }
-
             $appeal->update([
                 'status' => $status,
                 'observations' => $observations,
@@ -325,7 +315,7 @@ class AppealController extends Controller
      */
     private function cannotRegister(User $user, string $type): ?string
     {
-        $user->load([$type, 'appeals', 'inscription.exam_result']);
+        $user->load([$type, 'appeals']);
 
         $original = $user->{$type};
 
@@ -339,11 +329,6 @@ class AppealController extends Controller
 
         if ($user->appealOf($type)) {
             return 'Este candidato já possui recurso registrado para este pedido.';
-        }
-
-        // O recurso vale só antes da alocação nas salas de prova
-        if ($user->inscription?->exam_result) {
-            return 'Não é possível registrar o recurso, pois este candidato já está alocado em uma prova.';
         }
 
         return null;

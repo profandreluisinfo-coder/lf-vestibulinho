@@ -80,18 +80,18 @@
                             <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
                         </h5>
 
-                        <form id="location-access-form" action="{{ route('admin.system.release', 'location') }}"
+                        <form id="location-access-form" action="{{ route('admin.process.release', 'location') }}"
                             method="POST">
                             @csrf
 
                             <div class="form-check form-switch mb-3">
                                 <input class="form-check-input" type="checkbox" id="location" name="location"
-                                    onchange="confirmLocationAccess(this)" {{ $accessStatus->location ? 'checked' : '' }}>
+                                    onchange="confirmLocationAccess(this)" {{ $locationReleased ? 'checked' : '' }}>
 
                                 <label class="form-check-label" for="location">
                                     Status:
-                                    <span class="badge bg-{{ $accessStatus->location ? 'success' : 'danger' }} ms-2">
-                                        @if ($accessStatus->location)
+                                    <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }} ms-2">
+                                        @if ($locationReleased)
                                             <i class="bi bi-unlock-fill"></i> Liberado
                                         @else
                                             <i class="bi bi-lock-fill"></i> Bloqueado

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Setting;
+use App\Models\Process;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +16,9 @@ class IsResultEnabled
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Setting::isResultEnabled()) {
+        $process = Process::current();
+
+        if (! $process->isResultEnabled()) {
             abort(404);
         }
         

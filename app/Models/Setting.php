@@ -26,20 +26,11 @@ class Setting extends Model
         'appeals.medical-reports.rejected' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios indeferidos'],
     ];
 
-    protected $attributes = [
-        'location' => false,
-        'result' => false,
-    ];
-
     protected $fillable = [
-        'location',
-        'result',
         'publications',
     ];
 
     protected $casts = [
-        'location' => 'boolean',
-        'result' => 'boolean',
         'publications' => 'array', // ['inscriptions.approved' => true, ...]
     ];
 
@@ -60,20 +51,6 @@ class Setting extends Model
         }
 
         return parent::setAttribute($key, $value);
-    }
-   
-    // Retornar o valor de 'location'
-    public static function isLocationEnabled()
-    {
-        $setting = self::first();
-        return $setting ? (bool) $setting->location : false;
-    }
-
-    // Retornar o valor de 'result'
-    public static function isResultEnabled()
-    {
-        $setting = self::first();
-        return $setting ? (bool) $setting->result : false;
     }
 
     /**
@@ -96,9 +73,14 @@ class Setting extends Model
     }
 
     // Limpa o cache automaticamente quando salvar ou excluir
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::saved(fn() => Cache::forget('global_settings'));
-        static::deleted(fn() => Cache::forget('global_settings'));
+        $forget = function () {
+            Cache::forget('global_settings');
+            Cache::forget('global_total_publicacoes');
+        };
+
+        static::saved($forget);
+        static::deleted($forget);
     }
 }

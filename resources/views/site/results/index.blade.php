@@ -1,140 +1,76 @@
 @extends('layouts.site')
 
-@section('title', 'Classificação Geral')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/site/results/index.css') }}" />
-@endpush
-
 @section('content')
+    <div class="container py-5">
 
-    <!-- ===== BREADCRUMB ===== -->
-    <section class="breadcrumb-section">
-        <div class="container-lg">
-            <nav class="breadcrumb-nav">
-                <a href="{{ route('home') }}" class="breadcrumb-link">
-                    Home
-                </a>
-                <span> / </span>
-                <a href="{{ route('site.faqs.index') }}" class="breadcrumb-link">
-                    Vestibulinho LF {{ $process?->year ?? '' }}
-                </a>
-                <span> / </span>
-                <span>Classificação Geral</span>
-            </nav>
-        </div>
-    </section>
+        <h1 class="h4 mb-1">
+            Classificação {{ $process?->year ? ' — Processo Seletivo ' . $process->year : '' }}
+        </h1>
 
-    <section id="results" class="p-0 mb-5">
+        @if (! $released)
 
-        <div class="container">
-
-            <div class="row">
-                <div class="col-12">
-
-                    <h2 class="section-title text-center mb-3">
-                        Classificação Geral
-                    </h2>
-
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <p class="mb-3">A <strong>Escola Municipal Dr. Leandro Franceschini</strong> torna pública a
-                                classificação geral dos candidatos na prova objetiva, adotando como critério de desempate a
-                                menor idade.
-                            </p>
-
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-6 mb-2 mb-md-0">
-                                    <label for="filter-status" class="form-label fw-semibold me-2">Filtrar por
-                                        situação:</label>
-                                    <select id="filter-status" class="form-select form-select-sm w-auto d-inline-block">
-                                        <option value="all" selected>Todos</option>
-                                        <option value="classificado">Classificados</option>
-                                        <option value="empate">Empatados</option>
-                                        <option value="desclassificado">Desclassificados</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 text-md-end small">
-                                    <span class="badge bg-success me-2">Classificado</span>
-                                    <span class="badge bg-warning text-dark me-2">Empate</span>
-                                    <span class="badge bg-danger">Desclassificado</span>
-                                </div>
-                            </div>
-
-                            <div class="mb-2">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                    <input type="text" class="form-control" id="search" name="search"
-                                        placeholder="Pesquisar por nome ou inscrição" autocomplete="off"
-                                        aria-label="Pesquisar">
-                                </div>
-                            </div>
-
-                            <div id="results-counter" class="text-end small mb-2 mt-2" aria-live="polite" role="status">
-                            </div>
-
-                            <div class="table-responsive mt-3" style="max-height: 500px; overflow-y: auto;">
-                                <table id="classification" class="table table-striped table-hover table-sm mb-0 caption-top"
-                                    role="table" aria-label="Classificação geral">
-                                    <caption class="text-muted small">Vestibulinho LF {{ $process?->year ?? '' }} - Lista de
-                                        Classificação Geral</caption>
-
-                                    <thead class="table-success" role="rowgroup">
-                                        <tr>
-                                            <th scope="col">Classificação</th>
-                                            <th scope="col">Inscrição</th>
-                                            <th scope="col">Nome</th>
-                                            <th scope="col">Nascimento</th>
-                                            <th scope="col">Nota</th>
-                                            <th scope="col">Situação</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="results-tbody" class="table-group-divider">
-                                        @forelse ($results as $index => $result)
-                                            @php
-                                                $isDirectClassified = $result->ranking <= $limit;
-                                                $isTieClassified =
-                                                    !$isDirectClassified && $result->score == $cutoffScore;
-                                                $isClassified = $isDirectClassified || $isTieClassified;
-                                            @endphp
-                                            <tr
-                                                data-status="{{ $isDirectClassified ? 'classificado' : ($isTieClassified ? 'empate' : 'desclassificado') }}">
-                                                <th scope="row">{{ $result->ranking }}º</th>
-                                                <td>{{ $result->id }}</td>
-                                                <td>{{ $result->name ? $result->name : $result->name }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($result->birth)->format('d/m/Y') }}</td>
-                                                <td>{{ $result->score }}</td>
-                                                <td>
-                                                    @if ($isDirectClassified)
-                                                        <span class="badge bg-success">CLASSIFICADO</span>
-                                                    @elseif ($isTieClassified)
-                                                        <span class="badge bg-warning text-dark">CLASSIFICADO</span>
-                                                        <small class="text-muted d-block">(Empate na nota de corte)</small>
-                                                    @else
-                                                        <span class="badge bg-danger">DESCLASSIFICADO</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">Nenhum resultado encontrado.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="alert alert-info mt-4" role="status">
+                <i class="bi bi-hourglass-split me-1"></i>
+                O resultado ainda não foi divulgado.
+                @if ($process?->result_publish)
+                    Divulgação prevista para {{ $process->formatDate($process->result_publish) }}.
+                @endif
             </div>
-        </div>
 
-    </section>
+        @else
 
+            <p class="text-muted small mb-3">
+                Divulgado em {{ $process->result_released_at->format('d/m/Y \à\s H:i') }}.
+                Classificação em lista única, por ordem decrescente de pontuação; em caso de
+                empate, prevalece o candidato de menor idade. Os candidatos que não constam
+                nesta lista estão eliminados do processo seletivo.
+            </p>
+
+            <div class="mb-3" style="max-width: 320px;">
+                <label for="filter" class="form-label small mb-1">Buscar pelo número da inscrição</label>
+                <input type="search" id="filter" class="form-control form-control-sm"
+                       inputmode="numeric" placeholder="Ex.: 123" autocomplete="off">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-sm align-middle" id="results-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center" style="width: 120px;">Posição</th>
+                            <th class="text-center">Inscrição</th>
+                            <th class="text-center" style="width: 140px;">Pontuação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($results as $result)
+                            <tr>
+                                <td class="text-center">{{ $result->ranking }}º</td>
+                                <td class="text-center" data-inscription>{{ $result->inscription_id }}</td>
+                                <td class="text-center">{{ $result->score }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    Nenhum candidato classificado.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                document.getElementById('filter').addEventListener('input', function () {
+                    const term = this.value.trim();
+
+                    document.querySelectorAll('#results-table tbody tr').forEach(function (row) {
+                        const cell = row.querySelector('[data-inscription]');
+                        row.hidden = term !== '' && cell !== null && !cell.textContent.trim().startsWith(term);
+                    });
+                });
+            </script>
+
+        @endif
+
+    </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('assets/js/site/results/index.js') }}"></script>
-@endpush

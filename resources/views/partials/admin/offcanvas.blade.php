@@ -59,7 +59,7 @@
                 <a href="{{ route('admin.faqs.index') }}" class="list-group-item list-group-item-action border-0 px-0">
                     <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                 </a>
-                <a href="{{ route('admin.exam.index') }}" class="list-group-item list-group-item-action border-0 px-0">
+                <a href="{{ route('admin.exam.create') }}" class="list-group-item list-group-item-action border-0 px-0">
                     <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                 </a>
                 <a href="{{ route('admin.reports.classification') }}"

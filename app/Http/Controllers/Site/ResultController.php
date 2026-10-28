@@ -3,56 +3,38 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\ExamResult;
-use App\Models\Setting;
+use App\Models\Process;
+use App\Models\Result;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ResultController extends Controller
 {
     /**
-     * Mostra a lista de resultados na página de resultados do site com base na nota de corte
-     * 
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     * @return \Illuminate\View\View
+     * Lista pública de classificados.
+     *
+     * Mostra apenas número da inscrição, posição e pontuação, e só depois que o
+     * admin libera o resultado do processo atual. Nenhum dado pessoal é carregado.
+     *
+     * O $process também chega à view pelo GlobalDataHelper; aqui ele é usado só
+     * para decidir a consulta, por isso não é repassado.
      */
-    public function index(): View|RedirectResponse
+    public function index(): View
     {
-
-        if (!Setting::isResultEnabled()) {
-            return redirect()->back();
-        }
-
-        // determinar o limite de notas de corte
-        $limit = Course::sum('vacancies') * 3;
-
-        // Busca todos os resultados com user e user_details carregados
-        $results = ExamResult::whereNotNull('score')
-            ->join('inscriptions', 'exam_results.inscription_id', '=', 'inscriptions.id')
-            ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            // ->join('user_details', 'users.id', '=', 'user_details.user_id')
-            ->select(
-                'inscriptions.id',
-                'users.name',
-                'users.name',
-                'users.birth',
-                'exam_results.score',
-                'exam_results.ranking'
+        $process = Process::cached();
+        $released = (bool) $process?->isResultReleased();
+ 
+        // Cache limpo em Process::booted (liberar ou retirar do ar salva o processo)
+        $results = $released
+            ? Cache::remember('global_results', 3600, fn () => Result::query()
+                ->where('classified', true)
+                ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+                ->orderBy('ranking')
+                ->orderBy('inscription_id') // ordem estável entre empatados (mesma posição)
+                ->get(['inscription_id', 'ranking', 'score'])
             )
-            ->orderBy('exam_results.ranking')
-            ->get();
-
-        // ✅ 1️⃣ Pega o último dentro do limite
-        $lastInLimit = $results->where('ranking', '<=', $limit)->last();
-
-        // ✅ 2️⃣ Descobre a nota de corte
-        $cutoffScore = $lastInLimit ? $lastInLimit->score : 0;
-
-        return view('site.results.index', [
-            'results' => $results,
-            'limit' => $limit,
-            'cutoffScore' => $cutoffScore,
-        ]);
+            : collect();
+ 
+        return view('site.results.index', compact('released', 'results'));
     }
 }

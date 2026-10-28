@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
+use App\Models\Exam;
 use App\Models\ExamResult;
+use App\Models\Lgbt;
+use App\Models\Pne;
+use App\Models\Process;
 use App\Services\ExamReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -80,22 +84,39 @@ class PdfController extends Controller
      */
     public function testLocationCardToPdf()
     {
-        // $exam = ExamResult::with('location')
-        //     ->whereHas('inscription', fn ($q) => $q->where('user_id', Auth::user()->id))
-        //     ->first();
-        $exam = ExamResult::with([
-            'location',
-            'inscription.user.lgbt',
-            'inscription.user.pne',
-        ])
-            ->whereHas('inscription', fn($q) => $q->where('user_id', Auth::id()))
+        $process = Process::current();
+
+        // O cartão só existe depois que o admin libera o local da prova
+        if (! $process?->isLocationReleased()) {
+            return redirect()->back()->with('error', 'O local de prova ainda não foi liberado.');
+        }
+
+        // Só a alocação do próprio candidato, no processo atual
+        $exam = Exam::with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
+            ->whereHas(
+                'inscription',
+                fn($q) => $q
+                    ->forProcess($process->id)
+                    ->where('user_id', Auth::id())
+            )
             ->first();
 
         if (! $exam) {
             return redirect()->back()->with('error', 'Local de prova não encontrado.');
         }
 
-        $pdf = Pdf::loadView('pdf.test-location-card', compact('exam'))->setPaper('a4', 'portrait');
+        $user = $exam->inscription->user;
+
+        $displayName = $user->lgbt?->status === Lgbt::STATUS_ACCEPTED
+            ? $user->lgbt->name
+            : $user->name;
+
+        $isPneRoom = $user->pne?->status === Pne::STATUS_ACCEPTED;
+
+        $pdf = Pdf::loadView(
+            'pdf.test-location-card',
+            compact('exam', 'process', 'user', 'displayName', 'isPneRoom')
+        )->setPaper('a4', 'portrait');
 
         return $pdf->stream('cartao-local-prova.pdf');
     }

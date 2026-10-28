@@ -9,7 +9,8 @@ class Exam extends Model
     protected $fillable = [
         'inscription_id',
         'location_id',
-        'room_number'
+        'room_number',
+        'email_sent_at',
     ];
 
     public function inscription()

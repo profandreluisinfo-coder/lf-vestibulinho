@@ -1,15 +1,6 @@
 {{-- ═══════════════ ACESSO RÁPIDO ═══════════════ --}}
 @php
-    $inscricoesAbertas = (bool) $process?->isInscriptionOpen();
     $hasPublications = Route::has('site.publications.index');
-
-    $totalComunicados = \App\Models\Post::comunicados()->published()->count();
-    $totalPublicacoes = count(
-        array_intersect(
-            \App\Models\Setting::releasedPublications(),
-            array_keys(\App\Models\Setting::PUBLICATION_LISTS),
-        ),
-    );
 
     $quickLinks = [
         [
@@ -31,15 +22,25 @@
             'badge_title' => "{$totalComunicados} comunicado(s) importante(s)",
         ],
         [
-            'show' => (bool) $process?->edital,
-            'href' => $process?->edital ? Storage::url($process->edital) : '#',
+            // 'show' => (bool) $process?->edital,
+            // 'href' => $process?->edital ? Storage::url($process->edital) : '#',
+            'show' => filled($process?->edital),
+            'href' => filled($process?->edital) ? Storage::url($process?->edital) : '#',
             'icon' => 'file-earmark-text-fill',
             'title' => 'Edital',
             'desc' => 'Regras e regulamento completo',
             'external' => true,
         ],
         [
-            'show' => $inscricoesAbertas,
+            'show' => true,
+            'href' => route('site.archives.index'),
+            'icon' => 'journal-bookmark-fill',
+            'title' => 'Provas Anteriores',
+            'desc' => 'Treine com edições passadas',
+            'badge' => '',
+        ],
+        [
+            'show' => $isInscriptionOpen,
             'href' => route('register'),
             'icon' => 'person-plus-fill',
             'title' => 'Registrar-se',
@@ -47,8 +48,8 @@
             'badge' => '',
         ],
         [
-            'show' => true,
-            'href' => '#',
+            'show' => $resultReleased,
+            'href' => route('site.results.index'),
             'icon' => 'bar-chart-fill',
             'title' => 'Classificação',
             'desc' => 'Resultado e lista de aprovados',
@@ -61,14 +62,6 @@
             'icon' => 'bell-fill',
             'title' => 'Convocação',
             'desc' => 'Chamada para matrícula',
-            'badge' => '',
-        ],
-        [
-            'show' => true,
-            'href' => route('site.archives.index'),
-            'icon' => 'journal-bookmark-fill',
-            'title' => 'Provas Anteriores',
-            'desc' => 'Treine com edições passadas',
             'badge' => '',
         ],
     ];

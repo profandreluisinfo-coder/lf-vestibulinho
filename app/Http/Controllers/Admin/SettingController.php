@@ -282,19 +282,4 @@ class SettingController extends Controller
             ->route('admin.system.backups.index') // troque pelo nome da sua rota de listagem
             ->with('success', 'Backup excluído com sucesso.');
     }
-
-    /**
-     * Libera o acesso aos locais e resultados de prova.
-     */
-    public function toggle(string $type)
-    {
-        abort_unless(in_array($type, ['location', 'result'], true), 404);
-
-        $process = Process::current();
-        $column  = "{$type}_released_at";
-
-        $process->update([$column => $process->$column ? null : now()]);
-
-        return alertSuccess('Publicação atualizada.');
-    }
 }

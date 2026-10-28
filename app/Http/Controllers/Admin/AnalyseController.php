@@ -15,13 +15,7 @@ class AnalyseController extends Controller
 {
     public function showAcceptReport(User $user): View|RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'pne']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.pcds')
-                ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['pne']);
 
         if (! $user->pne) {
             return redirect()
@@ -40,13 +34,7 @@ class AnalyseController extends Controller
      */
     public function showRejectReport(User $user): View|RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'pne']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.pcds')
-                ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
-        }
+        $user->load(['pne']);
 
         if (! $user->pne) {
             return redirect()
@@ -66,13 +54,7 @@ class AnalyseController extends Controller
     public function acceptReport(string $id): RedirectResponse
     {
         $user = User::find($id);
-        $user->load(['inscription.exam_result', 'pne']);
-
-        if ($user?->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.pcds')
-                ->with('error', 'Não é possível deferir o relatório/laudo, pois este candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['pne']);
 
         if (! $user->pne) {
             return redirect()
@@ -109,13 +91,7 @@ class AnalyseController extends Controller
         ]);
 
         $user = User::find($id);
-        $user->load(['inscription.exam_result', 'pne']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.pcds')
-                ->with('error', 'Não é possível indeferir o relatório/laudo, pois o candidato já está inscrito em uma prova.');
-        }
+        $user->load(['pne']);
 
         if (! $user->pne) {
             return redirect()
@@ -145,13 +121,7 @@ class AnalyseController extends Controller
 
     public function showAcceptAuthorization(User $user): View|RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'lgbt']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Não é possível deferir a autorização, pois este candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['lgbt']);
 
         if (! $user->lgbt) {
             return redirect()
@@ -167,13 +137,7 @@ class AnalyseController extends Controller
 
     public function showRejectAuthorization(User $user): View|RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'lgbt']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Não é possível indeferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['lgbt']);
 
         if (! $user->lgbt) {
             return redirect()
@@ -189,13 +153,7 @@ class AnalyseController extends Controller
 
     public function acceptAuthorization(User $user): RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'lgbt']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Não é possível deferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['lgbt']);
 
         if (! $user->lgbt) {
             return redirect()
@@ -230,13 +188,7 @@ class AnalyseController extends Controller
 
     public function rejectAuthorization(Request $request, User $user): RedirectResponse
     {
-        $user->load(['inscription.exam_result', 'lgbt']);
-
-        if ($user->inscription?->exam_result) {
-            return redirect()
-                ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Não é possível indeferir a autorização, pois o candidato já está inscrito em uma prova agendada.');
-        }
+        $user->load(['lgbt']);
 
         if (! $user->lgbt) {
             return redirect()

@@ -121,13 +121,13 @@
                 </button>
                 <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
                     id="menuResultados">
-                    @if ($results_count > 0)
-                        <a href="javascript:void(0)" id="exportLink"
-                            class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
-                            onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
-                            <i class="bi bi-file-excel me-1"></i> Planilha de Notas
-                        </a>
-                    @endif
+                    
+                    <a href="javascript:void(0)" id="exportLink"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
+                        onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
+                        <i class="bi bi-file-excel me-1"></i> Planilha de Notas
+                    </a>
+
                     <a href="{{ route('admin.import.home') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.import.home') ? 'active' : '' }}">
                         <i class="bi bi-upload me-1"></i> Importar Notas

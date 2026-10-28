@@ -218,6 +218,11 @@ class Process extends Model
         return $process?->year;
     }
 
+    public static function cached(): ?self
+    {
+        return Cache::remember('global_process', 300, fn() => self::current());
+    }
+
     // Limpa o cache automaticamente quando salvar ou excluir
     protected static function booted()
     {
@@ -226,6 +231,7 @@ class Process extends Model
             Cache::forget('global_inscription_open');
             Cache::forget('global_total_inscriptions');
             Cache::forget('global_users_without_inscription');
+            Cache::forget('global_results');
         };
 
         static::saved($clearCache);

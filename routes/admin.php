@@ -92,6 +92,9 @@ Route::prefix('admin')
                     ->name('update');
                 Route::put('ativar/{sp}', [ProcessController::class, 'activate'])
                     ->name('activate');
+                Route::post('liberacao/{type}', [ProcessController::class, 'toggleRelease'])
+                    ->whereIn('type', ['location', 'result'])
+                    ->name('release');
             });
 
         // Edital
@@ -112,8 +115,8 @@ Route::prefix('admin')
         Route::prefix('prova')
             ->name('exam.')
             ->group(function () {
-                Route::get('salas', [ExamController::class, 'index'])
-                    ->name('index');
+                Route::get('salas', [ExamController::class, 'show'])
+                    ->name('show');
                 Route::get('agendar', [ExamController::class, 'create'])
                     ->name('create');
                 Route::post('salvar', [ExamController::class, 'store'])
@@ -380,8 +383,5 @@ Route::prefix('admin')
                     ->name('backups.download');
                 Route::delete('backups/{filename}', [SettingController::class, 'deleteBackup'])
                     ->name('backups.delete');
-                Route::post('liberacao/{type}', [SettingController::class, 'toggleRelease'])
-                    ->whereIn('type', ['location', 'result'])
-                    ->name('release');
             });
     });

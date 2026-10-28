@@ -12,7 +12,7 @@
                 <h6 class="mb-0 text-muted fw-normal">Agendamento de Prova</h6>
             </div>
 
-            <a href="{{ route('admin.exam.index') }}" class="btn btn-primary btn-sm">
+            <a href="{{ route('admin.exam.show') }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-search"></i>Visualizar Agendamento
             </a>
         </div>

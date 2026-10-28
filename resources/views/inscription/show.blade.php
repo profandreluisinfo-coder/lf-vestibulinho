@@ -259,13 +259,19 @@
                     </button>
                 </form>
 
-                @if ($settings->location)
+                @if ($locationReleased)
+                    @if ($exam)
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
                         <i class="bi bi-geo-alt me-1"></i> Local de Prova
                     </button>
+                @else
+                        <div class="alert alert-warning">
+                            Não encontramos a sua alocação de prova. Entre em contato com a escola.
+                        </div>
+                    @endif
                 @endif
 
-                @if ($settings->result)
+                @if ($resultReleased)
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#resultadoDeProva">
                         <i class="bi bi-list-ol me-1"></i> Classificação
@@ -278,7 +284,7 @@
         {{-- ╔══════════════════════════════════════════╗ --}}
         {{-- ║          MODAL — LOCAL DE PROVA          ║ --}}
         {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($settings->location && $exam)
+            @if ($locationReleased && $exam)
                 <div class="modal fade" id="localDeProva" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                         <div class="modal-content" style="border-radius:12px; border:1px solid #dee2e6;">
@@ -314,18 +320,18 @@
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                         <div class="call-data-label" style="color:#2b6cb0;">Data</div>
                                         <div class="call-data-value" style="color:#1a365d;">
-                                            {{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}
+                                            {{ $process->exam_date?->format('d/m/Y') ?? '—' }}
                                         </div>
                                     </div>
                                     <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                         <div class="call-data-label" style="color:#2b6cb0;">Horário</div>
                                         <div class="call-data-value" style="color:#1a365d;">
-                                            {{ \Carbon\Carbon::parse($process->exam_time)->format('H:i') }}
+                                            {{ $process->exam_time ? \Carbon\Carbon::parse($process->exam_time)->format('H:i') : '—' }}
                                         </div>
                                     </div>
                                 </div>
 
-                                @if ($exam->pne ?? false)
+                                @if ($isPneRoom)
                                     <div class="alert alert-warning py-2 px-3 mt-2"
                                         style="border-radius:8px; font-size:0.85rem;">
                                         <i class="bi bi-universal-access-circle me-1"></i>
@@ -349,7 +355,7 @@
                             </div>
 
                             <div class="modal-footer" style="border-top:1px solid #f1f3f5; gap:8px;">
-                                <a href="{{ route('inscription.card.exam') }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('inscription.card.exam') }}" class="btn btn-primary btn-sm" target="_blank">
                                     <i class="bi bi-download me-1"></i> Baixar PDF
                                 </a>
                                 <button type="button" class="btn btn-secondary btn-sm"
@@ -365,7 +371,7 @@
             {{-- ╔══════════════════════════════════════════╗ --}}
             {{-- ║       MODAL — RESULTADO DA PROVA         ║ --}}
             {{-- ╚══════════════════════════════════════════╝ --}}
-            @if ($settings->result)
+            @if ($resultReleased)
                 <div class="modal fade" id="resultadoDeProva" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content" style="border-radius:12px; border:none;">

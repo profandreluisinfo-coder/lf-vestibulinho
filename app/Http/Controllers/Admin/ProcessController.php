@@ -217,4 +217,25 @@ class ProcessController extends Controller
 
         return alertSuccess($mensagem);
     }
+
+    /**
+     * Libera o acesso aos locais e resultados de prova.
+     */
+    public function toggleRelease(string $type)
+    {
+        abort_unless(in_array($type, ['location', 'result'], true), 404);
+
+        $process = Process::current() ?? abort(404);
+        $column  = "{$type}_released_at";
+        $release = $process->$column === null;
+
+        // Não libera o local sem data e hora da prova (o candidato veria dados vazios)
+        if ($release && $type === 'location' && (! $process->exam_date || ! $process->exam_time)) {
+            return alertError('Defina a data e a hora da prova no processo antes de liberar o local.');
+        }
+
+        $process->update([$column => $release ? now() : null]);
+
+        return alertSuccess($release ? 'Liberado aos candidatos.' : 'Retirado do ar.');
+    }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Setting;
-use App\Models\ExamResult;
-use Illuminate\Console\Command;
 use App\Jobs\SendExamLocationMailJob;
+use App\Models\Exam;
+use App\Models\Lgbt;
 use App\Models\Process;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class SendDailyExamLocationEmails extends Command
 {
@@ -14,59 +15,65 @@ class SendDailyExamLocationEmails extends Command
 
     protected $description = 'Envia diariamente um lote de emails com o local de prova para os candidatos.';
 
-    public function handle()
+    private const DAILY_LIMIT = 225;
+
+    public function handle(): int
     {
-        $limit = 225;
+        $process = Process::current();
 
-        // Log::info("Verificando permissão para envio diário...");
-
-        // 🔎 Busca as configurações
-        $settings = Setting::first() ?? new Setting();
-
-        // ❌ Se o admin NÃO liberou o acesso, não envia nada
-        if (!$settings || !$settings->location) {
+        // Sem processo, ou com o local ainda não liberado pelo admin, não envia nada
+        if (! $process?->isLocationReleased()) {
             return Command::SUCCESS;
         }
 
-        // 🔎 Carrega calendário
-        $process = Process::latest('id')->first() ?? new Process();
+        // Segunda camada: a data ou a hora podem ter sido apagadas depois da liberação.
+        // Log, e não $this->error(), porque o cron descarta a saída do terminal.
+        if (! $process->exam_date || ! $process->exam_time) {
+            Log::warning('Envio do local de prova cancelado: data ou hora da prova não definidas no processo.');
 
-        // 🔎 Busca exam_results ainda não enviados
-        $results = ExamResult::whereNull('email_sent_at')
-            ->with(['inscription.user.lgbt', 'examLocation'])
-            ->limit($limit)
+            return Command::FAILURE;
+        }
+
+        // Alocações deste processo cujo e-mail ainda não foi enviado
+        $exams = Exam::whereNull('email_sent_at')
+            ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+            ->with(['inscription.user.lgbt', 'location'])
+            ->orderBy('id')
+            ->limit(self::DAILY_LIMIT)
             ->get();
 
-        if ($results->isEmpty()) {
+        if ($exams->isEmpty()) {
             return Command::SUCCESS;
         }
 
-        foreach ($results as $result) {
-            $user = $result->inscription->user;
+        foreach ($exams as $exam) {
+            $user = $exam->inscription->user;
             $lgbt = $user->lgbt;
 
-            $name = $lgbt?->status === \App\Models\Lgbt::STATUS_ACCEPTED
+            $name = $lgbt?->status === Lgbt::STATUS_ACCEPTED
                 ? $lgbt->name
                 : $user->name;
 
             SendExamLocationMailJob::dispatch(
                 email: $user->email,
-                subject: 'Local de Prova – Vestibulinho LF ' . ($process?->year ?? now()->year),
+                subject: 'Local de Prova – Vestibulinho LF ' . ($process->year ?? now()->year),
                 content: [
                     'name' => $name,
-                    'date' => $result->exam_date,
-                    'time' => $result->exam_time,
-                    'location' => $result->examLocation->name,
-                    'address' => $result->examLocation->address,
-                    'room_number' => $result->room_number,
+                    'date' => $process->exam_date,   // data e hora vêm do processo
+                    'time' => $process->exam_time,
+                    'location' => $exam->location->name,
+                    'address' => $exam->location->address,
+                    'room_number' => $exam->room_number,
                 ],
                 view: 'emails.exam.location'
             );
 
-            $result->update(['email_sent_at' => now()]);
+            // forceFill: dispensa colocar email_sent_at no $fillable de Exam.
+            // Sem isso, um update() comum seria ignorado e o mesmo lote seria reenviado todo dia.
+            $exam->forceFill(['email_sent_at' => now()])->save();
         }
 
-        $this->info("Enviados {$results->count()} emails hoje.");
+        $this->info("Enviados {$exams->count()} emails hoje.");
 
         return Command::SUCCESS;
     }
