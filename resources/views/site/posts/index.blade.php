@@ -122,9 +122,19 @@
                                 <a href="{{ route('site.posts.show', $post->slug) }}"
                                     class="posts-item delay-{{ ($loop->index % 4) + 1 }}">
 
-                                    <div class="posts-icon type-{{ $categoriaTipo }}">
-                                        <i class="bi {{ $icone }}"></i>
-                                    </div>
+                                    @if (filled($post->image))
+                                        <div class="posts-cover">
+                                            <img src="{{ Storage::url($post->image) }}" alt="Capa: {{ $post->title }}" loading="lazy"
+                                                onerror="this.remove(); const fallback = this.parentElement.querySelector('.posts-cover-fallback'); if (fallback) { fallback.classList.remove('d-none'); }">
+                                            <div class="posts-cover-fallback type-{{ $categoriaTipo }} d-none" aria-hidden="true">
+                                                <i class="bi {{ $icone }}"></i>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="posts-icon type-{{ $categoriaTipo }}" aria-hidden="true">
+                                            <i class="bi {{ $icone }}"></i>
+                                        </div>
+                                    @endif
 
                                     <div class="posts-body">
                                         <div class="posts-titulo">{{ $post->title }}</div>
