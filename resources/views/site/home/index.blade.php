@@ -138,47 +138,47 @@
                     </p>
                 </div>
 
-                <div class="news-grid">
-                    @foreach ($posts->take(6) as $post)
-                        @php
-                            $hasImage = filled($post->image);
-                        @endphp
-                        <div class="reveal delay-{{ min($loop->index, 5) }}">
-                            <div class="news-card">
-                                <div class="news-card-image news-card-image-teal">
-                                    @if ($hasImage)
-                                        <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
-                                            onerror="this.remove(); const fallback = this.parentElement.querySelector('.news-card-fallback-icon'); if (fallback) { fallback.classList.remove('d-none'); }">
-                                    @endif
-                                    <i class="bi bi-newspaper news-card-fallback-icon @if ($hasImage) d-none @endif"
-                                        aria-hidden="true"></i>
-                                </div>
+                <div class="news-carousel" data-news-carousel>
+                    <div class="news-carousel-controls" role="group" aria-label="Controles das notícias">
+                        <button class="news-carousel-control" type="button" data-news-previous aria-label="Notícias anteriores" aria-controls="news-carousel-track" disabled>
+                            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                        </button>
+                        <button class="news-carousel-control" type="button" data-news-next aria-label="Próximas notícias" aria-controls="news-carousel-track" disabled>
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
-                                <div class="news-card-body">
-                                    <span class="news-card-badge news-card-badge-teal">
-                                        Notícia
-                                    </span>
+                    <div class="news-carousel-viewport" data-news-viewport id="news-carousel-track" tabindex="0" role="region" aria-label="Notícias recentes. Use as setas do teclado para navegar.">
+                        <div class="news-grid">
+                            @foreach ($posts->take(6) as $post)
+                                @php
+                                    $hasImage = filled($post->image);
+                                @endphp
+                                <div class="reveal delay-{{ min($loop->index, 5) }}">
+                                    <div class="news-card">
+                                        <div class="news-card-image news-card-image-teal">
+                                            @if ($hasImage)
+                                                <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
+                                                    onerror="this.remove(); const fallback = this.parentElement.querySelector('.news-card-fallback-icon'); if (fallback) { fallback.classList.remove('d-none'); }">
+                                            @endif
+                                            <i class="bi bi-newspaper news-card-fallback-icon @if ($hasImage) d-none @endif"
+                                                aria-hidden="true"></i>
+                                        </div>
 
-                                    <h3 class="news-card-title">
-                                        {{ $post->title }}
-                                    </h3>
-
-                                    <p class="news-card-desc">
-                                        {{ $post->resume }}
-                                    </p>
-
-                                    <div class="news-card-meta">
-                                        <span
-                                            class="news-card-date">{{ $post->published_at?->diffForHumans() ?? '—' }}</span>
-                                        <a href="{{ route('site.posts.show', $post->slug) }}"
-                                            class="news-card-link news-card-link-teal">
-                                            Ler mais →
-                                        </a>
+                                        <div class="news-card-body">
+                                            <span class="news-card-badge news-card-badge-teal">Notícia</span>
+                                            <h3 class="news-card-title">{{ $post->title }}</h3>
+                                            <p class="news-card-desc">{{ $post->resume }}</p>
+                                            <div class="news-card-meta">
+                                                <span class="news-card-date">{{ $post->published_at?->diffForHumans() ?? '—' }}</span>
+                                                <a href="{{ route('site.posts.show', $post->slug) }}" class="news-card-link news-card-link-teal">Ler mais →</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
+                    </div>
                 </div>
 
                 <!-- CTA Notícias -->
@@ -486,4 +486,43 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/home/index.js') }}"></script>
     <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
+    <script>
+        document.querySelectorAll('[data-news-carousel]').forEach((carousel) => {
+            const viewport = carousel.querySelector('[data-news-viewport]');
+            const track = viewport.querySelector('.news-grid');
+            const cards = [...track.children];
+            const previous = carousel.querySelector('[data-news-previous]');
+            const next = carousel.querySelector('[data-news-next]');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+            const getStep = () => cards[0].getBoundingClientRect().width
+                + parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0);
+
+            const updateControls = () => {
+                const canScroll = viewport.scrollWidth > viewport.clientWidth + 1;
+                previous.hidden = next.hidden = !canScroll;
+                previous.disabled = viewport.scrollLeft <= 1;
+                next.disabled = viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 1;
+            };
+
+            const move = (direction) => {
+                viewport.scrollBy({
+                    left: direction * getStep(),
+                    behavior: reducedMotion.matches ? 'auto' : 'smooth'
+                });
+            };
+
+            previous.addEventListener('click', () => move(-1));
+            next.addEventListener('click', () => move(1));
+            viewport.addEventListener('scroll', updateControls, { passive: true });
+            viewport.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    move(event.key === 'ArrowRight' ? 1 : -1);
+                }
+            });
+            window.addEventListener('resize', updateControls);
+            updateControls();
+        });
+    </script>
 @endpush

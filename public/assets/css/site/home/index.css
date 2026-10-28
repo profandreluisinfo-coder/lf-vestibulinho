@@ -225,17 +225,59 @@
 }
 
 .news-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 300px));
-    justify-content: start;
+    display: flex;
+    width: max-content;
     align-items: stretch;
     gap: 1.5rem;
 }
 
 .news-grid > * {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+    flex: 0 0 300px;
+    width: 300px;
+}
+
+.news-carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: .6rem;
+    margin: -1.5rem 0 1rem;
+}
+
+.news-carousel-control {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgba(11, 30, 61, .14);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--teal);
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.news-carousel-control:hover:not(:disabled) {
+    border-color: var(--teal);
+    background: var(--teal);
+    color: #fff;
+}
+
+.news-carousel-control:disabled {
+    color: #aab3c0;
+    cursor: default;
+}
+
+.news-carousel-viewport {
+    overflow-x: auto;
+    padding: 10px 0 14px;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    outline-offset: 4px;
+}
+
+.news-carousel-viewport::-webkit-scrollbar {
+    display: none;
 }
 
 .news-card {
@@ -247,6 +289,10 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.news-grid > * {
+    scroll-snap-align: start;
 }
 
 .news-card:hover {
@@ -378,6 +424,18 @@
 .news-card-link-amber:hover {
     color: var(--amber2);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .news-carousel-viewport {
+        scroll-behavior: auto;
+    }
+
+    .news-carousel-control,
+    .news-card {
+        transition: none;
+    }
+}
+
 /* ───// FIM NOTÍCIAS SECTION ───────────────────────────────────── */
 
 /* ─── COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
