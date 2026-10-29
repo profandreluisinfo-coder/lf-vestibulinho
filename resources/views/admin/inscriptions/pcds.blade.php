@@ -215,7 +215,7 @@
             </div>
         @endif
 
-        @include('admin.partials.legends')
+        
     </div>
 
 @endsection

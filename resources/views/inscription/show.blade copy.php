@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @include('inscription.partials.navbar')
+    @include('partials.inscriptions.navbar')
 
     <div class="wrapper">
 
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
 
-                            @include('inscription.partials.appeal', ['type' => 'lgbt'])
+                            @include('partials.inscriptions.appeal', ['type' => 'lgbt'])
                         @endif
                     </div>
 
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
 
-                            @include('inscription.partials.appeal', ['type' => 'pne'])
+                            @include('partials.inscriptions.appeal', ['type' => 'pne'])
                         @endif
                     </div>
 

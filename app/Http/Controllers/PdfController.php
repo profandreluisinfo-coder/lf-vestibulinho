@@ -130,19 +130,7 @@ class PdfController extends Controller
      */
     public function testResultCardToPdf()
     {
-        $user = Auth::user();
-        // Verifica se o usuário logado possui resultado de exame
-        $examResult = ExamResult::with(['inscription.user'])
-            ->whereHas('inscription', fn($q) => $q->where('user_id', $user->id))
-            ->first();
-
-        if (! $examResult) {
-            return redirect()->back()->withErrors(['error' => 'Resultado ainda não disponível.']);
-        }
-
-        return Pdf::loadView('pdf.test-result-card', compact('examResult', 'user'))
-            ->setPaper('a4', 'portrait')
-            ->download('resultado-da-prova.pdf');
+        return "precisa refazer este método";
     }
 
     /**
