@@ -62,11 +62,11 @@
                 <a href="{{ route('admin.exam.create') }}" class="list-group-item list-group-item-action border-0 px-0">
                     <i class="bi bi-calendar-check me-2"></i>Agendar Prova
                 </a>
-                <a href="{{ route('admin.reports.classification') }}"
+                <a href="{{ route('admin.import.index') }}"
                     class="list-group-item list-group-item-action border-0 px-0">
                     <i class="bi bi-list-ol me-2"></i>Ver Classificação
                 </a>
-                <a href="{{ route('admin.calls.index') }}" class="list-group-item list-group-item-action border-0 px-0">
+                <a href="#" class="list-group-item list-group-item-action border-0 px-0">
                     <i class="bi bi-broadcast-pin me-2"></i>Convocação para matrícula
                 </a>
             </div>
