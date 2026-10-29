@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AdminController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
+use App\Http\Controllers\Admin\{DashboardController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
 use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PdfController;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 // Login de admins
 Route::middleware(['guest'])
-    ->prefix('admin')
+    ->prefix('gestao')
     ->name('admin.')
     ->group(function () {
         Route::get('login', [LoginController::class, 'loginForAdmin'])
@@ -17,12 +17,12 @@ Route::middleware(['guest'])
             ->middleware('throttle:3,1');
     });
 
-Route::prefix('admin')
+Route::prefix('gestao')
     ->middleware(['auth', IsAdmin::class])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('inicio', [AdminController::class, 'index'])
+        Route::get('inicio', [DashboardController::class, 'index'])
             ->name('index');
 
         Route::get('graficos', [ChartController::class, 'index'])
@@ -43,7 +43,7 @@ Route::prefix('admin')
                     ->name('pcd.data');
                 Route::get('nome-social', [InscriptionController::class, 'lgbts'])
                     ->name('lgbts');
-                
+
                 Route::get('editar/{user}', [InscriptionController::class, 'edit'])->name('edit');
                 Route::put('editar/{user}', [InscriptionController::class, 'update'])->name('update');
                 Route::get('relatorio', [InscriptionController::class, 'pdf'])
@@ -96,7 +96,7 @@ Route::prefix('admin')
                     ->whereIn('type', ['location', 'result'])
                     ->name('release');
             });
-            
+
         // Provas
         Route::prefix('prova')
             ->name('exam.')
@@ -187,36 +187,7 @@ Route::prefix('admin')
             ->name('export.')
             ->group(function () {
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
-                    ->name('excel');
-                Route::get('cursos/pdf', [AdminController::class, 'exportCoursesPdf'])
-                    ->name('courses.pdf');
-
-                Route::get('cursos/excel', [AdminController::class, 'exportCoursesExcel'])
-                    ->name('courses.excel');
-
-                Route::get('sexos/pdf', [AdminController::class, 'exportGendersPdf'])
-                    ->name('genders.pdf');
-
-                Route::get('sexos/excel', [AdminController::class, 'exportGendersExcel'])
-                    ->name('genders.excel');
-
-                Route::get('sexo-por-curso/pdf', [AdminController::class, 'exportGenderPerCoursePdf'])
-                    ->name('gender-course.pdf');
-
-                Route::get('sexo-por-curso/excel', [AdminController::class, 'exportGenderPerCourseExcel'])
-                    ->name('gender-course.excel');
-
-                Route::get('bairros/pdf', [AdminController::class, 'exportBurghsPdf'])
-                    ->name('burghs.pdf');
-
-                Route::get('bairros/excel', [AdminController::class, 'exportBurghsExcel'])
-                    ->name('burghs.excel');
-
-                Route::get('escolas/pdf', [AdminController::class, 'exportSchoolsPdf'])
-                    ->name('schools.pdf');
-
-                Route::get('escolas/excel', [AdminController::class, 'exportSchoolsExcel'])
-                    ->name('schools.excel');
+                    ->name('excel');                
             });
 
         // Importação
@@ -229,7 +200,7 @@ Route::prefix('admin')
                     ->name('create'); // exibe o formulário de importação da planilha de notas
                 Route::post('notas/gravar', [ImportController::class, 'store'])
                     ->name('store'); // grava as notas importadas
-                
+
             });
 
         // Alocações (PDFs)
@@ -272,8 +243,40 @@ Route::prefix('admin')
                     ->name('general');
                 Route::get('geral/pdf', [ReportController::class, 'generalPdf'])
                     ->name('general.pdf');
-                Route::get('notas-e-classificacao', [ReportController::class, 'classification'])
-                    ->name('classification'); // admin.reports.classification
+                Route::get('inscricoes-por-dia/pdf', [DashboardController::class, 'dailyPdf'])
+                    ->name('daily.pdf');
+                Route::get('inscricoes-por-dia/csv', [DashboardController::class, 'dailyCsv'])
+                    ->name('daily.csv');
+
+                Route::get('cursos/pdf', [ReportController::class, 'exportCoursesPdf'])
+                    ->name('courses.pdf');
+
+                Route::get('cursos/excel', [ReportController::class, 'exportCoursesExcel'])
+                    ->name('courses.excel');
+
+                Route::get('sexos/pdf', [ReportController::class, 'exportGendersPdf'])
+                    ->name('genders.pdf');
+
+                Route::get('sexos/excel', [ReportController::class, 'exportGendersExcel'])
+                    ->name('genders.excel');
+
+                Route::get('sexo-por-curso/pdf', [ReportController::class, 'exportGenderPerCoursePdf'])
+                    ->name('gender-course.pdf');
+
+                Route::get('sexo-por-curso/excel', [ReportController::class, 'exportGenderPerCourseExcel'])
+                    ->name('gender-course.excel');
+
+                Route::get('bairros/pdf', [ReportController::class, 'exportBurghsPdf'])
+                    ->name('burghs.pdf');
+
+                Route::get('bairros/excel', [ReportController::class, 'exportBurghsExcel'])
+                    ->name('burghs.excel');
+
+                Route::get('escolas/pdf', [ReportController::class, 'exportSchoolsPdf'])
+                    ->name('schools.pdf');
+
+                Route::get('escolas/excel', [ReportController::class, 'exportSchoolsExcel'])
+                    ->name('schools.excel');
             });
         // Análises
         Route::prefix('analises')

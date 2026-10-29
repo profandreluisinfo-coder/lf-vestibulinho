@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appeal;
-use App\Models\Inscription;
 use App\Models\Lgbt;
 use App\Models\Pne;
 use App\Models\Process;
-use Illuminate\Support\Facades\DB;
-use Carbon\CarbonPeriod;
+use App\Services\ChartService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
-class AdminController extends Controller
+class DashboardController extends Controller
 {
-    public function index()
+    public function index(ChartService $cs)
     {
         $process = Process::current();
 
@@ -27,8 +26,8 @@ class AdminController extends Controller
         $upcoming = $this->upcomingEvents($process);
         $timeline = $this->timeline($process);
         $alerts   = $this->alerts($process);
-        $chart    = $this->courseChart($process);
-        $daily    = $this->dailyChart($process);
+        $chart    = $cs->courseChart($process);
+        $daily    = $cs->dailyChart($process);
 
         return view('admin.home.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
     }
@@ -172,77 +171,67 @@ class AdminController extends Controller
     }
 
     /**
-     * Inscrições e vagas por curso, no processo atual.
+     * Relatório em PDF: inscrições por dia.
      */
-    private function courseChart(?Process $process): array
+    public function dailyPdf()
     {
-        $empty = ['labels' => [], 'inscritos' => [], 'vagas' => []];
+        $process = Process::current();
+        abort_if(!$process, 404);
 
-        if (!$process) {
-            return $empty;
-        }
+        $rows = $this->dailyRows($process);
 
-        $rows = DB::table('course_process')
-            ->join('courses', 'courses.id', '=', 'course_process.course_id')
-            ->leftJoin('inscriptions', function ($join) use ($process) {
-                $join->on('inscriptions.course_id', '=', 'course_process.course_id')
-                    ->where('inscriptions.process_id', '=', $process->id);
-            })
-            ->where('course_process.process_id', $process->id)
-            ->groupBy('courses.id', 'courses.name', 'course_process.vacancies')
-            ->select(
-                'courses.name as curso',
-                'course_process.vacancies as vagas',
-                DB::raw('COUNT(inscriptions.id) as inscritos')
-            )
-            ->orderByDesc('inscritos')
-            ->get();
+        $pdf = Pdf::loadView('admin.reports.daily', [
+            'process'     => $process,
+            'rows'        => $rows,
+            'total'       => $rows->sum('total'),
+            'generatedAt' => now(),
+        ]);
 
-        return [
-            'labels'    => $rows->pluck('curso')->all(),
-            'inscritos' => $rows->pluck('inscritos')->map(fn($v) => (int) $v)->all(),
-            'vagas'     => $rows->pluck('vagas')->map(fn($v) => (int) $v)->all(),
-        ];
+        return $pdf->download('inscricoes-por-dia-' . $process->year . '.pdf');
     }
 
-        /**
-     * Inscrições por dia, do início do período até hoje (ou até o fim).
+    /**
+     * Relatório em CSV: inscrições por dia.
      */
-    private function dailyChart(?Process $process): array
+    public function dailyCsv()
     {
-        $empty = ['labels' => [], 'values' => [], 'total' => 0];
+        $process = Process::current();
+        abort_if(!$process, 404);
 
-        if (!$process || !$process->start) {
-            return $empty;
-        }
+        $rows = $this->dailyRows($process);
 
-        $start = $process->start->copy()->startOfDay();
-        $last  = $process->end ? $process->end->copy() : today();
-        $end   = $last->lt(today()) ? $last : today(); // nunca passa de hoje
+        return response()->streamDownload(function () use ($rows) {
+            $out = fopen('php://output', 'w');
 
-        // Inscrições ainda não começaram
-        if ($end->lt($start)) {
-            return $empty;
-        }
+            fwrite($out, "\xEF\xBB\xBF"); // faz o Excel reconhecer os acentos
+            fputcsv($out, ['Data', 'Dia da semana', 'Inscrições', 'Acumulado'], ';', '"', '');
 
-        $counts = Inscription::where('process_id', $process->id)
-            ->whereBetween('created_at', [$start, $end->copy()->endOfDay()])
-            ->selectRaw('DATE(created_at) as day, COUNT(*) as total')
-            ->groupBy('day')
-            ->pluck('total', 'day');
+            foreach ($rows as $row) {
+                fputcsv($out, [$row['date'], $row['weekday'], $row['total'], $row['accumulated']], ';', '"', '');
+            }
 
-        $labels = [];
-        $values = [];
+            fclose($out);
+        }, 'inscricoes-por-dia-' . $process->year . '.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
 
-        foreach (CarbonPeriod::create($start, $end) as $date) {
-            $labels[] = $date->format('d/m');
-            $values[] = (int) ($counts[$date->toDateString()] ?? 0);
-        }
+    /**
+     * Linhas do relatório: data, dia da semana, total do dia e acumulado.
+     */
+    private function dailyRows(Process $process)
+    {
+        $accumulated = 0;
 
-        return [
-            'labels' => $labels,
-            'values' => $values,
-            'total'  => array_sum($values),
-        ];
+        return collect($process->dailyInscriptions())->map(function ($day) use (&$accumulated) {
+            $accumulated += $day['total'];
+
+            return [
+                'date'        => $day['date']->format('d/m/Y'),
+                'weekday'     => ucfirst($day['date']->copy()->locale('pt_BR')->isoFormat('dddd')),
+                'total'       => $day['total'],
+                'accumulated' => $accumulated,
+            ];
+        });
     }
 }

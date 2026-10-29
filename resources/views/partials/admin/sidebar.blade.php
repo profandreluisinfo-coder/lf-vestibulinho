@@ -148,8 +148,8 @@
                         <i class="bi bi-gender-trans me-1"></i> Nome Social (LGBTQIA+)
                     </a>
 
-                    <a href="{{ route('admin.reports.classification') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.reports.classification') ? 'active' : '' }}">
+                    <a href="{{ route('admin.import.index') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
                         <i class="bi bi-list-ol me-1"></i> Classificação
                     </a>
                 </div>

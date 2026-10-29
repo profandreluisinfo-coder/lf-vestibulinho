@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
+use Carbon\CarbonPeriod;
 
 class Process extends Model
 {
@@ -195,6 +196,45 @@ class Process extends Model
                 'date'  => $this->enrol_remaining,
             ],
         ];
+    }
+
+    /**
+     * Inscrições por dia, do início do período até hoje (ou até o fim).
+     * Dias sem inscrição aparecem com total 0.
+     *
+     * @return array<int, array{date: \Carbon\Carbon, total: int}>
+     */
+    public function dailyInscriptions(): array
+    {
+        if (!$this->start) {
+            return [];
+        }
+
+        $start = $this->start->copy()->startOfDay();
+        $last  = $this->end ? $this->end->copy() : today();
+        $end   = $last->lt(today()) ? $last : today(); // nunca passa de hoje
+
+        // Inscrições ainda não começaram
+        if ($end->lt($start)) {
+            return [];
+        }
+
+        $counts = Inscription::where('process_id', $this->id)
+            ->whereBetween('created_at', [$start, $end->copy()->endOfDay()])
+            ->selectRaw('DATE(created_at) as day, COUNT(*) as total')
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $days = [];
+
+        foreach (CarbonPeriod::create($start, $end) as $date) {
+            $days[] = [
+                'date'  => $date,
+                'total' => (int) ($counts[$date->toDateString()] ?? 0),
+            ];
+        }
+
+        return $days;
     }
 
     public function formatDate($date): string

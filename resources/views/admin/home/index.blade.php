@@ -159,7 +159,20 @@
         </div>
 
         {{-- Gráfico: inscrições por dia --}}
-        <h2 class="dash-section-title">Inscrições por dia</h2>
+        <div class="dash-section-head">
+            <h2 class="dash-section-title">Inscrições por dia</h2>
+
+            @if (count($daily['labels']))
+                <div class="dash-section-actions">
+                    <a href="{{ route('admin.reports.daily.pdf') }}" class="dash-btn">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                    <a href="{{ route('admin.reports.daily.csv') }}" class="dash-btn">
+                        <i class="bi bi-file-earmark-spreadsheet"></i> CSV
+                    </a>
+                </div>
+            @endif
+        </div>
         <div class="card dash-list">
             <div class="dash-chart-box">
                 @if (count($daily['labels']))
@@ -316,54 +329,61 @@
     @endpush
 @endif
 
-@if (count($daily['labels']))
-    @push('scripts')
-        <script>
-            (() => {
-                const daily = @json($daily);
-                const css = getComputedStyle(document.documentElement);
+    @if (count($daily['labels']))
+        @push('scripts')
+            <script>
+                (() => {
+                    const daily = @json($daily);
+                    const css = getComputedStyle(document.documentElement);
 
-                Chart.defaults.font.family = css.getPropertyValue('--font-body').trim();
+                    Chart.defaults.font.family = css.getPropertyValue('--font-body').trim();
 
-                new Chart(document.getElementById('dailyChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: daily.labels,
-                        datasets: [{
-                            label: 'Inscrições',
-                            data: daily.values,
-                            backgroundColor: css.getPropertyValue('--color-teal').trim(),
-                            borderRadius: 4,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    maxRotation: 0,
-                                    autoSkip: true
+                    // Escreve o valor em cima de cada barra
+                    const valueLabels = {
+                        id: 'valueLabels',
+                        afterDatasetsDraw(chart) {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.font = '600 11px ' + Chart.defaults.font.family;
+                            ctx.fillStyle = css.getPropertyValue('--color-navy').trim();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            chart.getDatasetMeta(0).data.forEach((bar, i) => {
+                                const value = chart.data.datasets[0].data[i];
+                                if (value > 0) {
+                                    ctx.fillText(value, bar.x, bar.y - 4);
                                 }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    precision: 0
-                                }
-                            },
+                            });
+
+                            ctx.restore();
                         },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
+                    };
+
+                    new Chart(document.getElementById('dailyChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: daily.labels,
+                            datasets: [{
+                                label: 'Inscrições',
+                                data: daily.values,
+                                backgroundColor: css.getPropertyValue('--color-teal').trim(),
+                                borderRadius: 4,
+                            }],
                         },
-                    },
-                });
-            })();
-        </script>
-    @endpush
-@endif
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            layout: { padding: { top: 20 } },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true } },
+                                y: { beginAtZero: true, ticks: { precision: 0 } },
+                            },
+                            plugins: { legend: { display: false } },
+                        },
+                        plugins: [valueLabels],
+                    });
+                })();
+            </script>
+        @endpush
+    @endif

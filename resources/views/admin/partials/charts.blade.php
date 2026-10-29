@@ -1,119 +1,160 @@
-<div class="statistics-container">
-    <h5>📊 Gráficos</h5>
+@php
+    /*
+     * Resumo de cada gráfico, exibido no card.
+     * Assim o card já informa algo útil antes de abrir o modal.
+     */
+    $lider = function ($colecao, $campo) {
+        $top = $colecao->sortByDesc('total')->first();
 
-    <p class="text-muted small mb-3">
-        Clique em um <i>card</i> para visualizar o gráfico detalhado, ou use os botões de exportação para baixar o relatório em
-        PDF ou Excel.
-    </p>
+        return $top ? [data_get($top, $campo), data_get($top, 'total')] : ['—', 0];
+    };
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3 justify-content-center">
+    [$cursoNome, $cursoTotal] = $lider($cursos, 'curso');
+    [$bairroNome, $bairroTotal] = $lider($bairros, 'burgh');
+    [$escolaNome, $escolaTotal] = $lider($escolas, 'school');
+    $totalInscritos = $sexos->sum('total');
 
-        {{-- Card 1: Inscritos por Curso --}}
-        <div class="col">
-            <div class="card shadow-sm h-100 d-flex flex-column">
-                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal" data-bs-target="#modalCursos"
-                    title="Visualizar gráfico">
-                    <i class="bi bi-bar-chart-fill fs-2 text-primary mb-2"></i>
-                    <p class="mb-0 fw-semibold">Inscritos por Curso</p>
-                </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
-                    <a href="{{ route('admin.export.courses.pdf') }}" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </a>
-                    <a href="{{ route('admin.export.courses.excel') }}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-file-earmark-excel"></i> Excel
-                    </a>
-                </div>
+    $graficos = [
+        [
+            'modal' => 'modalCursos',
+            'titulo' => 'Inscritos por curso',
+            'descricao' => 'Quantos candidatos escolheram cada curso.',
+            'icone' => 'bi-bar-chart-fill',
+            'cor' => 'teal',
+            'rotulo' => 'Curso mais procurado',
+            'destaque' => $cursoNome,
+            'detalhe' => $cursoTotal . ' inscritos',
+            'rota' => 'courses',
+        ],
+        [
+            'modal' => 'modalSexos',
+            'titulo' => 'Inscritos por sexo',
+            'descricao' => 'Distribuição geral dos candidatos.',
+            'icone' => 'bi-pie-chart-fill',
+            'cor' => 'navy',
+            'rotulo' => 'Total de inscritos',
+            'destaque' => number_format($totalInscritos, 0, ',', '.'),
+            'detalhe' => 'candidatos',
+            'rota' => 'genders',
+        ],
+        [
+            'modal' => 'modalSexoPorCurso',
+            'titulo' => 'Inscritos por curso e sexo',
+            'descricao' => 'Comparativo entre masculino e feminino em cada curso.',
+            'icone' => 'bi-bar-chart-steps',
+            'cor' => 'amber',
+            'rotulo' => 'Cursos comparados',
+            'destaque' => $sexoPorCurso->count(),
+            'detalhe' => 'cursos',
+            'rota' => 'gender-course',
+        ],
+        [
+            'modal' => 'modalBairros',
+            'titulo' => 'Bairros com mais candidatos',
+            'descricao' => 'Os 10 bairros com maior número de inscritos.',
+            'icone' => 'bi-geo-alt-fill',
+            'cor' => 'success',
+            'rotulo' => 'Bairro líder',
+            'destaque' => $bairroNome,
+            'detalhe' => $bairroTotal . ' candidatos',
+            'rota' => 'burghs',
+        ],
+        [
+            'modal' => 'modalEscolas',
+            'titulo' => 'Escolas de origem',
+            'descricao' => 'As 10 escolas que mais enviaram candidatos.',
+            'icone' => 'bi-building',
+            'cor' => 'muted',
+            'rotulo' => 'Escola líder',
+            'destaque' => $escolaNome,
+            'detalhe' => $escolaTotal . ' candidatos',
+            'rota' => 'schools',
+        ],
+    ];
+@endphp
+
+<section class="statistics-container charts-page">
+
+    <header class="charts-head">
+        <h4 class="charts-title">Gráficos e relatórios</h4>
+        <p class="charts-subtitle">
+            Escolha um gráfico para ver os detalhes. Para baixar os dados, use o painel de relatórios.
+        </p>
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+
+        {{-- Cards de gráficos: apenas visualização --}}
+        @foreach ($graficos as $g)
+            <div class="col">
+                <button type="button" class="chart-card chart-card--{{ $g['cor'] }}" data-bs-toggle="modal"
+                    data-bs-target="#{{ $g['modal'] }}" aria-label="Abrir gráfico: {{ $g['titulo'] }}">
+
+                    <span class="chart-card__icon" aria-hidden="true">
+                        <i class="bi {{ $g['icone'] }}"></i>
+                    </span>
+
+                    <span class="chart-card__title">{{ $g['titulo'] }}</span>
+                    <span class="chart-card__desc">{{ $g['descricao'] }}</span>
+
+                    <span class="chart-card__stat">
+                        <small>{{ $g['rotulo'] }}</small>
+                        <strong title="{{ $g['destaque'] }}">{{ $g['destaque'] }}</strong>
+                        <em>{{ $g['detalhe'] }}</em>
+                    </span>
+
+                    <span class="chart-card__cta">
+                        Ver gráfico <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                    </span>
+                </button>
             </div>
-        </div>
+        @endforeach
 
-        {{-- Card 2: Inscritos por Sexo --}}
+        {{-- Painel de relatórios: botões de exportação fora dos cards --}}
         <div class="col">
-            <div class="card shadow-sm h-100 d-flex flex-column">
-                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
-                    data-bs-target="#modalSexos">
-                    <i class="bi bi-pie-chart-fill fs-2 text-success mb-2"></i>
-                    <p class="mb-0 fw-semibold">Inscritos por Sexo</p>
+            <aside class="export-panel" aria-labelledby="exportTitle">
+                <div class="export-panel__head">
+                    <span class="export-panel__icon" aria-hidden="true"><i class="bi bi-download"></i></span>
+                    <div>
+                        <h5 id="exportTitle" class="export-panel__title">Baixar relatórios</h5>
+                        <p class="export-panel__hint">Escolha o formato de cada relatório.</p>
+                    </div>
                 </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
-                    <a href="{{ route('admin.export.genders.pdf') }}" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </a>
-                    <a href="{{ route('admin.export.genders.excel') }}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-file-earmark-excel"></i> Excel
-                    </a>
-                </div>
-            </div>
+
+                <ul class="export-list">
+                    @foreach ($graficos as $g)
+                        <li class="export-row">
+                            <span class="export-row__name">{{ $g['titulo'] }}</span>
+                            <span class="export-row__actions">
+                                <a href="{{ route('admin.reports.' . $g['rota'] . '.pdf') }}"
+                                    class="export-btn export-btn--pdf"
+                                    aria-label="Baixar {{ $g['titulo'] }} em PDF">
+                                    <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> PDF
+                                </a>
+                                <a href="{{ route('admin.reports.' . $g['rota'] . '.excel') }}"
+                                    class="export-btn export-btn--excel"
+                                    aria-label="Baixar {{ $g['titulo'] }} em Excel">
+                                    <i class="bi bi-file-earmark-excel" aria-hidden="true"></i> Excel
+                                </a>
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            </aside>
         </div>
-
-        {{-- Card 3: Inscritos por Curso e Sexo --}}
-        <div class="col">
-            <div class="card shadow-sm h-100 d-flex flex-column">
-                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
-                    data-bs-target="#modalSexoPorCurso">
-                    <i class="bi bi-bar-chart-steps fs-2 text-warning mb-2"></i>
-                    <p class="mb-0 fw-semibold">Inscritos por Curso e Sexo</p>
-                </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
-                    <a href="{{ route('admin.export.gender-course.pdf') }}" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </a>
-                    <a href="{{ route('admin.export.gender-course.excel') }}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-file-earmark-excel"></i> Excel
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
-        {{-- Card 4: Bairros --}}
-        <div class="col">
-            <div class="card shadow-sm h-100 d-flex flex-column">
-                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
-                    data-bs-target="#modalBairros">
-                    <i class="bi bi-geo-alt-fill fs-2 text-danger mb-2"></i>
-                    <p class="mb-0 fw-semibold">Bairros com Mais Candidatos</p>
-                </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
-                    <a href="{{ route('admin.export.burghs.pdf') }}" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </a>
-                    <a href="{{ route('admin.export.burghs.excel') }}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-file-earmark-excel"></i> Excel
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        {{-- Card 5: Escolas --}}
-        <div class="col">
-            <div class="card shadow-sm h-100 d-flex flex-column">
-                <div class="card-body text-center py-4 cursor-pointer" data-bs-toggle="modal"
-                    data-bs-target="#modalEscolas">
-                    <i class="bi bi-building fs-2 text-secondary mb-2"></i>
-                    <p class="mb-0 fw-semibold">Escolas de Origem</p>
-                </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-center pb-3 px-3">
-                    <a href="{{ route('admin.export.schools.pdf') }}" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </a>
-                    <a href="{{ route('admin.export.schools.excel') }}" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-file-earmark-excel"></i> Excel
-                    </a>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    {{-- Modais individuais --}}
+    {{-- ==================== MODAIS ==================== --}}
+    {{-- IDs dos <canvas> e atributos data-* mantidos: o JS dos gráficos continua funcionando. --}}
+
     {{-- Modal: Cursos --}}
-    <div class="modal fade" id="modalCursos" data-bs-backdrop="static">
+    <div class="modal fade" id="modalCursos" tabindex="-1" aria-labelledby="modalCursosLabel" aria-hidden="true"
+        data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Inscritos por Curso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="modalCursosLabel">Inscritos por curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <canvas id="chartCursos" data-labels='@json($cursos->pluck('curso'))'
@@ -124,12 +165,13 @@
     </div>
 
     {{-- Modal: Sexos --}}
-    <div class="modal fade" id="modalSexos" data-bs-backdrop="static">
+    <div class="modal fade" id="modalSexos" tabindex="-1" aria-labelledby="modalSexosLabel" aria-hidden="true"
+        data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Inscritos por Sexo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="modalSexosLabel">Inscritos por sexo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <canvas id="chartSexos" data-labels='@json($sexos->pluck('gender'))'
@@ -140,12 +182,13 @@
     </div>
 
     {{-- Modal: Sexo por Curso --}}
-    <div class="modal fade" id="modalSexoPorCurso" data-bs-backdrop="static">
+    <div class="modal fade" id="modalSexoPorCurso" tabindex="-1" aria-labelledby="modalSexoPorCursoLabel"
+        aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Inscritos por Curso e Sexo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="modalSexoPorCursoLabel">Inscritos por curso e sexo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <canvas id="chartSexoPorCurso" data-cursos='@json($sexoPorCurso->pluck('course'))'
@@ -157,12 +200,13 @@
     </div>
 
     {{-- Modal: Bairros --}}
-    <div class="modal fade" id="modalBairros" data-bs-backdrop="static">
+    <div class="modal fade" id="modalBairros" tabindex="-1" aria-labelledby="modalBairrosLabel" aria-hidden="true"
+        data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">10 Bairros com Mais Candidatos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="modalBairrosLabel">10 bairros com mais candidatos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <canvas id="chartBairros" data-labels='@json($bairros->pluck('burgh'))'
@@ -173,12 +217,13 @@
     </div>
 
     {{-- Modal: Escolas --}}
-    <div class="modal fade" id="modalEscolas" data-bs-backdrop="static">
+    <div class="modal fade" id="modalEscolas" tabindex="-1" aria-labelledby="modalEscolasLabel" aria-hidden="true"
+        data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">10 Escolas de Origem com Mais Candidatos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="modalEscolasLabel">10 escolas de origem com mais candidatos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <canvas id="chartEscolas" data-labels='@json($escolas->pluck('school'))'
@@ -187,4 +232,4 @@
             </div>
         </div>
     </div>
-</div>
+</section>

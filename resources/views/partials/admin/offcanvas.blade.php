@@ -37,7 +37,7 @@
                     </a>
                 </div>
                 <div class="col-6">
-                    <a href="{{ route('admin.reports.classification') }}" class="offcanvas-card">
+                    <a href="{{ route('admin.import.index') }}" class="offcanvas-card">
                         <div class="offcanvas-card-icon" style="background: #fef3c7; color: #f59e0b;">
                             <i class="bi bi-bar-chart-line"></i>
                         </div>
