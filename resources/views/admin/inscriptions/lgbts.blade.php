@@ -157,7 +157,7 @@
                                 <td class="col-actions">
                                     {{-- Ordem fixa: Imprimir, Deferir, Indeferir, Recurso --}}
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.inscriptions.pdf', ['type' => 'lgbt', 'id' => $user->id]) }}"
+                                        <a href="{{ route('admin.analyses.pdf', ['type' => 'lgbt', 'id' => $user->id]) }}"
                                             class="btn btn-sm btn-outline-primary" title="Imprimir dados do candidato"
                                             aria-label="Imprimir dados de {{ $user->name }}" target="_blank">
                                             <i class="bi bi-printer" aria-hidden="true"></i>
@@ -207,8 +207,6 @@
                 </table>
             </div>
         @endif
-
-        @include('admin.partials.legends')
     </div>
 
 @endsection
