@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\SimpleImport;
 use App\Models\Exam;
+use App\Models\Lgbt;
 use App\Models\Process;
 use App\Models\Result;
 use App\Services\ExamRankingService;
@@ -23,16 +24,106 @@ class ImportController extends Controller
         $this->rankingService = $rankingService;
     }
 
-    // Exibe o formulário de importação
-    public function index(): View
+    public const LIST_MULTIPLIER = 3;
+
+    /**
+     * Lista de classificação do processo atual no painel administrativo.
+     */
+    public function index(Request $request): View
     {
-        return view('admin.import.index');
+        $process = Process::current() ?? abort(404);
+
+        $situation = in_array($request->query('situation'), ['classified', 'eliminated'], true)
+            ? $request->query('situation')
+            : 'all';
+
+        // Busca por nome (civil ou social) ou número da inscrição
+        $search = trim((string) $request->query('q', ''));
+
+        // Resultados com nota deste processo, junto dos dados do candidato
+        $base = Result::query()
+            ->join('inscriptions', 'results.inscription_id', '=', 'inscriptions.id')
+            ->join('users', 'inscriptions.user_id', '=', 'users.id')
+            ->leftJoin('lgbts', function ($join) {
+                $join->on('lgbts.user_id', '=', 'users.id')
+                    ->where('lgbts.status', Lgbt::STATUS_ACCEPTED);
+            })
+            ->where('inscriptions.process_id', $process->id)
+            ->whereNotNull('results.score');
+
+        // Resumo do topo
+        $stats = (clone $base)
+            ->selectRaw('COUNT(*) as scored')
+            // Alias diferente de "classified": o model Result converte essa coluna para boolean
+            ->selectRaw('COALESCE(SUM(results.classified), 0) as classified_count')
+            ->selectRaw('MIN(CASE WHEN results.classified = 1 THEN results.score END) as cutoff')
+            ->first();
+
+        // Empates em nota e idade: o edital não define o desempate seguinte
+        $tied = (clone $base)
+            ->selectRaw('results.score, users.birth, COUNT(*) as total')
+            ->groupBy('results.score', 'users.birth')
+            ->havingRaw('COUNT(*) > 1')
+            ->get();
+
+        $tiedKeys = $tied->mapWithKeys(fn($t) => [$t->score . '|' . $t->birth => true]);
+
+        $vacancies = (int) $process->courses()->sum('course_process.vacancies');
+        $limit = $vacancies * ExamRankingService::LIST_MULTIPLIER;
+
+        // Lista paginada
+        $results = (clone $base)
+            ->when($situation === 'classified', fn($q) => $q->where('results.classified', true))
+            ->when($situation === 'eliminated', fn($q) => $q->where('results.classified', false))
+            ->when($search !== '', function ($q) use ($search) {
+                $like = '%' . addcslashes($search, '%_\\') . '%';
+
+                $q->where(function ($q) use ($like, $search) {
+                    $q->where('users.name', 'like', $like)
+                        ->orWhere('lgbts.name', 'like', $like);
+
+                    if (ctype_digit($search)) {
+                        $q->orWhere('results.inscription_id', (int) $search);
+                    }
+                });
+            })
+            ->orderBy('results.ranking')
+            ->orderBy('results.inscription_id')
+            ->select([
+                'results.inscription_id',
+                'results.ranking',
+                'results.score',
+                'results.classified',
+                'users.name',
+                'users.birth',
+                DB::raw('lgbts.name as social_name'),
+            ])
+            ->paginate(50)
+            ->withQueryString();
+
+        return view('admin.import.index', compact(
+            'process',
+            'results',
+            'stats',
+            'tied',
+            'tiedKeys',
+            'situation',
+            'search',
+            'vacancies',
+            'limit'
+        ));
+    }
+
+    // Exibe o formulário de importação
+    public function create(): View
+    {
+        return view('admin.import.create');
     }
 
     /**
      * Importa as notas de um arquivo .xlsx e calcula a classificação.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx|max:10240',
@@ -58,7 +149,7 @@ class ImportController extends Controller
             }
 
             // Candidatos alocados (com prova agendada) neste processo
-            $allocated = Exam::whereHas('inscription', fn ($q) => $q->forProcess($process->id));
+            $allocated = Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id));
 
             if (! (clone $allocated)->exists()) {
                 return $this->invalidFileResponse('Nenhuma prova foi agendada.');
@@ -82,7 +173,7 @@ class ImportController extends Controller
                 'points',
             ];
             $headers = array_map(
-                fn ($header) => strtolower(trim((string) $header)),
+                fn($header) => strtolower(trim((string) $header)),
                 $rows[0] ?? []
             );
 
@@ -139,14 +230,14 @@ class ImportController extends Controller
             $foundInscriptionIds = (clone $allocated)
                 ->whereIn('inscription_id', $inscriptionIds)
                 ->pluck('inscription_id')
-                ->map(fn ($id) => (int) $id)
+                ->map(fn($id) => (int) $id)
                 ->all();
             $missingInscriptionIds = array_values(array_diff($inscriptionIds, $foundInscriptionIds));
 
             if ($missingInscriptionIds) {
                 return $this->invalidFileResponse(
                     'As inscrições a seguir não têm prova agendada neste processo: '
-                    . implode(', ', $missingInscriptionIds) . '.'
+                        . implode(', ', $missingInscriptionIds) . '.'
                 );
             }
 
@@ -156,7 +247,7 @@ class ImportController extends Controller
 
             DB::transaction(function () use ($updates, $process, $now, &$summary) {
                 // Uma importação substitui integralmente as notas e classificações DESTE processo.
-                Result::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+                Result::whereHas('inscription', fn($q) => $q->forProcess($process->id))
                     ->update(['score' => null, 'ranking' => null, 'classified' => false]);
 
                 $rows = [];

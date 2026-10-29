@@ -8,13 +8,13 @@ use App\Http\Requests\CertificateRequest;
 use App\Http\Requests\FamilyRequest;
 use App\Http\Requests\OtherRequest;
 use App\Http\Requests\PersonalRequest;
-use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Disability;
 use App\Models\HealthIssue;
 use App\Models\Pne;
 use App\Models\Process;
 use App\Models\Resource;
+use App\Models\Result;
 use App\Models\School;
 use App\Models\Template;
 use App\Services\InscriptionService;
@@ -23,7 +23,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class InscriptionController extends Controller
@@ -58,6 +57,7 @@ class InscriptionController extends Controller
 
     public function show(): View|RedirectResponse
     {
+        $process  = Process::current();
         $user = Auth::user();
 
         $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
@@ -75,26 +75,36 @@ class InscriptionController extends Controller
 
         // Carrega tudo que o painel precisa
         $user->load([
-            'pne', 
-            'inscription.exam.location', 
-            'inscription.result', 
+            'pne',
+            'inscription.exam.location',
+            'inscription.result',
             'inscription.process'
-            ]);
+        ]);
 
         $inscription  = $user->inscription;
         $exam         = $inscription->exam;        // sala (room_number) e local
         $result       = $inscription->result;
 
 
-        // $call: ver em qual model ficou o antigo completedCall (Result?)
+        $resultSummary = null;
+
+        if ($process->isResultReleased() && $result?->ranking !== null) {
+            $resultSummary = [
+                'vacancies'  => (int) $process->courses()->sum('course_process.vacancies'),
+                'classified' => Result::where('classified', true)
+                    ->whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                    ->count(),
+            ];
+        }
 
         return view('inscription.show', [
-            'user'        => $user,
-            'displayName' => $displayName,
-            'initials'    => $initials,
-            'result'      => $result,
-            'exam'        => $exam,
-            'isPneRoom'   => $user->pne?->status === Pne::STATUS_ACCEPTED,
+            'user'          => $user,
+            'displayName'   => $displayName,
+            'initials'      => $initials,
+            'resultSummary' => $resultSummary,
+            'result'        => $result,
+            'exam'          => $exam,
+            'isPneRoom'     => $user->pne?->status === Pne::STATUS_ACCEPTED,
         ]);
     }
 

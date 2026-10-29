@@ -11,43 +11,6 @@
         <div class="alerts-container animate__animated animate__fadeInUp mb-4">
 
             {{-- ╔══════════════════════════════════════════╗ --}}
-            {{-- ║         CONVOCAÇÃO PARA MATRÍCULA        ║ --}}
-            {{-- ╚══════════════════════════════════════════╝ --}}
-            {{-- @if ($user->hasConfirmedCall())
-                <div class="card-call animate__animated animate__fadeInDown">
-                    <div class="card-call-header">
-                        <i class="bi bi-megaphone-fill" style="font-size:1.1rem; color:#f59e0b;"></i>
-                        <h5 class="card-call-title">Convocação para matrícula</h5>
-                        <span class="status-badge analise">Chamada nº {{ $call?->call_number }}</span>
-                    </div>
-
-                    <div class="call-data-grid">
-                        <div class="call-data-item">
-                            <div class="call-data-label"><i class="bi bi-calendar3 me-1"></i>Data</div>
-                            <div class="call-data-value">
-                                {{ Carbon\Carbon::parse($call?->date)->format('d/m/Y') }}
-                            </div>
-                        </div>
-                        <div class="call-data-item">
-                            <div class="call-data-label"><i class="bi bi-clock me-1"></i>Horário</div>
-                            <div class="call-data-value">
-                                {{ Carbon\Carbon::parse($call?->time)->format('H:i') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <p class="mb-2" style="font-size:0.8rem; color:#92400e;">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                        O não comparecimento na data e horário informados acarretará na <strong>perda da vaga</strong>.
-                    </p>
-
-                    <button class="btn btn-warning btn-sm mt-1" data-bs-toggle="modal" data-bs-target="#callDetailModal">
-                        <i class="bi bi-search me-1"></i> Ver detalhes da convocação
-                    </button>
-                </div>
-            @endif --}}
-
-            {{-- ╔══════════════════════════════════════════╗ --}}
             {{-- ║           RESUMO DA INSCRIÇÃO            ║ --}}
             {{-- ╚══════════════════════════════════════════╝ --}}
             <div class="section-header">
@@ -250,37 +213,38 @@
 
             </div>{{-- /card-modern --}}
 
-            {{-- Botões de ação --}}
-            <div class="actions-row">
-                <form action="{{ route('inscription.receipt.to.pdf') }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-filetype-pdf me-1"></i> Protocolo de Inscrição
-                    </button>
-                </form>
+        </div>
 
-                @if ($locationReleased)
-                    @if ($exam)
-                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
-                            <i class="bi bi-geo-alt me-1"></i> Local de Prova
-                        </button>
-                    @else
-                        <div class="alert alert-warning">
-                            Não encontramos a sua alocação de prova. Entre em contato com a escola.
-                        </div>
-                    @endif
-                @endif
+        {{-- Botões de ação --}}
+        <div class="actions-row">
+            <form action="{{ route('inscription.receipt.to.pdf') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="bi bi-filetype-pdf me-1"></i> Protocolo de Inscrição
+                </button>
+            </form>
 
-                {{-- ╔══════════════════════════════════════════╗ --}}
-                {{-- ║     local de prova                       ║ --}}
-                {{-- ╚══════════════════════════════════════════╝ --}}
-                @if ($resultReleased)
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#resultadoFinal">
-                        <i class="bi bi-list-ol me-1"></i> Ver resultado
+            @if ($locationReleased)
+                @if ($exam)
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#localDeProva">
+                        <i class="bi bi-geo-alt me-1"></i> Local de Prova
                     </button>
+                @else
+                    <div class="alert alert-warning">
+                        Não encontramos a sua alocação de prova. Entre em contato com a escola.
+                    </div>
                 @endif
-            </div>
+            @endif
+
+            {{-- ╔══════════════════════════════════════════╗ --}}
+            {{-- ║       MODAL — RESULTADO DA PROVA         ║ --}}
+            {{-- ╚══════════════════════════════════════════╝ --}}
+            @if ($resultReleased)
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#resultadoFinal">
+                    <i class="bi bi-list-ol me-1"></i> Ver resultado
+                </button>
+            @endif
 
         </div>
 
@@ -371,24 +335,8 @@
             </div>
         @endif
 
-
         {{-- ╔══════════════════════════════════════════╗ --}}
-        {{-- ║       MODAL — RESULTADO DA PROVA         ║ --}}
-        {{-- ╚══════════════════════════════════════════╝ --}}
-        {{-- ╔══════════════════════════════════════════╗ --}}
-        {{-- ║  1. BOTÃO: coloque ao lado do botão do   ║ --}}
-        {{-- ║     local de prova                       ║ --}}
-        {{-- ╚══════════════════════════════════════════╝ --}}
-        @if ($resultReleased)
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                data-bs-target="#resultadoFinal">
-                <i class="bi bi-list-ol me-1"></i> Ver resultado
-            </button>
-        @endif
-
-
-        {{-- ╔══════════════════════════════════════════╗ --}}
-        {{-- ║  2. MODAL: junto do modal do local       ║ --}}
+        {{-- ║          MODAL: RESULTADO DA PROVA       ║ --}}
         {{-- ╚══════════════════════════════════════════╝ --}}
         @if ($resultReleased)
             <div class="modal fade" id="resultadoFinal" tabindex="-1" aria-hidden="true">
@@ -418,6 +366,15 @@
                                         <div class="call-data-value" style="color:#1a365d;">{{ $result->score }}</div>
                                     </div>
                                 </div>
+
+                                {{-- Contexto: evita a leitura de "classificado = vaga garantida" --}}
+                                @if ($resultSummary)
+                                    <p class="text-muted small mt-3 mb-0">
+                                        Total de classificados: <strong>{{ $resultSummary['classified'] }}</strong>
+                                        &middot;
+                                        Vagas oferecidas: <strong>{{ $resultSummary['vacancies'] }}</strong>
+                                    </p>
+                                @endif
 
                                 @if ($result->classified)
                                     <div class="alert alert-success py-2 px-3 mt-3"
@@ -457,98 +414,6 @@
                 </div>
             </div>
         @endif
-
-
-        {{-- ╔══════════════════════════════════════════╗ --}}
-        {{-- ║      MODAL — DETALHES DA CONVOCAÇÃO      ║ --}}
-        {{-- ╚══════════════════════════════════════════╝ --}}
-        {{-- @if ($call && $user->hasConfirmedCall())
-                <div class="modal fade" id="callDetailModal" data-bs-backdrop="static" tabindex="-1"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                        <div class="modal-content" style="border-radius:12px; border:1px solid #fcd34d;">
-
-                            <div class="modal-header" style="background:#fffbeb; border-bottom:1px solid #fef3c7;">
-                                <h5 class="modal-title fw-semibold" style="color:#92400e;">
-                                    <i class="bi bi-megaphone-fill me-2" style="color:#f59e0b;"></i>
-                                    Detalhes da Convocação
-                                </h5>
-                            </div>
-
-                            <div class="modal-body p-4">
-
-                                <div class="call-data-grid mb-3"
-                                    style="grid-template-columns: repeat(auto-fill, minmax(130px,1fr));">
-                                    <div class="call-data-item">
-                                        <div class="call-data-label">Chamada nº</div>
-                                        <div class="call-data-value">{{ $call?->call_number }}</div>
-                                    </div>
-                                    <div class="call-data-item">
-                                        <div class="call-data-label">Data</div>
-                                        <div class="call-data-value">
-                                            {{ Carbon\Carbon::parse($call?->date)->format('d/m/Y') }}
-                                        </div>
-                                    </div>
-                                    <div class="call-data-item">
-                                        <div class="call-data-label">Horário</div>
-                                        <div class="call-data-value">
-                                            {{ Carbon\Carbon::parse($call?->time)->format('H:i') }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal-section-title">Local da Matrícula</div>
-                                <div class="info-block mb-3">
-                                    <p class="mb-1" style="font-size:0.88rem; font-weight:600;">
-                                        R. Geraldo de Souza, 221 — Jardim São Carlos
-                                    </p>
-                                    <p class="mb-1" style="font-size:0.82rem; color:#6c757d;">Sumaré - SP, 13170-232</p>
-                                    <p class="mb-1" style="font-size:0.82rem;">
-                                        <i class="bi bi-telephone me-1 text-muted"></i>(19) 3873-2605
-                                    </p>
-                                    <p class="mb-0" style="font-size:0.82rem;">
-                                        <i class="bi bi-clock me-1 text-muted"></i>Funcionamento: 14:00 às 23:00
-                                    </p>
-                                </div>
-
-                                <div class="modal-section-title">Documentos necessários (item 7.4 do edital)</div>
-                                <div class="alert alert-warning py-2 px-3 mb-2"
-                                    style="border-radius:8px; font-size:0.82rem;">
-                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                                    A falta de documentação ou o não comparecimento resultará na <strong>perda da
-                                        vaga</strong>.
-                                </div>
-                                <ol class="docs-list-modern">
-                                    <li>Declaração de Conclusão do Ensino Fundamental ou Histórico Escolar (original + 1
-                                        cópia)
-                                    </li>
-                                    <li>1 foto 3×4</li>
-                                    <li>Documento de identidade com foto — RG/CIN ou RNE para estrangeiros (original + 1
-                                        cópia)
-                                    </li>
-                                    <li>CPF (original + 1 cópia)</li>
-                                    <li>Certidão de nascimento (original + 1 cópia)</li>
-                                    <li>Carteira de vacinação (original + 1 cópia)</li>
-                                    <li>Comprovante de residência em Sumaré com menos de 60 dias, em nome dos pais ou
-                                        responsável legal (original + 1 cópia)</li>
-                                </ol>
-
-                            </div>
-
-                            <div class="modal-footer" style="border-top:1px solid #fef3c7; gap:8px;">
-                                <a href="{{ route('inscription.card.call') }}" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
-                                </a>
-                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                                    <i class="bi bi-x-circle me-1"></i> Fechar
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            @endif --}}
-
     </div>{{-- wrapper --}}
 
 @endsection

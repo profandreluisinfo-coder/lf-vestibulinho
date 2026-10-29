@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Process;
+use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -228,6 +229,15 @@ class ProcessController extends Controller
         $process = Process::current() ?? abort(404);
         $column  = "{$type}_released_at";
         $release = $process->$column === null;
+
+        if (
+            $release && $type === 'result'
+            && ! Result::where('classified', true)
+                ->whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                ->exists()
+        ) {
+            return alertError('Importe as notas e calcule a classificação antes de liberar o resultado.');
+        }
 
         // Não libera o local sem data e hora da prova (o candidato veria dados vazios)
         if ($release && $type === 'location' && (! $process->exam_date || ! $process->exam_time)) {

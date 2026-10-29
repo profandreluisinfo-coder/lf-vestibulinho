@@ -223,10 +223,13 @@ Route::prefix('admin')
         Route::prefix('importar')
             ->name('import.')
             ->group(function () {
-                Route::get('notas', [ImportController::class, 'index'])
-                    ->name('index');
-                Route::post('notas', [ImportController::class, 'create'])
-                    ->name('create');
+                Route::get('notas-importadas', [ImportController::class, 'index'])
+                    ->name('index'); // Lista os dados da classificação
+                Route::get('notas', [ImportController::class, 'create'])
+                    ->name('create'); // exibe o formulário de importação da planilha de notas
+                Route::post('notas/gravar', [ImportController::class, 'store'])
+                    ->name('store'); // grava as notas importadas
+                
             });
 
         // Alocações (PDFs)

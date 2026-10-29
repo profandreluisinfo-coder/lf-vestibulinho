@@ -114,28 +114,6 @@
             </div>
 
             <div class="menu-dropdown">
-                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
-                    <i class="bi bi-database"></i>
-                    <span>Dados</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
-                    id="menuResultados">
-                    
-                    <a href="javascript:void(0)" id="exportLink"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
-                        onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
-                        <i class="bi bi-file-excel me-1"></i> Planilha de Notas
-                    </a>
-
-                    <a href="{{ route('admin.import.index') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
-                        <i class="bi bi-upload me-1"></i> Importar Notas
-                    </a>
-                </div>
-            </div>
-
-            <div class="menu-dropdown">
                 <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuRelatorios')">
                     <i class="bi bi-clipboard-data"></i>
                     <span>Relatórios</span>
@@ -207,6 +185,34 @@
                     <a href="{{ route('admin.archives.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
                         <i class="bi bi-file-earmark-pdf me-1"></i> Publicar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Classificação -->
+            <div class="menu-dropdown">
+                <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuResultados')">
+                    <i class="bi bi-sort-numeric-down"></i>
+                    <span>Classificação</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
+                    id="menuResultados">
+                    
+                    <a href="javascript:void(0)" id="exportLink"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
+                        onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
+                        <i class="bi bi-file-excel me-1"></i> Planilha de Notas
+                    </a>
+
+                    <a href="{{ route('admin.import.create') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.import.create') ? 'active' : '' }}">
+                        <i class="bi bi-upload me-1"></i> Importar Notas
+                    </a>
+
+                    <a href="{{ route('admin.import.index') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
+                        <i class="bi bi-list-ol"></i> Lista de Classificação
                     </a>
                 </div>
             </div>

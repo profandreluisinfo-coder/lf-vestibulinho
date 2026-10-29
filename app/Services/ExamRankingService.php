@@ -9,7 +9,8 @@ use DomainException;
 class ExamRankingService
 {
     /** Edital, item 9.1: limite de classificados = 3 vezes o total de vagas. */
-    private const LIST_MULTIPLIER = 3;
+    // public const LIST_MULTIPLIER = 3;
+    public const LIST_MULTIPLIER = 3;
 
     /**
      * Calcula a classificação do processo informado.
