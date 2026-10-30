@@ -193,6 +193,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/archives/index.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/archives/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/archives/index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/archives/publish.js') }}"></script>
 @endpush

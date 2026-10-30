@@ -5,7 +5,7 @@
 @section('meta_description', 'Área de redefinição de senha exclusiva para candidatos.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/auth/reset.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/password/reset.css') }}">
 @endpush
 
 @section('left-panel')
@@ -222,5 +222,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/pass/reset.js') }}"></script>
+    <script src="{{ asset('assets/js/password/reset.js') }}"></script>
 @endpush

@@ -79,5 +79,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/archives/edit.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/archives/edit.js') }}"></script>
 @endpush

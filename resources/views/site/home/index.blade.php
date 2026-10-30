@@ -485,7 +485,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/home/index.js') }}"></script>
-    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/confirm.js') }}"></script>
     <script>
         document.querySelectorAll('[data-news-carousel]').forEach((carousel) => {
             const viewport = carousel.querySelector('[data-news-viewport]');

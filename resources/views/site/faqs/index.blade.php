@@ -180,5 +180,5 @@
     </script>
     <script src="{{ asset('assets/js/site/faqs/index.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/confirm.js') }}"></script>
 @endpush

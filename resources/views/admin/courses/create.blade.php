@@ -91,5 +91,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/courses/create.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/courses/create.js') }}"></script>
 @endpush

@@ -5,7 +5,7 @@
 @section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $process?->year)
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/email/sent.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/register/email-sent.css') }}">
 @endpush
 
 @section('left-panel')

@@ -5,7 +5,7 @@
 @section('meta_description', 'Área de confirmação de e-mail para candidatos do Vestibulinho.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/email/confirmed.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/register/email-confirmed.css') }}">
 @endpush
 
 @section('left-panel')

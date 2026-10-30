@@ -1,9 +1,7 @@
 document.querySelectorAll('.js-inscription-link').forEach((link) => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
-
-        // const loginUrl = @json(route('login'));
-        // const registerUrl = @json(route('register'));
+        
         const redirect = (hasAccount) => {
             window.location.href = hasAccount ? loginUrl : registerUrl;
         };
