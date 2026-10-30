@@ -96,7 +96,7 @@ function var_amber() {
 
 function var_green() {
     return getComputedStyle(document.documentElement)
-        .getPropertyValue('--green').trim() || '#27ae60';
+        .getPropertyValue('--teal2').trim() || '#007F72';
 }
 
 // ── Confirmar senha ────────────────────────────────────────

@@ -82,11 +82,14 @@
         <div class="view" id="viewForm">
 
             <div class="form-top">
-                <a href="{{ route('login') }}" class="back-link">
-                    <i class="bi bi-arrow-left"></i> Voltar ao login
-                </a>
-                <div class="form-badge">
-                    <i class="bi bi-shield-lock-fill"></i> Redefinir Senha
+
+                <div class="d-flex flex-column flex-md-row justify-content-between">
+                    <a href="{{ route('login') }}" class="back-link">
+                        <i class="bi bi-arrow-left"></i> Voltar ao login
+                    </a>
+                    <div class="form-badge">
+                        <i class="bi bi-shield-lock-fill"></i> Redefinir Senha
+                    </div>
                 </div>
                 <h1>Crie sua<br>nova senha</h1>
                 <p>Para redefinir sua senha, preencha o formulário abaixo com atenção às regras.</p>
@@ -115,8 +118,7 @@
                         <div class="field-wrap">
                             <input type="password" id="newPwd" name="password"
                                 class="form-input pwd-input @error('password') input-error @enderror"
-                                placeholder="Crie sua nova senha" style="padding-right:2.8rem;"
-                                oninput="onPwdInput()" />
+                                placeholder="Crie sua nova senha" style="padding-right:2.8rem;" oninput="onPwdInput()" />
                             <i class="bi bi-lock-fill field-icon"></i>
                             <button class="eye-btn" type="button" onclick="toggleEye('newPwd','eye1')"
                                 aria-label="Mostrar senha">
@@ -200,7 +202,7 @@
         </div><!-- /viewForm -->
 
         <!-- ─── VIEW 2: Sucesso ────────────────────────────── -->
-        {{-- <div class="view @unless (session('success')) hidden @endunless" id="viewSuccess"> --}}<div class="view hidden" id="viewSuccess">
+        <div class="view hidden" id="viewSuccess">
             <div class="success-card">
                 <div class="success-ring">
                     <i class="bi bi-shield-fill-check"></i>

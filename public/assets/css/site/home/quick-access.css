@@ -1,17 +1,7 @@
-/* ─── ACESSO RÁPIDO ──────────────────────────────────────────
-   Faixa de cards sobreposta à base do hero.
-   Usa só os tokens de assets/css/site/styles.css.
-   Carregar DEPOIS de home/index.css (@push('styles') na home).
-────────────────────────────────────────────────────────────── */
-
-/* O hero precisa de folga embaixo para os cards não cobrirem o conteúdo.
-   Confira o valor com o padding atual do .hero em home/index.css. */
 .hero {
     padding-bottom: 6.5rem;
 }
 
-/* O "rolar" ficaria escondido atrás dos cards e perde o sentido:
-   a faixa já está logo abaixo do hero. */
 .hero .scroll-hint {
     display: none;
 }
@@ -59,7 +49,6 @@
     outline-offset: 2px;
 }
 
-/* Mesmo tratamento do logo da navbar: quadrado com gradiente teal */
 .qa-icon {
     width: 40px;
     height: 40px;

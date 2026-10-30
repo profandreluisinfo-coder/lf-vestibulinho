@@ -1,6 +1,7 @@
 /* Propriedades comuns a todos */
 .btn-login,
 .btn-register,
+.btn-reset,
 .btn-back-login,
 .btn-recover {
     background: var(--grad-teal);
@@ -14,7 +15,8 @@
     transition: transform .25s, box-shadow .25s;
 }
 
-/* Propriedades específicas dos botões de login/register */
+/* Propriedades específicas */
+.btn-reset,
 .btn-login,
 .btn-register,
 .btn-recover {
@@ -38,6 +40,7 @@
     margin-top: 1.4rem;
 }
 
+.btn-reset:hover,
 .btn-login:hover,
 .btn-register:hover,
 .btn-back-login:hover,
@@ -46,6 +49,7 @@
     box-shadow: 0 12px 34px rgba(0, 168, 150, .45);
 }
 
+.btn-reset:active,
 .btn-login:active,
 .btn-register:active,
 .btn-back-login:active,
@@ -53,6 +57,7 @@
     transform: translateY(0);
 }
 
+.btn-reset:disabled,
 .btn-login:disabled,
 .btn-register:disabled,
 .btn-back-login:disabled,
@@ -63,6 +68,7 @@
     transform: none !important;
 }
 
+.btn-reset.btn-login:not(:disabled):hover,
 .btn-login:not(:disabled):hover,
 .btn-register:not(:disabled):hover,
 .btn-back-login:not(:disabled):hover,

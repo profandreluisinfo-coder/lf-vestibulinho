@@ -436,8 +436,6 @@
     }
 }
 
-/* ───// FIM NOTÍCIAS SECTION ───────────────────────────────────── */
-
 /* ─── COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
 #como-participar {
     background: #fff;
@@ -534,7 +532,6 @@
     line-height: 1.6;
     margin: 0;
 }
-/* ─── FIM COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
 
 /* ─── CURSOS ────────────────────────────────────────────── */
 #cursos {
@@ -635,7 +632,6 @@
     background: rgba(220, 50, 50, .08);
     color: #c0392b;
 }
-/* ─── FIM CURSOS ────────────────────────────────────────────── */
 
 /* ─── CALENDÁRIO ─────────────────────────────────────────── */
 #calendario {
@@ -717,7 +713,6 @@
     background: rgba(11, 30, 61, .08);
     color: var(--navy);
 }
-/* ─── FIM CALENDÁRIO ─────────────────────────────────────────── */
 
 /* ─── FAQ ────────────────────────────────────────────────── */
 #faq {
@@ -854,7 +849,6 @@
     color: #fff;
     transform: translateX(4px);
 }
-/* ─── FIM FAQ ────────────────────────────────────────────────── */
 
 /* ─── LINKS RÁPIDOS ──────────────────────────────────────── */
 #documentos {
@@ -923,8 +917,6 @@
     margin: 0;
     line-height: 1.5;
 }
-/* ─── FIM LINKS RÁPIDOS ──────────────────────────────────────── */
-
 
 /* Mobile timeline */
 @media(max-width:768px) {

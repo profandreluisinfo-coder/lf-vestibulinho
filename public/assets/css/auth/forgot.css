@@ -1,5 +1,5 @@
-@import url("./base.css");
-@import url("./buttons.css");
+@import url("../shared/base.css");
+@import url("../shared/buttons.css");
 
 /* ─── LAYOUT ──────────────────────────────────────────────── */
 .page-wrapper {
@@ -264,7 +264,7 @@
     align-items: center;
     gap: .5rem;
     background: rgba(0, 168, 150, .08);
-    border: 1px solid rgba(244, 162, 97, .3);
+    border: 1px solid rgba(0, 168, 150, .2);
     color: var(--teal);
     border-radius: 50px;
     padding: .3rem 1rem;
@@ -272,7 +272,6 @@
     font-weight: 700;
     letter-spacing: .07em;
     text-transform: uppercase;
-    margin-bottom: 1rem;
 }
 
 .form-top h1 {

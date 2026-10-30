@@ -1,98 +1,10 @@
-@import url("../auth/base.css");
-@import url("../auth/buttons.css");
+@import url("../shared/base.css");
+@import url("../shared/buttons.css");
 
 body {
     display: flex;
     flex-direction: column;
 }
-/* ─── KEYFRAMES ───────────────────────────────────────────── */
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(.92)
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1)
-    }
-}
-
-@keyframes checkPop {
-    0% {
-        transform: scale(0) rotate(-15deg);
-        opacity: 0
-    }
-
-    70% {
-        transform: scale(1.15) rotate(3deg)
-    }
-
-    100% {
-        transform: scale(1) rotate(0);
-        opacity: 1
-    }
-}
-
-@keyframes ripple {
-    0% {
-        transform: scale(1);
-        opacity: .6
-    }
-
-    100% {
-        transform: scale(1.8);
-        opacity: 0
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200% center
-    }
-
-    100% {
-        background-position: 200% center
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(16px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-/* ─── LAYOUT GRID ─────────────────────────────────────────── */
 
 /* ─── PAINEL ESQUERDO ─────────────────────────────────────── */
 
@@ -389,37 +301,6 @@ body {
 .next-step-box strong {
     color: var(--navy);
 }
-
-/* ─── BOTÃO CTA ───────────────────────────────────────────── */
-/* .btn-cta {
-    width: 100%;
-    padding: .95rem;
-    border: none;
-    border-radius: 50px;
-    background: var(--grad-teal);
-    color: #fff;
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: .95rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .6rem;
-    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
-    transition: transform .25s, box-shadow .25s;
-    animation: fadeUp .7s ease .75s both;
-} */
-
-/* .btn-cta:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
-    color: #fff;
-} */
-
-/* .btn-cta:active {
-    transform: translateY(0);
-} */
 
 /* ─── DIVIDER + LINK VOLTAR ───────────────────────────────── */
 .confirm-divider {
