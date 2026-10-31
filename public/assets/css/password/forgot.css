@@ -110,54 +110,6 @@
     font-size: .85rem;
 }
 
-/* ─── ESTADO DE SUCESSO ───────────────────────────────────── */
-.view {
-    transition: opacity .4s ease, transform .4s ease;
-}
-
-.view.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(12px);
-    position: absolute;
-    width: calc(100% - 5rem);
-}
-
-.success-card {
-    text-align: center;
-    animation: scaleIn .5s cubic-bezier(.22, .68, 0, 1.2) both;
-}
-
-.success-ring {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: var(--grad-teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #fff;
-    margin: 0 auto 1.4rem;
-    box-shadow: 0 8px 28px rgba(0, 168, 150, .35);
-    animation: pulse 2.5s ease-in-out 3;
-}
-
-.success-card h2 {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--navy);
-    margin-bottom: .5rem;
-}
-
-.success-card p {
-    font-size: .87rem;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
 .email-preview {
     display: inline-flex;
     align-items: center;

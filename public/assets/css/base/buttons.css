@@ -31,6 +31,30 @@
 }
 
 /* Propriedades específicas do botão back-login */
+.btn-go-login {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    background: var(--grad-teal);
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: .9rem;
+    padding: .8rem 2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
+    transition: transform .25s, box-shadow .25s;
+    margin-top: 1.5rem;
+}
+
+.btn-go-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 168, 150, .45);
+    color: #fff;
+}
+
 .btn-back-login {
     display: inline-flex;
     align-items: center;

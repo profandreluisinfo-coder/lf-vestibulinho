@@ -422,6 +422,140 @@
     gap: .65rem;
 }
 
+/* Barra de força */
+.strength-wrap {
+    margin-top: .55rem;
+}
+
+.strength-track {
+    height: 5px;
+    background: rgba(11, 30, 61, .08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    transition: width .4s ease, background .4s ease;
+}
+
+.strength-label {
+    font-size: .73rem;
+    color: var(--muted);
+    display: block;
+    margin-top: .3rem;
+    min-height: 1rem;
+    transition: color .3s;
+}
+
+/* Regras checklist */
+.rules-box {
+    background: rgba(11, 30, 61, .03);
+    border-radius: 12px;
+    border: 1px solid rgba(11, 30, 61, .07);
+    padding: .85rem 1rem;
+}
+
+.rules-note {
+    font-size: .78rem;
+    color: var(--muted);
+    line-height: 1.65;
+    border-left: 3px solid var(--amber);
+    padding-left: .75rem;
+    margin-bottom: .85rem;
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .35rem .6rem;
+}
+
+.rule-chip {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .77rem;
+    color: var(--muted);
+    font-weight: 500;
+    transition: color .3s;
+}
+
+.rule-chip .ri {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(11, 30, 61, .18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .6rem;
+    flex-shrink: 0;
+    transition: background .3s, border-color .3s, transform .3s;
+}
+
+.rule-chip.valid {
+    color: var(--teal2);
+}
+
+.rule-chip.valid .ri {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+    transform: scale(1.15);
+    animation: checkPop .3s cubic-bezier(.22, .68, 0, 1.3);
+}
+
+/* ─── ESTADO DE SUCESSO ───────────────────────────────────── */
+.view {
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.view.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    position: absolute;
+    width: calc(100% - 5rem);
+}
+
+.success-card {
+    text-align: center;
+    animation: scaleIn .5s cubic-bezier(.22, .68, 0, 1.2) both;
+}
+
+.success-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--grad-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #fff;
+    margin: 0 auto 1.4rem;
+    box-shadow: 0 8px 28px rgba(0, 168, 150, .35);
+    animation: pulse 2.5s ease-in-out 3;
+}
+
+.success-card h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: .5rem;
+}
+
+.success-card p {
+    font-size: .87rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
 /* Overlay sucesso */
 .success-overlay {
     position: absolute;
