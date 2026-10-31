@@ -64,7 +64,7 @@
         </div>
 
         <!-- Badge -->
-        <div class="status-badge">
+        <div class="form-badge">
             <span class="status-dot"></span>
             E-mail Verificado
         </div>

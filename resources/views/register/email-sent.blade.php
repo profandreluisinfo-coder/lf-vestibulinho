@@ -71,7 +71,7 @@
 
 @section('right-panel')
 
-  <div class="content-card">
+  <div class="confirm-card">
 
     <!-- Envelope animado -->
     <div class="envelope-wrap">
@@ -122,6 +122,6 @@
       <i class="bi bi-box-arrow-in-right"></i> Acessar Área do Candidato
     </a>
 
-  </div><!-- content-card -->
+  </div><!-- confirm-card -->
 
 @endsection

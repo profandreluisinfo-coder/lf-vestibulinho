@@ -120,7 +120,7 @@
     .existing-attachment .att-size { color: var(--text-muted); font-size: var(--font-size-xs); white-space: nowrap; }
 
     /* Status badge no cabeçalho */
-    .post-status-badge {
+    .post-form-badge {
         font-size: 11px;
         font-weight: 600;
         padding: 4px 12px;
@@ -379,7 +379,7 @@
                     <div class="form-card-header">
                         <i class="bi bi-send"></i>
                         <h6>Publicação</h6>
-                        <span class="ms-auto post-status-badge {{ $post->published ? 'bg-success text-white' : ($post->scheduled_at ? 'bg-info text-dark' : 'bg-secondary text-white') }}">
+                        <span class="ms-auto post-form-badge {{ $post->published ? 'bg-success text-white' : ($post->scheduled_at ? 'bg-info text-dark' : 'bg-secondary text-white') }}">
                             {{ $post->published ? 'Publicado' : ($post->scheduled_at ? 'Agendado' : 'Rascunho') }}
                         </span>
                     </div>

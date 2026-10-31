@@ -1,4 +1,26 @@
+/* Propriedades comuns a todos os botões */
+.btn-access,
+.btn-send,
+.btn-login,
+.btn-register,
+.btn-reset,
+.btn-back-login,
+.btn-go-login,
+.btn-hero-primary,
+.btn-hero-outline,
+.btn-faq-more,
+.btn-cta-main,
+.btn-cta-area,
+.btn-inscricao,
+.btn-recover,
+.btn-resend {
+    font-family: var(--font-head);
+    border-radius: 50px;
+    align-items: center;
+}
+
 /* Propriedades comuns a todos */
+.btn-access,
 .btn-login,
 .btn-register,
 .btn-reset,
@@ -6,16 +28,16 @@
 .btn-recover {
     background: var(--grad-teal);
     color: #fff;
-    font-family: var(--font-head);
     font-weight: 700;
     border: none;
-    border-radius: 50px;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
     transition: transform .25s, box-shadow .25s;
 }
 
 /* Propriedades específicas */
+.btn-access,
+.btn-send,
 .btn-reset,
 .btn-login,
 .btn-register,
@@ -24,24 +46,63 @@
     padding: .9rem;
     font-size: .95rem;
     display: flex;
-    align-items: center;
     justify-content: center;
     gap: .6rem;
     transition: transform .25s, box-shadow .25s, opacity .3s;
 }
 
-/* Propriedades específicas do botão back-login */
+/* Botão principal */
+.btn-access {
+    margin-bottom: 1rem;
+}
+
+/* Botão submit */
+.btn-send {
+    border: none;
+    background: var(--grad-teal);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
+}
+
+.btn-resend {
+    background: none;
+    border: 1.5px solid rgba(11, 30, 61, .15);
+    padding: .5rem 1.3rem;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: not-allowed;
+    display: inline-flex;
+    gap: .4rem;
+    transition: all .25s;
+}
+
+.btn-resend.ready {
+    border-color: var(--teal);
+    color: var(--teal);
+    cursor: pointer;
+}
+
+/* Link voltar ao login (tela sucesso) */
+.btn-back-login {
+    display: inline-flex;
+    gap: .5rem;
+    font-size: .88rem;
+    padding: .72rem 1.8rem;
+    margin-top: 1.4rem;
+    cursor: pointer;
+}
+
 .btn-go-login {
     display: inline-flex;
-    align-items: center;
     gap: .55rem;
     background: var(--grad-teal);
     color: #fff;
-    font-family: var(--font-head);
     font-weight: 700;
     font-size: .9rem;
     padding: .8rem 2rem;
-    border-radius: 50px;
     border: none;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
@@ -49,21 +110,20 @@
     margin-top: 1.5rem;
 }
 
+.btn-resend.ready:hover {
+    background: var(--teal);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 168, 150, .3);
+}
+
+.btn-access:hover,
+.btn-back-login:hover,
 .btn-go-login:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 168, 150, .45);
     color: #fff;
 }
 
-.btn-back-login {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    font-size: .88rem;
-    padding: .72rem 1.8rem;
-    margin-top: 1.4rem;
-}
-
+.btn-access:hover,
+.btn-go-login:hover,
 .btn-reset:hover,
 .btn-login:hover,
 .btn-register:hover,
@@ -73,6 +133,7 @@
     box-shadow: 0 12px 34px rgba(0, 168, 150, .45);
 }
 
+.btn-send:active,
 .btn-reset:active,
 .btn-login:active,
 .btn-register:active,
@@ -81,6 +142,7 @@
     transform: translateY(0);
 }
 
+.btn-send:disabled,
 .btn-reset:disabled,
 .btn-login:disabled,
 .btn-register:disabled,
@@ -92,6 +154,7 @@
     transform: none !important;
 }
 
+.btn-send:not(:disabled):hover,
 .btn-reset.btn-login:not(:disabled):hover,
 .btn-login:not(:disabled):hover,
 .btn-register:not(:disabled):hover,
@@ -104,16 +167,13 @@
 .btn-hero-primary {
     background: var(--grad-amber);
     color: var(--navy);
-    font-family: var(--font-head);
     font-weight: 700;
     padding: .85rem 2rem;
-    border-radius: 50px;
     font-size: .95rem;
     border: none;
     box-shadow: 0 6px 24px rgba(244, 162, 97, .4);
     transition: transform .25s, box-shadow .25s;
     display: inline-flex;
-    align-items: center;
     gap: .5rem;
 }
 
@@ -126,15 +186,12 @@
 .btn-hero-outline {
     background: transparent;
     color: #fff;
-    font-family: var(--font-head);
     font-weight: 600;
     padding: .85rem 2rem;
-    border-radius: 50px;
     font-size: .95rem;
     border: 2px solid rgba(255, 255, 255, .35);
     transition: border-color .25s, background .25s, transform .25s;
     display: inline-flex;
-    align-items: center;
     gap: .5rem;
 }
 
@@ -147,16 +204,13 @@
 
 .btn-faq-more {
     display: inline-flex;
-    align-items: center;
     gap: .5rem;
     background: transparent;
     border: 2px solid var(--teal);
     color: var(--teal);
-    font-family: var(--font-head);
     font-weight: 700;
     font-size: .88rem;
     padding: .65rem 1.5rem;
-    border-radius: 50px;
     transition: background .25s, color .25s, transform .25s;
 }
 
@@ -166,18 +220,19 @@
     transform: translateX(4px);
 }
 
+.btn-send:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
+}
 
 .btn-cta-main {
     background: var(--grad-amber);
     color: var(--navy);
-    font-family: var(--font-head);
     font-weight: 700;
     font-size: 1rem;
     padding: 1rem 2.4rem;
-    border-radius: 50px;
     border: none;
     display: inline-flex;
-    align-items: center;
     gap: .6rem;
     box-shadow: 0 8px 32px rgba(244, 162, 97, .4);
     transition: transform .3s, box-shadow .3s;
@@ -192,14 +247,11 @@
 .btn-cta-area {
     background: transparent;
     color: #fff;
-    font-family: var(--font-head);
     font-weight: 600;
     font-size: 1rem;
     padding: 1rem 2.4rem;
-    border-radius: 50px;
     border: 2px solid rgba(255, 255, 255, .3);
     display: inline-flex;
-    align-items: center;
     gap: .6rem;
     transition: border-color .3s, background .3s, transform .3s;
 }
@@ -216,13 +268,10 @@
     padding: .8rem;
     background: var(--grad-teal);
     color: #fff;
-    font-family: var(--font-head);
     font-weight: 700;
     font-size: .85rem;
     border: none;
-    border-radius: 50px;
     display: flex;
-    align-items: center;
     justify-content: center;
     gap: .5rem;
     box-shadow: 0 4px 16px rgba(0, 168, 150, .3);
@@ -234,4 +283,36 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 168, 150, .42);
     color: #fff;
+}
+
+.btn-resend {
+    background: none;
+    border: 1.5px solid rgba(11, 30, 61, .15);
+    padding: .5rem 1.3rem;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: not-allowed;
+    display: inline-flex;
+    gap: .4rem;
+    transition: all .25s;
+}
+
+.btn-resend.ready {
+    border-color: var(--teal);
+    color: var(--teal);
+    cursor: pointer;
+}
+
+.btn-resend.ready:hover {
+    background: var(--teal);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 168, 150, .3);
+}
+
+.resend-timer {
+    font-size: .75rem;
+    color: var(--muted);
+    margin-top: .4rem;
+    display: block;
 }

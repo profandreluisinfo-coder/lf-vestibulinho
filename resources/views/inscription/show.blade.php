@@ -76,15 +76,15 @@
                             </div>
 
                             @if ($user?->lgbt?->status === 'pending')
-                                <span class="status-badge analise">
+                                <span class="form-badge analise">
                                     <i class="bi bi-hourglass-split"></i> Em análise
                                 </span>
                             @elseif ($user?->lgbt?->status === 'accepted')
-                                <span class="status-badge deferido">
+                                <span class="form-badge deferido">
                                     <i class="bi bi-check-circle-fill"></i> Deferido
                                 </span>
                             @else
-                                <span class="status-badge indeferido">
+                                <span class="form-badge indeferido">
                                     <i class="bi bi-x-circle-fill"></i> Indeferido
                                 </span>
                             @endif
@@ -135,15 +135,15 @@
                             </div>
 
                             @if ($user?->pne?->status === 'pending')
-                                <span class="status-badge analise">
+                                <span class="form-badge analise">
                                     <i class="bi bi-hourglass-split"></i> Em análise
                                 </span>
                             @elseif ($user?->pne?->status === 'accepted')
-                                <span class="status-badge deferido">
+                                <span class="form-badge deferido">
                                     <i class="bi bi-check-circle-fill"></i> Deferido
                                 </span>
                             @else
-                                <span class="status-badge indeferido">
+                                <span class="form-badge indeferido">
                                     <i class="bi bi-x-circle-fill"></i> Indeferido
                                 </span>
                             @endif

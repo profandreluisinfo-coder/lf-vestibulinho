@@ -61,55 +61,11 @@ body {
     color: #fff;
 }
 
-/* Toggle senhas */
-.toggle-pwd-btn {
-    background: rgba(0, 168, 150, .08);
-    border: 1px solid rgba(0, 168, 150, .2);
-    color: var(--teal);
-    font-size: .78rem;
-    font-weight: 600;
-    font-family: var(--font-head);
-    cursor: pointer;
-    border-radius: 50px;
-    padding: .3rem .9rem;
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    transition: background .2s, box-shadow .2s;
-}
-
-.toggle-pwd-btn:hover {
-    background: rgba(0, 168, 150, .15);
-    box-shadow: 0 2px 10px rgba(0, 168, 150, .2);
-}
-
-/* Inline feedback */
-.field-msg {
-    font-size: .74rem;
-    margin-top: .35rem;
-    min-height: 1rem;
-    display: flex;
-    align-items: center;
-    gap: .3rem;
-    animation: slideRule .25s ease;
-}
-
-.field-msg.ok {
-    color: var(--teal2);
-}
-
-.field-msg.error {
-    color: #e74c3c;
-}
 
 /* Aviso de domínio suspeito */
 .input-warn {
     border-color: var(--amber) !important;
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
-}
-
-.field-msg.warn {
-    color: var(--amber);
 }
 
 /* ─── RESPONSIVO ─────────────────────────────────────────── */
@@ -122,8 +78,7 @@ body {
 }
 
 /* Tablets: transforma o formulário em uma única coluna confortável. */
-@media (max-width: 900px) {
-    
+@media (max-width: 900px) {    
     .panel-right {
         min-height: 100dvh;
         padding: clamp(2rem, 6vw, 3.5rem) clamp(1.5rem, 8vw, 4rem);
