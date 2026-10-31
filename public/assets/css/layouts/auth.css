@@ -238,6 +238,24 @@
     transition: color .25s;
 }
 
+.field-msg {
+    font-size: .74rem;
+    margin-top: .35rem;
+    min-height: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    animation: slideUp .2s ease;
+}
+
+.field-msg.ok {
+    color: var(--green);
+}
+
+.field-msg.error {
+    color: #e74c3c;
+}
+
 .form-input {
     width: 100%;
     border: 1.5px solid rgba(11, 30, 61, .14);
@@ -262,6 +280,10 @@
 
 .form-input.input-ok {
     border-color: var(--teal);
+}
+
+.form-input.input-ok~.field-icon {
+    color: var(--green);
 }
 
 .form-input:focus~.field-icon {
@@ -366,6 +388,38 @@
 
 .link-muted:hover {
     color: var(--navy);
+}
+
+.link-back {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    font-family: var(--font-head);
+    font-size: .84rem;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color .2s, gap .2s;
+}
+
+.link-back:hover {
+    color: var(--navy);
+    gap: .65rem;
+}
+
+.link-back-login {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    font-family: var(--font-head);
+    font-size: .84rem;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color .2s, gap .2s;
+}
+
+.link-back-login:hover {
+    color: var(--navy);
+    gap: .65rem;
 }
 
 /* Overlay sucesso */
