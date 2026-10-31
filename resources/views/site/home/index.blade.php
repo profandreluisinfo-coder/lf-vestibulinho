@@ -191,7 +191,7 @@
     @endif
 
     {{-- ═══════════════════════ CURSOS ════════════════════════════ --}}
-    <section id="cursos">
+    <section class="course-section" id="cursos">
         <div class="container">
             <div class="text-center mb-5 reveal">
                 <div class="section-tag justify-content-center">Oferta Acadêmica</div>
