@@ -58,16 +58,11 @@
     </div>
 
     <!-- Rodapé -->
-    <div class="panel-footer">
-        © {{ $year }}
-        EM Dr. Leandro Franceschini
-    </div>
+    @include('partials.auth.footer', ['year' => $process?->year ?? date('Y')])
 
 @endsection
 
 @section('right-panel')
-
-    {{-- @include('alerts.toasts') --}}
 
     <!-- Overlay de sucesso -->
     <div class="success-overlay" id="successOverlay">
@@ -90,7 +85,7 @@
 
         <!-- Topo -->
         <div class="form-top">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="d-flex justify-content-between">
                 <a href="{{ route('home') }}" class="back-link">
                     <i class="bi bi-arrow-left"></i> Voltar ao site
                 </a>
@@ -122,7 +117,7 @@
                 <div class="field-wrap">
                     <input type="email" id="loginEmail" name="email"
                         class="form-input @error('email') is-invalid @enderror" placeholder="seu@email.com"
-                        autocomplete="email" oninput="clearError(this)" />
+                        autocomplete="email" oninput="clearError(this); validateForm()" />
                     <i class="bi bi-envelope-fill field-icon"></i>
                     @error('email')
                         <div id="emailError" class="invalid-feedback">
@@ -140,7 +135,7 @@
                 <div class="field-wrap">
                     <input type="password" id="loginPassword" name="password"
                         class="form-input @error('password') is-invalid @enderror" placeholder="Sua senha"
-                        style="padding-right:2.8rem;" autocomplete="current-password" oninput="clearError(this)" />
+                        style="padding-right:2.8rem;" autocomplete="current-password" oninput="clearError(this); validateForm()" />
                     <i class="bi bi-lock-fill field-icon"></i>
                     <button class="eye-btn" type="button" onclick="toggleEye('loginPassword','eyeLogin')"
                         aria-label="Mostrar senha">
@@ -164,7 +159,7 @@
             </div>
 
             <!-- Botão entrar -->
-            <button type="submit" class="btn-login">
+            <button type="submit" class="btn-login" disabled>
                 <i class="bi bi-box-arrow-in-right"></i> Entrar
             </button>
 
