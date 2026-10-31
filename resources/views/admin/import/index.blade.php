@@ -1,5 +1,3 @@
-{{-- resources/views/admin/import/index.blade.php --}}
-{{-- Ajuste os nomes das rotas marcados com "ROTA" para os que existem no seu projeto. --}}
 @extends('layouts.admin')
 
 @section('page-title', 'Classificação')

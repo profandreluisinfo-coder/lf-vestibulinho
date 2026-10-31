@@ -58,11 +58,19 @@
 
         <!-- Topo -->
         <div class="form-top">
-            <a href="{{ route('home') }}" class="back-link">
-                <i class="bi bi-arrow-left"></i> Voltar ao site
-            </a>
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+                <a href="{{ route('home') }}" class="back-link">
+                    <i class="bi bi-arrow-left"></i> Voltar ao site
+                </a>
+                <div class="form-badge">
+                    <i class="bi bi-person-lock"></i> Registrar-se
+                </div>
+            </div>
+
+            <!-- Título -->
             <h1>Registrar<br>Dados de Acesso</h1>
             <p>Crie seu acesso para acompanhar o Vestibulinho {{ $process?->year }} pela Área do Candidato.</p>
+
         </div>
 
         <!-- Toggle senhas -->
@@ -75,11 +83,11 @@
 
         {{-- Mensagem de ação mal‑sucedida --}}
         @if (session('error'))
-        <div class="alert alert-danger border d-flex align-items-center alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <span>{{ session('error') }}</span>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
-        </div>
+            <div class="alert alert-danger border d-flex align-items-center alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span>{{ session('error') }}</span>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            </div>
         @endif
 
         <!-- Formulário -->

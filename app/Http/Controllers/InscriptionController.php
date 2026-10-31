@@ -132,7 +132,7 @@ class InscriptionController extends Controller
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        return view('inscription.steps.personal');
+        return view('partials.inscriptions.steps.personal');
     }
 
     // Gravar Dados de Passo 1
@@ -162,7 +162,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.personal')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('inscription.steps.certificate');
+        return view('partials.inscriptions.steps.certificate');
     }
 
     // Gravar Dados de Passo 2
@@ -181,7 +181,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.certificate')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('inscription.steps.address');
+        return view('partials.inscriptions.steps.address');
     }
 
     // Gravar Dados de Passo 3
@@ -202,7 +202,7 @@ class InscriptionController extends Controller
 
         $schools = School::all();
 
-        return view('inscription.steps.academic', [
+        return view('partials.inscriptions.steps.academic', [
             'schools' => $schools,
         ]);
     }
@@ -225,7 +225,7 @@ class InscriptionController extends Controller
 
         $degrees = Degree::all();
 
-        return view('inscription.steps.family', [
+        return view('partials.inscriptions.steps.family', [
             'degrees' => $degrees,
         ]);
     }
@@ -264,7 +264,7 @@ class InscriptionController extends Controller
         $disabilities = Disability::all();
         $accessibilityResources = Resource::all();
 
-        return view('inscription.steps.pcd', [
+        return view('partials.inscriptions.steps.pcd', [
             'disabilities' => $disabilities,
             'accessibilityResources' => $accessibilityResources,
         ]);
@@ -303,7 +303,7 @@ class InscriptionController extends Controller
 
         $healthIssues = HealthIssue::all();
 
-        return view('inscription.steps.others', [
+        return view('partials.inscriptions.steps.others', [
             'healthIssues' => $healthIssues,
         ]);
     }
@@ -341,7 +341,7 @@ class InscriptionController extends Controller
             ? $process->courses()->orderBy('courses.name')->get()
             : collect();
 
-        return view('inscription.steps.course', [
+        return view('partials.inscriptions.steps.course', [
             'courses' => $courses,
         ]);
     }
@@ -371,7 +371,7 @@ class InscriptionController extends Controller
         }
 
         // Retorna a view com os dados necessários
-        return view('inscription.steps.confirm', array_merge(
+        return view('partials.inscriptions.steps.confirm', array_merge(
             $steps->all()
         ));
     }

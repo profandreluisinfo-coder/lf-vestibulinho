@@ -1,0 +1,40 @@
+#cta {
+    background: linear-gradient(135deg, #0a2a1a 0%, #0B3D2E 50%, #0a2a1a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 80% at 50% 50%, rgba(0, 168, 150, .25) 0%, transparent 70%);
+}
+
+#cta .section-title {
+    color: #fff;
+}
+
+#cta .section-lead {
+    color: rgba(255, 255, 255, .65);
+}
+
+.pulse-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.pulse-wrap::before,
+.pulse-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50px;
+    border: 2px solid rgba(244, 162, 97, .4);
+    animation: pulse-ring 2s ease-out infinite;
+    pointer-events: none;
+}
+
+.pulse-wrap::after {
+    animation-delay: .8s;
+}

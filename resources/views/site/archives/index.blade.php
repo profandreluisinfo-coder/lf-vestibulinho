@@ -9,7 +9,7 @@
 @section('content')
 
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
-    <section class="pa-hero">
+    <section class="hero">
         <div class="hero-circle hc1"></div>
         <div class="hero-circle hc2"></div>
         <div class="hero-circle hc3"></div>
@@ -33,12 +33,12 @@
                         Vestibulinho.
                     </p>
                     <div class="hero-chips">
-                        <div class="hero-chip">
+                        <div class="stat-chip">
                             <div class="num">{{ $archives->count() }}</div>
                             <div class="lbl">{{ Str::plural('Prova', $archives->count()) }}
                                 disponíve{{ $archives->count() === 1 ? 'l' : 'is' }}</div>
                         </div>
-                        <div class="hero-chip">
+                        <div class="stat-chip">
                             <div class="num">{{ $archives->whereNotNull('answer')->count() }}</div>
                             <div class="lbl">Com gabarito</div>
                         </div>
@@ -223,5 +223,5 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/site/archives/index.js') }}"></script>
-    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/confirm.js') }}"></script>
 @endpush

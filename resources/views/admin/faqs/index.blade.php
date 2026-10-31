@@ -224,9 +224,9 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/faqs/index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/faqs/index.js') }}"></script>
     <script src="{{ asset('assets/js/admin/faqs/filters.js') }}"></script>
     <script src="{{ asset('assets/js/admin/faqs/sortable.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/faqs/delete.js') }}"></script>  
-    <script src="{{ asset('assets/js/swa/faqs/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/faqs/delete.js') }}"></script>  
+    <script src="{{ asset('assets/js/admin/faqs/publish.js') }}"></script>
 @endpush

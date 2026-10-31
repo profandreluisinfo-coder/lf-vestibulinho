@@ -1,0 +1,35 @@
+:root {
+    --navy: #0B1E3D;
+    --navy2: #132948;
+    --teal: #00A896;
+    --teal2: #007F72;
+    --green: #27ae60;
+    --green2: #1e8449;
+    --amber: #F4A261;
+    --amber2: #E07A3A;
+    --light: #EEF3FA;
+    --white: #FFFFFF;
+    --muted: #6B7FA3;
+    --card-bg: #FFFFFF;
+    --shadow: 0 8px 32px rgba(11, 30, 61, .12);
+    --shadow-lg: 0 20px 60px rgba(11, 30, 61, .18);
+    --radius: 16px;
+    --radius-lg: 24px;
+    --grad-main: linear-gradient(135deg, var(--navy) 0%, #1B3E72 60%, #0E4D6B 100%);
+    --grad-teal: linear-gradient(135deg, var(--teal) 0%, var(--teal2) 100%);
+    --grad-amber: linear-gradient(135deg, var(--amber) 0%, var(--amber2) 100%);
+    --font-head: 'Sora', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    /* ESPAÇAMENTOS */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* TRANSIÇÕES */
+    --transition: .3s ease;
+
+    /* LARGURAS */
+    --container-width: 1200px;
+}

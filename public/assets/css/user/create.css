@@ -1,66 +1,10 @@
-@import url("../auth/base.css");
-@import url("../auth/buttons.css");
-
-:root {
-    --card-bg: #FFFFFF;
-}
+@import url("../shared/base.css");
+@import url("../shared/buttons.css");
 
 body {
     display: flex;
     flex-direction: column;
 }
-/* ─── KEYFRAMES ───────────────────────────────────────────── */
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(.92)
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1)
-    }
-}
-
-@keyframes slideRule {
-    from {
-        opacity: 0;
-        transform: translateX(-8px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0)
-    }
-}
-
-/* ─── LAYOUT WRAPPER ──────────────────────────────────────── */
-
-/* ─── PAINEL ESQUERDO (decorativo) ───────────────────────── */
 
 /* Círculos decorativos */
 
@@ -209,12 +153,6 @@ body {
     animation: scaleIn .55s cubic-bezier(.22, .68, 0, 1.2) .1s both;
 }
 
-/* Topo do formulário */
-/* .form-top {
-    margin-top: 16rem;
-    margin-bottom: 2rem;
-} */
-
 .form-top .back-link {
     display: inline-flex;
     align-items: center;
@@ -229,6 +167,23 @@ body {
 .form-top .back-link:hover {
     color: var(--teal);
     gap: .6rem;
+}
+
+.form-top .form-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: .5rem;
+    width: fit-content;
+    background: rgba(0, 168, 150, .08);
+    border: 1px solid rgba(0, 168, 150, .2);
+    color: var(--teal);
+    border-radius: 50px;
+    padding: .3rem 1rem;
+    font-size: .73rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
 }
 
 .form-top h1 {
@@ -458,38 +413,6 @@ body {
     color: #fff;
     transform: scale(1.15);
 }
-
-/* Submit button */
-/* .btn-register {
-    width: 100%;
-    padding: .9rem;
-    border: none;
-    border-radius: 50px;
-    background: var(--grad-teal);
-    color: #fff;
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: .95rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .6rem;
-    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
-    transition: transform .25s, box-shadow .25s, opacity .3s;
-} */
-
-/* .btn-register:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none !important;
-}
-
-.btn-register:not(:disabled):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 168, 150, .45);
-} */
 
 /* Links bottom */
 .form-links {

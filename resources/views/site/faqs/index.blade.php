@@ -17,10 +17,10 @@
 @section('content')
 
     <!-- ═══════════════════════ HERO ════════════════════════════ -->
-    <section class="faq-hero">
-        <div class="hero-circle hero-c1"></div>
-        <div class="hero-circle hero-c2"></div>
-        <div class="hero-circle hero-c3"></div>
+    <section class="hero">
+        <div class="hero-circle hc1"></div>
+        <div class="hero-circle hc2"></div>
+        <div class="hero-circle hc3"></div>
 
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
@@ -35,10 +35,10 @@
                         <span class="live-dot"></span>
                         Dúvidas Frequentes · Vestibulinho {{ $process?->year }}
                     </div>
-                    <h1 class="faq-hero-title mb-3">
+                    <h1 class="hero-title mb-3">
                         Perguntas Frequentes<br><em>Processo Seletivo</em>
                     </h1>
-                    <h1>Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
+                    <h1 class="hero-sub">Encontre a resposta<br>para sua <em>dúvida</em><br>aqui.</h1>
                     <p class="lead mt-3">Reunimos as perguntas mais frequentes dos candidatos. Use a busca abaixo ou
                         navegue pelas categorias.</p>
 
@@ -82,19 +82,15 @@
                 </div>
                 <!-- Stats -->
                 <div class="col-lg-4">
-                    <div class="hero-stats justify-content-lg-end">
-                        <div class="hstat">
+                    <div class="hero-chips justify-content-lg-end">
+                        <div class="stat-chip">
                             <div class="num" id="statTotal">—</div>
                             <div class="lbl">Perguntas</div>
                         </div>
-                        <div class="hstat">
+                        <div class="stat-chip">
                             <div class="num" id="statCategories">—</div>
                             <div class="lbl">Categorias</div>
                         </div>
-                        {{-- <div class="hstat">
-                            <div class="num">100%</div>
-                            <div class="lbl">Gratuito</div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -175,10 +171,10 @@
 @endsection
 
 @push('scripts')
-    <<script>
+    <script>
         const FAQ_DATA = {{ Illuminate\Support\Js::from($faqs) }};
     </script>
     <script src="{{ asset('assets/js/site/faqs/index.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/site/home/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/shared/confirm.js') }}"></script>
 @endpush

@@ -5,7 +5,7 @@
 @section('meta_description', 'Área de confirmação de e-mail para candidatos do Vestibulinho.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/email/confirmed.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/register/email-confirmed.css') }}">
 @endpush
 
 @section('left-panel')
@@ -18,7 +18,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $process?->year ?? config('app.year') }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho {{ $process?->year ?? $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <div class="panel-center">

@@ -1,9 +1,8 @@
-/* ═══════════════════════════════════════════════════════════
-   errors.css — Layout master de páginas de erro
-   Depende dos tokens de index.css (:root)
-   ══════════════════════════════════════════════════════════ */
-@import '../errors/tokens.css';
-@import '../errors/navbar.css';
+@import url("../base/variables.css");
+@import url("../base/reset.css");
+@import url("../base/utilities.css");
+@import url("../base/global.css");
+@import url("../partials/navbar.css");
 
 /* ─── BODY ───────────────────────────────────────────────── */
 .err-body {

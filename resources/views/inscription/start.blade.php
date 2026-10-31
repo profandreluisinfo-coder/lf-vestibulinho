@@ -14,7 +14,7 @@
 
 @section('content')
 
-    @include('inscription.partials.navbar')
+    @include('partials.inscriptions.navbar')
 
     <div class="wrapper">
         <div class="important-info-box mb-3">

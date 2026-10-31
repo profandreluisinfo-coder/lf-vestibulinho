@@ -1,0 +1,42 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+}
+
+html,
+body {
+    font-family: var(--font-body);
+    background: var(--light);
+    color: var(--navy);
+    min-height: 100vh;
+}
+
+body {
+    overflow-x: clip;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-head);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

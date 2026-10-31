@@ -5,7 +5,7 @@
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/email/resend.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/register/resend-email.css') }}">
 @endpush
 
 @section('left-panel')
@@ -77,7 +77,7 @@
                 <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                 <span>
                     Use o mesmo e-mail informado durante o seu registro no Vestibulinho
-                    {{ $process?->year ?? config('app.year') }}.
+                    {{ $process?->year ?? $process?->year }}.
                     Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
                 </span>
             </div>
@@ -167,5 +167,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/email/resend.js') }}"></script>
+    <script src="{{ asset('assets/js/register/resend-email.js') }}"></script>
 @endpush

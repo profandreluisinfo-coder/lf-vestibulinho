@@ -106,7 +106,9 @@
             });
         });
     </script>
+@endpush
 
+@push('scripts')
     <script>
         document.getElementById('form-gerar-backup').addEventListener('submit', function() {
             const botao = document.getElementById('btn-gerar-backup');

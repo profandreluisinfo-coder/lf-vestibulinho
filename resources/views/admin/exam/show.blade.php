@@ -235,5 +235,5 @@
  @endsection
 
  @push('scripts')
-     <script src="{{ asset('assets/js/swa/locations/settings.js') }}"></script>
+     <script src="{{ asset('assets/js/admin/exam/settings.js') }}"></script>
  @endpush

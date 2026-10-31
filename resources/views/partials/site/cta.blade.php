@@ -1,4 +1,4 @@
-<section id="candidato-cta">
+<section id="cta">
     <div class="container text-center position-relative" style="z-index:1;">
         <div class="reveal">
             <div class="section-tag justify-content-center" style="color:var(--teal);">

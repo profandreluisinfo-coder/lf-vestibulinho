@@ -6,7 +6,7 @@
 @section('content')
     <div class="container">
         
-        @include('admin.partials.charts')
+        @include('partials.admin.charts')
 
     </div>
 

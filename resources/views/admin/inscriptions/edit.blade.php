@@ -68,13 +68,13 @@
                     <p class="fi-card-title">Identificação</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'cpf', 'label' => 'CPF', 'value' => $user->cpf, 'inputmode' => 'numeric'])
-                    @include('admin.partials.field', ['name' => 'name', 'label' => 'Nome', 'value' => $user->name, 'max' => 100])
-                    @include('admin.partials.field', ['name' => 'birth', 'label' => 'Data de nascimento', 'type' => 'date', 'value' => $user->getRawOriginal('birth'), 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'gender', 'label' => 'Gênero', 'value' => $user->getRawOriginal('gender'), 'options' => \App\Models\User::GENDERS, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'nationality', 'label' => 'Nacionalidade', 'value' => $user->getRawOriginal('nationality'), 'options' => $nationalities, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'email', 'label' => 'E-mail', 'type' => 'email', 'value' => $user->email, 'required' => true, 'max' => 150])
-                    @include('admin.partials.field', ['name' => 'phone', 'label' => 'Telefone', 'value' => $user->phone, 'class' => 'phone-mask', 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'cpf', 'label' => 'CPF', 'value' => $user->cpf, 'inputmode' => 'numeric'])
+                    @include('partials.admin.field', ['name' => 'name', 'label' => 'Nome', 'value' => $user->name, 'max' => 100])
+                    @include('partials.admin.field', ['name' => 'birth', 'label' => 'Data de nascimento', 'type' => 'date', 'value' => $user->getRawOriginal('birth'), 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'gender', 'label' => 'Gênero', 'value' => $user->getRawOriginal('gender'), 'options' => \App\Models\User::GENDERS, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'nationality', 'label' => 'Nacionalidade', 'value' => $user->getRawOriginal('nationality'), 'options' => $nationalities, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'email', 'label' => 'E-mail', 'type' => 'email', 'value' => $user->email, 'required' => true, 'max' => 150])
+                    @include('partials.admin.field', ['name' => 'phone', 'label' => 'Telefone', 'value' => $user->phone, 'class' => 'phone-mask', 'col' => 'col-md-6'])
                 </div>
             </div>
 
@@ -86,9 +86,9 @@
                         <p class="fi-card-title">Nome Social</p>
                     </div>
                     <div class="row g-3 p-3">
-                        @include('admin.partials.field', ['name' => 'lgbt[name]', 'label' => 'Nome social', 'value' => $user->lgbt->name, 'max' => 100, 'col' => 'col-md-6'])
-                        @include('admin.partials.field', ['name' => 'lgbt[status]', 'label' => 'Situação', 'value' => $user->lgbt->status, 'options' => $statuses, 'col' => 'col-md-6'])
-                        @include('admin.partials.field', ['name' => 'lgbt[observations]', 'label' => 'Observações', 'value' => $user->lgbt->observations, 'max' => 255, 'col' => 'col-12'])
+                        @include('partials.admin.field', ['name' => 'lgbt[name]', 'label' => 'Nome social', 'value' => $user->lgbt->name, 'max' => 100, 'col' => 'col-md-6'])
+                        @include('partials.admin.field', ['name' => 'lgbt[status]', 'label' => 'Situação', 'value' => $user->lgbt->status, 'options' => $statuses, 'col' => 'col-md-6'])
+                        @include('partials.admin.field', ['name' => 'lgbt[observations]', 'label' => 'Observações', 'value' => $user->lgbt->observations, 'max' => 255, 'col' => 'col-12'])
                     </div>
                 </div>
             @endif
@@ -100,9 +100,9 @@
                     <p class="fi-card-title">Documento Pessoal</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'document[type]', 'label' => 'Tipo', 'value' => $user->document?->getRawOriginal('type'), 'options' => \App\Models\Document::TYPES, 'required' => true, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'document[number]', 'label' => 'Número', 'value' => $user->document?->number, 'required' => true, 'max' => 15, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'document[expedition]', 'label' => 'Data de expedição', 'type' => 'date', 'value' => $user->document?->getRawOriginal('expedition'), 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'document[type]', 'label' => 'Tipo', 'value' => $user->document?->getRawOriginal('type'), 'options' => \App\Models\Document::TYPES, 'required' => true, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'document[number]', 'label' => 'Número', 'value' => $user->document?->number, 'required' => true, 'max' => 15, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'document[expedition]', 'label' => 'Data de expedição', 'type' => 'date', 'value' => $user->document?->getRawOriginal('expedition'), 'col' => 'col-md-4'])
                 </div>
             </div>
 
@@ -114,15 +114,15 @@
                     <p class="fi-card-title">Certidão</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'certificate[type]', 'label' => 'Modelo', 'value' => $user->certificate?->getRawOriginal('type'), 'options' => $certificateTypes, 'required' => true, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'certificate[number]', 'label' => 'Número', 'value' => $user->certificate?->number, 'required' => true, 'max' => 32, 'col' => 'col-md-8'])
+                    @include('partials.admin.field', ['name' => 'certificate[type]', 'label' => 'Modelo', 'value' => $user->certificate?->getRawOriginal('type'), 'options' => $certificateTypes, 'required' => true, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'certificate[number]', 'label' => 'Número', 'value' => $user->certificate?->number, 'required' => true, 'max' => 32, 'col' => 'col-md-8'])
 
                     {{-- Só aparece para certidão ANTIGA (tipo 2) --}}
                     <div class="col-12" id="certificate-old-fields">
                         <div class="row g-3">
-                            @include('admin.partials.field', ['name' => 'certificate[fls]', 'label' => 'Folhas', 'value' => $user->certificate?->fls, 'max' => 10, 'col' => 'col-md-4'])
-                            @include('admin.partials.field', ['name' => 'certificate[book]', 'label' => 'Livro', 'value' => $user->certificate?->book, 'max' => 10, 'col' => 'col-md-4'])
-                            @include('admin.partials.field', ['name' => 'certificate[city]', 'label' => 'Município', 'value' => $user->certificate?->city, 'max' => 45, 'col' => 'col-md-4'])
+                            @include('partials.admin.field', ['name' => 'certificate[fls]', 'label' => 'Folhas', 'value' => $user->certificate?->fls, 'max' => 10, 'col' => 'col-md-4'])
+                            @include('partials.admin.field', ['name' => 'certificate[book]', 'label' => 'Livro', 'value' => $user->certificate?->book, 'max' => 10, 'col' => 'col-md-4'])
+                            @include('partials.admin.field', ['name' => 'certificate[city]', 'label' => 'Município', 'value' => $user->certificate?->city, 'max' => 45, 'col' => 'col-md-4'])
                         </div>
                     </div>
                 </div>
@@ -136,11 +136,11 @@
                     <p class="fi-card-title">Filiação / Responsável Legal</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'mother[name]', 'label' => 'Nome da mãe', 'value' => $user->mother?->name, 'max' => 255])
-                    @include('admin.partials.field', ['name' => 'mother[phone]', 'label' => 'Telefone da mãe', 'value' => $user->mother?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
+                    @include('partials.admin.field', ['name' => 'mother[name]', 'label' => 'Nome da mãe', 'value' => $user->mother?->name, 'max' => 255])
+                    @include('partials.admin.field', ['name' => 'mother[phone]', 'label' => 'Telefone da mãe', 'value' => $user->mother?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
 
-                    @include('admin.partials.field', ['name' => 'father[name]', 'label' => 'Nome do pai', 'value' => $user->father?->name, 'max' => 255])
-                    @include('admin.partials.field', ['name' => 'father[phone]', 'label' => 'Telefone do pai', 'value' => $user->father?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
+                    @include('partials.admin.field', ['name' => 'father[name]', 'label' => 'Nome do pai', 'value' => $user->father?->name, 'max' => 255])
+                    @include('partials.admin.field', ['name' => 'father[phone]', 'label' => 'Telefone do pai', 'value' => $user->father?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
 
                     <div class="col-12">
                         <hr class="my-1">
@@ -149,18 +149,18 @@
                         </p>
                     </div>
 
-                    @include('admin.partials.field', ['name' => 'guardian[name]', 'label' => 'Responsável legal', 'value' => $user->guardian?->name, 'max' => 255])
-                    @include('admin.partials.field', ['name' => 'guardian[phone]', 'label' => 'Telefone do responsável', 'value' => $user->guardian?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
-                    @include('admin.partials.field', ['name' => 'guardian[degree_id]', 'label' => 'Grau de parentesco', 'value' => $user->guardian?->degree_id, 'options' => $degrees, 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'guardian[name]', 'label' => 'Responsável legal', 'value' => $user->guardian?->name, 'max' => 255])
+                    @include('partials.admin.field', ['name' => 'guardian[phone]', 'label' => 'Telefone do responsável', 'value' => $user->guardian?->phone, 'class' => 'phone-mask', 'inputmode' => 'numeric'])
+                    @include('partials.admin.field', ['name' => 'guardian[degree_id]', 'label' => 'Grau de parentesco', 'value' => $user->guardian?->degree_id, 'options' => $degrees, 'col' => 'col-md-6'])
 
                     {{-- Só aparece quando o parentesco é "Outro" (8) --}}
                     <div class="col-md-6" id="guardian-kinship-wrapper">
                         <div class="row">
-                            @include('admin.partials.field', ['name' => 'guardian[kinship]', 'label' => 'Qual parentesco?', 'value' => $user->guardian?->kinship, 'max' => 45, 'col' => 'col-12'])
+                            @include('partials.admin.field', ['name' => 'guardian[kinship]', 'label' => 'Qual parentesco?', 'value' => $user->guardian?->kinship, 'max' => 45, 'col' => 'col-12'])
                         </div>
                     </div>
 
-                    @include('admin.partials.field', ['name' => 'parent_email[address]', 'label' => 'E-mail da família', 'type' => 'email', 'value' => $user->parent_email?->address, 'col' => 'col-12'])
+                    @include('partials.admin.field', ['name' => 'parent_email[address]', 'label' => 'E-mail da família', 'type' => 'email', 'value' => $user->parent_email?->address, 'col' => 'col-12'])
                 </div>
             </div>
 
@@ -172,17 +172,17 @@
                     <p class="fi-card-title">Escolaridade</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'academic[school]', 'label' => 'Escola', 'value' => $user->academic?->school, 'required' => true, 'max' => 100, 'col' => 'col-md-8', 'list' => 'schools'])
+                    @include('partials.admin.field', ['name' => 'academic[school]', 'label' => 'Escola', 'value' => $user->academic?->school, 'required' => true, 'max' => 100, 'col' => 'col-md-8', 'list' => 'schools'])
 
                     <datalist id="schools">
                         @foreach ($schools as $school)
                             <option value="{{ $school->name }}">
                         @endforeach
                     </datalist>
-                    @include('admin.partials.field', ['name' => 'academic[ra]', 'label' => 'RA', 'value' => $user->academic?->ra, 'max' => 20, 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'academic[city]', 'label' => 'Cidade', 'value' => $user->academic?->city, 'required' => true, 'max' => 45, 'col' => 'col-md-6'])
-                    @include('admin.partials.field', ['name' => 'academic[state]', 'label' => 'UF', 'value' => $user->academic?->state, 'required' => true, 'max' => 2, 'col' => 'col-md-3'])
-                    @include('admin.partials.field', ['name' => 'academic[year]', 'label' => 'Ano de conclusão', 'value' => $user->academic?->year, 'required' => true, 'max' => 4, 'inputmode' => 'numeric', 'col' => 'col-md-3'])
+                    @include('partials.admin.field', ['name' => 'academic[ra]', 'label' => 'RA', 'value' => $user->academic?->ra, 'max' => 20, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'academic[city]', 'label' => 'Cidade', 'value' => $user->academic?->city, 'required' => true, 'max' => 45, 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'academic[state]', 'label' => 'UF', 'value' => $user->academic?->state, 'required' => true, 'max' => 2, 'col' => 'col-md-3'])
+                    @include('partials.admin.field', ['name' => 'academic[year]', 'label' => 'Ano de conclusão', 'value' => $user->academic?->year, 'required' => true, 'max' => 4, 'inputmode' => 'numeric', 'col' => 'col-md-3'])
                 </div>
             </div>
 
@@ -193,13 +193,13 @@
                     <p class="fi-card-title">Endereço</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'zip', 'label' => 'CEP', 'value' => $user->zip, 'max' => 8, 'inputmode' => 'numeric', 'col' => 'col-md-3'])
-                    @include('admin.partials.field', ['name' => 'street', 'label' => 'Rua', 'value' => $user->street, 'max' => 60, 'col' => 'col-md-6'])
-                    @include('admin.partials.field', ['name' => 'home', 'label' => 'Número', 'value' => $user->home, 'max' => 10, 'col' => 'col-md-3'])
-                    @include('admin.partials.field', ['name' => 'complement', 'label' => 'Complemento', 'value' => $user->complement, 'max' => 45, 'col' => 'col-md-6'])
-                    @include('admin.partials.field', ['name' => 'burgh', 'label' => 'Bairro', 'value' => $user->burgh, 'max' => 45, 'col' => 'col-md-6'])
-                    @include('admin.partials.field', ['name' => 'city', 'label' => 'Cidade', 'value' => $user->city, 'max' => 45, 'col' => 'col-md-8'])
-                    @include('admin.partials.field', ['name' => 'state', 'label' => 'UF', 'value' => $user->state, 'max' => 45, 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'zip', 'label' => 'CEP', 'value' => $user->zip, 'max' => 8, 'inputmode' => 'numeric', 'col' => 'col-md-3'])
+                    @include('partials.admin.field', ['name' => 'street', 'label' => 'Rua', 'value' => $user->street, 'max' => 60, 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'home', 'label' => 'Número', 'value' => $user->home, 'max' => 10, 'col' => 'col-md-3'])
+                    @include('partials.admin.field', ['name' => 'complement', 'label' => 'Complemento', 'value' => $user->complement, 'max' => 45, 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'burgh', 'label' => 'Bairro', 'value' => $user->burgh, 'max' => 45, 'col' => 'col-md-6'])
+                    @include('partials.admin.field', ['name' => 'city', 'label' => 'Cidade', 'value' => $user->city, 'max' => 45, 'col' => 'col-md-8'])
+                    @include('partials.admin.field', ['name' => 'state', 'label' => 'UF', 'value' => $user->state, 'max' => 45, 'col' => 'col-md-4'])
                 </div>
             </div>
 
@@ -213,8 +213,8 @@
                         <p class="fi-card-title">Educação Especial</p>
                     </div>
                     <div class="row g-3 p-3">
-                        @include('admin.partials.field', ['name' => 'pne[status]', 'label' => 'Situação', 'value' => $user->pne->status, 'options' => $statuses, 'col' => 'col-md-4'])
-                        @include('admin.partials.field', ['name' => 'pne[support]', 'label' => 'Auxílio necessário', 'value' => $user->pne->support, 'max' => 255, 'col' => 'col-md-8'])
+                        @include('partials.admin.field', ['name' => 'pne[status]', 'label' => 'Situação', 'value' => $user->pne->status, 'options' => $statuses, 'col' => 'col-md-4'])
+                        @include('partials.admin.field', ['name' => 'pne[support]', 'label' => 'Auxílio necessário', 'value' => $user->pne->support, 'max' => 255, 'col' => 'col-md-8'])
 
                         <div class="col-12">
                             <label for="pne_description" class="form-label">Necessidade</label>
@@ -225,7 +225,7 @@
                             @enderror
                         </div>
 
-                        @include('admin.partials.field', ['name' => 'pne[observations]', 'label' => 'Observações', 'value' => $user->pne->observations, 'max' => 255, 'col' => 'col-12'])
+                        @include('partials.admin.field', ['name' => 'pne[observations]', 'label' => 'Observações', 'value' => $user->pne->observations, 'max' => 255, 'col' => 'col-12'])
                     </div>
                 </div>
             @endif
@@ -236,8 +236,8 @@
                     <p class="fi-card-title">Programa Social e Saúde</p>
                 </div>
                 <div class="row g-3 p-3">
-                    @include('admin.partials.field', ['name' => 'nis', 'label' => 'NIS', 'value' => $user->nis, 'class' => 'phone-mask', 'inputmode' => 'numeric', 'col' => 'col-md-4'])
-                    @include('admin.partials.field', ['name' => 'health_issue', 'label' => 'Saúde e alergias', 'value' => $user->health_issue, 'max' => 100, 'col' => 'col-md-8'])
+                    @include('partials.admin.field', ['name' => 'nis', 'label' => 'NIS', 'value' => $user->nis, 'class' => 'phone-mask', 'inputmode' => 'numeric', 'col' => 'col-md-4'])
+                    @include('partials.admin.field', ['name' => 'health_issue', 'label' => 'Saúde e alergias', 'value' => $user->health_issue, 'max' => 100, 'col' => 'col-md-8'])
                 </div>
             </div>
 

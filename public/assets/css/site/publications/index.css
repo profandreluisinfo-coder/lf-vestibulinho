@@ -1,7 +1,3 @@
-/* ─── PUBLICAÇÕES (hub de listas) ────────────────────────────
-   Usa só os tokens de assets/css/site/styles.css.
-────────────────────────────────────────────────────────────── */
-
 .pub-section {
     padding: 1rem 0 4rem;
 }
@@ -118,28 +114,6 @@
 
 .pub-card.is-soon .pub-go {
     color: var(--muted);
-}
-
-@media (max-width: 575px) {
-    .pub-grid {
-        gap: .6rem;
-    }
-
-    .pub-card {
-        flex: 1 1 calc(50% - .6rem);
-        max-width: calc(50% - .3rem);
-        padding: 1rem .7rem .85rem;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .pub-card {
-        transition: none;
-    }
-
-    .pub-card[href]:hover {
-        transform: none;
-    }
 }
 
 /* ─── PÁGINAS ESPECÍFICAS (lista de números) ──────────────── */
@@ -288,5 +262,25 @@
 
     .pub-numbers {
         grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .pub-grid {
+        gap: .6rem;
+    }
+
+    .pub-card {
+        flex: 1 1 calc(50% - .6rem);
+        max-width: calc(50% - .3rem);
+        padding: 1rem .7rem .85rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pub-card {
+        transition: none;
+    }
+
+    .pub-card[href]:hover {
+        transform: none;
     }
 }

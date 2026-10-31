@@ -1,14 +1,3 @@
-/*
- * ============================================================
- *  candidato.css — View: Área do Candidato
- *  Depende de: theme.css (tokens obrigatórios)
- *  Uso no Blade:
- *  @push('styles')
- *    <link rel="stylesheet" href="{{ asset('assets/css/candidato.css') }}">
- *  @endpush
- * ============================================================
- */
-
 /* ─────────────────────────────────────────────────────────────
    1. WRAPPER GERAL
    ───────────────────────────────────────────────────────────── */
@@ -49,7 +38,6 @@
   color:       var(--color-navy);
   margin:      0;
 }
-
 
 /* ─────────────────────────────────────────────────────────────
    3. CARD DE CONVOCAÇÃO

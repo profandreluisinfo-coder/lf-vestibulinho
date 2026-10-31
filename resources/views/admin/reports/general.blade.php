@@ -348,13 +348,13 @@
                                 <td colspan="10">Nenhum candidato encontrado.</td>
                             </tr>
                         @endforelse
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-                {{-- {{ $inscriptions->links() }} --}}
+                {{ $inscriptions->links() }}
 
-            @endif
+        @endif
 
-    </div>
+        </div>
 
-    @endsection
+@endsection
