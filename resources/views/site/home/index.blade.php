@@ -54,9 +54,11 @@
                     <div class="hero-actions d-flex flex-wrap gap-3">
 
                         @if ($isInscriptionOpen)
-                            <a href="{{ route('login') }}" class="btn-hero-primary js-inscription-link">
-                                <i class="bi bi-pencil-square"></i> Inscrever-se Agora
-                            </a>
+                            <div class="pulse-wrap">
+                                <a href="{{ route('login') }}" class="btn-hero-primary js-inscription-link">
+                                    <i class="bi bi-pencil-square"></i> Inscrever-se Agora
+                                </a>
+                            </div>
                         @else
                             <span class="btn-hero-primary" aria-disabled="true">
                                 <i class="bi bi-info-circle"></i> {{ $inscriptionLabel }}
