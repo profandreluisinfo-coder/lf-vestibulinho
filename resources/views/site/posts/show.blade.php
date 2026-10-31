@@ -296,7 +296,7 @@
                 src: button.querySelector('img').src,
                 alt: button.querySelector('img').alt
             }));
-            const lightbox = gallery.querySelector('[data-post-lightbox]');
+            const lightbox = gallery.closest('.post-gallery').querySelector('[data-post-lightbox]');
             const lightboxImage = lightbox.querySelector('[data-lightbox-image]');
             const count = lightbox.querySelector('[data-lightbox-count]');
             const previous = lightbox.querySelector('[data-lightbox-previous]');
