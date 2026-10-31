@@ -89,10 +89,10 @@ function getDomainWarning(email) {
 let pwdVisible = false;
 
 const rules = {
-    len:       v => v.length >= 6 && v.length <= 8,
-    upper:     v => /[A-Z]/.test(v),
-    lower:     v => /[a-z]/.test(v),
-    num:       v => /[0-9]/.test(v),
+    len: v => v.length >= 6 && v.length <= 8,
+    upper: v => /[A-Z]/.test(v),
+    lower: v => /[a-z]/.test(v),
+    num: v => /[0-9]/.test(v),
     noSpecial: v => /^[A-Za-z0-9]*$/.test(v),  // ← novo
 };
 
@@ -120,7 +120,7 @@ function toggleEye(inputId, iconId) {
 // ── Helper: aplica estado visual ao campo ─────────────────
 function setFieldState(input, msgEl, state, html) {
     input.classList.remove('input-ok', 'input-error', 'input-warn');
-    if (state === 'ok')   input.classList.add('input-ok');
+    if (state === 'ok') input.classList.add('input-ok');
     if (state === 'error') input.classList.add('input-error');
     if (state === 'warn') input.classList.add('input-warn');  // ← novo
     msgEl.innerHTML = html;
@@ -166,6 +166,7 @@ function validateEmail() {
 }
 
 // ── Checar força e regras da senha ─────────────────────────
+// ── Checar força e regras da senha ─────────────────────────
 function onPwdInput() {
     const v = document.getElementById('regPwd').value;
 
@@ -174,45 +175,38 @@ function onPwdInput() {
     setRule('upper', rules.upper(v));
     setRule('lower', rules.lower(v));
     setRule('num', rules.num(v));
-    setRule('noSpecial', rules.noSpecial(v));  // ← novo
+    setRule('noSpecial', rules.noSpecial(v));
 
-    // Calcula força (0-4)
+    // ── Score de força (0-4) ──────────────────────────────
+    // noSpecial NÃO entra no score: é restrição, não força.
     let score = 0;
     if (rules.len(v)) score++;
     if (rules.upper(v)) score++;
     if (rules.lower(v)) score++;
     if (rules.num(v)) score++;
-    if (rules.noSpecial(v)) score++;  // ← novo
+
+    // Teto por comprimento: senha com menos de 6 chars
+    // nunca passa de "Fraca", por mais categorias que tenha.
+    if (v.length < 6) score = Math.min(score, 2);
+
+    // Consistência com checkSubmit: se tem caractere especial,
+    // a barra não pode dizer "Forte ✓" (o botão está desabilitado).
+    if (!rules.noSpecial(v)) score = Math.min(score, 3);
 
     const fill = document.getElementById('strengthFill');
     const label = document.getElementById('strengthLabel');
-    const map = [{
-        w: '0%',
-        bg: 'transparent',
-        txt: ''
-    },
-    {
-        w: '30%',
-        bg: '#e74c3c',
-        txt: 'Muito fraca'
-    },
-    {
-        w: '55%',
-        bg: 'var(--amber)',
-        txt: 'Fraca'
-    },
-    {
-        w: '78%',
-        bg: '#f0c030',
-        txt: 'Razoável'
-    },
-    {
-        w: '100%',
-        bg: 'var(--teal)',
-        txt: 'Forte ✓'
-    },
+    const map = [
+        { w: '0%', bg: 'transparent', txt: '' },
+        { w: '30%', bg: '#e74c3c', txt: 'Muito fraca' },
+        { w: '55%', bg: 'var(--amber)', txt: 'Fraca' },
+        { w: '78%', bg: '#f0c030', txt: 'Razoável' },
+        { w: '100%', bg: 'var(--teal)', txt: 'Forte ✓' },
     ];
-    const s = v.length === 0 ? 0 : Math.max(1, score);
+
+    const s = v.length === 0
+        ? 0
+        : Math.min(Math.max(1, score), map.length - 1);
+
     fill.style.width = map[s].w;
     fill.style.background = map[s].bg;
     label.textContent = map[s].txt;
@@ -248,12 +242,12 @@ function validateConfirm() {
 // ── Habilita/desabilita botão submit ───────────────────────
 function checkSubmit() {
     const email = document.getElementById('regEmail').value.trim();
-    const pwd   = document.getElementById('regPwd').value;
+    const pwd = document.getElementById('regPwd').value;
     const confirm = document.getElementById('regConfirm').value;
-    const btn   = document.getElementById('btnSubmit');
+    const btn = document.getElementById('btnSubmit');
 
     const emailFormatOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const domainCheck   = getDomainWarning(email);
+    const domainCheck = getDomainWarning(email);
     // Bloqueia apenas erros; avisos (warn) permitem continuar
     const emailOk = emailFormatOk && domainCheck?.type !== 'error';
 

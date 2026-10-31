@@ -41,44 +41,43 @@ function setRule(key, valid) {
 function onPwdInput() {
     const v = document.getElementById('newPwd').value;
 
+    // Atualiza chips de regras
     setRule('len', rules.len(v));
     setRule('upper', rules.upper(v));
     setRule('lower', rules.lower(v));
     setRule('num', rules.num(v));
     setRule('noSpecial', rules.noSpecial(v));
 
-    let score = [rules.len(v), rules.upper(v), rules.lower(v), rules.num(v), rules.noSpecial(v)]
-        .filter(Boolean).length;
+    // ── Score de força (0-4) ──────────────────────────────
+    // noSpecial NÃO entra no score: é restrição, não força.
+    let score = 0;
+    if (rules.len(v)) score++;
+    if (rules.upper(v)) score++;
+    if (rules.lower(v)) score++;
+    if (rules.num(v)) score++;
+
+    // Teto por comprimento: senha com menos de 6 chars
+    // nunca passa de "Fraca", por mais categorias que tenha.
+    if (v.length < 6) score = Math.min(score, 2);
+
+    // Consistência com checkSubmit: se tem caractere especial,
+    // a barra não pode dizer "Forte ✓" (o botão está desabilitado).
+    if (!rules.noSpecial(v)) score = Math.min(score, 3);
 
     const fill = document.getElementById('strengthFill');
     const label = document.getElementById('strengthLabel');
-    const map = [{
-        w: '0%',
-        bg: 'transparent',
-        txt: ''
-    },
-    {
-        w: '30%',
-        bg: '#e74c3c',
-        txt: 'Muito fraca'
-    },
-    {
-        w: '55%',
-        bg: var_amber(),
-        txt: 'Fraca'
-    },
-    {
-        w: '78%',
-        bg: '#f0c030',
-        txt: 'Razoável'
-    },
-    {
-        w: '100%',
-        bg: var_green(),
-        txt: 'Forte ✓'
-    },
+    const map = [
+        { w: '0%', bg: 'transparent', txt: '' },
+        { w: '30%', bg: '#e74c3c', txt: 'Muito fraca' },
+        { w: '55%', bg: 'var(--amber)', txt: 'Fraca' },
+        { w: '78%', bg: '#f0c030', txt: 'Razoável' },
+        { w: '100%', bg: 'var(--teal)', txt: 'Forte ✓' },
     ];
-    const s = v.length === 0 ? 0 : Math.max(1, score);
+
+    const s = v.length === 0
+        ? 0
+        : Math.min(Math.max(1, score), map.length - 1);
+
     fill.style.width = map[s].w;
     fill.style.background = map[s].bg;
     label.textContent = map[s].txt;
