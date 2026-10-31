@@ -78,108 +78,111 @@
     </div>
 
     <div class="form-card">
-        {{-- Mensagem de logout bem‑sucedido --}}
-        @if (session('success'))
-            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <span>{{ session('success') }}</span>
-                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
-            </div>
-        @endif
-
-        <!-- Topo -->
-        <div class="form-top">
-            <div class="d-flex flex-column flex-md-row justify-content-between">
-                <a href="{{ route('home') }}" class="back-link">
-                    <i class="bi bi-arrow-left"></i> Voltar ao site
-                </a>
-                <div class="form-badge">
-                    <i class="bi bi-person-lock"></i> Área do Candidato
-                </div>
-            </div>
-
-            <!-- Título -->
-            <h1>Vestibulinho<br>{{ $process?->year }}</h1>
-            <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário, clique
-                em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
-        </div>
-
-        <!-- Alerta de erro (hidden por padrão) -->
-        <div class="alert-error hidden" id="alertError">
-            <i class="bi bi-exclamation-circle-fill" style="font-size:1rem;flex-shrink:0;"></i>
-            <span id="alertMsg">E-mail ou senha incorretos. Verifique e tente novamente.</span>
-        </div>
-
-        <form method="POST" action="{{ route('login') }}" style="display:flex;flex-direction:column;gap:1.1rem;">
-
-            @csrf
-            <!-- Campos -->
-            <!-- E-mail -->
-            <div>
-                <div class="field-label">
-                    E-mail <span class="req">*</span>
-                </div>
-                <div class="field-wrap">
-                    <input type="email" id="loginEmail" name="email"
-                        class="form-input @error('email') is-invalid @enderror" placeholder="seu@email.com"
-                        autocomplete="email" oninput="clearError(this); validateForm()" />
-                    <i class="bi bi-envelope-fill field-icon"></i>
-                    @error('email')
-                        <div id="emailError" class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Senha -->
-            <div>
-                <div class="field-label">
-                    Senha <span class="req">*</span>
-                </div>
-                <div class="field-wrap">
-                    <input type="password" id="loginPassword" name="password"
-                        class="form-input @error('password') is-invalid @enderror" placeholder="Sua senha"
-                        style="padding-right:2.8rem;" autocomplete="current-password" oninput="clearError(this); validateForm()" />
-                    <i class="bi bi-lock-fill field-icon"></i>
-                    <button class="eye-btn" type="button" onclick="toggleEye('loginPassword','eyeLogin')"
-                        aria-label="Mostrar senha">
-                        <i class="bi bi-eye-fill" id="eyeLogin"></i>
-                    </button>
-                    @error('password')
-                        <div id="passwordError" class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Lembrar / Esqueceu -->
-            <div class="row-remember">
-                <label class="custom-check" for="rememberMe">
-                    <input type="checkbox" id="rememberMe" name="remember" />
-                    <div class="check-box"><i class="bi bi-check-lg"></i></div>
-                    <span class="check-label">Lembrar de mim</span>
-                </label>
-                <a href="{{ route('forgot.password') }}" class="forgot-link">Esqueceu a senha?</a>
-            </div>
-
-            <!-- Botão entrar -->
-            <button type="submit" class="btn-login" disabled>
-                <i class="bi bi-box-arrow-in-right"></i> Entrar
-            </button>
-
-            <!-- Links -->
-            @if ($process?->isInscriptionOpen())
-                <div class="form-links">
-                    <div class="divider-or">ou</div>
-                    <a href="{{ route('register') }}" class="link-register">
-                        <i class="bi bi-person-plus-fill"></i> Ainda não tem registro?
-                    </a>
+        <div class="view" id="viewForm">
+            {{-- Mensagem de logout bem‑sucedido --}}
+            @if (session('success'))
+                <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>{{ session('success') }}</span>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
                 </div>
             @endif
-        </form>
 
+            <!-- Topo -->
+            <div class="form-top">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('home') }}" class="back-link">
+                        <i class="bi bi-arrow-left"></i> Voltar ao site
+                    </a>
+                    <div class="form-badge">
+                        <i class="bi bi-person-lock"></i> Área do Candidato
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <h1>Vestibulinho<br>{{ $process?->year }}</h1>
+                <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário,
+                    clique
+                    em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
+            </div>
+
+            <!-- Alerta de erro (hidden por padrão) -->
+            <div class="alert-error hidden" id="alertError">
+                <i class="bi bi-exclamation-circle-fill" style="font-size:1rem;flex-shrink:0;"></i>
+                <span id="alertMsg">E-mail ou senha incorretos. Verifique e tente novamente.</span>
+            </div>
+
+            <form method="POST" action="{{ route('login') }}" style="display:flex;flex-direction:column;gap:1.1rem;">
+
+                @csrf
+                <!-- Campos -->
+                <!-- E-mail -->
+                <div>
+                    <div class="field-label">
+                        E-mail <span class="req">*</span>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="email" id="loginEmail" name="email"
+                            class="form-input @error('email') is-invalid @enderror" placeholder="seu@email.com"
+                            autocomplete="email" oninput="clearError(this); validateForm()" />
+                        <i class="bi bi-envelope-fill field-icon"></i>
+                        @error('email')
+                            <div id="emailError" class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Senha -->
+                <div>
+                    <div class="field-label">
+                        Senha <span class="req">*</span>
+                    </div>
+                    <div class="field-wrap">
+                        <input type="password" id="loginPassword" name="password"
+                            class="form-input @error('password') is-invalid @enderror" placeholder="Sua senha"
+                            style="padding-right:2.8rem;" autocomplete="current-password"
+                            oninput="clearError(this); validateForm()" />
+                        <i class="bi bi-lock-fill field-icon"></i>
+                        <button class="eye-btn" type="button" onclick="toggleEye('loginPassword','eyeLogin')"
+                            aria-label="Mostrar senha">
+                            <i class="bi bi-eye-fill" id="eyeLogin"></i>
+                        </button>
+                        @error('password')
+                            <div id="passwordError" class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Lembrar / Esqueceu -->
+                <div class="row-remember">
+                    <label class="custom-check" for="rememberMe">
+                        <input type="checkbox" id="rememberMe" name="remember" />
+                        <div class="check-box"><i class="bi bi-check-lg"></i></div>
+                        <span class="check-label">Lembrar de mim</span>
+                    </label>
+                    <a href="{{ route('forgot.password') }}" class="forgot-link">Esqueceu a senha?</a>
+                </div>
+
+                <!-- Botão entrar -->
+                <button type="submit" class="btn-login" disabled>
+                    <i class="bi bi-box-arrow-in-right"></i> Entrar
+                </button>
+
+                <!-- Links -->
+                @if ($process?->isInscriptionOpen())
+                    <div class="form-links">
+                        <div class="divider-or">ou</div>
+                        <a href="{{ route('register') }}" class="link-register">
+                            <i class="bi bi-person-plus-fill"></i> Ainda não tem registro?
+                        </a>
+                    </div>
+                @endif
+            </form>
+        </div><!-- /viewForm -->
     </div>
 
 @endsection

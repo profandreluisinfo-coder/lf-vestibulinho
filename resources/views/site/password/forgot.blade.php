@@ -64,7 +64,7 @@
 
 @section('right-panel')
 
-    <div class="form-card" style="position:relative;">
+    <div class="form-card">
 
         <!-- ─── VIEW 1: Formulário ──────────────────────────── -->
         <div class="view" id="viewForm">

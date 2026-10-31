@@ -58,7 +58,7 @@
 
         <!-- Topo -->
         <div class="form-top">
-            <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="d-flex justify-content-between">
                 <a href="{{ route('home') }}" class="back-link">
                     <i class="bi bi-arrow-left"></i> Voltar ao site
                 </a>
