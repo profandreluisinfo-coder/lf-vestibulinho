@@ -225,7 +225,7 @@
     {{-- Instruções exibidas enquanto o período de inscrição está válido. --}}
     @if ($isInscriptionOpen)
         {{-- ═══════════════════════ COMO PARTICIPAR ═════════════════════ --}}
-        <section id="como-participar">
+        <section class="how-to" id="como-participar">
             <div class="container">
                 <div class="row align-items-center mb-5">
                     <div class="col-lg-6 reveal">
@@ -304,7 +304,7 @@
 
     {{-- O calendário continua disponível após o encerramento das inscrições. --}}
     @if ($hasCalendarDates)
-        <section id="calendario">
+        <section class="cal" id="calendario">
             <div class="container">
                 <div class="text-center mb-5 reveal">
                     <div class="section-tag justify-content-center">Datas Importantes</div>
@@ -399,7 +399,7 @@
     @endif
 
     {{-- ═══════════════════════ FAQ ════════════════════════════════ --}}
-    <section id="faq">
+    <section class="faq" id="faq">
         <div class="container">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-6 reveal">

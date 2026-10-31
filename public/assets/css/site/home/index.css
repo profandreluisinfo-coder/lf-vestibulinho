@@ -385,7 +385,7 @@
 }
 
 /* ─── COMO PARTICIPAR ── ZIGZAG TIMELINE ─────────────────── */
-#como-participar {
+.how-to {
     background: #fff;
 }
 
@@ -482,7 +482,7 @@
 }
 
 /* ─── CALENDÁRIO ─────────────────────────────────────────── */
-#calendario {
+.cal {
     background: var(--light);
 }
 
@@ -563,7 +563,7 @@
 }
 
 /* ─── FAQ ────────────────────────────────────────────────── */
-#faq {
+.faq {
     background: #fff;
 }
 
