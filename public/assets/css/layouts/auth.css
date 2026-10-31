@@ -2,6 +2,7 @@
 @import url("../base/reset.css");
 @import url("../base/utilities.css");
 @import url("../base/buttons.css");
+@import url("../base/global.css");
 
 /* ─── LAYOUT ──────────────────────────────────────────────── */
 .page-wrapper {
