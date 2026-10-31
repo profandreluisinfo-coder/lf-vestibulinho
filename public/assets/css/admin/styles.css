@@ -1,7 +1,7 @@
 /* ==================== 1. DESIGN TOKENS (VARIÁVEIS) ==================== */
 :root {
     /* Dimensões */
-    --sidebar-width: 320px;
+    --sidebar-width: 275px;
     --topbar-height: 60px;
 
     /* Cores Primárias */

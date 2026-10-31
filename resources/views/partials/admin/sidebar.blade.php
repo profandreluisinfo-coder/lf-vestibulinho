@@ -97,12 +97,12 @@
                         class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.analyses.report.*')
                             ? 'active'
                             : '' }}">
-                        <i class="bi bi-universal-access me-1"></i> Laudos/Relatórios (PCDs)
+                        <i class="bi bi-universal-access me-1"></i> PcD
                     </a>
 
                     <a href="{{ route('admin.inscriptions.lgbts') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
-                        <i class="bi bi-gender-trans me-1"></i> Autorizações (LGBTQIA+)
+                        <i class="bi bi-gender-trans me-1"></i> LGBTQIA+
                     </a>
 
                     <a href="{{ route('admin.appeals.index') }}"
@@ -130,27 +130,22 @@
 
                     <a href="{{ route('admin.reports.general') }}"
                         class="dropdown-item-custom {{ $isGeneral && !$hasShortcut ? 'active' : '' }}">
-                        <i class="bi bi-funnel me-1"></i> Relatório Geral
+                        <i class="bi bi-funnel me-1"></i> Geral
                     </a>
 
                     <a href="{{ route('admin.reports.general', ['type' => 'summary', 'group_by' => 'course']) }}"
                         class="dropdown-item-custom {{ $isGeneral && request('type') === 'summary' && request('group_by') === 'course' ? 'active' : '' }}">
-                        <i class="bi bi-bar-chart me-1"></i> Candidatos por Curso
+                        <i class="bi bi-bar-chart me-1"></i> Candidatos x Curso
                     </a>
 
                     <a href="{{ route('admin.reports.general', ['pcd' => 'all']) }}"
                         class="dropdown-item-custom {{ $isGeneral && request('pcd') === 'all' ? 'active' : '' }}">
-                        <i class="bi bi-universal-access me-1"></i> Pessoas com Deficiência (PCDs)
+                        <i class="bi bi-universal-access me-1"></i> PcD
                     </a>
 
                     <a href="{{ route('admin.reports.general', ['social_name' => 'all']) }}"
                         class="dropdown-item-custom {{ $isGeneral && request('social_name') === 'all' ? 'active' : '' }}">
-                        <i class="bi bi-gender-trans me-1"></i> Nome Social (LGBTQIA+)
-                    </a>
-
-                    <a href="{{ route('admin.import.index') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-ol me-1"></i> Classificação
+                        <i class="bi bi-gender-trans me-1"></i> LGBTQIA+
                     </a>
                 </div>
             </div>
@@ -212,7 +207,7 @@
 
                     <a href="{{ route('admin.import.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-ol"></i> Lista de Classificação
+                        <i class="bi bi-list-ol"></i> Lista
                     </a>
                 </div>
             </div>
