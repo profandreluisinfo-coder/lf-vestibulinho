@@ -1,0 +1,12 @@
+.text-teal { color: var(--teal) !important; }
+.text-amber { color: var(--amber) !important; }
+.text-navy { color: var(--navy) !important; }
+.bg-navy { background: var(--navy) !important; }
+.fw-800 { font-weight: 800; }
+.rounded-pill-sm { border-radius: 50px; }
+.divider {
+    width: 48px;
+    height: 3px;
+    background: var(--grad-teal);
+    border-radius: 2px;
+}

@@ -329,61 +329,82 @@
     @endpush
 @endif
 
-    @if (count($daily['labels']))
-        @push('scripts')
-            <script>
-                (() => {
-                    const daily = @json($daily);
-                    const css = getComputedStyle(document.documentElement);
+@if (count($daily['labels']))
+    @push('scripts')
+        <script>
+            (() => {
+                const daily = @json($daily);
+                const css = getComputedStyle(document.documentElement);
 
-                    Chart.defaults.font.family = css.getPropertyValue('--font-body').trim();
+                Chart.defaults.font.family = css.getPropertyValue('--font-body').trim();
 
-                    // Escreve o valor em cima de cada barra
-                    const valueLabels = {
-                        id: 'valueLabels',
-                        afterDatasetsDraw(chart) {
-                            const ctx = chart.ctx;
-                            ctx.save();
-                            ctx.font = '600 11px ' + Chart.defaults.font.family;
-                            ctx.fillStyle = css.getPropertyValue('--color-navy').trim();
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
+                // Escreve o valor em cima de cada barra
+                const valueLabels = {
+                    id: 'valueLabels',
+                    afterDatasetsDraw(chart) {
+                        const ctx = chart.ctx;
+                        ctx.save();
+                        ctx.font = '600 11px ' + Chart.defaults.font.family;
+                        ctx.fillStyle = css.getPropertyValue('--color-navy').trim();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
 
-                            chart.getDatasetMeta(0).data.forEach((bar, i) => {
-                                const value = chart.data.datasets[0].data[i];
-                                if (value > 0) {
-                                    ctx.fillText(value, bar.x, bar.y - 4);
+                        chart.getDatasetMeta(0).data.forEach((bar, i) => {
+                            const value = chart.data.datasets[0].data[i];
+                            if (value > 0) {
+                                ctx.fillText(value, bar.x, bar.y - 4);
+                            }
+                        });
+
+                        ctx.restore();
+                    },
+                };
+
+                new Chart(document.getElementById('dailyChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: daily.labels,
+                        datasets: [{
+                            label: 'Inscrições',
+                            data: daily.values,
+                            backgroundColor: css.getPropertyValue('--color-teal').trim(),
+                            borderRadius: 4,
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: 20
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxRotation: 0,
+                                    autoSkip: true
                                 }
-                            });
-
-                            ctx.restore();
-                        },
-                    };
-
-                    new Chart(document.getElementById('dailyChart'), {
-                        type: 'bar',
-                        data: {
-                            labels: daily.labels,
-                            datasets: [{
-                                label: 'Inscrições',
-                                data: daily.values,
-                                backgroundColor: css.getPropertyValue('--color-teal').trim(),
-                                borderRadius: 4,
-                            }],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            layout: { padding: { top: 20 } },
-                            scales: {
-                                x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true } },
-                                y: { beginAtZero: true, ticks: { precision: 0 } },
                             },
-                            plugins: { legend: { display: false } },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            },
                         },
-                        plugins: [valueLabels],
-                    });
-                })();
-            </script>
-        @endpush
-    @endif
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                    },
+                    plugins: [valueLabels],
+                });
+            })();
+        </script>
+    @endpush
+@endif

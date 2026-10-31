@@ -4,7 +4,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/site/home/index.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/site/home/quick-access.css') }}" />
 @endpush
 
 @section('content')
@@ -31,9 +30,9 @@
 
     <!-- ===== HERO ===== -->
     <section class="hero" id="home">
-        <div class="hero-circle hero-circle-1"></div>
-        <div class="hero-circle hero-circle-2"></div>
-        <div class="hero-circle hero-circle-3"></div>
+        <div class="hero-circle hc1"></div>
+        <div class="hero-circle hc2"></div>
+        <div class="hero-circle hc3"></div>
 
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">

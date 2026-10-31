@@ -86,5 +86,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/swa/analyses/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/analyses/confirm.js') }}"></script>
 @endpush

@@ -159,6 +159,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/templates/index.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/templates/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/templates/index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/templates/publish.js') }}"></script>
 @endpush

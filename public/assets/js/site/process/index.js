@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const circles = [
-        { el: heroSection.querySelector('.hero-circle-1'), factor: 0.035, usePosition: false },
-        { el: heroSection.querySelector('.hero-circle-2'), factor: 0.05, usePosition: false },
-        { el: heroSection.querySelector('.hero-circle-3'), factor: 0.08, usePosition: true }
+        { el: heroSection.querySelector('.hc1'), factor: 0.035, usePosition: false },
+        { el: heroSection.querySelector('.hc2'), factor: 0.05, usePosition: false },
+        { el: heroSection.querySelector('.hc3'), factor: 0.08, usePosition: true }
     ].filter(item => item.el);
 
     let targetX = 0;

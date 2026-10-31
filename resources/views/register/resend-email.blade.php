@@ -77,7 +77,7 @@
                 <div class="info-icon"><i class="bi bi-info-lg"></i></div>
                 <span>
                     Use o mesmo e-mail informado durante o seu registro no Vestibulinho
-                    {{ $process?->year ?? config('app.year') }}.
+                    {{ $process?->year ?? $process?->year }}.
                     Verifique também a pasta de <strong>spam</strong> caso não encontre o e-mail.
                 </span>
             </div>

@@ -253,5 +253,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/process/swa/activate.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/process/activate.js') }}"></script>
 @endpush

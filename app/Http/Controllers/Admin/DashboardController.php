@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $chart    = $cs->courseChart($process);
         $daily    = $cs->dailyChart($process);
 
-        return view('admin.home.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
+        return view('admin.dashboard.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
     }
 
     /**

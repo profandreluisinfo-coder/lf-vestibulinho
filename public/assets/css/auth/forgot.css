@@ -2,14 +2,14 @@
 @import url("../shared/buttons.css");
 
 /* ─── LAYOUT ──────────────────────────────────────────────── */
-.page-wrapper {
+/* .page-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 100vh;
-}
+} */
 
 /* ═══════════ PAINEL ESQUERDO ════════════════════════════════ */
-.panel-left {
+/* .panel-left {
     background: var(--grad-main);
     background-size: 300% 300%;
     animation: gradShift 14s ease infinite;
@@ -19,13 +19,13 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 3rem;
-}
+} */
 
-.deco-circle {
+/* .deco-circle {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-}
+} */
 
 .deco-c1 {
     width: 440px;
@@ -64,13 +64,13 @@
 }
 
 /* Brand */
-.panel-brand {
+/* .panel-brand {
     position: relative;
     z-index: 2;
     animation: fadeDown .8s ease both;
-}
+} */
 
-.brand-icon {
+/* .brand-icon {
     width: 48px;
     height: 48px;
     border-radius: 14px;
@@ -82,22 +82,22 @@
     color: #fff;
     box-shadow: 0 6px 20px rgba(0, 168, 150, .4);
     margin-bottom: 1.2rem;
-}
+} */
 
-.panel-brand h2 {
+/* .panel-brand h2 {
     font-size: 1.1rem;
     font-weight: 800;
     color: #fff;
     line-height: 1.3;
-}
+} */
 
-.panel-brand p {
+/* .panel-brand p {
     font-size: .8rem;
     color: rgba(255, 255, 255, .55);
     margin-top: .2rem;
-}
+} */
 
-/* Centro */
+/* Centro
 .panel-center {
     position: relative;
     z-index: 2;
@@ -126,7 +126,7 @@
     color: rgba(255, 255, 255, .65);
     line-height: 1.75;
     max-width: 380px;
-}
+} */
 
 /* Steps de recuperação */
 .recovery-steps {
@@ -213,16 +213,16 @@
 }
 
 /* Rodapé */
-.panel-footer {
+/* .panel-footer {
     position: relative;
     z-index: 2;
     font-size: .73rem;
     color: rgba(255, 255, 255, .3);
     animation: fadeIn 1s ease .9s both;
-}
+} */
 
 /* ═══════════ PAINEL DIREITO ═════════════════════════════════ */
-.panel-right {
+/* .panel-right {
     background: #fff;
     display: flex;
     align-items: center;
@@ -230,7 +230,7 @@
     padding: 3rem 2.5rem;
     position: relative;
     overflow-y: auto;
-}
+} */
 
 .form-card {
     width: 100%;
@@ -399,35 +399,6 @@
     color: var(--teal2);
 }
 
-/* Botão */
-/* .btn-recover { */
-    /* width: 100%; */
-    /* padding: .9rem; */
-    /* border: none; */
-    /* border-radius: 50px; */
-    /* background: var(--grad-amber); */
-    /* color: var(--navy); */
-    /* font-family: var(--font-head); */
-    /* font-weight: 700; */
-    /* font-size: .95rem; */
-    /* cursor: pointer; */
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    /* gap: .6rem; */
-    /* box-shadow: 0 6px 22px rgba(244, 162, 97, .38); */
-    /* transition: transform .25s, box-shadow .25s; */
-/* } */
-
-/* .btn-recover:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 34px rgba(244, 162, 97, .5);
-} */
-
-/* .btn-recover:active {
-    transform: translateY(0);
-} */
-
 /* Link inferior */
 .form-links {
     border-top: 1px solid rgba(11, 30, 61, .07);
@@ -580,47 +551,8 @@
     display: block;
 }
 
-/* Link voltar ao login (tela sucesso) */
-/* .btn-back-login {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    background: var(--grad-teal);
-    color: #fff;
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: .88rem;
-    padding: .72rem 1.8rem;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 168, 150, .35);
-    transition: transform .25s, box-shadow .25s;
-    margin-top: 1.4rem;
-} */
-
-/* .btn-back-login:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 34px rgba(0, 168, 150, .45);
-    color: #fff;
-} */
-
 /* ─── RESPONSIVO ──────────────────────────────────────────── */
 @media(max-width:900px) {
-    .page-wrapper {
-        grid-template-columns: 1fr;
-    }
-
-    .panel-left {
-        display: none;
-    }
-
-    .panel-right {
-        padding: 2.5rem 1.5rem;
-        min-height: 100vh;
-        align-items: flex-start;
-    }
-
     .form-card {
         padding-top: 1rem;
     }
@@ -631,10 +563,6 @@
 }
 
 @media(max-width:480px) {
-    .panel-right {
-        padding: 2rem 1.2rem;
-    }
-
     .view.hidden {
         width: calc(100% - 2.4rem);
     }

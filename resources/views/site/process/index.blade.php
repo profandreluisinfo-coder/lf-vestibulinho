@@ -15,9 +15,9 @@
 
     <!-- ═══════════════════════ PAGE HERO ════════════════════════ -->
     <section class="cal-hero">
-        <div class="hero-circle hero-circle-1"></div>
-        <div class="hero-circle hero-circle-2"></div>
-        <div class="hero-circle hero-circle-3"></div>
+        <div class="hero-circle hc1"></div>
+        <div class="hero-circle hc2"></div>
+        <div class="hero-circle hc3"></div>
 
         <div class="container position-relative" style="z-index:1;">
             <div class="row align-items-center g-5">
@@ -32,7 +32,7 @@
                         <span class="live-dot"></span>
                         Datas Importantes · Vestibulinho {{ $process?->year ?? '' }}
                     </div>
-                    <h1 class="cal-hero-title mb-3">
+                    <h1 class="hero-title mb-3">
                         Calendário do<br><em>Vestibulinho {{ $process?->year ?? '' }}</em><br>
                     </h1>
                     <p class="hero-sub mb-0">

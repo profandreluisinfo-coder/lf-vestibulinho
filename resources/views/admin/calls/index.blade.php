@@ -329,14 +329,16 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/calls/create.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/calls/delete.js') }}"></script>
-    <script src="{{ asset('assets/js/swa/calls/finalize.js') }}"></script>
+    <script src="{{ asset('public/assets/js/admin/calls/create.js') }}"></script>
+    <script src="{{ asset('public/assets/js/admin/calls/delete.js') }}"></script>
+    <script src="{{ asset('public/assets/js/admin/calls/finalize.js') }}"></script>
     <!-- Importa o Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Importa o plugin de datalabels -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+@endpush
 
+@push('scripts')
     <script>
         const chartLabels = @json($chartData['labels']);
         const chartData = @json($chartData['data']);
@@ -393,7 +395,9 @@
             plugins: [ChartDataLabels]
         });
     </script>
+@endpush
 
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('.datatable').DataTable({
