@@ -355,10 +355,14 @@
     scroll-snap-align: start;
 }
 
-.post-gallery-item a {
+.post-gallery-open {
     display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
     overflow: hidden;
     background: #eef2f5;
+    cursor: zoom-in;
 }
 
 .post-gallery-item img {
@@ -371,8 +375,76 @@
     transition: transform .2s ease;
 }
 
-.post-gallery-item a:hover img {
+.post-gallery-open:hover img {
     transform: scale(1.035);
+}
+
+.post-lightbox {
+    width: min(96vw, 1400px);
+    max-width: none;
+    max-height: 94dvh;
+    padding: .75rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 16px;
+    background: #101820;
+    color: #fff;
+}
+
+.post-lightbox::backdrop {
+    background: rgba(5, 12, 22, .88);
+    backdrop-filter: blur(4px);
+}
+
+.post-lightbox-toolbar {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.post-lightbox-count {
+    color: rgba(255, 255, 255, .8);
+    font-size: .85rem;
+}
+
+.post-lightbox-close,
+.post-lightbox-nav {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    cursor: pointer;
+}
+
+.post-lightbox-nav[hidden] {
+    display: none;
+}
+
+.post-lightbox-close:hover,
+.post-lightbox-nav:hover {
+    background: rgba(255, 255, 255, .22);
+}
+
+.post-lightbox-stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: center;
+    gap: clamp(.4rem, 2vw, 1rem);
+}
+
+.post-lightbox-image {
+    display: block;
+    width: 100%;
+    height: min(82dvh, 900px);
+    object-fit: contain;
 }
 
 .post-gallery-control {
@@ -700,6 +772,9 @@ a.post-attachment-link:hover {
     .post-attachment-link,
     .post-gallery-item img,
     .post-gallery-control,
+    .post-gallery-open,
+    .post-lightbox-close,
+    .post-lightbox-nav,
     .post-nav-link,
     .post-back-link,
     .post-share-button {
@@ -724,6 +799,24 @@ a.post-attachment-link:hover {
 
     .post-gallery-item {
         flex-basis: 78%;
+    }
+
+    .post-lightbox {
+        width: 100vw;
+        max-height: 100dvh;
+        padding: .5rem;
+        border-radius: 0;
+    }
+
+    .post-lightbox-image {
+        height: 78dvh;
+    }
+
+    .post-lightbox-close,
+    .post-lightbox-nav {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
     }
 }
 

@@ -130,9 +130,9 @@
                                             $galleryImageUrl = $attachment->preview_url ?? Storage::url($attachment->path);
                                         @endphp
                                         <li class="post-gallery-item">
-                                            <a href="{{ $galleryImageUrl }}" target="_blank" rel="noopener" aria-label="Abrir imagem {{ $index + 1 }}">
+                                            <button class="post-gallery-open" type="button" data-lightbox-index="{{ $loop->index }}" aria-label="Ampliar imagem {{ $index + 1 }}">
                                                 <img src="{{ $galleryImageUrl }}" alt="Imagem {{ $index + 1 }} da publicação: {{ $post->title }}" loading="lazy">
-                                            </a>
+                                            </button>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -142,6 +142,25 @@
                             </button>
                             <span class="visually-hidden" data-gallery-status aria-live="off"></span>
                         </div>
+
+                        <dialog class="post-lightbox" data-post-lightbox aria-labelledby="post-lightbox-title">
+                            <div class="post-lightbox-toolbar">
+                                <h2 class="visually-hidden" id="post-lightbox-title">Imagem ampliada da publicação</h2>
+                                <span class="post-lightbox-count" data-lightbox-count aria-live="polite"></span>
+                                <button class="post-lightbox-close" type="button" data-lightbox-close aria-label="Fechar imagem ampliada">
+                                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="post-lightbox-stage">
+                                <button class="post-lightbox-nav" type="button" data-lightbox-previous aria-label="Imagem anterior">
+                                    <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <img class="post-lightbox-image" data-lightbox-image alt="">
+                                <button class="post-lightbox-nav" type="button" data-lightbox-next aria-label="Próxima imagem">
+                                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </dialog>
                     </section>
                 @endif
 
@@ -264,6 +283,52 @@
                     feedback.textContent = 'Link copiado.';
                 } catch (error) {
                     feedback.textContent = 'Não foi possível copiar. Copie o endereço da página.';
+                }
+            });
+        });
+    </script>
+@endpush
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('[data-post-gallery]').forEach((gallery) => {
+            const images = [...gallery.querySelectorAll('[data-lightbox-index]')].map((button) => ({
+                src: button.querySelector('img').src,
+                alt: button.querySelector('img').alt
+            }));
+            const lightbox = gallery.querySelector('[data-post-lightbox]');
+            const lightboxImage = lightbox.querySelector('[data-lightbox-image]');
+            const count = lightbox.querySelector('[data-lightbox-count]');
+            const previous = lightbox.querySelector('[data-lightbox-previous]');
+            const next = lightbox.querySelector('[data-lightbox-next]');
+            let activeIndex = 0;
+
+            const showImage = (index) => {
+                activeIndex = (index + images.length) % images.length;
+                lightboxImage.src = images[activeIndex].src;
+                lightboxImage.alt = images[activeIndex].alt;
+                count.textContent = `Imagem ${activeIndex + 1} de ${images.length}`;
+                previous.hidden = next.hidden = images.length < 2;
+            };
+
+            gallery.querySelectorAll('[data-lightbox-index]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    showImage(Number(button.dataset.lightboxIndex));
+                    lightbox.showModal();
+                });
+            });
+
+            previous.addEventListener('click', () => showImage(activeIndex - 1));
+            next.addEventListener('click', () => showImage(activeIndex + 1));
+            lightbox.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox) lightbox.close();
+            });
+            lightbox.addEventListener('keydown', (event) => {
+                if (images.length < 2) return;
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    showImage(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
                 }
             });
         });
