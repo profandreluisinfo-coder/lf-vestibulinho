@@ -75,7 +75,7 @@
 
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .section-header .section-lead {
@@ -731,6 +731,10 @@
 
 /* Mobile timeline */
 @media(max-width:768px) {
+    .section-header {
+        margin-bottom: 2.5rem;
+    }
+
     .timeline-wrap::before {
         left: 26px;
     }

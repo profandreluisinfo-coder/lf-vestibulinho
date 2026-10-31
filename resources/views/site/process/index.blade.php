@@ -14,7 +14,7 @@
     @endphp
 
     <!-- ═══════════════════════ PAGE HERO ════════════════════════ -->
-    <section class="cal-hero">
+    <section class="hero">
         <div class="hero-circle hc1"></div>
         <div class="hero-circle hc2"></div>
         <div class="hero-circle hc3"></div>

@@ -181,7 +181,7 @@
                 </div>
 
                 <!-- CTA Notícias -->
-                <div style="text-align: center; margin-top: 3rem;">
+                <div style="text-align: center; margin-top: 2rem;">
                     <a href="{{ route('site.news.index') }}" class="btn-hero-primary">
                         Ver Todos <i class="bi bi-arrow-right ms-2"></i>
                     </a>
