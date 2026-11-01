@@ -22,7 +22,7 @@ class LoginController extends Controller
     public function login(): View | RedirectResponse
     {
         $process = Process::current();
-        
+
         if ($process?->status === 'closed') {
             return redirect()->route('home');
         }
@@ -46,7 +46,7 @@ class LoginController extends Controller
      * baseada no seu papel. Caso contrário, será exibido um erro.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return RedirectResponse|JsonResponse
      */
     public function authenticate(Request $request): RedirectResponse|JsonResponse
     {
@@ -66,7 +66,6 @@ class LoginController extends Controller
             $user = Auth::user();
 
             if (!$user->email_verified_at) {
-
                 Auth::logout();
 
                 $msg = 'Para acessar a Área do Candidato, você precisa validar seu endereço de e-mail.';
@@ -77,6 +76,22 @@ class LoginController extends Controller
             }
 
             $request->session()->regenerate();
+
+            // Verifica se o candidato pode iniciar uma nova inscrição.
+            if ($user->role === 'user' && !$user->inscription()->exists()) {
+                $process = Process::current();
+
+                if (!$process || !$process->isInscriptionOpen()) {
+                    Auth::logout();
+
+                    $msg = 'As inscrições estão encerradas.';
+
+                    return $request->wantsJson()
+                        ? response()->json(['success' => false, 'message' => $msg], 422)
+                        : alertError($msg);
+                }
+            }
+
             $user->last_login_at = Carbon::now();
             $user->save();
 
@@ -102,8 +117,8 @@ class LoginController extends Controller
 
         if ($user->role === 'user') {
             return $user->inscription()->exists()
-                ? route('inscription.user.show') // O usuário não possui inscrição
-                : route('inscription.start'); // O usuário possui inscrição
+                ? route('inscription.user.show')
+                : route('inscription.start');
         }
 
         return route('login');
