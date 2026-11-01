@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Reenvio de E-mail — Vestibulinho ' . $process?->year)
+@section('title', 'Reenvio de E-mail')
 
 @section('meta_description', 'Área de acesso exclusivo para candidatos.')
 
@@ -19,7 +19,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho LF {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <!-- Conteúdo central -->

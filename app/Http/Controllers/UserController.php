@@ -37,10 +37,10 @@ class UserController extends Controller
      * Caso contrário, será exibido um erro.
      *
      * @param Request $request
-     * @param UserService $userService
+     * @param UserService $us
      * @return RedirectResponse|View
      */
-    public function store(Request $request, UserService $userService): RedirectResponse|View
+    public function store(Request $request, UserService $us): RedirectResponse|View
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -56,7 +56,7 @@ class UserController extends Controller
         ]);
 
         try {
-            $result = $userService->register($credentials);
+            $result = $us->register($credentials);
 
             if (!$result['success']) {
                 return redirect()->back()

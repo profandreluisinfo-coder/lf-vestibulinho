@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\{UserController, EmailController};
-use App\Http\Controllers\Auth\{LoginController, LogoutController, PasswordController};
+use App\Http\Controllers\{UserController, EmailController, LoginController, LogoutController, PasswordController};
 use App\Http\Controllers\Site\{HomeController};
 use Illuminate\Support\Facades\Route;
 

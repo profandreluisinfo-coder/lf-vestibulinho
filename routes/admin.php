@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\{DashboardController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
 use App\Http\Controllers\Admin\CourseProcessController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;

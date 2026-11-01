@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Confirmação de e-mail — Vestibulinho ' . $process?->year)
+@section('title', 'Confirmação de e-mail')
 
 @section('meta_description', 'Área de confirmação de e-mail para candidatos do Vestibulinho.')
 
@@ -18,7 +18,7 @@
     <div class="panel-brand">
         <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
         <h2>EM Dr. Leandro Franceschini</h2>
-        <p>Vestibulinho {{ $process?->year ?? $process?->year }} · Cursos Técnicos Gratuitos</p>
+        <p>Vestibulinho LF {{ $process?->year }} · Cursos Técnicos Gratuitos</p>
     </div>
 
     <div class="panel-center">

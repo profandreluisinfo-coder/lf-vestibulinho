@@ -153,7 +153,7 @@ class InscriptionService
                 'process_id' => $sp->id,
             ]);
 
-            $pdf = Pdf::loadView('inscription.pdf.protocol', compact('user', 'inscription', 'sp'));
+            $pdf = Pdf::loadView('pdf.inscription.protocol', compact('user', 'inscription', 'sp'));
 
             $filename = 'Protocolo_' . $inscription->id . '.pdf';   // sem CPF no nome
             $disk = Storage::disk('local');                          // disco privado

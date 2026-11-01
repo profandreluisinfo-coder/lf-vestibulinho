@@ -31,8 +31,10 @@ Route::middleware(['auth', NotAdmin::class])
 
         Route::post('confirm-instructions', [InscriptionController::class, 'confirmInstructions'])
             ->name('confirm-instructions');
+
         // 📝 Passos da inscrição
         Route::middleware([NoInscription::class, EnsureInstructionsConfirmed::class])
+
             ->prefix('inscricao')
             ->group(function () {
 
@@ -82,17 +84,18 @@ Route::middleware(['auth', NotAdmin::class])
                 ->name('card.')
                 ->group(function () {
                     // PDF Cartão do local de prova
-                    Route::get('meu-local', [PdfController::class, 'testLocationCardToPdf'])
+                    Route::get('meu-local', [PdfController::class, 'locationCardToPdf'])
                         ->middleware([IsLocationEnabled::class])
                         ->name('exam');
 
                     // PDF Cartão do resultado da Prova
-                    Route::get('resultado', [PdfController::class, 'testResultCardToPdf'])
+                    Route::get('resultado', [PdfController::class, 'resultCardToPdf'])
                         ->middleware([IsResultEnabled::class])
                         ->name('result');
 
                     // PDF Cartão de chamada
-                    Route::get('chamada', [PdfController::class, 'callCardToPdf'])->name('call');
+                    Route::get('chamada', [PdfController::class, 'callCardToPdf'])
+                        ->name('call');
                 });
 
             Route::prefix('comprovante')

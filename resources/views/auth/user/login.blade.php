@@ -101,9 +101,14 @@
 
                 <!-- Título -->
                 <h1>Vestibulinho<br>{{ $process?->year }}</h1>
-                <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário,
-                    clique
-                    em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
+                @if ($isInscriptionOpen)
+                    <p>Se você já registrou seus dados de acesso, informe seu e-mail e senha para continuar. Caso contrário,
+                        clique
+                        em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
+                @else
+                    <p><strong>As inscrições estão encerradas.</strong> Acompanhe o andamento do Processo Seletivo e as
+                        próximas etapas nesta página.</p>
+                @endif
             </div>
 
             <!-- Alerta de erro (hidden por padrão) -->

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Process;
 use App\Models\User;
 use Carbon\Carbon;
@@ -28,7 +27,7 @@ class LoginController extends Controller
             return redirect()->route('home');
         }
 
-        return view('auth.login');
+        return view('auth.user.login');
     }
 
     /**
@@ -38,7 +37,7 @@ class LoginController extends Controller
      */
     public function loginForAdmin(): View
     {
-        return view('admin.auth.login');
+        return view('auth.admin.login');
     }
 
     /**

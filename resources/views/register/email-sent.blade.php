@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Verificação de E-mail — Vestibulinho ' . $process?->year)
+@section('title', 'Verificação de E-mail')
 
 @section('meta_description', 'Verificação de e-mail para candidatos do Vestibulinho ' . $process?->year)
 

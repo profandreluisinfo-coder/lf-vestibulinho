@@ -10,34 +10,34 @@ use App\Models\Process;
 use App\Services\ExamReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 
 class PdfController extends Controller
 {
-    // Relatório de Alocação
-    public function allocationsToPdf(ExamReportService $reportService)
+    /**
+     * Gera o relatório de alocação de candidatos em formato PDF para visualização.
+     *
+     * Este método obtém os dados de alocação agrupados através do serviço de relatórios,
+     * renderiza a respectiva view administrativa em formato A4 (retrato) e abre o
+     * fluxo (stream) do arquivo PDF diretamente no navegador do usuário.
+     * 
+     * Local: Painel Administrativo
+     *
+     * @param  \App\Services\ExamReportService  $rs  Serviço responsável pela lógica do relatório.
+     * @return \Illuminate\Http\Response Resposta HTTP contendo o stream do PDF.
+     */
+    public function listsToPdf(string $type, ExamReportService $rs): Response
     {
-        $allocations = $reportService->getGroupedAllocations();
-
-        $pdf = Pdf::loadView('admin.allocations.allocation', compact('allocations'))
-            ->setPaper('a4', 'portrait');
-
-        return $pdf->stream('relatorio-de-alocacao.pdf');
-    }
-
-    public function listsToPdf(
-        string $type,
-        ExamReportService $reportService
-    ) {
         $views = [
-            'geral'       => 'admin.allocations.general',
-            'salas'       => 'admin.allocations.rooms',
-            'assinaturas' => 'admin.allocations.signatures',
+            'geral'       => 'pdf.allocations.general',
+            'salas'       => 'pdf.allocations.rooms',
+            'assinaturas' => 'pdf.allocations.signatures',
         ];
 
         abort_unless(isset($views[$type]), 404);
 
-        $allocations = $reportService->getGroupedAllocations();
+        $allocations = $rs->getGroupedAllocations();
 
         $pdf = Pdf::loadView($views[$type], compact('allocations'))
             ->setPaper('a4', 'portrait');
@@ -52,36 +52,16 @@ class PdfController extends Controller
     }
 
     /**
-     * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.
+     * Gera o PDF com o cartão do local de prova do candidato.
      *
-     * @return Response O PDF gerado com a ficha de inscri o do candidato.
+     * Verifica se as alocações foram liberadas pelo administrador e se o candidato
+     * possui um registro válido. Caso contrário, redireciona o usuário com uma mensagem de erro.
+     * 
+     * Local: Área do Candidato
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse Stream do PDF ou redirecionamento em caso de erro.
      */
-    public function proofOfRegistrationToPdf()
-    {
-        // Gera o PDF com a view
-        $pdf = Pdf::loadView('admin.pdf.proof-of-registration', [
-            'user' => Auth::user(),
-        ]);
-
-        // Sanitiza o CPF (remove espaços, pontos, traços etc.)
-        $cpfSanitizado = preg_replace('/[^0-9]/', '', Auth::user()->cpf);
-
-        // Monta o nome do arquivo
-        $filename = 'Protocolo_' . $cpfSanitizado . '.pdf';
-
-        // Retorna o PDF diretamente como download
-        return $pdf->download($filename);
-    }
-
-    /**
-     * Gera um PDF com o cartão do local de prova do candidato.
-     *
-     * Verifica se o usuário logado possui local de prova.
-     * Caso não possua, redireciona para a página anterior com um aviso.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function testLocationCardToPdf()
+    public function locationCardToPdf(): Response | RedirectResponse
     {
         $process = Process::current();
 
@@ -113,7 +93,7 @@ class PdfController extends Controller
         $isPneRoom = $user->pne?->status === Pne::STATUS_ACCEPTED;
 
         $pdf = Pdf::loadView(
-            'pdf.test-location-card',
+            'pdf.cards.location',
             compact('exam', 'process', 'user', 'displayName', 'isPneRoom')
         )->setPaper('a4', 'portrait');
 
@@ -126,9 +106,11 @@ class PdfController extends Controller
      * Verifica se o usuário logado possui resultado da prova.
      * Caso não possua, redireciona para a página anterior com um aviso.
      *
+     * Local: Área do Candidato
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function testResultCardToPdf()
+    public function resultCardToPdf()
     {
         return "precisa refazer este método";
     }
@@ -139,6 +121,8 @@ class PdfController extends Controller
      * Verifica se o usuário logado possui resultado de exame e se há chamada para esse resultado com lista finalizada.
      * Caso o usuário não tenha resultado de exame ou não tenha sido convocado em nenhuma chamada finalizada,
      * retorna null.
+     * 
+     * Local: Área do Candidato
      *
      * @return \Illuminate\Http\Response
      */
@@ -164,7 +148,7 @@ class PdfController extends Controller
             return back()->with('warning', 'Nenhuma convocação finalizada encontrada.');
         }
 
-        $pdf = Pdf::loadView('pdf.call-card', [
+        $pdf = Pdf::loadView('pdf.cards.call', [
             'user' => $user,
             'examResult' => $examResult,
             'call' => $call,
@@ -187,10 +171,12 @@ class PdfController extends Controller
 
     /**
      * Gera um PDF com a ficha de inscrição do candidato atual e retorna diretamente como download.
-     *
+     * 
+     * Local: Área do Candidato
+     * 
      * @return Response O PDF gerado com a ficha de inscrição do candidato.
      */
-    public function inscriptionReceiptToPdf()
+    public function inscriptionReceiptToPdf(): Response
     {
         $user = auth()->user()->load([
             'inscription',
@@ -211,14 +197,14 @@ class PdfController extends Controller
 
         $process = $user->inscription?->process;
 
-        $pdf = Pdf::loadView('inscription.pdf.complete', [
+        $pdf = Pdf::loadView('pdf.inscription.complete', [
             'user' => $user,
             'displayName' => $displayName,
             'process' => $process,
         ]);
 
-        $cpfSanitizado = preg_replace('/\D/', '', $user->cpf);
+        $inscription = $user->inscription?->id;
 
-        return $pdf->download("Protocolo_{$cpfSanitizado}.pdf");
+        return $pdf->download("Protocolo_{$inscription}.pdf");
     }
 }

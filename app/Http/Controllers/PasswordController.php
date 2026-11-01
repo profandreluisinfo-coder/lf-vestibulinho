@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
@@ -22,7 +21,7 @@ class PasswordController extends Controller
      */
     public function forgotPassword(): View
     {
-        return view('site.password.forgot');
+        return view('password.forgot');
     }
 
     /**
@@ -76,7 +75,7 @@ class PasswordController extends Controller
                 ->with('error', 'O link de redefinição de senha é inválido ou expirou.');
         }
 
-        return view('site.password.reset', compact('token'));
+        return view('password.reset', compact('token'));
     }
 
     /**
