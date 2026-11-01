@@ -107,7 +107,7 @@
                         em <strong>"Ainda não tem registro?"</strong> para se cadastrar.</p>
                 @else
                     <p><strong>As inscrições estão encerradas.</strong> Acompanhe o andamento do Processo Seletivo e as
-                        próximas etapas nesta página.</p>
+                        próximas etapas nesta página. Digite seu e-mail e senha para continuar.</p>
                 @endif
             </div>
 
