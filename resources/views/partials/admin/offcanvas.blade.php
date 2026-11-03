@@ -60,7 +60,7 @@
                     <i class="bi bi-question-circle me-2"></i>Registrar FAQ
                 </a>
                 <a href="{{ route('admin.exam.create') }}" class="list-group-item list-group-item-action border-0 px-0">
-                    <i class="bi bi-calendar-check me-2"></i>Agendar Prova
+                    <i class="bi bi-calendar2-week me-1"></i>Alocar Candidatos
                 </a>
                 <a href="{{ route('admin.import.index') }}"
                     class="list-group-item list-group-item-action border-0 px-0">

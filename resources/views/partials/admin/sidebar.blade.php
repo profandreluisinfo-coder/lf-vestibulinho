@@ -170,16 +170,16 @@
                     id="menuProvas">
                     <a href="{{ route('admin.location.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.location.index') ? 'active' : '' }}">
-                        <i class="bi bi-geo me-1"></i> Locais
+                        <i class="bi bi-geo me-1"></i> Locais de Prova
                     </a>
                     <a href="{{ route('admin.exam.create') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.exam.create') ? 'active' : '' }}">
-                        <i class="bi bi-calendar2-week me-1"></i> Agendar
+                        <i class="bi bi-calendar2-week me-1"></i> Alocar Candidatos
                     </a>
 
                     <a href="{{ route('admin.archives.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.archives.*') ? 'active' : '' }}">
-                        <i class="bi bi-file-earmark-pdf me-1"></i> Publicar
+                        <i class="bi bi-file-earmark-pdf me-1"></i> Publicar Prova
                     </a>
                 </div>
             </div>
@@ -207,7 +207,7 @@
 
                     <a href="{{ route('admin.import.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-ol"></i> Lista
+                        <i class="bi bi-list-ol"></i> Lista de Classificação
                     </a>
                 </div>
             </div>

@@ -20,7 +20,6 @@
         @else
 
             <p class="text-muted small mb-3">
-                Divulgado em {{ $process->result_released_at->format('d/m/Y \à\s H:i') }}.
                 Classificação em lista única, por ordem decrescente de pontuação; em caso de
                 empate, prevalece o candidato de menor idade. Os candidatos que não constam
                 nesta lista estão eliminados do processo seletivo.
