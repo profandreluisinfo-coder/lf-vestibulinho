@@ -12,6 +12,7 @@ use DomainException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\Appeal;
 
 class ExamAllocationService
 {
@@ -55,7 +56,7 @@ class ExamAllocationService
             if ($process->isLocationReleased()) {
                 throw new DomainException(
                     'O local da prova já foi liberado aos candidatos. '
-                    . 'Uma nova alocação trocaria a sala de quem já foi informado.'
+                        . 'Uma nova alocação trocaria a sala de quem já foi informado.'
                 );
             }
 
@@ -63,7 +64,7 @@ class ExamAllocationService
                 throw new DomainException(
                     $process->end
                         ? 'O período de inscrições só termina em ' . $process->formatDate($process->end)
-                            . '. Aguarde o encerramento para alocar os candidatos.'
+                        . '. Aguarde o encerramento para alocar os candidatos.'
                         : 'O período de inscrições do processo atual não está definido.'
                 );
             }
@@ -92,15 +93,15 @@ class ExamAllocationService
             }
 
             // 3.1 Análises pendentes mudariam as salas e a ordem depois da alocação
-            $this->assertNoPendingAnalyses($sorted);
+            $this->assertNoPendingAnalyses($sorted, $process);
 
             // 4. Separar PNE e não-PNE (mantendo a ordem alfabética em cada grupo)
             $pne = $sorted
-                ->filter(fn ($i) => $i->user?->pne?->status === Pne::STATUS_ACCEPTED)
+                ->filter(fn($i) => $i->user?->pne?->status === Pne::STATUS_ACCEPTED)
                 ->values();
 
             $naoPne = $sorted
-                ->reject(fn ($i) => $i->user?->pne?->status === Pne::STATUS_ACCEPTED)
+                ->reject(fn($i) => $i->user?->pne?->status === Pne::STATUS_ACCEPTED)
                 ->values();
 
             // 5. Validar capacidade antes de montar qualquer coisa
@@ -142,7 +143,7 @@ class ExamAllocationService
 
             // 7. Remover alocações antigas de inscrições deste processo que saíram da lista
             //    (alocações de outros processos não são tocadas)
-            Exam::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+            Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id))
                 ->whereNotIn('inscription_id', $sorted->pluck('id'))
                 ->delete();
 
@@ -166,7 +167,7 @@ class ExamAllocationService
         return Inscription::approved()
             ->forProcess($process->id)
             ->with(['user.lgbt', 'user.pne'])
-            ->whereHas('user', fn ($q) => $q->where('role', 'user'))
+            ->whereHas('user', fn($q) => $q->where('role', 'user'))
             ->get()
             ->sortBy(function ($i) {
                 $name = $i->user?->lgbt?->status === Lgbt::STATUS_ACCEPTED
@@ -179,35 +180,41 @@ class ExamAllocationService
     }
 
     /**
-     * Impede a alocação enquanto houver PNE ou nome social ainda sem decisão.
+     * Impede a alocação enquanto houver PNE, nome social ou recurso ainda sem decisão.
      * "Pendente" = existe a solicitação, mas o status não é deferido nem indeferido.
      *
      * @throws DomainException
      */
-    private function assertNoPendingAnalyses(Collection $candidates): void
+    private function assertNoPendingAnalyses(Collection $candidates, Process $process): void
     {
         $pendingPne = $candidates
-            ->filter(fn ($i) => $i->user?->pne
+            ->filter(fn($i) => $i->user?->pne
                 && ! in_array($i->user->pne->status, [Pne::STATUS_ACCEPTED, Pne::STATUS_REJECTED], true))
             ->count();
 
         $pendingLgbt = $candidates
-            ->filter(fn ($i) => $i->user?->lgbt
+            ->filter(fn($i) => $i->user?->lgbt
                 && ! in_array($i->user->lgbt->status, [Lgbt::STATUS_ACCEPTED, Lgbt::STATUS_REJECTED], true))
             ->count();
 
-        if ($pendingPne === 0 && $pendingLgbt === 0) {
+        // Recursos ainda em análise, de candidatos deste processo
+        $pendingAppeals = Appeal::pending()
+            ->whereHas('user.inscription', fn($q) => $q->approved()->forProcess($process->id))
+            ->count();
+
+        if ($pendingPne === 0 && $pendingLgbt === 0 && $pendingAppeals === 0) {
             return;
         }
 
         $parts = array_filter([
             $pendingPne > 0 ? "{$pendingPne} de PNE" : null,
             $pendingLgbt > 0 ? "{$pendingLgbt} de nome social" : null,
+            $pendingAppeals > 0 ? "{$pendingAppeals} recurso(s)" : null,
         ]);
 
         throw new DomainException(
-            'Ainda há análises pendentes (' . implode(' e ', $parts) . '). '
-            . 'Conclua os deferimentos antes de alocar os candidatos.'
+            'Ainda há pendências (' . implode(', ', $parts) . '). '
+                . 'Conclua os deferimentos e os recursos antes de alocar os candidatos.'
         );
     }
 
@@ -232,7 +239,7 @@ class ExamAllocationService
         if ($splitLocations && $pneRooms > $splitFromRoom - 1) {
             throw new DomainException(
                 "As salas dos candidatos PNE ({$pneRooms}) não cabem inteiras no primeiro local. "
-                . 'Divida a partir da sala ' . ($pneRooms + 1) . ' ou posterior.'
+                    . 'Divida a partir da sala ' . ($pneRooms + 1) . ' ou posterior.'
             );
         }
 
@@ -245,14 +252,14 @@ class ExamAllocationService
         if ($roomsInFirst > $firstLocation->rooms_available) {
             throw new DomainException(
                 "O local {$firstLocation->name} comporta {$firstLocation->rooms_available} sala(s), "
-                . "mas seriam necessárias {$roomsInFirst}."
+                    . "mas seriam necessárias {$roomsInFirst}."
             );
         }
 
         if ($roomsInSecond > 0 && $roomsInSecond > $secondLocation->rooms_available) {
             throw new DomainException(
                 "O local {$secondLocation->name} comporta {$secondLocation->rooms_available} sala(s), "
-                . "mas seriam necessárias {$roomsInSecond}."
+                    . "mas seriam necessárias {$roomsInSecond}."
             );
         }
     }

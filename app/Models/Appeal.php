@@ -160,4 +160,23 @@ class Appeal extends Model
     {
         return self::STATUS_BADGES[$this->status] ?? 'bg-secondary';
     }
+
+    /**
+     * True se a alocação nas salas já foi feita no processo atual.
+     * Depois disso, os recursos estão encerrados.
+     */
+    public static function allocationStarted(): bool
+    {
+        static $started = null; // guarda o resultado durante a requisição
+
+        if ($started === null) {
+            $process = Process::current();
+
+            $started = $process
+                ? Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id))->exists()
+                : false;
+        }
+
+        return $started;
+    }
 }

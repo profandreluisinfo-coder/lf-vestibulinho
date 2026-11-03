@@ -10,11 +10,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\Exam;
 
 class AnalyseController extends Controller
 {
     public function showAcceptReport(User $user): View|RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user->load(['pne']);
 
         if (! $user->pne) {
@@ -34,6 +39,10 @@ class AnalyseController extends Controller
      */
     public function showRejectReport(User $user): View|RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user->load(['pne']);
 
         if (! $user->pne) {
@@ -53,6 +62,10 @@ class AnalyseController extends Controller
      */
     public function acceptReport(string $id): RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user = User::find($id);
         $user->load(['pne']);
 
@@ -90,6 +103,10 @@ class AnalyseController extends Controller
             'reason' => 'nullable|string|max:1000',
         ]);
 
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user = User::find($id);
         $user->load(['pne']);
 
@@ -121,6 +138,10 @@ class AnalyseController extends Controller
 
     public function showAcceptAuthorization(User $user): View|RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user->load(['lgbt']);
 
         if (! $user->lgbt) {
@@ -137,6 +158,10 @@ class AnalyseController extends Controller
 
     public function showRejectAuthorization(User $user): View|RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.lgbts', 'indeferir', 'a autorização de nome social')) {
+            return $blocked;
+        }
+
         $user->load(['lgbt']);
 
         if (! $user->lgbt) {
@@ -153,6 +178,10 @@ class AnalyseController extends Controller
 
     public function acceptAuthorization(User $user): RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.pcds', 'deferir', 'o relatório/laudo')) {
+            return $blocked;
+        }
+
         $user->load(['lgbt']);
 
         if (! $user->lgbt) {
@@ -182,12 +211,16 @@ class AnalyseController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Erro ao deferir a autorização: '.$e->getMessage());
+                ->with('error', 'Erro ao deferir a autorização: ' . $e->getMessage());
         }
     }
 
     public function rejectAuthorization(Request $request, User $user): RedirectResponse
     {
+        if ($blocked = $this->allocationLock('admin.inscriptions.lgbts', 'indeferir', 'a autorização de nome social')) {
+            return $blocked;
+        }
+
         $user->load(['lgbt']);
 
         if (! $user->lgbt) {
@@ -218,7 +251,7 @@ class AnalyseController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('admin.inscriptions.lgbts')
-                ->with('error', 'Erro ao indeferir a autorização: '.$e->getMessage());
+                ->with('error', 'Erro ao indeferir a autorização: ' . $e->getMessage());
         }
     }
 
@@ -238,6 +271,21 @@ class AnalyseController extends Controller
                 $attachment
             )
         )->delay(now()->addSeconds(10));
+    }
+
+    /**
+     * Depois da alocação nas salas, deferir/indeferir mudaria a sala e a ordem
+     * dos candidatos. Devolve o redirecionamento com o erro, ou null se estiver liberado.
+     */
+    private function allocationLock(string $route, string $verb, string $subject): ?RedirectResponse
+    {
+        if (! Exam::allocationExists()) {
+            return null;
+        }
+
+        return redirect()
+            ->route($route)
+            ->with('error', "Não é possível {$verb} {$subject}, pois a alocação dos candidatos nas salas de prova já foi feita.");
     }
 
     public function pdf(string $type, int $id)

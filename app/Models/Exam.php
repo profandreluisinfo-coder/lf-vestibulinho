@@ -21,4 +21,20 @@ class Exam extends Model
     {
         return $this->belongsTo(Location::class);
     }
+
+     /**
+     * True se já existe alguma alocação de candidatos nas salas
+     * para o processo seletivo informado (ou o atual, se nenhum for informado).
+     */
+    public static function allocationExists(?Process $process = null): bool
+    {
+        $process ??= Process::current();
+
+        if (! $process) {
+            return false;
+        }
+
+        return static::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+            ->exists();
+    }
 }

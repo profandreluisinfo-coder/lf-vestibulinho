@@ -38,6 +38,8 @@
     ];
 
     $counts = $users->countBy(fn($u) => $u->lgbt?->status);
+    // True se a alocação nas salas já foi feita (aí as análises ficam encerradas)
+    $allocated = \App\Models\Exam::allocationExists();
 @endphp
 
 @section('content')
@@ -109,8 +111,8 @@
                                 $meta = $statusMap[$status] ?? ['label' => '-', 'class' => 'bg-secondary', 'icon' => 'bi-dash'];
                                 $hasObservation = in_array($status, ['accepted', 'rejected']) && $lgbt?->observations;
                                 $appeal = $user->appeals->firstWhere('type', 'lgbt');
-                                $canDefer = in_array($status, ['pending', 'rejected']);
-                                $canReject = in_array($status, ['pending', 'accepted']);
+                                $canDefer = ! $allocated && in_array($status, ['pending', 'rejected']);
+                                $canReject = ! $allocated && in_array($status, ['pending', 'accepted']);
                             @endphp
 
                             <tr data-id="{{ $user->id }}">
@@ -198,6 +200,11 @@
                                                     <span class="d-none d-xl-inline">Registrar recurso</span>
                                                 </a>
                                             @endif
+                                        @endif
+                                        @if ($allocated)
+                                            <span class="text-muted small align-self-center">
+                                                <i class="bi bi-lock" aria-hidden="true"></i> Análise encerrada
+                                            </span>
                                         @endif
                                     </div>
                                 </td>

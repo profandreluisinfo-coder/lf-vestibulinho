@@ -6,6 +6,8 @@
 
     @php
         $user = $appeal->user;
+        // True se a alocação nas salas já foi feita (aí não dá mais para deferir)
+        $allocated = \App\Models\Appeal::allocationStarted();
 
         // Arquivo do pedido original (laudo ou autorização de nome social)
         $file = $appeal->type === 'pne' ? $original?->report : $original?->authorization;
@@ -127,6 +129,16 @@
 
                 {{-- Decisão: só aparece enquanto o recurso está em análise --}}
                 @if ($appeal->isPending())
+
+                    @if ($allocated)
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            A alocação dos candidatos nas salas de prova já foi feita.
+                            Por isso <strong>não é possível deferir</strong> este recurso.
+                            Você ainda pode <strong>indeferir</strong>.
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('admin.appeals.accept', $appeal) }}">
                         @csrf
                         @method('PATCH')
@@ -149,8 +161,15 @@
                             <strong>Nos dois casos, o candidato será notificado por e-mail.</strong>
                         </p>
 
-                        <button type="submit" class="btn btn-sm btn-success"
+                        {{-- <button type="submit" class="btn btn-sm btn-success"
                             formaction="{{ route('admin.appeals.accept', $appeal) }}" data-swal-action="defer">
+                            <i class="bi bi-check-lg"></i> Deferir recurso
+                        </button> --}}
+                        <button type="submit" class="btn btn-sm btn-success"
+                            formaction="{{ route('admin.appeals.accept', $appeal) }}"
+                            @disabled($allocated)
+                            title="{{ $allocated ? 'Alocação já feita: não é possível deferir' : '' }}"
+                            onclick="return confirm('Confirma o deferimento do recurso? O pedido do candidato também será deferido.')">
                             <i class="bi bi-check-lg"></i> Deferir recurso
                         </button>
 

@@ -43,6 +43,8 @@
     ];
 
     $counts = $users->countBy(fn($u) => $u->pne?->status);
+    // True se a alocação nas salas já foi feita (aí as análises ficam encerradas)
+    $allocated = \App\Models\Exam::allocationExists();
 @endphp
 
 @section('content')
@@ -115,8 +117,8 @@
                                 $meta = $statusMap[$status] ?? ['label' => '-', 'class' => 'bg-secondary', 'icon' => 'bi-dash'];
                                 $hasSocialName = $user->lgbt && $user->lgbt->status === 'accepted';
                                 $appeal = $user->appeals->firstWhere('type', 'pne');
-                                $canDefer = in_array($status, ['pending', 'rejected']);
-                                $canReject = in_array($status, ['pending', 'accepted']);
+                                $canDefer = ! $allocated && in_array($status, ['pending', 'rejected']);
+                                $canReject = ! $allocated && in_array($status, ['pending', 'accepted']);
                             @endphp
 
                             <tr data-id="{{ $user->id }}">
@@ -197,7 +199,7 @@
                                                     <i class="bi bi-folder2-open" aria-hidden="true"></i>
                                                     <span class="d-none d-xl-inline">Ver recurso</span>
                                                 </a>
-                                            @elseif (!$user->inscription?->exam_result)
+                                            @elseif (! $allocated)
                                                 <a href="{{ route('admin.appeals.create', [$user->id, 'pne']) }}"
                                                     class="btn btn-sm btn-warning" title="Registrar recurso"
                                                     aria-label="Registrar recurso de {{ $user->name }}">
@@ -205,6 +207,11 @@
                                                     <span class="d-none d-xl-inline">Registrar recurso</span>
                                                 </a>
                                             @endif
+                                        @endif
+                                        @if ($allocated)
+                                            <span class="text-muted small align-self-center">
+                                                <i class="bi bi-lock" aria-hidden="true"></i> Análise encerrada
+                                            </span>
                                         @endif
                                     </div>
                                 </td>

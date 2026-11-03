@@ -237,6 +237,12 @@ class AppealController extends Controller
                 return 'Este recurso já foi decidido.';
             }
 
+            // Deferir muda o pedido original e quebraria a alocação já feita.
+            // (Indeferir não muda nada, por isso continua permitido.)
+            if ($status === Appeal::STATUS_ACCEPTED && Appeal::allocationStarted()) {
+                return 'Não é possível deferir o recurso, pois a alocação dos candidatos nas salas de prova já foi feita.';
+            }
+
             $appeal->update([
                 'status' => $status,
                 'observations' => $observations,
@@ -329,6 +335,11 @@ class AppealController extends Controller
 
         if ($user->appealOf($type)) {
             return 'Este candidato já possui recurso registrado para este pedido.';
+        }
+
+        // O recurso vale só antes da alocação nas salas de prova
+        if (Appeal::allocationStarted()) {
+            return 'Não é possível registrar o recurso, pois a alocação dos candidatos nas salas de prova já foi feita.';
         }
 
         return null;
