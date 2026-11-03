@@ -249,9 +249,7 @@
                 $table.DataTable() :
                 $table.DataTable({
                     responsive: true,
-                    order: [
-                        [0, 'asc']
-                    ]
+                     order: [[0, 'asc']],
                 });
 
             const STATUS_COLUMN = 4;
