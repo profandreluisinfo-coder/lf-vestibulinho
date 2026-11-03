@@ -72,13 +72,13 @@
             <div class="form-group mb-3">
                 <label class="form-label" for="exam_date">Data da prova:</label>
                 <input type="text" name="exam_date" class="form-control" id="exam_date"
-                    value="{{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}" readonly
+                    value="{{ \Carbon\Carbon::parse($process?->exam_date)->format('d/m/Y') }}" readonly
                     style="background-color: #e6e6e6" title="Não é possível editar este campo.">
             </div>
 
             <div class="form-group mb-3">
                 <label class="form-label" for="exam_time">Hora da prova:</label>
-                <input type="text" name="exam_time" class="form-control" id="exam_time" value="{{ $process->exam_time }}"
+                <input type="text" name="exam_time" class="form-control" id="exam_time" value="{{ $process?->exam_time }}"
                     readonly style="background-color: #e6e6e6" title="Não é possível editar este campo.">
             </div>
 

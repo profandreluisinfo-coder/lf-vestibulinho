@@ -43,6 +43,7 @@ class ProcessController extends Controller
                     'end' => 'required|date|after_or_equal:start',
                     'location_publish' => 'required|date|after_or_equal:end',
                     'exam_date' => 'required|date|after_or_equal:end',
+                    'exam_time' => 'required|date_format:H:i',
                     'answer_publish' => 'required|date|after_or_equal:exam_date',
                     'revision_start' => 'required|date|after_or_equal:exam_date',
                     'revision_end' => 'required|date|after_or_equal:revision_start',
@@ -124,19 +125,19 @@ class ProcessController extends Controller
             }
 
             $data = [
-                'year' => $validated['year'],
-                'edital' => $newEditalPath,
-
-                'start' => $validated['start'],
-                'end' => $validated['end'],
+                'year'             => $validated['year'],
+                'edital'           => $newEditalPath,
+                'start'            => $validated['start'],
+                'end'              => $validated['end'],
                 'location_publish' => $validated['location_publish'],
-                'exam_date' => $validated['exam_date'],
-                'answer_publish' => $validated['answer_publish'],
-                'revision_start' => $validated['revision_start'],
-                'revision_end' => $validated['revision_end'],
-                'result_publish' => $validated['result_publish'],
-                'enrol_start' => $validated['enrol_start'],
-                'enrol_remaining' => $validated['enrol_remaining'],
+                'exam_date'        => $validated['exam_date'],
+                'exam_time'        => $validated['exam_time'],
+                'answer_publish'   => $validated['answer_publish'],
+                'revision_start'   => $validated['revision_start'],
+                'revision_end'     => $validated['revision_end'],
+                'result_publish'   => $validated['result_publish'],
+                'enrol_start'      => $validated['enrol_start'],
+                'enrol_remaining'  => $validated['enrol_remaining'],
             ];
 
             DB::transaction(function () use ($data, $newEditalPath) {

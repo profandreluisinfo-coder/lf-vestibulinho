@@ -145,16 +145,20 @@
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Aplicação das Provas</p>
                             <div class="row g-3">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="show-field-label">Divulgação dos Locais de Prova</span>
                                     <span
                                         class="show-field-value">{{ $process?->location_publish?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <span class="show-field-label">Data de Aplicação</span>
                                     <span class="show-field-value">{{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <span class="show-field-label">Horário de Aplicação</span>
+                                    <span class="show-field-value">{{ $process?->exam_time?->format('H:i') ?? '—' }}</span>
+                                </div>
+                                <div class="col-md-3">
                                     <span class="show-field-label">Divulgação do Gabarito</span>
                                     <span
                                         class="show-field-value">{{ $process?->answer_publish?->format('d/m/Y') ?? '—' }}</span>

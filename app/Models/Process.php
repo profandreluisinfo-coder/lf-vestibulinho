@@ -46,6 +46,7 @@ class Process extends Model
             'end'                  => 'date',
             'location_publish'     => 'date',
             'exam_date'            => 'date',
+            'exam_time'            => 'datetime:H:i', // * NOVO
             'answer_publish'       => 'date',
             'revision_start'       => 'date',
             'revision_end'         => 'date',

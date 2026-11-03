@@ -111,7 +111,7 @@
                             <div class="edit-section mb-4">
                                 <p class="edit-section-label">Aplicação das Provas</p>
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="location_publish" class="form-label">Divulgação dos Locais de Prova</label>
                                         <input type="date"
                                             class="form-control @error('location_publish') is-invalid @enderror"
@@ -121,7 +121,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="exam_date" class="form-label">Data de Aplicação das Provas</label>
                                         <input type="date" class="form-control @error('exam_date') is-invalid @enderror"
                                             id="exam_date" name="exam_date"
@@ -130,7 +130,16 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
+                                        <label for="exam_time" class="form-label">Hora de Aplicação das Provas</label>
+                                        <input type="time" class="form-control @error('exam_time') is-invalid @enderror"
+                                            id="exam_time" name="exam_time"
+                                            value="{{ old('exam_time', $process?->exam_time?->format('H:i') ?? '') }}">
+                                        @error('exam_time')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
                                         <label for="answer_publish" class="form-label">Divulgação do Gabarito</label>
                                         <input type="date"
                                             class="form-control @error('answer_publish') is-invalid @enderror"
