@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const reason = form.querySelector('[name="reason"]');
             const reasonValue = reason ? reason.value.trim() : '';
 
+            const button = form.querySelector('[type="submit"]');
+
             const isAccept = action === 'accept';
 
             Swal.fire({
@@ -37,11 +39,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 reverseButtons: true,
                 focusCancel: true
+
             }).then(function (result) {
+
                 if (result.isConfirmed) {
+
+                    // Desabilita o botão
+                    button.disabled = true;
+
+                    // Exibe o spinner
+                    button.innerHTML = `
+                        <span class="spinner-border spinner-border-sm me-1"
+                              role="status"
+                              aria-hidden="true"></span>
+                        Processando...
+                    `;
+
+                    // Envia o formulário
                     form.submit();
                 }
             });
+
         });
 
     });
