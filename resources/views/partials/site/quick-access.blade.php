@@ -1,10 +1,11 @@
 {{-- ═══════════════ ACESSO RÁPIDO ═══════════════ --}}
 @php
     $temPublicacoes = $totalPublicacoes > 0;
+    $temComunicados = $totalComunicados > 0;
 
     $quickLinks = [
         [
-            'show' => $totalPublicacoes > 0,
+            'show' => $temPublicacoes,
             'href' => route('site.publications.index'),
             'icon' => 'card-checklist',
             'title' => 'Publicações',
@@ -13,7 +14,7 @@
             'badge_title' => "{$totalPublicacoes} lista(s) liberada(s)",
         ],
         [
-            'show' => true,
+            'show' => $temComunicados,
             'href' => route('site.notices.index'),
             'icon' => 'megaphone-fill',
             'title' => 'Comunicados',
