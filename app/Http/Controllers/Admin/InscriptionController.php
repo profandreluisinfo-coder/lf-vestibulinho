@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inscription;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Collection;
@@ -385,7 +384,7 @@ class InscriptionController extends Controller
      */
     public function pcds(): View
     {
-        return view('admin.inscriptions.pcds', [
+        return view('admin.analyses.pcds', [
             'users' => $this->candidatesWith('pne', 'pne'),
         ]);
     }
@@ -395,7 +394,7 @@ class InscriptionController extends Controller
      */
     public function lgbts(): View
     {
-        return view('admin.inscriptions.lgbts', [
+        return view('admin.analyses.lgbts', [
             'users' => $this->candidatesWith('lgbt', 'lgbt'),
         ]);
     }
@@ -418,15 +417,6 @@ class InscriptionController extends Controller
             ])
             ->get();
     }
-
-    // public function resources(): View
-    // {
-    //     $users = User::whereHas('inscription')->get();
-
-    //     return view('admin.inscriptions.resources', [
-    //         'users' => $users
-    //     ]);
-    // }
 
     /**
      * Exporta a lista de inscrições em formato PDF.

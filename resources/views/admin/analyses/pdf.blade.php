@@ -112,7 +112,7 @@
 
     <p><strong>Ref.:</strong><br>
 
-        @if ($type === 'pcd')
+        @if ($type === \App\Enums\AnalysisType::Pcd)
             Solicitação de atendimento especializado para realização da prova, na condição de
             pessoa com deficiência (PcD).
         @else
@@ -146,7 +146,7 @@
         </tr>
     </table>
 
-    @if ($type === 'pcd')
+    @if ($type === \App\Enums\AnalysisType::Pcd)
         <h2>Dados de Pessoa com Deficiência</h2>
         <table>
             <tr>

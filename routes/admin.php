@@ -37,13 +37,6 @@ Route::prefix('gestao')
                     ->name('get.data');
                 Route::get('detalhes/{user}', [InscriptionController::class, 'show'])
                     ->name('show');
-                Route::get('pessoas-com-deficiencia', [InscriptionController::class, 'pcds'])
-                    ->name('pcds');
-                Route::post('pcd-data', [InscriptionController::class, 'getPcd'])
-                    ->name('pcd.data');
-                Route::get('nome-social', [InscriptionController::class, 'lgbts'])
-                    ->name('lgbts');
-
                 Route::get('editar/{user}', [InscriptionController::class, 'edit'])->name('edit');
                 Route::put('editar/{user}', [InscriptionController::class, 'update'])->name('update');
                 Route::get('relatorio', [InscriptionController::class, 'pdf'])
@@ -187,7 +180,7 @@ Route::prefix('gestao')
             ->name('export.')
             ->group(function () {
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
-                    ->name('excel');                
+                    ->name('excel');
             });
 
         // Importação
@@ -283,34 +276,20 @@ Route::prefix('gestao')
             ->name('analyses.')
             ->group(function () {
 
-                // Candidatos que solicitaram o uso de Nome Social
-                Route::get('nome-social/{user}/deferir', [AnalyseController::class, 'showAcceptAuthorization'])
-                    ->name('accept.social.name.form');
+                Route::get('pessoas-com-deficiencia', [AnalyseController::class, 'pcds'])
+                    ->name('pcds');
+                Route::get('nome-social', [AnalyseController::class, 'lgbts'])
+                    ->name('lgbts');
 
-                Route::get('nome-social/{user}/indeferir', [AnalyseController::class, 'showRejectAuthorization'])
-                    ->name('reject.social.name.form');
-
-                Route::patch('nome-social/{user}/deferir', [AnalyseController::class, 'acceptAuthorization'])
-                    ->name('accept.social.name');
-
-                Route::patch('nome-social/{user}/indeferir', [AnalyseController::class, 'rejectAuthorization'])
-                    ->name('reject.social.name');
-
-                // Pessoas que apresentaram laudo/relatório médico
-                Route::get('relatorio/{user}/deferir', [AnalyseController::class, 'showAcceptReport'])
-                    ->name('accept.report.form');
-
-                Route::get('relatorio/{user}/indeferir', [AnalyseController::class, 'showRejectReport'])
-                    ->name('reject.report.form');
-
-                Route::patch('relatorio/{user}/deferir', [AnalyseController::class, 'acceptReport'])
-                    ->name('accept.report');
-
-                Route::patch('relatorio/{user}/indeferir', [AnalyseController::class, 'rejectReport'])
-                    ->name('reject.report');
+                // Rotas genéricas (PcD / Nome Social)
+                Route::prefix('{type}')->group(function () {
+                    Route::get('{user}/deferir', [AnalyseController::class, 'showAccept'])->name('accept.form');
+                    Route::get('{user}/indeferir', [AnalyseController::class, 'showReject'])->name('reject.form');
+                    Route::patch('{user}/deferir', [AnalyseController::class, 'accept'])->name('accept');
+                    Route::patch('{user}/indeferir', [AnalyseController::class, 'reject'])->name('reject');
+                });
 
                 Route::get('pdf/{type}/{id}', [AnalyseController::class, 'pdf'])
-                    ->whereIn('type', ['pcd', 'lgbt'])
                     ->whereNumber('id')
                     ->name('pdf');
             });

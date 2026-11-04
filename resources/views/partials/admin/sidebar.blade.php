@@ -79,29 +79,34 @@
                 </a>
             </div>
             <!-- Gerenciar Análises -->
+            @php
+                // Tipo da análise em andamento (pcd / lgbt), pra marcar o item certo do menu.
+                $analysesType = request()->routeIs('admin.analyses.*') ? request()->route('type') : null;
+                $analysesType = $analysesType instanceof \BackedEnum ? $analysesType->value : $analysesType;
+            @endphp
+
             <div class="menu-dropdown">
                 <button class="dropdown-toggle-custom" onclick="toggleDropdown('menuAnalises')">
                     <i class="bi bi-clipboard-check"></i>
                     <span>Análises</span>
                     <i class="bi bi-chevron-down"></i>
                 </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs('admin.inscriptions.pcds') ||
-                request()->routeIs('admin.inscriptions.lgbts') ||
+                <div class="dropdown-menu-custom {{ 
+                request()->routeIs('admin.analyses.pcds') ||
+                request()->routeIs('admin.analyses.lgbts') ||
                 request()->routeIs('admin.analyses.*') ||
                 request()->routeIs('admin.appeals.*')
                     ? 'show'
                     : '' }}"
                     id="menuAnalises">
 
-                    <a href="{{ route('admin.inscriptions.pcds') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.pcds') || request()->routeIs('admin.analyses.report.*')
-                            ? 'active'
-                            : '' }}">
+                    <a href="{{ route('admin.analyses.pcds') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.analyses.pcds') || $analysesType === 'pcd' ? 'active' : '' }}">
                         <i class="bi bi-universal-access me-1"></i> PcD
                     </a>
 
-                    <a href="{{ route('admin.inscriptions.lgbts') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.inscriptions.lgbts') ? 'active' : '' }}">
+                    <a href="{{ route('admin.analyses.lgbts') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.analyses.lgbts') || $analysesType === 'lgbt' ? 'active' : '' }}">
                         <i class="bi bi-gender-trans me-1"></i> LGBTQIA+
                     </a>
 
@@ -193,7 +198,7 @@
                 </button>
                 <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.*', 'admin.import.*']) ? 'show' : '' }}"
                     id="menuResultados">
-                    
+
                     <a href="javascript:void(0)" id="exportLink"
                         class="dropdown-item-custom {{ request()->routeIs('admin.export.excel') ? 'active' : '' }}"
                         onclick="handleExport(event, '{{ route('admin.export.excel') }}')">
@@ -228,8 +233,7 @@
             </div>
 
             <div class="menu-item">
-                <a href="#"
-                    class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">
+                <a href="#" class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">
                     <i class="bi bi-broadcast-pin"></i>
                     <span>Chamadas</span>
                 </a>

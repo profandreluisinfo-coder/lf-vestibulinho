@@ -1,6 +1,20 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Análise de Recurso - Laudo/Relatório Médico')
+@section('page-title', $type->pageTitle())
+
+@php
+    // Registro da análise (pne / lgbt) e o arquivo enviado pelo candidato.
+    $analysis = $user->{$type->relation()};
+    $file = $analysis?->{$type->fileField()};
+
+    // Nome Social: no fluxo de nome social sempre aparece; no de PcD só se já foi deferido.
+    $isLgbt = $type === \App\Enums\AnalysisType::Lgbt;
+    $socialName = $isLgbt
+        ? $analysis?->name
+        : ($user->lgbt?->status === 'accepted' ? $user->lgbt->name : null);
+
+    $routeParams = ['type' => $type->value, 'user' => $user->id];
+@endphp
 
 @section('content')
 
@@ -9,7 +23,8 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-file-earmark-medical"></i>
-                <h6 class="mb-0 text-muted fw-normal">{{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} Relatório/Laudo
+                <h6 class="mb-0 text-muted fw-normal">
+                    {{ $action === 'accept' ? 'Deferir' : 'Indeferir' }} {{ $type->label() }}
                 </h6>
             </div>
         </div>
@@ -21,33 +36,33 @@
                     <dt class="col-sm-3">Candidato</dt>
                     <dd class="col-sm-9">{{ $user->name }}</dd>
 
-                    @if ($user?->lgbt && $user->lgbt?->status === 'accepted')
+                    @if ($isLgbt || $socialName)
                         <dt class="col-sm-3">Nome Social</dt>
-                        <dd class="col-sm-9 text-primary fw-bold">{{ $user->lgbt?->name }}</dd>
+                        <dd class="col-sm-9 text-primary fw-bold">{{ $socialName }}</dd>
                     @endif
 
                     <dt class="col-sm-3">Inscrição</dt>
                     <dd class="col-sm-9">{{ $user->inscription?->id }}</dd>
 
                     <dt class="col-sm-3">Observações</dt>
-                    <dd class="col-sm-9">{{ $user->pne?->observations ?? '-' }}</dd>
+                    <dd class="col-sm-9">{{ $analysis?->observations ?? '-' }}</dd>
 
-                    <dt class="col-sm-3">Laudo/Relatório</dt>
+                    <dt class="col-sm-3">{{ $type->fileLabel() }}</dt>
                     <dd class="col-sm-9">
-                        @if ($user?->pne && Storage::disk('public')->exists($user->pne?->report))
-                            <a href="{{ Storage::url($user->pne?->report) }}" target="_blank"
-                                class="btn btn-primary btn-sm">
-                                <i class="bi bi-file-earmark-medical"></i> Abrir laudo
+                        @if ($file && Storage::disk('public')->exists($file))
+                            <a href="{{ Storage::url($file) }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="bi bi-file-earmark-medical"></i> {{ $type->fileButton() }}
                             </a>
                         @endif
                     </dd>
                 </dl>
 
                 @if ($action === 'accept')
-                    <p>Confirma o <strong>deferimento</strong> do relatório/laudo deste candidato?
-                        O candidato será notificado por e-mail.</p>
+                    <p>Confirma o <strong>deferimento</strong> {{ $type->ofSubject() }} deste candidato?
+                        <strong>O candidato será notificado por e-mail.</strong>
+                    </p>
 
-                    <form method="POST" action="{{ route('admin.analyses.accept.report', $user->id) }}"
+                    <form method="POST" action="{{ route('admin.analyses.accept', $routeParams) }}"
                         data-confirm-action="accept">
                         @csrf
                         @method('PATCH')
@@ -55,12 +70,12 @@
                         <button type="submit" class="btn btn-sm btn-success">
                             <i class="bi bi-check-lg"></i> Confirmar deferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route($type->listRoute()) }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>
                 @else
-                    <form method="POST" action="{{ route('admin.analyses.reject.report', $user->id) }}"
+                    <form method="POST" action="{{ route('admin.analyses.reject', $routeParams) }}"
                         data-confirm-action="reject">
                         @csrf
                         @method('PATCH')
@@ -73,7 +88,7 @@
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="bi bi-x-lg"></i> Confirmar indeferimento
                         </button>
-                        <a href="{{ route('admin.inscriptions.pcds') }}" class="btn btn-sm btn-secondary">
+                        <a href="{{ route($type->listRoute()) }}" class="btn btn-sm btn-secondary">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </a>
                     </form>

@@ -351,7 +351,7 @@ class AppealController extends Controller
     private function listRoute(string $type): string
     {
         return $type === Appeal::TYPE_PNE
-            ? 'admin.inscriptions.pcds'
-            : 'admin.inscriptions.lgbts';
+            ? 'admin.analyses.pcds'
+            : 'admin.analyses.lgbts';
     }
 }

@@ -86,7 +86,7 @@
         <h2 class="dash-section-title">Para analisar</h2>
         <div class="row g-3 statistics-container">
             <div class="col-12 col-md-4">
-                <a href="{{ route('admin.inscriptions.pcds') }}" class="card dash-card h-100">
+                <a href="{{ route('admin.analyses.pcds') }}" class="card dash-card h-100">
                     <div class="dash-card-icon amber"><i class="bi bi-universal-access"></i></div>
                     <div>
                         <div class="dash-card-number">{{ $stats['pne_pending'] }}</div>
@@ -96,7 +96,7 @@
             </div>
 
             <div class="col-12 col-md-4">
-                <a href="{{ route('admin.inscriptions.lgbts') }}" class="card dash-card h-100">
+                <a href="{{ route('admin.analyses.lgbts') }}" class="card dash-card h-100">
                     <div class="dash-card-icon amber"><i class="bi bi-person-badge"></i></div>
                     <div>
                         <div class="dash-card-number">{{ $stats['lgbt_pending'] }}</div>

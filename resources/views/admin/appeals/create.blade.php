@@ -5,7 +5,7 @@
 @section('content')
 
     @php
-        $cancelRoute = $type === 'pne' ? route('admin.inscriptions.pcds') : route('admin.inscriptions.lgbts');
+        $cancelRoute = $type === 'pne' ? route('admin.analyses.pcds') : route('admin.analyses.lgbts');
     @endphp
 
     <div class="container">
