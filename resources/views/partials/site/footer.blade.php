@@ -44,12 +44,16 @@
                             </a>
                         </li>
                     @endif
-                    @if ($process?->is_active)
-                        <li><a href="{{ route('site.calendar.show') }}">Calendário</a></li>
+                    @if ($process?->isOpen())
+                        <li><a href="{{ route('site.process.show') }}">Calendário</a></li>
                     @endif
                     <li><a href="{{ route('site.archives.index') }}">Provas Anteriores</a></li>
-                    <li><a href="{{ $resultReleased ? route('site.results.index') : '#' }}">Classificação</a></li>
-                    <li><a href="{{ $calls_exists ? route('site.calls.index') : '#' }}">Convocação</a></li>
+                    @if ($resultReleased)
+                        <li><a href="{{ route('site.results.index') }}">Classificação</a></li>
+                    @endif
+                    @if ($calls_exists)
+                        <li><a href="{{ route('site.calls.index') }}">Convocação</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
@@ -69,7 +73,9 @@
                     @endif
                     <li><a href="{{ $process?->isOpen() ? route('login') : '#' }}">Área do Candidato</a></li>
                     <li><a href="{{ route('site.faqs.index') }}">FAQ Completo</a></li>
-                    <li><a href="{{ $process?->isInscriptionOpen() ? route('home') : '#' }}/#como-participar">Como Participar</a></li>
+                    @if (! $process?->isInscriptionEnded())
+                        <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
