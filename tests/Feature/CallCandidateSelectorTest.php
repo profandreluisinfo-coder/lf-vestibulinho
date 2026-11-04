@@ -79,6 +79,26 @@ class CallCandidateSelectorTest extends TestCase
         $this->assertSame([$waiting->id], $selector->select($process, 1, 0, $course->id)->modelKeys());
     }
 
+    public function test_published_call_cannot_be_deleted_and_returns_a_validation_message(): void
+    {
+        [$process] = $this->processAndCourse();
+        $callList = $this->callList($process);
+        $admin = User::create([
+            'email' => 'admin-calls@example.test',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'name' => 'Administrador de teste',
+        ]);
+
+        $this->actingAs($admin)
+            ->from(route('admin.calls.index'))
+            ->delete(route('admin.calls.destroy', $callList))
+            ->assertRedirect(route('admin.calls.index'))
+            ->assertSessionHasErrors('call');
+
+        $this->assertDatabaseHas('call_lists', ['id' => $callList->id, 'status' => 'completed']);
+    }
+
     public function test_public_call_page_shows_only_classified_candidates_and_the_three_public_fields(): void
     {
         [$process, $course] = $this->processAndCourse();

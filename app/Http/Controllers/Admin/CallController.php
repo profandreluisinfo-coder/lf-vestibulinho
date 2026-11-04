@@ -206,7 +206,10 @@ class CallController extends Controller
     public function destroy(CallList $callList): RedirectResponse
     {
         abort_unless($callList->process_id === Process::current()?->id, 404);
-        abort_if($callList->status === 'completed', 409, 'Uma chamada publicada não pode ser excluída.');
+
+        if ($callList->status === 'completed') {
+            return back()->withErrors(['call' => 'Uma chamada publicada não pode ser excluída.']);
+        }
 
         $callList->delete();
 
@@ -360,12 +363,14 @@ class CallController extends Controller
     public function pdf(int $callNumber): Response
     {
         $callList = CallList::query()
+            ->with('process')
             ->where('process_id', Process::current()?->id)
             ->where('number', $callNumber)
             ->firstOrFail();
 
         $callListMembers = $callList->calls()
             ->with([
+                'result.inscription.course',
                 'result.inscription.user.lgbt',
                 'result.inscription.user.pne',
                 'result.inscription.user.document',
@@ -382,7 +387,9 @@ class CallController extends Controller
             ->select('calls.*')
             ->get();
 
-        $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers', 'callList'))
+        $process = $callList->process;
+
+        $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers', 'callList', 'process'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream("fichas-matricula-chamada-{$callNumber}.pdf");

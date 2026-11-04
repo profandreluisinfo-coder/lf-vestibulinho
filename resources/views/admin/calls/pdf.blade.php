@@ -1,502 +1,332 @@
+@php
+    $processYear = (int) ($process?->year ?? $callList->process?->year ?? now()->year);
+    $headerPath = public_path('assets/img/cab_ficha.png');
+    $headerImage = is_file($headerPath)
+        ? 'data:image/png;base64,' . base64_encode(file_get_contents($headerPath))
+        : null;
+@endphp
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vestibulinho LF {{ $process?->year }} - Ficha Cadastral do Estudante</title>
+    <title>Vestibulinho LF {{ $processYear }} - Ficha Cadastral do Estudante</title>
     <style>
         @page {
-            /* margin: 5mm; */
-            margin-top: 12mm;
-            margin-bottom: 10mm;
-            margin-left: 5mm;
-            margin-right: 5mm;
+            size: A4 portrait;
+            margin: 0;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
         body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            color: #000;
+            font-family: Cambria, "Times New Roman", serif;
+            font-size: 12pt;
+            line-height: 1.12;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+        .folha {
+            width: 197mm;
+            margin: 0 auto;
+            padding: 6mm 0;
         }
 
-        img {
-            width: 100%
-        }
-
-        .foto-box {
-            float: right;
-            width: 80px;
-            height: 100px;
-            border: 2px solid black;
-            text-align: center;
-            line-height: 100px;
-            font-size: 10px;
-            margin-top: -20px;
-        }
-
-        table {
-            border-collapse: collapse;
+        .cabecalho {
             width: 100%;
-            border: 2px solid black;
-            margin-bottom: 15px;
-        }
-
-        td,
-        th {
-            border: 1px solid black;
-            padding: 4px;
-            text-align: left;
-            vertical-align: middle;
-            font-size: 11px;
-        }
-
-        .header-cell {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        .imagem,
-        .termo {
-            border: 2px solid black;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 13px;
-            line-height: 1.4;
-            text-align: justify;
-        }
-
-        .termo h3 {
+            margin: 0 0 3mm;
             text-align: center;
-            margin-top: 0;
-            /* font-size: 12px; */
-            font-weight: bold;
         }
 
-        .assinatura-linha {
-            margin-top: 20px;
-            border-bottom: 1px solid black;
-            width: 300px;
+        .cabecalho img {
+            display: block;
+            width: 100%;
+            height: auto;
         }
 
-        #page-break {
+        .ficha {
+            width: 100%;
+            table-layout: fixed;
+            border: 1.5pt solid #000;
+            border-collapse: collapse;
             page-break-inside: avoid;
-            break-inside: avoid;
         }
 
-        .tc {
+        .ficha + .ficha {
+            margin-top: 3.2mm;
+        }
+
+        .ficha th,
+        .ficha td {
+            padding: 0 1.6mm;
+            border: .5pt solid #000;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .ficha th {
+            font-weight: 700;
+            font-size: 12pt;
+            text-align: left;
+        }
+
+        .ficha .dupla th {
+            height: 11.58mm;
+            padding-bottom: 10pt;
+            vertical-align: top;
+        }
+
+        .ficha .c {
             text-align: center;
         }
 
-        .fs {
-            font-size: 12px;
-            text-transform: uppercase;
-        }
+        .ficha .fs65 { font-size: 6.5pt; }
+        .ficha .fs7 { font-size: 7pt; }
+        .ficha .fs75 { font-size: 7.5pt; }
+        .ficha .fs10 { font-size: 10pt; }
+        .birth-date { font-size: 6.5pt; white-space: nowrap; }
+        .narrow-label { font-size: 5.5pt !important; word-wrap: normal !important; overflow-wrap: normal !important; }
+        .opcoes { font-weight: 700; }
+        .op { white-space: nowrap; }
+        .op + .op { margin-left: 1em; }
+        .check { font-family: Arial, sans-serif; font-weight: 700; }
     </style>
 </head>
 
-@php
-    $path = public_path('assets/img/cab_ficha.png');
-    $base64 = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
-@endphp
-
 <body>
-
     @foreach ($callListMembers as $call)
         @php
-            $user = $call->result->inscription->user;
-            
-            // Relacionamentos
+            $user = $call->result?->inscription?->user;
+            $inscription = $call->result?->inscription;
             $lgbt = $user?->lgbt;
             $pne = $user?->pne;
-            $academic = $user->academic;
-            $document = $user->document;
+            $academic = $user?->academic;
+            $document = $user?->document;
             $certificate = $user?->certificate;
-            $mother = $user->mother;
+            $mother = $user?->mother;
             $father = $user?->father;
             $guardian = $user?->guardian;
-            $parent_email = $user->parent_email;
+            $parentEmail = $user?->parent_email;
 
-            $call_date = $call->date->format('d/m/Y');
-            $doc = trim(explode(' ', $document?->type)[0]); // pega a primeira palavra do tipo de documento
+            $certificateType = (string) $certificate?->getRawOriginal('type');
+            $isForeign = (string) $user?->typeOfNationality() === '3';
+            $hasAcceptedPne = $pne?->status === 'accepted';
+            $needsAdaptation = $hasAcceptedPne && filled($pne?->support);
+            $healthIssue = filled($user?->health_issue) ? $user->health_issue : null;
+            $courseName = $call->course?->name ?: $inscription?->course?->name;
+            $callDate = $call->date?->format('d/m/Y') ?? '';
+            $birthDate = $user?->birth?->format('d/m/Y') ?? '';
         @endphp
 
-        <div class="header">
-            <img src="{{ $base64 }}" alt="Cabecalho">
-        </div>
+        <main class="folha">
+            @if ($headerImage)
+                <div class="cabecalho">
+                    <img src="{{ $headerImage }}" alt="Cabeçalho da ficha de matrícula">
+                </div>
+            @endif
 
-        <div class="clear"></div>
+            <table class="ficha" aria-label="Dados do estudante">
+                <colgroup>
+                    <col style="width:20%"><col style="width:8%"><col style="width:6%">
+                    <col style="width:9%"><col style="width:6%"><col style="width:7%">
+                    <col style="width:7%"><col style="width:7%"><col style="width:1%">
+                    <col style="width:9%"><col style="width:8%"><col style="width:12%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:5.79mm">
+                        <th colspan="2">NOME DO ESTUDANTE</th>
+                        <td colspan="6">{{ $user?->name ?? '-' }}</td>
+                        <th class="fs75" colspan="2">CONTATO</th>
+                        <td colspan="2">{{ $user?->phone ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:6.62mm">
+                        <th colspan="2">NOME SOCIAL/AFETIVO<br>(DECR. 55588/10)</th>
+                        <td colspan="10">{{ $lgbt?->status === 'accepted' ? $lgbt->name : '-' }}</td>
+                    </tr>
+                    <tr class="dupla">
+                        <th colspan="3">RA: {{ $academic?->ra ?? '-' }}</th>
+                        <th colspan="4">RG/CIN: {{ $document?->number ?? '-' }}</th>
+                        <th colspan="5">CPF: {{ $user?->cpf ?? '-' }}</th>
+                    </tr>
+                    <tr style="height:6.62mm">
+                        <th colspan="2">CERTIDÃO DE<br>NASCIMENTO</th>
+                        <th class="fs65" colspan="2">NOVA</th>
+                        <td colspan="6">{{ $certificateType === '1' ? ($certificate?->number ?? '-') : '-' }}</td>
+                        <th class="fs75">DATA NASC.</th>
+                        <td class="birth-date">{{ $birthDate ?: '-' }}</td>
+                    </tr>
+                    <tr style="height:6.62mm">
+                        <th>ANTIGA</th>
+                        <th>FLS.</th>
+                        <td>{{ $certificateType === '2' ? ($certificate?->fls ?? '-') : '-' }}</td>
+                        <th>LIVRO</th>
+                        <td>{{ $certificateType === '2' ? ($certificate?->book ?? '-') : '-' }}</td>
+                        <th>NÚMERO</th>
+                        <td>{{ $certificateType === '2' ? ($certificate?->number ?? '-') : '-' }}</td>
+                        <th class="fs75" colspan="2">DISTRITO</th>
+                        <td colspan="3">-</td>
+                    </tr>
+                    <tr style="height:7.11mm">
+                        <th class="narrow-label">SUBDISTRITO</th>
+                        <td colspan="4">-</td>
+                        <th colspan="2">MUNICÍPIO</th>
+                        <td colspan="5">{{ $certificate?->city ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th colspan="2">NACIONALIDADE</th>
+                        <td colspan="2">{{ $user?->nationality ?? '-' }}</td>
+                        <th colspan="2">ESTRANGEIRO</th>
+                        <td colspan="2" class="opcoes">[{{ $isForeign ? ' ' : 'X' }}] NÃO [{{ $isForeign ? 'X' : ' ' }}] SIM</td>
+                        <th class="fs7" colspan="2">RNE/RNM</th>
+                        <td colspan="2">{{ $isForeign ? ($document?->number ?? '-') : '-' }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>GÊNERO</th>
+                        <td colspan="2">{{ $user?->gender ?? '-' }}</td>
+                        <th colspan="2">BOLSA FAMÍLIA</th>
+                        <td colspan="2" class="opcoes">[{{ filled($user?->nis) ? 'X' : ' ' }}] SIM [{{ filled($user?->nis) ? ' ' : 'X' }}] NÃO</td>
+                        <th colspan="2">NIS</th>
+                        <td colspan="3">{{ $user?->nis ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:7.32mm">
+                        <th colspan="3">POSSUI ALGUMA DEFICIÊNCIA?</th>
+                        <td class="opcoes" colspan="9">
+                            <span class="op">[{{ $hasAcceptedPne ? ' ' : 'X' }}] NÃO</span>
+                            <span class="op">[{{ $hasAcceptedPne ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $hasAcceptedPne ? ($pne?->description ?? '') : '' }}</span>
+                        </td>
+                    </tr>
+                    <tr style="height:7.32mm">
+                        <th colspan="3">NECESSITA DE ADAPTAÇÃO PEDAGÓGICA?</th>
+                        <td class="opcoes" colspan="9">
+                            <span class="op">[{{ $needsAdaptation ? ' ' : 'X' }}] NÃO</span>
+                            <span class="op">[{{ $needsAdaptation ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $needsAdaptation ? ($pne?->support ?? '') : '' }}</span>
+                        </td>
+                    </tr>
+                    <tr style="height:7.32mm">
+                        <th colspan="3">TEM ALGUM PROBLEMA DE SAÚDE OU ALERGIA?</th>
+                        <td class="opcoes" colspan="9">
+                            <span class="op">[{{ $healthIssue ? ' ' : 'X' }}] NÃO</span>
+                            <span class="op">[{{ $healthIssue ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $healthIssue ?? '' }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-            <tr>
-                <td class="header-cell" style="width: 20%;">NOME DO ESTUDANTE</td>
-                <td colspan="4" class="tc fs">{{ $user->name }}</td>
-                <td class="header-cell" style="width: auto; text-align: center">CONTATO</td>
-                <td colspan="3" class="tc fs">{{ $user->phone }}</td>
-            </tr>
+            <table class="ficha" aria-label="Filiação e responsável">
+                <colgroup>
+                    <col style="width:15.088%"><col style="width:55.390%"><col style="width:8.784%">
+                    <col style="width:3.582%"><col style="width:17.156%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:5.79mm">
+                        <th>FILIAÇÃO 1</th><td>{{ $mother?->name ?? '-' }}</td>
+                        <th class="fs75">CONTATO</th><td colspan="2">{{ $mother?->phone ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>FILIAÇÃO 2</th><td>{{ $father?->name ?? '-' }}</td>
+                        <th class="fs75">CONTATO</th><td colspan="2">{{ $father?->phone ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>RESPONSÁVEL PELO ESTUDANTE</th><td>{{ $guardian?->name ?? '-' }}</td>
+                        <th class="fs75" colspan="2">PARENTESCO</th><td>{{ $guardian?->kinship ?: ($guardian?->degree ?: '-') }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>E-MAIL</th><td>{{ $parentEmail?->address ?? '-' }}</td>
+                        <th class="fs75">CONTATO</th><td colspan="2">{{ $guardian?->phone ?? '-' }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <tr>
-                <td class="header-cell">NOME SOCIAL/AFETIVO<br>(DECR. 55588/10)<br>(LEI N° 16.785/18)</td>
-                <td colspan="8" class="tc">{{ $lgbt?->status === 'accepted' ? $lgbt?->name : "---" }}</td>
-            </tr>
+            <table class="ficha" aria-label="Endereço residencial">
+                <colgroup>
+                    <col style="width:14.953%"><col style="width:7.602%"><col style="width:35.566%">
+                    <col style="width:6.519%"><col style="width:7.835%"><col style="width:6.465%"><col style="width:21.060%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:5.79mm">
+                        <th>ENDEREÇO RESIDENCIAL</th><th>RUA/AV.</th><td colspan="5">{{ $user?->street }} {{ $user?->home }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>BAIRRO</th><td colspan="2">{{ $user?->burgh ?? '-' }}</td>
+                        <th colspan="2">COMPLEMENTO</th><td colspan="2">{{ $user?->complement ?: '-' }}</td>
+                    </tr>
+                    <tr style="height:5.79mm">
+                        <th>CIDADE</th><td colspan="2">{{ $user?->city ?? '-' }}</td>
+                        <th class="c">UF</th><td>{{ $user?->state ?? '-' }}</td>
+                        <th class="c">CEP</th><td>{{ $user?->zip ?? '-' }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <tr>
-                <td class="header-cell">RA</td>
-                <td colspan="2" class="tc fs">{{ $academic->ra }}</td>
-                <td class="header-cell tc">{{ $doc }}</td>
-                <td colspan="2" class="tc fs">{{ $user->nationality === "ESTRANGEIRA" ? "" : $document->number }}</td>
-                <td class="header-cell tc">CPF</td>
-                <td colspan="2" class="tc fs">{{ $user->cpf }}</td>
-            </tr>
+            <table class="ficha" aria-label="Escola de conclusão do Ensino Fundamental">
+                <colgroup>
+                    <col style="width:15.097%"><col style="width:28.447%"><col style="width:5.999%">
+                    <col style="width:13.852%"><col style="width:19.431%"><col style="width:17.174%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:6.49mm">
+                        <th>ESCOLA DE CONCLUSÃO E.F.</th><td colspan="5">{{ $academic?->school ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:6.49mm">
+                        <th>CIDADE</th><td>{{ $academic?->city ?? '-' }}</td>
+                        <th class="c">UF</th><td>{{ $academic?->state ?? '-' }}</td>
+                        <th class="c">ANO DE CONCLUSÃO</th><td>{{ $academic?->year ?? '-' }}</td>
+                    </tr>
+                    <tr style="height:6.49mm">
+                        <td class="opcoes" colspan="6">ESTUDANTE JÁ CURSOU 1º ANO EM OUTRA INSTITUIÇÃO DE ENSINO? <span class="op">[&nbsp;&nbsp;] NÃO</span><span class="op">[&nbsp;&nbsp;] SIM</span></td>
+                    </tr>
+                </tbody>
+            </table>
 
-        </table>
+            <table class="ficha" aria-label="Matrícula">
+                <colgroup>
+                    <col style="width:21.365%"><col style="width:51.119%"><col style="width:8.838%"><col style="width:18.678%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:4.85mm">
+                        <th class="c fs10" rowspan="2">MATRÍCULA</th>
+                        <th colspan="3">SOLICITO MATRÍCULA NO 1º ANO DO ENSINO TÉCNICO DE NÍVEL MÉDIO INTEGRADO - TÉCNICO EM:</th>
+                    </tr>
+                    <tr style="height:7mm">
+                        <td>{{ $courseName ?? '-' }}</td><th class="c">DATA</th><td>{{ $callDate }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-            <!-- CERTIDÃO DE NASCIMENTO -->
-            <tr>
-                <td class="header-cell" rowspan="3" style="width: 20%">CERTIDÃO DE NASCIMENTO</td>
-                <td class="header-cell tc">NOVA</td>
-                <td colspan="4" class="tc fs">{{ $certificate->type == '1' ? $certificate->number : '---' }}</td>
-                <td class="header-cell tc">DATA NASC.</td>
-                <td colspan="2" class="tc fs">
-                    {{ $user->birth }}
-                </td>
-            </tr>
+            <table class="ficha" aria-label="Movimentação do aluno">
+                <colgroup>
+                    <col style="width:10.087%"><col style="width:5.066%"><col style="width:5.066%">
+                    <col style="width:11.186%"><col style="width:31.868%"><col style="width:18.360%"><col style="width:18.369%">
+                </colgroup>
+                <tbody>
+                    <tr style="height:5.59mm"><th class="c fs10" colspan="7">MOVIMENTAÇÃO DO ALUNO</th></tr>
+                    <tr style="height:4.92mm">
+                        <th class="c">ANO</th><th class="c" colspan="2">CLASSE</th><th class="c">IDADE</th><th class="c" colspan="3">ASSINATURAS</th>
+                    </tr>
+                    <tr style="height:4.74mm">
+                        <td></td><th class="c">S</th><th class="c">T</th><td></td><th class="c">RESPONSÁVEL</th><th class="c">SECRETÁRIO</th><th class="c">DIRETOR</th>
+                    </tr>
+                    @for ($yearOffset = 0; $yearOffset < 6; $yearOffset++)
+                        <tr style="height:6.51mm">
+                            <th class="c">{{ $processYear + $yearOffset }}</th>
+                            <td></td><td></td><td>{{ $user?->getAgeAttribute() ?? '-' }}</td>
+                            <td></td><td></td><td></td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </main>
 
-            <tr>
-                <td class="header-cell tc">ANTIGA</td>
-                <td class="header-cell tc">FLS.</td>
-                <td class="tc fs">{{ $certificate->type == '2' ? $certificate?->fls : "---" }}</td>
-                <td class="header-cell tc">LIVRO</td>
-                <td class="tc fs">{{ $certificate->type == '2' ? $certificate?->book : "---" }}</td>
-                <td class="header-cell tc">NÚMERO</td>
-                <td colspan="2" class="tc fs">{{ $certificate->type == '2' ? $certificate?->number : "---" }}</td>
-            </tr>
-
-            <tr>
-                <td class="header-cell tc">DISTRITO</td>
-                <td></td>
-                <td class="header-cell tc" style="font-size: 10px">SUBDISTRITO</td>
-                <td></td>
-                <td class="header-cell tc">MUNICÍPIO</td>
-                <td colspan="3" class="tc fs">{{ $certificate->city }}</td>
-            </tr>
-
-            <!-- NACIONALIDADE / RNE -->
-            <tr>
-                <td class="header-cell">NACIONALIDADE</td>
-                <td colspan="{{ $user->typeOfNationality() === "1" ? "8" : "2" }}" class="fs">{{ $user->nationality }}</td>
-                @if ($user->typeOfNationality() === "3")
-                <td class="header-cell tc">RNE</td>
-                <td colspan="5" class="tc fs">
-                    {{ $document->number }}
-                  </td>
-                @endif
-            </tr>
-
-            <!-- BOLSA-FAMÍLIA -->
-            <tr>
-                <td class="header-cell">GÊNERO</td>
-                <td class="tc fs">{{ $user->gender }}</td>
-                <td class="header-cell tc">BOLSA FAMÍLIA</td>
-                <td class="tc fs">{{ $user?->nis ? 'Sim' : 'Não' }}</td>
-                <td class="header-cell tc">NIS</td>
-                <td colspan="4" class="tc fs">{{ $user?->nis ? $user?->nis : '---' }}</td>
-            </tr>
-
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-
-            <!-- EDUCAÇÃO ESPECIAL -->
-            <tr>
-                <td class="header-cell" style="width: 32%">ELEGÍVEL AOS SERVIÇOS DA EDUCAÇÃO ESPECIAL</td>
-                <td class="tc fs">{{ ($pne?->status === "accepted") ? 'Sim' : 'Não' }}</td>
-                <td class="header-cell tc">QUAL?</td>
-                <td colspan="5" class="tc fs">{{ ($pne?->status === "accepted") ? $pne?->description : '---' }}</td>
-            </tr>
-
-            <!-- SAÚDE / ALERGIA -->
-            <tr>
-                <td class="header-cell">TEM ALGUM PROBLEMA DE SAÚDE OU ALERGIA</td>
-                <td class="tc fs">{{ $user?->health_issue ? 'Sim' : 'Não' }}</td>
-                <td class="header-cell tc">QUAL?</td>
-                <td colspan="5" class="tc fs">{{ $user?->health_issue }}</td>
-            </tr>
-        </table>
-
-        <table>
-            <tr>
-                <td class="header-cell" style="width: 19%;">FILIAÇÃO 1</td>
-                <td class="tc fs">{{ $mother->name }}</td>
-                <td class="header-cell" style="width: 15%; text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $mother?->phone }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell">FILIAÇÃO 2</td>
-                <td class="tc fs">{{ $father?->name ?? '---' }}</td>
-                <td class="header-cell" style="text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $father?->phone ?? '---' }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell">RESPONSÁVEL PELO ESTUDANTE</td>
-                <td class="tc fs">{{ $guardian?->name ?? '---' }}</td>
-                <td class="header-cell" style="text-align: center">PARENTESCO</td>
-                <td class="tc fs">{{ $guardian?->kinship ?? '---' }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell">E-MAIL</td>
-                <td class="tc fs">{{ $parent_email->address }}</td>
-                <td class="header-cell" style="text-align: center">CONTATO</td>
-                <td class="tc fs">{{ $guardian?->phone ?? '---' }}</td>
-            </tr>
-        </table>
-
-        <table>
-            <tr>
-                <td class="header-cell" rowspan="3">ENDEREÇO<br>RESIDENCIAL</td>
-                <td class="header-cell" style="width: 15%; text-align: center">RUA/AV.</td>
-                <td colspan="6" class="tc fs">{{ $user->street }} {{ $user?->number }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell" style="width: 10%; text-align: center">BAIRRO</td>
-                <td colspan="3" class="tc fs">{{ $user->burgh }}</td>
-                </td>
-                <td class="header-cell">COMPLEMENTO</td>
-                <td colspan="2" class="tc fs">{{ $user?->complement ?? '---' }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell" style="width: 10%; text-align: center">CIDADE</td>
-                <td class="tc fs">{{ $user->city }}</td>
-                <td class="header-cell" style="width: 8%; text-align: center;">UF</td>
-                <td class="tc fs">{{ $user->state }}</td>
-                <td class="header-cell" style="width: 10%; text-align: center;">CEP</td>
-                <td colspan="2" class="tc fs">{{ $user->zip }}</td>
-            </tr>
-            <tr>
-                <th rowspan="2" class="header-cell">TRANSPORTE<br>ESCOLAR GRATUITO</td>
-                <td></td>
-                <td class="header-cell" style="text-align: center;">VAN<br>ESCOLAR</td>
-                <td></td>
-                <td class="header-cell" style="text-align: center;">OUTRO MEIO</td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td class="header-cell" style="text-align: center;">OBS.</td>
-                <td colspan="6"></td>
-            </tr>
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-                <th rowspan="3" class="header-cell"
-                    style="writing-mode: vertical-lr;  text-orientation: sideways; width: 30px; text-align: center;">
-                    <strong>ALTERAÇÕES</strong>
-                </th>
-                <td style="height: 15px"></td>
-            </tr>
-            <tr>
-                <td style="height: 15px"></td>
-            </tr>
-            <tr>
-                <td style="height: 15px"></td>
-            </tr>
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-            <tr>
-                <td class="header-cell" style="width: 25%;">ESCOLA DE CONCLUSÃO E.F.</td>
-                <td colspan="6" style="width: 70%;" class="tc fs">{{ $academic->school }}</td>
-            </tr>
-            <tr>
-                <td class="header-cell" style="width: 15%;">CIDADE</td>
-                <td colspan="2" class="tc fs">{{ $academic->city }}</td>
-                <td class="header-cell" style="width: 5%; text-align: center">UF</td>
-                <td class="tc fs">{{ $academic->state }}</td> <!-- célula para valor de UF -->
-                <td class="header-cell" style="width: 20%;">ANO DE CONCLUSÃO</td>
-                <td class="tc fs">{{ $academic->year }}</td> <!-- célula para valor do ano -->
-            </tr>
-        </table>
-        <!-- Mover a tabela para a próxima página na impressão -->
-        <table id="page-break">
-            <tr>
-                <th rowspan="2" class="header-cell" style="width: 15%; text-align: center">MATRÍCULA</th>
-                <td colspan="5" class="header-cell" style="text-align: center;">SOLICITO MATRÍCULA NO 1º ANO DO
-                    ENSINO
-                    TÉCNICO DE NÍVEL MÉDIO INTEGRADO - TÉCNICO EM:</td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-                <td class="header-cell tc" style="width: 10%;">DATA</td>
-                <td class="tc fs">{{ $call_date }}</td>
-            </tr>
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-            <tr>
-                <td class="header-cell" colspan="7" style="text-align: center;">MOVIMENTAÇÃO DO ALUNO</td>
-            </tr>
-            <tr>
-                <td class="header-cell" style="text-align: center;">ANO</td>
-                <td colspan="2" class="header-cell" style="text-align: center;">CLASSE</td>
-                <td class="header-cell" style="text-align: center;">IDADE</td>
-                <td colspan="3" class="header-cell" style="text-align: center;">ASSINATURAS</td>
-            </tr>
-            <tr>
-                <td style="width: 10%;"></td>
-                <td class="header-cell" style="width: 5%; text-align: center;">S</td>
-                <td class="header-cell" style="width: 5%; text-align: center;">T</td>
-                <td style="width: 10%;"></td>
-                <td class="header-cell" style="width: 25%; text-align: center;">RESPONSÁVEL</td>
-                <td class="header-cell" style="width: 15%; text-align: center;">SECRETÁRIO</td>
-                <td class="header-cell" style="width: 15%; text-align: center;">DIRETOR</td>
-            </tr>
-            <tr>
-                <td>2027</td>
-                <td></td>
-                <td></td>
-                <td class="tc fs">{{ $user->getAgeAttribute() }}</td>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2028</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2029</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2030</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2031</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            {{-- <tr>
-                <td>2032</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr> --}}
-        </table>
-
-        <table>
-            <tr>
-                <th rowspan="4" class="header-cell"
-                    style="writing-mode: vertical-rl; text-orientation: mixed; width: 120px; text-align: center; height: 100px;">
-                    <strong>TRANSFERÊNCIA</strong>
-                </th>
-                <td colspan="5" style="text-align: center;font-size: 13px"><strong>SOLICITO TRANSFERÊNCIA DE
-                        MATRÍCULA PARA OUTRO ESTABELECIMENTO DE ENSINO</strong>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5" class="tc fs"><strong>Obs:</strong> a assinatura neste campo torna sem efeito as
-                    rematrículas realizadas para
-                    os anos subsequentes.</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="header-cell"
-                    style="writing-mode: vertical-rl; text-orientation: mixed; width: 80px; text-align: center;">
-                    <strong>INSTITUIÇÃO DE ENSINO:</strong>
-                </td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td class="header-cell"
-                    style="writing-mode: vertical-rl; text-orientation: mixed; width: 80px; text-align: center;">
-                    <strong>DATA</strong>
-                </td>
-                <td style="width: 150px;"></td>
-                <td class="header-cell"
-                    style="writing-mode: vertical-rl; text-orientation: mixed; width: 80px; text-align: center;">
-                    <strong>ASSINATURA</strong><br><strong>RESPONSÁVEL</strong>
-                </td>
-                <td colspan="2"></td>
-            </tr>
-        </table>
-
-        <div class="imagem">
-            <h3 style="text-align: center; margin-top: -3px;">AUTORIZAÇÃO PARA USO DE IMAGEM</h3>
-            <p>Autorizo, de forma gratuita e definitiva, o uso da imagem do(a) estudante acima identificado(a) pela
-                instituição de ensino.</p>
-            <p>A presente autorização abrange o uso da imagem em fotografias, vídeos e demais registros audiovisuais
-                realizados em atividades escolares, eventos, projetos pedagógicos, publicações institucionais, redes
-                sociais, mídias digitais e impressas, com finalidade exclusivamente educativa, institucional e
-                informativa, respeitando a legislação vigente: Lei nº 8.069, de 13 de julho de 1990, art. 17, que
-                garante o direito ao respeito, incluindo a preservação da imagem da criança e do adolescente.</p>
-            <p>Declaro estar ciente de que esta autorização não tem caráter comercial e que a imagem será utilizada de
-                forma ética, sem causar prejuízo à honra, reputação ou dignidade do(a) estudante.</p>
-            <p>Sim <span style="margin-left: 8px; margin-right: 8px">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span> Não <span
-                    style="margin-left: 8px; margin-right: 8px">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</span></p>
-        </div>
-
-        <div class="termo">
-            <h3>TERMO DE CIÊNCIA</h3>
-
-            <p>A Direção da ESCOLA MUNICIPAL DR. LEANDRO FRANCESCHINI, em cumprimento às atuais legislações, informa e
-                dá
-                ciência aos alunos e seus pais ou responsáveis, que os cursos oferecidos por esta escola, de Técnico em
-                Administração, Técnico em Contabilidade, Técnico em Informática e Técnico em Segurança do Trabalho, tem
-                duração
-                de 4 (quatro) anos e por ser a articulação do Ensino Profissional com o Ensino Médio, conforme forma
-                integrada,
-                prevista no decreto 5154/04, somente possibilitará prosseguimento de estudos em nível superior após a
-                conclusão
-                do curso.</p>
-
-            <p>Portanto o aluno receberá o Histórico Escolar e o Certificado de Conclusão após sua aprovação no quarto
-                ano do
-                curso.</p>
-
-            <p><strong>DECLARO ACATAR AS NORMAS REGIMENTAIS DESSE ESTABELECIMENTO DE ENSINO.</strong></p>
-
-            <p><strong>Sumaré, <span class="fs">{{ $call_date }}.</strong></p>
-
-            <p><strong>Assinatura do pai ou responsável:</strong></p>
-            <div class="assinatura-linha"></div>
-        </div>
-
-        <div style="page-break-after: always;"></div>
+        @if (! $loop->last)
+            <div style="page-break-after: always;"></div>
+        @endif
     @endforeach
-
 </body>
 
 </html>

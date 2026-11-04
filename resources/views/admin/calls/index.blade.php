@@ -30,18 +30,131 @@
             </div>
         @endif
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-broadcast-pin text-muted"></i>
                 <h6 class="mb-0 text-muted fw-normal">Convocação para matrícula</h6>
             </div>
-            
-            @if (!empty($countResults))
-                <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
-                    <i class="bi bi-plus-circle"></i> Novo
-                </a>
-            @endif
 
+            <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#callsInfoModal">
+                    <i class="bi bi-info-circle me-1"></i> Informações sobre chamadas
+                </button>
+                @if (!empty($countResults))
+                    <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
+                        <i class="bi bi-plus-circle"></i> Novo
+                    </a>
+                @endif
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="callsInfoModal" tabindex="-1" aria-labelledby="callsInfoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h5 class="modal-title" id="callsInfoModalLabel">Informações sobre o sistema de chamadas</h5>
+                            <p class="text-muted small mb-0 mt-1">Orientações para convocação e acompanhamento das matrículas.</p>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="accordion" id="callsInfoAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="callsInfoHeadingSelection">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#callsInfoSelection" aria-expanded="true" aria-controls="callsInfoSelection">
+                                        <i class="bi bi-list-ol me-2"></i>Montagem da chamada
+                                    </button>
+                                </h2>
+                                <div id="callsInfoSelection" class="accordion-collapse collapse show"
+                                    aria-labelledby="callsInfoHeadingSelection" data-bs-parent="#callsInfoAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Chamada geral:</strong> convoca os próximos candidatos classificados que ainda não foram chamados, seguindo a classificação geral.</p>
+                                        <p><strong>Quantidade de PcDs:</strong> informe quantos candidatos PcD deferidos deseja incluir. O sistema seleciona os próximos PcDs pela classificação e completa as demais vagas pela lista geral.</p>
+                                        <p class="mb-0"><strong>Empates:</strong> candidatos empatados na posição de corte entram juntos. Por isso, a chamada pode ter mais pessoas do que a quantidade informada.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="callsInfoHeadingVacancy">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#callsInfoVacancy" aria-expanded="false" aria-controls="callsInfoVacancy">
+                                        <i class="bi bi-arrow-repeat me-2"></i>Vaga reaberta em um curso
+                                    </button>
+                                </h2>
+                                <div id="callsInfoVacancy" class="accordion-collapse collapse"
+                                    aria-labelledby="callsInfoHeadingVacancy" data-bs-parent="#callsInfoAccordion">
+                                    <div class="accordion-body">
+                                        <p>Use a seleção de curso quando uma desistência ou outra ocorrência abrir uma vaga específica. O sistema considera os próximos candidatos ainda não convocados e também quem ficou aguardando vaga naquele mesmo curso.</p>
+                                        <p class="mb-0">Quem aguarda vaga em um curso só volta a ser considerado numa chamada específica para esse curso. A ordenação continua respeitando a classificação.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="callsInfoHeadingPublication">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#callsInfoPublication" aria-expanded="false" aria-controls="callsInfoPublication">
+                                        <i class="bi bi-megaphone me-2"></i>Rascunho e publicação
+                                    </button>
+                                </h2>
+                                <div id="callsInfoPublication" class="accordion-collapse collapse"
+                                    aria-labelledby="callsInfoHeadingPublication" data-bs-parent="#callsInfoAccordion">
+                                    <div class="accordion-body">
+                                        <p>Uma chamada nova começa como <strong>rascunho</strong>. Confira os convocados e use <strong>Finalizar</strong> para publicá-la.</p>
+                                        <p class="mb-0">A publicação disponibiliza a lista pública e envia e-mails como avisos complementares. A lista pública exibe apenas candidatos classificados, com classificação, número de inscrição e pontuação.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="callsInfoHeadingEnrollment">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#callsInfoEnrollment" aria-expanded="false" aria-controls="callsInfoEnrollment">
+                                        <i class="bi bi-clipboard-check me-2"></i>Registro de matrículas
+                                    </button>
+                                </h2>
+                                <div id="callsInfoEnrollment" class="accordion-collapse collapse"
+                                    aria-labelledby="callsInfoHeadingEnrollment" data-bs-parent="#callsInfoAccordion">
+                                    <div class="accordion-body">
+                                        <p>Após publicar a chamada, abra <strong>Registrar matrículas</strong> para registrar a situação de cada convocado:</p>
+                                        <ul>
+                                            <li><strong>Matriculado:</strong> matrícula concluída no curso selecionado.</li>
+                                            <li><strong>Documentos pendentes:</strong> informe o curso e o prazo para regularização, de no mínimo 48 horas.</li>
+                                            <li><strong>Perdeu a vaga:</strong> não compareceu ou não regularizou a documentação no prazo.</li>
+                                            <li><strong>Desistiu após matrícula:</strong> registra a desistência e a vaga que reabriu.</li>
+                                            <li><strong>Aguardando vaga no curso:</strong> selecione o curso desejado para que o candidato possa ser considerado quando surgir uma vaga nele.</li>
+                                        </ul>
+                                        <p class="mb-0">Se não registrar o resultado, o candidato permanece como <strong>Aguardando atendimento</strong> e não será convocado novamente automaticamente. Registre os resultados para acompanhar as vagas disponíveis antes da próxima chamada.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="callsInfoHeadingCalendar">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#callsInfoCalendar" aria-expanded="false" aria-controls="callsInfoCalendar">
+                                        <i class="bi bi-calendar-event me-2"></i>Datas das chamadas
+                                    </button>
+                                </h2>
+                                <div id="callsInfoCalendar" class="accordion-collapse collapse"
+                                    aria-labelledby="callsInfoHeadingCalendar" data-bs-parent="#callsInfoAccordion">
+                                    <div class="accordion-body">
+                                        <p class="mb-0">A data da primeira chamada deve respeitar o início de matrículas definido no calendário. Chamadas posteriores devem ocorrer a partir da data de vagas remanescentes e todas precisam estar dentro da data limite para convocações. O formulário informa se uma data não atende ao cronograma.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
@@ -106,17 +219,19 @@
                             <td>
                                 <div class="d-flex flex-wrap justify-content-center gap-2">
 
-                                    <!-- Botão de excluir -->
-                                    <form id="delete-form-{{ $callList->id }}"
-                                        action="{{ route('admin.calls.destroy', $callList->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                            onclick="confirmDelete({{ $callList->id }})">
-                                            <i class="bi bi-trash"></i> Excluir
-                                        </button>
-                                    </form>
+                                    @if ($callList->status === 'pending')
+                                        <!-- Rascunhos podem ser excluídos; chamadas publicadas ficam preservadas. -->
+                                        <form id="delete-form-{{ $callList->id }}"
+                                            action="{{ route('admin.calls.destroy', $callList->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-sm btn-danger" title="Excluir rascunho"
+                                                onclick="confirmDelete({{ $callList->id }})">
+                                                <i class="bi bi-trash"></i> Excluir
+                                            </button>
+                                        </form>
+                                    @endif
 
                                     <!-- Botão de detalhes -->
                                     <button class="btn btn-sm btn-secondary text-white" title="Detalhes"
