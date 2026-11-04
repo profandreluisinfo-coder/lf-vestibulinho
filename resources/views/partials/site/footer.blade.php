@@ -67,11 +67,9 @@
                     @if ($process?->isInscriptionOpen())
                         <li><a href="{{ route('register') }}">Registrar-se</a></li>
                     @endif
-                    <li><a href="{{ route('login') }}">Área do Candidato</a></li>
+                    <li><a href="{{ $process?->isOpen() ? route('login') : '#' }}">Área do Candidato</a></li>
                     <li><a href="{{ route('site.faqs.index') }}">FAQ Completo</a></li>
-                    @if ($process?->isInscriptionOpen())
-                        <li><a href="{{ route('home') }}/#como-participar">Como Participar</a></li>
-                    @endif
+                    <li><a href="{{ $process?->isInscriptionOpen() ? route('home') : '#' }}/#como-participar">Como Participar</a></li>
                 </ul>
             </div>
             <div class="col-6 col-lg-2 foot-col text-center text-lg-start">
