@@ -16,6 +16,20 @@
 
     <div class="container">
 
+        @if (session('success'))
+            <div class="alert alert-success" role="status">{{ session('success') }}</div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <strong>Não foi possível criar a chamada:</strong>
+                <ul class="mb-0 mt-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-broadcast-pin text-muted"></i>
@@ -112,7 +126,8 @@
                                     </button>
 
                                     <a href="{{ route('admin.calls.show', $callList->number) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-clipboard-check"></i> Matrículas
+                                        <i class="bi bi-clipboard-check"></i>
+                                        {{ $callList->status === 'completed' ? 'Registrar matrículas' : 'Ver convocados' }}
                                     </a>
 
                                     <a href="{{ route('admin.calls.pdf', $callList->number) }}"
@@ -240,14 +255,14 @@
                                 <div class="mb-3">
                                     <label for="number" class="form-label">Número da Chamada</label>
                                     <input type="number" name="number" id="number"
-                                        class="form-control @error('number') is-invalid @enderror" min="1">
+                                        class="form-control @error('number') is-invalid @enderror" min="1" value="{{ old('number') }}">
                                     <div class="form-text">Última chamada deste processo: {{ $lastNumber ?: 'nenhuma' }}</div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="limit" class="form-label">Quantidade de Candidatos</label>
                                     <input type="number" name="limit" id="limit"
-                                        class="form-control @error('limit') is-invalid @enderror" min="1">
+                                        class="form-control @error('limit') is-invalid @enderror" min="1" value="{{ old('limit') }}">
                                     <div class="form-text text-success">
                                         Última chamada: {{ $lastAmount }} candidatos.
                                     </div>
@@ -255,7 +270,7 @@
 
                                 <div class="mb-3">
                                     <label for="pcd_limit" class="form-label">Quantidade de PcDs nesta chamada</label>
-                                    <input type="number" name="pcd_limit" id="pcd_limit" value="0"
+                                    <input type="number" name="pcd_limit" id="pcd_limit" value="{{ old('pcd_limit', 0) }}"
                                         class="form-control @error('pcd_limit') is-invalid @enderror" min="0">
                                     <div class="form-text">O sistema seleciona os próximos PcDs deferidos pela classificação e completa o total pela lista geral. Empates na posição de corte permanecem juntos.</div>
                                 </div>
@@ -265,7 +280,7 @@
                                     <select name="vacancy_course_id" id="vacancy_course_id" class="form-select">
                                         <option value="">Chamada geral</option>
                                         @foreach ($courses as $course)
-                                            <option value="{{ $course->id }}">{{ $course->name }} ({{ $course->pivot->vacancies }} vagas previstas)</option>
+                                            <option value="{{ $course->id }}" @selected((string) old('vacancy_course_id') === (string) $course->id)>{{ $course->name }} ({{ $course->pivot->vacancies }} vagas previstas)</option>
                                         @endforeach
                                     </select>
                                     <div class="form-text">Use quando uma desistência abrir vaga em curso específico; o sistema também considera candidatos que aguardam vaga nesse curso.</div>
@@ -274,13 +289,13 @@
                                 <div class="mb-3">
                                     <label for="date" class="form-label">Data de Comparecimento</label>
                                     <input type="date" name="date" id="date"
-                                        class="form-control @error('date') is-invalid @enderror">
+                                        class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}">
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="time" class="form-label">Hora de Comparecimento</label>
                                     <input type="time" name="time" id="time"
-                                        class="form-control @error('time') is-invalid @enderror">
+                                        class="form-control @error('time') is-invalid @enderror" value="{{ old('time') }}">
                                 </div>
 
                                 {{-- prettier-ignore --}}
@@ -321,9 +336,17 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('public/assets/js/admin/calls/create.js') }}"></script>
-    <script src="{{ asset('public/assets/js/admin/calls/delete.js') }}"></script>
-    <script src="{{ asset('public/assets/js/admin/calls/finalize.js') }}"></script>
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const modalElement = document.getElementById('setNewCall');
+                if (modalElement) new bootstrap.Modal(modalElement).show();
+            });
+        </script>
+    @endif
+    <script src="{{ asset('assets/js/admin/calls/create.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/calls/delete.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/calls/finalize.js') }}"></script>
     <!-- Importa o Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Importa o plugin de datalabels -->

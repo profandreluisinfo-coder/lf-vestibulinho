@@ -18,6 +18,11 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+        @if ($callList->status !== 'completed')
+            <div class="alert alert-info">
+                Esta chamada ainda está em rascunho. Publique-a na página de chamadas para habilitar o registro das situações de matrícula.
+            </div>
+        @endif
         @if ($errors->any())
             <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
         @endif
