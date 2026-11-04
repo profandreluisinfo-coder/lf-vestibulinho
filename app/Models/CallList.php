@@ -3,19 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CallList extends Model
 {
-    protected $fillable = ['number', 'date', 'time', 'status'];
+    protected $fillable = [
+        'process_id',
+        'number',
+        'date',
+        'time',
+        'status',
+        'published_at',
+        'published_by',
+        'vacancy_course_id',
+    ];
 
     protected function casts(): array
     {
         return [
-        'date' => 'date',
-        'time' => 'datetime:H:i',
-    ];
+            'date' => 'date',
+            'time' => 'datetime:H:i',
+            'published_at' => 'datetime',
+        ];
     }
 
     /**
@@ -47,13 +57,18 @@ class CallList extends Model
         return $this->hasMany(Call::class);
     }
 
-    /**
-     * Obter todos os resultados de exame associados a essa lista de chamada.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function examResults(): BelongsToMany
+    public function process(): BelongsTo
     {
-        return $this->belongsToMany(ExamResult::class, 'call_list_exam_result');
+        return $this->belongsTo(Process::class);
+    }
+
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'published_by');
+    }
+
+    public function vacancyCourse(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'vacancy_course_id');
     }
 }

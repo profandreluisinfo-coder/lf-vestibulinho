@@ -215,6 +215,10 @@
                                     <span
                                         class="show-field-value">{{ $process?->enrol_remaining?->format('d/m/Y') ?? '—' }}</span>
                                 </div>
+                                <div class="col-md-4">
+                                    <span class="show-field-label">Limite de novas convocações</span>
+                                    <span class="show-field-value">{{ $process?->enrol_deadline?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
                             </div>
                         </div>
 

@@ -2,19 +2,16 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
-        $indexExists = DB::select("
-            SHOW INDEX FROM events
-            WHERE Key_name = 'events_process_id_unique'
-        ");
+        $indexExists = collect(Schema::getIndexes('events'))
+            ->contains(fn (array $index) => $index['name'] === 'events_process_id_unique');
 
-        if (empty($indexExists)) {
+        if (! $indexExists) {
             Schema::table('events', function (Blueprint $table) {
                 $table->unique('process_id');
             });
@@ -23,12 +20,10 @@ return new class extends Migration
 
     public function down(): void
     {
-        $indexExists = DB::select("
-            SHOW INDEX FROM events
-            WHERE Key_name = 'events_process_id_unique'
-        ");
+        $indexExists = collect(Schema::getIndexes('events'))
+            ->contains(fn (array $index) => $index['name'] === 'events_process_id_unique');
 
-        if (!empty($indexExists)) {
+        if ($indexExists) {
             Schema::table('events', function (Blueprint $table) {
                 $table->dropUnique('events_process_id_unique');
             });

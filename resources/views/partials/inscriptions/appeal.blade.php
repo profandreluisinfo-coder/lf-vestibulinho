@@ -5,7 +5,7 @@
 @if (! $appeal)
 
     {{-- Ainda sem recurso: só avisa enquanto o candidato não foi alocado em prova --}}
-    @if (! $user->inscription?->exam_result)
+    @if (! $user->inscription?->result)
         <div class="modality-note modality-pending d-flex align-items-start gap-2">
             <i class="bi bi-info-circle mt-1"></i>
             <div>

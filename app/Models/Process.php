@@ -38,6 +38,7 @@ class Process extends Model
         // Matrícula
         'enrol_start',
         'enrol_remaining',
+        'enrol_deadline',
 
         // Divulgação
         'location_released_at',
@@ -58,6 +59,7 @@ class Process extends Model
             'result_publish'       => 'date',
             'enrol_start'          => 'date',
             'enrol_remaining'      => 'date',
+            'enrol_deadline'       => 'date',
             'created_at'           => 'datetime',
             'updated_at'           => 'datetime',
             'location_released_at' => 'datetime',
@@ -206,6 +208,12 @@ class Process extends Model
                 'icon'  => '<i class="bi bi-pin-angle me-1"></i>',
                 'type'  => 'date',
                 'date'  => $this->enrol_remaining,
+            ],
+            [
+                'label' => 'Encerramento das convocações',
+                'icon'  => '<i class="bi bi-calendar-check me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->enrol_deadline,
             ],
         ];
     }

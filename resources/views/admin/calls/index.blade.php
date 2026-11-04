@@ -86,7 +86,7 @@
                             <th>{{ $callList->calls_count }}</th> <!-- Quantidade de convocados -->
                             <td>
                                 <span class="badge bg-{{ $callList->status == 'pending' ? 'warning' : 'success' }}">
-                                    {{ $callList->status == 'pending' ? 'Pendente' : 'Finalizada' }}
+                                    {{ $callList->status == 'pending' ? 'Rascunho' : 'Publicada' }}
                                 </span>
                             </td> <!-- Status da chamada -->
                             <td>
@@ -110,6 +110,10 @@
                                         aria-expanded="false" aria-controls="details-{{ $callList->id }}">
                                         <i class="bi bi-info-circle"></i> Detalhes
                                     </button>
+
+                                    <a href="{{ route('admin.calls.show', $callList->number) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-clipboard-check"></i> Matrículas
+                                    </a>
 
                                     <a href="{{ route('admin.calls.pdf', $callList->number) }}"
                                         class="btn btn-sm btn-primary text-white" title="Gerar PDF" target="_blank">
@@ -148,25 +152,29 @@
                                                 <th scope="col">Candidato</th>
                                                 <th scope="col">CPF</th>
                                                 <th scope="col">PCD</th>
+                                                <th scope="col">Matrícula</th>
+                                                <th scope="col">Curso</th>
                                             </tr>
                                         </thead>
 
                                         <tbody class="table-group-divider">
                                             @foreach ($callList->calls as $call)
                                                 @php
-                                                    $user = $call->examResult->inscription->user;
+                                            $user = $call->result->inscription->user;
                                                 @endphp
                                                 <tr>
-                                                    <td>{{ $call->examResult->ranking }}</td>
-                                                    <td>{{ $call->examResult->inscription_id }}</td>
+                                                    <td>{{ $call->result->ranking }}</td>
+                                                    <td>{{ $call->result->inscription_id }}</td>
                                                     <td>{{ ($user?->lgbt?->status === 'accepted') ? $user?->lgbt?->name : $user->name }}</td>
                                                     <td>{{ $user->cpf }}</td>
                                                     <td>
-                                                        @if ($user?->pne?->status === 'accepted')
+                                                        @if ($call->is_pcd_reserve)
                                                             <span class="badge bg-success" title="Candidato PCD"><i
                                                                     class="bi bi-universal-access"></i></span>
                                                         @endif
                                                     </td>
+                                                    <td>{{ $call->enrollment_status }}</td>
+                                                    <td>{{ $call->course?->name ?? '—' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -221,9 +229,8 @@
                         <div class="card shadow-sm">
 
                             @php
-                                $last_call = App\Models\Call::orderBy('call_number', 'desc')->first();
-                                $amount = $last_call?->amount ?? 0;
-                                $number_of_pcd = App\Models\Call::countPcdInLastCall();
+                            $lastNumber = $lastCallList?->number ?? 0;
+                            $lastAmount = $lastCallList?->calls_count ?? 0;
                             @endphp
 
                             <form action="{{ route('admin.calls.store') }}" method="POST" class="p-3"
@@ -234,13 +241,7 @@
                                     <label for="number" class="form-label">Número da Chamada</label>
                                     <input type="number" name="number" id="number"
                                         class="form-control @error('number') is-invalid @enderror" min="1">
-                                    <div class="form-text text-success">
-                                        @if ($last_call)
-                                            <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Ultima chamada
-                                                registrada:</span> <span
-                                                class="fs-6 fw-bold">{{ $last_call?->call_number }}</span>
-                                        @endif
-                                    </div>
+                                    <div class="form-text">Última chamada deste processo: {{ $lastNumber ?: 'nenhuma' }}</div>
                                 </div>
 
                                 <div class="mb-3">
@@ -248,35 +249,26 @@
                                     <input type="number" name="limit" id="limit"
                                         class="form-control @error('limit') is-invalid @enderror" min="1">
                                     <div class="form-text text-success">
-                                        @if ($last_call)
-                                            <span class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Quantidade de
-                                                candidatos da última chamada:</span> <span
-                                                class="fs-6 fw-bold">{{ $amount }}</span>
-                                        @endif
+                                        Última chamada: {{ $lastAmount }} candidatos.
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="pne_exam_result_ids" class="form-label">Selecionar Candidatos PCD
-                                        (opcional)</label>
-                                    <select name="manual_pcds[]" id="manual_pcds" class="form-select" multiple>
-                                        @foreach ($pneCandidates as $candidate)
-                                            <option value="{{ $candidate->id }}">
-                                                {{ $candidate->inscription->user?->lgbt?->status === 'accepted' ? $candidate->inscription->user?->lgbt?->name : $candidate->inscription->user->name }} — CPF:
-                                                {{ $candidate->inscription->user->cpf }} —
-                                                Posição: {{ $candidate->ranking }}
-                                            </option>
+                                    <label for="pcd_limit" class="form-label">Quantidade de PcDs nesta chamada</label>
+                                    <input type="number" name="pcd_limit" id="pcd_limit" value="0"
+                                        class="form-control @error('pcd_limit') is-invalid @enderror" min="0">
+                                    <div class="form-text">O sistema seleciona os próximos PcDs deferidos pela classificação e completa o total pela lista geral. Empates na posição de corte permanecem juntos.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="vacancy_course_id" class="form-label">Convocação por vaga reaberta em um curso (opcional)</label>
+                                    <select name="vacancy_course_id" id="vacancy_course_id" class="form-select">
+                                        <option value="">Chamada geral</option>
+                                        @foreach ($courses as $course)
+                                            <option value="{{ $course->id }}">{{ $course->name }} ({{ $course->pivot->vacancies }} vagas previstas)</option>
                                         @endforeach
                                     </select>
-                                    <div class="form-text text-success mt-2">
-                                        <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Número de
-                                            candidatos PCD convocados até o momento: <span
-                                                class="fs-6 fw-bold">{{ $number_of_pcd }}</span></div>
-                                        <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Segure Ctrl (ou
-                                            Cmd) para selecionar múltiplos.</div>
-                                        <div class="fw-semibold"><i class="bi bi-info-circle me-2"></i>Verifique se a
-                                            posição do candidato já está contemplada na chamada.</div>
-                                    </div>
+                                    <div class="form-text">Use quando uma desistência abrir vaga em curso específico; o sistema também considera candidatos que aguardam vaga nesse curso.</div>
                                 </div>
 
                                 <div class="mb-3">

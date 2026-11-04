@@ -124,11 +124,9 @@
 
                                         <thead class="table-success">
                                             <tr>
-                                                <th>Inscrição</th>
                                                 <th>Classificação</th>
-                                                <th>Nome</th>
-                                                <th>Data</th>
-                                                <th>Hora</th>
+                                                <th>Número de inscrição</th>
+                                                <th>Pontuação</th>
                                             </tr>
                                         </thead>
 
@@ -136,17 +134,13 @@
 
                                             @forelse ($convocados as $call)
                                                 <tr>
-                                                    <td>{{ $call->examResult->inscription->id }}</td>
-                                                    <td>{{ $call->examResult->ranking }}º</td>
-                                                    <td>
-                                                        {{ ($call->examResult->inscription->user->authorization_accepted == 1) ? $call->examResult->inscription->user->name : $call->examResult->inscription->user->name }}
-                                                    </td>
-                                                    <td>{{ \Carbon\Carbon::parse($call->date)->format('d/m/Y') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($call->time)->format('H:i') }}</td>
+                                                    <td>{{ $call->result->ranking }}º</td>
+                                                    <td>{{ $call->result->inscription_id }}</td>
+                                                    <td>{{ $call->result->score }}</td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center">
+                                                    <td colspan="3" class="text-center">
                                                         Nenhum resultado encontrado.
                                                     </td>
                                                 </tr>

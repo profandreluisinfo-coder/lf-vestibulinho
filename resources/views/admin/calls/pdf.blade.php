@@ -113,7 +113,7 @@
 
     @foreach ($callListMembers as $call)
         @php
-            $user = $call->examResult->inscription->user;
+            $user = $call->result->inscription->user;
             
             // Relacionamentos
             $lgbt = $user?->lgbt;

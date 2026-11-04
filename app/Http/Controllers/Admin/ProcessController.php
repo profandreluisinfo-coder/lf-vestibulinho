@@ -50,6 +50,7 @@ class ProcessController extends Controller
                     'result_publish' => 'required|date|after_or_equal:answer_publish',
                     'enrol_start' => 'required|date|after_or_equal:result_publish',
                     'enrol_remaining' => 'required|date|after_or_equal:enrol_start',
+                    'enrol_deadline' => 'required|date|after_or_equal:enrol_remaining',
                 ],
                 [
                     'year.required' => 'O campo ano do vestibulinho é obrigatório.',
@@ -97,6 +98,9 @@ class ProcessController extends Controller
                     'enrol_remaining.required' => 'O campo período de matrículas (2ª chamada) é obrigatório.',
                     'enrol_remaining.date' => 'O campo período de matrículas (2ª chamada) deve ser uma data.',
                     'enrol_remaining.after_or_equal' => 'O campo período de matrículas (2ª chamada) deve ser posterior ou igual à 1ª chamada.',
+                    'enrol_deadline.required' => 'O campo encerramento das convocações é obrigatório.',
+                    'enrol_deadline.date' => 'O campo encerramento das convocações deve ser uma data.',
+                    'enrol_deadline.after_or_equal' => 'O encerramento das convocações deve ser posterior ou igual à data de vagas remanescentes.',
                 ]
             );
 
@@ -138,6 +142,7 @@ class ProcessController extends Controller
                 'result_publish'   => $validated['result_publish'],
                 'enrol_start'      => $validated['enrol_start'],
                 'enrol_remaining'  => $validated['enrol_remaining'],
+                'enrol_deadline'   => $validated['enrol_deadline'],
             ];
 
             DB::transaction(function () use ($data, $newEditalPath) {

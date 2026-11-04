@@ -129,18 +129,20 @@ class PdfController extends Controller
     public function callCardToPdf()
     {
         // $user = Auth::user();
-        $user = Auth::user()->load(['lgbt', 'inscription.exam_result']);
+        $user = Auth::user()->load(['lgbt', 'inscription.result']);
 
         // Acessar a inscrição e o resultado do exame do usuário autenticado
-        $examResult = $user->inscription->exam_result ?? null;
+        $examResult = $user->inscription?->result;
 
         if (! $examResult) {
             return null; // Usuário sem resultado de exame
         }
 
         // Verifica se há chamada para esse resultado com lista finalizada
-        $call = Call::where('exam_result_id', $examResult->id)
-            ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
+        $call = Call::where('result_id', $examResult->id)
+            ->whereHas('callList', fn ($query) => $query
+                ->where('status', 'completed')
+                ->where('process_id', $examResult->inscription?->process_id))
             ->with('callList') // carrega os dados da lista de chamada
             ->first();
 

@@ -226,6 +226,16 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="col-md-6">
+                                        <label for="enrol_deadline" class="form-label">Data limite para novas convocações</label>
+                                        <input type="date"
+                                            class="form-control @error('enrol_deadline') is-invalid @enderror"
+                                            id="enrol_deadline" name="enrol_deadline"
+                                            value="{{ old('enrol_deadline', $process?->enrol_deadline?->format('Y-m-d') ?? '') }}">
+                                        @error('enrol_deadline')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 

@@ -9,37 +9,42 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class CallExport implements FromCollection, WithHeadings
 {
     protected $call_number;
+    protected $processId;
 
-    public function __construct($call_number)
+    public function __construct($call_number, ?int $processId = null)
     {
         $this->call_number = $call_number;
+        $this->processId = $processId;
     }
 
     public function collection()
     {
         return Call::with([
-            'examResult.inscription.user.lgbt',
-            'examResult.inscription.user.document',
-            'examResult.inscription.user.certificate',
-            'examResult.inscription.user.academic',
-            'examResult.inscription.user.mother',
-            'examResult.inscription.user.father',
-            'examResult.inscription.user.guardian',
-            'examResult.inscription.user.parent_email',
-            'examResult.inscription.user.pne',
+            'result.inscription.user.lgbt',
+            'result.inscription.user.document',
+            'result.inscription.user.certificate',
+            'result.inscription.user.academic',
+            'result.inscription.user.mother',
+            'result.inscription.user.father',
+            'result.inscription.user.guardian',
+            'result.inscription.user.parent_email',
+            'result.inscription.user.pne',
         ])
             ->where('call_number', $this->call_number)
-            ->whereHas('callList', fn ($q) => $q->where('status', 'completed'))
-            ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')
-            ->orderBy('exam_results.ranking')
+            ->whereHas('callList', fn ($q) => $q
+                ->where('status', 'completed')
+                ->when($this->processId, fn ($query) => $query->where('process_id', $this->processId)))
+            ->whereHas('result', fn ($query) => $query->where('classified', true))
+            ->join('results', 'calls.result_id', '=', 'results.id')
+            ->orderBy('results.ranking')
             ->select('calls.*')
             ->get()
             ->map(function ($call) {
-                $user = $call->examResult->inscription->user;
+                $user = $call->result->inscription->user;
                 // $detail = $user->user_detail;
 
                 return [
-                    'Inscrição' => $call->examResult->inscription->id,
+                    'Inscrição' => $call->result->inscription->id,
                     'Nome' => $user->name,
                     'Nome Social' => $user?->lgbt?->name,
                     'CPF' => $user->cpf,

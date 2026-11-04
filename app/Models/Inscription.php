@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 
@@ -93,9 +94,16 @@ class Inscription extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function calls(): HasMany
+    public function calls(): HasManyThrough
     {
-        return $this->hasMany(Call::class, 'exam_result_id');
+        return $this->hasManyThrough(
+            Call::class,
+            Result::class,
+            'inscription_id',
+            'result_id',
+            'id',
+            'id',
+        );
     }
 
     /**

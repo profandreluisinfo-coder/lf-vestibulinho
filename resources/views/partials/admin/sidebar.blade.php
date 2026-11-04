@@ -233,7 +233,7 @@
             </div>
 
             <div class="menu-item">
-                <a href="#" class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.calls.index') }}" class="menu-link {{ request()->routeIs('admin.calls.*') ? 'active' : '' }}">
                     <i class="bi bi-broadcast-pin"></i>
                     <span>Chamadas</span>
                 </a>

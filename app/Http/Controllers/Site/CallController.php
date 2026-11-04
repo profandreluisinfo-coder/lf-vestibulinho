@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Models\Call;
 use App\Http\Controllers\Controller;
+use App\Models\Process;
 
 
 /**
@@ -23,13 +24,9 @@ class CallController extends Controller
     public function index()
     {
         // Obter todas as chamadas e seus respectivos dados
-        $calls = Call::callsCompleted();
+        $process = Process::current();
+        $calls = Call::callsCompleted($process?->id);
 
-        // verificar se 'calls' é uma coleção vazia
-        if ($calls->isEmpty()) {
-            return redirect()->back();
-        }
-
-        return view('site.calls.index', compact('calls'));
+        return view('site.calls.index', compact('calls', 'process'));
     }
 }

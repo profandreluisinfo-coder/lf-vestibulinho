@@ -214,6 +214,7 @@ Route::prefix('gestao')
                 Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
                 Route::get('numero/{call_number}', [CallController::class, 'show'])->name('show');
                 Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
+                Route::patch('{call}/matricula', [CallController::class, 'updateEnrollment'])->name('enrollment.update');
                 Route::get('numero/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
                 Route::get('numero/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
             });

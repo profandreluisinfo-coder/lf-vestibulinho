@@ -42,17 +42,27 @@ return new class extends Migration
                 ->update($data);
         });
 
-        // 3) Índices
-        Schema::table('processes', function (Blueprint $table) {
-            $table->index('exam_date');
-            $table->index(['start', 'end'], 'idx_period');
-            $table->index(['enrol_start', 'enrol_remaining'], 'idx_enrol_period');
-        });
-
-        // 4) Remove a tabela antiga
+        // 3) Remove a tabela antiga após copiar os dados. Isso também evita
+        // colisão de nomes de índice no SQLite durante os testes.
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('events');
         Schema::enableForeignKeyConstraints();
+
+        // 4) Índices
+        $indexes = collect(Schema::getIndexes('processes'))->pluck('name')->all();
+
+        Schema::table('processes', function (Blueprint $table) use ($indexes) {
+            if (! in_array('processes_exam_date_index', $indexes, true)) {
+                $table->index('exam_date');
+            }
+            if (! in_array('idx_period', $indexes, true)) {
+                $table->index(['start', 'end'], 'idx_period');
+            }
+            if (! in_array('idx_enrol_period', $indexes, true)) {
+                $table->index(['enrol_start', 'enrol_remaining'], 'idx_enrol_period');
+            }
+        });
+
     }
 
     public function down(): void

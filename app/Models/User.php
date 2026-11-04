@@ -149,13 +149,13 @@ class User extends Authenticatable
 
     public function hasConfirmedCall(): bool
     {
-        $result = $this->inscription->exam_result ?? null;
+        $result = $this->inscription?->result;
 
         if (! $result) {
             return false;
         }
 
-        return Call::where('exam_result_id', $result->id)
+        return Call::where('result_id', $result->id)
             ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
             ->exists();
     }

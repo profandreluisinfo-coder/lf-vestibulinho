@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\CallList;
 use App\Models\Course;
-use App\Models\ExamResult;
+use App\Models\Exam;
 use App\Models\Inscription;
 use App\Models\Process;
 use App\Models\User;
@@ -145,7 +145,7 @@ class SettingController extends Controller
 
             // Remove os registros na ordem das dependências, sem desativar FKs.
             Call::query()->delete();
-            ExamResult::query()->delete();
+            Exam::query()->delete();
             Inscription::query()->delete();
             CallList::query()->delete();
             Process::query()->delete();

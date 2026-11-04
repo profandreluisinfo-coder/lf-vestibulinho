@@ -2,314 +2,347 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CallExport;
+use App\Http\Controllers\Controller;
+use App\Jobs\SendCallNotificationJob;
 use App\Models\Call;
 use App\Models\CallList;
-use Illuminate\View\View;
-use App\Exports\CallExport;
+use App\Models\Process;
+use App\Models\Result;
+use App\Services\CallCandidateSelector;
+use Barryvdh\DomPDF\Facade\Pdf;
+use DomainException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Jobs\SendCallNotificationJob;
-use App\Models\Process;
-use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\View\View;
 
-/**
- * Class CallController
- * Controller para gerenciamento de chamadas
- *
- * @package App\Http\Controllers
- */
 class CallController extends Controller
 {
-    /**
-     * Renderiza a view para criar uma nova chamada
-     *
-     * @return \Illuminate\View\View
-     */
     public function index(): View
     {
-        // Este trecho de código recupera todos os registros de `CallList` do banco de dados, faz o carregamento previsorio das associações relacionadas `calls` e `examResult.inscription.user`, conta o número de `calls` para cada `CallList` e ordena os resultados pela coluna `number`. Os dados resultantes são armazenados na variável `$callLists`.
-        $callLists = CallList::withCount('calls')
-            ->with(['calls.examResult.inscription.user', 'calls.examResult.inscription.user.lgbt'])
-            ->orderBy('number')
-            ->get();
+        $process = Process::current();
 
-        // IDs dos exam_results que já foram convocados (qualquer chamada, seja manual ou não)
-        $alreadyCalledIds = Call::pluck('exam_result_id')->toArray();
+        $callLists = $process
+            ? CallList::query()
+                ->where('process_id', $process->id)
+                ->withCount('calls')
+                ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne', 'calls.course'])
+                ->orderBy('number')
+                ->get()
+            : collect();
+        $courses = $process?->courses ?? collect();
 
-        // Filtra os PCDs que ainda não foram convocados
-        $pneCandidates = ExamResult::whereNotNull('ranking')
-            ->whereNotIn('id', $alreadyCalledIds)
-            ->whereHas('inscription.user.pne', function ($query) {
-                $query->where('status', '=', 'accepted');
-            })
-            // ->with(['inscription.user.user_detail'])
+        $calledIds = $process
+            ? Call::query()
+                ->whereHas('result.inscription', fn ($query) => $query->forProcess($process->id))
+                ->pluck('result_id')
+            : collect();
+
+        $eligible = $process
+            ? Result::query()
+                ->whereNotNull('ranking')
+                ->where('classified', true)
+                ->whereHas('inscription', fn ($query) => $query->approved()->forProcess($process->id))
+            : Result::query()->whereRaw('1 = 0');
+
+        $pcdCandidates = (clone $eligible)
+            ->whereNotIn('id', $calledIds)
+            ->whereHas('inscription.user.pne', fn ($query) => $query->where('status', 'accepted'))
+            ->with(['inscription.user.lgbt'])
             ->orderBy('ranking')
             ->get();
-        // Quantidade de convocados por curso
-        $convocadosPorCurso = Call::with('examResult.inscription.course')
-            ->get()
-            ->groupBy(function ($call) {
-                return optional($call->examResult->inscription->course)->name ?? 'Sem curso';
-            })
-            ->map(function ($group) {
-                return $group->count();
-            })
+
+        $calledByCourse = $callLists
+            ->flatMap(fn ($callList) => $callList->calls)
+            ->filter(fn ($call) => $call->course)
+            ->groupBy(fn ($call) => $call->course->name)
+            ->map(fn ($calls) => $calls->count())
             ->sortKeys();
 
         $chartData = [
-            'labels' => $convocadosPorCurso->keys(),
-            'data' => $convocadosPorCurso->values(),
+            'labels' => $calledByCourse->keys()->values(),
+            'data' => $calledByCourse->values(),
+            'colors' => $calledByCourse->keys()->map(fn () => sprintf('#%06X', mt_rand(0, 0xFFFFFF))),
         ];
 
-        $colors = collect(range(1, count($chartData['labels'])))
-            ->map(function () {
-                return sprintf('#%06X', mt_rand(0, 0xFFFFFF)); // Gera cores aleatórias
-            });
+        $countResults = (clone $eligible)->count();
+        $lastCallList = $callLists->last();
 
-        $chartData['colors'] = $colors;
-
-        // Verificar se as provas já foram corrigidas para exibir o botão de lançamento de chamada
-        $countResults = ExamResult::count();
-
-        view()->share(compact('callLists', 'pneCandidates', 'chartData', 'countResults'));
-
-        return view('admin.calls.index');
+        return view('admin.calls.index', compact(
+            'process',
+            'callLists',
+            'courses',
+            'pcdCandidates',
+            'chartData',
+            'countResults',
+            'lastCallList',
+        ));
     }
 
-    /**
-     * Armazena uma chamada no banco de dados e seus respectivos chamados.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request): Response | RedirectResponse
+    public function store(Request $request, CallCandidateSelector $selector): RedirectResponse
     {
-        $results_count = ExamResult::count('ranking');
+        $process = Process::current();
 
-        if ($results_count === 0) {
-            return alertError('Não é possível criar uma chamada sem resultados de exame.');
+        if (! $process) {
+            return back()->withErrors(['error' => 'Cadastre o processo seletivo antes de criar uma chamada.']);
         }
 
-        $request->validate([
-            'number' => 'required|integer|min:1',
-            'limit' => 'required|integer|min:1',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'manual_pcds' => 'array',
-            'manual_pcds.*' => 'exists:exam_results,id',
-        ], [
-            'date.required' => 'Por favor, informe a data.',
-            'time.required' => 'Por favor, informe a hora.',
-            'time.date_format' => 'Por favor, informe a hora no formato HH:MM.',
-            'manual_pcds.*.exists' => 'Um PCD inválido foi informado.',
+        $data = $request->validate([
+            'number' => ['required', 'integer', 'min:1', Rule::unique('call_lists', 'number')->where('process_id', $process->id)],
+            'limit' => ['required', 'integer', 'min:1'],
+            'pcd_limit' => ['required', 'integer', 'min:0'],
+            'date' => ['required', 'date'],
+            'time' => ['required', 'date_format:H:i'],
+            'vacancy_course_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('course_process', 'course_id')->where('process_id', $process->id),
+            ],
         ]);
 
-        $number = (int) $request->number;
-        $limit = (int) $request->limit;
-        $date = $request->date;
-        $time = $request->time;
+        if ($data['pcd_limit'] > $data['limit']) {
+            return back()->withErrors(['pcd_limit' => 'A quantidade de PcDs não pode exceder o total da chamada.'])->withInput();
+        }
 
-        // 🔍 Impede chamadas duplicadas
-        if (CallList::where('number', $number)->exists() && CallList::where('date', $date)->where('time', $time)->exists()) {
-            return back()->withErrors(['number' => 'Já existe uma chamada com esse número, data e hora.'])->withInput();
+        $callDate = Carbon::parse($data['date'])->startOfDay();
+        $firstEnrollmentDate = $process->enrol_start?->copy()->startOfDay();
+        $remainingEnrollmentDate = $process->enrol_remaining?->copy()->startOfDay();
+        $enrollmentDeadline = $process->enrol_deadline?->copy()->startOfDay();
+
+        if (! $enrollmentDeadline) {
+            return back()->withErrors(['date' => 'Defina a data limite para convocações no calendário do processo.'])->withInput();
+        }
+
+        if ($firstEnrollmentDate && $callDate->lt($firstEnrollmentDate)) {
+            return back()->withErrors(['date' => 'A convocação não pode ocorrer antes do início das matrículas definido no calendário.'])->withInput();
+        }
+
+        if ((int) $data['number'] > 1 && $remainingEnrollmentDate && $callDate->lt($remainingEnrollmentDate)) {
+            return back()->withErrors(['date' => 'As chamadas de vagas remanescentes não podem ocorrer antes da data prevista no calendário.'])->withInput();
+        }
+
+        if ($callDate->gt($enrollmentDeadline)) {
+            return back()->withErrors(['date' => 'A convocação não pode ocorrer após a data limite definida no calendário.'])->withInput();
         }
 
         try {
-            DB::transaction(function () use ($number, $limit, $date, $time, $request) {
-
-                // 🧾 Cria a lista principal
+            $results = DB::transaction(function () use ($data, $process, $selector): array {
                 $callList = CallList::create([
-                    'number' => $number,
-                    'date' => $date,
-                    'time' => $time,
+                    'process_id' => $process->id,
+                    'number' => $data['number'],
+                    'date' => $data['date'],
+                    'time' => $data['time'],
                     'status' => 'pending',
+                    'vacancy_course_id' => $data['vacancy_course_id'] ?? null,
                 ]);
 
-                // 📜 Candidatos já convocados (em qualquer chamada anterior)
-                $alreadyCalledIds = Call::pluck('exam_result_id')->toArray();
+                $selected = $selector->select(
+                    $process,
+                    (int) $data['limit'],
+                    (int) $data['pcd_limit'],
+                    isset($data['vacancy_course_id']) ? (int) $data['vacancy_course_id'] : null,
+                );
 
-                // 🔢 Próximos classificados ainda não chamados
-                $examResults = ExamResult::whereNotNull('ranking')
-                    ->whereNotIn('id', $alreadyCalledIds)
-                    ->orderBy('ranking')
-                    ->take($limit)
-                    ->get();
+                if ($selected->isEmpty()) {
+                    throw new DomainException('Não há candidatos classificados e elegíveis ainda não convocados.');
+                }
 
-                // ⚙️ Criação dos chamados automáticos
-                foreach ($examResults as $result) {
+                $pcdIds = $selected
+                    ->filter(fn (Result $result) => $result->inscription?->user?->pne?->status === 'accepted')
+                    ->take((int) $data['pcd_limit'])
+                    ->modelKeys();
+
+                foreach ($selected as $result) {
                     Call::create([
-                        'exam_result_id' => $result->id,
+                        'result_id' => $result->id,
                         'call_list_id' => $callList->id,
-                        'call_number' => $number,
-                        'amount' => $limit,
-                        'date' => $date,
-                        'time' => $time,
+                        'call_number' => $callList->number,
+                        'amount' => $selected->count(),
+                        'date' => $callList->date,
+                        'time' => $callList->time,
                         'is_manual' => false,
+                        'is_pcd_reserve' => in_array($result->id, $pcdIds, true),
+                        'enrollment_status' => 'awaiting',
                     ]);
                 }
 
-                // ♿ Criação dos chamados manuais (PCDs)
-                if ($request->filled('manual_pcds')) {
-                    // Evita duplicação com automáticos
-                    $autoIds = $examResults->pluck('id')->toArray();
-                    $manualIds = array_diff($request->manual_pcds, $autoIds);
-
-                    if (!empty($manualIds)) {
-                        $manualPcds = ExamResult::whereIn('id', $manualIds)->get();
-
-                        foreach ($manualPcds as $result) {
-                            Call::create([
-                                'exam_result_id' => $result->id,
-                                'call_list_id' => $callList->id,
-                                'call_number' => $number,
-                                'amount' => $limit,
-                                'date' => $date,
-                                'time' => $time,
-                                'is_manual' => true,
-                            ]);
-                        }
-                    }
-                }
+                return [$callList->id, $selected->count(), count($pcdIds)];
             });
-
-            return redirect()
-                ->route('admin.calls.index')
-                ->with('success', 'Chamada registrada com sucesso!');
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withErrors(['error' => 'Ocorreu um erro ao registrar a chamada.'])->withInput();
+        } catch (DomainException $exception) {
+            return back()->withErrors(['error' => $exception->getMessage()])->withInput();
+        } catch (\Throwable $exception) {
+            report($exception);
+            return back()->withErrors(['error' => 'Não foi possível preparar a chamada.'])->withInput();
         }
+
+        return redirect()
+            ->route('admin.calls.index')
+            ->with('success', "Rascunho da chamada nº {$data['number']} criado com {$results[1]} convocados, incluindo {$results[2]} PcD.");
     }
 
-    /**
-     * Exibe a lista de convocados para uma chamada específica.
-     *
-     * @param int $call_number Número da chamada.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show($call_number): View
+    public function show(int $callNumber): View
     {
-        // Busca as chamadas com todos os dados do usuário carregados via relacionamento
-        $convocados = Call::with('examResult.inscription.user')
-            ->where('call_number', $call_number)
-            ->get();
+        $process = Process::current();
+        $callList = CallList::query()
+            ->where('process_id', $process?->id)
+            ->where('number', $callNumber)
+            ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne', 'calls.course'])
+            ->firstOrFail();
+        $courses = $callList->process?->courses ?? collect();
 
-        return view('admin.calls.show', compact('convocados', 'call_number'));
+        return view('admin.calls.show', compact('callList', 'courses'));
     }
 
-    /**
-     * Remove a chamada com todos os seus chamados.
-     *
-     * @param \App\Models\CallList $callList
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy(CallList $callList): RedirectResponse
     {
-        
+        abort_unless($callList->process_id === Process::current()?->id, 404);
+        abort_if($callList->status === 'completed', 409, 'Uma chamada publicada não pode ser excluída.');
+
         $callList->delete();
 
-        return redirect()->route('admin.calls.index')->with('success', 'Chamada excluída com sucesso!');
+        return redirect()->route('admin.calls.index')->with('success', 'Rascunho da chamada excluído.');
     }
 
-    /**
-     * Finaliza uma lista de chamadas atualizando seu status para concluído e enviando notificações por e-mail
-     * para todos os usuários associados às chamadas na lista.
-     *
-     * @param \App\Models\CallList $callList A lista de chamadas está sendo finalizada.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function finalize(CallList $callList): RedirectResponse
     {
-        $callList->update([
-            'status' => 'completed'
-        ]);
+        abort_unless($callList->process_id === Process::current()?->id, 404);
 
-        $actual_process = Process::getYear();
+        try {
+            DB::transaction(function () use ($callList): void {
+                $locked = CallList::query()->lockForUpdate()->findOrFail($callList->id);
 
-        $calls = $callList->calls()
-            ->with([
-                'examResult.inscription.user',
-                'examResult.inscription.user.lgbt',
-                'examResult.inscription.user.pne',
-            ])
-            ->get();
+                if ($locked->status === 'completed') {
+                    throw ValidationException::withMessages(['call' => 'Esta chamada já foi publicada.']);
+                }
 
-        foreach ($calls as $call) {
+                if (! $locked->calls()->exists()) {
+                    throw ValidationException::withMessages(['call' => 'Não é possível publicar uma chamada sem candidatos.']);
+                }
 
-            $user = $call->examResult?->inscription?->user;
+                $locked->update([
+                    'status' => 'completed',
+                    'published_at' => now(),
+                    'published_by' => Auth::id(),
+                ]);
+            });
+        } catch (ValidationException $exception) {
+            return back()->withErrors($exception->errors());
+        }
 
-            if (!$user || !$user->email) {
-                Log::warning("Usuário sem e-mail na chamada ID {$call->id}");
+        $callList->refresh()->load('calls.result.inscription.user.lgbt');
+
+        foreach ($callList->calls as $call) {
+            $user = $call->result?->inscription?->user;
+
+            if (! $user?->email) {
+                Log::warning("Candidato sem e-mail na chamada ID {$call->id}");
                 continue;
             }
 
-            $subject = sprintf(
-                'CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s E.M. DR. LEANDRO FRANCESCHINI — CHAMADA %d',
-                $actual_process,
-                $callList->number
-            );
-
-            $content = [
-                'nome' => ($user?->lgbt?->status === 'accepted' && !empty($user->name))
-                    ? $user?->lgbt?->name
-                    : $user->name,
-
-                'data' => $callList->date->format('d/m/Y'),
-
-                'hora' => $callList->time->format('H:i'),
-
-                'numero_chamada' => $callList->number,
-            ];
-
             SendCallNotificationJob::dispatch(
                 $user->email,
-                $subject,
-                $content,
-                'emails.call.convocation'
+                sprintf('CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s — CHAMADA %d', $callList->process?->year, $callList->number),
+                [
+                    'nome' => $user->lgbt?->status === 'accepted' ? $user->lgbt->name : $user->name,
+                    'data' => $callList->date->format('d/m/Y'),
+                    'hora' => $callList->time->format('H:i'),
+                    'numero_chamada' => $callList->number,
+                ],
+                'emails.call.convocation',
             );
         }
 
-        return back()->with(
-            'success',
-            'Chamada finalizada! Os convocados serão notificados por e-mail.'
-        );
+        return back()->with('success', 'Chamada publicada no site. Os e-mails são avisos complementares.');
     }
 
-    /**
-     * Retorna os dados da chamada para o qual o usuário autenticado foi convocado.
-     * Caso o usuário não tenha resultado de exame ou não tenha sido convocado em nenhuma chamada finalizada,
-     * retorna null.
-     *
-     * @return array|null Os dados da chamada ou null se o usuário não tiver resultado de exame ou não tiver sido convocado.
-     */
-    public function getUserCall(): ?array
+    public function updateEnrollment(Request $request, Call $call): RedirectResponse
     {
-        $user = Auth::user();
+        $call->load('callList');
+        abort_unless($call->callList?->process_id === Process::current()?->id, 404);
+        abort_unless($call->callList?->status === 'completed', 409, 'Publique a chamada antes de registrar a matrícula.');
 
-        // Acessar a inscrição e o resultado do exame do usuário autenticado
-        $examResult = $user->inscription->exam_result ?? null;
+        $data = $request->validate([
+            'enrollment_status' => ['required', Rule::in(['enrolled', 'documents_pending', 'lost', 'withdrawn', 'waiting_course'])],
+            'course_id' => [
+                Rule::requiredIf(in_array($request->input('enrollment_status'), ['enrolled', 'documents_pending', 'waiting_course'], true)),
+                'nullable',
+                'integer',
+                Rule::exists('course_process', 'course_id')->where('process_id', $call->callList->process_id),
+            ],
+            'regularization_deadline' => [
+                Rule::requiredIf($request->input('enrollment_status') === 'documents_pending'),
+                'nullable',
+                'date',
+                'after_or_equal:' . now()->addHours(48)->format('Y-m-d H:i:s'),
+            ],
+            'enrollment_notes' => ['nullable', 'string', 'max:2000'],
+        ]);
 
-        if (!$examResult) {
-            return null; // Usuário sem resultado de exame
+        try {
+            DB::transaction(function () use ($call, $data): void {
+                $locked = Call::query()->lockForUpdate()->findOrFail($call->id);
+                $processId = $locked->callList()->value('process_id');
+                $courseId = $data['course_id'] ?? null;
+                $status = $data['enrollment_status'];
+
+                if ($courseId && in_array($status, ['enrolled', 'documents_pending'], true)) {
+                    $course = DB::table('course_process')
+                        ->where('process_id', $processId)
+                        ->where('course_id', $courseId)
+                        ->lockForUpdate()
+                        ->first();
+
+                    $occupied = Call::query()
+                        ->where('course_id', $courseId)
+                        ->whereIn('enrollment_status', ['enrolled', 'documents_pending'])
+                        ->where('id', '!=', $locked->id)
+                        ->whereHas('callList', fn ($query) => $query->where('process_id', $processId))
+                        ->count();
+
+                    if (! $course || $occupied >= $course->vacancies) {
+                        throw ValidationException::withMessages(['course_id' => 'Não há vagas disponíveis neste curso.']);
+                    }
+                }
+
+                $locked->update([
+                    'enrollment_status' => $status,
+                    'course_id' => $courseId,
+                    'regularization_deadline' => $status === 'documents_pending' ? $data['regularization_deadline'] : null,
+                    'enrollment_notes' => $data['enrollment_notes'] ?? null,
+                    'enrollment_recorded_at' => now(),
+                    'enrollment_recorded_by' => Auth::id(),
+                ]);
+            });
+        } catch (ValidationException $exception) {
+            return back()->withErrors($exception->errors())->withInput();
+        } catch (ModelNotFoundException $exception) {
+            abort(404);
         }
 
-        // Verifica se há chamada para esse resultado com lista finalizada
-        $call = Call::where('exam_result_id', $examResult->id)
-            ->whereHas('callList', fn($query) => $query->where('status', 'completed'))
-            ->with('callList') // carrega os dados da lista de chamada
+        return back()->with('success', 'Situação da matrícula registrada.');
+    }
+
+    public function getUserCall(): ?array
+    {
+        $result = Auth::user()?->inscription?->result;
+        $call = $result?->calls()
+            ->whereHas('callList', fn ($query) => $query->where('status', 'completed'))
+            ->with('callList')
+            ->latest('id')
             ->first();
 
-        if (!$call) {
-            return null; // Não foi convocado em nenhuma chamada finalizada
+        if (! $call) {
+            return null;
         }
 
         return [
@@ -319,49 +352,39 @@ class CallController extends Controller
         ];
     }
 
-    /**
-     * Gera uma lista de matrícula com os convocados para uma chamada específica.
-     *
-     * @param int $call_number Número da chamada.
-     * @return \Illuminate\View\View
-     */
-    public function excel($call_number)
+    public function excel(int $callNumber): BinaryFileResponse
     {
-        return Excel::download(new CallExport($call_number), "chamada_{$call_number}.xlsx");
+        return Excel::download(new CallExport($callNumber, Process::current()?->id), "chamada_{$callNumber}.xlsx");
     }
 
-    /**
-     * Gera um PDF com a lista de matrícula com os convocados para uma chamada específica.
-     *
-     * @param int $call_number Número da chamada.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function pdf($call_number): Response
+    public function pdf(int $callNumber): Response
     {
-        $callListMembers = Call::with([
-            'examResult.inscription.user.lgbt',
-            'examResult.inscription.user.pne',
-            'examResult.inscription.user.document',
-            'examResult.inscription.user.certificate',
-            'examResult.inscription.user.academic',
-            'examResult.inscription.user.mother',
-            'examResult.inscription.user.father',
-            'examResult.inscription.user.guardian',
-            'examResult.inscription.user.parent_email',
-        ])
-            ->where('call_number', $call_number)
-            ->join('exam_results', 'calls.exam_result_id', '=', 'exam_results.id')
-            ->orderBy('exam_results.ranking')
+        $callList = CallList::query()
+            ->where('process_id', Process::current()?->id)
+            ->where('number', $callNumber)
+            ->firstOrFail();
+
+        $callListMembers = $callList->calls()
+            ->with([
+                'result.inscription.user.lgbt',
+                'result.inscription.user.pne',
+                'result.inscription.user.document',
+                'result.inscription.user.certificate',
+                'result.inscription.user.academic',
+                'result.inscription.user.mother',
+                'result.inscription.user.father',
+                'result.inscription.user.guardian',
+                'result.inscription.user.parent_email',
+                'course',
+            ])
+            ->join('results', 'calls.result_id', '=', 'results.id')
+            ->orderBy('results.ranking')
             ->select('calls.*')
             ->get();
 
-        $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers'))
+        $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers', 'callList'))
             ->setPaper('a4', 'portrait');
 
-        // return $pdf->download("chamada_{$call_number}.pdf"); // faz download
-
-        return $pdf->stream("chamada_{$call_number}.pdf"); // abre no navegador
-
+        return $pdf->stream("fichas-matricula-chamada-{$callNumber}.pdf");
     }
 }
