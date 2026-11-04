@@ -10,6 +10,11 @@ use Carbon\CarbonPeriod;
 
 class Process extends Model
 {
+    // Valores gravados na coluna `status`
+    public const STATUS_OPEN     = 'open';
+    public const STATUS_ANNULLED = 'annulled';
+    public const STATUS_CLOSED   = 'closed';
+
     protected $fillable = [
         'year',
         'edital',
@@ -22,7 +27,7 @@ class Process extends Model
         // Prova
         'location_publish',
         'exam_date',
-        'exam_time', // * NOVO
+        'exam_time',
 
         // Gabarito, revisão e resultado
         'answer_publish',
@@ -46,7 +51,7 @@ class Process extends Model
             'end'                  => 'date',
             'location_publish'     => 'date',
             'exam_date'            => 'date',
-            'exam_time'            => 'datetime:H:i', // * NOVO
+            'exam_time'            => 'datetime:H:i',
             'answer_publish'       => 'date',
             'revision_start'       => 'date',
             'revision_end'         => 'date',
@@ -95,6 +100,12 @@ class Process extends Model
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    // ── Ajudantes ────────────────────────────────────────────
+    public function isOpen(): bool
+    {
+        return $this->status === self::STATUS_OPEN;
     }
 
     /**
@@ -259,6 +270,7 @@ class Process extends Model
         return $process?->year;
     }
 
+    // Recupera o processo atual do cache, ou consulta o banco se não estiver em cache
     public static function cached(): ?self
     {
         return Cache::remember('global_process', 300, fn() => self::current());

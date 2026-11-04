@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class Lgbt extends Model
 {
-    // Valores gravados na coluna `status` (definidos em Admin\DeferralController)
+    // Valores gravados na coluna `status`
     public const STATUS_ACCEPTED = 'accepted';
     public const STATUS_REJECTED = 'rejected';
 

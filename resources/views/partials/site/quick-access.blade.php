@@ -1,11 +1,11 @@
 {{-- ═══════════════ ACESSO RÁPIDO ═══════════════ --}}
 @php
-    $hasPublications = Route::has('site.publications.index');
+    $temPublicacoes = $totalPublicacoes > 0;
 
     $quickLinks = [
         [
-            'show' => $hasPublications,
-            'href' => $hasPublications ? route('site.publications.index') : '#',
+            'show' => $totalPublicacoes > 0,
+            'href' => route('site.publications.index'),
             'icon' => 'card-checklist',
             'title' => 'Publicações',
             'desc' => 'Listas de deferidos e indeferidos',
@@ -22,8 +22,6 @@
             'badge_title' => "{$totalComunicados} comunicado(s) importante(s)",
         ],
         [
-            // 'show' => (bool) $process?->edital,
-            // 'href' => $process?->edital ? Storage::url($process->edital) : '#',
             'show' => filled($process?->edital),
             'href' => filled($process?->edital) ? Storage::url($process?->edital) : '#',
             'icon' => 'file-earmark-text-fill',
@@ -46,6 +44,13 @@
             'title' => 'Registrar-se',
             'desc' => 'Crie seu acesso',
             'badge' => '',
+        ],[
+            'show' => $process?->isOpen() ?? false,
+            'href' => route('login'),
+            'icon' => 'person-fill-lock',
+            'title' => 'Área do Candidato',
+            'desc' => 'Entre com suas credenciais',
+            'badge' => '',
         ],
         [
             'show' => $resultReleased,
@@ -56,7 +61,7 @@
             'badge' => '',
         ],
         [
-            'show' => true,
+            'show' => false,
             // 'href' => route('site.calls.index'),
             'href' => '#',
             'icon' => 'bell-fill',
