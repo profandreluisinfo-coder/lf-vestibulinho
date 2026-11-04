@@ -37,9 +37,9 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal"
+                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                     data-bs-target="#callsInfoModal">
-                    <i class="bi bi-info-circle me-1"></i> Informações sobre chamadas
+                    <i class="bi bi-info-circle me-1"></i> Ajuda?
                 </button>
                 @if (!empty($countResults))
                     <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
@@ -55,7 +55,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div>
-                            <h5 class="modal-title" id="callsInfoModalLabel">Informações sobre o sistema de chamadas</h5>
+                            <h5 class="modal-title" id="callsInfoModalLabel"><i class="bi bi-info-circle me-1"></i> Informações sobre o sistema de chamadas</h5>
                             <p class="text-muted small mb-0 mt-1">Orientações para convocação e acompanhamento das matrículas.</p>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
