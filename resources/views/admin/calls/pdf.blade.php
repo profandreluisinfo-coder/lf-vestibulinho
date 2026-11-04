@@ -27,7 +27,7 @@
             padding: 0;
             color: #000;
             font-family: Cambria, "Times New Roman", serif;
-            font-size: 12pt;
+            font-size: 10pt;
             line-height: 1.12;
         }
 
@@ -72,7 +72,7 @@
 
         .ficha th {
             font-weight: 700;
-            font-size: 12pt;
+            font-size: 10pt;
             text-align: left;
         }
 

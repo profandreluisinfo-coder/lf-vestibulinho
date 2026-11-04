@@ -104,7 +104,9 @@
                                         <i class="bi bi-search"></i>
                                     </span>
                                     <input type="text" class="form-control search-input"
-                                        placeholder="Pesquisar nesta chamada..." data-table="{{ $tableId }}"
+                                        placeholder="Pesquisar por classificação ou número de inscrição..."
+                                        aria-label="Pesquisar por classificação ou número de inscrição nesta chamada"
+                                        data-table="{{ $tableId }}"
                                         autocomplete="off">
                                 </div>
                                 
