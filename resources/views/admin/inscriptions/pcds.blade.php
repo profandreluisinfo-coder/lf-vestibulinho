@@ -1,3 +1,4 @@
+
 @extends('layouts.admin')
 
 @section('page-title', 'Pessoas com Deficiência')
@@ -6,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
     <style>
         #subscribers caption {
             caption-side: top;
@@ -35,15 +37,29 @@
 @endpush
 
 @php
-    // Mapa único de status: evita repetir if/elseif e mantém rótulo, cor e ícone em um só lugar.
+    // Mapa único de status.
     $statusMap = [
-        'pending' => ['label' => 'Pendente', 'class' => 'bg-warning text-dark', 'icon' => 'bi-hourglass-split'],
-        'accepted' => ['label' => 'Deferido', 'class' => 'bg-success', 'icon' => 'bi-check-circle-fill'],
-        'rejected' => ['label' => 'Indeferido', 'class' => 'bg-danger', 'icon' => 'bi-x-circle-fill'],
+        'pending' => [
+            'label' => 'Pendente',
+            'class' => 'bg-warning text-dark',
+            'icon' => 'bi-hourglass-split',
+        ],
+        'accepted' => [
+            'label' => 'Deferido',
+            'class' => 'bg-success',
+            'icon' => 'bi-check-circle-fill',
+        ],
+        'rejected' => [
+            'label' => 'Indeferido',
+            'class' => 'bg-danger',
+            'icon' => 'bi-x-circle-fill',
+        ],
     ];
 
+    // Contagem dos candidatos por status.
     $counts = $users->countBy(fn($u) => $u->pne?->status);
-    // True se a alocação nas salas já foi feita (aí as análises ficam encerradas)
+
+    // True quando a alocação nas salas já foi realizada.
     $allocated = \App\Models\Exam::allocationExists();
 @endphp
 
@@ -73,56 +89,131 @@
         @endif
 
         @if ($users->isEmpty())
+
             <div class="text-center text-muted py-5">
                 <i class="bi bi-inbox fs-1 d-block mb-2" aria-hidden="true"></i>
-                <p class="mb-0">Nenhum candidato com necessidades especiais foi encontrado neste processo.</p>
+                <p class="mb-0">
+                    Nenhum candidato com necessidades especiais foi encontrado neste processo.
+                </p>
             </div>
+
         @else
-            {{-- Filtro por situação, com contagem. Filtra a tabela sem recarregar a página. --}}
-            <div class="status-filter btn-group flex-wrap mb-3" role="group" aria-label="Filtrar por situação">
-                <button type="button" class="btn btn-outline-secondary active" data-filter="" aria-pressed="true">
-                    Todos <span class="badge bg-secondary">{{ $users->count() }}</span>
+
+            {{-- Filtro por situação, com contagem. --}}
+            <div class="status-filter btn-group flex-wrap mb-3"
+                role="group"
+                aria-label="Filtrar por situação">
+
+                <button type="button"
+                    class="btn btn-outline-secondary active"
+                    data-filter=""
+                    aria-pressed="true">
+
+                    Todos
+                    <span class="badge bg-secondary">{{ $users->count() }}</span>
                 </button>
+
                 @foreach ($statusMap as $key => $meta)
-                    <button type="button" class="btn btn-outline-secondary" data-filter="{{ $key }}"
+
+                    <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-filter="{{ $key }}"
                         aria-pressed="false">
+
                         <i class="bi {{ $meta['icon'] }}" aria-hidden="true"></i>
                         {{ $meta['label'] }}
-                        <span class="badge {{ $meta['class'] }}">{{ $counts[$key] ?? 0 }}</span>
+
+                        <span class="badge {{ $meta['class'] }}">
+                            {{ $counts[$key] ?? 0 }}
+                        </span>
                     </button>
+
                 @endforeach
+
             </div>
 
             <div class="table-responsive">
+
                 <table id="subscribers" class="table table-hover align-middle">
-                    <caption>Vestibulinho LF - {{ $process?->year }} - Lista de Candidatos com Necessidades
-                        Especiais</caption>
+
+                    <caption>
+                        Vestibulinho LF - {{ $process?->year }} -
+                        Lista de Candidatos com Necessidades Especiais
+                    </caption>
+
                     <thead class="table-success text-center">
                         <tr>
-                            <th scope="col"><i class="bi bi-hash me-1" aria-hidden="true"></i>Inscrição</th>
-                            <th scope="col"><i class="bi bi-person me-1" aria-hidden="true"></i>Candidato</th>
-                            <th scope="col"><i class="bi bi-universal-access me-1" aria-hidden="true"></i>Condição</th>
-                            <th scope="col"><i class="bi bi-file-earmark-medical me-1" aria-hidden="true"></i>Relatório
+                            <th scope="col">
+                                <i class="bi bi-hash me-1" aria-hidden="true"></i>
+                                Inscrição
                             </th>
-                            <th scope="col"><i class="bi bi-search me-1" aria-hidden="true"></i>Status</th>
-                            <th scope="col" class="text-nowrap"><i class="bi bi-gear me-1" aria-hidden="true"></i>Ação
+
+                            <th scope="col">
+                                <i class="bi bi-person me-1" aria-hidden="true"></i>
+                                Candidato
+                            </th>
+
+                            <th scope="col">
+                                <i class="bi bi-universal-access me-1" aria-hidden="true"></i>
+                                Condição
+                            </th>
+
+                            <th scope="col">
+                                <i class="bi bi-file-earmark-medical me-1" aria-hidden="true"></i>
+                                Relatório
+                            </th>
+
+                            <th scope="col">
+                                <i class="bi bi-search me-1" aria-hidden="true"></i>
+                                Status
+                            </th>
+
+                            <th scope="col" class="text-nowrap">
+                                <i class="bi bi-gear me-1" aria-hidden="true"></i>
+                                Ação
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         @foreach ($users as $user)
+
                             @php
                                 $pne = $user->pne;
                                 $status = $pne?->status;
-                                $meta = $statusMap[$status] ?? ['label' => '-', 'class' => 'bg-secondary', 'icon' => 'bi-dash'];
-                                $hasSocialName = $user->lgbt && $user->lgbt->status === 'accepted';
+
+                                $meta = $statusMap[$status] ?? [
+                                    'label' => '-',
+                                    'class' => 'bg-secondary',
+                                    'icon' => 'bi-dash',
+                                ];
+
+                                $hasSocialName = $user->lgbt
+                                    && $user->lgbt->status === 'accepted';
+
                                 $appeal = $user->appeals->firstWhere('type', 'pne');
-                                $canDefer = ! $allocated && in_array($status, ['pending', 'rejected']);
-                                $canReject = ! $allocated && in_array($status, ['pending', 'accepted']);
+
+                                // Análise inicial: somente candidatos pendentes.
+                                $canAnalyze = ! $allocated
+                                    && $status === 'pending';
+
+                                // Recurso: somente candidatos indeferidos
+                                // que ainda não possuem recurso registrado.
+                                $canRegisterAppeal = ! $allocated
+                                    && $status === 'rejected'
+                                    && ! $appeal;
+
+                                // Recursos existentes continuam disponíveis para consulta.
+                                $canViewAppeal = $status === 'rejected'
+                                    && (bool) $appeal;
                             @endphp
 
                             <tr data-id="{{ $user->id }}">
-                                <th scope="row" class="text-center">{{ $user->inscription?->id ?? '-' }}</th>
+
+                                <th scope="row" class="text-center">
+                                    {{ $user->inscription?->id ?? '-' }}
+                                </th>
 
                                 <td class="candidate-name">
                                     {{ $hasSocialName ? $user->lgbt->name : $user->name }}
@@ -133,93 +224,179 @@
                                 </td>
 
                                 <td class="text-center">
+
                                     @if ($pne?->report)
-                                        <a href="{{ Storage::url($pne->report) }}" target="_blank" rel="noopener"
+
+                                        <a href="{{ Storage::url($pne->report) }}"
+                                            target="_blank"
+                                            rel="noopener"
                                             class="btn btn-outline-primary btn-sm"
                                             title="Abrir laudo/relatório em nova aba"
                                             aria-label="Abrir laudo de {{ $user->name }} em nova aba">
-                                            <i class="bi bi-file-earmark-text" aria-hidden="true"></i> Abrir laudo
+
+                                            <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+                                            Abrir laudo
                                         </a>
+
                                     @else
+
                                         <span class="text-muted">Nenhum arquivo</span>
+
                                     @endif
+
                                 </td>
 
-                                {{-- data-order/data-search: DataTables ordena e filtra pelo valor, não pelo HTML --}}
-                                <td class="text-center" data-order="{{ $status }}" data-search="{{ $status }}">
+                                {{-- Status do candidato. --}}
+                                <td class="text-center"
+                                    data-order="{{ $status }}"
+                                    data-search="{{ $status }}">
+
                                     <span class="badge {{ $meta['class'] }} d-inline-flex align-items-center gap-1"
-                                        @if (in_array($status, ['accepted', 'rejected']) && $pne?->observations) data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            data-bs-title="{{ $pne->observations }}" @endif>
-                                        <i class="bi {{ $meta['icon'] }}" aria-hidden="true"></i>
-                                        {{ $meta['label'] }}
+
                                         @if (in_array($status, ['accepted', 'rejected']) && $pne?->observations)
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            data-bs-title="{{ $pne->observations }}"
+                                        @endif>
+
+                                        <i class="bi {{ $meta['icon'] }}" aria-hidden="true"></i>
+
+                                        {{ $meta['label'] }}
+
+                                        @if (in_array($status, ['accepted', 'rejected']) && $pne?->observations)
+
                                             <i class="bi bi-chat-left-text" aria-hidden="true"></i>
-                                            <span class="visually-hidden">Observação: {{ $pne->observations }}</span>
+
+                                            <span class="visually-hidden">
+                                                Observação: {{ $pne->observations }}
+                                            </span>
+
                                         @endif
+
                                     </span>
+
                                     @if ($status === 'pending')
-                                        <div class="small text-muted">Aguardando análise</div>
+                                        <div class="small text-muted">
+                                            Aguardando análise
+                                        </div>
                                     @endif
+
                                 </td>
 
+                                {{-- Ações disponíveis. --}}
                                 <td class="col-actions">
-                                    {{-- Ordem fixa: Imprimir, Deferir, Indeferir, Recurso (cada ação fica sempre no mesmo lugar) --}}
+
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('admin.analyses.pdf', ['type' => 'pcd', 'id' => $user->id]) }}"
-                                            class="btn btn-sm btn-outline-primary" title="Imprimir dados do candidato"
-                                            aria-label="Imprimir dados de {{ $user->name }}" target="_blank">
+
+                                        {{-- Imprimir dados do candidato. --}}
+                                        <a href="{{ route('admin.analyses.pdf', [
+                                            'type' => 'pcd',
+                                            'id' => $user->id,
+                                        ]) }}"
+                                            class="btn btn-sm btn-outline-primary"
+                                            title="Imprimir dados do candidato"
+                                            aria-label="Imprimir dados de {{ $user->name }}"
+                                            target="_blank">
+
                                             <i class="bi bi-printer" aria-hidden="true"></i>
-                                            <span class="d-none d-xl-inline">Imprimir</span>
+
+                                            <span class="d-none d-xl-inline">
+                                                Imprimir
+                                            </span>
+
                                         </a>
 
-                                        @if ($canDefer)
+                                        {{-- Análise inicial: deferir ou indeferir. --}}
+                                        @if ($canAnalyze)
+
                                             <a href="{{ route('admin.analyses.accept.report.form', $user->id) }}"
-                                                class="btn btn-sm btn-success" title="Deferir"
+                                                class="btn btn-sm btn-success"
+                                                title="Deferir"
                                                 aria-label="Deferir {{ $user->name }}">
+
                                                 <i class="bi bi-check-lg" aria-hidden="true"></i>
-                                                <span class="d-none d-xl-inline">Deferir</span>
-                                            </a>
-                                        @endif
 
-                                        @if ($canReject)
+                                                <span class="d-none d-xl-inline">
+                                                    Deferir
+                                                </span>
+
+                                            </a>
+
                                             <a href="{{ route('admin.analyses.reject.report.form', $user->id) }}"
-                                                class="btn btn-sm btn-danger" title="Indeferir"
+                                                class="btn btn-sm btn-danger"
+                                                title="Indeferir"
                                                 aria-label="Indeferir {{ $user->name }}">
+
                                                 <i class="bi bi-x-lg" aria-hidden="true"></i>
-                                                <span class="d-none d-xl-inline">Indeferir</span>
+
+                                                <span class="d-none d-xl-inline">
+                                                    Indeferir
+                                                </span>
+
                                             </a>
+
                                         @endif
 
-                                        @if ($status === 'rejected')
-                                            @if ($appeal)
-                                                <a href="{{ route('admin.appeals.show', $appeal) }}"
-                                                    class="btn btn-sm btn-outline-secondary" title="Ver recurso"
-                                                    aria-label="Ver recurso de {{ $user->name }}">
-                                                    <i class="bi bi-folder2-open" aria-hidden="true"></i>
-                                                    <span class="d-none d-xl-inline">Ver recurso</span>
-                                                </a>
-                                            @elseif (! $allocated)
-                                                <a href="{{ route('admin.appeals.create', [$user->id, 'pne']) }}"
-                                                    class="btn btn-sm btn-warning" title="Registrar recurso"
-                                                    aria-label="Registrar recurso de {{ $user->name }}">
-                                                    <i class="bi bi-folder-plus" aria-hidden="true"></i>
-                                                    <span class="d-none d-xl-inline">Registrar recurso</span>
-                                                </a>
-                                            @endif
+                                        {{-- Consulta ou registro de recurso. --}}
+                                        @if ($canViewAppeal)
+
+                                            <a href="{{ route('admin.appeals.show', $appeal) }}"
+                                                class="btn btn-sm btn-outline-secondary"
+                                                title="Ver recurso"
+                                                aria-label="Ver recurso de {{ $user->name }}">
+
+                                                <i class="bi bi-folder2-open" aria-hidden="true"></i>
+
+                                                <span class="d-none d-xl-inline">
+                                                    Ver recurso
+                                                </span>
+
+                                            </a>
+
+                                        @elseif ($canRegisterAppeal)
+
+                                            <a href="{{ route('admin.appeals.create', [
+                                                $user->id,
+                                                'pne',
+                                            ]) }}"
+                                                class="btn btn-sm btn-warning"
+                                                title="Registrar recurso"
+                                                aria-label="Registrar recurso de {{ $user->name }}">
+
+                                                <i class="bi bi-folder-plus" aria-hidden="true"></i>
+
+                                                <span class="d-none d-xl-inline">
+                                                    Registrar recurso
+                                                </span>
+
+                                            </a>
+
                                         @endif
+
+                                        {{-- Indicação de encerramento das análises. --}}
                                         @if ($allocated)
+
                                             <span class="text-muted small align-self-center">
-                                                <i class="bi bi-lock" aria-hidden="true"></i> Análise encerrada
+                                                <i class="bi bi-lock" aria-hidden="true"></i>
+                                                Análise encerrada
                                             </span>
+
                                         @endif
+
                                     </div>
+
                                 </td>
+
                             </tr>
+
                         @endforeach
+
                     </tbody>
+
                 </table>
+
             </div>
+
         @endif
 
     </div>
@@ -227,64 +404,88 @@
 @endsection
 
 @push('plugins')
-    <!-- Datatables -->
+
+    <!-- DataTables -->
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+
     <!-- DataTables Buttons -->
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.colVis.min.js"></script>
-    <!-- PDF e Excel (para botões de exportação) -->
+
+    <!-- PDF e Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
 @endpush
 
 @push('scripts')
+
     <script src="{{ asset('assets/js/admin/datatables/shared.js') }}"></script>
+
     <script>
         $(function() {
+
             const $table = $('#subscribers');
+
             if (!$table.length) return;
 
-            // Usa a instância criada pelo shared.js; se ela não existir, cria uma básica.
+            // Usa a instância criada pelo shared.js;
+            // caso não exista, cria uma configuração básica.
             const table = $.fn.dataTable.isDataTable($table) ?
                 $table.DataTable() :
                 $table.DataTable({
                     responsive: true,
-                     order: [[0, 'asc']],
+                    order: [
+                        [0, 'asc']
+                    ]
                 });
 
             const STATUS_COLUMN = 4;
 
-            // Filtro por situação (Todos / Pendente / Deferido / Indeferido)
+            // Filtro por situação.
             $('.status-filter').on('click', '[data-filter]', function() {
+
                 const value = $(this).data('filter');
 
                 $('.status-filter [data-filter]')
                     .removeClass('active')
                     .attr('aria-pressed', 'false');
-                $(this).addClass('active').attr('aria-pressed', 'true');
+
+                $(this)
+                    .addClass('active')
+                    .attr('aria-pressed', 'true');
 
                 table.column(STATUS_COLUMN)
                     .search(value ? '^' + value + '$' : '', true, false)
                     .draw();
+
             });
 
-            // Tooltips das observações (reiniciados a cada paginação/ordenação)
+            // Inicialização dos tooltips.
             const initTooltips = () => {
+
                 if (!window.bootstrap) return;
-                document.querySelectorAll('#subscribers [data-bs-toggle="tooltip"]').forEach(el => {
+
+                document.querySelectorAll(
+                    '#subscribers [data-bs-toggle="tooltip"]'
+                ).forEach(el => {
                     bootstrap.Tooltip.getOrCreateInstance(el);
                 });
+
             };
 
             initTooltips();
+
             table.on('draw.dt responsive-display.dt', initTooltips);
+
         });
     </script>
+
 @endpush

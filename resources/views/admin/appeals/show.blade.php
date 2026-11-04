@@ -22,10 +22,10 @@
                 <i class="bi bi-folder2-open"></i>
                 <h6 class="mb-0 text-muted fw-normal">Recurso - {{ $appeal->typeLabel() }}</h6>
             </div>
-            {{-- @if (! $status) --}}
-                <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-printer"></i> Imprimir
-                </a>
+            {{-- @if (!$status) --}}
+            <a href="{{ route('admin.appeals.pdf', $appeal) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-printer"></i> Imprimir
+            </a>
             {{-- @endif --}}
         </div>
 
@@ -160,16 +160,11 @@
                             Ao <strong>indeferir</strong>, o pedido continua como está.
                             <strong>Nos dois casos, o candidato será notificado por e-mail.</strong>
                         </p>
-
-                        {{-- <button type="submit" class="btn btn-sm btn-success"
-                            formaction="{{ route('admin.appeals.accept', $appeal) }}" data-swal-action="defer">
-                            <i class="bi bi-check-lg"></i> Deferir recurso
-                        </button> --}}
+                        
                         <button type="submit" class="btn btn-sm btn-success"
-                            formaction="{{ route('admin.appeals.accept', $appeal) }}"
-                            @disabled($allocated)
+                            formaction="{{ route('admin.appeals.accept', $appeal) }}" @disabled($allocated)
                             title="{{ $allocated ? 'Alocação já feita: não é possível deferir' : '' }}"
-                            onclick="return confirm('Confirma o deferimento do recurso? O pedido do candidato também será deferido.')">
+                            data-swal-action="defer">
                             <i class="bi bi-check-lg"></i> Deferir recurso
                         </button>
 
@@ -280,6 +275,24 @@
                         focusCancel: true
                     }).then(function(resultado) {
                         if (resultado.isConfirmed) {
+
+                            const formAction = botao.getAttribute('formaction');
+
+                            // Desabilita o botão
+                            botao.disabled = true;
+
+                            // Exibe o spinner
+                            botao.innerHTML = `
+                                <span class="spinner-border spinner-border-sm me-1"
+                                    role="status"
+                                    aria-hidden="true"></span>
+                                Processando...
+                            `;
+
+                            // Define a action correta no form e envia
+                            if (formAction) {
+                                form.action = formAction;
+                            }
                             // Envia o formulário usando o botão clicado,
                             // assim o formaction (accept/reject) é respeitado
                             form.requestSubmit(botao);
