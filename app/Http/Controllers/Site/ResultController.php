@@ -37,4 +37,28 @@ class ResultController extends Controller
  
         return view('site.results.index', compact('released', 'results'));
     }
+ 
+    /**
+     * Lista pública de candidatos não classificados (eliminados, edital 9.3).
+     *
+     * Mostra apenas o número da inscrição, e só depois que o resultado é liberado.
+     */
+    public function eliminated(): View
+    {
+        $process = Process::cached();
+        $released = (bool) $process?->isResultReleased();
+ 
+        // Cache limpo em Process::booted, junto com o da lista de classificados
+        $numbers = $released
+            ? Cache::remember('global_results_eliminated', 3600, fn () => Result::query()
+                ->where('classified', false)
+                ->whereNotNull('score')
+                ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+                ->orderBy('inscription_id')
+                ->pluck('inscription_id')
+            )
+            : collect();
+ 
+        return view('site.results.eliminated', compact('released', 'numbers'));
+    }
 }

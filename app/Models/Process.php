@@ -293,6 +293,7 @@ class Process extends Model
             Cache::forget('global_total_inscriptions');
             Cache::forget('global_users_without_inscription');
             Cache::forget('global_results');
+            Cache::forget('global_results_eliminated');
         };
 
         static::saved($clearCache);

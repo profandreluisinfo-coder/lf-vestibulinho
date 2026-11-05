@@ -4,7 +4,7 @@
     <div class="container py-5">
 
         <h1 class="h4 mb-1">
-            Classificação {{ $process?->year ? ' — Processo Seletivo ' . $process->year : '' }}
+            Resultado Preliminar{{ $process?->year ? ' — Processo Seletivo ' . $process->year : '' }}
         </h1>
 
         @if (! $released)
@@ -23,6 +23,13 @@
                 Classificação em lista única, por ordem decrescente de pontuação; em caso de
                 empate, prevalece o candidato de menor idade. Os candidatos que não constam
                 nesta lista estão eliminados do processo seletivo.
+            </p>
+
+            {{-- ROTA: lista de não classificados --}}
+            <p class="small mb-3">
+                <a href="{{ route('site.results.eliminated') }}">
+                    Ver candidatos não classificados <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </p>
 
             <div class="mb-3" style="max-width: 320px;">

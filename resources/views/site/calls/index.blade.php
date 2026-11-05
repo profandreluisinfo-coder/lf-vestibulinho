@@ -8,6 +8,11 @@
             animation: pulse 1.5s infinite;
         }
 
+        .table-success th,
+        .table-group-divider td {
+            text-align: center;
+        }
+
         @keyframes pulse {
             0% {
                 opacity: 1;
@@ -115,7 +120,7 @@
 
                                     <table id="{{ $tableId }}" class="table-sm table-striped mb-0 table caption-top">
 
-                                        <caption class="bg-warning text-light px-4">
+                                        <caption class="bg-warning text-light text-center px-4">
                                             <strong>
                                                 Vestibulinho LF  {{ $process?->year }}
                                                 - Chamada nº {{ $callNumber }}

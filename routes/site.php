@@ -32,8 +32,10 @@ Route::name('site.')
             ->name('archives.index');
 
         // Classificação geral
-        Route::get('classificacao-geral', [ResultController::class, 'index'])
+        Route::get('resultado/classificacao-geral', [ResultController::class, 'index'])
             ->name('results.index');
+        Route::get('resultado/nao-classificados', [ResultController::class, 'eliminated'])
+            ->name('results.eliminated');
 
         // Chamadas
         Route::get('chamadas', [CallController::class, 'index'])
