@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\SimpleImport;
 use App\Models\Exam;
+use App\Models\Inscription;
 use App\Models\Lgbt;
 use App\Models\Process;
 use App\Models\Result;
@@ -23,8 +24,6 @@ class ImportController extends Controller
     {
         $this->rankingService = $rankingService;
     }
-
-    public const LIST_MULTIPLIER = 3;
 
     /**
      * Lista de classificação do processo atual no painel administrativo.
@@ -184,6 +183,7 @@ class ImportController extends Controller
             }
 
             $updates = [];
+            $sheetOwners = [];
             $errors = [];
 
             foreach (array_slice($rows, 1) as $index => $row) {
@@ -195,6 +195,7 @@ class ImportController extends Controller
                 }
 
                 $inscriptionId = $row[0];
+                $userId = $row[1];
                 $points = $row[5];
 
                 if (!is_numeric($inscriptionId) || (float) $inscriptionId < 1 || floor((float) $inscriptionId) !== (float) $inscriptionId) {
@@ -207,6 +208,11 @@ class ImportController extends Controller
                     continue;
                 }
 
+                if (!is_numeric($userId) || (float) $userId < 1 || floor((float) $userId) !== (float) $userId) {
+                    $errors[] = "Linha {$line}: user_id inválido.";
+                    continue;
+                }
+
                 $normalizedInscriptionId = (int) $inscriptionId;
 
                 if (isset($updates[$normalizedInscriptionId])) {
@@ -215,6 +221,7 @@ class ImportController extends Controller
                 }
 
                 $updates[$normalizedInscriptionId] = (int) $points;
+                $sheetOwners[$normalizedInscriptionId] = ['user_id' => (int) $userId, 'line' => $line];
             }
 
             if ($errors) {
@@ -238,6 +245,33 @@ class ImportController extends Controller
                 return $this->invalidFileResponse(
                     'As inscrições a seguir não têm prova agendada neste processo: '
                         . implode(', ', $missingInscriptionIds) . '.'
+                );
+            }
+
+            // O user_id da planilha precisa ser o dono da inscrição: pega nota lançada na linha errada
+            $owners = Inscription::forProcess($process->id)
+                ->whereIn('id', $inscriptionIds)
+                ->pluck('user_id', 'id');
+
+            $mismatches = [];
+
+            foreach ($sheetOwners as $inscriptionId => $sheet) {
+                $realOwner = (int) ($owners[$inscriptionId] ?? 0);
+
+                if ($sheet['user_id'] !== $realOwner) {
+                    $mismatches[] = "linha {$sheet['line']} (inscrição {$inscriptionId})";
+                }
+            }
+
+            if ($mismatches) {
+                $shown = array_slice($mismatches, 0, 10);
+                $extra = count($mismatches) - count($shown);
+
+                return $this->invalidFileResponse(
+                    'O user_id da planilha não confere com o dono da inscrição em: '
+                    . implode('; ', $shown)
+                    . ($extra > 0 ? "; e mais {$extra}." : '.')
+                    . ' Confira se as linhas foram alteradas ou reordenadas.'
                 );
             }
 
