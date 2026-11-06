@@ -405,7 +405,7 @@
                                     <li class="list-group-item">
                                         <i class="bi bi-info-circle"></i>
                                         <span>
-                                            Gabarito preliminar publicado no site oficial.
+                                            Divulgação do gabarito e da prova.
                                         </span>
                                     </li>
                                 </ul>
