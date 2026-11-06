@@ -1,10 +1,11 @@
 @php
-    $processYear = (int) ($process?->year ?? $callList->process?->year ?? now()->year);
+    $processYear = (int) ($process?->year ?? ($callList->process?->year ?? now()->year));
     $headerPath = public_path('assets/img/cab_ficha.png');
     $headerImage = is_file($headerPath)
         ? 'data:image/png;base64,' . base64_encode(file_get_contents($headerPath))
         : null;
 @endphp
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,90 +13,96 @@
     <meta charset="UTF-8">
     <title>Vestibulinho LF {{ $processYear }} - Ficha Cadastral do Estudante</title>
     <style>
-        @page {
-            size: A4 portrait;
-            margin: 0;
+        /* ===== Ficha cadastral — compatível com DomPDF ===== */
+
+        /* Margens da folha A4 (área útil = 197 mm de largura) */
+        @page { margin: 6mm 6.5mm 5mm 6.5mm; }
+
+        @font-face {
+            font-family: 'Caladea';
+            font-style: normal;
+            font-weight: normal;
+            src: url('{{ str_replace('\\', '/', public_path('assets/fonts/Caladea-Regular.ttf')) }}') format('truetype');
+        }
+        @font-face {
+            font-family: 'Caladea';
+            font-style: normal;
+            font-weight: bold;
+            src: url('{{ str_replace('\\', '/', public_path('assets/fonts/Caladea-Bold.ttf')) }}') format('truetype');
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
         body {
             margin: 0;
-            padding: 0;
+            font-family: 'Caladea', 'Times New Roman', serif;
+            font-size: 8pt;
+            line-height: 0.927;   /* no DomPDF, 0,927 equivale a 1,172 do Word (ele multiplica pela altura própria da fonte) */
             color: #000;
-            font-family: Cambria, "Times New Roman", serif;
-            font-size: 10pt;
-            line-height: 1.12;
         }
 
-        .folha {
-            width: 197mm;
-            margin: 0 auto;
-            padding: 6mm 0;
-        }
+        .quebra { page-break-after: always; }
 
-        .cabecalho {
-            width: 100%;
-            margin: 0 0 3mm;
-            text-align: center;
-        }
+        .cabecalho img { display: block; width: 197mm; }
 
-        .cabecalho img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
+        /* ---------- Tabelas ---------- */
         .ficha {
-            width: 100%;
-            table-layout: fixed;
-            border: 1.5pt solid #000;
+            width: 197mm;
             border-collapse: collapse;
+            border: 1.5pt solid #000;
             page-break-inside: avoid;
         }
 
-        .ficha + .ficha {
-            margin-top: 3.2mm;
-        }
+        /* Espaço entre tabelas = parágrafo de 12 pt do original */
+        .ficha + .ficha { margin-top: 5.35mm; }
 
         .ficha th,
         .ficha td {
-            padding: 0 1.6mm;
+            padding: 0 1.9mm;
             border: .5pt solid #000;
             vertical-align: middle;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .ficha th {
-            font-weight: 700;
-            font-size: 10pt;
             text-align: left;
         }
 
-        .ficha .dupla th {
-            height: 11.58mm;
-            padding-bottom: 10pt;
-            vertical-align: top;
+        .ficha th { font-weight: bold; }
+
+        /* Linha-régua: só define a largura das colunas (DomPDF ignora <colgroup>) */
+        .ficha tr.regua td {
+            height: 0;
+            padding: 0;
+            border: 0;
+            font-size: 0;
+            line-height: 0;
         }
 
-        .ficha .c {
-            text-align: center;
-        }
+        /* Alturas das linhas (DomPDF ignora height na <tr>, por isso na célula) */
+        tr.h579 th, tr.h579 td { height: 5.61mm; }
+        tr.h662 th, tr.h662 td { height: 6.44mm; }
+        tr.h1158 th, tr.h1158 td { height: 11.40mm; }
+        tr.h711 th, tr.h711 td { height: 6.93mm; }
+        tr.h732 th, tr.h732 td { height: 7.14mm; }
+        tr.h649 th, tr.h649 td { height: 6.31mm; }
+        tr.h485 th, tr.h485 td { height: 4.67mm; }
+        tr.h700 th, tr.h700 td { height: 6.82mm; }
+        tr.h559 th, tr.h559 td { height: 5.41mm; }
+        tr.h492 th, tr.h492 td { height: 4.74mm; }
+        tr.h474 th, tr.h474 td { height: 4.56mm; }
+        tr.h651 th, tr.h651 td { height: 6.33mm; }
 
-        .ficha .fs65 { font-size: 6.5pt; }
-        .ficha .fs7 { font-size: 7pt; }
-        .ficha .fs75 { font-size: 7.5pt; }
-        .ficha .fs10 { font-size: 10pt; }
-        .birth-date { font-size: 6.5pt; white-space: nowrap; }
-        .narrow-label { font-size: 5.5pt !important; word-wrap: normal !important; overflow-wrap: normal !important; }
-        .opcoes { font-weight: 700; }
+        /* Linha com entrelinha dupla (RA / RG / CPF) */
+        tr.dupla th, tr.dupla td { height: 10.6mm; vertical-align: top; padding-top: 0.8mm; }
+
+        /* ---------- Variações ---------- */
+        .ficha .c { text-align: center; }
+        .fs65 { font-size: 6.5pt; }
+        .fs7  { font-size: 7pt; }
+        .fs75 { font-size: 7.5pt; }
+        .fs10 { font-size: 10pt; }
+
+        .opcoes { font-weight: bold; }
         .op { white-space: nowrap; }
-        .op + .op { margin-left: 1em; }
-        .check { font-family: Arial, sans-serif; font-weight: 700; }
+
+        /* Valores preenchidos pelo sistema (rótulo em negrito, dado normal) */
+        .v { font-weight: normal; }
+
     </style>
 </head>
 
@@ -124,7 +131,7 @@
             $birthDate = $user?->birth?->format('d/m/Y') ?? '';
         @endphp
 
-        <main class="folha">
+        <div class="folha{{ $loop->last ? '' : ' quebra' }}">
             @if ($headerImage)
                 <div class="cabecalho">
                     <img src="{{ $headerImage }}" alt="Cabeçalho da ficha de matrícula">
@@ -132,200 +139,295 @@
             @endif
 
             <table class="ficha" aria-label="Dados do estudante">
-                <colgroup>
-                    <col style="width:20%"><col style="width:8%"><col style="width:6%">
-                    <col style="width:9%"><col style="width:6%"><col style="width:7%">
-                    <col style="width:7%"><col style="width:7%"><col style="width:1%">
-                    <col style="width:9%"><col style="width:8%"><col style="width:12%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:5.79mm">
+                    <tr class="regua">
+                        <td style="width:82.57pt"></td>
+                        <td style="width:30.04pt"></td>
+                        <td style="width:42.48pt"></td>
+                        <td style="width:58.78pt"></td>
+                        <td style="width:42.94pt"></td>
+                        <td style="width:46.38pt"></td>
+                        <td style="width:50.29pt"></td>
+                        <td style="width:45.09pt"></td>
+                        <td style="width:1.90pt"></td>
+                        <td style="width:45.34pt"></td>
+                        <td style="width:35.44pt"></td>
+                        <td style="width:77.17pt"></td>
+                    </tr>
+                    <tr class="h579">
                         <th colspan="2">NOME DO ESTUDANTE</th>
                         <td colspan="6">{{ $user?->name ?? '-' }}</td>
                         <th class="fs75" colspan="2">CONTATO</th>
                         <td colspan="2">{{ $user?->phone ?? '-' }}</td>
                     </tr>
-                    <tr style="height:6.62mm">
+                    <tr class="h662">
                         <th colspan="2">NOME SOCIAL/AFETIVO<br>(DECR. 55588/10)</th>
                         <td colspan="10">{{ $lgbt?->status === 'accepted' ? $lgbt->name : '-' }}</td>
                     </tr>
-                    <tr class="dupla">
-                        <th colspan="3">RA: {{ $academic?->ra ?? '-' }}</th>
-                        <th colspan="4">RG/CIN: {{ $document?->number ?? '-' }}</th>
-                        <th colspan="5">CPF: {{ $user?->cpf ?? '-' }}</th>
+                    <tr class="h1158 dupla">
+                        <th colspan="3">RA: <span class="v">{{ $academic?->ra ?? '-' }}</span></th>
+                        <th colspan="4">RG/CIN: <span class="v">{{ $document?->number ?? '-' }}</span></th>
+                        <th colspan="5">CPF: <span class="v">{{ $user?->cpf ?? '-' }}</span></th>
                     </tr>
-                    <tr style="height:6.62mm">
-                        <th colspan="2">CERTIDÃO DE<br>NASCIMENTO</th>
-                        <th class="fs65" colspan="2">NOVA</th>
-                        <td colspan="6">{{ $certificateType === '1' ? ($certificate?->number ?? '-') : '-' }}</td>
+                    <tr class="h662">
+                        <th>CERTIDÃO DE<br>NASCIMENTO</th>
+                        <th class="fs65">NOVA</th>
+                        <td colspan="8"></td>
                         <th class="fs75">DATA NASC.</th>
-                        <td class="birth-date">{{ $birthDate ?: '-' }}</td>
+                        <td></td>
                     </tr>
-                    <tr style="height:6.62mm">
+                    <tr class="h662">
                         <th>ANTIGA</th>
                         <th>FLS.</th>
-                        <td>{{ $certificateType === '2' ? ($certificate?->fls ?? '-') : '-' }}</td>
+                        <td></td>
                         <th>LIVRO</th>
-                        <td>{{ $certificateType === '2' ? ($certificate?->book ?? '-') : '-' }}</td>
+                        <td></td>
                         <th>NÚMERO</th>
-                        <td>{{ $certificateType === '2' ? ($certificate?->number ?? '-') : '-' }}</td>
+                        <td></td>
                         <th class="fs75" colspan="2">DISTRITO</th>
-                        <td colspan="3">-</td>
+                        <td colspan="3"></td>
                     </tr>
-                    <tr style="height:7.11mm">
-                        <th class="narrow-label">SUBDISTRITO</th>
-                        <td colspan="4">-</td>
+                    <tr class="h711">
+                        <th>SUBDISTRITO</th>
+                        <td colspan="4"></td>
                         <th colspan="2">MUNICÍPIO</th>
-                        <td colspan="5">{{ $certificate?->city ?? '-' }}</td>
+                        <td colspan="5"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th colspan="2">NACIONALIDADE</th>
-                        <td colspan="2">{{ $user?->nationality ?? '-' }}</td>
+                    <tr class="h579">
+                        <th>NACIONALIDADE</th>
+                        <td colspan="2"></td>
                         <th colspan="2">ESTRANGEIRO</th>
-                        <td colspan="2" class="opcoes">[{{ $isForeign ? ' ' : 'X' }}] NÃO [{{ $isForeign ? 'X' : ' ' }}] SIM</td>
+                        <td colspan="2"></td>
                         <th class="fs7" colspan="2">RNE/RNM</th>
-                        <td colspan="2">{{ $isForeign ? ($document?->number ?? '-') : '-' }}</td>
+                        <td colspan="3"></td>
                     </tr>
-                    <tr style="height:5.79mm">
+                    <tr class="h579">
                         <th>GÊNERO</th>
-                        <td colspan="2">{{ $user?->gender ?? '-' }}</td>
+                        <td colspan="2"></td>
                         <th colspan="2">BOLSA FAMÍLIA</th>
-                        <td colspan="2" class="opcoes">[{{ filled($user?->nis) ? 'X' : ' ' }}] SIM [{{ filled($user?->nis) ? ' ' : 'X' }}] NÃO</td>
+                        <td colspan="2"></td>
                         <th colspan="2">NIS</th>
-                        <td colspan="3">{{ $user?->nis ?? '-' }}</td>
+                        <td colspan="3"></td>
                     </tr>
-                    <tr style="height:7.32mm">
+                    <tr class="h732">
                         <th colspan="3">POSSUI ALGUMA DEFICIÊNCIA?</th>
-                        <td class="opcoes" colspan="9">
-                            <span class="op">[{{ $hasAcceptedPne ? ' ' : 'X' }}] NÃO</span>
-                            <span class="op">[{{ $hasAcceptedPne ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $hasAcceptedPne ? ($pne?->description ?? '') : '' }}</span>
-                        </td>
+                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
                     </tr>
-                    <tr style="height:7.32mm">
+                    <tr class="h732">
                         <th colspan="3">NECESSITA DE ADAPTAÇÃO PEDAGÓGICA?</th>
-                        <td class="opcoes" colspan="9">
-                            <span class="op">[{{ $needsAdaptation ? ' ' : 'X' }}] NÃO</span>
-                            <span class="op">[{{ $needsAdaptation ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $needsAdaptation ? ($pne?->support ?? '') : '' }}</span>
-                        </td>
+                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
                     </tr>
-                    <tr style="height:7.32mm">
+                    <tr class="h732">
                         <th colspan="3">TEM ALGUM PROBLEMA DE SAÚDE OU ALERGIA?</th>
-                        <td class="opcoes" colspan="9">
-                            <span class="op">[{{ $healthIssue ? ' ' : 'X' }}] NÃO</span>
-                            <span class="op">[{{ $healthIssue ? 'X' : ' ' }}] SIM - ESPECIFIQUE: {{ $healthIssue ?? '' }}</span>
-                        </td>
+                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="ficha" aria-label="Filiação e responsável">
-                <colgroup>
-                    <col style="width:15.088%"><col style="width:55.390%"><col style="width:8.784%">
-                    <col style="width:3.582%"><col style="width:17.156%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:5.79mm">
-                        <th>FILIAÇÃO 1</th><td>{{ $mother?->name ?? '-' }}</td>
-                        <th class="fs75">CONTATO</th><td colspan="2">{{ $mother?->phone ?? '-' }}</td>
+                    <tr class="regua">
+                        <td style="width:84.26pt"></td>
+                        <td style="width:309.31pt"></td>
+                        <td style="width:49.05pt"></td>
+                        <td style="width:20.00pt"></td>
+                        <td style="width:95.80pt"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th>FILIAÇÃO 2</th><td>{{ $father?->name ?? '-' }}</td>
-                        <th class="fs75">CONTATO</th><td colspan="2">{{ $father?->phone ?? '-' }}</td>
+                    <tr class="h579">
+                        <th>FILIAÇÃO 1</th>
+                        <td></td>
+                        <th class="fs75">CONTATO</th>
+                        <td colspan="2"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th>RESPONSÁVEL PELO ESTUDANTE</th><td>{{ $guardian?->name ?? '-' }}</td>
-                        <th class="fs75" colspan="2">PARENTESCO</th><td>{{ $guardian?->kinship ?: ($guardian?->degree ?: '-') }}</td>
+                    <tr class="h579">
+                        <th>FILIAÇÃO 2</th>
+                        <td></td>
+                        <th class="fs75">CONTATO</th>
+                        <td colspan="2"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th>E-MAIL</th><td>{{ $parentEmail?->address ?? '-' }}</td>
-                        <th class="fs75">CONTATO</th><td colspan="2">{{ $guardian?->phone ?? '-' }}</td>
+                    <tr class="h662">
+                        <th>RESPONSÁVEL PELO ESTUDANTE</th>
+                        <td></td>
+                        <th class="fs75" colspan="2">PARENTESCO</th>
+                        <td></td>
+                    </tr>
+                    <tr class="h579">
+                        <th>E-MAIL</th>
+                        <td></td>
+                        <th class="fs75">CONTATO</th>
+                        <td colspan="2"></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="ficha" aria-label="Endereço residencial">
-                <colgroup>
-                    <col style="width:14.953%"><col style="width:7.602%"><col style="width:35.566%">
-                    <col style="width:6.519%"><col style="width:7.835%"><col style="width:6.465%"><col style="width:21.060%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:5.79mm">
-                        <th>ENDEREÇO RESIDENCIAL</th><th>RUA/AV.</th><td colspan="5">{{ $user?->street }} {{ $user?->home }}</td>
+                    <tr class="regua">
+                        <td style="width:83.50pt"></td>
+                        <td style="width:42.45pt"></td>
+                        <td style="width:198.61pt"></td>
+                        <td style="width:36.40pt"></td>
+                        <td style="width:43.75pt"></td>
+                        <td style="width:36.10pt"></td>
+                        <td style="width:117.60pt"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th>BAIRRO</th><td colspan="2">{{ $user?->burgh ?? '-' }}</td>
-                        <th colspan="2">COMPLEMENTO</th><td colspan="2">{{ $user?->complement ?: '-' }}</td>
+                    <tr class="h662">
+                        <th>ENDEREÇO RESIDENCIAL</th>
+                        <th>RUA/AV.</th>
+                        <td colspan="5"></td>
                     </tr>
-                    <tr style="height:5.79mm">
-                        <th>CIDADE</th><td colspan="2">{{ $user?->city ?? '-' }}</td>
-                        <th class="c">UF</th><td>{{ $user?->state ?? '-' }}</td>
-                        <th class="c">CEP</th><td>{{ $user?->zip ?? '-' }}</td>
+                    <tr class="h579">
+                        <th>BAIRRO</th>
+                        <td colspan="2"></td>
+                        <th colspan="2">COMPLEMENTO</th>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr class="h579">
+                        <th>CIDADE</th>
+                        <td colspan="2"></td>
+                        <th class="c">UF</th>
+                        <td></td>
+                        <th class="c">CEP</th>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="ficha" aria-label="Escola de conclusão do Ensino Fundamental">
-                <colgroup>
-                    <col style="width:15.097%"><col style="width:28.447%"><col style="width:5.999%">
-                    <col style="width:13.852%"><col style="width:19.431%"><col style="width:17.174%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:6.49mm">
-                        <th>ESCOLA DE CONCLUSÃO E.F.</th><td colspan="5">{{ $academic?->school ?? '-' }}</td>
+                    <tr class="regua">
+                        <td style="width:84.31pt"></td>
+                        <td style="width:158.86pt"></td>
+                        <td style="width:33.50pt"></td>
+                        <td style="width:77.35pt"></td>
+                        <td style="width:108.51pt"></td>
+                        <td style="width:95.90pt"></td>
                     </tr>
-                    <tr style="height:6.49mm">
-                        <th>CIDADE</th><td>{{ $academic?->city ?? '-' }}</td>
-                        <th class="c">UF</th><td>{{ $academic?->state ?? '-' }}</td>
-                        <th class="c">ANO DE CONCLUSÃO</th><td>{{ $academic?->year ?? '-' }}</td>
+                    <tr class="h649">
+                        <th>ESCOLA DE CONCLUSÃO E.F.</th>
+                        <td colspan="5"></td>
                     </tr>
-                    <tr style="height:6.49mm">
-                        <td class="opcoes" colspan="6">ESTUDANTE JÁ CURSOU 1º ANO EM OUTRA INSTITUIÇÃO DE ENSINO? <span class="op">[&nbsp;&nbsp;] NÃO</span><span class="op">[&nbsp;&nbsp;] SIM</span></td>
+                    <tr class="h649">
+                        <th>CIDADE</th>
+                        <td></td>
+                        <th class="c">UF</th>
+                        <td></td>
+                        <th class="c">ANO DE CONCLUSÃO</th>
+                        <td></td>
+                    </tr>
+                    <tr class="h649">
+                        <td class="opcoes" colspan="6">ESTUDANTE JÁ CURSOU 1º ANO EM OUTRA INSTITUIÇÃO DE ENSINO? <span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM</span></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="ficha" aria-label="Matrícula">
-                <colgroup>
-                    <col style="width:21.365%"><col style="width:51.119%"><col style="width:8.838%"><col style="width:18.678%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:4.85mm">
-                        <th class="c fs10" rowspan="2">MATRÍCULA</th>
-                        <th colspan="3">SOLICITO MATRÍCULA NO 1º ANO DO ENSINO TÉCNICO DE NÍVEL MÉDIO INTEGRADO - TÉCNICO EM:</th>
+                    <tr class="regua">
+                        <td style="width:119.31pt"></td>
+                        <td style="width:285.46pt"></td>
+                        <td style="width:49.35pt"></td>
+                        <td style="width:104.30pt"></td>
                     </tr>
-                    <tr style="height:7mm">
-                        <td>{{ $courseName ?? '-' }}</td><th class="c">DATA</th><td>{{ $callDate }}</td>
+                    <tr class="h485">
+                        <th class="c fs10" rowspan="2">MATRÍCULA</th>
+                        <th colspan="3">SOLICITO MATRÍCULA NO 1º ANO DO ENSINO TÉCNICO DE NÍVEL MÉDIO INTEGRADO – TÉCNICO EM:</th>
+                    </tr>
+                    <tr class="h700">
+                        <td></td>
+                        <th class="c">DATA</th>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="ficha" aria-label="Movimentação do aluno">
-                <colgroup>
-                    <col style="width:10.087%"><col style="width:5.066%"><col style="width:5.066%">
-                    <col style="width:11.186%"><col style="width:31.868%"><col style="width:18.360%"><col style="width:18.369%">
-                </colgroup>
                 <tbody>
-                    <tr style="height:5.59mm"><th class="c fs10" colspan="7">MOVIMENTAÇÃO DO ALUNO</th></tr>
-                    <tr style="height:4.92mm">
-                        <th class="c">ANO</th><th class="c" colspan="2">CLASSE</th><th class="c">IDADE</th><th class="c" colspan="3">ASSINATURAS</th>
+                    <tr class="regua">
+                        <td style="width:56.33pt"></td>
+                        <td style="width:28.29pt"></td>
+                        <td style="width:28.29pt"></td>
+                        <td style="width:62.46pt"></td>
+                        <td style="width:177.96pt"></td>
+                        <td style="width:102.52pt"></td>
+                        <td style="width:102.58pt"></td>
                     </tr>
-                    <tr style="height:4.74mm">
-                        <td></td><th class="c">S</th><th class="c">T</th><td></td><th class="c">RESPONSÁVEL</th><th class="c">SECRETÁRIO</th><th class="c">DIRETOR</th>
+                    <tr class="h559">
+                        <th class="c fs10" colspan="7">MOVIMENTAÇÃO DO ALUNO</th>
                     </tr>
-                    @for ($yearOffset = 0; $yearOffset < 6; $yearOffset++)
-                        <tr style="height:6.51mm">
-                            <th class="c">{{ $processYear + $yearOffset }}</th>
-                            <td></td><td></td><td>{{ $user?->getAgeAttribute() ?? '-' }}</td>
-                            <td></td><td></td><td></td>
-                        </tr>
-                    @endfor
+                    <tr class="h492">
+                        <th class="c">ANO</th>
+                        <th class="c" colspan="2">CLASSE</th>
+                        <th class="c">IDADE</th>
+                        <th class="c" colspan="3">ASSINATURAS</th>
+                    </tr>
+                    <tr class="h474">
+                        <td></td>
+                        <th class="c">S</th>
+                        <th class="c">T</th>
+                        <td></td>
+                        <th class="c">RESPONSÁVEL</th>
+                        <th class="c">SECRETÁRIO</th>
+                        <th class="c">DIRETOR</th>
+                    </tr>
+                    <tr class="h651">
+                        <th class="c">{{ $processYear + 0 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 0 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="h662">
+                        <th class="c">{{ $processYear + 1 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 1 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="h651">
+                        <th class="c">{{ $processYear + 2 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 2 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="h651">
+                        <th class="c">{{ $processYear + 3 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 3 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="h662">
+                        <th class="c">{{ $processYear + 4 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 4 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="h651">
+                        <th class="c">{{ $processYear + 5 }}</th>
+                        <td></td>
+                        <td></td>
+                        <td class="c">{{ $user?->getAgeAttribute() + 5 ?? '-' }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
-        </main>
 
-        @if (! $loop->last)
-            <div style="page-break-after: always;"></div>
-        @endif
+        </div>
     @endforeach
 </body>
 
