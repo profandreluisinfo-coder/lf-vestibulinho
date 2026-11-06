@@ -172,18 +172,18 @@
                     <tr class="h662">
                         <th>CERTIDÃO DE<br>NASCIMENTO</th>
                         <th class="fs65">NOVA</th>
-                        <td colspan="8"></td>
+                        <td colspan="8">{{ $certificateType === '1' ? $certificate?->number ?? '-' : '-' }}</td>
                         <th class="fs75">DATA NASC.</th>
-                        <td></td>
+                        <td>{{ $birthDate ?: '-' }}</td>
                     </tr>
                     <tr class="h662">
                         <th>ANTIGA</th>
                         <th>FLS.</th>
-                        <td></td>
+                        <td>{{ $certificateType === '2' ? $certificate?->fls ?? '-' : '-' }}</td>
                         <th>LIVRO</th>
-                        <td></td>
+                        <td>{{ $certificateType === '2' ? $certificate?->book ?? '-' : '-' }}</td>
                         <th>NÚMERO</th>
-                        <td></td>
+                        <td>{{ $certificateType === '2' ? $certificate?->number ?? '-' : '-' }}</td>
                         <th class="fs75" colspan="2">DISTRITO</th>
                         <td colspan="3"></td>
                     </tr>
@@ -191,23 +191,29 @@
                         <th>SUBDISTRITO</th>
                         <td colspan="4"></td>
                         <th colspan="2">MUNICÍPIO</th>
-                        <td colspan="5"></td>
+                        <td colspan="5">{{ $certificateType === '2' ? $certificate?->city ?? '-' : '-' }}</td>
                     </tr>
                     <tr class="h579">
                         <th>NACIONALIDADE</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $user?->nationality ?? '-' }}</td>
                         <th colspan="2">ESTRANGEIRO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">
+                            @if ($isForeign)
+                                <span>SIM</span>
+                            @else
+                                <span>NÃO</span>
+                            @endif
+                        </td>
                         <th class="fs7" colspan="2">RNE/RNM</th>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $isForeign ? $document?->number ?? '-' : '-' }}</td>
                     </tr>
                     <tr class="h579">
                         <th>GÊNERO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $user?->gender ?? '-' }}</td>
                         <th colspan="2">BOLSA FAMÍLIA</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ filled($user?->nis) ? 'SIM' : ' NÃO'}}</td>
                         <th colspan="2">NIS</th>
-                        <td colspan="3"></td>
+                        <td colspan="3">{{ $user?->nis ? $user?->nis : '-' }}</td>
                     </tr>
                     <tr class="h732">
                         <th colspan="3">POSSUI ALGUMA DEFICIÊNCIA?</th>
@@ -428,6 +434,10 @@
             </table>
 
         </div>
+
+        @php
+            die();
+        @endphp
     @endforeach
 </body>
 

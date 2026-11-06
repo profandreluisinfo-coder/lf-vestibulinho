@@ -355,6 +355,7 @@
                                 <div class="cal-info flex-grow-1">
                                     <h5>Divulgação dos Locais de Prova</h5>
                                     <p>Local e horário de prova disponíveis na Área do Candidato.</p>
+                                    <p>Altamente Recomendável: imprimir protocolo de inscrição e cartão de local de prova para apresentá-los no dia da prova.</p>
                                 </div>
                                 <span class="cal-badge badge-event">Evento</span>
                             </div>
@@ -368,7 +369,7 @@
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Dia da Prova</h5>
-                                    <p>Realização da prova escrita. Levar RG original. Portões fecham às 8h.</p>
+                                    <p>Levar documento oficial com foto que permita sua identificação e contenha o número do CPF.</p>
                                 </div>
                                 <span class="cal-badge badge-event">Prova</span>
                             </div>
@@ -382,7 +383,8 @@
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Divulgação da Classificação</h5>
-                                    <p>Lista de classificados publicada no site e na Área do Candidato.</p>
+                                    <p>Lista de classificados publicada no site.</p>
+                                    <p>Classificação individual na Área do Candidato.</p>
                                 </div>
                                 <span class="cal-badge"
                                     style="background:rgba(224,122,58,.15);color:var(--amber2);">Resultado</span>

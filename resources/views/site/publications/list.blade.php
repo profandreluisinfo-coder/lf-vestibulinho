@@ -50,7 +50,7 @@
                         <i class="bi bi-arrow-left"></i> Voltar às publicações
                     </a>
 
-                    <div class="pub-panel reveal">
+                    <div class="pub-panel">
                         @if (!$released)
                             <div class="pub-empty">
                                 <i class="bi bi-hourglass-split"></i>

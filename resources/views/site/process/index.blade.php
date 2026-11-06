@@ -9,7 +9,7 @@
 @section('content')
 
     @php
-        $isInscriptionEnded   = $process?->isInscriptionEnded() ?? false;
+        $isInscriptionEnded = $process?->isInscriptionEnded() ?? false;
         $isInscriptionStarted = $process?->isInscriptionStarted() ?? false;
     @endphp
 
@@ -104,7 +104,8 @@
                     <div class="text-center mb-5 reveal">
                         <div class="section-tag justify-content-center">Visão Geral</div>
                         <h2 class="section-title mb-2">Linha do <span>Tempo</span></h2>
-                        <p class="section-lead mx-auto text-center">Acompanhe o fluxo completo do Vestibulinho {{ $process?->year ?? '' }}.</p>
+                        <p class="section-lead mx-auto text-center">Acompanhe o fluxo completo do Vestibulinho
+                            {{ $process?->year ?? '' }}.</p>
                     </div>
 
                     <div class="timeline-flow">
@@ -123,7 +124,8 @@
                                     'icon' => 'bi-geo-alt-fill',
                                     'color' => 'purple',
                                     'date' => $process?->location_publish?->format('d/m/Y'),
-                                    'active' => $process?->location_publish && now()->isSameDay($process?->location_publish),
+                                    'active' =>
+                                        $process?->location_publish && now()->isSameDay($process?->location_publish),
                                     'done' => $process?->location_publish && now()->gt($process?->location_publish),
                                 ],
                                 [
@@ -139,7 +141,8 @@
                                     'icon' => 'bi-list-check',
                                     'color' => 'amber',
                                     'date' => $process?->answer_publish?->format('d/m/Y'),
-                                    'active' => $process?->answer_publish && now()->isSameDay($process?->answer_publish),
+                                    'active' =>
+                                        $process?->answer_publish && now()->isSameDay($process?->answer_publish),
                                     'done' => $process?->answer_publish && now()->gt($process?->answer_publish),
                                 ],
                                 [
@@ -147,14 +150,18 @@
                                     'icon' => 'bi-list-ol',
                                     'color' => 'orange',
                                     'date' => $process?->result_publish?->format('d/m/Y'),
-                                    'active' => $process?->result_publish && now()->isSameDay($process?->result_publish),
+                                    'active' =>
+                                        $process?->result_publish && now()->isSameDay($process?->result_publish),
                                     'done' => $process?->result_publish && now()->gt($process?->result_publish),
                                 ],
                                 [
                                     'label' => 'Matrícula',
                                     'icon' => 'bi-pin-angle-fill',
                                     'color' => 'teal',
-                                    'date' => $process?->formatPeriod($process?->enrol_start, $process?->enrol_remaining),
+                                    'date' => $process?->formatPeriod(
+                                        $process?->enrol_start,
+                                        $process?->enrol_remaining,
+                                    ),
                                     'active' =>
                                         $process?->enrol_start &&
                                         $process?->enrol_remaining &&
@@ -187,7 +194,8 @@
                 <div class="text-center mb-5 reveal">
                     <div class="section-tag justify-content-center">Detalhamento</div>
                     <h2 class="section-title mb-2">Todas as <span>Datas</span></h2>
-                    <p class="section-lead mx-auto text-center">Informações completas de cada etapa do Vestibulinho {{ $process?->year ?? '' }}.
+                    <p class="section-lead mx-auto text-center">Informações completas de cada etapa do Vestibulinho
+                        {{ $process?->year ?? '' }}.
                     </p>
                 </div>
 
@@ -237,11 +245,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Inscrições realizadas exclusivamente pelo portal online. Acesse a <strong>Área do
-                                        Candidato</strong> para se inscrever.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Inscrições realizadas exclusivamente pelo portal online. Acesse a <strong>Área do
+                                                Candidato</strong> para se inscrever.
+                                        </span>
+                                    </li>
+                                </ul>
                                 @if ($isInscriptionOpen)
                                     <a href="{{ route('login') }}" class="btn-detail-cta js-inscription-link mt-3">
                                         <i class="bi bi-pencil-square me-1"></i> Inscrever-se Agora
@@ -281,10 +293,23 @@
                                             {{ $process?->location_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Local e horário disponíveis na Área do Candidato.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Local e horário disponíveis na Área do Candidato.
+                                        </span>
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            <strong>Altamente recomendável:</strong>
+                                            imprimir protocolo de inscrição e cartão de local de prova
+                                            para apresentá-los no dia da prova.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -322,10 +347,26 @@
                                             {{ $process?->exam_date?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Levar documento original com foto atual. Portões fecham às 8h. Chegue com antecedência.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Abertura dos portões às 07h30min.
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Fechamento às 08h00.
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Levar documento oficial com foto que permita sua identificação e contenha o número do CPF.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -360,10 +401,14 @@
                                             {{ $process?->answer_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Gabarito preliminar publicado no site oficial.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Gabarito preliminar publicado no site oficial.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -403,10 +448,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Solicitações de revisão devem ser feitas dentro do prazo estabelecido.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Prazo para protocolar, na secretaria da escola, das 15h00 às 19h00, a revisão das questões da prova.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -419,7 +468,7 @@
                                 <div class="detail-phase-icon orange-bg"><i class="bi bi-list-ol"></i></div>
                                 <div class="detail-phase-info">
                                     <span class="detail-phase-num">Etapa 06</span>
-                                    <h3>Resultado Final</h3>
+                                    <h3>Divulgação da Classificação/Resultado</h3>
                                     @if ($process?->result_publish && now()->gt($process?->result_publish))
                                         <span class="detail-badge badge-done"><i
                                                 class="bi bi-check-lg me-1"></i>Divulgado</span>
@@ -441,10 +490,20 @@
                                             {{ $process?->result_publish?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Lista de classificados publicada no site e na Área do Candidato.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Lista de classificados publicada no site.
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Classificação individual na Área do Candidato.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -479,10 +538,14 @@
                                             {{ $process?->enrol_start?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Candidatos convocados devem realizar matrícula presencialmente.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Divulgação das datas de comparecimento para a realização das matrículas em 1ª chamada.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -517,10 +580,14 @@
                                             {{ $process?->enrol_remaining?->format('Y') ?? '' }}</div>
                                     </div>
                                 </div>
-                                <p class="detail-note mt-3">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Chamamento para preenchimento de vagas remanescentes.
-                                </p>
+                                <ul class="list-group list-group-flush detail-notes mt-3">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-info-circle"></i>
+                                        <span>
+                                            Divulgação das datas de comparecimento para a realização das matrículas em vagas remanescentes.
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -538,7 +605,7 @@
 
 @endsection
 
-@push('scripts')    
+@push('scripts')
     <script src="{{ asset('assets/js/site/process/index.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/shared/confirm.js') }}"></script>
