@@ -96,7 +96,7 @@
                         Gênero
                     </option>
                     <option value="school" @selected(request('group_by') == 'school')>Escola</option>
-                    <option value="process" @selected(request('group_by') == 'process')>Processo/ano</option>
+                    {{-- <option value="process" @selected(request('group_by') == 'process')>Processo/ano</option> --}}
                     <option value="course_gender" @selected(request('group_by') == 'course_gender')>Curso e Gênero</option>
                 </select>
             </div>
@@ -161,7 +161,7 @@
                     value="{{ request('school') }}">
             </div>
 
-            <div class="col-md-3">
+            {{-- <div class="col-md-3">
                 <label class="form-label">Processo/ano</label>
                 <select name="process_id" class="form-select">
                     <option value="">Todos</option>
@@ -171,7 +171,7 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="col-md-6 d-flex align-items-end gap-2">
 
@@ -268,7 +268,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Ano</th>
+                        {{-- <th>Ano</th> --}}
                         <th>Inscrição</th>
                         <th>Candidato</th>
                         <th>Gênero</th>
@@ -285,7 +285,7 @@
                 <tbody>
                     @forelse ($inscriptions as $inscription)
                         <tr>
-                            <td>{{ $inscription->process->year }}</td>
+                            {{-- <td>{{ $inscription->process->year }}</td> --}}
                             <td>{{ $inscription->id }}</td>
                             <td>{{ $inscription->user->name }}</td>
                             <td>{{ $inscription->user->gender }}</td>

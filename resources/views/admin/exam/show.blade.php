@@ -5,107 +5,91 @@
  @section('content')
      <div class="container-fluid">
 
-        <div class="row g-4 mb-4">
+         <div class="row g-4 mb-4">
 
-            {{-- Card: Informações da Prova --}}
-            <div class="col-12 col-md-4">
+             {{-- Card: Informações da Prova --}}
+             <div class="col-12 col-md-4">
 
-                <div class="card shadow h-100" style="background-color: #ffffe6">
-                    <div class="card-body">
+                 <div class="card shadow h-100" style="background-color: #ffffe6">
+                     <div class="card-body">
 
-                        <h5 class="card-title mb-3">
-                            <i class="bi bi-calendar-event me-2"></i>Informações da Prova
-                        </h5>
+                         <h5 class="card-title mb-3">
+                             <i class="bi bi-calendar-event me-2"></i>Informações da Prova
+                         </h5>
 
-                        <p class="mb-1">
-                            <strong>Data:</strong>
-                                {{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}
-                        </p>
+                         <p class="mb-1">
+                             <strong>Data:</strong>
+                             {{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}
+                         </p>
 
-                        <p class="mb-0">
-                            <strong>Horário:</strong>
-                                {{ \Carbon\Carbon::parse($process->exam_time)->format('H:i') }}
-                        </p>
-                    </div>
-                </div>
+                         <p class="mb-0">
+                             <strong>Horário:</strong>
+                             {{ \Carbon\Carbon::parse($process->exam_time)->format('H:i') }}
+                         </p>
+                     </div>
+                 </div>
 
-            </div>
+             </div>
 
-            {{-- Card: Relatórios & Detalhes --}}
-            <div class="col-12 col-md-4">
+             {{-- Card: Relatórios & Detalhes --}}
+             <div class="col-12 col-md-4">
 
-                <div class="card shadow h-100" style="background-color: #ffffe6">
-                    <div class="card-body">
+                 <div class="card shadow h-100" style="background-color: #ffffe6">
+                     <div class="card-body">
 
-                        <h5 class="card-title mb-3">
-                            <i class="bi bi-file-earmark-text me-2"></i>Listas
-                        </h5>
+                         <h5 class="card-title mb-3">
+                             <i class="bi bi-file-earmark-text me-2"></i>Listas
+                         </h5>
 
-                        <div class="card-body">
+                         <div class="card-body">
 
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2">
-                                    <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}"
-                                        target="_blank" class="text-decoration-none">
-                                        <i class="bi bi-printer me-2"></i>Geral (Consulta)
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}"
-                                        target="_blank" class="text-decoration-none">
-                                        <i class="bi bi-printer me-2"></i>Mural e Salas
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
-                                        target="_blank" class="text-decoration-none">
-                                        <i class="bi bi-printer me-2"></i>Folhas de Assinatura
-                                    </a>
-                                </li>
-                            </ul>
+                             <ul class="list-unstyled mb-0">
+                                 <li class="mb-2">
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}"
+                                         target="_blank" class="text-decoration-none">
+                                         <i class="bi bi-printer me-2"></i>Geral (Consulta)
+                                     </a>
+                                 </li>
+                                 <li class="mb-2">
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}"
+                                         target="_blank" class="text-decoration-none">
+                                         <i class="bi bi-printer me-2"></i>Mural e Salas
+                                     </a>
+                                 </li>
+                                 <li>
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
+                                         target="_blank" class="text-decoration-none">
+                                         <i class="bi bi-printer me-2"></i>Folhas de Assinatura
+                                     </a>
+                                 </li>
+                             </ul>
 
-                        </div>
-                    </div>
-                </div>
+                         </div>
+                     </div>
+                 </div>
 
-            </div>
+             </div>
 
-            {{-- Card: Acesso aos Locais de Prova --}}
-            <div class="col-12 col-md-4">
+             {{-- Card: Acesso aos Locais de Prova --}}
+             <div class="col-12 col-md-4">
 
-                <div class="card shadow h-100" style="background-color: #ffffe6">
-                    <div class="card-body">
+                 <div class="card shadow h-100" style="background-color: #ffffe6">
+                     <div class="card-body">
+                         <h5 class="card-title mb-3">
+                             <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
+                         </h5>
+                         <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }} ms-2">
+                             @if ($locationReleased)
+                                 <i class="bi bi-unlock-fill"></i> Liberado
+                             @else
+                                 <i class="bi bi-lock-fill"></i> Bloqueado
+                             @endif
+                         </span>
+                     </div>
+                 </div>
+             </div>
 
-                        <h5 class="card-title mb-3">
-                            <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
-                        </h5>
-
-                        <form id="location-access-form" action="{{ route('admin.process.release', 'location') }}"
-                            method="POST">
-                            @csrf
-
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" type="checkbox" id="location" name="location"
-                                    onchange="confirmLocationAccess(this)" {{ $locationReleased ? 'checked' : '' }}>
-
-                                <label class="form-check-label" for="location">
-                                    Status:
-                                    <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }} ms-2">
-                                        @if ($locationReleased)
-                                            <i class="bi bi-unlock-fill"></i> Liberado
-                                        @else
-                                            <i class="bi bi-lock-fill"></i> Bloqueado
-                                        @endif
-                                    </span>
-                                </label>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
+         </div>
 
          {{-- Cabeçalho --}}
          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">

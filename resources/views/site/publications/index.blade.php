@@ -109,6 +109,18 @@
                     ],
                 ],
             ],
+            [
+                'title' => 'Relação definitiva',
+                'icon' => 'patch-check',
+                'cards' => [
+                    [
+                        'status' => 'approved',
+                        'title' => 'Relação definitiva de candidatos(as) inscritos(as)',
+                        'desc' => 'Inscritos após a análise dos recursos',
+                        'route' => 'site.publications.final-list.approved',
+                    ],
+                ],
+            ],
         ];
     @endphp
 
@@ -138,9 +150,10 @@
                         @foreach ($group['cards'] as $card)
                             @php
                                 $key = \Illuminate\Support\Str::after($card['route'], 'site.publications.');
-                                $href = Route::has($card['route']) && in_array($key, $released, true)
-                                    ? route($card['route'])
-                                    : null;
+                                $href =
+                                    Route::has($card['route']) && in_array($key, $released, true)
+                                        ? route($card['route'])
+                                        : null;
                                 $isApproved = $card['status'] === 'approved';
                             @endphp
 

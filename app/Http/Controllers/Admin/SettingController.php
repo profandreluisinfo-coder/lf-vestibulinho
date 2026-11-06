@@ -64,6 +64,8 @@ class SettingController extends Controller
      */
     private function generateBackup(): string
     {
+        // Ano do Processo Seletivo atual
+        $processYear = Process::current()?->year ?? now()->year;
         // Dados de conexão (pega automaticamente do seu .env)
         $host = config('database.connections.mysql.host');
         $port = config('database.connections.mysql.port');
@@ -72,7 +74,7 @@ class SettingController extends Controller
         $password = config('database.connections.mysql.password');
 
         // Nome do arquivo com data e hora
-        $fileName = 'backup_completo_' . now()->format('Y-m-d_H-i-s') . '.sql';
+        $fileName = 'Vestibulinho_' . $processYear . '_' . now()->format('Y-m-d_H-i-s') . '.sql';
 
         // Caminho real do arquivo, sempre consistente com o disco 'local'
         $completePath = Storage::disk('local')->path('backups/' . $fileName);
@@ -166,10 +168,13 @@ class SettingController extends Controller
 
             Cache::forget('global_calendar');
             Cache::forget('global_process');
+            Cache::forget('global_inscription_open');
             Cache::forget('global_total_inscriptions');
             Cache::forget('global_users_without_inscription');
             Cache::forget('global_settings');
             Cache::forget('calls_exists');
+            Cache::forget('global_total_comunicados');
+            Cache::forget('global_total_publicacoes');
 
             // Apagar os dados de autenticação
             session()->flush();

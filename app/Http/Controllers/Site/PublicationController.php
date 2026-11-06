@@ -43,6 +43,23 @@ class PublicationController extends Controller
             ->pluck('id'));
     }
 
+    /** Relação definitiva de candidatos inscritos, divulgada após a análise dos recursos. */
+    public function finalList(): View
+    {
+        return $this->renderList('approved', 'final-list', [
+            'subject' => 'Relação definitiva de candidatos(as)',
+            'labels' => ['approved' => 'inscritos(as)'],
+            'leads' => [
+                'approved' => 'Candidatos com inscrição confirmada após a análise dos recursos',
+            ],
+            'identifiedBy' => 'Os candidatos são identificados pelo número de inscrição.',
+            'unit' => ['inscrição', 'inscrições'],
+        ], fn(string $status, ?int $processId) => Inscription::approved()
+            ->forProcess($processId)
+            ->orderBy('id')
+            ->pluck('id'));
+    }
+
     /** Pedidos de uso de nome social deferidos ou indeferidos (só o número de inscrição). */
     public function socialNames(string $status): View
     {

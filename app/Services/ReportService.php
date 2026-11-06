@@ -70,7 +70,18 @@ class ReportService
     public function candidatesListAll(array $filters): \Illuminate\Database\Eloquent\Collection
     {
         return $this->filteredQuery($filters)
-            ->with(['user.pne', 'user.lgbt', 'user.academic', 'course'])
+            ->select([
+                'id',
+                'user_id',
+                'course_id',
+            ])
+            ->with([
+                'user:id,name,gender',
+                'user.pne:id,user_id,status,description,support',
+                'user.lgbt:id,user_id,name,status',
+                'user.academic:id,user_id,school',
+                'course:id,name',
+            ])
             ->latest('id')
             ->get();
     }

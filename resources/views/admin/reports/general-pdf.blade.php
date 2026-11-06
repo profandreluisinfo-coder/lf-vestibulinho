@@ -6,13 +6,15 @@
     <title>Vestibulinho LF {{ $selectedProcess?->year ?? $process?->year }} - Relatório Geral</title>
     <style>
         @page {
-            margin: 10mm;
+            /* margin: 10mm; */
+            margin: 8mm;
         }
 
         body {
             margin: 0;
             font-family: DejaVu Sans, sans-serif;
-            font-size: 11px;
+            /* font-size: 11px; */
+            font-size: 9px;
         }
 
         h1 {
@@ -32,13 +34,16 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
         th,
         td {
             border: 1px solid #999;
-            padding: 4px 6px;
+            /* padding: 4px 6px; */
+            padding: 3px;
             text-align: left;
+            overflow-wrap: break-word;
         }
 
         th {
@@ -123,48 +128,49 @@
                 'rejected' => 'REJEITADO',
             ];
 
-            $temNomeSocial = $inscriptions->contains(fn ($i) => filled($i->user->lgbt?->name));
-            $temPcd = $inscriptions->contains(fn ($i) => filled($i->user->pne?->status));
+            $temNomeSocial = $inscriptions->contains(fn($i) => filled($i->user->lgbt?->name));
+            $temPcd = $inscriptions->contains(fn($i) => filled($i->user->pne?->status));
         @endphp
 
         <table>
             <thead>
                 <tr>
-                    <th>Ano</th>
+                    {{-- <th>Ano</th> --}}
                     <th>Inscrição</th>
                     <th>Candidato</th>
                     <th>Gênero</th>
-                @if ($temNomeSocial)
-                    <th>Nome Social</th>
-                    <th>Situação</th>
-                @endif
+                    @if ($temNomeSocial)
+                        <th>Nome Social</th>
+                        <th>Situação</th>
+                    @endif
                     <th>Curso</th>
                     <th>Escola</th>
-                @if ($temPcd)
-                    <th>PCD</th>
-                    <th>Condição</th>
-                    <th>Requer</th>
-                @endif
+                    @if ($temPcd)
+                        <th>PCD</th>
+                        <th>Condição</th>
+                        <th>Requer</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($inscriptions as $inscription)
+                {{-- @foreach ($inscriptions->take(800) as $inscription) --}}
                     <tr>
-                        <td>{{ $inscription->process->year }}</td>
+                        {{-- <td>{{ $inscription->process->year }}</td> --}}
                         <td>{{ $inscription->id }}</td>
                         <td>{{ $inscription->user->name }}</td>
                         <td>{{ $inscription->user->gender }}</td>
-                    @if ($temNomeSocial)
-                        <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
-                        <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
-                    @endif
+                        @if ($temNomeSocial)
+                            <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
+                            <td>{{ $statusLabels[$inscription->user->lgbt?->status] ?? '—' }}</td>
+                        @endif
                         <td>{{ $inscription->course->name }}</td>
                         <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
-                    @if ($temPcd)
-                        <td>{{ $statusLabels[$inscription->user->pne?->status] ?? '—' }}</td>
-                        <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
-                        <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
-                    @endif
+                        @if ($temPcd)
+                            <td>{{ $statusLabels[$inscription->user->pne?->status] ?? '—' }}</td>
+                            <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
+                            <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

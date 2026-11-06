@@ -62,6 +62,8 @@ Route::name('site.')
                 Route::get('inscricoes-indeferidas', 'inscriptions')
                     ->defaults('status', 'rejected')->name('inscriptions.rejected');
 
+                Route::get('relacao-definitiva', 'finalList')->name('final-list.approved');
+
                 // Nome social
                 Route::get('nome-social-deferidos', 'socialNames')
                     ->defaults('status', 'approved')->name('social-names.approved');

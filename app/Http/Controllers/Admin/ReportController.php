@@ -38,6 +38,16 @@ class ReportController extends Controller
 
         $type = $filters['type'] ?? 'list';
 
+        $inscriptions = $type === 'list'
+            ? $service->candidatesListAll($filters)
+            : null;
+
+        logger()->info('Relatório Geral - Diagnóstico', [
+            'registros' => $inscriptions?->count() ?? 0,
+            'memoria_atual' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
+            'memoria_pico' => round(memory_get_peak_usage(true) / 1024 / 1024, 2) . ' MB',
+        ]);
+
         return view('admin.reports.general', [
             'type'         => $type,
             'groupBy'      => $filters['group_by'] ?? 'course',
@@ -63,13 +73,30 @@ class ReportController extends Controller
 
         $type = $filters['type'] ?? 'list';
 
+        $inscriptions = $type === 'list'
+            ? $service->candidatesListAll($filters)
+            : null;
+
+        if ($inscriptions && $inscriptions->count() > 800) {
+            return back()->with(
+                'error',
+                'O relatório ultrapassa o limite de 800 registros. Refine os filtros e tente novamente.'
+            );
+        }
+
         $pdf = Pdf::loadView('admin.reports.general-pdf', [
-            'type'            => $type,
-            'groupBy'         => $filters['group_by'] ?? 'course',
-            'selectedProcess' => ! empty($filters['process_id']) ? Process::find($filters['process_id']) : null,
-            'inscriptions'    => $type === 'list' ? $service->candidatesListAll($filters) : null,
-            'summary'         => $type === 'summary' ? $service->summary($filters, $filters['group_by'] ?? 'course') : null,
+            'type' => $type,
+            'groupBy' => $filters['group_by'] ?? 'course',
+            'selectedProcess' => !empty($filters['process_id'])
+                ? Process::find($filters['process_id'])
+                : null,
+            'inscriptions' => $inscriptions,
+            'summary' => $type === 'summary'
+                ? $service->summary($filters, $filters['group_by'] ?? 'course')
+                : null,
         ]);
+
+        $pdf->render();
 
         return $pdf->stream('relatorio-geral.pdf');
     }

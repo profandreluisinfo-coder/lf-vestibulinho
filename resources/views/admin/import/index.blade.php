@@ -26,11 +26,6 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                {{-- ROTA: exportação da planilha --}}
-                <a href="{{ route('admin.export.excel') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Exportar planilha
-                </a>
-
                 {{-- ROTA: formulário de importação (create) --}}
                 <a href="{{ route('admin.import.create') }}"
                     class="btn btn-outline-primary btn-sm {{ $released ? 'disabled' : '' }}"
@@ -39,7 +34,7 @@
                 </a>
 
                 {{-- Toggle de liberação do resultado --}}
-                <form method="POST" action="{{ route('admin.process.release', 'result') }}"
+                {{-- <form method="POST" action="{{ route('admin.process.release', 'result') }}"
                     onsubmit='return confirm(@json($confirmMessage))'>
                     @csrf
                     <button type="submit"
@@ -48,7 +43,7 @@
                         <i class="bi {{ $released ? 'bi-eye-slash' : 'bi-megaphone' }} me-1"></i>
                         {{ $released ? 'Retirar resultado do ar' : 'Liberar resultado' }}
                     </button>
-                </form>
+                </form> --}}
             </div>
         </div>
 

@@ -24,6 +24,9 @@ class Setting extends Model
         'appeals.social-names.rejected' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social indeferidos'],
         'appeals.medical-reports.approved' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios deferidos'],
         'appeals.medical-reports.rejected' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios indeferidos'],
+
+        // Relação definitiva (após a análise dos recursos)
+        'final-list.approved' => ['group' => 'Relação definitiva', 'icon' => 'patch-check', 'label' => 'Relação definitiva de candidatos(as) inscritos(as)'],
     ];
 
     protected $fillable = [
