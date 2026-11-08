@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\CallExport;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendCallNotificationJob;
 use App\Models\Call;
@@ -12,18 +11,13 @@ use App\Models\Result;
 use App\Services\CallCandidateSelector;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DomainException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\View\View;
 
 class CallController extends Controller
@@ -36,16 +30,9 @@ class CallController extends Controller
             ? CallList::query()
                 ->where('process_id', $process->id)
                 ->withCount('calls')
-                ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne', 'calls.course'])
-                ->orderBy('number')
+                ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne'])
+                ->orderByDesc('id')
                 ->get()
-            : collect();
-        $courses = $process?->courses ?? collect();
-
-        $calledIds = $process
-            ? Call::query()
-                ->whereHas('result.inscription', fn ($query) => $query->forProcess($process->id))
-                ->pluck('result_id')
             : collect();
 
         $eligible = $process
@@ -55,38 +42,31 @@ class CallController extends Controller
                 ->whereHas('inscription', fn ($query) => $query->approved()->forProcess($process->id))
             : Result::query()->whereRaw('1 = 0');
 
-        $pcdCandidates = (clone $eligible)
-            ->whereNotIn('id', $calledIds)
-            ->whereHas('inscription.user.pne', fn ($query) => $query->where('status', 'accepted'))
-            ->with(['inscription.user.lgbt'])
-            ->orderBy('ranking')
-            ->get();
-
-        $calledByCourse = $callLists
-            ->flatMap(fn ($callList) => $callList->calls)
-            ->filter(fn ($call) => $call->course)
-            ->groupBy(fn ($call) => $call->course->name)
-            ->map(fn ($calls) => $calls->count())
-            ->sortKeys();
-
-        $chartData = [
-            'labels' => $calledByCourse->keys()->values(),
-            'data' => $calledByCourse->values(),
-            'colors' => $calledByCourse->keys()->map(fn () => sprintf('#%06X', mt_rand(0, 0xFFFFFF))),
-        ];
-
         $countResults = (clone $eligible)->count();
-        $lastCallList = $callLists->last();
 
-        return view('admin.calls.index', compact(
-            'process',
-            'callLists',
-            'courses',
-            'pcdCandidates',
-            'chartData',
-            'countResults',
-            'lastCallList',
-        ));
+        return view('admin.calls.index', compact('process', 'callLists', 'countResults'));
+    }
+
+    public function allCandidates(): View
+    {
+        $process = Process::current();
+
+        $calls = $process
+            ? Call::query()
+                ->select('calls.*')
+                ->join('call_lists', 'call_lists.id', '=', 'calls.call_list_id')
+                ->join('results', 'results.id', '=', 'calls.result_id')
+                ->where('call_lists.process_id', $process->id)
+                ->with(['callList', 'result.inscription.user.lgbt', 'result.inscription.user.pne'])
+                ->orderBy('call_lists.number')
+                ->orderBy('call_lists.date')
+                ->orderBy('call_lists.time')
+                ->orderBy('results.ranking')
+                ->orderBy('calls.id')
+                ->get()
+            : collect();
+
+        return view('admin.calls.all', compact('process', 'calls'));
     }
 
     public function store(Request $request, CallCandidateSelector $selector): RedirectResponse
@@ -98,41 +78,15 @@ class CallController extends Controller
         }
 
         $data = $request->validate([
-            'number' => ['required', 'integer', 'min:1', Rule::unique('call_lists', 'number')->where('process_id', $process->id)],
+            'number' => ['required', 'integer', 'min:1'],
             'limit' => ['required', 'integer', 'min:1'],
             'pcd_limit' => ['required', 'integer', 'min:0'],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
-            'vacancy_course_id' => [
-                'nullable',
-                'integer',
-                Rule::exists('course_process', 'course_id')->where('process_id', $process->id),
-            ],
         ]);
 
         if ($data['pcd_limit'] > $data['limit']) {
             return back()->withErrors(['pcd_limit' => 'A quantidade de PcDs não pode exceder o total da chamada.'])->withInput();
-        }
-
-        $callDate = Carbon::parse($data['date'])->startOfDay();
-        $firstEnrollmentDate = $process->enrol_start?->copy()->startOfDay();
-        $remainingEnrollmentDate = $process->enrol_remaining?->copy()->startOfDay();
-        $enrollmentDeadline = $process->enrol_deadline?->copy()->startOfDay();
-
-        if (! $enrollmentDeadline) {
-            return back()->withErrors(['date' => 'Defina a data limite para convocações no calendário do processo.'])->withInput();
-        }
-
-        if ($firstEnrollmentDate && $callDate->lt($firstEnrollmentDate)) {
-            return back()->withErrors(['date' => 'A convocação não pode ocorrer antes do início das matrículas definido no calendário.'])->withInput();
-        }
-
-        if ((int) $data['number'] > 1 && $remainingEnrollmentDate && $callDate->lt($remainingEnrollmentDate)) {
-            return back()->withErrors(['date' => 'As chamadas de vagas remanescentes não podem ocorrer antes da data prevista no calendário.'])->withInput();
-        }
-
-        if ($callDate->gt($enrollmentDeadline)) {
-            return back()->withErrors(['date' => 'A convocação não pode ocorrer após a data limite definida no calendário.'])->withInput();
         }
 
         try {
@@ -143,14 +97,12 @@ class CallController extends Controller
                     'date' => $data['date'],
                     'time' => $data['time'],
                     'status' => 'pending',
-                    'vacancy_course_id' => $data['vacancy_course_id'] ?? null,
                 ]);
 
                 $selected = $selector->select(
                     $process,
                     (int) $data['limit'],
                     (int) $data['pcd_limit'],
-                    isset($data['vacancy_course_id']) ? (int) $data['vacancy_course_id'] : null,
                 );
 
                 if ($selected->isEmpty()) {
@@ -172,7 +124,6 @@ class CallController extends Controller
                         'time' => $callList->time,
                         'is_manual' => false,
                         'is_pcd_reserve' => in_array($result->id, $pcdIds, true),
-                        'enrollment_status' => 'awaiting',
                     ]);
                 }
 
@@ -190,30 +141,26 @@ class CallController extends Controller
             ->with('success', "Rascunho da chamada nº {$data['number']} criado com {$results[1]} convocados, incluindo {$results[2]} PcD.");
     }
 
-    public function show(int $callNumber): View
+    public function show(int $callListId): View
     {
         $process = Process::current();
         $callList = CallList::query()
             ->where('process_id', $process?->id)
-            ->where('number', $callNumber)
-            ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne', 'calls.course'])
+            ->whereKey($callListId)
+            ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne'])
             ->firstOrFail();
-        $courses = $callList->process?->courses ?? collect();
 
-        return view('admin.calls.show', compact('callList', 'courses'));
+        return view('admin.calls.show', compact('callList'));
     }
 
     public function destroy(CallList $callList): RedirectResponse
     {
         abort_unless($callList->process_id === Process::current()?->id, 404);
 
-        if ($callList->status === 'completed') {
-            return back()->withErrors(['call' => 'Uma chamada publicada não pode ser excluída.']);
-        }
-
+        $number = $callList->number;
         $callList->delete();
 
-        return redirect()->route('admin.calls.index')->with('success', 'Rascunho da chamada excluído.');
+        return redirect()->route('admin.calls.index')->with('success', "Chamada nº {$number} excluída.");
     }
 
     public function finalize(CallList $callList): RedirectResponse
@@ -268,73 +215,6 @@ class CallController extends Controller
         return back()->with('success', 'Chamada publicada no site. Os e-mails são avisos complementares.');
     }
 
-    public function updateEnrollment(Request $request, Call $call): RedirectResponse
-    {
-        $call->load('callList');
-        abort_unless($call->callList?->process_id === Process::current()?->id, 404);
-        abort_unless($call->callList?->status === 'completed', 409, 'Publique a chamada antes de registrar a matrícula.');
-
-        $data = $request->validate([
-            'enrollment_status' => ['required', Rule::in(['enrolled', 'documents_pending', 'lost', 'withdrawn', 'waiting_course'])],
-            'course_id' => [
-                Rule::requiredIf(in_array($request->input('enrollment_status'), ['enrolled', 'documents_pending', 'waiting_course'], true)),
-                'nullable',
-                'integer',
-                Rule::exists('course_process', 'course_id')->where('process_id', $call->callList->process_id),
-            ],
-            'regularization_deadline' => [
-                Rule::requiredIf($request->input('enrollment_status') === 'documents_pending'),
-                'nullable',
-                'date',
-                'after_or_equal:' . now()->addHours(48)->format('Y-m-d H:i:s'),
-            ],
-            'enrollment_notes' => ['nullable', 'string', 'max:2000'],
-        ]);
-
-        try {
-            DB::transaction(function () use ($call, $data): void {
-                $locked = Call::query()->lockForUpdate()->findOrFail($call->id);
-                $processId = $locked->callList()->value('process_id');
-                $courseId = $data['course_id'] ?? null;
-                $status = $data['enrollment_status'];
-
-                if ($courseId && in_array($status, ['enrolled', 'documents_pending'], true)) {
-                    $course = DB::table('course_process')
-                        ->where('process_id', $processId)
-                        ->where('course_id', $courseId)
-                        ->lockForUpdate()
-                        ->first();
-
-                    $occupied = Call::query()
-                        ->where('course_id', $courseId)
-                        ->whereIn('enrollment_status', ['enrolled', 'documents_pending'])
-                        ->where('id', '!=', $locked->id)
-                        ->whereHas('callList', fn ($query) => $query->where('process_id', $processId))
-                        ->count();
-
-                    if (! $course || $occupied >= $course->vacancies) {
-                        throw ValidationException::withMessages(['course_id' => 'Não há vagas disponíveis neste curso.']);
-                    }
-                }
-
-                $locked->update([
-                    'enrollment_status' => $status,
-                    'course_id' => $courseId,
-                    'regularization_deadline' => $status === 'documents_pending' ? $data['regularization_deadline'] : null,
-                    'enrollment_notes' => $data['enrollment_notes'] ?? null,
-                    'enrollment_recorded_at' => now(),
-                    'enrollment_recorded_by' => Auth::id(),
-                ]);
-            });
-        } catch (ValidationException $exception) {
-            return back()->withErrors($exception->errors())->withInput();
-        } catch (ModelNotFoundException $exception) {
-            abort(404);
-        }
-
-        return back()->with('success', 'Situação da matrícula registrada.');
-    }
-
     public function getUserCall(): ?array
     {
         $result = Auth::user()?->inscription?->result;
@@ -355,17 +235,12 @@ class CallController extends Controller
         ];
     }
 
-    public function excel(int $callNumber): BinaryFileResponse
-    {
-        return Excel::download(new CallExport($callNumber, Process::current()?->id), "chamada_{$callNumber}.xlsx");
-    }
-
-    public function pdf(int $callNumber): Response
+    public function pdf(int $callListId): Response
     {
         $callList = CallList::query()
             ->with('process')
             ->where('process_id', Process::current()?->id)
-            ->where('number', $callNumber)
+            ->whereKey($callListId)
             ->firstOrFail();
 
         $callListMembers = $callList->calls()
@@ -380,7 +255,6 @@ class CallController extends Controller
                 'result.inscription.user.father',
                 'result.inscription.user.guardian',
                 'result.inscription.user.parent_email',
-                'course',
             ])
             ->join('results', 'calls.result_id', '=', 'results.id')
             ->orderBy('results.ranking')
@@ -392,6 +266,6 @@ class CallController extends Controller
         $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers', 'callList', 'process'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("fichas-matricula-chamada-{$callNumber}.pdf");
+        return $pdf->stream("fichas-matricula-chamada-{$callList->number}_{$callList->id}.pdf");
     }
 }

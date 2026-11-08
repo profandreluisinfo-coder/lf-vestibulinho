@@ -13,10 +13,10 @@ class CallCandidateSelector
      * Returns the next not-yet-called candidates in general ranking order.
      * A tie at the requested boundary is kept together.
      */
-    public function select(Process $process, int $totalLimit, int $pcdLimit, ?int $vacancyCourseId = null): Collection
+    public function select(Process $process, int $totalLimit, int $pcdLimit): Collection
     {
         $pcdCandidates = $pcdLimit > 0
-            ? $this->next($process, $pcdLimit, true, [], $vacancyCourseId)
+            ? $this->next($process, $pcdLimit, true)
             : new Collection;
 
         if ($pcdCandidates->count() < $pcdLimit) {
@@ -28,7 +28,6 @@ class CallCandidateSelector
             max(0, $totalLimit - $pcdCandidates->count()),
             false,
             $pcdCandidates->modelKeys(),
-            $vacancyCourseId,
         );
 
         return $pcdCandidates->concat($generalCandidates)->sortBy([
@@ -42,14 +41,13 @@ class CallCandidateSelector
         int $limit,
         bool $pcdOnly = false,
         array $excludedIds = [],
-        ?int $vacancyCourseId = null,
     ): Collection
     {
         if ($limit < 1) {
             return new Collection;
         }
 
-        $pool = $this->eligibleResults($process, $vacancyCourseId)
+        $pool = $this->eligibleResults($process)
             ->reject(fn (Result $result) => in_array($result->id, $excludedIds, true));
 
         if ($pcdOnly) {
@@ -73,32 +71,16 @@ class CallCandidateSelector
         return $selected->concat($tiedAtBoundary)->values();
     }
 
-    private function eligibleResults(Process $process, ?int $vacancyCourseId): Collection
+    private function eligibleResults(Process $process): Collection
     {
-        $base = Result::query()
+        return Result::query()
             ->with(['inscription.user.lgbt', 'inscription.user.pne'])
             ->whereNotNull('ranking')
             ->where('classified', true)
             ->whereHas('inscription', fn ($query) => $query
                 ->approved()
-                ->forProcess($process->id));
-
-        $eligible = (clone $base)
+                ->forProcess($process->id))
             ->whereDoesntHave('calls')
             ->get();
-
-        if (! $vacancyCourseId) {
-            return $eligible;
-        }
-
-        $waitingForCourse = (clone $base)
-            ->whereHas('calls', fn ($query) => $query
-                ->where('enrollment_status', 'waiting_course')
-                ->where('course_id', $vacancyCourseId)
-                ->whereHas('callList', fn ($list) => $list->where('process_id', $process->id)))
-            ->whereDoesntHave('calls', fn ($query) => $query->where('enrollment_status', '!=', 'waiting_course'))
-            ->get();
-
-        return $eligible->concat($waitingForCourse)->unique('id')->values();
     }
 }

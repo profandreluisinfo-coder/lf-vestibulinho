@@ -16,7 +16,6 @@ class CallList extends Model
         'status',
         'published_at',
         'published_by',
-        'vacancy_course_id',
     ];
 
     protected function casts(): array
@@ -67,8 +66,4 @@ class CallList extends Model
         return $this->belongsTo(User::class, 'published_by');
     }
 
-    public function vacancyCourse(): BelongsTo
-    {
-        return $this->belongsTo(Course::class, 'vacancy_course_id');
-    }
 }

@@ -33,7 +33,7 @@
     @php
         $latestKey = collect($calls->keys())
             ->sortByDesc(function ($key) {
-                [, $date, $time] = explode('|', $key);
+                [, , $date, $time] = explode('|', $key);
 
                 $date = \Carbon\Carbon::parse($date)->format('Y-m-d');
                 $time = \Carbon\Carbon::parse($time)->format('H:i:s');
@@ -80,8 +80,8 @@
                         @foreach ($calls as $key => $convocados)
                             @php
                                 $isLatest = $key === $latestKey;
-                                [$callNumber, $date, $time] = explode('|', $key);
-                                $tableId = 'calls-' . $callNumber . '-' . $loop->index;
+                                [$callListId, $callNumber, $date, $time] = explode('|', $key);
+                                $tableId = 'calls-' . $callListId;
                             @endphp
 
                             <div class="pt-5 {{ $isLatest ? 'shadow-lg p-3 bg-white rounded' : '' }}">

@@ -47,7 +47,6 @@ class CallCandidateSelectorTest extends TestCase
             'amount' => 1,
             'date' => '2027-01-13',
             'time' => '09:00',
-            'enrollment_status' => 'lost',
         ]);
 
         $selected = app(CallCandidateSelector::class)->select($process, 1, 0);
@@ -55,48 +54,43 @@ class CallCandidateSelectorTest extends TestCase
         $this->assertSame([$next->id], $selected->modelKeys());
     }
 
-    public function test_course_specific_reopened_vacancy_includes_candidates_waiting_for_that_course(): void
+    public function test_call_numbers_can_repeat_and_dates_do_not_block_call_creation(): void
     {
         [$process, $course] = $this->processAndCourse();
-        $waiting = $this->makeResult($process, $course, 1);
-        $next = $this->makeResult($process, $course, 2);
-        $callList = $this->callList($process);
+        $this->makeResult($process, $course, 1);
+        $this->makeResult($process, $course, 2);
+        $admin = $this->admin();
 
-        Call::create([
-            'result_id' => $waiting->id,
-            'call_list_id' => $callList->id,
-            'call_number' => 1,
-            'amount' => 1,
-            'date' => '2027-01-13',
-            'time' => '09:00',
-            'course_id' => $course->id,
-            'enrollment_status' => 'waiting_course',
-        ]);
+        foreach (['2027-01-12', '2027-03-01'] as $date) {
+            $this->actingAs($admin)
+                ->post(route('admin.calls.store'), [
+                    'number' => 2,
+                    'limit' => 1,
+                    'pcd_limit' => 0,
+                    'date' => $date,
+                    'time' => '09:00',
+                ])
+                ->assertRedirect(route('admin.calls.index'))
+                ->assertSessionHasNoErrors();
+        }
 
-        $selector = app(CallCandidateSelector::class);
-
-        $this->assertSame([$next->id], $selector->select($process, 1, 0)->modelKeys());
-        $this->assertSame([$waiting->id], $selector->select($process, 1, 0, $course->id)->modelKeys());
+        $this->assertDatabaseCount('call_lists', 2);
+        $dates = CallList::query()->orderBy('id')->get()->map(fn (CallList $callList) => $callList->date->toDateString())->all();
+        $this->assertSame(['2027-01-12', '2027-03-01'], $dates);
     }
 
-    public function test_published_call_cannot_be_deleted_and_returns_a_validation_message(): void
+    public function test_published_call_can_be_deleted(): void
     {
         [$process] = $this->processAndCourse();
         $callList = $this->callList($process);
-        $admin = User::create([
-            'email' => 'admin-calls@example.test',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'name' => 'Administrador de teste',
-        ]);
 
-        $this->actingAs($admin)
+        $this->actingAs($this->admin())
             ->from(route('admin.calls.index'))
             ->delete(route('admin.calls.destroy', $callList))
             ->assertRedirect(route('admin.calls.index'))
-            ->assertSessionHasErrors('call');
+            ->assertSessionHas('success');
 
-        $this->assertDatabaseHas('call_lists', ['id' => $callList->id, 'status' => 'completed']);
+        $this->assertDatabaseMissing('call_lists', ['id' => $callList->id]);
     }
 
     public function test_public_call_page_shows_only_classified_candidates_and_the_three_public_fields(): void
@@ -116,7 +110,6 @@ class CallCandidateSelectorTest extends TestCase
                 'amount' => 2,
                 'date' => '2027-01-13',
                 'time' => '09:00',
-                'enrollment_status' => 'awaiting',
             ]);
         }
 
@@ -129,6 +122,58 @@ class CallCandidateSelectorTest extends TestCase
             ->assertSee('1º')
             ->assertDontSee('Nome Privado 739184')
             ->assertDontSee('987654');
+    }
+
+    public function test_admin_all_candidates_page_shows_a_message_when_there_are_no_calls(): void
+    {
+        $this->processAndCourse();
+        GlobalDataHelper::share();
+
+        $this->actingAs($this->admin())
+            ->get(route('admin.calls.all'))
+            ->assertOk()
+            ->assertSee('Ainda não há candidatos convocados neste processo seletivo.');
+    }
+
+    public function test_admin_all_candidates_page_orders_by_call_number_then_date_and_time(): void
+    {
+        [$process, $course] = $this->processAndCourse();
+
+        $candidateA = $this->makeResult($process, $course, 3);
+        $candidateB = $this->makeResult($process, $course, 2);
+        $candidateC = $this->makeResult($process, $course, 1);
+        $candidateA->inscription->user->update(['name' => 'Candidato chamada 1']);
+        $candidateB->inscription->user->update(['name' => 'Candidato chamada 2 primeiro horário']);
+        $candidateC->inscription->user->update(['name' => 'Candidato chamada 2 segundo horário']);
+
+        $lists = [
+            CallList::create(['process_id' => $process->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '10:00', 'status' => 'pending']),
+            CallList::create(['process_id' => $process->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '09:00', 'status' => 'completed']),
+            CallList::create(['process_id' => $process->id, 'number' => 1, 'date' => '2027-01-13', 'time' => '09:00', 'status' => 'completed']),
+        ];
+
+        foreach ([[$candidateA, $lists[2]], [$candidateB, $lists[1]], [$candidateC, $lists[0]]] as [$result, $list]) {
+            Call::create([
+                'result_id' => $result->id,
+                'call_list_id' => $list->id,
+                'call_number' => $list->number,
+                'amount' => 1,
+                'date' => $list->date,
+                'time' => $list->time,
+            ]);
+        }
+
+        GlobalDataHelper::share();
+
+        $response = $this->actingAs($this->admin())->get(route('admin.calls.all'));
+
+        $response
+            ->assertOk()
+            ->assertSeeInOrder([
+                'CANDIDATO CHAMADA 1',
+                'CANDIDATO CHAMADA 2 PRIMEIRO HORÁRIO',
+                'CANDIDATO CHAMADA 2 SEGUNDO HORÁRIO',
+            ]);
     }
 
     private function processAndCourse(): array
@@ -191,6 +236,16 @@ class CallCandidateSelectorTest extends TestCase
             'date' => '2027-01-13',
             'time' => '09:00',
             'status' => 'completed',
+        ]);
+    }
+
+    private function admin(): User
+    {
+        return User::create([
+            'email' => uniqid('admin-calls') . '@example.test',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'name' => 'Administrador de teste',
         ]);
     }
 }

@@ -210,13 +210,12 @@ Route::prefix('gestao')
             ->name('calls.')
             ->group(function () {
                 Route::get('registros', [CallController::class, 'index'])->name('index');
+                  Route::get('convocados', [CallController::class, 'allCandidates'])->name('all');
                 Route::post('salvar', [CallController::class, 'store'])->name('store');
                 Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
-                Route::get('numero/{call_number}', [CallController::class, 'show'])->name('show');
+                Route::get('numero/{callListId}', [CallController::class, 'show'])->name('show');
                 Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
-                Route::patch('{call}/matricula', [CallController::class, 'updateEnrollment'])->name('enrollment.update');
-                Route::get('numero/{call_number}/excel', [CallController::class, 'excel'])->name('excel');
-                Route::get('numero/{call_number}/pdf', [CallController::class, 'pdf'])->name('pdf');
+                Route::get('numero/{callListId}/pdf', [CallController::class, 'pdf'])->name('pdf');
             });
 
         // Local

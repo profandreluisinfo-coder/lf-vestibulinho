@@ -434,10 +434,6 @@
             </table>
 
         </div>
-
-        @php
-            die();
-        @endphp
     @endforeach
 </body>
 
