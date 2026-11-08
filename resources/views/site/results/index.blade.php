@@ -32,11 +32,16 @@
                 </a>
             </p>
 
-            <div class="mb-3" style="max-width: 320px;">
+            <div class="mb-3" style="max-width: 380px;">
                 <label for="filter" class="form-label small mb-1">Buscar pelo número da inscrição</label>
-                <input type="search" id="filter" class="form-control form-control-sm"
-                       inputmode="numeric" placeholder="Ex.: 123" autocomplete="off">
+                <input type="search" id="filter" class="form-control"
+                       inputmode="numeric" placeholder="Digite o início do número" autocomplete="off" aria-describedby="results-count">
             </div>
+            <p class="small text-muted mb-3">
+                Role a página para carregar mais candidatos. Se preferir, use o botão ao final da lista.
+            </p>
+
+            <p id="results-count" class="small text-muted mb-2" aria-live="polite">Exibindo {{ $results->count() }} candidatos</p>
 
             <div class="table-responsive">
                 <table class="table table-hover table-sm align-middle" id="results-table">
@@ -48,33 +53,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($results as $result)
+                        @foreach ($results as $result)
                             <tr>
                                 <td class="text-center">{{ $result->ranking }}º</td>
                                 <td class="text-center" data-inscription>{{ $result->inscription_id }}</td>
                                 <td class="text-center">{{ $result->score }}</td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-muted py-4">
-                                    Nenhum candidato classificado.
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
-            <script>
-                document.getElementById('filter').addEventListener('input', function () {
-                    const term = this.value.trim();
+            <div id="results-loading" class="text-center text-muted py-3" role="status" hidden>
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Carregando candidatos…
+            </div>
+            <p id="results-end" class="text-center small text-muted py-3 mb-0" hidden>Todos os resultados foram carregados.</p>
+            <p id="results-empty" class="text-center text-muted py-4" hidden>Nenhum candidato corresponde a essa inscrição.</p>
+            <p id="results-error" class="text-center text-danger small py-3" role="alert" hidden></p>
+            <div class="text-center mb-3">
+                <button type="button" id="results-more" class="btn btn-outline-primary btn-sm" hidden>Carregar mais candidatos</button>
+            </div>
+            <div id="results-sentinel" aria-hidden="true"></div>
 
-                    document.querySelectorAll('#results-table tbody tr').forEach(function (row) {
-                        const cell = row.querySelector('[data-inscription]');
-                        row.hidden = term !== '' && cell !== null && !cell.textContent.trim().startsWith(term);
-                    });
-                });
+            <script>
+                window.resultsMoreUrl = @json(route('site.results.more'));
             </script>
+            @push('scripts')
+                <script src="{{ asset('assets/js/site/results/index.js') }}?v={{ filemtime(public_path('assets/js/site/results/index.js')) }}"></script>
+            @endpush
 
         @endif
 

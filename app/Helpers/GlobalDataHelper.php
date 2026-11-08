@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Call;
+use App\Models\CallList;
 use App\Models\Inscription;
 use App\Models\Post;
 use App\Models\Process;
@@ -35,11 +35,18 @@ class GlobalDataHelper
             fn() => User::where('role', 'user')->doesntHave('inscription')->count()
         );
 
-        $calls_exists = Cache::remember(
-            'calls_exists',
+        $callsCountCacheKey = 'calls_finalized_count_' . ($process?->id ?? 'none');
+        $totalFinalizedCalls = Cache::remember(
+            $callsCountCacheKey,
             60,
-            fn() => class_exists(Call::class) ? Call::exists() : false
+            fn () => $process
+                ? CallList::query()
+                    ->where('process_id', $process->id)
+                    ->where('status', 'completed')
+                    ->count()
+                : 0
         );
+        $calls_exists = $totalFinalizedCalls > 0;
 
         $totalComunicados = Cache::remember('global_total_comunicados', 300, function () {
             try {
@@ -74,6 +81,7 @@ class GlobalDataHelper
             $usersWithoutInscription,
             $year,
             $calls_exists,
+            $totalFinalizedCalls,
             $locationReleased,
             $resultReleased,
         ) {
@@ -84,6 +92,7 @@ class GlobalDataHelper
                 'usersWithoutInscription' => $usersWithoutInscription,
                 'year' => $year,
                 'calls_exists' => $calls_exists,
+                'totalFinalizedCalls' => $totalFinalizedCalls,
                 'locationReleased' => $locationReleased,
                 'resultReleased'   => $resultReleased,
             ]);

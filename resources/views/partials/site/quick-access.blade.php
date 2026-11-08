@@ -62,13 +62,13 @@
             'badge' => '',
         ],
         [
-            'show' => false,
-            // 'href' => route('site.calls.index'),
-            'href' => '#',
+            'show' => $calls_exists,
+            'href' => route('site.calls.index'),
             'icon' => 'bell-fill',
-            'title' => 'Convocação',
-            'desc' => 'Chamada para matrícula',
-            'badge' => '',
+            'title' => 'Chamadas',
+            'desc' => 'Convocação para matrícula',
+            'badge' => $totalFinalizedCalls ?: null,
+            'badge_title' => "{$totalFinalizedCalls} chamada(s) finalizada(s)",
         ],
     ];
 @endphp

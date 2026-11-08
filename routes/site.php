@@ -34,6 +34,8 @@ Route::name('site.')
         // Classificação geral
         Route::get('resultado/classificacao-geral', [ResultController::class, 'index'])
             ->name('results.index');
+        Route::get('resultado/classificacao-geral/mais', [ResultController::class, 'more'])
+            ->name('results.more');
         Route::get('resultado/nao-classificados', [ResultController::class, 'eliminated'])
             ->name('results.eliminated');
 

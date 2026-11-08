@@ -7,6 +7,8 @@ use App\Models\Process;
 use App\Models\Result;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ResultController extends Controller
 {
@@ -25,17 +27,48 @@ class ResultController extends Controller
         $released = (bool) $process?->isResultReleased();
  
         // Cache limpo em Process::booted (liberar ou retirar do ar salva o processo)
-        $results = $released
-            ? Cache::remember('global_results', 3600, fn () => Result::query()
-                ->where('classified', true)
-                ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
-                ->orderBy('ranking')
-                ->orderBy('inscription_id') // ordem estável entre empatados (mesma posição)
-                ->get(['inscription_id', 'ranking', 'score'])
-            )
-            : collect();
+        $results = $released ? $this->classifiedResultsQuery($process->id)->limit(50)->get() : collect();
  
         return view('site.results.index', compact('released', 'results'));
+    }
+
+    /** Carrega páginas adicionais da lista pública, sem expor dados antes da liberação. */
+    public function more(Request $request): JsonResponse
+    {
+        $process = Process::cached();
+        if (! $process?->isResultReleased()) {
+            return response()->json(['data' => [], 'has_more' => false], 403);
+        }
+
+        $validated = $request->validate([
+            'offset' => ['sometimes', 'integer', 'min:0'],
+            'search' => ['sometimes', 'nullable', 'string', 'max:30'],
+        ]);
+        $offset = (int) ($validated['offset'] ?? 0);
+        $search = trim($validated['search'] ?? '');
+        $query = $this->classifiedResultsQuery($process->id);
+        if ($search !== '') {
+            $query->where('inscription_id', 'like', $search . '%');
+        }
+        $data = $query->offset($offset)->limit(51)->get();
+        $hasMore = $data->count() > 50;
+        $data = $data->take(50)->values();
+
+        return response()->json([
+            'data' => $data,
+            'has_more' => $hasMore,
+            'next_offset' => $offset + $data->count(),
+        ]);
+    }
+
+    private function classifiedResultsQuery(int $processId)
+    {
+        return Result::query()
+            ->where('classified', true)
+            ->whereHas('inscription', fn ($q) => $q->forProcess($processId))
+            ->orderBy('ranking')
+            ->orderBy('inscription_id')
+            ->select(['inscription_id', 'ranking', 'score']);
     }
  
     /**

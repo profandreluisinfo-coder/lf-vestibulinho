@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 class CallList extends Model
 {
@@ -64,6 +65,17 @@ class CallList extends Model
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by');
+    }
+
+    protected static function booted(): void
+    {
+        $forgetCallCache = function (CallList $callList): void {
+            Cache::forget('calls_exists');
+            Cache::forget('calls_finalized_count_' . ($callList->process_id ?? 'none'));
+        };
+
+        static::saved($forgetCallCache);
+        static::deleted($forgetCallCache);
     }
 
 }
