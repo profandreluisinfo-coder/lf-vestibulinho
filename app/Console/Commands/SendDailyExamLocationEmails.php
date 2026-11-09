@@ -56,7 +56,7 @@ class SendDailyExamLocationEmails extends Command
 
             SendExamLocationMailJob::dispatch(
                 email: $user->email,
-                subject: 'Local de Prova – Vestibulinho LF ' . ($process?->year ?? now()->year),
+                subject: 'CONVOCAÇÃO PARA PROVA – PROCESSO SELETIVO E.M. DR. LEANDRO FRANCESCHINI ' . ($process?->year ?? now()->year),
                 content: [
                     'name' => $name,
                     'date' => $process?->exam_date,   // data e hora vêm do processo

@@ -1,50 +1,68 @@
   <p>Prezado(a) candidato(a), {{ $nome }}!</p>
 
-  <p>Parabéns pela sua aprovação no Processo Seletivo {{ $process?->year }} da ESCOLA MUNICIPAL DR. LEANDRO
-      FRANCESCHINI! Estamos felizes em recebê-lo(a) em nossa Unidade Escolar.</p>
+  <p>Parabéns por sua classificação no Processo Seletivo {{ $process?->year }} da <strong>ESCOLA MUNICIPAL DR. LEANDRO
+          FRANCESCHINI</strong>! É com satisfação que o(a) convocamos para a efetivação de sua matrícula no ENSINO
+      TÉCNICO DE NÍVEL MÉDIO INTEGRADO para o ano letivo de 2027.</p>
 
-  <p>É com grande satisfação que convocamos seus responsáveis legais para realizar sua matrícula no ENSINO TÉCNICO DE
-      NÍVEL MÉDIO INTEGRADO, <strong>{{ $numero_chamada }}ª chamada</strong>,imprescindivelmente no:</p>
+  <p>Nos termos do Edital do Processo Seletivo Público 2027, os(as) candidatos(as) convocados(as) deverão comparecer
+      para a matrícula na data, horário e local informados abaixo:</p>
 
   <p>
-      <strong>Dia:</strong> {{ $data }}<br>
+      <strong>Data:</strong> {{ $data }}<br>
       <strong>Horário:</strong> {{ $hora }} às 19:00h<br>
-      <strong>Local:</strong> R. Geraldo de Souza, 157/221 - Jardim São Carlos, Sumaré - SP, 13170-232
+      <strong>Local:</strong> Escola Municipal Dr. Leandro Franceschini<br>
+      <strong>Endereço:</strong> R. Geraldo de Souza, 157/221 - Jardim São Carlos, Sumaré/SP
   </p>
 
-  <p>
-      <strong>INFORMAÇÕES IMPORTANTES!</strong>
-  </p>
+  <p>DOCUMENTAÇÃO OBRIGATÓRIA</p>
 
-  <p>A falta de documentação ou não comparecimento na data e horário estabelecido acarretará na perda da vaga, portanto
-      não se esqueça de comparecer no dia e horário indicado portando todos os documentos previstos no item
-      <strong>7.4</strong> do edital.
-  </p>
-
-  <p>Quais sejam:</p>
+  <p>No ato da matrícula, o(a) candidato(a) deverá apresentar os seguintes documentos:</p>
 
   <ol>
-      <li>Declaração de Conclusão do Ensino Fundamental ou Histórico Escolar do Ensino Fundamental (Original e 01
-          cópia);
-      </li>
-      <li>01 foto 3x4;</li>
-      <li>Original e 01 cópia do documento de identidade (RG/CIN ou RNE para estrangeiro) atualizado e com foto que
-          identifique o portador;</li>
-      <li>Original e 01 cópia do CPF;</li>
-      <li>Original e 01 cópia da certidão de nascimento;</li>
-      <li>Carteira de vacinação (Original e 01 cópia);</li>
-      <li>Comprovante de residência no município de Sumaré com menos de 60 dias de emissão, em nome dos pais ou do
-          responsável legal pelo (a) candidato (a); (Original e 01 cópia)</li>
+      <li>Declaração de Conclusão ou Histórico Escolar do Ensino Fundamental - original e 1 cópia;</li>
+      <li>01 foto 3x4 recente;</li>
+      <li>Documento de identidade atualizado, com foto que identifique o portador (RG, CIN ou RNM/RNE para estrangeiros)
+          - original e 1 cópia;</li>
+      <li>Cadastro de Pessoa Física (CPF) - original e 1 cópia;</li>
+      <li>Certidão de Nascimento - original e 1 cópia;</li>
+      <li>Comprovante de residência no Município de Sumaré, emitido há no máximo 60 dias, em nome dos pais ou do
+          responsável legal do(a) candidato(a) - original e 1 cópia;</li>
+      <li>Carteira de vacinação atualizada - 1 cópia;</li>
   </ol>
 
-  <p>O(a) candidato(a) elegível aos serviços da educação especial deverá apresentar laudo médico no ato da matrícula.
+  <p>
+      <strong>ORIENTAÇÕES IMPORTANTES!</strong>
   </p>
-  <p>Àqueles que possuem responsáveis legais que não sejam os pais biológicos, devem trazer o documento que comprove a
-      guarda ou a tutela.</p>
-  <p>Agradecemos sua atenção e os aguardamos na E.M. Dr. Leandro Franceschini para a realização da matrícula.</p>
+
+  <ul>
+      <li>A matrícula será realizada de acordo com a classificação geral dos(as) candidatos(as) aprovados(as) e a
+          disponibilidade de vagas.</li>
+      <li>O(a) candidato(a) convocado(a) que não comparecer para efetivar a matrícula no período estabelecido perderá o
+          direito à vaga, que será destinada ao(à) próximo(a) candidato(a) classificado(a).</li>
+      <li>No caso de candidato(a) menor de idade, é obrigatória a presença de seu representante legal (pai, mãe, tutor
+          ou curador) no ato da matrícula.</li>
+      <li>Quando acompanhado(a) pelos pais, será necessária apenas a apresentação de documento oficial de identificação.
+      </li>
+      <li>Na ausência dos pais, o representante deverá apresentar procuração simples com firma reconhecida em cartório.
+      </li>
+      <li>Nos casos de tutela, guarda ou curatela, deverá ser apresentado o respectivo documento judicial comprobatório.
+      </li>
+      <li>Para os casos em que o imóvel seja alugado e o comprovante de residência não esteja em nome dos pais ou do
+          responsável legal do(a) candidato(a), serão aceitos:<br>
+          I - Contrato de locação vigente acompanhado de comprovante de residência do imóvel. ou<br>
+          II - Declaração de residência assinada pelo proprietário ou locatário do imóvel, acompanhada de cópia do
+          documento de identificação do declarante e de comprovante de residência emitido há no máximo 60 (sessenta)
+          dias.</li>
+      <li>Havendo ausência de documentação obrigatória ou apresentação de documentos em desconformidade com o edital, a
+          matrícula poderá ficar suspensa para regularização, conforme os procedimentos previstos no edital.</li>
+  </ul>
+
+  <p>Acompanhe as publicações oficiais através do site da escola: <a
+          href="https://vestibulinho.leandrofranceschini.com.br">https://vestibulinho.leandrofranceschini.com.br</a> e na
+      Área do Candidato.</p>
 
   <p>Atenciosamente,<br>
-      Equipe de Seleção E.M. Dr. Leandro Franceschini<br>
-      <strong>E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong>
+      <strong>Comissão Organizadora do Processo Seletivo Público 2027<br>
+          E. M. Dr. Leandro Franceschini - Prefeitura Muninicipal de Sumaré</strong>
   </p>
   @include('partials.emails.footer')

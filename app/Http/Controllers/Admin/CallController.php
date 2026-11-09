@@ -201,12 +201,11 @@ class CallController extends Controller
 
             SendCallNotificationJob::dispatch(
                 $user->email,
-                sprintf('CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s — CHAMADA %d', $callList->process?->year, $callList->number),
+                sprintf('CONVOCAÇÃO PARA MATRÍCULA – PROCESSO SELETIVO %s E.M. DR. LEANDRO FRANCESCHINI', $callList->process?->year),
                 [
                     'nome' => $user->lgbt?->status === 'accepted' ? $user->lgbt->name : $user->name,
                     'data' => $callList->date->format('d/m/Y'),
                     'hora' => $callList->time->format('H:i'),
-                    'numero_chamada' => $callList->number,
                 ],
                 'emails.call.convocation',
             );
