@@ -165,7 +165,11 @@
                         <td colspan="10">{{ $lgbt?->status === 'accepted' ? $lgbt->name : '-' }}</td>
                     </tr>
                     <tr class="h1158 dupla">
-                        <th colspan="3">RA: <span class="v">{{ $academic?->ra ?? '-' }}</span></th>
+                        @php
+                            $ra = $academic?->ra;
+                            $raDigits = preg_replace('/\D+/', '', (string) $ra);
+                        @endphp
+                        <th colspan="3">RA: <span class="v">{{ $raDigits === '0000000000' ? '' : ($ra ?? '') }}</span></th>
                         <th colspan="4">RG/CIN: <span class="v">{{ $document?->number ?? '-' }}</span></th>
                         <th colspan="5">CPF: <span class="v">{{ $user?->cpf ?? '-' }}</span></th>
                     </tr>
@@ -217,15 +221,15 @@
                     </tr>
                     <tr class="h732">
                         <th colspan="3">POSSUI ALGUMA DEFICIÊNCIA?</th>
-                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
+                        <td colspan="9">{{ $hasAcceptedPne ? 'SIM - ' : 'NÃO' }} {{ $hasAcceptedPne ? mb_strtoupper($pne?->description, 'UTF-8') : '' }}</td>
                     </tr>
                     <tr class="h732">
                         <th colspan="3">NECESSITA DE ADAPTAÇÃO PEDAGÓGICA?</th>
-                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
+                        <td colspan="9">{{ $needsAdaptation ? 'SIM - ' : 'NÃO' }} {{ $needsAdaptation ? $pne?->support : '' }}</td>
                     </tr>
                     <tr class="h732">
                         <th colspan="3">TEM ALGUM PROBLEMA DE SAÚDE OU ALERGIA?</th>
-                        <td class="opcoes" colspan="9"><span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM – ESPECIFIQUE:</span></td>
+                        <td colspan="9">{{ $healthIssue ? 'SIM - ' : 'NÃO' }} {{ $healthIssue ?? '' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -241,27 +245,27 @@
                     </tr>
                     <tr class="h579">
                         <th>FILIAÇÃO 1</th>
-                        <td></td>
+                        <td>{{ $mother?->name ?? '-' }}</td>
                         <th class="fs75">CONTATO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $mother?->phone ?? '-' }}</td>
                     </tr>
                     <tr class="h579">
                         <th>FILIAÇÃO 2</th>
-                        <td></td>
+                        <td>{{ $father?->name ?? '-' }}</td>
                         <th class="fs75">CONTATO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $father?->phone ?? '-' }}</td>
                     </tr>
                     <tr class="h662">
                         <th>RESPONSÁVEL PELO ESTUDANTE</th>
-                        <td></td>
+                        <td>{{ $guardian?->name ?? '-' }}</td>
                         <th class="fs75" colspan="2">PARENTESCO</th>
-                        <td></td>
+                        <td>{{ $guardian?->kinship ?: ($guardian?->degree ?: '-') }}</td>
                     </tr>
                     <tr class="h579">
                         <th>E-MAIL</th>
-                        <td></td>
+                        <td>{{ $parentEmail?->address ?? '-' }}</td>
                         <th class="fs75">CONTATO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $guardian?->phone ?? '-' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -280,21 +284,21 @@
                     <tr class="h662">
                         <th>ENDEREÇO RESIDENCIAL</th>
                         <th>RUA/AV.</th>
-                        <td colspan="5"></td>
+                        <td colspan="5">{{ $user?->street }} {{ $user?->home }}</td>
                     </tr>
                     <tr class="h579">
                         <th>BAIRRO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $user?->burgh ?? '-' }}</td>
                         <th colspan="2">COMPLEMENTO</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $user?->complement ?? '-' }}</td>
                     </tr>
                     <tr class="h579">
                         <th>CIDADE</th>
-                        <td colspan="2"></td>
+                        <td colspan="2">{{ $user?->city ?? '-' }}</td>
                         <th class="c">UF</th>
-                        <td></td>
+                        <td>{{ $user?->state ?? '-' }}</td>
                         <th class="c">CEP</th>
-                        <td></td>
+                        <td>{{ $user?->zip ?? '-' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -311,15 +315,15 @@
                     </tr>
                     <tr class="h649">
                         <th>ESCOLA DE CONCLUSÃO E.F.</th>
-                        <td colspan="5"></td>
+                        <td colspan="5">{{ $academic?->school ?? '-' }}</td>
                     </tr>
                     <tr class="h649">
                         <th>CIDADE</th>
-                        <td></td>
+                        <td>{{ $academic?->city ?? '-' }}</td>
                         <th class="c">UF</th>
-                        <td></td>
+                        <td>{{ $academic?->state ?? '-' }}</td>
                         <th class="c">ANO DE CONCLUSÃO</th>
-                        <td></td>
+                        <td>{{ $academic?->year ?? '-' }}</td>
                     </tr>
                     <tr class="h649">
                         <td class="opcoes" colspan="6">ESTUDANTE JÁ CURSOU 1º ANO EM OUTRA INSTITUIÇÃO DE ENSINO? <span class="op">(&nbsp;&nbsp;&nbsp;) NÃO</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="op">(&nbsp;&nbsp;&nbsp;) SIM</span></td>
@@ -342,7 +346,7 @@
                     <tr class="h700">
                         <td></td>
                         <th class="c">DATA</th>
-                        <td></td>
+                        <td>{{ $callDate }}</td>
                     </tr>
                 </tbody>
             </table>
