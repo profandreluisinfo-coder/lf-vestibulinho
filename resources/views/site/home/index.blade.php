@@ -15,11 +15,11 @@
         $hasCalendarDates =
             $process !== null &&
             collect([
-                $process->start,
-                $process->end,
-                $process->location_publish,
-                $process->exam_date,
-                $process->result_publish,
+                $process?->start,
+                $process?->end,
+                $process?->location_publish,
+                $process?->exam_date,
+                $process?->result_publish,
             ])->contains(fn($date) => $date !== null);
         $inscriptionLabel = match (true) {
             $process?->isInscriptionEnded() => 'Inscrições encerradas',
@@ -76,7 +76,7 @@
                         @if ($process?->year)
                             <div class="col-6">
                                 <div class="stat-chip delay-4">
-                                    <div class="num">{{ $process->year }}</div>
+                                    <div class="num">{{ $process?->year }}</div>
                                     <div class="lbl">Processo Seletivo</div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                 <div class="stat-chip delay-3">
                                     <div class="num" style="color:var(--amber);">Prova</div>
                                     <div class="lbl">
-                                        {{ ucfirst($process->exam_date->translatedFormat('d/m')) }}
+                                        {{ ucfirst($process?->exam_date->translatedFormat('d/m')) }}
                                     </div>
                                 </div>
                             </div>
@@ -320,8 +320,8 @@
                         @if ($process?->start)
                             <div class="cal-card mb-3 reveal delay-1">
                                 <div class="cal-date">
-                                    <div class="day">{{ $process->start->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($process->start->translatedFormat('M')) }}</div>
+                                    <div class="day">{{ $process?->start->format('d') }}</div>
+                                    <div class="mon">{{ ucfirst($process?->start->translatedFormat('M')) }}</div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Início das Inscrições</h5>
@@ -334,8 +334,8 @@
                         @if ($process?->end)
                             <div class="cal-card mb-3 reveal delay-2">
                                 <div class="cal-date" style="background:var(--teal2);">
-                                    <div class="day">{{ $process->end->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($process->end->translatedFormat('M')) }}</div>
+                                    <div class="day">{{ $process?->end->format('d') }}</div>
+                                    <div class="mon">{{ ucfirst($process?->end->translatedFormat('M')) }}</div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Encerramento das Inscrições</h5>
@@ -348,8 +348,8 @@
                         @if ($process?->location_publish)
                             <div class="cal-card mb-3 reveal delay-3">
                                 <div class="cal-date" style="background:#7B3FA0;">
-                                    <div class="day">{{ $process->location_publish->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($process->location_publish->translatedFormat('M')) }}
+                                    <div class="day">{{ $process?->location_publish->format('d') }}</div>
+                                    <div class="mon">{{ ucfirst($process?->location_publish->translatedFormat('M')) }}
                                     </div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
@@ -364,8 +364,8 @@
                         @if ($process?->exam_date)
                             <div class="cal-card mb-3 reveal delay-2">
                                 <div class="cal-date" style="background:#C0392B;">
-                                    <div class="day">{{ $process->exam_date->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($process->exam_date->translatedFormat('M')) }}</div>
+                                    <div class="day">{{ $process?->exam_date->format('d') }}</div>
+                                    <div class="mon">{{ ucfirst($process?->exam_date->translatedFormat('M')) }}</div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Dia da Prova</h5>
@@ -378,8 +378,8 @@
                         @if ($process?->result_publish)
                             <div class="cal-card mb-3 reveal delay-3">
                                 <div class="cal-date" style="background:var(--amber2);">
-                                    <div class="day">{{ $process->result_publish->format('d') }}</div>
-                                    <div class="mon">{{ ucfirst($process->result_publish->translatedFormat('M')) }}</div>
+                                    <div class="day">{{ $process?->result_publish->format('d') }}</div>
+                                    <div class="mon">{{ ucfirst($process?->result_publish->translatedFormat('M')) }}</div>
                                 </div>
                                 <div class="cal-info flex-grow-1">
                                     <h5>Divulgação da Classificação</h5>

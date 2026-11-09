@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Vestibulinho LF {{ $process->year }} - Lista para Mural e Salas</title>
+    <title>Vestibulinho LF {{ $process?->year }} - Lista para Mural e Salas</title>
     <style>
        body {
             font-family: DejaVu Sans, sans-serif;

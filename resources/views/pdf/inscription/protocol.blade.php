@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Vestibulinho LF {{ $process->year }} | Ficha de Inscrição
+        Vestibulinho LF {{ $process?->year }} | Ficha de Inscrição
     </title>
 
     <style>
@@ -154,12 +154,12 @@
 </head>
 
 <body>
-    <div class="watermark">Vestibulinho LF {{ $process->year }}</div>
+    <div class="watermark">Vestibulinho LF {{ $process?->year }}</div>
 
     <div class="card">
         <div class="header-info">
             <span style="font-size: 16px; text-transform:uppercase; font-weight: 600">Vestibulinho LF
-                {{ $process->year }}
+                {{ $process?->year }}
         </div>
 
         <div class="header-info">
@@ -406,7 +406,7 @@
         </div>
 
         <div class="card-footer">
-            <p>E. M. Dr. Leandro Franceschini | Vestibulinho LF {{ $process->year }}</p>
+            <p>E. M. Dr. Leandro Franceschini | Vestibulinho LF {{ $process?->year }}</p>
         </div>
     </div>
 </body>

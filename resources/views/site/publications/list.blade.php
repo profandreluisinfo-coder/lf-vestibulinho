@@ -103,7 +103,7 @@
                         @unless ($approved)
                             Dúvidas sobre o indeferimento? Consulte o
                             @if ($process?->edital)
-                                <a href="{{ Storage::url($process->edital) }}" target="_blank"
+                                <a href="{{ Storage::url($process?->edital) }}" target="_blank"
                                     rel="noopener noreferrer">edital</a>.
                             @else
                                 edital.

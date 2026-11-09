@@ -81,7 +81,7 @@ class LoginController extends Controller
             if ($user->role === 'user' && !$user->inscription()->exists()) {
                 $process = Process::current();
 
-                if (!$process || !$process->isInscriptionOpen()) {
+                if (!$process || !$process?->isInscriptionOpen()) {
                     Auth::logout();
 
                     $msg = 'As inscrições estão encerradas.';

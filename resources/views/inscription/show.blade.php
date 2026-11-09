@@ -287,13 +287,13 @@
                                 <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                     <div class="call-data-label" style="color:#2b6cb0;">Data</div>
                                     <div class="call-data-value" style="color:#1a365d;">
-                                        {{ $process->exam_date?->format('d/m/Y') ?? '—' }}
+                                        {{ $process?->exam_date?->format('d/m/Y') ?? '—' }}
                                     </div>
                                 </div>
                                 <div class="call-data-item" style="border-color:#bee3f8; background:#ebf8ff;">
                                     <div class="call-data-label" style="color:#2b6cb0;">Horário</div>
                                     <div class="call-data-value" style="color:#1a365d;">
-                                        {{ $process->exam_time ? \Carbon\Carbon::parse($process->exam_time)->format('H:i') : '—' }}
+                                        {{ $process?->exam_time ? \Carbon\Carbon::parse($process?->exam_time)->format('H:i') : '—' }}
                                     </div>
                                 </div>
                             </div>

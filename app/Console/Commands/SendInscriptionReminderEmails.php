@@ -20,7 +20,7 @@ class SendInscriptionReminderEmails extends Command
         $process = Process::current();
 
         // Só roda dentro do período de inscrições (status "open" + data atual entre início e fim)
-        if (! $process || ! $process->isInscriptionOpen()) {
+        if (! $process || ! $process?->isInscriptionOpen()) {
             return Command::SUCCESS;
         }
 
@@ -32,11 +32,11 @@ class SendInscriptionReminderEmails extends Command
             ->whereNotNull('email_verified_at')
             ->where('email_verified_at', '<=', now()->subDays($days))
             // sem inscrição neste processo seletivo
-            ->whereDoesntHave('inscription', fn($q) => $q->where('process_id', $process->id))
+            ->whereDoesntHave('inscription', fn($q) => $q->where('process_id', $process?->id))
             // não reenviar: só quem nunca recebeu (ou recebeu antes deste período de inscrições)
             ->where(function ($q) use ($process) {
                 $q->whereNull('inscription_reminder_sent_at')
-                    ->orWhere('inscription_reminder_sent_at', '<', $process->start);
+                    ->orWhere('inscription_reminder_sent_at', '<', $process?->start);
             })
             ->orderBy('email_verified_at')
             ->limit($limit)
@@ -49,9 +49,9 @@ class SendInscriptionReminderEmails extends Command
         foreach ($users as $user) {
             SendInscriptionReminderMailJob::dispatch(
                 userId: $user->id,
-                processId: $process->id,
-                subject: 'Complete sua inscrição – Vestibulinho LF ' . $process->year,
-                end: $process->end,
+                processId: $process?->id,
+                subject: 'Complete sua inscrição – Vestibulinho LF ' . $process?->year,
+                end: $process?->end,
                 url: config('app.url'),
             );
         }

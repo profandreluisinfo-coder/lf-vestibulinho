@@ -4,7 +4,7 @@
     <div class="container py-5">
 
         <h1 class="h4 mb-1">
-            Candidatos não classificados{{ $process?->year ? ' — Processo Seletivo ' . $process->year : '' }}
+            Candidatos não classificados{{ $process?->year ? ' — Processo Seletivo ' . $process?->year : '' }}
         </h1>
 
         @if (! $released)
@@ -13,7 +13,7 @@
                 <i class="bi bi-hourglass-split me-1"></i>
                 O resultado ainda não foi divulgado.
                 @if ($process?->result_publish)
-                    Divulgação prevista para {{ $process->formatDate($process->result_publish) }}.
+                    Divulgação prevista para {{ $process?->formatDate($process?->result_publish) }}.
                 @endif
             </div>
 

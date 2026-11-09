@@ -4,7 +4,7 @@
 
 @section('content')
     @php
-        $released = $process->isResultReleased();
+        $released = $process?->isResultReleased();
         $canRelease = (int) $stats->classified_count > 0;
         $confirmMessage = $released
             ? 'Retirar o resultado do ar? Os candidatos deixarão de vê-lo.'
@@ -51,7 +51,7 @@
         @if ($released)
             <div class="alert alert-success py-2 small" role="status">
                 <i class="bi bi-check-circle-fill me-1"></i>
-                Resultado liberado aos candidatos em {{ $process->result_released_at->format('d/m/Y \à\s H:i') }}.
+                Resultado liberado aos candidatos em {{ $process?->result_released_at->format('d/m/Y \à\s H:i') }}.
                 A importação de notas fica bloqueada enquanto ele estiver no ar.
             </div>
         @else

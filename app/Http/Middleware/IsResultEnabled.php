@@ -18,7 +18,7 @@ class IsResultEnabled
     {
         $process = Process::current();
 
-        if (! $process->isResultEnabled()) {
+        if (! $process?->isResultEnabled()) {
             abort(404);
         }
         

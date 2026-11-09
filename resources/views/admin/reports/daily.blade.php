@@ -106,9 +106,9 @@
         </tr>
     </table>
     <h1>Inscrições por dia</h1>
-    <p class="sub">Vestibulinho {{ $process->year }}</p>
+    <p class="sub">Vestibulinho {{ $process?->year }}</p>
     <p class="period">
-        Período das inscrições: {{ $process->formatPeriod($process->start, $process->end) }}
+        Período das inscrições: {{ $process?->formatPeriod($process?->start, $process?->end) }}
     </p>
 
     <table>

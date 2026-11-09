@@ -35,7 +35,7 @@
                         <tr>
                             <td scope="row">{{ $file->id }}</td>
                             <td>
-                                Vestibulinho {{ $file?->process->year }}
+                                {{ $file->process?->year ? 'Vestibulinho ' . $file->process->year : 'Sem processo vinculado' }}
                             </td>
                             <td>
                                 <a href="{{ route('admin.templates.preview', $file) }}" target="_blank">

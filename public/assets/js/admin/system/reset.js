@@ -41,7 +41,7 @@ function resetSystem() {
                 })
                 .then(data => {
                     Swal.fire('Redefinido!', data.message, 'success').then(() => {
-                        window.location.href = '/admin/login';
+                        window.location.href = redirUrl; // Redireciona para a página inicial
                     });
                 })
                 .catch(error => {

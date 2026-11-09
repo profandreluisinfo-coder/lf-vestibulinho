@@ -53,17 +53,17 @@ class ExamAllocationService
                 throw new DomainException('Nenhum processo seletivo cadastrado.');
             }
 
-            if ($process->isLocationReleased()) {
+            if ($process?->isLocationReleased()) {
                 throw new DomainException(
                     'O local da prova já foi liberado aos candidatos. '
                         . 'Uma nova alocação trocaria a sala de quem já foi informado.'
                 );
             }
 
-            if (! $process->isInscriptionEnded()) {
+            if (! $process?->isInscriptionEnded()) {
                 throw new DomainException(
-                    $process->end
-                        ? 'O período de inscrições só termina em ' . $process->formatDate($process->end)
+                    $process?->end
+                        ? 'O período de inscrições só termina em ' . $process?->formatDate($process?->end)
                         . '. Aguarde o encerramento para alocar os candidatos.'
                         : 'O período de inscrições do processo atual não está definido.'
                 );
@@ -143,7 +143,7 @@ class ExamAllocationService
 
             // 7. Remover alocações antigas de inscrições deste processo que saíram da lista
             //    (alocações de outros processos não são tocadas)
-            Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id))
+            Exam::whereHas('inscription', fn($q) => $q->forProcess($process?->id))
                 ->whereNotIn('inscription_id', $sorted->pluck('id'))
                 ->delete();
 
@@ -165,7 +165,7 @@ class ExamAllocationService
     private function sortedCandidates(Process $process): Collection
     {
         return Inscription::approved()
-            ->forProcess($process->id)
+            ->forProcess($process?->id)
             ->with(['user.lgbt', 'user.pne'])
             ->whereHas('user', fn($q) => $q->where('role', 'user'))
             ->get()
@@ -199,7 +199,7 @@ class ExamAllocationService
 
         // Recursos ainda em análise, de candidatos deste processo
         $pendingAppeals = Appeal::pending()
-            ->whereHas('user.inscription', fn($q) => $q->approved()->forProcess($process->id))
+            ->whereHas('user.inscription', fn($q) => $q->approved()->forProcess($process?->id))
             ->count();
 
         if ($pendingPne === 0 && $pendingLgbt === 0 && $pendingAppeals === 0) {

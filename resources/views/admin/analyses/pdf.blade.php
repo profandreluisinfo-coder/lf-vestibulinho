@@ -107,7 +107,7 @@
 
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
-        <h1>Vestibulinho LF {{ $process->year }} - {{ $title }}</h1>
+        <h1>Vestibulinho LF {{ $process?->year }} - {{ $title }}</h1>
     </div>
 
     <p><strong>Ref.:</strong><br>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Vestibulinho LF {{ $process->year }} - Lista de Assinaturas</title>
+    <title>Vestibulinho LF {{ $process?->year }} - Lista de Assinaturas</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;

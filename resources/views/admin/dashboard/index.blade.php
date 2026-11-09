@@ -4,15 +4,17 @@
 
 @section('content')
     @php
-        if (!$process->start || !$process->end) {
+        if (!$process) {
+            $situation = 'Nenhum processo seletivo cadastrado';
+        } elseif (!$process?->start || !$process?->end) {
             $situation = 'Datas das inscrições ainda não definidas';
-        } elseif ($process->isInscriptionOpen()) {
-            $days = (int) today()->diffInDays($process->end);
+        } elseif ($process?->isInscriptionOpen()) {
+            $days = (int) today()->diffInDays($process?->end);
             $situation =
                 $days === 0 ? 'Inscrições abertas — encerram hoje!' : "Inscrições abertas — encerram em {$days} dia(s)";
-        } elseif (!$process->isInscriptionStarted()) {
-            $situation = 'Inscrições começam em ' . $process->formatDate($process->start);
-        } elseif ($process->isInscriptionEnded()) {
+        } elseif (!$process?->isInscriptionStarted()) {
+            $situation = 'Inscrições começam em ' . $process?->formatDate($process?->start);
+        } elseif ($process?->isInscriptionEnded()) {
             $situation = 'Inscrições encerradas';
         } else {
             $situation = 'Inscrições fechadas';
@@ -27,15 +29,15 @@
                 <div>
                     <div class="d-flex">
                         <img src="{{ asset('assets/img/logo.webp') }}" class="me-2 mb-3" alt="Logo" height="32">
-                        <h1>Vestibulinho LF {{ $process->year }}</h1>
+                        <h1>Vestibulinho LF {{ $process?->year ?? '—' }}</h1>
                     </div>
                     <p class="mb-0">
-                        <a href="{{ $process?->edital ? Storage::url($process->edital) : '#' }}" target="_blank">Edital<i
+                        <a href="{{ $process?->edital ? Storage::url($process?->edital) : '#' }}" target="_blank">Edital<i
                                 class="bi bi-box-arrow-up-right fs-6 ms-2"></i></a>
                     </p>
                 </div>
-                <span class="badge {{ $process->status === 'open' ? 'text-bg-success' : 'text-bg-secondary' }}">
-                    {{ $process->status === 'open' ? 'Aberto' : 'Fechado' }}
+                <span class="badge {{ $process?->status === 'open' ? 'text-bg-success' : 'text-bg-secondary' }}">
+                    {{ !$process ? 'Não cadastrado' : ($process?->status === 'open' ? 'Aberto' : 'Fechado') }}
                 </span>
             </div>
             <hr class="border-light opacity-25">
@@ -215,7 +217,7 @@
                     <i class="bi bi-geo-alt"></i>
                     <span>
                         Locais de prova
-                        <small>{{ $process->isLocationReleased() ? 'Já divulgados' : 'Ainda não divulgados' }}</small>
+                        <small>{{ $process?->isLocationReleased() ? 'Já divulgados' : 'Ainda não divulgados' }}</small>
                     </span>
                 </a>
             </div>
@@ -225,7 +227,7 @@
                     <i class="bi bi-list-ol"></i>
                     <span>
                         Resultado final
-                        <small>{{ $process->isResultReleased() ? 'Já divulgado' : 'Ainda não divulgado' }}</small>
+                        <small>{{ $process?->isResultReleased() ? 'Já divulgado' : 'Ainda não divulgado' }}</small>
                     </span>
                 </a>
             </div>

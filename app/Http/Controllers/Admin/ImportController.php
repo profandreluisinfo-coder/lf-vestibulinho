@@ -47,7 +47,7 @@ class ImportController extends Controller
                 $join->on('lgbts.user_id', '=', 'users.id')
                     ->where('lgbts.status', Lgbt::STATUS_ACCEPTED);
             })
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->whereNotNull('results.score');
 
         // Resumo do topo
@@ -67,7 +67,7 @@ class ImportController extends Controller
 
         $tiedKeys = $tied->mapWithKeys(fn($t) => [$t->score . '|' . $t->birth => true]);
 
-        $vacancies = (int) $process->courses()->sum('course_process.vacancies');
+        $vacancies = (int) $process?->courses()->sum('course_process.vacancies');
         $limit = $vacancies * ExamRankingService::LIST_MULTIPLIER;
 
         // Lista paginada
@@ -141,14 +141,14 @@ class ImportController extends Controller
             }
 
             // Reimportar mudaria notas e classificação já visíveis aos candidatos
-            if ($process->isResultReleased()) {
+            if ($process?->isResultReleased()) {
                 return $this->invalidFileResponse(
                     'O resultado já foi liberado aos candidatos. Retire-o do ar antes de importar novas notas.'
                 );
             }
 
             // Candidatos alocados (com prova agendada) neste processo
-            $allocated = Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id));
+            $allocated = Exam::whereHas('inscription', fn($q) => $q->forProcess($process?->id));
 
             if (! (clone $allocated)->exists()) {
                 return $this->invalidFileResponse('Nenhuma prova foi agendada.');
@@ -249,7 +249,7 @@ class ImportController extends Controller
             }
 
             // O user_id da planilha precisa ser o dono da inscrição: pega nota lançada na linha errada
-            $owners = Inscription::forProcess($process->id)
+            $owners = Inscription::forProcess($process?->id)
                 ->whereIn('id', $inscriptionIds)
                 ->pluck('user_id', 'id');
 
@@ -281,7 +281,7 @@ class ImportController extends Controller
 
             DB::transaction(function () use ($updates, $process, $now, &$summary) {
                 // Uma importação substitui integralmente as notas e classificações DESTE processo.
-                Result::whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                Result::whereHas('inscription', fn($q) => $q->forProcess($process?->id))
                     ->update(['score' => null, 'ranking' => null, 'classified' => false]);
 
                 $rows = [];

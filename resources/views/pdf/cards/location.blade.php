@@ -57,7 +57,7 @@
 <div class="card">
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" alt="Logo">
-        <h2>Vestibulinho LF {{ $process->year }} - Cartão do Local de Prova</h2>
+        <h2>Vestibulinho LF {{ $process?->year }} - Cartão do Local de Prova</h2>
     </div>
 
     <div class="section">
@@ -70,9 +70,9 @@
                 - Sala de Atendimento Especializado
             @endif
         </p>
-        <p><strong>Data:</strong> {{ $process->exam_date?->format('d/m/Y') ?? '—' }}</p>
+        <p><strong>Data:</strong> {{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</p>
         <p><strong>Horário:</strong>
-            {{ $process->exam_time ? \Carbon\Carbon::parse($process->exam_time)->format('H:i') : '—' }}
+            {{ $process?->exam_time ? \Carbon\Carbon::parse($process?->exam_time)->format('H:i') : '—' }}
         </p>
     </div>
 

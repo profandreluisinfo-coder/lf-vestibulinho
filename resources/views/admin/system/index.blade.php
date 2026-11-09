@@ -157,6 +157,7 @@
 @push('scripts')
     <script>
         const resetUrl = "{{ route('admin.system.reset') }}";
+        const redirUrl = "{{ route('home') }}";
     </script>
 @endpush
 

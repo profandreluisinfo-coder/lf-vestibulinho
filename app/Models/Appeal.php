@@ -173,7 +173,7 @@ class Appeal extends Model
             $process = Process::current();
 
             $started = $process
-                ? Exam::whereHas('inscription', fn($q) => $q->forProcess($process->id))->exists()
+                ? Exam::whereHas('inscription', fn($q) => $q->forProcess($process?->id))->exists()
                 : false;
         }
 

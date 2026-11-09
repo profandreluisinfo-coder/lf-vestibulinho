@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Vestibulinho LF {{ $process->year }} - Relatório Geral de Alocação</title>
+    <title>Vestibulinho LF {{ $process?->year }} - Relatório Geral de Alocação</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;

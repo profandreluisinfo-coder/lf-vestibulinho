@@ -75,7 +75,7 @@ class PdfController extends Controller
             ->whereHas(
                 'inscription',
                 fn($q) => $q
-                    ->forProcess($process->id)
+                    ->forProcess($process?->id)
                     ->where('user_id', Auth::id())
             )
             ->first();

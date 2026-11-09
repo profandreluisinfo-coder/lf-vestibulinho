@@ -34,11 +34,11 @@ return new class extends Migration
         DB::table('events')->orderBy('id')->each(function ($process) {
             $data = [];
             foreach ($this->dateColumns as $column) {
-                $data[$column] = $process->$column;
+                $data[$column] = $process?->$column;
             }
 
             DB::table('processes')
-                ->where('id', $process->process_id)
+                ->where('id', $process?->process_id)
                 ->update($data);
         });
 
@@ -81,9 +81,9 @@ return new class extends Migration
 
         // Copia de volta
         DB::table('processes')->orderBy('id')->each(function ($process) {
-            $data = ['process_id' => $process->id, 'created_at' => now(), 'updated_at' => now()];
+            $data = ['process_id' => $process?->id, 'created_at' => now(), 'updated_at' => now()];
             foreach ($this->dateColumns as $column) {
-                $data[$column] = $process->$column;
+                $data[$column] = $process?->$column;
             }
 
             DB::table('events')->insert($data);

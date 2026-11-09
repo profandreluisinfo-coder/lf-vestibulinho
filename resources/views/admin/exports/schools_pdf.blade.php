@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <h2>Vestibulinho LF {{ $process->year }} - 10 Escolas de Origem com Mais Candidatos</h2>
+    <h2>Vestibulinho LF {{ $process?->year }} - 10 Escolas de Origem com Mais Candidatos</h2>
     <table>
         <thead>
             <tr>

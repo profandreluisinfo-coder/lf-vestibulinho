@@ -147,9 +147,9 @@ class CallCandidateSelectorTest extends TestCase
         $candidateC->inscription->user->update(['name' => 'Candidato chamada 2 segundo horário']);
 
         $lists = [
-            CallList::create(['process_id' => $process->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '10:00', 'status' => 'pending']),
-            CallList::create(['process_id' => $process->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '09:00', 'status' => 'completed']),
-            CallList::create(['process_id' => $process->id, 'number' => 1, 'date' => '2027-01-13', 'time' => '09:00', 'status' => 'completed']),
+            CallList::create(['process_id' => $process?->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '10:00', 'status' => 'pending']),
+            CallList::create(['process_id' => $process?->id, 'number' => 2, 'date' => '2027-01-12', 'time' => '09:00', 'status' => 'completed']),
+            CallList::create(['process_id' => $process?->id, 'number' => 1, 'date' => '2027-01-13', 'time' => '09:00', 'status' => 'completed']),
         ];
 
         foreach ([[$candidateA, $lists[2]], [$candidateB, $lists[1]], [$candidateC, $lists[0]]] as [$result, $list]) {
@@ -190,7 +190,7 @@ class CallCandidateSelectorTest extends TestCase
             'description' => 'Curso técnico',
         ]);
 
-        $process->courses()->attach($course->id, ['vacancies' => 10]);
+        $process?->courses()->attach($course->id, ['vacancies' => 10]);
 
         return [$process, $course];
     }
@@ -208,7 +208,7 @@ class CallCandidateSelectorTest extends TestCase
         $inscription = Inscription::create([
             'user_id' => $user->id,
             'course_id' => $course->id,
-            'process_id' => $process->id,
+            'process_id' => $process?->id,
             'status' => 'approved',
         ]);
 
@@ -231,7 +231,7 @@ class CallCandidateSelectorTest extends TestCase
     private function callList(Process $process): CallList
     {
         return CallList::create([
-            'process_id' => $process->id,
+            'process_id' => $process?->id,
             'number' => 1,
             'date' => '2027-01-13',
             'time' => '09:00',

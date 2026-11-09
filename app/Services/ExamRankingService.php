@@ -27,7 +27,7 @@ class ExamRankingService
      */
     public function calculate(Process $process): array
     {
-        $vacancies = (int) $process->courses()->sum('course_process.vacancies');
+        $vacancies = (int) $process?->courses()->sum('course_process.vacancies');
 
         if ($vacancies < 1) {
             throw new DomainException(
@@ -38,13 +38,13 @@ class ExamRankingService
         $limit = $vacancies * self::LIST_MULTIPLIER;
 
         // Zera a classificação apenas dos resultados deste processo
-        Result::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+        Result::whereHas('inscription', fn ($q) => $q->forProcess($process?->id))
             ->update(['ranking' => null, 'classified' => false]);
 
         $scored = Result::query()
             ->join('inscriptions', 'results.inscription_id', '=', 'inscriptions.id')
             ->join('users', 'inscriptions.user_id', '=', 'users.id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->whereNotNull('results.score')
             ->orderByDesc('results.score')
             ->orderByDesc('users.birth')

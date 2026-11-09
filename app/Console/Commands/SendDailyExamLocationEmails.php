@@ -28,7 +28,7 @@ class SendDailyExamLocationEmails extends Command
 
         // Segunda camada: a data ou a hora podem ter sido apagadas depois da liberação.
         // Log, e não $this->error(), porque o cron descarta a saída do terminal.
-        if (! $process->exam_date || ! $process->exam_time) {
+        if (! $process?->exam_date || ! $process?->exam_time) {
             Log::warning('Envio do local de prova cancelado: data ou hora da prova não definidas no processo.');
 
             return Command::FAILURE;
@@ -36,7 +36,7 @@ class SendDailyExamLocationEmails extends Command
 
         // Alocações deste processo cujo e-mail ainda não foi enviado
         $exams = Exam::whereNull('email_sent_at')
-            ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+            ->whereHas('inscription', fn ($q) => $q->forProcess($process?->id))
             ->with(['inscription.user.lgbt', 'location'])
             ->orderBy('id')
             ->limit(self::DAILY_LIMIT)
@@ -56,11 +56,11 @@ class SendDailyExamLocationEmails extends Command
 
             SendExamLocationMailJob::dispatch(
                 email: $user->email,
-                subject: 'Local de Prova – Vestibulinho LF ' . ($process->year ?? now()->year),
+                subject: 'Local de Prova – Vestibulinho LF ' . ($process?->year ?? now()->year),
                 content: [
                     'name' => $name,
-                    'date' => $process->exam_date,   // data e hora vêm do processo
-                    'time' => $process->exam_time,
+                    'date' => $process?->exam_date,   // data e hora vêm do processo
+                    'time' => $process?->exam_time,
                     'location' => $exam->location->name,
                     'address' => $exam->location->address,
                     'room_number' => $exam->room_number,

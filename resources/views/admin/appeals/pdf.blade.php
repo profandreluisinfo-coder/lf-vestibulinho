@@ -112,7 +112,7 @@
 <body>
     <div class="header">
         <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
-        <h1>Vestibulinho LF {{ $process->year }} - Recurso - {{ $appeal->typeLabel() }}</h1>
+        <h1>Vestibulinho LF {{ $process?->year }} - Recurso - {{ $appeal->typeLabel() }}</h1>
         <div class="sub">Protocolo {{ $appeal->protocol }}</div>
     </div>
     @if ($appeal->type === 'pne')

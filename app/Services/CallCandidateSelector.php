@@ -79,7 +79,7 @@ class CallCandidateSelector
             ->where('classified', true)
             ->whereHas('inscription', fn ($query) => $query
                 ->approved()
-                ->forProcess($process->id))
+                ->forProcess($process?->id))
             ->whereDoesntHave('calls')
             ->get();
     }

@@ -28,7 +28,7 @@ class CallController extends Controller
 
         $callLists = $process
             ? CallList::query()
-                ->where('process_id', $process->id)
+                ->where('process_id', $process?->id)
                 ->withCount('calls')
                 ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne'])
                 ->orderByDesc('id')
@@ -39,7 +39,7 @@ class CallController extends Controller
             ? Result::query()
                 ->whereNotNull('ranking')
                 ->where('classified', true)
-                ->whereHas('inscription', fn ($query) => $query->approved()->forProcess($process->id))
+                ->whereHas('inscription', fn ($query) => $query->approved()->forProcess($process?->id))
             : Result::query()->whereRaw('1 = 0');
 
         $countResults = (clone $eligible)->count();
@@ -56,7 +56,7 @@ class CallController extends Controller
                 ->select('calls.*')
                 ->join('call_lists', 'call_lists.id', '=', 'calls.call_list_id')
                 ->join('results', 'results.id', '=', 'calls.result_id')
-                ->where('call_lists.process_id', $process->id)
+                ->where('call_lists.process_id', $process?->id)
                 ->with(['callList', 'result.inscription.user.lgbt', 'result.inscription.user.pne'])
                 ->orderBy('call_lists.number')
                 ->orderBy('call_lists.date')
@@ -92,7 +92,7 @@ class CallController extends Controller
         try {
             $results = DB::transaction(function () use ($data, $process, $selector): array {
                 $callList = CallList::create([
-                    'process_id' => $process->id,
+                    'process_id' => $process?->id,
                     'number' => $data['number'],
                     'date' => $data['date'],
                     'time' => $data['time'],

@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $chart    = $cs->courseChart($process);
         $daily    = $cs->dailyChart($process);
 
-        return view('admin.dashboard.index', compact('stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
+        return view('admin.dashboard.index', compact('process', 'stats', 'upcoming', 'timeline', 'alerts', 'chart', 'daily'));
     }
 
     /**
@@ -43,7 +43,7 @@ class DashboardController extends Controller
 
         $today = today();
 
-        return collect($process->calendar())
+        return collect($process?->calendar())
             ->map(function ($item) use ($process, $today) {
                 $isPeriod = $item['type'] === 'period';
                 $start    = $isPeriod ? $item['start'] : $item['date'];
@@ -74,8 +74,8 @@ class DashboardController extends Controller
                     'label'     => $item['label'],
                     'icon'      => $item['icon'],
                     'when'      => $isPeriod
-                        ? $process->formatPeriod($start, $end)
-                        : $process->formatDate($start),
+                        ? $process?->formatPeriod($start, $end)
+                        : $process?->formatDate($start),
                     'countdown' => $countdown,
                     'tone'      => $tone,
                     'target'    => $target,
@@ -98,7 +98,7 @@ class DashboardController extends Controller
 
         $today = today();
 
-        return collect($process->calendar())->map(function ($item) use ($process, $today) {
+        return collect($process?->calendar())->map(function ($item) use ($process, $today) {
             $isPeriod = $item['type'] === 'period';
             $start    = $isPeriod ? $item['start'] : $item['date'];
             $end      = $isPeriod ? $item['end'] : $item['date'];
@@ -114,8 +114,8 @@ class DashboardController extends Controller
                 };
 
                 $when = $isPeriod
-                    ? $process->formatPeriod($start, $end)
-                    : $process->formatDate($start);
+                    ? $process?->formatPeriod($start, $end)
+                    : $process?->formatDate($start);
             }
 
             return [
@@ -147,24 +147,24 @@ class DashboardController extends Controller
 
         // Locais de prova
         if (
-            $process->location_publish
-            && $today->gte($process->location_publish)
-            && !$process->isLocationReleased()
+            $process?->location_publish
+            && $today->gte($process?->location_publish)
+            && !$process?->isLocationReleased()
         ) {
-            $alerts[] = $today->isSameDay($process->location_publish)
+            $alerts[] = $today->isSameDay($process?->location_publish)
                 ? 'Hoje é o dia de divulgar os locais de prova.'
-                : 'A data de divulgação dos locais de prova (' . $process->formatDate($process->location_publish) . ') já passou e eles ainda não foram divulgados.';
+                : 'A data de divulgação dos locais de prova (' . $process?->formatDate($process?->location_publish) . ') já passou e eles ainda não foram divulgados.';
         }
 
         // Resultado final
         if (
-            $process->result_publish
-            && $today->gte($process->result_publish)
-            && !$process->isResultReleased()
+            $process?->result_publish
+            && $today->gte($process?->result_publish)
+            && !$process?->isResultReleased()
         ) {
-            $alerts[] = $today->isSameDay($process->result_publish)
+            $alerts[] = $today->isSameDay($process?->result_publish)
                 ? 'Hoje é o dia de divulgar o resultado final.'
-                : 'A data de divulgação do resultado (' . $process->formatDate($process->result_publish) . ') já passou e ele ainda não foi divulgado.';
+                : 'A data de divulgação do resultado (' . $process?->formatDate($process?->result_publish) . ') já passou e ele ainda não foi divulgado.';
         }
 
         return $alerts;
@@ -187,7 +187,7 @@ class DashboardController extends Controller
             'generatedAt' => now(),
         ]);
 
-        return $pdf->download('inscricoes-por-dia-' . $process->year . '.pdf');
+        return $pdf->download('inscricoes-por-dia-' . $process?->year . '.pdf');
     }
 
     /**
@@ -211,7 +211,7 @@ class DashboardController extends Controller
             }
 
             fclose($out);
-        }, 'inscricoes-por-dia-' . $process->year . '.csv', [
+        }, 'inscricoes-por-dia-' . $process?->year . '.csv', [
             'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
@@ -223,7 +223,7 @@ class DashboardController extends Controller
     {
         $accumulated = 0;
 
-        return collect($process->dailyInscriptions())->map(function ($day) use (&$accumulated) {
+        return collect($process?->dailyInscriptions())->map(function ($day) use (&$accumulated) {
             $accumulated += $day['total'];
 
             return [

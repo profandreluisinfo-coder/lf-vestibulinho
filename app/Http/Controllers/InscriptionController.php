@@ -88,11 +88,11 @@ class InscriptionController extends Controller
 
         $resultSummary = null;
 
-        if ($process->isResultReleased() && $result?->ranking !== null) {
+        if ($process?->isResultReleased() && $result?->ranking !== null) {
             $resultSummary = [
-                'vacancies'  => (int) $process->courses()->sum('course_process.vacancies'),
+                'vacancies'  => (int) $process?->courses()->sum('course_process.vacancies'),
                 'classified' => Result::where('classified', true)
-                    ->whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                    ->whereHas('inscription', fn($q) => $q->forProcess($process?->id))
                     ->count(),
             ];
         }
@@ -338,7 +338,7 @@ class InscriptionController extends Controller
         $process = Process::current();
 
         $courses = $process
-            ? $process->courses()->orderBy('courses.name')->get()
+            ? $process?->courses()->orderBy('courses.name')->get()
             : collect();
 
         return view('partials.inscriptions.steps.course', [

@@ -27,7 +27,7 @@ class ResultController extends Controller
         $released = (bool) $process?->isResultReleased();
  
         // Cache limpo em Process::booted (liberar ou retirar do ar salva o processo)
-        $results = $released ? $this->classifiedResultsQuery($process->id)->limit(50)->get() : collect();
+        $results = $released ? $this->classifiedResultsQuery($process?->id)->limit(50)->get() : collect();
  
         return view('site.results.index', compact('released', 'results'));
     }
@@ -46,7 +46,7 @@ class ResultController extends Controller
         ]);
         $offset = (int) ($validated['offset'] ?? 0);
         $search = trim($validated['search'] ?? '');
-        $query = $this->classifiedResultsQuery($process->id);
+        $query = $this->classifiedResultsQuery($process?->id);
         if ($search !== '') {
             $query->where('inscription_id', 'like', $search . '%');
         }
@@ -86,7 +86,7 @@ class ResultController extends Controller
             ? Cache::remember('global_results_eliminated', 3600, fn () => Result::query()
                 ->where('classified', false)
                 ->whereNotNull('score')
-                ->whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+                ->whereHas('inscription', fn ($q) => $q->forProcess($process?->id))
                 ->orderBy('inscription_id')
                 ->pluck('inscription_id')
             )

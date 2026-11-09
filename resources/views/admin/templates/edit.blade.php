@@ -25,7 +25,7 @@
                     required>
                     <option value="">Selecione o processo...</option>
                     @foreach ($vests as $vest)
-                        <option value="{{ $vest->id }}" {{ old('process_id') == $vest->id ? 'selected' : '' }}>
+                        <option value="{{ $vest->id }}" {{ old('process_id', $template->process_id) == $vest->id ? 'selected' : '' }}>
                             Vestibulinho {{ $vest->year }}
                         </option>
                     @endforeach

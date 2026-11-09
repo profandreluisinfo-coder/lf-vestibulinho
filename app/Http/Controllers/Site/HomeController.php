@@ -18,7 +18,7 @@ class HomeController extends Controller
 
         // Obter todos os cursos
         $courses = $process
-            ? $process->courses()->orderBy('courses.name')->get()
+            ? $process?->courses()->orderBy('courses.name')->get()
             : collect();
 
         // Apenas posts publicados (máximo de 6 na home)

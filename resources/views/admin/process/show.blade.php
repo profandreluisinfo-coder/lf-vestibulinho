@@ -89,14 +89,14 @@
                         </div>
 
                         <div class="d-flex align-items-center gap-3">
-                            <span class="status-pill {{ $process->status === 'open' ? 'status-open' : 'status-closed' }}">
-                                <i class="bi bi-{{ $process->status === 'open' ? 'unlock' : 'lock' }}"></i>
-                                {{ $process->status === 'open' ? 'Aberto' : 'Fechado' }}
+                            <span class="status-pill {{ $process?->status === 'open' ? 'status-open' : 'status-closed' }}">
+                                <i class="bi bi-{{ $process?->status === 'open' ? 'unlock' : 'lock' }}"></i>
+                                {{ $process?->status === 'open' ? 'Aberto' : 'Fechado' }}
                             </span>
                             <div class="form-check form-switch mb-0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="process" name="process"
                                     onchange="activateProcessSelective(this)"
-                                    {{ $process->status === 'open' ? 'checked' : '' }}
+                                    {{ $process?->status === 'open' ? 'checked' : '' }}
                                     style="width: 2.5em; height: 1.3em; cursor: pointer;">
                                 <label class="form-check-label visually-hidden" for="process">Ativar processo</label>
                             </div>

@@ -5,6 +5,10 @@
  @section('content')
      <div class="container-fluid">
 
+         @if (!$process)
+             <div class="alert alert-info">Nenhum processo seletivo está cadastrado no momento.</div>
+         @endif
+
          <div class="row g-4 mb-4">
 
              {{-- Card: Informações da Prova --}}
@@ -19,12 +23,12 @@
 
                          <p class="mb-1">
                              <strong>Data:</strong>
-                             {{ \Carbon\Carbon::parse($process->exam_date)->format('d/m/Y') }}
+                             {{ $process?->exam_date?->format('d/m/Y') ?? '—' }}
                          </p>
 
                          <p class="mb-0">
                              <strong>Horário:</strong>
-                             {{ \Carbon\Carbon::parse($process->exam_time)->format('H:i') }}
+                             {{ $process?->exam_time?->format('H:i') ?? '—' }}
                          </p>
                      </div>
                  </div>

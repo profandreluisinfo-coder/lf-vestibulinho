@@ -152,7 +152,7 @@ class ProcessController extends Controller
                 $oldEditalPath = $process?->edital;
 
                 if ($process) {
-                    $process->update($data);
+                    $process?->update($data);
                 } else {
                     Process::create($data);
                 }
@@ -234,23 +234,23 @@ class ProcessController extends Controller
 
         $process = Process::current() ?? abort(404);
         $column  = "{$type}_released_at";
-        $release = $process->$column === null;
+        $release = $process?->$column === null;
 
         if (
             $release && $type === 'result'
             && ! Result::where('classified', true)
-                ->whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                ->whereHas('inscription', fn($q) => $q->forProcess($process?->id))
                 ->exists()
         ) {
             return alertError('Importe as notas e calcule a classificação antes de liberar o resultado.');
         }
 
         // Não libera o local sem data e hora da prova (o candidato veria dados vazios)
-        if ($release && $type === 'location' && (! $process->exam_date || ! $process->exam_time)) {
+        if ($release && $type === 'location' && (! $process?->exam_date || ! $process?->exam_time)) {
             return alertError('Defina a data e a hora da prova no processo antes de liberar o local.');
         }
 
-        $process->update([$column => $release ? now() : null]);
+        $process?->update([$column => $release ? now() : null]);
 
         return alertSuccess($release ? 'Liberado aos candidatos.' : 'Retirado do ar.');
     }

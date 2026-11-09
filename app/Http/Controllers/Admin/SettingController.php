@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use App\Models\CallList;
-use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Inscription;
 use App\Models\Process;
@@ -100,15 +99,15 @@ class SettingController extends Controller
 
         // Executa o comando e salva SOMENTE a saída normal (o SQL de verdade)
         $process = new SymfonyProcess($comand);
-        $process->setTimeout(300);
-        $process->run(function ($type, $output) use ($completePath) {
+        $process?->setTimeout(300);
+        $process?->run(function ($type, $output) use ($completePath) {
             if ($type === SymfonyProcess::OUT) {
                 file_put_contents($completePath, $output, FILE_APPEND);
             }
         });
 
-        if (!$process->isSuccessful()) {
-            $erro = $this->limparUtf8($process->getErrorOutput());
+        if (!$process?->isSuccessful()) {
+            $erro = $this->limparUtf8($process?->getErrorOutput());
             throw new \Exception('Falha ao gerar o backup: ' . $erro);
         }
 
@@ -120,12 +119,9 @@ class SettingController extends Controller
      *
      * Garante que só admin possa resetar o sistema.
      * Gera um backup completo do banco (.sql) antes de apagar qualquer coisa.
-     * Apaga todos os usuários que não são admin.
-     * Apaga todas as inscrições (e suas dependências) via CASCADE.
-     * Ajusta AUTO_INCREMENT dos users.
-     * Ajusta AUTO_INCREMENT das inscrições.
-     * Zera vagas dos cursos.
-     * Atualiza todos os registros da tabela de settings.
+     * Remove dados do processo e usuários não administradores dentro de uma transação.
+     * Inscrições, resultados, provas e dados relacionados a usuários são removidos pelas FKs.
+     * Preserva publicações, FAQs, arquivos de provas anteriores e modelos reutilizáveis.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -143,45 +139,155 @@ class SettingController extends Controller
             // ===== BACKUP COMPLETO DO BANCO (antes de apagar qualquer coisa) =====
             $this->generateBackup();
 
-            // ===== FIM DO BACKUP — a partir daqui, começa a remoção dos dados =====
+            // MySQL commits DDL implicitly, so keep only the data changes in this transaction.
+            // Collect storage paths before cascading deletes remove their database records.
+            [$filesToDelete, $processIds, $resetTables] = DB::transaction(function (): array {
+                $deletedUserIds = User::where('role', '!=', 'admin')->pluck('id');
+                $processIds = Process::pluck('id');
+                $filesToDelete = collect();
 
-            // Remove os registros na ordem das dependências, sem desativar FKs.
-            Call::query()->delete();
-            Exam::query()->delete();
-            Inscription::query()->delete();
-            CallList::query()->delete();
-            Process::query()->delete();
-            User::where('role', '!=', 'admin')->delete();
+                foreach ([
+                    ['lgbts', 'authorization'],
+                    ['pnes', 'report'],
+                    ['appeals', 'path'],
+                ] as [$table, $column]) {
+                    $filesToDelete = $filesToDelete->merge(
+                        DB::table($table)->whereNotNull($column)->pluck($column)
+                    );
+                }
 
-            // Ajusta AUTO_INCREMENT dos users
-            $maxUserId = User::max('id');
-            $nextUserId = $maxUserId ? $maxUserId + 1 : 1;
-            DB::statement("ALTER TABLE users AUTO_INCREMENT = " . (int) $nextUserId);
+                // Editais belong to the process being reset; reusable templates do not.
+                $filesToDelete = $filesToDelete
+                    ->merge(DB::table('processes')->whereNotNull('edital')->pluck('edital'));
 
-            // Ajusta AUTO_INCREMENT das inscriptions
-            $maxInscriptionId = DB::table('inscriptions')->max('id');
-            $nextInscriptionId = $maxInscriptionId ? $maxInscriptionId + 1 : 1;
-            DB::statement("ALTER TABLE inscriptions AUTO_INCREMENT = " . (int) $nextInscriptionId);
+                // Delete in FK dependency order. These explicit deletes also clear rows
+                // belonging to admin accounts, which must be preserved in the users table.
+                Call::query()->delete();
+                Exam::query()->delete();
+                DB::table('results')->delete();
+                Inscription::query()->delete();
+                CallList::query()->delete();
+                DB::table('course_process')->delete();
+                Process::query()->delete();
 
-            // Zera vagas dos cursos
-            Course::whereNotNull('vacancies')->update(['vacancies' => 0]);
+                foreach ([
+                    'appeals',
+                    'lgbts',
+                    'pnes',
+                    'mothers',
+                    'fathers',
+                    'guardians',
+                    'parent_emails',
+                    'documents',
+                    'addresses',
+                    'certificates',
+                    'academics',
+                ] as $table) {
+                    DB::table($table)->delete();
+                }
+
+                // Preserve reusable content whose FK would otherwise cascade when
+                // a non-admin author is removed. Attribute it to the admin running reset.
+                if ($deletedUserIds->isNotEmpty()) {
+                    foreach (['faqs', 'posts', 'archives'] as $table) {
+                        DB::table($table)
+                            ->whereIn('user_id', $deletedUserIds)
+                            ->update(['user_id' => Auth::id()]);
+                    }
+                }
+
+                // Reset publication visibility; these flags are stored in settings,
+                // independently of the inscriptions and results being deleted above.
+                DB::table('settings')->update([
+                    'publications' => json_encode([]),
+                    'updated_at' => now(),
+                ]);
+
+                User::where('role', '!=', 'admin')->delete(); // cascades user-owned records
+
+                // The sessions table has no FK; clear all database sessions for the reset.
+                if (config('session.driver') === 'database') {
+                    $sessionsTable = config('session.table', 'sessions');
+                    if (DB::getSchemaBuilder()->hasTable($sessionsTable)) {
+                        DB::table($sessionsTable)->delete();
+                    }
+                }
+
+                $resetTables = [
+                    'results', 'inscriptions', 'course_process', 'pnes', 'parent_emails',
+                    'mothers', 'fathers', 'lgbts', 'guardians', 'documents', 'certificates',
+                    'appeals', 'addresses', 'academics',
+                    'exams', 'calls', 'call_lists', 'processes',
+                ];
+
+                return [$filesToDelete->filter()->unique()->values(), $processIds, $resetTables];
+            });
+
+            // Storage is outside the database transaction; failures are logged without undoing the reset.
+            $fileCleanupComplete = true;
+            try {
+                if ($filesToDelete->isNotEmpty()) {
+                    $fileCleanupComplete = Storage::disk('public')->delete($filesToDelete->all());
+                }
+                foreach (['authorizations', 'reports', 'appeals'] as $directory) {
+                    if (! Storage::disk('public')->deleteDirectory($directory)) {
+                        $fileCleanupComplete = false;
+                    }
+                }
+            } catch (\Throwable $fileError) {
+                $fileCleanupComplete = false;
+                Log::warning('Reset concluído, mas houve falha ao remover arquivos relacionados', [
+                    'message' => $fileError->getMessage(),
+                ]);
+            }
+            if (! $fileCleanupComplete) {
+                Log::warning('Reset concluído, mas um ou mais arquivos relacionados não foram removidos.');
+            }
+
+            // ALTER TABLE implicitly commits in MySQL, so run sequence adjustments after data commits.
+            $sequenceResetComplete = true;
+            try {
+                $maxUserId = User::max('id');
+                $nextUserId = $maxUserId ? $maxUserId + 1 : 1;
+                DB::statement('ALTER TABLE users AUTO_INCREMENT = ' . (int) $nextUserId);
+
+                foreach ($resetTables as $table) {
+                    DB::statement('ALTER TABLE `' . $table . '` AUTO_INCREMENT = 1');
+                }
+            } catch (\Throwable $sequenceError) {
+                $sequenceResetComplete = false;
+                Log::warning('Reset concluído, mas não foi possível redefinir os contadores das tabelas', [
+                    'message' => $sequenceError->getMessage(),
+                ]);
+            }
 
             Cache::forget('global_calendar');
             Cache::forget('global_process');
             Cache::forget('global_inscription_open');
             Cache::forget('global_total_inscriptions');
             Cache::forget('global_users_without_inscription');
+            Cache::forget('global_results');
+            Cache::forget('global_results_eliminated');
             Cache::forget('global_settings');
             Cache::forget('calls_exists');
             Cache::forget('global_total_comunicados');
             Cache::forget('global_total_publicacoes');
+            Cache::forget('archives_active_list');
+            Cache::forget('archives_has_active');
+            foreach ($processIds as $processId) {
+                Cache::forget('calls_finalized_count_' . $processId);
+            }
 
             // Apagar os dados de autenticação
             session()->flush();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Sistema redefinido com sucesso. Por favor, faça login novamente. Lembre-se de limpar o cache do navegador.'
+                'message' => 'Sistema redefinido com sucesso.'
+                    . ((! $fileCleanupComplete || ! $sequenceResetComplete)
+                        ? ' Confira o log: uma tarefa secundária de limpeza não foi concluída.'
+                        : '')
+                    . ' Por favor, faça login novamente. Lembre-se de limpar o cache do navegador.'
             ]);
         } catch (\Throwable $e) {
             // Registra o erro completo no log, pra você poder investigar depois

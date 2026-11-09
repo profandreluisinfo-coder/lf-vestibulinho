@@ -34,7 +34,7 @@ class Exam extends Model
             return false;
         }
 
-        return static::whereHas('inscription', fn ($q) => $q->forProcess($process->id))
+        return static::whereHas('inscription', fn ($q) => $q->forProcess($process?->id))
             ->exists();
     }
 }

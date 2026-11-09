@@ -41,7 +41,7 @@ class GlobalDataHelper
             60,
             fn () => $process
                 ? CallList::query()
-                    ->where('process_id', $process->id)
+                    ->where('process_id', $process?->id)
                     ->where('status', 'completed')
                     ->count()
                 : 0

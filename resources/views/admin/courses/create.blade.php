@@ -51,8 +51,8 @@
                             <option value="">Selecione o vestibulinho</option>
 
                             @foreach ($processes as $process)
-                                <option value="{{ $process->id }}" @selected(old('process_id') == $process->id)>
-                                    {{ $process->year }}
+                                <option value="{{ $process?->id }}" @selected(old('process_id') == $process?->id)>
+                                    {{ $process?->year }}
                                 </option>
                             @endforeach
                         </select>

@@ -22,9 +22,9 @@ class ChartService
             ->join('courses', 'courses.id', '=', 'course_process.course_id')
             ->leftJoin('inscriptions', function ($join) use ($process) {
                 $join->on('inscriptions.course_id', '=', 'course_process.course_id')
-                    ->where('inscriptions.process_id', '=', $process->id);
+                    ->where('inscriptions.process_id', '=', $process?->id);
             })
-            ->where('course_process.process_id', $process->id)
+            ->where('course_process.process_id', $process?->id)
             ->groupBy('courses.id', 'courses.name', 'course_process.vacancies')
             ->select(
                 'courses.name as curso',
@@ -56,11 +56,15 @@ class ChartService
     }
 
     // Candidatos por bairro
-    public function burghs(Process $process)
+    public function burghs(?Process $process)
     {
+        if (! $process) {
+            return collect();
+        }
+
         return DB::table('users')
             ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->select(
                 'users.burgh',
                 DB::raw('COUNT(DISTINCT users.id) as total')
@@ -72,11 +76,15 @@ class ChartService
     }
 
     // Inscrições por curso
-    public function courses(Process $process)
+    public function courses(?Process $process)
     {
+        if (! $process) {
+            return collect();
+        }
+
         return DB::table('inscriptions')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->select(
                 'courses.name as curso',
                 DB::raw('COUNT(inscriptions.id) as total')
@@ -87,11 +95,15 @@ class ChartService
     }
 
     // Escolas de origem
-    public function schools(Process $process)
+    public function schools(?Process $process)
     {
+        if (! $process) {
+            return collect();
+        }
+
         return DB::table('academics')
             ->join('inscriptions', 'inscriptions.user_id', '=', 'academics.user_id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->select(
                 'academics.school',
                 DB::raw('COUNT(DISTINCT academics.user_id) as total')
@@ -103,11 +115,15 @@ class ChartService
     }
 
     // Candidatos por sexo
-    public function genders(Process $process)
+    public function genders(?Process $process)
     {
+        if (! $process) {
+            return collect();
+        }
+
         return DB::table('users')
             ->join('inscriptions', 'inscriptions.user_id', '=', 'users.id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->select(
                 'users.gender',
                 DB::raw('COUNT(DISTINCT users.id) as total')
@@ -118,12 +134,16 @@ class ChartService
     }
 
     // Candidatos por sexo e curso
-    public function genderPerCourse(Process $process)
+    public function genderPerCourse(?Process $process)
     {
+        if (! $process) {
+            return collect();
+        }
+
         return DB::table('inscriptions')
             ->join('users', 'users.id', '=', 'inscriptions.user_id')
             ->join('courses', 'courses.id', '=', 'inscriptions.course_id')
-            ->where('inscriptions.process_id', $process->id)
+            ->where('inscriptions.process_id', $process?->id)
             ->select(
                 'courses.name as course',
                 DB::raw('COUNT(DISTINCT CASE WHEN users.gender = 1 THEN users.id END) as masculino'),
