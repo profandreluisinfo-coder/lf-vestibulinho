@@ -23,7 +23,7 @@ class LoginController extends Controller
     {
         $process = Process::current();
 
-        if ($process?->status === 'closed') {
+        if (! $process || $process->status === 'closed') {
             return redirect()->route('home');
         }
 

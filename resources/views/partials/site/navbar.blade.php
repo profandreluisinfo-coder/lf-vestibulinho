@@ -34,19 +34,17 @@
                     <a class="nav-link" href="{{ route('home') }}/#faq"><i class="bi bi-question-circle me-1"></i>
                         Ajuda</a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}/#documentos"><i class="bi bi-file-earmark me-1"></i>
-                        Documentos</a>
-                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i>
                         Provas Anteriores</a>
                 </li>
-                <li class="nav-item ms-lg-2">
-                    <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
-                        <i class="bi bi-person-circle me-1"></i> Área do Candidato
-                    </a>
-                </li>
+                @if ($process?->isOpen())
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link btn-nav-cta" href="{{ route('login') }}">
+                            <i class="bi bi-person-circle me-1"></i> Área do Candidato
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
