@@ -3,6 +3,9 @@
 @section('page-title', 'Convocação para matrícula')
 
 @section('content')
+    @php
+        $show = $callLists->isNotEmpty();
+    @endphp
     <div class="container">
         @if (session('success'))
             <div class="alert alert-success" role="status">{{ session('success') }}</div>
@@ -24,11 +27,14 @@
                 <h6 class="mb-0 text-muted fw-normal">Convocação para matrícula</h6>
             </div>
             <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('admin.calls.all') }}" class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-list-ol me-1"></i>Todos os convocados
-                </a>
+                @if ($show)
+                    <a href="{{ route('admin.calls.all') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-list-ol me-1"></i>Todos os convocados ()
+                    </a>
+                @endif
                 @if ($countResults > 0)
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setNewCall">
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#setNewCall">
                         <i class="bi bi-plus-circle me-1"></i>Nova chamada
                     </button>
                 @endif
@@ -71,7 +77,8 @@
                                         </button>
                                     </form>
 
-                                    <a href="{{ route('admin.calls.show', $callList->id) }}" class="btn btn-sm btn-outline-secondary">
+                                    <a href="{{ route('admin.calls.show', $callList->id) }}"
+                                        class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-people"></i> Convocados
                                     </a>
                                     <a href="{{ route('admin.calls.pdf', $callList->id) }}" class="btn btn-sm btn-primary"
@@ -102,9 +109,11 @@
                     <tfoot>
                         <tr class="table-success">
                             <th>Total: {{ $callLists->count() }}</th>
-                            <th></th><th></th>
+                            <th></th>
+                            <th></th>
                             <th>{{ $callLists->sum('calls_count') }} candidatos convocados</th>
-                            <th></th><th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 @endif
@@ -117,10 +126,12 @@
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-light">
                         <h5 class="modal-title" id="setNewCallLabel"><i class="bi bi-plus-circle me-2"></i>Nova chamada</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('admin.calls.store') }}" method="POST" id="setNewCallForm" class="d-grid gap-3">
+                        <form action="{{ route('admin.calls.store') }}" method="POST" id="setNewCallForm"
+                            class="d-grid gap-3">
                             @csrf
                             <div>
                                 <label for="number" class="form-label">Número da chamada</label>
@@ -136,8 +147,11 @@
                             <div>
                                 <label for="pcd_limit" class="form-label">Quantidade de PcDs nesta chamada</label>
                                 <input type="number" name="pcd_limit" id="pcd_limit" min="0" required
-                                    class="form-control @error('pcd_limit') is-invalid @enderror" value="{{ old('pcd_limit', 0) }}">
-                                <div class="form-text">Os PcDs deferidos são selecionados pela classificação e as demais vagas são preenchidas pela lista geral. Empates na posição de corte permanecem juntos.</div>
+                                    class="form-control @error('pcd_limit') is-invalid @enderror"
+                                    value="{{ old('pcd_limit', 0) }}">
+                                <div class="form-text">Os PcDs deferidos são selecionados pela classificação e as demais
+                                    vagas são preenchidas pela lista geral. Empates na posição de corte permanecem juntos.
+                                </div>
                             </div>
                             <div>
                                 <label for="date" class="form-label">Data de comparecimento</label>
@@ -150,8 +164,10 @@
                                     class="form-control @error('time') is-invalid @enderror" value="{{ old('time') }}">
                             </div>
                             <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-1"></i>Salvar chamada</button>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-success"><i
+                                        class="bi bi-check-circle me-1"></i>Salvar chamada</button>
                             </div>
                         </form>
                     </div>
@@ -164,7 +180,7 @@
 @push('scripts')
     @if ($errors->any())
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const modal = document.getElementById('setNewCall');
                 if (modal) new bootstrap.Modal(modal).show();
             });
