@@ -12,9 +12,9 @@
                 <h6 class="mb-0 text-muted fw-normal">Alocar Candidatos</h6>
             </div>
 
-            <a href="{{ route('admin.exam.show') }}" class="btn btn-primary btn-sm">
+            {{-- <a href="{{ route('admin.exam.show') }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-search"></i>Visualizar Alocação
-            </a>
+            </a> --}}
         </div>
 
         @if (session('success'))
@@ -57,19 +57,25 @@
             <div class="form-group mb-3">
                 <label class="form-label" for="exam_date">Data da prova:</label>
                 <input type="text" name="exam_date" class="form-control" id="exam_date"
-                    value="{{ $process?->exam_date?->format('d/m/Y') ?? '' }}" readonly
-                    style="background-color: #e6e6e6" title="Não é possível editar este campo.">
+                    value="{{ $process?->exam_date?->format('d/m/Y') ?? '' }}" readonly style="background-color: #e6e6e6"
+                    title="Não é possível editar este campo.">
             </div>
 
             <div class="form-group mb-3">
                 <label class="form-label" for="exam_time">Hora da prova:</label>
-                <input type="text" name="exam_time" class="form-control" id="exam_time" value="{{ $process?->exam_time?->format('H:i') ?? '' }}"
-                    readonly style="background-color: #e6e6e6" title="Não é possível editar este campo.">
+                <input type="text" name="exam_time" class="form-control" id="exam_time"
+                    value="{{ $process?->exam_time?->format('H:i') ?? '' }}" readonly style="background-color: #e6e6e6"
+                    title="Não é possível editar este campo.">
             </div>
 
             <button type="submit" class="btn btn-success btn-sm">
                 <i class="bi bi-check-circle me-1"></i>Salvar
             </button>
+
+            <a href="{{ route('admin.exam.show') }}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>
+                Voltar
+            </a>
         </form>
 
     </div>

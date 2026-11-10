@@ -69,131 +69,159 @@
  @endpush
 
  @section('content')
+     @php
+         $show = \App\Models\Exam::exists();
+     @endphp
+
      <div class="container-fluid">
 
          @if (!$process)
              <div class="alert alert-info">Nenhum processo seletivo está cadastrado no momento.</div>
          @endif
 
-         <div class="row g-4 mb-4">
+         @if (session('success'))
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+                 {{ session('success') }}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+         @endif
 
+         @if (session('error'))
+             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                 {{ session('error') }}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+         @endif
+
+         @if ($show)
              <div class="row g-4 mb-4">
 
-                 {{-- Card: Informações da Prova --}}
-                 <div class="col-12 col-md-4">
-                     <div class="card info-card shadow-sm h-100" style="--accent: #0d6efd;">
-                         <div class="card-body">
+                 <div class="row g-4 mb-4">
 
-                             <div class="d-flex align-items-center gap-3 mb-3">
-                                 <div class="info-icon">
-                                     <i class="bi bi-calendar-event"></i>
+                     {{-- Card: Informações da Prova --}}
+                     <div class="col-12 col-md-4">
+                         <div class="card info-card shadow-sm h-100" style="--accent: #0d6efd;">
+                             <div class="card-body">
+
+                                 <div class="d-flex align-items-center gap-3 mb-3">
+                                     <div class="info-icon">
+                                         <i class="bi bi-calendar-event"></i>
+                                     </div>
+                                     <h5 class="mb-0">Informações da Prova</h5>
                                  </div>
-                                 <h5 class="mb-0">Informações da Prova</h5>
+
+                                 <div class="d-flex flex-column gap-2">
+                                     <div class="info-box">
+                                         <small><i class="bi bi-calendar3 me-1"></i>Data</small>
+                                         <strong>{{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</strong>
+                                     </div>
+
+                                     <div class="info-box">
+                                         <small><i class="bi bi-clock me-1"></i>Horário</small>
+                                         <strong>{{ $process?->exam_time?->format('H:i') ?? '—' }}</strong>
+                                     </div>
+                                 </div>
+
                              </div>
-
-                             <div class="d-flex flex-column gap-2">
-                                 <div class="info-box">
-                                     <small><i class="bi bi-calendar3 me-1"></i>Data</small>
-                                     <strong>{{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</strong>
-                                 </div>
-
-                                 <div class="info-box">
-                                     <small><i class="bi bi-clock me-1"></i>Horário</small>
-                                     <strong>{{ $process?->exam_time?->format('H:i') ?? '—' }}</strong>
-                                 </div>
-                             </div>
-
                          </div>
                      </div>
-                 </div>
 
-                 {{-- Card: Listas --}}
-                 <div class="col-12 col-md-4">
-                     <div class="card info-card shadow-sm h-100" style="--accent: #6f42c1;">
-                         <div class="card-body">
+                     {{-- Card: Listas --}}
+                     <div class="col-12 col-md-4">
+                         <div class="card info-card shadow-sm h-100" style="--accent: #6f42c1;">
+                             <div class="card-body">
 
-                             <div class="d-flex align-items-center gap-3 mb-3">
-                                 <div class="info-icon">
-                                     <i class="bi bi-file-earmark-text"></i>
+                                 <div class="d-flex align-items-center gap-3 mb-3">
+                                     <div class="info-icon">
+                                         <i class="bi bi-file-earmark-text"></i>
+                                     </div>
+                                     <h5 class="mb-0">Listas</h5>
                                  </div>
-                                 <h5 class="mb-0">Listas</h5>
+
+                                 <div class="d-flex flex-column gap-2">
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}"
+                                         target="_blank" class="info-link">
+                                         <i class="bi bi-printer"></i>Geral (Consulta)
+                                     </a>
+
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}"
+                                         target="_blank" class="info-link">
+                                         <i class="bi bi-printer"></i>Mural e Salas
+                                     </a>
+
+                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
+                                         target="_blank" class="info-link">
+                                         <i class="bi bi-printer"></i>Folhas de Assinatura
+                                     </a>
+                                 </div>
+
                              </div>
-
-                             <div class="d-flex flex-column gap-2">
-                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}" target="_blank"
-                                     class="info-link">
-                                     <i class="bi bi-printer"></i>Geral (Consulta)
-                                 </a>
-
-                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}" target="_blank"
-                                     class="info-link">
-                                     <i class="bi bi-printer"></i>Mural e Salas
-                                 </a>
-
-                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
-                                     target="_blank" class="info-link">
-                                     <i class="bi bi-printer"></i>Folhas de Assinatura
-                                 </a>
-                             </div>
-
                          </div>
                      </div>
-                 </div>
 
-                 {{-- Card: Acesso aos Locais de Prova --}}
-                 <div class="col-12 col-md-4">
-                     <div class="card info-card shadow-sm h-100"
-                         style="--accent: {{ $locationReleased ? '#198754' : '#dc3545' }};">
-                         <div class="card-body">
+                     {{-- Card: Acesso aos Locais de Prova --}}
+                     <div class="col-12 col-md-4">
+                         <div class="card info-card shadow-sm h-100"
+                             style="--accent: {{ $locationReleased ? '#198754' : '#dc3545' }};">
+                             <div class="card-body">
 
-                             <div class="d-flex align-items-center gap-3 mb-3">
-                                 <div class="info-icon">
-                                     <i class="bi bi-geo-alt"></i>
-                                 </div>
-                                 <h5 class="mb-0">Acesso aos Locais</h5>
-                             </div>
-
-                             <div class="info-box text-center py-3">
-                                 <i class="bi {{ $locationReleased ? 'bi-unlock-fill text-success' : 'bi-lock-fill text-danger' }}"
-                                     style="font-size: 2rem;"></i>
-
-                                 <div class="mt-2">
-                                     <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }}">
-                                         {{ $locationReleased ? 'Liberado' : 'Bloqueado' }}
-                                     </span>
+                                 <div class="d-flex align-items-center gap-3 mb-3">
+                                     <div class="info-icon">
+                                         <i class="bi bi-geo-alt"></i>
+                                     </div>
+                                     <h5 class="mb-0">Acesso aos Locais</h5>
                                  </div>
 
-                                 @unless ($locationReleased)
-                                     <p class="text-muted small mt-2 mb-0">
-                                         O acesso aos locais de prova ainda não foi liberado.
-                                     </p>
-                                 @endunless
-                             </div>
+                                 <div class="info-box text-center py-3">
+                                     <i class="bi {{ $locationReleased ? 'bi-unlock-fill text-success' : 'bi-lock-fill text-danger' }}"
+                                         style="font-size: 2rem;"></i>
 
+                                     <div class="mt-2">
+                                         <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }}">
+                                             {{ $locationReleased ? 'Liberado' : 'Bloqueado' }}
+                                         </span>
+                                     </div>
+
+                                     @unless ($locationReleased)
+                                         <p class="text-muted small mt-2 mb-0">
+                                             O acesso aos locais de prova ainda não foi liberado.
+                                         </p>
+                                     @endunless
+                                 </div>
+
+                             </div>
                          </div>
                      </div>
+
                  </div>
-
-             </div>
-         </div>
-
-         {{-- Cabeçalho --}}
-         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-             <div>
-                 <h5 class="mb-1">
-                     <i class="bi bi-card-list me-2 text-primary"></i>
-                     Candidatos por Sala
-                 </h5>
-                 <p class="text-muted small mb-0">
-                     Relação de candidatos distribuídos por local e sala de prova.
-                 </p>
              </div>
 
-             <a href="{{ route('admin.exam.create') }}" class="btn btn-outline-secondary btn-sm">
-                 <i class="bi bi-arrow-left me-1"></i>
-                 Voltar
-             </a>
-         </div>
+             {{-- Cabeçalho --}}
+             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                 <div>
+                     <h5 class="mb-1">
+                         <i class="bi bi-card-list me-2 text-primary"></i>
+                         Candidatos por Sala
+                     </h5>
+                     <p class="text-muted small mb-0">
+                         Relação de candidatos distribuídos por local e sala de prova.
+                     </p>
+                 </div>
+
+                 <div class="d-flex flex-wrap gap-2">
+                     @if ($candidates->isNotEmpty() && !($process?->isLocationReleased() ?? false))
+                         <form id="delete-exam-allocation-form" method="POST" action="{{ route('admin.exam.destroy') }}">
+                             @csrf
+                             @method('DELETE')
+                             <button type="submit" class="btn btn-outline-danger btn-sm">
+                                 <i class="bi bi-trash me-2"></i>
+                                 Apagar alocação
+                             </button>
+                         </form>
+                     @endif
+                 </div>
+             </div>
+         @endif
 
          @forelse ($candidates as $location => $rooms)
 
@@ -260,7 +288,8 @@
                                                              @if ($candidate->pne)
                                                                  <i class="bi bi-person-wheelchair text-primary"
                                                                      title="Pessoa com deficiência" aria-hidden="true"></i>
-                                                                 <span class="visually-hidden">Pessoa com deficiência</span>
+                                                                 <span class="visually-hidden">Pessoa com
+                                                                     deficiência</span>
                                                              @endif
                                                          </td>
                                                      </tr>
@@ -305,5 +334,25 @@
  @endsection
 
  @push('scripts')
-     <script src="{{ asset('assets/js/admin/exam/settings.js') }}"></script>
+     <script>
+         document.getElementById('delete-exam-allocation-form')?.addEventListener('submit', function(event) {
+             event.preventDefault();
+             const form = event.currentTarget;
+
+             Swal.fire({
+                 title: 'Apagar alocação?',
+                 text: 'Esta ação não pode ser desfeita. Todos os candidatos serão removidos das salas de prova.',
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#dc3545',
+                 cancelButtonColor: '#6c757d',
+                 confirmButtonText: 'Sim, apagar',
+                 cancelButtonText: 'Cancelar',
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     form.submit();
+                 }
+             });
+         });
+     </script>
  @endpush

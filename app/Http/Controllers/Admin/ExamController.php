@@ -4,54 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
+use App\Models\Process;
 use App\Services\ExamAllocationService;
 use DomainException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ExamController extends Controller
 {
-    /**
-     * Mostra a lista de alocação dos candidatos por sala.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(): View
-    {
-        $candidates = Exam::with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
-            ->orderBy('location_id')
-            ->orderBy('room_number')
-            ->get()
-            ->map(function ($exam) {
-                $user = $exam->inscription->user;
-
-                return (object) [
-                    'location'       => $exam->location->name,
-                    'room'           => $exam->room_number,
-                    'inscription_id' => $exam->inscription_id,
-                    'name'           => $user->name,
-                    'social_name'    => $user->lgbt?->status === 'accepted' ? $user->lgbt->name : null,
-                    'pne'            => $user->pne?->status === 'accepted',
-                ];
-            })
-            ->groupBy('location')
-            ->map(
-                fn($rooms) => $rooms
-                    ->groupBy('room')
-                    ->map(
-                        fn($list) => $list
-                            ->sortBy(fn($c) => Str::lower(Str::ascii($c->social_name ?? $c->name)))
-                            ->values()
-                    )
-            );
-
-
-        return view('admin.exam.show', [
-            'candidates' => $candidates
-        ]);
-    }
-
     /**
      * Mostra a página de configurações de agendamento de provas.
      *
@@ -92,6 +55,84 @@ class ExamController extends Controller
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        return alertSuccess('Prova agendada com sucesso!');
+        return alertSuccess('Prova agendada com sucesso!', 'admin.exam.show');
+    }
+
+    /**
+     * Mostra a lista de alocação dos candidatos por sala.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function show(): View
+    {
+        $process = Process::current();
+        $query = Exam::query();
+
+        if ($process) {
+            $query->whereHas('inscription', fn ($q) => $q->forProcess($process->id));
+        } else {
+            $query->whereRaw('1 = 0');
+        }
+
+        $candidates = $query->with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
+            ->orderBy('location_id')
+            ->orderBy('room_number')
+            ->get()
+            ->map(function ($exam) {
+                $user = $exam->inscription->user;
+
+                return (object) [
+                    'location'       => $exam->location->name,
+                    'room'           => $exam->room_number,
+                    'inscription_id' => $exam->inscription_id,
+                    'name'           => $user->name,
+                    'social_name'    => $user->lgbt?->status === 'accepted' ? $user->lgbt->name : null,
+                    'pne'            => $user->pne?->status === 'accepted',
+                ];
+            })
+            ->groupBy('location')
+            ->map(
+                fn($rooms) => $rooms
+                    ->groupBy('room')
+                    ->map(
+                        fn($list) => $list
+                            ->sortBy(fn($c) => Str::lower(Str::ascii($c->social_name ?? $c->name)))
+                            ->values()
+                    )
+            );
+
+
+        return view('admin.exam.show', [
+            'candidates' => $candidates,
+            'process' => $process,
+        ]);
+    }
+
+    /** Apaga as alocações do processo seletivo atual. */
+    public function destroy(): RedirectResponse
+    {
+        $process = Process::current();
+
+        if (! $process) {
+            return redirect()->route('admin.exam.create')
+                ->with('error', 'Nenhum processo seletivo cadastrado.');
+        }
+
+        if ($process->isLocationReleased()) {
+            return redirect()->route('admin.exam.create')
+                ->with('error', 'Não é possível apagar a alocação depois que o local da prova foi liberado aos candidatos.');
+        }
+
+        $deleted = DB::transaction(fn () => Exam::whereHas(
+            'inscription',
+            fn ($query) => $query->forProcess($process->id)
+        )->delete());
+
+        if ($deleted === 0) {
+            return redirect()->route('admin.exam.create')
+                ->with('error', 'Não há alocações para apagar no processo seletivo atual.');
+        }
+
+        return alertSuccess('Alocação de prova removida com sucesso!', 'admin.exam.show');
     }
 }

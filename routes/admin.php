@@ -100,6 +100,8 @@ Route::prefix('gestao')
                     ->name('create');
                 Route::post('salvar', [ExamController::class, 'store'])
                     ->name('store');
+                Route::delete('apagar-alocacao', [ExamController::class, 'destroy'])
+                    ->name('destroy');
             });
 
         // Modelos de documentos

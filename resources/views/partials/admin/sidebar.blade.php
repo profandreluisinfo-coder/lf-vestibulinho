@@ -177,8 +177,8 @@
                         class="dropdown-item-custom {{ request()->routeIs('admin.location.index') ? 'active' : '' }}">
                         <i class="bi bi-geo me-1"></i> Locais de Prova
                     </a>
-                    <a href="{{ route('admin.exam.create') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.exam.create') ? 'active' : '' }}">
+                    <a href="{{ route('admin.exam.show') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.exam.*') ? 'active' : '' }}">
                         <i class="bi bi-calendar2-week me-1"></i> Alocar Candidatos
                     </a>
 
