@@ -194,7 +194,7 @@
         <h2 class="dash-section-title">Andamento do processo</h2>
         <div class="card dash-list">
             <ol class="dash-timeline">
-                @foreach ($timeline as $step)
+                @forelse ($timeline as $step)
                     <li class="dash-tl-item {{ $step['state'] }}">
                         <div class="dash-tl-dot">{!! $step['icon'] !!}</div>
 
@@ -205,7 +205,15 @@
 
                         <span class="dash-tl-tag">{{ $step['tag'] }}</span>
                     </li>
-                @endforeach
+                @empty
+                    <li class="dash-tl-item">
+                        <div class="dash-tl-dot"><i class="bi bi-info-circle"></i></div>
+                        <div class="dash-tl-info">
+                            <strong>Nenhuma grade de eventos foi definida.</strong>
+                            <small>Cadastre os eventos do processo para acompanhar o andamento.</small>
+                        </div>
+                    </li>
+                @endforelse
             </ol>
         </div>
 
