@@ -4,6 +4,8 @@
 
 @section('content')
     @php
+        $show = \App\Models\Result::exists();
+        
         $released = $process?->isResultReleased();
         $canRelease = (int) $stats->classified_count > 0;
         $confirmMessage = $released
@@ -24,42 +26,25 @@
                     Notas importadas e situação de cada candidato no processo seletivo.
                 </p>
             </div>
-
-            <div class="d-flex flex-wrap gap-2">
-                {{-- ROTA: formulário de importação (create) --}}
-                <a href="{{ route('admin.import.create') }}"
-                    class="btn btn-outline-primary btn-sm {{ $released ? 'disabled' : '' }}"
-                    @if ($released) aria-disabled="true" tabindex="-1" @endif>
-                    <i class="bi bi-upload me-1"></i> Importar notas
-                </a>
-
-                {{-- Toggle de liberação do resultado --}}
-                {{-- <form method="POST" action="{{ route('admin.process.release', 'result') }}"
-                    onsubmit='return confirm(@json($confirmMessage))'>
-                    @csrf
-                    <button type="submit"
-                        class="btn btn-sm {{ $released ? 'btn-outline-danger' : 'btn-success' }}"
-                        @if (! $released && ! $canRelease) disabled title="Importe as notas antes de liberar." @endif>
-                        <i class="bi {{ $released ? 'bi-eye-slash' : 'bi-megaphone' }} me-1"></i>
-                        {{ $released ? 'Retirar resultado do ar' : 'Liberar resultado' }}
-                    </button>
-                </form> --}}
-            </div>
         </div>
 
         {{-- Situação da publicação --}}
-        @if ($released)
-            <div class="alert alert-success py-2 small" role="status">
-                <i class="bi bi-check-circle-fill me-1"></i>
-                Resultado liberado aos candidatos em {{ $process?->result_released_at->format('d/m/Y \à\s H:i') }}.
-                A importação de notas fica bloqueada enquanto ele estiver no ar.
-            </div>
-        @else
-            <div class="alert alert-secondary py-2 small" role="status">
-                <i class="bi bi-eye-slash me-1"></i>
-                Resultado ainda não liberado: os candidatos não veem notas nem classificação.
-            </div>
+        @if ($canRelease)
+            @if ($released)
+                <div class="alert alert-success py-2 small" role="status">
+                    <i class="bi bi-check-circle-fill me-1"></i>
+                    Resultado liberado aos candidatos em {{ $process?->result_released_at->format('d/m/Y \à\s H:i') }}.
+                    A importação de notas fica bloqueada enquanto ele estiver no ar.
+                </div>
+            @else
+                <div class="alert alert-secondary py-2 small" role="status">
+                    <i class="bi bi-eye-slash me-1"></i>
+                    Resultado ainda não liberado: os candidatos não veem notas nem classificação.
+                </div>
+            @endif
         @endif
+
+        {{-- Ações --}}
 
         @if ((int) $stats->scored === 0)
 

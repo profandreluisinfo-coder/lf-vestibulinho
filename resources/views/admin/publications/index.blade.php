@@ -40,9 +40,16 @@
                             @foreach ($items as $key => $item)
                                 @php
                                     $isPublic = in_array($key, $released, true);
+                                    $date = isset($item['date']) ? $process?->{$item['date']} : null;
+                                    $late = !$isPublic && $date && $date->lt(today());
                                 @endphp
+
                                 <tr>
                                     <td>{{ $item['label'] }}</td>
+                                    <td class="text-center small {{ $late ? 'text-danger fw-semibold' : 'text-muted' }}"
+                                        style="width: 190px;">
+                                        Previsto: {{ $process?->formatDate($date) ?? '—' }}
+                                    </td>
                                     <td class="text-center" style="width: 120px;">
                                         <span class="badge {{ $isPublic ? 'text-bg-success' : 'text-bg-secondary' }}">
                                             {{ $isPublic ? 'Pública' : 'Oculta' }}
@@ -79,78 +86,89 @@
         @endforeach
 
         {{-- Acesso dos candidatos: local e resultado da prova (guardados no Processo) --}}
-@php
-    // $process = \App\Models\Process::current();
-
-    $accessGroups = [
-        [
-            'title' => 'Local de Prova',
-            'icon' => 'geo-alt',
-            'type' => 'location',
-            'label' => 'Local, data e hora da prova',
-            'releasedAt' => $process?->location_released_at,
-            'textOn' => 'O local da prova deixará de ser exibido aos candidatos.',
-            'textOff' => 'O local da prova será exibido aos candidatos.',
-        ],
-        [
-            'title' => 'Resultado da Prova',
-            'icon' => 'clipboard-check',
-            'type' => 'result',
-            'label' => 'Classificação geral (classificados e não classificados)',
-            'releasedAt' => $process?->result_released_at,
-            'textOn' => 'O resultado deixará de ser exibido aos candidatos.',
-            'textOff' => 'O resultado será exibido aos candidatos.',
-        ],
-    ];
-@endphp
-
-@if ($process)
-    @foreach ($accessGroups as $access)
         @php
-            $isPublic = $access['releasedAt'] !== null;
+
+            $accessGroups = [
+                [
+                    'title' => 'Local de Prova',
+                    'icon' => 'geo-alt',
+                    'type' => 'location',
+                    'label' => 'Local, data e hora da prova',
+                    'releasedAt' => $process?->location_released_at,
+                    'textOn' => 'O local da prova deixará de ser exibido aos candidatos.',
+                    'textOff' => 'O local da prova será exibido aos candidatos.',
+                    'dueDate' => $process?->location_publish,
+                ],
+                [
+                    'title' => 'Resultado da Prova',
+                    'icon' => 'clipboard-check',
+                    'type' => 'result',
+                    'label' => 'Classificação geral (classificados e não classificados)',
+                    'releasedAt' => $process?->result_released_at,
+                    'textOn' => 'O resultado deixará de ser exibido aos candidatos.',
+                    'textOff' => 'O resultado será exibido aos candidatos.',
+                    'dueDate' => $process?->result_publish,
+                ],
+            ];
         @endphp
 
-        <div class="card shadow-sm mb-3">
-            <div class="card-header bg-white fw-semibold">
-                <i class="bi bi-{{ $access['icon'] }} me-2"></i>{{ $access['title'] }}
-            </div>
+        @if ($process)
+            @foreach ($accessGroups as $access)
+                {{-- @php
+                    $isPublic = $access['releasedAt'] !== null;
+                @endphp --}}
+                @php
+                    $isPublic = $access['releasedAt'] !== null;
+                    $due = $access['dueDate'];
+                    $late = !$isPublic && $due && $due->lt(today());
+                @endphp
 
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <tbody>
-                        <tr>
-                            <td>{{ $access['label'] }}</td>
-                            <td class="text-center" style="width: 120px;">
-                                <span class="badge {{ $isPublic ? 'text-bg-success' : 'text-bg-secondary' }}">
-                                    {{ $isPublic ? 'Pública' : 'Oculta' }}
-                                </span>
-                            </td>
-                            <td class="text-end" style="width: 160px;">
-                                <form method="POST" action="{{ route('admin.process.release', $access['type']) }}"
-                                    class="d-inline js-confirm-action"
-                                    data-confirm-title="{{ $isPublic ? 'Ocultar?' : 'Liberar?' }}"
-                                    data-confirm-text="{{ $isPublic ? $access['textOn'] : $access['textOff'] }}"
-                                    data-confirm-button="{{ $isPublic ? 'Sim, ocultar' : 'Sim, liberar' }}"
-                                    data-confirm-icon="{{ $isPublic ? 'warning' : 'question' }}">
-                                    @csrf
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-white fw-semibold">
+                        <i class="bi bi-{{ $access['icon'] }} me-2"></i>{{ $access['title'] }}
+                    </div>
 
-                                    <button type="submit"
-                                        class="btn btn-sm {{ $isPublic ? 'btn-outline-secondary' : 'btn-success' }}">
-                                        @if ($isPublic)
-                                            <i class="bi bi-eye-slash"></i> Ocultar
-                                        @else
-                                            <i class="bi bi-broadcast"></i> Liberar
-                                        @endif
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endforeach
-@endif
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>{{ $access['label'] }}</td>
+                                    <td class="text-center small {{ $late ? 'text-danger fw-semibold' : 'text-muted' }}"
+                                        style="width: 190px;">
+                                        Previsto: {{ $process->formatDate($due) }}
+                                    </td>
+                                    <td class="text-center" style="width: 120px;">
+
+                                        <span class="badge {{ $isPublic ? 'text-bg-success' : 'text-bg-secondary' }}">
+                                            {{ $isPublic ? 'Pública' : 'Oculta' }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end" style="width: 160px;">
+                                        <form method="POST" action="{{ route('admin.process.release', $access['type']) }}"
+                                            class="d-inline js-confirm-action"
+                                            data-confirm-title="{{ $isPublic ? 'Ocultar?' : 'Liberar?' }}"
+                                            data-confirm-text="{{ $isPublic ? $access['textOn'] : $access['textOff'] }}"
+                                            data-confirm-button="{{ $isPublic ? 'Sim, ocultar' : 'Sim, liberar' }}"
+                                            data-confirm-icon="{{ $isPublic ? 'warning' : 'question' }}">
+                                            @csrf
+
+                                            <button type="submit"
+                                                class="btn btn-sm {{ $isPublic ? 'btn-outline-secondary' : 'btn-success' }}">
+                                                @if ($isPublic)
+                                                    <i class="bi bi-eye-slash"></i> Ocultar
+                                                @else
+                                                    <i class="bi bi-broadcast"></i> Liberar
+                                                @endif
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     </div>
 @endsection
 

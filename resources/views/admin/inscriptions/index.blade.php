@@ -26,8 +26,7 @@
         <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
             <caption>Lista Geral de Inscritos</caption>
             <thead class="table-success text-center">
-                <tr>
-                    <th><i class="bi bi-calendar-event me-1"></i>Vestibulinho</th> <!-- NOVO -->
+                <tr>                    
                     <th><i class="bi bi-hash me-1"></i>Inscrição</th>
                     <th><i class="bi bi-person me-1"></i>Candidato</th>
                     <th><i class="bi bi-credit-card me-1"></i>CPF</th>
@@ -71,8 +70,7 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
                 },
-                columns: [
-                    { data: 'process_year',   name: 'process_year', className: 'text-center' }, // NOVO
+                columns: [                    
                     { data: 'inscription_id', name: 'inscription_id' },
                     { data: 'name',           name: 'name' },
                     { data: 'cpf',            name: 'cpf' },

@@ -13,20 +13,19 @@ class Setting extends Model
      * Para criar uma lista nova, inclua uma linha aqui.
      */
     public const PUBLICATION_LISTS = [
-        'inscriptions.approved' => ['group' => 'Inscrições', 'icon' => 'person-lines-fill', 'label' => 'Inscrições deferidas'],
-        'inscriptions.rejected' => ['group' => 'Inscrições', 'icon' => 'person-lines-fill', 'label' => 'Inscrições indeferidas'],
-        'social-names.approved' => ['group' => 'Nome social', 'icon' => 'person-vcard', 'label' => 'Nome social deferidos'],
-        'social-names.rejected' => ['group' => 'Nome social', 'icon' => 'person-vcard', 'label' => 'Nome social indeferidos'],
-        'medical-reports.approved' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios deferidos'],
-        'medical-reports.rejected' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios indeferidos'],
+        'inscriptions.approved' => ['group' => 'Inscrições', 'icon' => 'person-lines-fill', 'label' => 'Inscrições deferidas', 'date' => 'deferrals'],
+        'inscriptions.rejected' => ['group' => 'Inscrições', 'icon' => 'person-lines-fill', 'label' => 'Inscrições indeferidas', 'date' => 'deferrals'],
+        'social-names.approved' => ['group' => 'Nome social', 'icon' => 'person-vcard', 'label' => 'Nome social deferidos', 'date' => 'deferrals'],
+        'social-names.rejected' => ['group' => 'Nome social', 'icon' => 'person-vcard', 'label' => 'Nome social indeferidos', 'date' => 'deferrals'],
+        'medical-reports.approved' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios deferidos', 'date' => 'deferrals'],
+        'medical-reports.rejected' => ['group' => 'Laudos e relatórios médicos', 'icon' => 'file-earmark-medical', 'label' => 'Laudos e relatórios indeferidos', 'date' => 'deferrals'],
         // Resultado dos recursos (model Appeal)
-        'appeals.social-names.approved' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social deferidos'],
-        'appeals.social-names.rejected' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social indeferidos'],
-        'appeals.medical-reports.approved' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios deferidos'],
-        'appeals.medical-reports.rejected' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios indeferidos'],
-
+        'appeals.social-names.approved' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social deferidos', 'date' => 'appeals_results'],
+        'appeals.social-names.rejected' => ['group' => 'Recursos de nome social', 'icon' => 'arrow-repeat', 'label' => 'Recursos de nome social indeferidos', 'date' => 'appeals_results'],
+        'appeals.medical-reports.approved' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios deferidos', 'date' => 'appeals_results'],
+        'appeals.medical-reports.rejected' => ['group' => 'Recursos de laudos e relatórios médicos', 'icon' => 'arrow-repeat', 'label' => 'Recursos de laudos e relatórios indeferidos', 'date' => 'appeals_results'],
         // Relação definitiva (após a análise dos recursos)
-        'final-list.approved' => ['group' => 'Relação definitiva', 'icon' => 'patch-check', 'label' => 'Relação definitiva de candidatos(as) inscritos(as)'],
+        'final-list.approved' => ['group' => 'Relação definitiva', 'icon' => 'patch-check', 'label' => 'Relação definitiva de candidatos(as) inscritos(as)', 'date' => 'definitive_list'],
     ];
 
     protected $fillable = [
