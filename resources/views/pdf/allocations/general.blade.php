@@ -120,7 +120,7 @@
                     <tr>
                         <th>Inscrição</th>
                         <th>Candidato</th>
-                        <th>PNE</th>
+                        <th>PcD</th>
                         <th>Local</th>
                     </tr>
                 </thead>
