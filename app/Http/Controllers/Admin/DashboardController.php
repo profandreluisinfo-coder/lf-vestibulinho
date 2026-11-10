@@ -153,9 +153,18 @@ class DashboardController extends Controller
                 ->whereHas('user.inscription', fn ($query) => $query->forProcess($process->id))
                 ->count();
 
-            $alerts[] = $pendingAppeals > 0
-                ? "Atenção: A alocação nas salas já foi feita e há {$pendingAppeals} recurso(s) pendente(s). Recursos deferidos após a alocação não podem ser considerados."
-                : 'Atenção: A alocação nas salas já foi feita. Novos deferimentos de recursos não podem ser considerados.';
+            if (! $process->definitive_list || $today->lte($process->definitive_list)) {
+                $finalListDate = $process->definitive_list
+                    ? ' A lista definitiva está prevista para ' . $process->formatDate($process->definitive_list) . '.'
+                    : ' A data da lista definitiva ainda não foi definida.';
+
+                $alerts[] = 'Atenção: já existe uma alocação, mas a lista definitiva ainda não foi divulgada.'
+                    . $finalListDate;
+            }
+
+            if ($pendingAppeals > 0) {
+                $alerts[] = "Há {$pendingAppeals} recurso(s) pendente(s). A alocação impede deferimentos que alterariam os candidatos ou sua sala.";
+            }
         }
 
         // Locais de prova

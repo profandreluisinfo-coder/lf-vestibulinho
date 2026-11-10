@@ -141,6 +141,62 @@
 
                         <hr class="show-divider">
 
+                        {{-- Divulgação das Inscrições Deferidas e Indeferidas --}}
+                        <div class="col-12 mb-4">
+                            <p class="show-section-label">Divulgação das Inscrições Deferidas e Indeferidas, PCDs e Nome Social</p>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <span class="show-field-label">Divulgação Preliminar</span>
+                                    <span class="show-field-value">{{ $process?->deferrals?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="show-divider">
+
+                        {{-- Abertura e Fechamento do Prazo de Recursos --}}
+                        <div class="col-12 mb-4">
+                            <p class="show-section-label">Abertura e Fechamento do Prazo de Recursos</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <span class="show-field-label">Abertura do Prazo</span>
+                                    <span class="show-field-value">{{ $process?->appeals_start?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="show-field-label">Fechamento do Prazo</span>
+                                    <span class="show-field-value">{{ $process?->appeals_end?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="show-divider">
+
+                        {{-- Divulgação do Resultado da Análise dos Recursos --}}
+                        <div class="col-12 mb-4">
+                            <p class="show-section-label">Divulgação do Resultado da Análise dos Recursos</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <span class="show-field-label">Data de Divulgação</span>
+                                    <span class="show-field-value">{{ $process?->appeals_results?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="show-divider">
+                        
+                        {{-- Divulgação da Lista Definitiva --}}
+                        <div class="col-12 mb-4">
+                            <p class="show-section-label">Divulgação da relação definitiva de candidatos inscritos após a análise dos recursos</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <span class="show-field-label">Data de Divulgação</span>
+                                    <span class="show-field-value">{{ $process?->definitive_list?->format('d/m/Y') ?? '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="show-divider">
+
                         {{-- Aplicação das Provas --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Aplicação das Provas</p>

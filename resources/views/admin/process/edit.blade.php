@@ -107,6 +107,92 @@
 
                             <hr class="edit-divider">
 
+                            {{-- Seção: Divulgação preliminar das inscrições deferidas e indeferidas --}}
+                            <div class="edit-section mb-4">
+                                <p class="edit-section-label">Divulgação preliminar das inscrições deferidas e indeferidas, PCDs e Nome Social</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="deferrals" class="form-label">Data de Divulgação</label>
+                                        <input type="date"
+                                            class="form-control @error('deferrals') is-invalid @enderror"
+                                            id="deferrals" name="deferrals"
+                                            value="{{ old('deferrals', $process?->deferrals?->format('Y-m-d') ?? '') }}">
+                                        @error('deferrals')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="edit-divider">
+
+                            {{-- Seção: Abertura e fechamento do prazo de recursos das inscrições indeferidas, pcds e nome social --}}
+                            <div class="edit-section mb-4">
+                                <p class="edit-section-label">Abertura e Fechamento do Prazo de Recursos</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="appeals_start" class="form-label">Abertura do Prazo</label>
+                                        <input type="date"
+                                            class="form-control @error('appeals_start') is-invalid @enderror"
+                                            id="appeals_start" name="appeals_start"
+                                            value="{{ old('appeals_start', $process?->appeals_start?->format('Y-m-d') ?? '') }}">
+                                        @error('appeals_start')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="appeals_end" class="form-label">Fechamento do Prazo</label>
+                                        <input type="date"
+                                            class="form-control @error('appeals_end') is-invalid @enderror"
+                                            id="appeals_end" name="appeals_end"
+                                            value="{{ old('appeals_end', $process?->appeals_end?->format('Y-m-d') ?? '') }}">
+                                        @error('appeals_end')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="edit-divider">
+
+                            {{-- Seção: Divulgação dos Resultados dos Recursos --}}
+                            <div class="edit-section mb-4">
+                                <p class="edit-section-label">Divulgação dos Resultados da Análise dos Recursos</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="appeals_results" class="form-label">Data de Divulgação</label>
+                                        <input type="date"
+                                            class="form-control @error('appeals_results') is-invalid @enderror"
+                                            id="appeals_results" name="appeals_results"
+                                            value="{{ old('appeals_results', $process?->appeals_results?->format('Y-m-d') ?? '') }}">
+                                        @error('appeals_results')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="edit-divider">
+
+                            {{-- Seção: Divulgação da Lista Definitiva --}}
+                            <div class="edit-section mb-4">
+                                <p class="edit-section-label">Divulgação da relação definitiva de candidatos inscritos após a análise dos recursos</p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="definitive_list" class="form-label">Data de Divulgação</label>
+                                        <input type="date"
+                                            class="form-control @error('definitive_list') is-invalid @enderror"
+                                            id="definitive_list" name="definitive_list"
+                                            value="{{ old('definitive_list', $process?->definitive_list?->format('Y-m-d') ?? '') }}">
+                                        @error('definitive_list')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="edit-divider">
+
                             {{-- Seção: Aplicação das Provas --}}
                             <div class="edit-section mb-4">
                                 <p class="edit-section-label">Aplicação das Provas</p>

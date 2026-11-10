@@ -120,6 +120,38 @@
                                     'done' => $isInscriptionEnded,
                                 ],
                                 [
+                                    'label' => 'Divulgação preliminar',
+                                    'icon' => 'bi-clipboard-check',
+                                    'color' => 'amber',
+                                    'date' => $process?->deferrals?->format('d/m/Y'),
+                                    'active' => $process?->deferrals && now()->isSameDay($process?->deferrals),
+                                    'done' => $process?->deferrals && now()->gt($process?->deferrals),
+                                ],
+                                [
+                                    'label' => 'Prazo para recursos',
+                                    'icon' => 'bi-file-earmark-text',
+                                    'color' => 'teal',
+                                    'date' => $process?->formatPeriod($process?->appeals_start, $process?->appeals_end),
+                                    'active' => $process?->appeals_start && $process?->appeals_end && now()->between($process?->appeals_start, $process?->appeals_end),
+                                    'done' => $process?->appeals_end && now()->gt($process?->appeals_end),
+                                ],
+                                [
+                                    'label' => 'Resultado dos recursos',
+                                    'icon' => 'bi-megaphone',
+                                    'color' => 'purple',
+                                    'date' => $process?->appeals_results?->format('d/m/Y'),
+                                    'active' => $process?->appeals_results && now()->isSameDay($process?->appeals_results),
+                                    'done' => $process?->appeals_results && now()->gt($process?->appeals_results),
+                                ],
+                                [
+                                    'label' => 'Lista definitiva',
+                                    'icon' => 'bi-card-list',
+                                    'color' => 'orange',
+                                    'date' => $process?->definitive_list?->format('d/m/Y'),
+                                    'active' => $process?->definitive_list && now()->isSameDay($process?->definitive_list),
+                                    'done' => $process?->definitive_list && now()->gt($process?->definitive_list),
+                                ],
+                                [
                                     'label' => 'Local da Prova',
                                     'icon' => 'bi-geo-alt-fill',
                                     'color' => 'purple',
@@ -263,6 +295,85 @@
                         </div>
                     </div>
 
+                    {{-- Divulgação preliminar, recursos e lista definitiva --}}
+                    @php
+                        $inscriptionPhases = [
+                            [
+                                'label' => 'Divulgação preliminar',
+                                'icon' => 'bi-clipboard-check',
+                                'type' => 'date',
+                                'date' => $process?->deferrals,
+                                'description' => 'Divulgação das inscrições deferidas e indeferidas, incluindo PcD e nome social.',
+                            ],
+                            [
+                                'label' => 'Prazo para recursos',
+                                'icon' => 'bi-file-earmark-text',
+                                'type' => 'period',
+                                'start' => $process?->appeals_start,
+                                'end' => $process?->appeals_end,
+                                'description' => 'Período para apresentar recursos contra os indeferimentos de inscrições, PcD e nome social.',
+                            ],
+                            [
+                                'label' => 'Resultado dos recursos',
+                                'icon' => 'bi-megaphone',
+                                'type' => 'date',
+                                'date' => $process?->appeals_results,
+                                'description' => 'Divulgação do resultado da análise dos recursos.',
+                            ],
+                            [
+                                'label' => 'Lista definitiva de inscrições',
+                                'icon' => 'bi-card-list',
+                                'type' => 'date',
+                                'date' => $process?->definitive_list,
+                                'description' => 'Divulgação da relação definitiva de candidatos inscritos após a análise dos recursos.',
+                            ],
+                        ];
+                    @endphp
+
+                    @foreach ($inscriptionPhases as $i => $phase)
+                        @php
+                            $phaseDone = $phase['type'] === 'period'
+                                ? ($phase['end'] && now()->gt($phase['end']))
+                                : ($phase['date'] && now()->gt($phase['date']));
+                            $phaseActive = $phase['type'] === 'period'
+                                ? ($phase['start'] && $phase['end'] && now()->between($phase['start'], $phase['end']))
+                                : ($phase['date'] && now()->isSameDay($phase['date']));
+                        @endphp
+                        <div class="col-md-6 col-lg-5 reveal delay-{{ ($i % 3) + 1 }}">
+                            <div class="detail-card detail-teal2 {{ $phaseActive ? 'detail-active' : ($phaseDone ? 'detail-done' : '') }}">
+                                <div class="detail-phase">
+                                    <div class="detail-phase-icon teal2-bg"><i class="bi {{ $phase['icon'] }}"></i></div>
+                                    <div class="detail-phase-info">
+                                        <span class="detail-phase-num">Etapa {{ str_pad($i + 2, 2, '0', STR_PAD_LEFT) }}</span>
+                                        <h3>{{ $phase['label'] }}</h3>
+                                        @if ($phaseActive)
+                                            <span class="detail-badge badge-open"><span class="live-dot me-1"></span>{{ $phase['type'] === 'period' ? 'Aberto agora' : 'Hoje' }}</span>
+                                        @elseif ($phaseDone)
+                                            <span class="detail-badge badge-done"><i class="bi bi-check-lg me-1"></i>{{ $phase['type'] === 'period' ? 'Prazo encerrado' : 'Data passada' }}</span>
+                                        @else
+                                            <span class="detail-badge badge-upcoming"><i class="bi bi-clock me-1"></i>Data prevista</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="detail-body">
+                                    <p class="fw-semibold mb-2">
+                                        @if ($phase['type'] === 'period')
+                                            {{ $process?->formatPeriod($phase['start'], $phase['end']) }}
+                                        @else
+                                            {{ $process?->formatDate($phase['date']) }}
+                                        @endif
+                                    </p>
+                                    <ul class="list-group list-group-flush detail-notes mt-3">
+                                        <li class="list-group-item">
+                                            <i class="bi bi-info-circle"></i>
+                                            <span>{{ $phase['description'] }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
                     {{-- Divulgação Local da Prova --}}
                     <div class="col-md-6 col-lg-5 reveal delay-2">
                         <div
@@ -270,7 +381,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon purple-bg"><i class="bi bi-geo-alt-fill"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 02</span>
+                                    <span class="detail-phase-num">Etapa 06</span>
                                     <h3>Local da Prova</h3>
                                     @if ($process?->location_publish && now()->gt($process?->location_publish))
                                         <span class="detail-badge badge-done"><i
@@ -321,7 +432,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon red-bg"><i class="bi bi-calendar2-week-fill"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 03</span>
+                                    <span class="detail-phase-num">Etapa 07</span>
                                     <h3>Dia da Prova</h3>
                                     @if ($process?->exam_date && now()->isSameDay($process?->exam_date))
                                         <span class="detail-badge badge-open"><span
@@ -378,7 +489,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon amber-bg"><i class="bi bi-list-check"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 04</span>
+                                    <span class="detail-phase-num">Etapa 08</span>
                                     <h3>Gabarito</h3>
                                     @if ($process?->answer_publish && now()->gt($process?->answer_publish))
                                         <span class="detail-badge badge-done"><i
@@ -419,7 +530,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal2-bg"><i class="bi bi-search"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 05</span>
+                                    <span class="detail-phase-num">Etapa 09</span>
                                     <h3>Revisão de Prova</h3>
                                     <span class="detail-badge badge-upcoming"><i
                                             class="bi bi-clock me-1"></i>Pendente</span>
@@ -467,7 +578,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon orange-bg"><i class="bi bi-list-ol"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 06</span>
+                                    <span class="detail-phase-num">Etapa 10</span>
                                     <h3>Divulgação da Classificação/Resultado</h3>
                                     @if ($process?->result_publish && now()->gt($process?->result_publish))
                                         <span class="detail-badge badge-done"><i
@@ -515,7 +626,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal-bg"><i class="bi bi-pin-angle-fill"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 07</span>
+                                    <span class="detail-phase-num">Etapa 11</span>
                                     <h3>1ª Chamada</h3>
                                     @if ($process?->enrol_start && now()->gte($process?->enrol_start))
                                         <span class="detail-badge badge-open"><span
@@ -557,7 +668,7 @@
                             <div class="detail-phase">
                                 <div class="detail-phase-icon teal2-bg"><i class="bi bi-pin-angle-fill"></i></div>
                                 <div class="detail-phase-info">
-                                    <span class="detail-phase-num">Etapa 08</span>
+                                    <span class="detail-phase-num">Etapa 12</span>
                                     <h3>Vagas Remanescentes</h3>
                                     @if ($process?->enrol_remaining && now()->gte($process?->enrol_remaining))
                                         <span class="detail-badge badge-open"><span

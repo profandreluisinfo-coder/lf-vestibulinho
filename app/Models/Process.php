@@ -24,6 +24,19 @@ class Process extends Model
         'start',
         'end',
 
+        // Divulgação preliminar das inscrições, pcds e nome social, deferidas e indeferidas
+        'deferrals',
+
+        // Abertura e fechamento do prazo de recursos das inscrições indeferidas, pcds e nome social
+        'appeals_start',
+        'appeals_end',
+
+        // Divulgação do resultado dos recursos das inscrições indeferidas, pcds e nome social
+        'appeals_results',
+
+        // Divulgação da lista definitiva de inscrições deferidas, pcds e nome social
+        'definitive_list',
+
         // Prova
         'location_publish',
         'exam_date',
@@ -50,6 +63,11 @@ class Process extends Model
         return [
             'start'                => 'date',
             'end'                  => 'date',
+            'deferrals'            => 'date',
+            'appeals_start'        => 'date',
+            'appeals_end'          => 'date',
+            'appeals_results'      => 'date',
+            'definitive_list'      => 'date',
             'location_publish'     => 'date',
             'exam_date'            => 'date',
             'exam_time'            => 'datetime:H:i',
@@ -165,6 +183,31 @@ class Process extends Model
                 'type'  => 'period',
                 'start' => $this->start,
                 'end'   => $this->end,
+            ],
+            [
+                'label' => 'Divulgação preliminar das inscrições, PcD e nome social',
+                'icon'  => '<i class="bi bi-clipboard-check me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->deferrals,
+            ],
+            [
+                'label' => 'Prazo para recursos das inscrições, PcD e nome social',
+                'icon'  => '<i class="bi bi-file-earmark-text me-1"></i>',
+                'type'  => 'period',
+                'start' => $this->appeals_start,
+                'end'   => $this->appeals_end,
+            ],
+            [
+                'label' => 'Divulgação do resultado dos recursos',
+                'icon'  => '<i class="bi bi-megaphone me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->appeals_results,
+            ],
+            [
+                'label' => 'Divulgação da lista definitiva de inscrições',
+                'icon'  => '<i class="bi bi-card-list me-1"></i>',
+                'type'  => 'date',
+                'date'  => $this->definitive_list,
             ],
             [
                 'label' => 'Divulgação do local da prova',
