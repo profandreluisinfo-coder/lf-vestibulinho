@@ -17,34 +17,19 @@
             </a>
         </div>
 
-        <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 mt-4 p-3" role="alert">
-
-            <div class="me-3 fs-3" aria-hidden="true">
-                <i class="bi bi-info-circle-fill"></i>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @endif
 
-            <div class="flex-grow-1">
-                <h5 class="alert-heading mb-2">Informação Importante</h5>
-                <p class="mb-0">
-                    Para agendar uma nova prova, clique no botão <i class="bi bi-calendar2-week me-1"></i>Agendar
-                    Prova. Este procedimento irá substituir o agendamento anterior.
-                </p>
-                <p>Regras:</p>
-                <ul>
-                    <li>só roda depois do encerramento das inscrições do processo atual;</li>
-                    <li>só roda quando não há análise de PNE ou de nome social pendente;</li>
-                    <li>apenas inscrições deferidas do processo seletivo atual;</li>
-                    <li>candidatos PNE ocupam sempre as primeiras salas, separados dos demais;</li>
-                    <li>dentro de cada grupo, a ordem é alfabética (considerando o nome social aceito);</li>
-                    <li>o sistema comporta no máximo dois locais de prova;</li>
-                    <li>se 'Deseja dividir os locais' = 'sim', as salas a partir de 'Dividir locais a partir da sala nº:' vão para o segundo local.
-                    </li>
-                </ul>
-                <p class="mb-0 mt-2 small opacity-75">
-                    Em caso de dúvidas, entre em contato com o suporte técnico.
-                </p>
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
+        @endif
 
         <form id="exam-schedule" method="POST" action="{{ route('admin.exam.store') }}">
             @csrf

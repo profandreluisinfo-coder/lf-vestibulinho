@@ -2,6 +2,72 @@
 
  @section('page-title', 'Candidatos por Sala')
 
+ @push('styles')
+     <style>
+         .info-card {
+             border: 0;
+             border-left: 5px solid var(--accent);
+             border-radius: .75rem;
+             background-color: #fff;
+             transition: transform .15s ease, box-shadow .15s ease;
+         }
+
+         .info-card:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .12) !important;
+         }
+
+         .info-icon {
+             width: 44px;
+             height: 44px;
+             flex-shrink: 0;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             border-radius: 50%;
+             font-size: 1.25rem;
+             color: var(--accent);
+             background-color: color-mix(in srgb, var(--accent) 15%, white);
+         }
+
+         .info-box {
+             background-color: #f8f9fa;
+             border-radius: .5rem;
+             padding: .6rem .9rem;
+         }
+
+         .info-box small {
+             display: block;
+             text-transform: uppercase;
+             letter-spacing: .04em;
+             font-size: .7rem;
+             color: #6c757d;
+         }
+
+         .info-link {
+             display: flex;
+             align-items: center;
+             gap: .6rem;
+             padding: .55rem .8rem;
+             border-radius: .5rem;
+             background-color: #f8f9fa;
+             color: #212529;
+             text-decoration: none;
+             font-size: .95rem;
+             transition: background-color .15s ease;
+         }
+
+         .info-link:hover {
+             background-color: color-mix(in srgb, var(--accent) 15%, white);
+             color: #212529;
+         }
+
+         .info-link i {
+             color: var(--accent);
+         }
+     </style>
+ @endpush
+
  @section('content')
      <div class="container-fluid">
 
@@ -11,88 +77,104 @@
 
          <div class="row g-4 mb-4">
 
-             {{-- Card: Informações da Prova --}}
-             <div class="col-12 col-md-4">
+             <div class="row g-4 mb-4">
 
-                 <div class="card shadow h-100" style="background-color: #ffffe6">
-                     <div class="card-body">
+                 {{-- Card: Informações da Prova --}}
+                 <div class="col-12 col-md-4">
+                     <div class="card info-card shadow-sm h-100" style="--accent: #0d6efd;">
+                         <div class="card-body">
 
-                         <h5 class="card-title mb-3">
-                             <i class="bi bi-calendar-event me-2"></i>Informações da Prova
-                         </h5>
+                             <div class="d-flex align-items-center gap-3 mb-3">
+                                 <div class="info-icon">
+                                     <i class="bi bi-calendar-event"></i>
+                                 </div>
+                                 <h5 class="mb-0">Informações da Prova</h5>
+                             </div>
 
-                         <p class="mb-1">
-                             <strong>Data:</strong>
-                             {{ $process?->exam_date?->format('d/m/Y') ?? '—' }}
-                         </p>
+                             <div class="d-flex flex-column gap-2">
+                                 <div class="info-box">
+                                     <small><i class="bi bi-calendar3 me-1"></i>Data</small>
+                                     <strong>{{ $process?->exam_date?->format('d/m/Y') ?? '—' }}</strong>
+                                 </div>
 
-                         <p class="mb-0">
-                             <strong>Horário:</strong>
-                             {{ $process?->exam_time?->format('H:i') ?? '—' }}
-                         </p>
+                                 <div class="info-box">
+                                     <small><i class="bi bi-clock me-1"></i>Horário</small>
+                                     <strong>{{ $process?->exam_time?->format('H:i') ?? '—' }}</strong>
+                                 </div>
+                             </div>
+
+                         </div>
                      </div>
                  </div>
 
-             </div>
-
-             {{-- Card: Relatórios & Detalhes --}}
-             <div class="col-12 col-md-4">
-
-                 <div class="card shadow h-100" style="background-color: #ffffe6">
-                     <div class="card-body">
-
-                         <h5 class="card-title mb-3">
-                             <i class="bi bi-file-earmark-text me-2"></i>Listas
-                         </h5>
-
+                 {{-- Card: Listas --}}
+                 <div class="col-12 col-md-4">
+                     <div class="card info-card shadow-sm h-100" style="--accent: #6f42c1;">
                          <div class="card-body">
 
-                             <ul class="list-unstyled mb-0">
-                                 <li class="mb-2">
-                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}"
-                                         target="_blank" class="text-decoration-none">
-                                         <i class="bi bi-printer me-2"></i>Geral (Consulta)
-                                     </a>
-                                 </li>
-                                 <li class="mb-2">
-                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}"
-                                         target="_blank" class="text-decoration-none">
-                                         <i class="bi bi-printer me-2"></i>Mural e Salas
-                                     </a>
-                                 </li>
-                                 <li>
-                                     <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
-                                         target="_blank" class="text-decoration-none">
-                                         <i class="bi bi-printer me-2"></i>Folhas de Assinatura
-                                     </a>
-                                 </li>
-                             </ul>
+                             <div class="d-flex align-items-center gap-3 mb-3">
+                                 <div class="info-icon">
+                                     <i class="bi bi-file-earmark-text"></i>
+                                 </div>
+                                 <h5 class="mb-0">Listas</h5>
+                             </div>
+
+                             <div class="d-flex flex-column gap-2">
+                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'geral']) }}" target="_blank"
+                                     class="info-link">
+                                     <i class="bi bi-printer"></i>Geral (Consulta)
+                                 </a>
+
+                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'salas']) }}" target="_blank"
+                                     class="info-link">
+                                     <i class="bi bi-printer"></i>Mural e Salas
+                                 </a>
+
+                                 <a href="{{ route('admin.allocations.lists.pdf', ['type' => 'assinaturas']) }}"
+                                     target="_blank" class="info-link">
+                                     <i class="bi bi-printer"></i>Folhas de Assinatura
+                                 </a>
+                             </div>
+
+                         </div>
+                     </div>
+                 </div>
+
+                 {{-- Card: Acesso aos Locais de Prova --}}
+                 <div class="col-12 col-md-4">
+                     <div class="card info-card shadow-sm h-100"
+                         style="--accent: {{ $locationReleased ? '#198754' : '#dc3545' }};">
+                         <div class="card-body">
+
+                             <div class="d-flex align-items-center gap-3 mb-3">
+                                 <div class="info-icon">
+                                     <i class="bi bi-geo-alt"></i>
+                                 </div>
+                                 <h5 class="mb-0">Acesso aos Locais</h5>
+                             </div>
+
+                             <div class="info-box text-center py-3">
+                                 <i class="bi {{ $locationReleased ? 'bi-unlock-fill text-success' : 'bi-lock-fill text-danger' }}"
+                                     style="font-size: 2rem;"></i>
+
+                                 <div class="mt-2">
+                                     <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }}">
+                                         {{ $locationReleased ? 'Liberado' : 'Bloqueado' }}
+                                     </span>
+                                 </div>
+
+                                 @unless ($locationReleased)
+                                     <p class="text-muted small mt-2 mb-0">
+                                         O acesso aos locais de prova ainda não foi liberado.
+                                     </p>
+                                 @endunless
+                             </div>
 
                          </div>
                      </div>
                  </div>
 
              </div>
-
-             {{-- Card: Acesso aos Locais de Prova --}}
-             <div class="col-12 col-md-4">
-
-                 <div class="card shadow h-100" style="background-color: #ffffe6">
-                     <div class="card-body">
-                         <h5 class="card-title mb-3">
-                             <i class="bi bi-geo-alt me-2"></i>Acesso aos Locais
-                         </h5>
-                         <span class="badge bg-{{ $locationReleased ? 'success' : 'danger' }} ms-2">
-                             @if ($locationReleased)
-                                 <i class="bi bi-unlock-fill"></i> Liberado
-                             @else
-                                 <i class="bi bi-lock-fill"></i> Bloqueado
-                             @endif
-                         </span>
-                     </div>
-                 </div>
-             </div>
-
          </div>
 
          {{-- Cabeçalho --}}
@@ -212,7 +294,7 @@
 
                      <a href="{{ route('admin.exam.create') }}" class="btn btn-primary btn-sm">
                          <i class="bi bi-calendar-check me-1"></i>
-                         Configurar prova
+                         Alocar Candidatos
                      </a>
                  </div>
              </div>
