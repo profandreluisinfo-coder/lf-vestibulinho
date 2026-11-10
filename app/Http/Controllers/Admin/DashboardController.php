@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appeal;
+use App\Models\Exam;
 use App\Models\Lgbt;
 use App\Models\Pne;
 use App\Models\Process;
@@ -144,6 +145,18 @@ class DashboardController extends Controller
 
         $today  = today();
         $alerts = [];
+
+        // A alocação encerra a possibilidade de deferir recursos. Avise no painel
+        // se ela já foi feita enquanto ainda há recursos aguardando análise.
+        if (Exam::allocationExists($process)) {
+            $pendingAppeals = Appeal::pending()
+                ->whereHas('user.inscription', fn ($query) => $query->forProcess($process->id))
+                ->count();
+
+            $alerts[] = $pendingAppeals > 0
+                ? "Atenção: A alocação nas salas já foi feita e há {$pendingAppeals} recurso(s) pendente(s). Recursos deferidos após a alocação não podem ser considerados."
+                : 'Atenção: A alocação nas salas já foi feita. Novos deferimentos de recursos não podem ser considerados.';
+        }
 
         // Locais de prova
         if (

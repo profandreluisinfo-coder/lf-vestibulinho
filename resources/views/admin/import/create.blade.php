@@ -4,72 +4,16 @@
 
 @section('content')
 
-    <div class="container">
-
-        {{-- Título da Página --}}
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-upload text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Importar Notas</h6>
-            </div>
-        </div>
-
-        <div class="progress mb-3 d-none" id="progress-wrapper">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" role="progressbar"
-                style="width: 0%">0%</div>
-        </div>
-
-        {{-- ALERTA --}}
-        <div class="alert alert-warning d-flex align-items-center bg-warning py-2 px-3 text-white">
-            <i class="bi bi-exclamation-triangle-fill me-1"></i>
-            <strong>Atenção - leia antes de importar</strong>
-        </div>
-
-        <div class="mb-3 shadow-sm border border-warning-subtle rounded d-flex flex-column mb-3">
-
-            <div class="p-3 mb-3">Na planilha de notas a importar, o arquivo deve conter obrigatoriamente os seguintes
-                cabeçalhos, na seguinte ordem:
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-sm">
-                    <caption class="py-2 px-3 text-muted" style="font-size:12px;"><i
-                            class="bi bi-info-circle me-2"></i>Modelo de cabeçalho esperado</caption>
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">inscription_id</th>
-                            <th scope="col">user_id</th>
-                            <th scope="col">user_cpf</th>
-                            <th scope="col">user_name</th>
-                            <th scope="col">user_birth</th>
-                            <th scope="col">points</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-            <div class="list-group gap-2 px-3 py-3">
-                <span class="fw-semibold me-1">Observações:</span>
-                <span><i class="bi bi-check2-circle text-success me-2"></i>Os cabeçalhos devem
-                    estar sem acentos ou espaços extras.</span>
-                <span><i class="bi bi-check2-circle text-success me-2"></i>Cada importação
-                    substituirá os dados anteriores.</span>
-                <span><i class="bi bi-check2-circle text-success me-2"></i>Formato aceito:
-                    .xlsx (máx. 10MB)</span>
-            </div>
-
-        </div>
-
-        <form id="import-results" action="{{ route('admin.import.store') }}" method="POST"
-            data-redirect="{{ route('admin.import.index') }}">
-            @csrf
-
-            <div class="form-group mb-3">
-                <label for="file" class="form-label fw-semibold">
-                    Selecione o arquivo <span class="text-danger">*</span>
-                </label>
-
-                <input type="file" name="file" id="file" class="form-control" required>
+    <div class="container-fluid">
+        @if (!$process)
+            <div class="alert alert-info">Nenhum processo seletivo está cadastrado no momento.</div>
+        @else
+            {{-- Título da Página --}}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-upload text-muted"></i>
+                    <h6 class="mb-0 text-muted fw-normal">Importar Notas</h6>
+                </div>
             </div>
 
             <div class="progress mb-3 d-none" id="progress-wrapper">
@@ -77,12 +21,70 @@
                     style="width: 0%">0%</div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
-                <i class="bi bi-upload"></i> Importar
-            </button>
+            {{-- ALERTA --}}
+            <div class="alert alert-warning d-flex align-items-center bg-warning py-2 px-3 text-white">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                <strong>Atenção - leia antes de importar</strong>
+            </div>
 
-        </form>
+            <div class="mb-3 shadow-sm border border-warning-subtle rounded d-flex flex-column mb-3">
 
+                <div class="p-3 mb-3">Na planilha de notas a importar, o arquivo deve conter obrigatoriamente os seguintes
+                    cabeçalhos, na seguinte ordem:
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <caption class="py-2 px-3 text-muted" style="font-size:12px;"><i
+                                class="bi bi-info-circle me-2"></i>Modelo de cabeçalho esperado</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">inscription_id</th>
+                                <th scope="col">user_id</th>
+                                <th scope="col">user_cpf</th>
+                                <th scope="col">user_name</th>
+                                <th scope="col">user_birth</th>
+                                <th scope="col">points</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="list-group gap-2 px-3 py-3">
+                    <span class="fw-semibold me-1">Observações:</span>
+                    <span><i class="bi bi-check2-circle text-success me-2"></i>Os cabeçalhos devem
+                        estar sem acentos ou espaços extras.</span>
+                    <span><i class="bi bi-check2-circle text-success me-2"></i>Cada importação
+                        substituirá os dados anteriores.</span>
+                    <span><i class="bi bi-check2-circle text-success me-2"></i>Formato aceito:
+                        .xlsx (máx. 10MB)</span>
+                </div>
+
+            </div>
+
+            <form id="import-results" action="{{ route('admin.import.store') }}" method="POST"
+                data-redirect="{{ route('admin.import.index') }}">
+                @csrf
+
+                <div class="form-group mb-3">
+                    <label for="file" class="form-label fw-semibold">
+                        Selecione o arquivo <span class="text-danger">*</span>
+                    </label>
+
+                    <input type="file" name="file" id="file" class="form-control" required>
+                </div>
+
+                <div class="progress mb-3 d-none" id="progress-wrapper">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar"
+                        role="progressbar" style="width: 0%">0%</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm" id="btn-submit">
+                    <i class="bi bi-upload"></i> Importar
+                </button>
+
+            </form>
+        @endif
     </div>
 
 @endsection
