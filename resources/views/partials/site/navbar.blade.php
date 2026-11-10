@@ -35,6 +35,10 @@
                         Ajuda</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('site.news.index') }}"><i class="bi bi-megaphone me-1"></i>
+                        Notícias</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('site.archives.index') }}"><i class="bi bi-card-list me-1"></i>
                         Provas Anteriores</a>
                 </li>
