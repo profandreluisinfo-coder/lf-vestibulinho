@@ -200,7 +200,7 @@
                     id="menuResultados">
 
                     <a href="javascript:void(0)" id="exportLink"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.exports.excel') ? 'active' : '' }}"
+                        class="dropdown-item-custom"
                         onclick="handleExport(event, '{{ route('admin.exports.excel') }}')">
                         <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                     </a>
