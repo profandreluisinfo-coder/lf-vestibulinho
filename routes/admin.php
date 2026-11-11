@@ -181,6 +181,8 @@ Route::prefix('gestao')
         Route::prefix('exportar')
             ->name('exports.')
             ->group(function () {
+                Route::get('planilha-de-notas', [ExportController::class, 'index'])
+                    ->name('index');
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
                     ->name('excel');
                 Route::get('cursos/excel', [ExportController::class, 'coursesToExcel'])

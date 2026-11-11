@@ -13,15 +13,40 @@ use App\Exports\CoursesExport;
 use App\Exports\GenderPerCourseExport;
 use App\Exports\GendersExport;
 use App\Exports\SchoolsExport;
+use Illuminate\View\View;
 
 class ExportController extends Controller
 {
+    public function index(): View
+    {
+        $process = Process::current();
+        $hasApprovedInscriptions = $process
+            && Inscription::approved()->forProcess($process->id)->exists();
+        $hasExam = $process
+            && Exam::whereHas('inscription', fn ($query) => $query->forProcess($process->id))->exists();
+
+        return view('admin.exports.index', [
+            'hasCurrentProcess' => (bool) $process,
+            'hasApprovedInscriptions' => (bool) $hasApprovedInscriptions,
+            'hasExam' => (bool) $hasExam,
+            'canExportCandidates' => (bool) ($hasApprovedInscriptions && $hasExam),
+            'appealsPeriodOpen' => $process?->appeals_end
+                ? today()->lte($process->appeals_end)
+                : false,
+            'appealsEnd' => $process?->appeals_end,
+        ]);
+    }
+
     public function exporToExcel()
     {
         $process = Process::current();
 
         // Verificar se existem inscrições do processo atual antes de exportar
         if (! $process || ! Inscription::approved()->forProcess($process?->id)->exists()) {
+            if (request()->expectsJson()) {
+                return response()->json(['message' => 'Nenhuma inscrição encontrada.'], 422);
+            }
+
             return alertError('Nenhuma inscrição encontrada.');
         }
 
@@ -29,6 +54,12 @@ class ExportController extends Controller
         $hasExam = Exam::whereHas('inscription', fn ($q) => $q->forProcess($process?->id))->exists();
 
         if (! $hasExam) {
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'message' => 'Não é possível exportar os dados dos candidatos, pois no momento não existe uma prova agendada.',
+                ], 422);
+            }
+
             return alertError('Não é possível exportar os dados dos candidatos, pois no momento não existe uma prova agendada.');
         }
 
