@@ -131,7 +131,7 @@
                                     aria-label="Baixar {{ $g['titulo'] }} em PDF">
                                     <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> PDF
                                 </a>
-                                <a href="{{ route('admin.reports.' . $g['rota'] . '.excel') }}"
+                                <a href="{{ route('admin.exports.' . $g['rota'] . '.excel') }}"
                                     class="export-btn export-btn--excel"
                                     aria-label="Baixar {{ $g['titulo'] }} em Excel">
                                     <i class="bi bi-file-earmark-excel" aria-hidden="true"></i> Excel

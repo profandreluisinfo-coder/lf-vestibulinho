@@ -1,3 +1,10 @@
+@php
+    $headerPath = public_path('assets/img/logo.webp');
+    $headerImage = is_file($headerPath)
+        ? 'data:image/png;base64,' . base64_encode(file_get_contents($headerPath))
+        : null;
+@endphp
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,10 +12,29 @@
     <meta charset="UTF-8">
     <title>Vestibulinho LF {{ $process?->year }} - Lista para Mural e Salas</title>
     <style>
-       body {
-            font-family: DejaVu Sans, sans-serif;
+        /* Margens da folha A4 (área útil = 197 mm de largura) */
+        @page {
+            margin: 10mm;
+        }
+
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: normal;
+        }
+
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Times New Roman', serif;
             font-size: 12px;
-            margin: 10px;
+            line-height: 0.927;   /* no DomPDF, 0,927 equivale a 1,172 do Word (ele multiplica pela altura própria da fonte) */
+            color: #000;
         }
 
         img {
@@ -42,7 +68,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid #999;
-            margin-bottom: 10px;
+            margin: 10px 0 10px 0;
         }
 
         .info td {
@@ -51,10 +77,15 @@
             font-size: 12px;
         }
 
+        thead th {
+            border-bottom: 2px solid #999;
+            padding-bottom: 5px;
+        }
+
         thead th,
         .header {
             text-align: center;
-            text-transform: uppercase
+            text-transform: uppercase;
         }
 
         .room-header {
@@ -66,22 +97,20 @@
         .table {
             width: 100%;
             border-collapse: collapse;
-            /* margin-bottom: 20px; */
         }
 
         .table td {
-            padding: 1px;
+            padding: 1.5mm;
             border-bottom: 1px solid #ddd;
             text-align: center
         }
 
-        tr:nth-child(even) {
+
+        tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        th {
-            background-color: #eee;
-        }
+        
     </style>
 </head>
 
@@ -94,7 +123,9 @@
                 <table class="header-top">
                     <tr>
                         <td class="logo-cell">
-                            <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
+                            @if ($headerImage)
+                                <img src="{{ $headerImage }}" class="logo" alt="Logo da Escola">
+                            @endif
                         </td>
                         <td>
                             <h3 class="title">Vestibulinho LF {{ $process?->year }}</h3>

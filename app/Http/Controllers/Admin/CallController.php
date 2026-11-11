@@ -262,7 +262,7 @@ class CallController extends Controller
 
         $process = $callList->process;
 
-        $pdf = Pdf::loadView('admin.calls.pdf', compact('callListMembers', 'callList', 'process'))
+        $pdf = Pdf::loadView('pdf.calls.report', compact('callListMembers', 'callList', 'process'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream("fichas-matricula-chamada-{$callList->number}_{$callList->id}.pdf");

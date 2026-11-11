@@ -169,7 +169,7 @@
                     <a href="{{ route('admin.reports.daily.pdf') }}" class="dash-btn">
                         <i class="bi bi-file-earmark-pdf"></i> PDF
                     </a>
-                    <a href="{{ route('admin.reports.daily.csv') }}" class="dash-btn">
+                    <a href="{{ route('admin.exports.daily.csv') }}" class="dash-btn">
                         <i class="bi bi-file-earmark-spreadsheet"></i> CSV
                     </a>
                 </div>

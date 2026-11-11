@@ -179,10 +179,22 @@ Route::prefix('gestao')
 
         // Exportação
         Route::prefix('exportar')
-            ->name('export.')
+            ->name('exports.')
             ->group(function () {
                 Route::get('candidatos', [ExportController::class, 'exporToExcel'])
                     ->name('excel');
+                Route::get('cursos/excel', [ExportController::class, 'coursesToExcel'])
+                    ->name('courses.excel');
+                Route::get('sexos/excel', [ExportController::class, 'gendersToExcel'])
+                    ->name('genders.excel');
+                Route::get('sexo-por-curso/excel', [ExportController::class, 'genderPerCourseToExcel'])
+                    ->name('gender-course.excel');
+                Route::get('bairros/excel', [ExportController::class, 'burghsToExcel'])
+                    ->name('burghs.excel');
+                Route::get('escolas/excel', [ExportController::class, 'schoolsToExcel'])
+                    ->name('schools.excel');
+                Route::get('inscricoes-por-dia/csv', [DashboardController::class, 'dailyCsv'])
+                    ->name('daily.csv');
             });
 
         // Importação
@@ -240,38 +252,16 @@ Route::prefix('gestao')
                     ->name('general.pdf');
                 Route::get('inscricoes-por-dia/pdf', [DashboardController::class, 'dailyPdf'])
                     ->name('daily.pdf');
-                Route::get('inscricoes-por-dia/csv', [DashboardController::class, 'dailyCsv'])
-                    ->name('daily.csv');
-
-                Route::get('cursos/pdf', [ReportController::class, 'exportCoursesPdf'])
+                Route::get('cursos/pdf', [ReportController::class, 'coursesToPdf'])
                     ->name('courses.pdf');
-
-                Route::get('cursos/excel', [ReportController::class, 'exportCoursesExcel'])
-                    ->name('courses.excel');
-
-                Route::get('sexos/pdf', [ReportController::class, 'exportGendersPdf'])
+                Route::get('sexos/pdf', [ReportController::class, 'gendersToPdf'])
                     ->name('genders.pdf');
-
-                Route::get('sexos/excel', [ReportController::class, 'exportGendersExcel'])
-                    ->name('genders.excel');
-
-                Route::get('sexo-por-curso/pdf', [ReportController::class, 'exportGenderPerCoursePdf'])
+                Route::get('sexo-por-curso/pdf', [ReportController::class, 'genderPerCourseToPdf'])
                     ->name('gender-course.pdf');
-
-                Route::get('sexo-por-curso/excel', [ReportController::class, 'exportGenderPerCourseExcel'])
-                    ->name('gender-course.excel');
-
-                Route::get('bairros/pdf', [ReportController::class, 'exportBurghsPdf'])
+                Route::get('bairros/pdf', [ReportController::class, 'burghsToPdf'])
                     ->name('burghs.pdf');
-
-                Route::get('bairros/excel', [ReportController::class, 'exportBurghsExcel'])
-                    ->name('burghs.excel');
-
-                Route::get('escolas/pdf', [ReportController::class, 'exportSchoolsPdf'])
+                Route::get('escolas/pdf', [ReportController::class, 'schoolsToPdf'])
                     ->name('schools.pdf');
-
-                Route::get('escolas/excel', [ReportController::class, 'exportSchoolsExcel'])
-                    ->name('schools.excel');
             });
         // Análises
         Route::prefix('analises')

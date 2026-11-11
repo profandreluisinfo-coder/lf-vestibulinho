@@ -1,3 +1,10 @@
+@php
+    $headerPath = public_path('assets/img/logo.webp');
+    $headerImage = is_file($headerPath)
+        ? 'data:image/png;base64,' . base64_encode(file_get_contents($headerPath))
+        : null;
+@endphp
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,10 +12,26 @@
     <meta charset="UTF-8">
     <title>Vestibulinho LF {{ $process?->year }} - Relatório Geral de Alocação</title>
     <style>
+        /* Margens da folha A4 (área útil = 197 mm de largura) */
+        @page { margin: 10mm; }
+
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: normal;
+        }
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+
         body {
-            font-family: DejaVu Sans, sans-serif;
+            margin: 0;
+            font-family: 'Times New Roman', serif;
             font-size: 12px;
-            margin: 30px;
+            line-height: 0.927;   /* no DomPDF, 0,927 equivale a 1,172 do Word (ele multiplica pela altura própria da fonte) */
+            color: #000;
         }
 
         img {
@@ -47,7 +70,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid #999;
-            margin-bottom: 15px;
+            margin: 10px 0 10px 0;
         }
 
         .info td {
@@ -57,7 +80,8 @@
         }
 
         thead th {
-            border-bottom: 1px solid #999;
+            border-bottom: 2px solid #999;
+            padding-bottom: 5px;
         }
 
         .room-header {
@@ -68,12 +92,11 @@
 
         .table {
             width: 100%;
-            /* border-collapse: collapse; */
-            margin-bottom: 20px;
+            border-collapse: collapse;
         }
 
         .table td {
-            padding: 4px;
+            padding: 1.5mm;
             border-bottom: 1px solid #ddd;
             text-align: center
         }
@@ -94,7 +117,9 @@
                 <table class="header-top">
                     <tr>
                         <td class="logo-cell">
-                            <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
+                            @if ($headerImage)
+                                <img src="{{ $headerImage }}" class="logo" alt="Logo da Escola">
+                            @endif
                         </td>
                         <td>
                             <h3 class="title">Vestibulinho LF {{ $process?->year }}</h3>
@@ -118,19 +143,21 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Inscrição</th>
-                        <th>Candidato</th>
+                        <th>INSCRIÇÃO</th>
+                        <th>CANDIDATO</th>
                         <th>PcD</th>
-                        <th>Local</th>
+                        <th>LOCAL</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($candidates as $candidate)
                         <tr>
                             <td>{{ $candidate->inscription_id }}</td>
-                            <td>{{ $candidate->name }}
+                            <td>
                                 @if ($candidate->social_name)
-                                    {{ 'Nome Social: ' . $candidate->social_name }}
+                                    {{ $candidate->social_name }}
+                                @else
+                                    {{ $candidate->name }}
                                 @endif
                             </td>
                             <td>{{ $candidate?->pne == 1 ? 'Sim' : 'Não' }}</td>

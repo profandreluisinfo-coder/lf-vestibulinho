@@ -1,3 +1,10 @@
+@php
+    $headerPath = public_path('assets/img/logo.webp');
+    $headerImage = is_file($headerPath)
+        ? 'data:image/png;base64,' . base64_encode(file_get_contents($headerPath))
+        : null;
+@endphp
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,10 +12,26 @@
     <meta charset="UTF-8">
     <title>Vestibulinho LF {{ $process?->year }} - Lista de Assinaturas</title>
     <style>
+        /* Margens da folha A4 (área útil = 197 mm de largura) */
+        @page { margin: 10mm; }
+
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: normal;
+        }
+        @font-face {
+            font-family: 'Times New Roman', serif;
+            font-style: normal;
+            font-weight: bold;
+        }
+
         body {
-            font-family: DejaVu Sans, sans-serif;
+            margin: 0;
+            font-family: 'Times New Roman', serif;
             font-size: 12px;
-            margin: 30px;
+            line-height: 0.927;   /* no DomPDF, 0,927 equivale a 1,172 do Word (ele multiplica pela altura própria da fonte) */
+            color: #000;
         }
 
         img {
@@ -47,7 +70,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid #999;
-            margin-bottom: 15px;
+            margin: 10px 0 10px 0;
         }
 
         .info td {
@@ -59,6 +82,11 @@
         thead th,
         .header {
             text-align: left;
+        }
+
+        thead th {
+            border-bottom: 2px solid #999;
+            padding-bottom: 5px;
         }
 
         .room-header {
@@ -74,7 +102,7 @@
         }
 
         .table td {
-            padding: 4px;
+            padding: 1.5mm;
             border-bottom: 1px solid #ddd;
         }
 
@@ -118,7 +146,9 @@
                 <table class="header-top">
                     <tr>
                         <td class="logo-cell">
-                            <img src="{{ public_path('assets/img/logo.webp') }}" class="logo" alt="Logo da Escola">
+                            @if ($headerImage)
+                                <img src="{{ $headerImage }}" class="logo" alt="Logo da Escola">
+                            @endif
                         </td>
                         <td>
                             <h3 class="title">Vestibulinho LF {{ $process?->year }}</h3>
@@ -142,9 +172,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="width: 15%;text-align: center">Inscrição Nº</th>
-                        <th style="width: 50%;">Nome</th>
-                        <th>Assinatura</th>
+                        <th style="width: 15%;text-align: center">INSCRIÇÃO</th>
+                        <th style="width: 50%;">NOME COMPLETO</th>
+                        <th style="text-align: center;">ASSINATURA</th>
                     </tr>
                 </thead>
                 <tbody>

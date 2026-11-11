@@ -202,7 +202,7 @@ class DashboardController extends Controller
 
         $rows = $this->dailyRows($process);
 
-        $pdf = Pdf::loadView('admin.reports.daily', [
+        $pdf = Pdf::loadView('pdf.reports.daily', [
             'process'     => $process,
             'rows'        => $rows,
             'total'       => $rows->sum('total'),
