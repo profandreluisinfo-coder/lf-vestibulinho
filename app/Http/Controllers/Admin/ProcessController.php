@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use App\Models\Process;
 use App\Models\Result;
 use Illuminate\Http\Request;
@@ -273,6 +274,24 @@ class ProcessController extends Controller
                 ->exists()
         ) {
             return alertError('Importe as notas e calcule a classificação antes de liberar o resultado.');
+        }
+
+        if (
+            $release && $type === 'result'
+            && Result::whereNotNull('score')
+                ->where('is_published', false)
+                ->whereHas('inscription', fn($q) => $q->forProcess($process->id))
+                ->exists()
+        ) {
+            return alertError('Torne o resultado definitivo antes de liberá-lo aos candidatos.');
+        }
+
+        if ($release && $type === 'location') {
+            $allocations = Exam::whereHas('inscription', fn ($q) => $q->forProcess($process->id));
+
+            if (! (clone $allocations)->exists() || (clone $allocations)->where('is_finalized', false)->exists()) {
+                return alertError('Finalize a alocação da prova antes de liberar os locais aos candidatos.');
+            }
         }
 
         // Não libera o local sem data e hora da prova (o candidato veria dados vazios)

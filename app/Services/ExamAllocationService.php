@@ -135,6 +135,8 @@ class ExamAllocationService
                         'inscription_id' => $inscription->id,
                         'location_id'    => $location->id,
                         'room_number'    => $roomNumber,
+                        'is_finalized'   => false,
+                        'email_sent_at'  => null,
                         'created_at'     => $now,
                         'updated_at'     => $now,
                     ];
@@ -152,7 +154,7 @@ class ExamAllocationService
                 Exam::upsert(
                     $batch,
                     ['inscription_id'],
-                    ['location_id', 'room_number', 'updated_at']
+                    ['location_id', 'room_number', 'is_finalized', 'email_sent_at', 'updated_at']
                 );
             }
         });

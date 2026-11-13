@@ -74,6 +74,9 @@ class ExamController extends Controller
             $query->whereRaw('1 = 0');
         }
 
+        $exams = (clone $query)->get();
+        $isFinalized = $exams->isNotEmpty() && $exams->every(fn ($exam) => $exam->is_finalized);
+
         $candidates = $query->with(['location', 'inscription.user.lgbt', 'inscription.user.pne'])
             ->orderBy('location_id')
             ->orderBy('room_number')
@@ -105,7 +108,30 @@ class ExamController extends Controller
         return view('admin.exam.show', [
             'candidates' => $candidates,
             'process' => $process,
+            'isFinalized' => $isFinalized,
         ]);
+    }
+
+    /** Marca como finalizada a alocação do processo seletivo atual. */
+    public function finalize(): RedirectResponse
+    {
+        $process = Process::current();
+
+        if (! $process) {
+            return redirect()->route('admin.exam.show')
+                ->with('error', 'Nenhum processo seletivo cadastrado.');
+        }
+
+        $updated = Exam::whereHas('inscription', fn ($query) => $query->forProcess($process->id))
+            ->where('is_finalized', false)
+            ->update(['is_finalized' => true, 'updated_at' => now()]);
+
+        if ($updated === 0) {
+            return redirect()->route('admin.exam.show')
+                ->with('error', 'Não há alocações em rascunho para finalizar.');
+        }
+
+        return alertSuccess('Alocação da prova marcada como finalizada!', 'admin.exam.show');
     }
 
     /** Apaga as alocações do processo seletivo atual. */

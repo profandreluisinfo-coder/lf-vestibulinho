@@ -12,11 +12,13 @@ class Result extends Model
         'inscription_id',
         'score',
         'ranking',
-        'classified'
+        'classified',
+        'is_published',
     ];
 
     protected $casts = [
-        'classified'   => 'boolean'
+        'classified'   => 'boolean',
+        'is_published' => 'boolean',
     ];
 
     public function inscription(): BelongsTo

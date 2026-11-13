@@ -205,9 +205,29 @@
                          <p class="text-muted small mb-0">
                              Relação de candidatos distribuídos por local e sala de prova.
                          </p>
+                         @if ($candidates->isNotEmpty())
+                             <div class="mt-2">
+                                 <span class="badge bg-{{ $isFinalized ? 'success' : 'warning text-dark' }}">
+                                     <i class="bi {{ $isFinalized ? 'bi-check-circle' : 'bi-pencil-square' }} me-1"></i>
+                                     {{ $isFinalized ? 'Finalizada' : 'Rascunho' }}
+                                 </span>
+                                 <small class="text-muted ms-1">
+                                     Status administrativo da alocação.
+                                 </small>
+                             </div>
+                         @endif
                      </div>
 
                      <div class="d-flex flex-wrap gap-2">
+                         @if ($candidates->isNotEmpty() && !$isFinalized)
+                             <form id="finalize-exam-form" method="POST" action="{{ route('admin.exam.finalize') }}">
+                                 @csrf
+                                 @method('PATCH')
+                                 <button type="submit" class="btn btn-success btn-sm">
+                                     <i class="bi bi-check-circle me-2"></i>Finalizar alocação
+                                 </button>
+                             </form>
+                         @endif
                          @if ($candidates->isNotEmpty() && !($process?->isLocationReleased() ?? false))
                              <form id="delete-exam-allocation-form" method="POST"
                                  action="{{ route('admin.exam.destroy') }}">
@@ -334,6 +354,26 @@
 
  @push('scripts')
      <script>
+         document.getElementById('finalize-exam-form')?.addEventListener('submit', function(event) {
+             event.preventDefault();
+             const form = event.currentTarget;
+
+             Swal.fire({
+                 title: 'Finalizar alocação?',
+                 text: 'Isso marcará a alocação como finalizada.',
+                 icon: 'question',
+                 showCancelButton: true,
+                 confirmButtonColor: '#198754',
+                 cancelButtonColor: '#6c757d',
+                 confirmButtonText: 'Sim, finalizar',
+                 cancelButtonText: 'Cancelar',
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     form.submit();
+                 }
+             });
+         });
+
          document.getElementById('delete-exam-allocation-form')?.addEventListener('submit', function(event) {
              event.preventDefault();
              const form = event.currentTarget;

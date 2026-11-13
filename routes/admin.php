@@ -100,6 +100,8 @@ Route::prefix('gestao')
                     ->name('create');
                 Route::post('salvar', [ExamController::class, 'store'])
                     ->name('store');
+                Route::patch('finalizar', [ExamController::class, 'finalize'])
+                    ->name('finalize');
                 Route::delete('apagar-alocacao', [ExamController::class, 'destroy'])
                     ->name('destroy');
             });
@@ -205,6 +207,8 @@ Route::prefix('gestao')
             ->group(function () {
                 Route::get('notas-importadas', [ImportController::class, 'index'])
                     ->name('index'); // Lista os dados da classificação
+                Route::patch('tornar-definitivo', [ImportController::class, 'finalize'])
+                    ->name('finalize');
                 Route::get('notas', [ImportController::class, 'create'])
                     ->name('create'); // exibe o formulário de importação da planilha de notas
                 Route::post('notas/gravar', [ImportController::class, 'store'])

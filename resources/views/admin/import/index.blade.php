@@ -25,7 +25,25 @@
                 <p class="text-muted small mb-0">
                     Notas importadas e situação de cada candidato no processo seletivo.
                 </p>
+                @if ((int) $stats->scored > 0)
+                    <div class="mt-2">
+                        <span class="badge bg-{{ $isPublished ? 'success' : 'warning text-dark' }}">
+                            <i class="bi {{ $isPublished ? 'bi-check-circle' : 'bi-pencil-square' }} me-1"></i>
+                            {{ $isPublished ? 'Definitivo' : 'Rascunho' }}
+                        </span>
+                        <small class="text-muted ms-1">Status administrativo do resultado.</small>
+                    </div>
+                @endif
             </div>
+            @if ((int) $stats->scored > 0 && !$isPublished)
+                <form id="finalize-result-form" method="POST" action="{{ route('admin.import.finalize') }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="bi bi-check-circle me-2"></i>Tornar definitivo
+                    </button>
+                </form>
+            @endif
         </div>
 
         {{-- Situação da publicação --}}
@@ -120,7 +138,7 @@
             {{-- Filtro por situação e busca --}}
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                 <ul class="nav nav-pills small">
-                    @foreach (['all' => 'Todos', 'classified' => 'Classificados', 'eliminated' => 'Eliminados'] as $key => $label)
+                    @foreach (['all' => 'Todos', 'classified' => 'Classificados', 'eliminated' => 'Eliminados', 'tied' => 'Empatados'] as $key => $label)
                         <li class="nav-item">
                             {{-- ROTA: esta mesma página (index) --}}
                             <a class="nav-link py-1 {{ $situation === $key ? 'active' : '' }}"

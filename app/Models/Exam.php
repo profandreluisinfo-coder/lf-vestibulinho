@@ -11,7 +11,16 @@ class Exam extends Model
         'location_id',
         'room_number',
         'email_sent_at',
+        'is_finalized',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_finalized' => 'boolean',
+            'email_sent_at' => 'datetime',
+        ];
+    }
 
     public function inscription()
     {

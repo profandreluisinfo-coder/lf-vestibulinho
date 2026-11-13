@@ -11,6 +11,7 @@ use App\Models\Process;
 use App\Models\Result;
 use App\Services\ExamRankingService;
 use DomainException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -32,7 +33,13 @@ class ImportController extends Controller
     {
         $process = Process::current() ?? abort(404);
 
-        $situation = in_array($request->query('situation'), ['classified', 'eliminated'], true)
+        $publicationStates = Result::query()
+            ->whereHas('inscription', fn ($query) => $query->forProcess($process->id))
+            ->whereNotNull('score')
+            ->pluck('is_published');
+        $isPublished = $publicationStates->isNotEmpty() && $publicationStates->every(fn ($state) => (bool) $state);
+
+        $situation = in_array($request->query('situation'), ['classified', 'eliminated', 'tied'], true)
             ? $request->query('situation')
             : 'all';
 
@@ -74,6 +81,21 @@ class ImportController extends Controller
         $results = (clone $base)
             ->when($situation === 'classified', fn($q) => $q->where('results.classified', true))
             ->when($situation === 'eliminated', fn($q) => $q->where('results.classified', false))
+            ->when($situation === 'tied', function ($q) use ($tied) {
+                if ($tied->isEmpty()) {
+                    $q->whereRaw('1 = 0');
+                    return;
+                }
+
+                $q->where(function ($q) use ($tied) {
+                    foreach ($tied as $tie) {
+                        $q->orWhere(function ($q) use ($tie) {
+                            $q->where('results.score', $tie->score)
+                                ->where('users.birth', $tie->birth);
+                        });
+                    }
+                });
+            })
             ->when($search !== '', function ($q) use ($search) {
                 $like = '%' . addcslashes($search, '%_\\') . '%';
 
@@ -109,7 +131,8 @@ class ImportController extends Controller
             'situation',
             'search',
             'vacancies',
-            'limit'
+            'limit',
+            'isPublished'
         ));
     }
 
@@ -282,7 +305,7 @@ class ImportController extends Controller
             DB::transaction(function () use ($updates, $process, $now, &$summary) {
                 // Uma importação substitui integralmente as notas e classificações DESTE processo.
                 Result::whereHas('inscription', fn($q) => $q->forProcess($process?->id))
-                    ->update(['score' => null, 'ranking' => null, 'classified' => false]);
+                    ->update(['score' => null, 'ranking' => null, 'classified' => false, 'is_published' => false]);
 
                 $rows = [];
 
@@ -290,6 +313,7 @@ class ImportController extends Controller
                     $rows[] = [
                         'inscription_id' => $inscriptionId,
                         'score'          => $points,
+                        'is_published'   => false,
                         'created_at'     => $now,
                         'updated_at'     => $now,
                     ];
@@ -297,7 +321,7 @@ class ImportController extends Controller
 
                 // exige índice unique em results.inscription_id
                 foreach (array_chunk($rows, 1000) as $batch) {
-                    Result::upsert($batch, ['inscription_id'], ['score', 'updated_at']);
+                    Result::upsert($batch, ['inscription_id'], ['score', 'is_published', 'updated_at']);
                 }
 
                 $summary = $this->rankingService->calculate($process);
@@ -337,5 +361,28 @@ class ImportController extends Controller
             'success' => false,
             'message' => $message,
         ], 422);
+    }
+
+    /** Marca como definitivo o resultado importado do processo atual. */
+    public function finalize(): RedirectResponse
+    {
+        $process = Process::current();
+
+        if (! $process) {
+            return redirect()->route('admin.import.index')
+                ->with('error', 'Nenhum processo seletivo cadastrado.');
+        }
+
+        $updated = Result::whereHas('inscription', fn ($query) => $query->forProcess($process->id))
+            ->whereNotNull('score')
+            ->where('is_published', false)
+            ->update(['is_published' => true, 'updated_at' => now()]);
+
+        if ($updated === 0) {
+            return redirect()->route('admin.import.index')
+                ->with('error', 'Não há resultado em rascunho para tornar definitivo.');
+        }
+
+        return alertSuccess('Resultado marcado como definitivo!', 'admin.import.index');
     }
 }
