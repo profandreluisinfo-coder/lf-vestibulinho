@@ -2,9 +2,9 @@
 
   <p>Parabéns por sua classificação no Processo Seletivo {{ $process?->year }} da <strong>ESCOLA MUNICIPAL DR. LEANDRO
           FRANCESCHINI</strong>! É com satisfação que o(a) convocamos para a efetivação de sua matrícula no ENSINO
-      TÉCNICO DE NÍVEL MÉDIO INTEGRADO para o ano letivo de 2027.</p>
+      TÉCNICO DE NÍVEL MÉDIO INTEGRADO para o ano letivo de {{ $process?->year }}.</p>
 
-  <p>Nos termos do Edital do Processo Seletivo Público 2027, os(as) candidatos(as) convocados(as) deverão comparecer
+  <p>Nos termos do Edital do Processo Seletivo Público {{ $process?->year }}, os(as) candidatos(as) convocados(as) deverão comparecer
       para a matrícula na data, horário e local informados abaixo:</p>
 
   <p>
