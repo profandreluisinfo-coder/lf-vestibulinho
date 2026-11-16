@@ -195,76 +195,80 @@
             @if ($groupBy === 'course_gender')
 
                 {{-- RESUMO: Curso e Gênero --}}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Curso</th>
-                            <th>Masculino</th>
-                            <th>Feminino</th>
-                            <th>Outro</th>
-                            <th>Prefiro não informar</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($summary as $row)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $row->grupo }}</td>
-                                <td>{{ $row->masculino }}</td>
-                                <td>{{ $row->feminino }}</td>
-                                <td>{{ $row->outro }}</td>
-                                <td>{{ $row->nao_informado }}</td>
-                                <td>{{ $row->total }}</td>
+                                <th>Curso</th>
+                                <th>Masculino</th>
+                                <th>Feminino</th>
+                                <th>Outro</th>
+                                <th>Prefiro não informar</th>
+                                <th>Total</th>
                             </tr>
-                        @empty
+                        </thead>
+                        <tbody>
+                            @forelse ($summary as $row)
+                                <tr>
+                                    <td>{{ $row->grupo }}</td>
+                                    <td>{{ $row->masculino }}</td>
+                                    <td>{{ $row->feminino }}</td>
+                                    <td>{{ $row->outro }}</td>
+                                    <td>{{ $row->nao_informado }}</td>
+                                    <td>{{ $row->total }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6">Nenhum resultado encontrado.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                        <tfoot>
                             <tr>
-                                <td colspan="6">Nenhum resultado encontrado.</td>
+                                <th>Total geral</th>
+                                <th>{{ $summary->sum('masculino') }}</th>
+                                <th>{{ $summary->sum('feminino') }}</th>
+                                <th>{{ $summary->sum('outro') }}</th>
+                                <th>{{ $summary->sum('nao_informado') }}</th>
+                                <th>{{ $summary->sum('total') }}</th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Total geral</th>
-                            <th>{{ $summary->sum('masculino') }}</th>
-                            <th>{{ $summary->sum('feminino') }}</th>
-                            <th>{{ $summary->sum('outro') }}</th>
-                            <th>{{ $summary->sum('nao_informado') }}</th>
-                            <th>{{ $summary->sum('total') }}</th>
-                        </tr>
-                    </tfoot>
-                </table>
+                        </tfoot>
+                    </table>
+                </div>
             @else
                 {{-- RESUMO: simples (Grupo / Total) --}}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Grupo</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($summary as $row)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $row->grupo }}</td>
-                                <td>{{ $row->total }}</td>
+                                <th>Grupo</th>
+                                <th>Total</th>
                             </tr>
-                        @empty
+                        </thead>
+                        <tbody>
+                            @forelse ($summary as $row)
+                                <tr>
+                                    <td>{{ $row->grupo }}</td>
+                                    <td>{{ $row->total }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2">Nenhum resultado encontrado.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                        <tfoot>
                             <tr>
-                                <td colspan="2">Nenhum resultado encontrado.</td>
+                                <th>Total geral</th>
+                                <th>{{ $summary->sum('total') }}</th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Total geral</th>
-                            <th>{{ $summary->sum('total') }}</th>
-                        </tr>
-                    </tfoot>
-                </table>
-
+                        </tfoot>
+                    </table>
+                </div>
             @endif
         @else
             {{-- LISTA de candidatos --}}
+            <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
@@ -350,11 +354,12 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
 
-                {{ $inscriptions->links() }}
+            {{ $inscriptions->links() }}
 
         @endif
 
-        </div>
+    </div> {{-- container --}}
 
 @endsection
