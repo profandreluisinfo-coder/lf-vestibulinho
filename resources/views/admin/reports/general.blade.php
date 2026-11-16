@@ -292,12 +292,16 @@
                                 <td class="text-nowrap">{{ $inscription->user->gender }}</td>
                                 <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
                                 <td class="text-nowrap">
-                                    @include('partials.reports.status-badge', ['status' => $inscription->user->lgbt?->status])
+                                    @include('partials.reports.status-badge', [
+                                        'status' => $inscription->user->lgbt?->status,
+                                    ])
                                 </td>
                                 <td>{{ $inscription->course->name }}</td>
                                 <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
                                 <td class="text-nowrap">
-                                    @include('partials.reports.status-badge', ['status' => $inscription->user->pne?->status])
+                                    @include('partials.reports.status-badge', [
+                                        'status' => $inscription->user->pne?->status,
+                                    ])
                                 </td>
                                 <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
                                 <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
@@ -314,14 +318,8 @@
             </div>
 
             @if ($inscriptions->hasPages())
-                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 mt-3">
-                    <small class="text-muted">
-                        Mostrando {{ $inscriptions->firstItem() }} a {{ $inscriptions->lastItem() }}
-                        de {{ $inscriptions->total() }} candidatos
-                    </small>
-                    <div class="overflow-auto" style="max-width: 100%;">
-                        {{ $inscriptions->withQueryString()->links('pagination::bootstrap-5') }}
-                    </div>
+                <div class="mt-3 overflow-auto">
+                    {{ $inscriptions->withQueryString()->links('pagination::bootstrap-5') }}
                 </div>
             @endif
 
