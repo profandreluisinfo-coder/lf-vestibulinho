@@ -47,12 +47,12 @@
         {{-- Avisos --}}
         <div class="mb-4">
             @forelse ($alerts as $alert)
-                <div class="dash-alert">
+                <div class="dash-alert align-items-center">
                     <i class="bi bi-exclamation-triangle-fill"></i>
                     <span>{{ $alert }}</span>
                 </div>
             @empty
-                <div class="dash-alert ok">
+                <div class="dash-alert ok align-items-center">
                     <i class="bi bi-check-circle-fill"></i>
                     <span>Nenhum aviso de prazo por enquanto. Está tudo em dia!</span>
                 </div>
