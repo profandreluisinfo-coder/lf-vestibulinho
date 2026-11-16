@@ -319,7 +319,7 @@
 
             @if ($inscriptions->hasPages())
                 <div class="mt-3 overflow-auto">
-                    {{ $inscriptions->withQueryString()->links('pagination::bootstrap-5') }}
+                    {{ $inscriptions->links() }}
                 </div>
             @endif
 
