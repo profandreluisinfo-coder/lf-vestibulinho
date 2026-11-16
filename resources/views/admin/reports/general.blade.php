@@ -318,10 +318,10 @@
             </div>
 
             @if ($inscriptions->hasPages())
-                <div class="mt-3 overflow-auto">
-                    {{ $inscriptions->links() }}
-                </div>
-            @endif
+    <div class="mt-3 overflow-auto">
+        {{ $inscriptions->withQueryString()->links() }}
+    </div>
+@endif
 
         @endif
 
