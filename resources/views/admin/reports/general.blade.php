@@ -74,7 +74,7 @@
 
         <form method="GET" action="{{ route('admin.reports.general') }}" class="row g-3 mb-4">
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Tipo de relatório</label>
                 <select name="type" class="form-select">
                     <option value="list" @selected(request('type', 'list') == 'list')>
@@ -86,7 +86,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Agrupar por (só no Resumo)</label>
                 <select name="group_by" class="form-select">
                     <option value="course" @selected(request('group_by', 'course') == 'course')>
@@ -101,7 +101,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Curso</label>
                 <select name="course_id" class="form-select">
                     <option value="">Todos</option>
@@ -113,7 +113,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Gênero</label>
                 <select name="gender" class="form-select">
                     <option value="">Todos</option>
@@ -125,7 +125,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Pessoa com Deficiência</label>
                 <select name="pcd" class="form-select">
                     <option value="">Todos os candidatos</option>
@@ -136,7 +136,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Nome Social</label>
                 <select name="social_name" class="form-select">
                     <option value="">Todos os candidatos</option>
@@ -155,13 +155,13 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Escola (parte do nome)</label>
                 <input type="text" name="school" class="form-control" placeholder="Ex.: João Silva"
                     value="{{ request('school') }}">
             </div>
 
-            {{-- <div class="col-md-3">
+            {{-- <div class="col-12 col-sm-6 col-md-3">
                 <label class="form-label">Processo/ano</label>
                 <select name="process_id" class="form-select">
                     <option value="">Todos</option>
@@ -173,15 +173,15 @@
                 </select>
             </div> --}}
 
-            <div class="col-md-6 d-flex align-items-end gap-2">
+            <div class="col-12 col-md-6 d-flex flex-wrap align-items-end gap-2">
 
-                <button type="submit" class="btn btn-primary px-4">
+                <button type="submit" class="btn btn-primary px-4 flex-fill flex-md-grow-0">
                     <i class="bi bi-file-earmark-bar-graph me-1"></i>
                     Gerar relatório
                 </button>
 
                 <a href="{{ route('admin.reports.general.pdf', request()->query()) }}" target="_blank"
-                    class="btn btn-outline-danger px-4">
+                    class="btn btn-outline-danger px-4 flex-fill flex-md-grow-0">
                     <i class="bi bi-file-earmark-pdf me-1"></i>
                     Exportar PDF
                 </a>
@@ -196,7 +196,7 @@
 
                 {{-- RESUMO: Curso e Gênero --}}
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-striped table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>Curso</th>
@@ -238,7 +238,7 @@
             @else
                 {{-- RESUMO: simples (Grupo / Total) --}}
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-striped table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>Grupo</th>
@@ -268,95 +268,62 @@
             @endif
         @else
             {{-- LISTA de candidatos --}}
-            <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        {{-- <th>Ano</th> --}}
-                        <th>Inscrição</th>
-                        <th>Candidato</th>
-                        <th>Gênero</th>
-                        <th>Nome Social</th>
-                        <th>Situação</th>
-                        <th>Curso</th>
-                        <th>Escola</th>
-                        <th>PCD</th>
-                        <th>Condição</th>
-                        <th>Requer</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($inscriptions as $inscription)
+            <div class="table-responsive border rounded">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light">
                         <tr>
-                            {{-- <td>{{ $inscription->process->year }}</td> --}}
-                            <td>{{ $inscription->id }}</td>
-                            <td>{{ $inscription->user->name }}</td>
-                            <td>{{ $inscription->user->gender }}</td>
-                            <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
-                            <td>
-                                @switch($inscription->user->lgbt?->status)
-                                    @case('pending')
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-hourglass-split me-1"></i> Pendente
-                                        </span>
-                                    @break
-
-                                    @case('accepted')
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Deferido
-                                        </span>
-                                    @break
-
-                                    @case('rejected')
-                                        <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Indeferido
-                                        </span>
-                                    @break
-
-                                    @default
-                                        —
-                                @endswitch
-                            </td>
-                            <td>{{ $inscription->course->name }}</td>
-                            <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
-                            <td>
-                                @switch($inscription->user->pne?->status)
-                                    @case('pending')
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-hourglass-split me-1"></i> Pendente
-                                        </span>
-                                    @break
-
-                                    @case('accepted')
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-check-circle-fill me-1"></i> Deferido
-                                        </span>
-                                    @break
-
-                                    @case('rejected')
-                                        <span class="badge bg-danger">
-                                            <i class="bi bi-x-circle-fill me-1"></i> Indeferido
-                                        </span>
-                                    @break
-
-                                    @default
-                                        —
-                                @endswitch
-                            </td>
-                            <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
-                            <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
+                            <th class="text-nowrap">Inscrição</th>
+                            <th style="min-width: 180px;">Candidato</th>
+                            <th class="text-nowrap">Gênero</th>
+                            <th style="min-width: 140px;">Nome Social</th>
+                            <th class="text-nowrap">Situação</th>
+                            <th style="min-width: 160px;">Curso</th>
+                            <th style="min-width: 200px;">Escola</th>
+                            <th class="text-nowrap">PCD</th>
+                            <th style="min-width: 160px;">Condição</th>
+                            <th style="min-width: 160px;">Requer</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($inscriptions as $inscription)
+                            <tr>
+                                <td class="text-nowrap">{{ $inscription->id }}</td>
+                                <td>{{ $inscription->user->name }}</td>
+                                <td class="text-nowrap">{{ $inscription->user->gender }}</td>
+                                <td>{{ $inscription->user->lgbt?->name ?? '—' }}</td>
+                                <td class="text-nowrap">
+                                    @include('partials.reports.status-badge', ['status' => $inscription->user->lgbt?->status])
+                                </td>
+                                <td>{{ $inscription->course->name }}</td>
+                                <td>{{ $inscription->user->academic?->school ?? '—' }}</td>
+                                <td class="text-nowrap">
+                                    @include('partials.reports.status-badge', ['status' => $inscription->user->pne?->status])
+                                </td>
+                                <td>{{ $inscription->user->pne?->description ?? '—' }}</td>
+                                <td>{{ $inscription->user->pne?->support ?? '—' }}</td>
+                            </tr>
                         @empty
                             <tr>
-                                <td colspan="10">Nenhum candidato encontrado.</td>
+                                <td colspan="10" class="text-center text-muted py-4">
+                                    Nenhum candidato encontrado.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
 
-            {{ $inscriptions->links() }}
+            @if ($inscriptions->hasPages())
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 mt-3">
+                    <small class="text-muted">
+                        Mostrando {{ $inscriptions->firstItem() }} a {{ $inscriptions->lastItem() }}
+                        de {{ $inscriptions->total() }} candidatos
+                    </small>
+                    <div class="overflow-auto" style="max-width: 100%;">
+                        {{ $inscriptions->withQueryString()->links('pagination::bootstrap-5') }}
+                    </div>
+                </div>
+            @endif
 
         @endif
 
