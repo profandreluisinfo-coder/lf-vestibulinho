@@ -153,7 +153,7 @@ class DashboardController extends Controller
                 ->whereHas('user.inscription', fn ($query) => $query->forProcess($process->id))
                 ->count();
 
-            if (! $process->definitive_list || $today->lte($process->definitive_list)) {
+            if (! $process->definitive_list || $today->lt($process->definitive_list)) {
                 $finalListDate = $process->definitive_list
                     ? ' A lista definitiva está prevista para ' . $process->formatDate($process->definitive_list) . '.'
                     : ' A data da lista definitiva ainda não foi definida.';
