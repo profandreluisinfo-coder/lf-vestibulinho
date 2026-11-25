@@ -117,7 +117,7 @@ class LoginController extends Controller
 
         if ($user->role === 'user') {
             return $user->inscription()->exists()
-                ? route('inscription.user.show')
+                ? route('inscription.show')
                 : route('inscription.start');
         }
 

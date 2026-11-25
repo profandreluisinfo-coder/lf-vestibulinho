@@ -1,11 +1,21 @@
 $(document).ready(function () {
+    // O textarea fica oculto pelo Summernote e pode conter apenas HTML vazio,
+    // como <p><br></p>, que a regra required padrão considera preenchido.
+    $.validator.addMethod('summernoteRequired', function (value, element) {
+        const content = $(element).summernote('code');
+        const text = $('<div>').html(content).text().replace(/[\s\u00a0\u200b\ufeff]/g, '');
+        const hasMedia = /<(img|iframe|video|audio|object|embed)\b/i.test(content);
+
+        return text.length > 0 || hasMedia;
+    }, 'Por favor, insira a resposta');
+
     // Inicializar Summernote
     $('.summernote').summernote({
-        height: 300,
+        height: 200,
         lang: 'pt-BR',
         toolbar: [
             ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['bold', 'underline', 'clear']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
@@ -13,65 +23,92 @@ $(document).ready(function () {
             ['view', ['fullscreen', 'codeview', 'help']]
         ],
         placeholder: 'Digite a resposta aqui...',
-        callbacks: {
-            onInit: function () {
-                console.log('Summernote initialized');
-            }
-        }
+        dialogsInBody: true
     });
 
     // Validação do formulário
-    $('.edit-form').validate({
+    $('#faqForm').validate({
+        // O Summernote oculta o textarea original; ele ainda precisa ser validado.
+        ignore: ':hidden:not(.summernote)',
         rules: {
             category: {
                 required: true
             },
             question: {
-                required: true,
-                minlength: 5
+                required: true
             },
             answer: {
-                required: true,
-                minlength: 10
+                summernoteRequired: true
             }
         },
         messages: {
             category: {
-                required: "* Por favor, insira a categoria"
+                required: "Por favor, selecione uma categoria"
             },
             question: {
-                required: "* Por favor, insira a pergunta",
-                minlength: "* A pergunta deve ter pelo menos 5 caracteres"
+                required: "Por favor, insira a pergunta"
             },
             answer: {
-                required: "* Por favor, insira a resposta",
-                minlength: "* A resposta deve ter pelo menos 10 caracteres"
+                summernoteRequired: "Por favor, insira a resposta"
             }
         },
-        errorElement: 'span',
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
-            element.closest('.mb-3').append(error);
+            
+            // Para o campo answer, colocar a mensagem de erro em um local específico
+            if (element.attr('id') === 'answer') {
+                // Coloca a mensagem de erro depois do container do Summernote
+                $('.note-editor').closest('.form-group').append(error);
+            } else {
+                element.closest('.form-group').append(error);
+            }
         },
         highlight: function (element, errorClass, validClass) {
-            $(element).addClass('is-invalid');
+            if ($(element).hasClass('summernote')) {
+                // Adiciona borda vermelha ao editor do Summernote
+                $(element).siblings('.note-editor').find('.note-editing-area').css('border', '1px solid #dc3545');
+            } else {
+                $(element).addClass('is-invalid');
+            }
         },
         unhighlight: function (element, errorClass, validClass) {
-            $(element).removeClass('is-invalid');
+            if ($(element).hasClass('summernote')) {
+                // Remove borda vermelha do editor do Summernote
+                $(element).siblings('.note-editor').find('.note-editing-area').css('border', '');
+            } else {
+                $(element).removeClass('is-invalid');
+            }
         },
         submitHandler: function (form) {
-            // Garantir que o conteúdo do Summernote seja enviado
-            $(form).find('.summernote').each(function () {
-                if ($(this).summernote('isEmpty')) {
-                    $(this).val('');
-                }
+            // IMPORTANTE: Sincronizar o conteúdo do Summernote antes de enviar
+            $('.summernote').each(function() {
+                $(this).val($(this).summernote('code'));
             });
-
-            // Prevenir envio duplicado - buscar o botão dentro do formulário específico
-            var $submitButton = $(form).find('button[type="submit"]');
-            $submitButton.prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i> Atualizando...');
-
+            
+            const $btn = $(form).find('button[type="submit"]');
+            $btn.prop("disabled", true).html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Aguarde...`);
             form.submit();
+        },
+        // Adicionar validação em tempo real para o Summernote
+        onfocusout: function(element) {
+            if ($(element).hasClass('summernote')) {
+                // Sincronizar e validar quando sai do editor
+                $(element).val($(element).summernote('code'));
+                $(element).valid();
+            } else {
+                $(element).valid();
+            }
         }
+    });
+
+    // Função para validar conteúdo do Summernote considerando tags HTML
+    $.validator.addMethod('summernoteMinlength', function(value, element, param) {
+        if ($(element).hasClass('summernote')) {
+            const content = $(element).summernote('code');
+            // Remove tags HTML para contar apenas texto
+            const textContent = $('<div>').html(content).text().trim();
+            return textContent.length >= param;
+        }
+        return value.length >= param;
     });
 });

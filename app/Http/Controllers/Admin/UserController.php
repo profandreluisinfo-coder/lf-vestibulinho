@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->role !== 'user') {
+        if ($user->role !== 'guest') {
             return alertError('Este usuário não pode ser excluído.');
         }
 

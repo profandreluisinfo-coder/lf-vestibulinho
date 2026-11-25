@@ -18,17 +18,15 @@ class ChartService
             return $empty;
         }
 
-        $rows = DB::table('course_process')
-            ->join('courses', 'courses.id', '=', 'course_process.course_id')
+        $rows = DB::table('courses')
             ->leftJoin('inscriptions', function ($join) use ($process) {
-                $join->on('inscriptions.course_id', '=', 'course_process.course_id')
+                $join->on('inscriptions.course_id', '=', 'courses.id')
                     ->where('inscriptions.process_id', '=', $process?->id);
             })
-            ->where('course_process.process_id', $process?->id)
-            ->groupBy('courses.id', 'courses.name', 'course_process.vacancies')
+            ->groupBy('courses.id', 'courses.name', 'courses.vacancies')
             ->select(
                 'courses.name as curso',
-                'course_process.vacancies as vagas',
+                'courses.vacancies as vagas',
                 DB::raw('COUNT(inscriptions.id) as inscritos')
             )
             ->orderByDesc('inscritos')

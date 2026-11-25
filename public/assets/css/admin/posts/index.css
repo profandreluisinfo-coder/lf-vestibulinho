@@ -1,4 +1,4 @@
-.page-header {
+/* .page-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -34,7 +34,7 @@
 .page-header-title span {
     font-size: var(--font-size-sm);
     color: var(--text-muted);
-}
+} */
 
 /* Filtros */
 .filter-bar {

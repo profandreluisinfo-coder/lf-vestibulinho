@@ -167,7 +167,6 @@ class SettingController extends Controller
                 DB::table('results')->delete();
                 Inscription::query()->delete();
                 CallList::query()->delete();
-                DB::table('course_process')->delete();
                 Process::query()->delete();
 
                 foreach ([
@@ -214,10 +213,10 @@ class SettingController extends Controller
                 }
 
                 $resetTables = [
-                    'results', 'inscriptions', 'course_process', 'pnes', 'parent_emails',
+                    'results', 'inscriptions', 'pnes', 'parent_emails',
                     'mothers', 'fathers', 'lgbts', 'guardians', 'documents', 'certificates',
                     'appeals', 'addresses', 'academics',
-                    'exams', 'calls', 'call_lists', 'processes',
+                    'exams', 'calls', 'call_lists', 'processes'
                 ];
 
                 return [$filesToDelete->filter()->unique()->values(), $processIds, $resetTables];

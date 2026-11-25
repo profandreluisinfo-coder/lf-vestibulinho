@@ -16,7 +16,7 @@ class CourseSeeder extends Seeder
                 'card' => 'cc-admin',
                 'icone' => 'briefcase-fill',
                 'description' => 'TÉCNICO EM ADMINISTRAÇÃO INTEGRADO AO ENSINO MÉDIO - NOTURNO - 4 ANOS',
-                'duration' => 4,
+                'duration' => 4,                
                 'info' => 'Gestão empresarial, finanças, recursos humanos e organização de processos corporativos.',
             ],
             [

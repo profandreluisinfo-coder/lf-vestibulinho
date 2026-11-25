@@ -7,6 +7,9 @@ $(document).ready(function () {
                 required: true,
                 number: true
             },
+            edital: {
+                required: true
+            },
             start: {
                 required: true,
                 date: true,
@@ -15,6 +18,26 @@ $(document).ready(function () {
                 required: true,
                 date: true,
             },
+            deferrals: {
+                required: true,
+                date: true
+            },
+            appeals_start: {
+                required: true,
+                date: true
+            },
+            appeals_end: {
+                required: true,
+                date: true
+            },
+            appeals_results: {
+                required: true,
+                date: true
+            },
+            definitive_list: {
+                required: true,
+                date: true
+            },
             location_publish: {
                 required: true,
                 date: true,
@@ -22,6 +45,10 @@ $(document).ready(function () {
             exam_date: {
                 required: true,
                 date: true,
+            },
+            exam_time: {
+                required: true,
+                time: true,
             },
             answer_publish: {
                 required: true,
@@ -43,6 +70,14 @@ $(document).ready(function () {
                 required: true,
                 date: true,
             },
+            enrol_remaining: {
+                required: true,
+                date: true,
+            },
+            enrol_deadline: {
+                required: true,
+                date: true,
+            },
             enrol_end: {
                 required: true,
                 date: true,
@@ -53,12 +88,35 @@ $(document).ready(function () {
                 required: "Por favor, informe o ano do processo seletivo.",
                 number: "Por favor, insira um ano válido."
             },
+            edital: {
+                required: "Por favor, selecione o edital."
+            },
             start: {
                 required: "Por favor, informe a data de início das inscrições.",
                 date: "Por favor, insira uma data válida."
             },
             end: {
                 required: "Por favor, informe a data de término das inscrições.",
+                date: "Por favor, insira uma data válida."
+            },
+            deferrals: {
+                required: "Por favor, informe a data de divulgação.",
+                date: "Por favor, insira uma data válida."
+            },
+            appeals_start: {
+                required: "Por favor, informe a data de início dos recursos.",
+                date: "Por favor, insira uma data válida."
+            },
+            appeals_end: {
+                required: "Por favor, informe a data de término dos recursos.",
+                date: "Por favor, insira uma data válida."
+            },
+            appeals_results: {
+                required: "Por favor, informe a data de divulgação do resultado dos recursos.",
+                date: "Por favor, insira uma data válida."
+            },
+            definitive_list: {
+                required: "Por favor, informe a data de divulgação da lista definitiva.",
                 date: "Por favor, insira uma data válida."
             },
             location_publish: {
@@ -68,6 +126,10 @@ $(document).ready(function () {
             exam_date: {
                 required: "Por favor, informe a data de aplicação das provas.",
                 date: "Por favor, insira uma data válida."
+            },
+            exam_time: {
+                required: "Por favor, informe a hora de aplicação das provas.",
+                time: "Por favor, insira um horário válido."
             },
             answer_publish: {
                 required: "Por favor, informe a data de divulgação do gabarito.",
@@ -92,6 +154,14 @@ $(document).ready(function () {
             enrol_end: {
                 required: "Por favor, informe a data de cronograma de vagas remanescentes.",
                 date: "Por favor, insira uma data válida."
+            },
+            enrol_remaining: {
+                required: "Por favor, informe a data de cronograma de vagas remanescentes.",
+                date: "Por favor, insira uma data válida."
+            },
+            enrol_deadline: {
+                required: "Por favor, informe a data de limite para novas convocações.",
+                date: "Por favor, insira uma data válida."
             }
         },
         errorElement: "div",
@@ -109,12 +179,4 @@ $(document).ready(function () {
             form.submit();
         }
     });
-
-    // Feedback visual ao digitar
-    // $('#form-calendar input').on('blur', function () {
-    //     if ($(this).valid()) {
-    //         $(this).addClass('is-valid');
-    //     }
-    // });
-
 });

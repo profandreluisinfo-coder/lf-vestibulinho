@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Login')
+@section('title', 'Área Administrativa')
 
 @section('meta_description', 'Área de acesso exclusivo para administradores.')
 

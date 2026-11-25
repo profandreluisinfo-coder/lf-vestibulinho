@@ -2,14 +2,27 @@
 
 @section('page-title', 'Editar Curso')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Cursos', 'url' => route('admin.courses.index')],
+        ['label' => 'Editar'],
+    ]])
+@endsection
+
 @section('content')
 
     <div class="container">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-book text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Editar Vagas de Curso por Vestibulinho</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-pencil"></i>
+                </div>
+                <div>
+                    <h4>{{ $course->name }}</h4>
+                </div>
             </div>
         </div>
 
@@ -17,7 +30,7 @@
 
             <div class="card-body">
 
-                <form id="courseProcessForm" action="{{ route('admin.course-processes.update', $courseProcess->id) }}"
+                <form id="courseEditForm" action="{{ route('admin.courses.update', ['course' => $course]) }}"
                     method="POST">
 
                     @csrf
@@ -25,46 +38,57 @@
 
                     {{-- Curso --}}
                     <div class="form-group mb-3">
-                        <label for="course" class="form-label">Curso:</label>
-
-                        <input type="text" id="course" class="form-control" value="{{ $courseProcess->course->name }}"
-                            readonly>
+                        <label for="course" class="form-label required">Curso:</label>
+                        <input type="text" name="name" id="course" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $course->name) }}">
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    {{-- Processo Seletivo --}}
+                    {{-- Descrição --}}
                     <div class="form-group mb-3">
-                        <label for="process_id" class="form-label required">
-                            Vestibulinho:
+                        <label for="description" class="form-label required">
+                            Descrição:
                         </label>
+                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $course->description) }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                        <select name="process_id" id="process_id"
-                            class="form-select @error('process_id') is-invalid @enderror" required>
-
-                            <option value="">Selecione o vestibulinho</option>
-
-                            @foreach ($processes as $item)
-                                <option value="{{ $item->id }}" @selected(old('process_id', $courseProcess->process_id) == $item->id)>
-                                    {{ $item->year }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('process_id')
+                    {{-- Duração --}}
+                    <div class="form-group mb-3">
+                        <label for="duration" class="form-label required">
+                            Duração (anos):
+                        </label>
+                        <input type="number" class="form-control @error('duration') is-invalid @enderror" id="duration"
+                            name="duration" value="{{ old('duration', $course->duration) }}" min="0">
+                        @error('duration')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     {{-- Vagas --}}
                     <div class="form-group mb-3">
-                        <label for="vacancies" class="form-label required">
+                        <label for="vacancies" class="form-label">
                             Número de vagas:
                         </label>
 
                         <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
-                            name="vacancies" value="{{ old('vacancies', $courseProcess->vacancies) }}" min="0"
-                            required>
+                            name="vacancies" value="{{ old('vacancies', $course->vacancies) }}" min="0">
 
                         @error('vacancies')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Informações do curso --}}
+                    <div class="form-group mb-3">
+                        <label for="info" class="form-label">
+                            Informações do curso:
+                        </label>
+                        <textarea name="info" id="info" class="form-control @error('info') is-invalid @enderror">{{ old('info', $course->info) }}</textarea>
+                        @error('info')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

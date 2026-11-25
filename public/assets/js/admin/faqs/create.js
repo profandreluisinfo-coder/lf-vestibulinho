@@ -13,49 +13,33 @@ $(document).ready(function () {
             ['view', ['fullscreen', 'codeview', 'help']]
         ],
         placeholder: 'Digite a resposta aqui...',
-        dialogsInBody: true,
-        callbacks: {
-            onInit: function () {
-                // Garantir que o editor funcione dentro do modal
-                $('.note-editor').css('z-index', '9999');
-            },
-            onChange: function (contents) {
-                // Sincronizar automaticamente quando o conteúdo muda
-                $(this).val(contents);
-                // Disparar evento de validação
-                $(this).valid();
-            }
-        }
-    });
-
-    // Limpar o editor quando o modal for fechado
-    $('#setNewFAQ').on('hidden.bs.modal', function () {
-        $('.summernote').summernote('code', '');
-        $('#faqForm')[0].reset();
-        // Limpar mensagens de erro
-        $('#faqForm').validate().resetForm();
+        dialogsInBody: true
     });
 
     // Validação do formulário
     $('#faqForm').validate({
+        // O Summernote oculta o textarea original; ele ainda precisa ser validado.
+        ignore: ':hidden:not(.summernote)',
         rules: {
+            category: {
+                required: true
+            },
             question: {
-                required: true,
-                minlength: 5
+                required: true
             },
             answer: {
-                required: true,
-                minlength: 10
+                required: true
             }
         },
         messages: {
+            category: {
+                required: "Por favor, selecione uma categoria"
+            },
             question: {
-                required: "Por favor, insira a pergunta",
-                minlength: "A pergunta deve ter pelo menos 5 caracteres"
+                required: "Por favor, insira a pergunta"
             },
             answer: {
-                required: "Por favor, insira a resposta",
-                minlength: "A resposta deve ter pelo menos 10 caracteres"
+                required: "Por favor, insira a resposta"
             }
         },
         errorPlacement: function (error, element) {
@@ -117,9 +101,4 @@ $(document).ready(function () {
         }
         return value.length >= param;
     });
-
-    // Atualizar as regras para usar o método personalizado
-    $('#faqForm').validate().settings.rules.answer.minlength = {
-        summernoteMinlength: 10
-    };
 });

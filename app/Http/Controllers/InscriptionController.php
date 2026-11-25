@@ -8,6 +8,7 @@ use App\Http\Requests\CertificateRequest;
 use App\Http\Requests\FamilyRequest;
 use App\Http\Requests\OtherRequest;
 use App\Http\Requests\PersonalRequest;
+use App\Models\Course;
 use App\Models\Degree;
 use App\Models\Disability;
 use App\Models\HealthIssue;
@@ -38,7 +39,7 @@ class InscriptionController extends Controller
         }
 
         if ($user->hasInscription()) {
-            return redirect()->route('inscription.user.show');
+            return redirect()->route('inscription.show');
         }
 
         $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
@@ -63,7 +64,6 @@ class InscriptionController extends Controller
         $displayName = $user?->name && $user?->lgbt?->status === 'accepted'
             ? $user?->lgbt?->name
             : $user?->name;
-        // $name = $user?->name;
         $initials = $this->getInitials($displayName);
 
         // Segurança extra caso acessem direto sem ter inscrição
@@ -132,7 +132,7 @@ class InscriptionController extends Controller
     // Passo 1: Dados pessoais
     public function personal(): View|RedirectResponse
     {
-        return view('partials.inscriptions.steps.personal');
+        return view('inscription.personal');
     }
 
     // Gravar Dados de Passo 1
@@ -162,7 +162,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.personal')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('partials.inscriptions.steps.certificate');
+        return view('inscription.certificate');
     }
 
     // Gravar Dados de Passo 2
@@ -181,7 +181,7 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.certificate')->with('warning', 'Complete o passo anterior.');
         }
 
-        return view('partials.inscriptions.steps.address');
+        return view('inscription.address');
     }
 
     // Gravar Dados de Passo 3
@@ -202,7 +202,7 @@ class InscriptionController extends Controller
 
         $schools = School::all();
 
-        return view('partials.inscriptions.steps.academic', [
+        return view('inscription.academic', [
             'schools' => $schools,
         ]);
     }
@@ -225,7 +225,7 @@ class InscriptionController extends Controller
 
         $degrees = Degree::all();
 
-        return view('partials.inscriptions.steps.family', [
+        return view('inscription.family', [
             'degrees' => $degrees,
         ]);
     }
@@ -264,7 +264,7 @@ class InscriptionController extends Controller
         $disabilities = Disability::all();
         $accessibilityResources = Resource::all();
 
-        return view('partials.inscriptions.steps.pcd', [
+        return view('inscription.pcd', [
             'disabilities' => $disabilities,
             'accessibilityResources' => $accessibilityResources,
         ]);
@@ -303,7 +303,7 @@ class InscriptionController extends Controller
 
         $healthIssues = HealthIssue::all();
 
-        return view('partials.inscriptions.steps.others', [
+        return view('inscription.others', [
             'healthIssues' => $healthIssues,
         ]);
     }
@@ -335,13 +335,9 @@ class InscriptionController extends Controller
             return redirect()->route('inscription.step.other')->with('warning', 'Complete o passo anterior.');
         }
 
-        $process = Process::current();
+        $courses = Course::all();
 
-        $courses = $process
-            ? $process?->courses()->orderBy('courses.name')->get()
-            : collect();
-
-        return view('partials.inscriptions.steps.course', [
+        return view('inscription.course', [
             'courses' => $courses,
         ]);
     }
@@ -371,7 +367,7 @@ class InscriptionController extends Controller
         }
 
         // Retorna a view com os dados necessários
-        return view('partials.inscriptions.steps.confirm', array_merge(
+        return view('inscription.confirm', array_merge(
             $steps->all()
         ));
     }
@@ -386,7 +382,7 @@ class InscriptionController extends Controller
 
             $inscriptionService->store(); // Grava os dados através do service
 
-            return redirect()->route('inscription.user.show')->with('success', 'Inscrição efetuada com sucesso!');
+            return redirect()->route('inscription.show')->with('success', 'Inscrição efetuada com sucesso!');
         } catch (QueryException $e) {
 
             if ($e->getCode() === '23000') {

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Editar Eventos do Vestibulinho')
+@section('page-title', 'Definir Eventos do Vestibulinho')
 
 @push('styles')
 <style>
@@ -27,13 +27,28 @@
     </style>
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Eventos', 'url' => route('admin.process.show', $process?->id)],
+        ['label' => 'Definir Eventos'],
+    ]])
+@endsection
+
 @section('content')
    
     <div class="container">
 
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <i class="bi bi-calendar4-week text-muted"></i>
-            <h6 class="mb-0 text-muted fw-normal">Editar Eventos do Vestibulinho</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div>
+                    <h4>Definir Eventos do Processo Seletivo</h4>
+                </div>
+            </div>
         </div>
 
         <div class="row">

@@ -2,6 +2,13 @@
 
 @section('page-title', 'Notícias e Comunicados - Novo Post')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Notícias e Comunicados', 'url' => route('admin.posts.index')],
+        ['label' => 'Novo post'],
+    ]])
+@endsection
+
 {{-- =====================================================================
      ESTILOS
 ====================================================================== --}}
@@ -17,13 +24,6 @@
 @section('content')
 
 <div class="container-fluid py-4 px-3 px-md-4">
-
-    {{-- Breadcrumb --}}
-    <nav class="page-breadcrumb">
-        <a href="{{ route('admin.posts.index') }}">Notícias e Comunicados</a>
-        <i class="bi bi-chevron-right"></i>
-        <span>Novo post</span>
-    </nav>
 
     <form action="{{ route('admin.posts.store') }}"
           method="POST"

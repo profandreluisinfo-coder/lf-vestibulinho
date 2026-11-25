@@ -1,3 +1,10 @@
+const agreeTerms = document.getElementById('agree_terms');
+const confirmButton = document.getElementById('confirm-inscription-button');
+
+agreeTerms.addEventListener('change', () => {
+  confirmButton.disabled = !agreeTerms.checked;
+});
+
 function confirmInscription() {
 
   const agree = document.getElementById('agree_terms');

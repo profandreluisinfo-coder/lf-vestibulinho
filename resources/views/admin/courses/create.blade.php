@@ -1,15 +1,28 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Editar Curso')
+@section('page-title', 'Novo Curso')
+
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Cursos', 'url' => route('admin.courses.index')],
+        ['label' => 'Novo curso'],
+    ]])
+@endsection
 
 @section('content')
 
     <div class="container">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-book text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Definição de vagas por curso</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-book"></i>
+                </div>
+                <div>
+                    <h4>Novo Curso</h4>
+                </div>
             </div>
         </div>
 
@@ -17,57 +30,50 @@
 
             <div class="card-body">
 
-                <form id="courseProcessForm" action="{{ route('admin.course-processes.store') }}" method="POST">
+                <form id="courseForm" action="{{ route('admin.courses.store') }}" method="POST">
                     @csrf
-
                     {{-- Curso --}}
                     <div class="form-group mb-3">
-                        <label for="course_id" class="form-label required">Curso:</label>
-
-                        <select name="course_id" id="course_id" class="form-select @error('course_id') is-invalid @enderror"
-                            required>
-
-                            <option value="">Selecione o curso</option>
-
-                            @foreach ($courses as $course)
-                                <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>
-                                    {{ $course->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('course_id')
+                        <label for="name" class="form-label required">Nome do curso:</label>
+                        <input type="text" name="name" id="name" class="form-control @error ('name') is-invalid @enderror" value="{{ old('name') }}" aria-label="Nome do curso">
+                        @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    {{-- Processo Seletivo --}}
+                    {{-- Descrição do curso --}}
                     <div class="form-group mb-3">
-                        <label for="process_id" class="form-label required">Vestibulinho:</label>
+                        <label for="description" class="form-label required">Descrição do curso:</label>
+                        <textarea name="description" id="description" class="form-control @error ('description') is-invalid @enderror" aria-label="Descrição do curso">{{ old('description') }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                        <select name="process_id" id="process_id"
-                            class="form-select @error('process_id') is-invalid @enderror" required>
+                    {{-- Duração do curso --}}
+                    <div class="form-group mb-3">
+                        <label for="duration" class="form-label required">Duração do curso:</label>
+                        <input type="number" min="0" name="duration" id="duration" class="form-control @error ('duration') is-invalid @enderror" value="{{ old('duration') }}" aria-label="Duração do curso">
+                        @error('duration')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                            <option value="">Selecione o vestibulinho</option>
-
-                            @foreach ($processes as $process)
-                                <option value="{{ $process?->id }}" @selected(old('process_id') == $process?->id)>
-                                    {{ $process?->year }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        @error('process_id')
+                    {{-- Informações do curso --}}
+                    <div class="form-group mb-3">
+                        <label for="info" class="form-label">Informações sobre o curso:</label>
+                        <textarea name="info" id="info" class="form-control @error ('info') is-invalid @enderror" aria-label="Informações sobre o curso">{{ old('info') }}</textarea>
+                        @error('info')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     {{-- Vagas --}}
                     <div class="form-group mb-3">
-                        <label for="vacancies" class="form-label required">Número de vagas:</label>
+                        <label for="vacancies" class="form-label">Número de vagas:</label>
 
-                        <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies"
-                            name="vacancies" value="{{ old('vacancies') }}" min="0" required>
+                        <input type="number" class="form-control @error('vacancies') is-invalid @enderror" id="vacancies" aria-label="Número de vagas"
+                            name="vacancies" value="{{ old('vacancies') }}" min="0">
 
                         @error('vacancies')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -75,7 +81,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success btn-sm">
-                        <i class="bi bi-check-circle me-1"></i> Registrar vagas
+                        <i class="bi bi-check-circle me-1"></i> Salvar
                     </button>
                     <a href="{{ route('admin.courses.index') }}" class="btn btn-secondary btn-sm">
                         <i class="bi bi-arrow-left me-1"></i> Voltar

@@ -14,9 +14,9 @@
 
         <!-- ====== SEÇÃO: VESTIBULINHO ====== -->
         <div class="menu-section">
-            <div class="menu-section-title">
+            {{-- <div class="menu-section-title">
                 <i class="bi bi-book-half me-2"></i> Vestibulinho
-            </div>
+            </div> --}}
 
             <div class="menu-item">
                 <a href="{{ route('admin.index') }}"

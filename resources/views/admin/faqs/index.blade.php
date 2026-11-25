@@ -12,18 +12,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Perguntas Frequentes'],
+    ]])
+@endsection
+
 @section('content')
-
+    @php
+        $results = \App\Models\Faq::paginate(10);
+    @endphp
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-question-circle text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Perguntas Frequentes</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-question-circle"></i>
+                </div>
+                <div>
+                    <h4>Perguntas Frequentes</h4>
+                    <span>
+                        {{ $results->total() }}
+                        {{ $results->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-
-            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#setNewFAQ">
-                <i class="bi bi-plus-circle me-1"></i> Novo
+            <a href="{{ route('admin.faqs.create') }}" class="btn btn-sm btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Novo
             </a>
         </div>
 
@@ -106,27 +122,26 @@
 
                                     <span class="ms-2">
                                         <span class="badge bg-{{ $faq->status ? 'success' : 'warning' }}">
-                                            {{ $faq->status ? 'Publicado' : 'Não Publicado' }}
+                                            {{ $faq->status ? 'Publicado' : 'Oculto' }}
                                         </span>
                                     </span>
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
 
-                                    @can('manage-faq', $faq)
                                         <form id="publish-faq-form-{{ $faq->id }}"
                                             action="{{ route('admin.faqs.publish', $faq->id) }}" method="POST" class="d-none">
                                             @csrf
                                             @method('PUT')
                                         </form>
                                         <button type="button"
-                                            class="btn btn-sm btn-{{ $faq->status ? 'warning' : 'success' }}"
+                                            class="btn btn-sm btn-outline-{{ $faq->status ? 'warning' : 'success' }}"
                                             title="{{ $faq->status ? 'Não Publicar' : 'Publicar' }}"
                                             onclick="confirmFaqPublish({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
-                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i> {{ $faq->status ? 'Não Publicar' : 'Publicar' }}
+                                            <i class="bi bi-{{ $faq->status ? 'eye-slash' : 'eye' }}"></i> {{ $faq->status ? 'Ocultar' : 'Publicar' }}
                                         </button>
 
-                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-pencil-square" title="Editar"></i> Editar
                                         </a>
 
@@ -136,16 +151,16 @@
                                             @csrf
                                             @method('DELETE')
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-danger"
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
                                             onclick="confirmFaqDelete({{ $faq->id }}, '{{ addslashes($faq->question) }}')">
                                             <i class="bi bi-trash"></i> Excluir
                                         </button>
-                                    @endcan
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                 @endforeach
 
             </div>
@@ -154,65 +169,6 @@
                 <i class="bi bi-info-circle me-1"></i> Nenhuma FaQ cadastrada.
             </p>
         @endif
-
-        <div class="modal fade" id="setNewFAQ" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header text-light">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-question-circle me-2"></i>Gravar
-                            Nova FaQ</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <form action="{{ route('admin.faqs.store') }}" method="POST" id="faqForm">
-                                    @csrf
-                                    <div class="form-group mb-3">
-
-                                        <label for="category" class="form-label required">
-                                            Categoria:
-                                        </label>
-
-                                        <input type="text" class="form-control" id="category" name="category"
-                                            list="categoriesList" aria-describedby="categoryHelp">
-
-                                        <datalist id="categoriesList">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->name }}">
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </datalist>
-
-                                        <small id="categoryHelp" class="text-primary fst-italic">
-                                            <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já
-                                            cadastrada ou digite uma nova.
-                                        </small>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="question" class="form-label required">Pergunta:</label>
-                                        <input type="text" class="form-control" id="question" name="question">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="answer" class="form-label required">Resposta:</label>
-                                        <textarea class="form-control summernote" id="answer" name="answer" rows="6"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="bi bi-check-circle me-1"></i>Salvar
-                                    </button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                class="bi bi-x-circle me-1"></i>Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 @endsection
@@ -224,7 +180,6 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/faqs/index.js') }}"></script>
     <script src="{{ asset('assets/js/admin/faqs/filters.js') }}"></script>
     <script src="{{ asset('assets/js/admin/faqs/sortable.js') }}"></script>
     <script src="{{ asset('assets/js/admin/faqs/delete.js') }}"></script>  

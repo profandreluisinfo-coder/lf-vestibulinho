@@ -108,7 +108,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/js/inscription/ui/others.js') }}"></script>
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/ui/inscription/others.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/inscription/others.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/others.js') }}"></script>
 @endpush

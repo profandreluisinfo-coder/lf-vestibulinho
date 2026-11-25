@@ -28,6 +28,14 @@ class FaqController extends Controller
             'faqs' => $faqs
         ]);
     }
+    
+    public function create()
+    {
+        $categories = Category::all();
+        return view('admin.faqs.create', [
+            'categories' => $categories
+        ]);
+    }
 
     /**
      * Grava uma nova pergunta frequente no sistema.
@@ -45,7 +53,23 @@ class FaqController extends Controller
         $request->validate([
             'category' => 'required|string|max:255',
             'question' => 'required',
-            'answer' => 'required',
+            'answer' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // O editor pode enviar HTML sem conteúdo, como <p><br></p>.
+                    if (!is_string($value) || trim($value) === '') {
+                        return;
+                    }
+
+                    $text = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $text = preg_replace('/[\s\p{Z}\x{200B}\x{FEFF}]+/u', '', $text);
+                    $hasMedia = preg_match('/<(img|iframe|video|audio|object|embed)\b/i', $value);
+
+                    if ($text === '' && !$hasMedia) {
+                        $fail('A resposta precisa ser preenchida.');
+                    }
+                },
+            ],
         ], [
             'category.required' => 'A categoria precisa ser preenchida.',
             'question.required' => 'A pergunta precisa ser preenchida.',
@@ -69,7 +93,7 @@ class FaqController extends Controller
             'order' => $maxOrder + 1,
         ]);
 
-        return alertSuccess('FAQ criada com sucesso!');
+        return alertSuccess('FAQ criada com sucesso!', 'admin.faqs.index');
     }
 
     /**
@@ -114,16 +138,27 @@ class FaqController extends Controller
      */
     public function update(Request $request, Faq $faq)
     {
-        // $this->authorize('update-faq', $faq);
-        if (!Auth::user()->can('manage-faq', $faq)) {
-            // abort(403);
-            return redirect()->back()->with('error', 'Acesso negado! Voce não tem permissão para editar essa FAQ porque ela pertence a outro usuário.');
-        }
         // Validar dados
         $request->validate([
             'category' => 'required|string|max:255',
             'question' => 'required',
-            'answer' => 'required',
+            'answer' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // O editor pode enviar HTML sem conteúdo, como <p><br></p>.
+                    if (!is_string($value) || trim($value) === '') {
+                        return;
+                    }
+
+                    $text = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $text = preg_replace('/[\s\p{Z}\x{200B}\x{FEFF}]+/u', '', $text);
+                    $hasMedia = preg_match('/<(img|iframe|video|audio|object|embed)\b/i', $value);
+
+                    if ($text === '' && !$hasMedia) {
+                        $fail('A resposta precisa ser preenchida.');
+                    }
+                },
+            ],
         ], [
             'category.required' => 'A categoria precisa ser preenchida.',
             'question.required' => 'A pergunta precisa ser preenchida.',
@@ -139,10 +174,11 @@ class FaqController extends Controller
         $faq->update([
             'category_id' => $category->id,
             'question' => $request->question,
-            'answer' => Purifier::clean($request->answer, 'faq')
+            'answer' => Purifier::clean($request->answer, 'faq'),
+            'user_id' => Auth::id()
         ]);
 
-        return alertSuccess('FAQ atualizada com sucesso!');
+        return alertSuccess('FAQ atualizada com sucesso!', 'admin.faqs.index');
     }
 
     public function destroy(Faq $faq)

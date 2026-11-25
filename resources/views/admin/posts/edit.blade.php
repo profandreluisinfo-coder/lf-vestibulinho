@@ -2,6 +2,13 @@
 
 @section('page-title', 'Editar Post')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Notícias e Comunicados', 'url' => route('admin.posts.index')],
+        ['label' => 'Editar: ' . Str::limit($post->title, 40)],
+    ]])
+@endsection
+
 {{-- =====================================================================
      ESTILOS  (reaproveita os mesmos tokens do create)
 ====================================================================== --}}
@@ -127,19 +134,6 @@
         border-radius: var(--radius-pill);
     }
 
-    /* Breadcrumb */
-    .page-breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: var(--font-size-sm);
-        color: var(--text-muted);
-        margin-bottom: 20px;
-    }
-
-    .page-breadcrumb a { color: var(--color-teal); }
-    .page-breadcrumb i { font-size: 12px; }
-
     /* Slug preview */
     .slug-preview {
         font-size: var(--font-size-xs);
@@ -158,13 +152,6 @@
 @section('content')
 
 <div class="container-fluid py-4 px-3 px-md-4">
-
-    {{-- Breadcrumb --}}
-    <nav class="page-breadcrumb">
-        <a href="{{ route('admin.posts.index') }}">Notícias e Comunicados</a>
-        <i class="bi bi-chevron-right"></i>
-        <span>Editar: {{ Str::limit($post->title, 40) }}</span>
-    </nav>
 
     <form action="{{ route('admin.posts.update', $post) }}"
           method="POST"

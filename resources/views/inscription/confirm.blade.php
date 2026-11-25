@@ -350,7 +350,7 @@
     </div>
 
     {{-- Termos + Finalizar --}}
-    <form id="finalize-inscription" action="{{ route('inscription.store') }}" method="POST" class="mt-4">
+    <form id="finalize-inscription" action="{{ route('inscription.step.store') }}" method="POST" class="mt-4">
         @csrf
 
         <div class="terms-box mb-4">
@@ -378,7 +378,7 @@
             <a href="{{ route('inscription.step.course') }}" class="btn btn-secondary btn-sm">
                 <i class="bi bi-arrow-left-circle me-1"></i> Voltar
             </a>
-            <button type="button" class="btn btn-primary btn-sm w-auto" onclick="confirmInscription()">
+            <button type="button" class="btn btn-primary btn-sm w-auto" id="confirm-inscription-button" onclick="confirmInscription()" disabled>
                 Confirmar inscrição <i class="bi bi-check-circle ms-1"></i>
             </button>
         </div>
@@ -387,5 +387,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/swa/inscription/confirm.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/confirm.js') }}"></script>
 @endpush

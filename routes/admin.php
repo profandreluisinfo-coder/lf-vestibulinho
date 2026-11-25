@@ -58,7 +58,9 @@ Route::prefix('gestao')
             ->name('faqs.')
             ->group(function () {
                 Route::get('/', [FaqController::class, 'index'])
-                    ->name('index');
+                    ->name('index');                
+                Route::get('create', [FaqController::class, 'create'])
+                    ->name('create');
                 Route::post('gravar', [FaqController::class, 'store'])
                     ->name('store');
                 Route::get('editar/{faq}', [FaqController::class, 'edit'])
@@ -132,23 +134,11 @@ Route::prefix('gestao')
             ->controller(CourseController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
+                Route::get('novo', 'create')->name('create');
                 Route::post('salvar', 'store')->name('store');
                 Route::get('editar/{course}', 'edit')->name('edit');
                 Route::put('atualizar/{course}', 'update')->name('update');
                 Route::delete('excluir/{course}', 'destroy')->name('destroy');
-            });
-
-        // Cursos por vestibulinho: vagas e associações
-        Route::prefix('cursos-vestibulinhos')
-            ->name('course-processes.')
-            ->controller(CourseProcessController::class)
-            ->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('criar', 'create')->name('create');
-                Route::post('salvar', 'store')->name('store');
-                Route::get('editar/{courseProcess}', 'edit')->name('edit');
-                Route::put('atualizar/{courseProcess}', 'update')->name('update');
-                Route::delete('excluir/{courseProcess}', 'destroy')->name('destroy');
             });
 
         // Arquivos

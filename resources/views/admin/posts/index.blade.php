@@ -159,7 +159,7 @@
                                 <form action="{{ route('admin.posts.toggle', $post) }}" method="POST">
                                     @csrf @method('PATCH')
                                     <button type="submit"
-                                        class="btn btn-sm {{ $post->published ? 'btn-warning' : 'btn-success' }}"
+                                        class="btn btn-sm {{ $post->published ? 'btn-outline-warning' : 'btn-outline-success' }}"
                                         title="{{ $post->published ? 'Despublicar' : ($post->scheduled_at ? 'Publicar agora' : 'Publicar') }}">
                                         <i class="bi bi-{{ $post->published ? 'eye-slash' : 'eye' }}"></i>
                                     </button>
@@ -167,14 +167,14 @@
 
                                 {{-- Editar --}}
                                 <a href="{{ route('admin.posts.edit', $post) }}"
-                                    class="btn btn-sm btn-primary"
+                                    class="btn btn-sm btn-outline-primary"
                                     title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
 
                                 {{-- Excluir --}}
                                 <button type="button"
-                                    class="btn btn-sm btn-danger"
+                                    class="btn btn-sm btn-outline-danger"
                                     title="Excluir"
                                     onclick="confirmDelete('{{ route('admin.posts.destroy', $post) }}')">
                                     <i class="bi bi-trash3"></i>

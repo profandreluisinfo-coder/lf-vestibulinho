@@ -270,7 +270,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/inscription/personal.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/personal.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const socialNameOption1 = document.getElementById('radioYes');

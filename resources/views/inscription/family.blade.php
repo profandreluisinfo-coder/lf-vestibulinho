@@ -169,7 +169,7 @@
 
 {{-- Ordem importa: primeiro a UI (mostrar/ocultar/limpar), depois máscaras e, por fim, as regras --}}
 @push('scripts')
-    <script src="{{ asset('assets/js/ui/inscription/family.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/ui/family.js') }}"></script>
     <script src="{{ asset('assets/js/cleave/masks.js') }}"></script>
-    <script src="{{ asset('assets/js/rules/inscription/family.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/family.js') }}"></script>
 @endpush

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Lista de Eventos')
+@section('page-title', 'Eventos do Processo Seletivo')
 
 @push('styles')
     <style>
@@ -56,16 +56,32 @@
     </style>
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Eventos'],
+    ]])
+@endsection
+
 @section('content')
-
+    @php
+        $results = \App\Models\Process::paginate(10);
+    @endphp
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-calendar4-week text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Eventos do Processo Seletivo</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div>
+                    <h4>Eventos do Processo Seletivo</h4>
+                    <span>
+                        {{ $results->total() }}
+                        {{ $results->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-            
             <a href="{{ route('admin.process.edit', $process?->id) }}" class="btn btn-sm btn-primary">
                 <i class="bi bi-pencil-square"></i>
                 {{ $process?->exists() ? 'Editar Eventos' : 'Definir Eventos' }}

@@ -14,7 +14,7 @@
                 @forelse ($courses as $course)
                     <option value="{{ $course->id }}"
                         {{ old('course_id', session('step8.course_id')) == $course->id ? 'selected' : '' }}>
-                        {{ $course->description }} - {{ $course->pivot->vacancies }} vagas
+                        {{ $course->description }} - {{ $course->vacancies }} vagas
                     </option>
                 @empty
                     <option value="">Nenhum curso disponível</option>
@@ -59,5 +59,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/rules/inscription/course.js') }}"></script>
+    <script src="{{ asset('assets/js/inscription/rules/course.js') }}"></script>
 @endpush

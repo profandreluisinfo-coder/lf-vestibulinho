@@ -85,13 +85,6 @@ class Process extends Model
         ];
     }
 
-    public function courses()
-    {
-        return $this->belongsToMany(Course::class, 'course_process')
-            ->withPivot('id', 'vacancies')
-            ->withTimestamps();
-    }
-
     // Histórico completo do usuário
     public function inscriptions(): HasMany
     {

@@ -100,11 +100,4 @@ class Course extends Model
     {
         return $this->hasMany(Inscription::class);
     }
-
-    public function processes()
-    {
-        return $this->belongsToMany(Process::class, 'course_process')
-            ->withPivot('id', 'vacancies')
-            ->withTimestamps();
-    }
 }

@@ -15,7 +15,7 @@
     {{-- Bootstrap & Ícones --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
 
     {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -46,6 +46,10 @@
 
         @include('shared.toasts')
 
+        @hasSection('breadcrumb')
+            @yield('breadcrumb')
+        @endif
+
         @yield('content')
 
         {{-- Modal Alterar Senha --}}
@@ -59,7 +63,7 @@
     {{-- === PLUGGINS === --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
 
     {{-- === PLUGGINS ESPECÍFICOS === --}}
@@ -70,6 +74,11 @@
     <script src="{{ asset('assets/js/shared/toasts.js') }}"></script>
     <script type="module" src="{{ asset('assets/js/shared/change-password.js') }}"></script>
     <script src="{{ asset('assets/js/shared/popovers.js') }}"></script>
+    <script>
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+            new bootstrap.Tooltip(el);
+        });
+    </script>
 
     {{-- === JS ESPECÍFICOS === --}}
     @stack('scripts')
@@ -81,9 +90,6 @@
             });
         </script>
     @endif
-    
-    <script src="{{ asset('assets/js/admin/export/handler.js') }}"></script>
-
 </body>
 
 </html>
