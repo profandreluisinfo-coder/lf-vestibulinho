@@ -1,196 +1,91 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Lista de Locais de Prova')
+@section('page-title', 'Locais de Prova')
+
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Locais de Prova'],
+    ]])
+@endsection
 
 @section('content')
 
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-geo text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Locais de Prova</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+                <div>
+                    <h4>Locais de Prova</h4>
+                    <span>
+                        {{ $locations->total() }}
+                        {{ $locations->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setLocalModal">
-                <i class="bi bi-plus-circle me-1"></i> Novo
+            <a href="{{ route('admin.location.create') }}" class="btn btn-primary btn-sm" aria-label="Cadastrar novo local">
+                <i class="bi bi-plus-lg me-1"></i> Novo
             </a>
         </div>
 
         <div class="table-responsive">
 
-            <table class="table-striped table caption-top">
-                <caption>Vestibulinho LF  {{ $process?->year }} - Lista de Locais de Prova</caption>
-                <thead class="table-success text-center">
+            <table class="table-striped table">
+                <thead class="table-success">
                     <tr>
                         <th scope="col">Local</th>
-                        <th scope="col">Salas Disponíveis</th>
-                        {{-- <th scope="col">Endereço</th> --}}
+                        <th scope="col">Endereço</th>
+                        <th scope="col" class="text-center">Salas Disponíveis</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     @forelse ($locations as $local)
-                        <tr class="text-center">
+                        <tr>
                             <th scope="row">
                                 {{ $local->name }}
                             </th>
-                            <td>{{ $local->rooms_available }}</td>
-                            {{-- <td>{{ $local->address }}</td> --}}
+                            <td>{{ $local->address }}</td>
+                            <td class="text-center">{{ $local->rooms_available }}</td>
                             <td>
-                                <div class="d-flex gap-2 justify-content-center">
-                                    <!-- Detalhes -->
-                                    <a href="#" class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#viewLocal"
-                                        onclick="showLocalDetails({{ $local->id }}, '{{ addslashes($local->name) }}', '{{ addslashes($local->address) }}', '{{ $local->rooms_available }}')">
-                                        <i class="bi bi-eye me-1" title="Ver Detalhes"></i> Detalhes
-                                    </a>
-                                    <!-- Excluir -->
-                                    <form id="delete-location-form-{{ $local->id }}"
-                                        action="{{ route('admin.location.destroy', ['location' => $local]) }}" method="POST"
-                                        style="display:none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    <!-- Editar -->
-                                    <a href="{{ route('admin.location.edit', $local->id) }}"
-                                            class="btn btn-sm btn-primary">
-                                            <i class="bi bi-pencil-square me-1"></i> Editar
-                                        </a>                                        
-                                    <!-- Botão de excluir -->
-                                    <button type="button" title="Excluir"
-                                        onclick="confirmLocationDelete({{ $local->id }}, '{{ addslashes($local->name) }}')"
-                                        class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash me-1"></i> Excluir
-                                    </button>
-                                </div>
+
+                                <!-- Excluir -->
+                                <form id="delete-location-form-{{ $local->id }}"
+                                    action="{{ route('admin.location.destroy', ['location' => $local]) }}" method="POST"
+                                    style="display:none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <!-- Editar -->
+                                <a href="{{ route('admin.location.edit', $local->id) }}"
+                                    class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Editar local" aria-label="Editar local">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <!-- Botão de excluir -->
+                                <button type="button" title="Excluir"
+                                    onclick="confirmLocationDelete({{ $local->id }}, '{{ addslashes($local->name) }}')"
+                                    class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Excluir local" aria-label="Excluir local">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     @empty
-                        <tr class="text-center">
-                            <td colspan="3">Nenhum local cadastrado</td>
+                        <tr>
+                            <td colspan="4" class="text-center">Nenhum local cadastrado</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
 
         </div>
-
-        {{-- Modal de definição de local --}}
-        <div class="modal fade" id="setLocalModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="setLocalModalLabel"><i class="bi bi-geo me-2"></i>Cadastrar Local de
-                            Prova</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-
-                                <form id="exam-location" action="{{ route('admin.location.store') }}" method="POST" novalidate>
-                                    @csrf
-
-                                    {{-- Nome do Local --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="name"
-                                            class="form-control @error('name') is-invalid @enderror" id="name"
-                                            placeholder="Nome do local" value="{{ old('name') }}" required>
-                                        <label for="name" class="form-label required">Nome do Local</label>
-                                        @error('name')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Endereço --}}
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="address"
-                                            class="form-control @error('address') is-invalid @enderror" id="address"
-                                            placeholder="Endereço" value="{{ old('address') }}" required>
-                                        <label for="address" class="form-label required">Endereço</label>
-                                        @error('address')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Total de Salas --}}
-                                    <div class="form-floating mb-4">
-                                        <input type="number" name="rooms_available"
-                                            class="form-control @error('rooms_available') is-invalid @enderror"
-                                            id="rooms_available" min="1" max="40"
-                                            placeholder="Total de Salas Disponíveis" value="{{ old('rooms_available') }}"
-                                            required>
-                                        <label for="rooms_available" class="form-label required">Total de Salas
-                                            Disponíveis</label>
-                                        @error('rooms_available')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- prettier-ignore --}}
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    <i class="bi bi-check-circle me-1"></i>Salvar
-                                    </button>
-                                </form>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal de exibição de detalhes de um local --}}
-        <div class="modal fade" id="viewLocal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">
-                            <i class="bi bi-eye me-2"></i>Detalhes do Local
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <p><strong>Nome:</strong> <span id="view-name"></span></p>
-                                <p><strong>Endereço:</strong> <span id="view-address"></span></p>
-                                <p><strong>Salas Disponíveis:</strong> <span id="view-rooms"></span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-1"></i>Fechar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
 @endsection
 
-@push('plugins')
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>
-@endpush
-
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/location/create.js') }}"></script>
-    <script src="{{ asset('assets/js/admin/location/details.js') }}"></script>
     <script src="{{ asset('assets/js/admin/location/delete.js') }}"></script>
 @endpush

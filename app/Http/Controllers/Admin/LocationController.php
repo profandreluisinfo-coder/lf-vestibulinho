@@ -21,9 +21,14 @@ class LocationController extends Controller
     public function index(): View
     {
         // Obter todos as locais de prova
-        $locations = Location::all();
+        $locations = Location::paginate(10);
 
         return view('admin.location.index', compact('locations'));
+    }
+
+    public function create(): View
+    {
+        return view('admin.location.create');
     }
 
     /**
@@ -62,7 +67,7 @@ class LocationController extends Controller
 
         // Verificar se a operação foi bem-sucedida
         if ($examLocation->wasRecentlyCreated) {
-            return alertSuccess('Local de exame cadastrado com sucesso!');
+            return alertSuccess('Local de exame cadastrado com sucesso!', 'admin.location.index');
         }
 
         return alertError('Ocorreu um erro ao cadastrar o local de exame.');
@@ -74,10 +79,8 @@ class LocationController extends Controller
      * @param int $id ID do local de prova.
      * @return \Illuminate\View\View
      */
-    public function edit($id): View
+    public function edit(Location $location): View
     {
-        $location = Location::find($id);
-
         return view('admin.location.edit', [
             'location' => $location
         ]);
@@ -91,9 +94,8 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, Location $location): RedirectResponse
     {
-        $location = Location::find($id);
         $location->name = $this->stringToUpper($request->name);
         $location->address = $this->stringToUpper($request->address);
         $location->rooms_available = $request->rooms_available;
@@ -108,11 +110,9 @@ class LocationController extends Controller
     /**
      * Remove um local de prova.
      *
-     * @param int $id ID do local de prova.
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Location $location )
+    public function destroy(Location $location)
     {
         try {
             

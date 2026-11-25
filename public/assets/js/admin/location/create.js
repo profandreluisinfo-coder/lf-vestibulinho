@@ -13,22 +13,22 @@ $(document).ready(function () {
             rooms_available: {
                 required: true,
                 min: 1,
-                max: 40
+                max: 50
             }
         },
         messages: {
             name: {
-                required: 'Obrigatório',
-                maxlength: 'Máximo de 100 caracteres'
+                required: '* Campo obrigatório',
+                maxlength: '* Máximo de 100 caracteres'
             },
             address: {
-                required: 'Obrigatório',
-                maxlength: 'Máximo de 200 caracteres'
+                required: '* Campo obrigatório',
+                maxlength: '* Máximo de 200 caracteres'
             },
             rooms_available: {
-                required: 'Obrigatório',
-                min: 'O número de salas deve ser maior que 0',
-                max: 'O número de salas deve ser menor ou igual a 40'
+                required: '* Campo obrigatório',
+                min: '* O número de salas deve ser maior que 0',
+                max: '* O número de salas deve ser menor ou igual a 50'
             }
         },
         submitHandler: function (form) {
@@ -36,7 +36,7 @@ $(document).ready(function () {
         },
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
-            element.closest('.form-floating').append(error);
+            element.closest('.form-group').append(error);
         },
         highlight: function (element) {
             $(element).addClass('is-invalid');
@@ -52,9 +52,4 @@ $(document).ready(function () {
             return false;
         }
     });
-
-    $("#exam-location").on("invalid-form.validate", function () {
-        alert("Existem campos inválidos. Por favor, revise o formulário.");
-    });
-
 });

@@ -12,7 +12,6 @@
 @section('content')
 
     <div class="container">
-
         {{-- Cabeçalho da página --}}
         <div class="page-header">
             <div class="page-header-title">

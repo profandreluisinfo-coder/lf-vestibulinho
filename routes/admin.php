@@ -233,6 +233,7 @@ Route::prefix('gestao')
             ->name('location.')
             ->group(function () {
                 Route::get('/', [LocationController::class, 'index'])->name('index');
+                Route::get('novo', [LocationController::class, 'create'])->name('create');
                 Route::post('salvar', [LocationController::class, 'store'])->name('store');
                 Route::get('editar/{location}', [LocationController::class, 'edit'])->name('edit');
                 Route::put('editar/{location}', [LocationController::class, 'update'])->name('update');
