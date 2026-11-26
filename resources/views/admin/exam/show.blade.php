@@ -68,6 +68,13 @@
      </style>
  @endpush
 
+ @section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Alocar Candidatos'],
+    ]])
+@endsection
+
  @section('content')
      @php
          $show = \App\Models\Exam::exists();
