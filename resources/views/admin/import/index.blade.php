@@ -2,10 +2,16 @@
 
 @section('page-title', 'Classificação')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [['label' => 'Início', 'url' => route('admin.index')], ['label' => 'Classificação']],
+    ])
+@endsection
+
 @section('content')
     @php
         $show = \App\Models\Result::exists();
-        
+
         $released = $process?->isResultReleased();
         $canRelease = (int) $stats->classified_count > 0;
         $confirmMessage = $released
@@ -13,8 +19,21 @@
             : 'Liberar o resultado para todos os candidatos?';
     @endphp
 
-    <div class="container-fluid">
-
+    <div class="container">
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark-zip"></i>
+                </div>
+                <div>
+                    <h4>Classificação</h4>
+                    <span>
+                        Notas importadas e situação de cada candidato no processo seletivo
+                    </span>
+                </div>
+            </div>
+        </div>
         {{-- Cabeçalho e ações --}}
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
@@ -78,9 +97,7 @@
                     </a>
                 </div>
             </div>
-
         @else
-
             {{-- Resumo --}}
             <div class="row g-3 mb-4">
                 <div class="col-6 col-xl-3">
@@ -142,10 +159,13 @@
                         <li class="nav-item">
                             {{-- ROTA: esta mesma página (index) --}}
                             <a class="nav-link py-1 {{ $situation === $key ? 'active' : '' }}"
-                                href="{{ route('admin.import.index', array_filter([
-                                    'situation' => $key === 'all' ? null : $key,
-                                    'q' => $search,
-                                ])) }}">
+                                href="{{ route(
+                                    'admin.import.index',
+                                    array_filter([
+                                        'situation' => $key === 'all' ? null : $key,
+                                        'q' => $search,
+                                    ]),
+                                ) }}">
                                 {{ $label }}
                             </a>
                         </li>
@@ -158,8 +178,7 @@
                         <input type="hidden" name="situation" value="{{ $situation }}">
                     @endif
                     <input type="search" name="q" value="{{ $search }}" class="form-control form-control-sm"
-                        style="min-width: 260px;" placeholder="Nome ou número da inscrição"
-                        aria-label="Buscar candidato">
+                        style="min-width: 260px;" placeholder="Nome ou número da inscrição" aria-label="Buscar candidato">
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-search"></i><span class="visually-hidden">Buscar</span>
                     </button>

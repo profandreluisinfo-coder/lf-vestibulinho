@@ -2,20 +2,33 @@
 
 @section('page-title', 'Importar Notas')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Importar Notas'],
+    ]])
+@endsection
+
 @section('content')
 
-    <div class="container-fluid">
+    <div class="container">
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark-zip"></i>
+                </div>
+                <div>
+                    <h4>Importar Notas</h4>
+                    <span>
+                        Importe as notas dos candidatos a partir de uma planilha do Excel
+                    </span>
+                </div>
+            </div>
+        </div>
         @if (!$process)
             <div class="alert alert-info">Nenhum processo seletivo está cadastrado no momento.</div>
         @else
-            {{-- Título da Página --}}
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-upload text-muted"></i>
-                    <h6 class="mb-0 text-muted fw-normal">Importar Notas</h6>
-                </div>
-            </div>
-
             <div class="progress mb-3 d-none" id="progress-wrapper">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" role="progressbar"
                     style="width: 0%">0%</div>
@@ -24,7 +37,7 @@
             {{-- ALERTA --}}
             <div class="alert alert-warning d-flex align-items-center bg-warning py-2 px-3 text-white">
                 <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                <strong>Atenção - leia antes de importar</strong>
+                <strong>Leia antes de importar</strong>
             </div>
 
             <div class="mb-3 shadow-sm border border-warning-subtle rounded d-flex flex-column mb-3">
@@ -109,8 +122,8 @@
                 },
                 messages: {
                     file: {
-                        required: "Selecione um arquivo.",
-                        extension: "Apenas arquivos .xlsx são permitidos."
+                        required: "* Selecione um arquivo.",
+                        extension: "* Apenas arquivos .xlsx são permitidos."
                     }
                 },
                 errorClass: 'is-invalid',

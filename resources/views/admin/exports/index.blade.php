@@ -3,15 +3,14 @@
 @section('page-title', 'Planilha de Notas')
 
 @section('breadcrumb')
-    @include('partials.admin.breadcrumb', ['items' => [
-        ['label' => 'Início', 'url' => route('admin.index')],
-        ['label' => 'Planilha de Notas'],
-    ]])
+    @include('partials.admin.breadcrumb', [
+        'items' => [['label' => 'Início', 'url' => route('admin.index')], ['label' => 'Planilha de Notas']],
+    ])
 @endsection
 
 @section('content')
     <div class="container">
-    {{-- Cabeçalho da página --}}
+        {{-- Cabeçalho da página --}}
         <div class="page-header">
             <div class="page-header-title">
                 <div class="icon-wrap">
@@ -46,10 +45,10 @@
                     @unless ($hasCurrentProcess)
                         <li>Não há um processo seletivo cadastrado.</li>
                     @endunless
-                    @if ($hasCurrentProcess && ! $hasApprovedInscriptions)
+                    @if ($hasCurrentProcess && !$hasApprovedInscriptions)
                         <li>Nenhuma inscrição deferida foi encontrada no processo atual.</li>
                     @endif
-                    @if ($hasCurrentProcess && ! $hasExam)
+                    @if ($hasCurrentProcess && !$hasExam)
                         <li>Não existe prova agendada com candidatos alocados em salas no processo atual.</li>
                     @endif
                 </ul>
@@ -59,33 +58,35 @@
         <div class="row g-3">
             <div class="col-12 col-md-6 col-lg-4">
                 @if ($canExportCandidates)
-                    <a href="{{ route('admin.exports.excel') }}" class="card h-100 text-decoration-none text-dark shadow-sm" id="export-candidates-card">
-                @else
-                    <div class="card h-100 text-muted shadow-sm bg-light" aria-disabled="true">
+                    <a href="{{ route('admin.exports.excel') }}" class="card h-100 text-decoration-none text-dark shadow-sm"
+                        id="export-candidates-card">
+                    @else
+                        <div class="card h-100 text-muted shadow-sm bg-light" aria-disabled="true">
                 @endif
-                    <div class="card-body d-flex align-items-center gap-3">
-                        <i class="bi bi-file-earmark-spreadsheet {{ $canExportCandidates ? 'text-success' : 'text-muted' }} fs-2" aria-hidden="true"></i>
-                        <div>
-                            <h5 class="card-title mb-1">Exportar planilha Excel</h5>
-                            <p class="card-text {{ $canExportCandidates ? 'text-muted' : 'text-secondary' }} mb-0">
-                                {{ $canExportCandidates ? 'Baixe a planilha de candidatos e notas.' : 'Disponível quando houver candidatos alocados em uma prova agendada.' }}
-                            </p>
-                        </div>
+                <div class="card-body d-flex align-items-center gap-3">
+                    <i class="bi bi-file-earmark-spreadsheet {{ $canExportCandidates ? 'text-success' : 'text-muted' }} fs-2"
+                        aria-hidden="true"></i>
+                    <div>
+                        <h5 class="card-title mb-1">Exportar planilha Excel</h5>
+                        <p class="card-text {{ $canExportCandidates ? 'text-muted' : 'text-secondary' }} mb-0">
+                            {{ $canExportCandidates ? 'Baixe a planilha de candidatos e notas.' : 'Disponível quando houver candidatos alocados em uma prova agendada.' }}
+                        </p>
                     </div>
+                </div>
                 @if ($canExportCandidates)
                     </a>
                 @else
-                    </div>
-                @endif
             </div>
+            @endif
         </div>
+    </div>
 
     </div>
 @endsection
 
 @push('scripts')
     <script>
-        document.getElementById('export-candidates-card')?.addEventListener('click', async function (event) {
+        document.getElementById('export-candidates-card')?.addEventListener('click', async function(event) {
             event.preventDefault();
 
             const card = this;
