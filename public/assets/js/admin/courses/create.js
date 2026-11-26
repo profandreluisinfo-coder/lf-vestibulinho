@@ -47,7 +47,6 @@ $(document).ready(function () {
         unhighlight: function (element) {
             $(element).removeClass('is-invalid');
         }
-
     });
     
     $("#courseForm").on("keyup keypress", function (e) {
@@ -56,9 +55,4 @@ $(document).ready(function () {
             return false;
         }
     });
-
-    $("#courseForm").on("invalid-form.validate", function () {
-        alert("Existem campos inválidos. Por favor, revise o formulário.");
-    });
-
 })

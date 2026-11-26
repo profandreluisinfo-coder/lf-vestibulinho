@@ -1,99 +1,102 @@
 @extends('layouts.admin')
 
-@section('page-title','Importar Prova')
+@section('page-title', 'Importar Prova')
+
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Provas'],
+    ]])
+@endsection
 
 @section('content')
-
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-zip text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Arquivos</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark-zip"></i>
+                </div>
+                <div>
+                    <h4>Provas</h4>
+                    <span>
+                        {{ $files->total() }}
+                        {{ $files->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
-                <i class="bi bi-upload me-1"></i> Importar Prova
+            <a href="{{ route('admin.archives.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Nova prova
             </a>
         </div>
-
-        <div id="meu-alert" class="alert alert-info d-flex align-items-start border-0 rounded-3 p-3" role="alert">
-            <div class="me-3 fs-3" aria-hidden="true">
-                <i class="bi bi-info-circle-fill"></i>
-            </div>
-            <div class="flex-grow-1">
-                <h5 class="alert-heading mb-2">Informação Importante</h5>
-                <p class="mb-0">
-                    Cada prova poderá conter (ou não) um gabarito vinculado, que poderá ser registrado no momento do
-                    cadastro da prova, ou, durante a edição da mesma.
-                </p>
-                <p class="mb-0 mt-2 small opacity-75">
-                    Em caso de dúvidas, entre em contato com o suporte técnico.
-                </p>
-            </div>
-            <button type="button" class="btn-close ms-3" aria-label="Fechar alerta" data-bs-dismiss="alert"></button>
-        </div>
-
         <div class="table-responsive">
-            <table class="table-striped table caption-top">
-                <caption>Publicação de Provas do Vestibulinho</caption>
-                <thead class="table-success text-center">
+            <table class="table-striped table">
+                <thead class="table-success">
                     <tr>
                         <th scope="col">Ano</th>
                         <th scope="col">Prova</th>
                         <th scope="col">Gabarito</th>
-                        <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Status</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-
                     @forelse($files as $file)
                         <tr>
-                            <td scope="row">{{ $file->year }}</td>
+                            <th scope="row">{{ $file->year }}</th>
                             <td>
                                 <a href="{{ Storage::url($file->file) }}" target="_blank">
-                                    Vestibulinho {{ $file->year }} <i class="bi bi-box-arrow-up-right ms-2"></i>
+                                    Vestibulinho {{ $file->year }} <i class="bi bi-box-arrow-up-right ms-1"></i>
                                 </a>
                             </td>
                             <td>
                                 @if ($file->answer?->file)
                                     <a href="{{ Storage::url($file->answer->file) }}" target="_blank">
-                                        Gabarito <i class="bi bi-box-arrow-up-right ms-2"></i>
+                                        Gabarito {{ $file->year }} <i class="bi bi-box-arrow-up-right ms-1"></i>
                                     </a>
                                 @else
-                                    <span class="text-danger">-</span>
+                                    <span class="text-muted">-</span>
                                 @endif
                             </td>
-                            <td><span
-                                    class="badge bg-{{ $file->status ? 'success' : 'warning' }}">{{ $file->status ? 'publicado' : 'não publicado' }}</span>
+                            <td class="text-center">
+                                <span class="status-pill {{ $file->status ? 'status-open' : 'status-closed' }}">
+                                    <i class="bi bi-{{ $file->status ? 'unlock' : 'lock' }}"></i>
+                                    {{ $file->status ? 'Publicado' : 'Não publicado' }}
+                                </span>
                             </td>
-                            <td class="d-flex align-items-center justify-content-center gap-2">
-
+                            <td class="d-flex gap-1">
                                 {{-- Botão de publicar (alterar status) --}}
                                 <form id="archive-form-{{ $file->id }}"
-                                    action="{{ route('admin.archives.publish', $file->id) }}" method="POST" class="d-none">
+                                    action="{{ route('admin.archives.publish', $file->id) }}" method="POST"
+                                    class="d-none">
                                     @csrf
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $file->status ? 'secondary' : 'success' }} l"
+                                    class="btn btn-sm btn-outline-{{ $file->status ? 'warning' : 'success' }}"
                                     title="{{ $file->status ? 'Ocultar' : 'Publicar' }}"
-                                    onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
-                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }} me-1"></i>
-                                    {{ $file->status ? 'Ocultar' : 'Publicar' }}
+                                    onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    data-bs-title="{{ $file->status ? 'Ocultar' : 'Publicar' }}"
+                                    aria-label="{{ $file->status ? 'Ocultar' : 'Publicar' }}">
+                                    <i class="bi bi-{{ $file->status ? 'eye-slash' : 'eye' }}"></i>
                                 </button>
-
-                                <a href="{{ route('admin.archives.edit', $file->id) }}" class="btn btn-sm btn-primary l"
-                                    title="Editar">
-                                    <i class="bi bi-pencil-square me-1"></i> Editar
+                                <a href="{{ route('admin.archives.edit', $file->id) }}"
+                                    class="btn btn-sm btn-outline-primary" title="Editar" aria-label="Editar"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" data-bs-title="Editar">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
-
                                 <form action="{{ route('admin.archives.destroy', $file->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger l" title="Excluir">
-                                        <i class="bi bi-trash me-1"></i> Excluir
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    data-bs-title="Excluir"
+                                    aria-label="Excluir">
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -105,94 +108,11 @@
                     @endforelse
                 </tbody>
             </table>
-
-            {{ $files->links('pagination::bootstrap-5') }}
+            {{ $files->links() }}
         </div>
-
-        @if (!empty($files))
-            <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="createArchiveModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-light">
-                            <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Arquivar
-                                Prova
-                            </h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-
-                                    <form id="form-file" action="{{ route('admin.archives.store') }}" method="POST"
-                                        enctype="multipart/form-data" novalidate>
-                                        @csrf
-
-                                        {{-- Ano em que a prova foi aplicada --}}
-                                        <div class="form-group mb-3">
-                                            <label for="year" class="form-label required">Ano de referência da
-                                                prova:</label>
-                                            <input type="text" name="year"
-                                                class="form-control @error('year') is-invalid @enderror" id="year"
-                                                placeholder="Ano em que a prova foi realizada" value="{{ old('year') }}"
-                                                required>
-                                            @error('year')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Arquivo relacionado --}}
-                                        <div class="form-group mb-3">
-                                            <label for="file" class="form-label required">Arquivo relacionado à
-                                                prova:</label>
-                                            <input type="file" name="file"
-                                                class="form-control @error('file') is-invalid @enderror" id="file"
-                                                required>
-                                            @error('file')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Gabarito relacionado --}}
-                                        <div class="form-group mb-3">
-                                            <label for="answer" class="form-label">Gabarito relacionado (Se
-                                                houver)</label>
-                                            <input type="file" name="answer"
-                                                class="form-control @error('answer') is-invalid @enderror" id="answer">
-                                            @error('answer')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="bi bi-check-circle me-1"></i>Salvar
-                                            </button>
-                                        </div>
-                                    </form>
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                    class="bi bi-x-circle me-1"></i>Fechar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
     </div>
-
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/archives/index.js') }}"></script>
     <script src="{{ asset('assets/js/admin/archives/publish.js') }}"></script>
 @endpush

@@ -2,60 +2,6 @@
 
 @section('page-title', 'Eventos do Processo Seletivo')
 
-@push('styles')
-    <style>
-        .show-section-label {
-            /* font-size: var(--font-size-sm); */
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-muted);
-            margin-bottom: 0.75rem;
-        }
-
-        .show-field-label {
-            display: block;
-            font-size: var(--font-size-xs);
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
-        }
-
-        .show-field-value {
-            display: block;
-            font-size: var(--font-size-sm);
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .show-divider {
-            border-color: var(--border-color);
-            margin: 0 0 1.5rem 0;
-            opacity: 1;
-        }
-
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.3rem 0.75rem;
-            border-radius: var(--radius-pill);
-            font-size: var(--font-size-xs);
-            font-weight: 600;
-            letter-spacing: 0.03em;
-        }
-
-        .status-open {
-            background-color: rgba(39, 174, 96, 0.1);
-            color: var(--color-success-dark);
-        }
-
-        .status-closed {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: var(--color-danger);
-        }
-    </style>
-@endpush
-
 @section('breadcrumb')
     @include('partials.admin.breadcrumb', ['items' => [
         ['label' => 'Início', 'url' => route('admin.index')],
@@ -93,17 +39,14 @@
             <form id="process-access-form" class="mb-4" action="{{ route('admin.process.activate', $process) }}" method="POST">
                 @csrf
                 @method('PUT')
-
                 <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
                     <div class="card-body p-4 d-flex align-items-center justify-content-between gap-3 flex-wrap">
-
                         <div>
                             <p class="show-section-label mb-1">Status do Processo Seletivo</p>
                             <p class="mb-0" style="font-size: var(--font-size-sm); color: var(--text-muted);">
                                 Controla se os candidatos podem se inscrever no processo seletivo no momento.
                             </p>
                         </div>
-
                         <div class="d-flex align-items-center gap-3">
                             <span class="status-pill {{ $process?->status === 'open' ? 'status-open' : 'status-closed' }}">
                                 <i class="bi bi-{{ $process?->status === 'open' ? 'unlock' : 'lock' }}"></i>
@@ -117,16 +60,12 @@
                                 <label class="form-check-label visually-hidden" for="process">Ativar processo</label>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
-
             <div class="card border-0" style="box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">
                 <div class="card-body p-4">
-
                     <div class="row g-0">
-
                         {{-- Informações Básicas --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Informações Básicas</p>
@@ -137,9 +76,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Inscrições --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Período de Inscrições</p>
@@ -154,9 +91,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Divulgação das Inscrições Deferidas e Indeferidas --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Divulgação das Inscrições Deferidas e Indeferidas, PCDs e Nome Social</p>
@@ -167,9 +102,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Abertura e Fechamento do Prazo de Recursos --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Abertura e Fechamento do Prazo de Recursos</p>
@@ -184,9 +117,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Divulgação do Resultado da Análise dos Recursos --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Divulgação do Resultado da Análise dos Recursos</p>
@@ -197,9 +128,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <hr class="show-divider">
-                        
+                        <hr class="show-divider">                        
                         {{-- Divulgação da Lista Definitiva --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Divulgação da relação definitiva de candidatos inscritos após a análise dos recursos</p>
@@ -210,9 +139,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Aplicação das Provas --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Aplicação das Provas</p>
@@ -237,7 +164,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
 
                         {{-- Revisão --}}
@@ -256,9 +182,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Resultados --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Resultados</p>
@@ -270,9 +194,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Matrículas --}}
                         <div class="col-12 mb-4">
                             <p class="show-section-label">Matrículas</p>
@@ -293,9 +215,7 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr class="show-divider">
-
                         {{-- Edital --}}
                         <div class="col-12">
                             <p class="show-section-label">Edital</p>
@@ -307,7 +227,6 @@
                                 <i class="bi bi-box-arrow-up-right" style="font-size: 0.72rem;"></i>
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>

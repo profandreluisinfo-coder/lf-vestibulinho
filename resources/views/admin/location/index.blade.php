@@ -10,7 +10,6 @@
 @endsection
 
 @section('content')
-
     <div class="container">
         {{-- Cabeçalho da página --}}
         <div class="page-header">
@@ -30,9 +29,7 @@
                 <i class="bi bi-plus-lg me-1"></i> Novo
             </a>
         </div>
-
         <div class="table-responsive">
-
             <table class="table-striped table">
                 <thead class="table-success">
                     <tr>
@@ -51,7 +48,6 @@
                             <td>{{ $local->address }}</td>
                             <td class="text-center">{{ $local->rooms_available }}</td>
                             <td>
-
                                 <!-- Excluir -->
                                 <form id="delete-location-form-{{ $local->id }}"
                                     action="{{ route('admin.location.destroy', ['location' => $local]) }}" method="POST"
@@ -81,7 +77,6 @@
                     @endforelse
                 </tbody>
             </table>
-
         </div>
     </div>
 @endsection

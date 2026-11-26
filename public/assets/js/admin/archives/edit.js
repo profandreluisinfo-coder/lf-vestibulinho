@@ -2,7 +2,8 @@ $('#form-file-edit').validate({
     rules: {
         year: {
             required: true,
-            number: true
+            number: true,
+            min: 2020
         },
         file: {
             required: true,
@@ -14,12 +15,13 @@ $('#form-file-edit').validate({
     },
     messages: {
         year: {
-            required: 'Ano de referência da prova',
-            number: 'Ano de referência da prova'
+            required: '* Ano de referência da prova',
+            number: '* Ano de referência da prova',
+            min: '* Ano de referência da prova deve ser maior ou igual a 2020'
         },
         file: {
-            required: 'Arquivo relacionado',
-            extension: 'Formato de arquivo inválido'
+            required: '* Arquivo relacionado',
+            extension: '* Formato de arquivo inválido'
         },
         answer: {
             extension: 'Formato de arquivo inválido'

@@ -2,14 +2,27 @@
 
 @section('page-title', 'Editar Arquivos')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Arquivos', 'url' => route('admin.archives.index')],
+        ['label' => 'Editar'],
+    ]])
+@endsection
+
 @section('content')
 
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-pencil-square"></i>
-                <h6 class="mb-0 text-muted fw-normal">Editar Arquivos</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div>
+                    <h4>Prova</h4>
+                    <span>Edição da prova referente ao ano {{ $archive->year }}</span>
+                </div>
             </div>
         </div>
 
@@ -23,9 +36,9 @@
                     
                     {{-- Ano em que a prova foi aplicada --}}
                     <div class="form-group mb-3">
-                        <label for="year" class="form-label required">Ano de referência da prova:</label>
-                        <input type="text" name="year" class="form-control @error('year') is-invalid @enderror"
-                            id="year" placeholder="Ano em que a prova foi realizada" value="{{ $archive->year }}">
+                        <label for="year" class="form-label required">Ano de referência da prova</label>
+                        <input type="number" name="year" class="form-control @error('year') is-invalid @enderror"
+                            id="year" value="{{ $archive->year }}" min="2020" aria-label="Ano de referência da prova">
                         @error('year')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -35,9 +48,9 @@
 
                     {{-- Arquivo relacionado --}}
                     <div class="form-group mb-3">
-                        <label for="file" class="form-label required">Arquivo relacionado à prova:</label>
+                        <label for="file" class="form-label required">Arquivo relacionado à prova</label>
                         <input type="file" name="file" class="form-control @error('file') is-invalid @enderror"
-                            id="file" placeholder="Endereço">
+                            id="file" aria-label="Arquivo relacionado à prova">
                         @error('file')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -47,10 +60,10 @@
 
                     {{-- Gabarito relacionado --}}
                     <div class="form-group mb-3">
-                        <label for="answer" class="form-label">Gabarito relacionado à prova (Se houver)</label>
+                        <label for="answer" class="form-label">Gabarito relacionado à prova</label>
                         <input type="file" name="answer"
                             class="form-control @error('answer') is-invalid @enderror" id="answer"
-                            value="{{ old('answer') }}">
+                            value="{{ old('answer') }}" aria-label="Gabarito relacionado à prova">
                         @error('answer')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -61,9 +74,6 @@
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
-                    <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary btn-sm">
-                        <i class="bi bi-arrow-left me-1"></i> Voltar
-                    </a>
                 </form>
 
             </div>
@@ -72,11 +82,6 @@
     </div>
 
 @endsection
-
-@push('plugins')
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.4/dist/additional-methods.min.js"></script>    
-@endpush
 
 @push('scripts')
     <script src="{{ asset('assets/js/admin/archives/edit.js') }}"></script>

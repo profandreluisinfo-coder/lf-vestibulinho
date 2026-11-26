@@ -28,9 +28,19 @@ class ArchiveController extends Controller
     public function index(): View
     {
         // Obter todos os arquivos de prova
-        $files = Archive::orderBy('year', 'desc')->paginate(20);
+        $files = Archive::orderBy('year', 'desc')->paginate(10);
 
         return view('admin.archives.index', compact('files'));
+    }
+    
+    /**
+     * Exibir o formulário para criar um novo arquivo de prova.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create(): View
+    {
+        return view('admin.archives.create');
     }
 
     /**
@@ -100,7 +110,7 @@ class ArchiveController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Arquivo cadastrado com sucesso!');
+        return alertSuccess('Arquivo cadastrado com sucesso!', 'admin.archives.index');
     }
 
     /**

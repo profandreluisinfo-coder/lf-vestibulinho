@@ -2,7 +2,8 @@ $('#form-file').validate({
     rules: {
         year: {
             required: true,
-            number: true
+            number: true,
+            min: 2020
         },
         file: {
             required: true,
@@ -14,15 +15,16 @@ $('#form-file').validate({
     },
     messages: {
         year: {
-            required: 'Ano de referência da prova',
-            number: 'Ano de referência da prova'
+            required: '* Ano de referência da prova',
+            number: '* Ano de referência da prova',
+            min: '* Ano de referência da prova deve ser maior ou igual a 2020'
         },
         file: {
-            required: 'Arquivo relacionado',
-            extension: 'Formato de arquivo inválido'
+            required: '* Arquivo relacionado',
+            extension: '* Formato de arquivo inválido'
         },
         answer: {
-            extension: 'Formato de arquivo inválido'
+            extension: '* Formato de arquivo inválido'
         }
     },
     errorElement: 'span',
@@ -35,7 +37,7 @@ $('#form-file').validate({
     },
     errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
-        element.closest('.form-floating').append(error);
+        element.closest('.form-group').append(error);
     },
     highlight: function (element, errorClass, validClass) {
         $(element).addClass('is-invalid');

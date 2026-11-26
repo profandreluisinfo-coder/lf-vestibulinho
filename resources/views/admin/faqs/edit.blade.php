@@ -15,9 +15,7 @@
 @endsection
 
 @section('content')
-
     <div class="container">
-
         {{-- Cabeçalho da página --}}
         <div class="page-header">
             <div class="page-header-title">
@@ -32,23 +30,17 @@
                 </div>
             </div>
         </div>
-
         <div class="card shadow-sm">
             <div class="card-body">
-
                 <form id="faqForm" action="{{ route('admin.faqs.edit', ['faq' => $faq ]) }}" method="POST">
                     @csrf
                     @method('PUT')
-
                     <div class="form-group mb-3">
-
                         <label for="category" class="form-label required">
                             Categoria:
                         </label>
-
                         <input type="text" class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ $faq->category->name }}"
                             list="categoriesList" aria-describedby="categoryHelp" aria-label="Categoria">
-
                         <datalist id="categoriesList">
                             @foreach ($categories as $category)
                                 <option value="{{ $category->name }}">
@@ -56,11 +48,9 @@
                                 </option>
                             @endforeach
                         </datalist>
-
                         <small id="categoryHelp" class="text-primary fst-italic">
                             <i class="bi bi-info-circle me-1"></i> Clique para escolher uma categoria já cadastrada ou digite uma nova.
                         </small>
-
                         @error('category')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -68,16 +58,14 @@
                     <div class="form-group mb-3">
                         <label for="question" class="form-label required">Pergunta:</label>
                         <input type="text" class="form-control @error('question') is-invalid @enderror" id="question" name="question"
-                            value="{{ $faq->question }}" aria-label="Pergunta">
-                        
+                            value="{{ $faq->question }}" aria-label="Pergunta">                            
                         @error('question')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-3">
                         <label for="answer" class="form-label required">Resposta:</label>
-                        <textarea class="form-control summernote @error('answer') is-invalid @enderror" id="answer" name="answer" rows="6" aria-label="Resposta">{{ $faq->answer }}</textarea>
-                        
+                        <textarea class="form-control summernote @error('answer') is-invalid @enderror" id="answer" name="answer" rows="6" aria-label="Resposta">{{ $faq->answer }}</textarea>                        
                         @error('answer')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -86,17 +74,11 @@
                         <button type="submit" class="btn btn-success btn-sm">
                             <i class="bi bi-check-circle me-1"></i>Salvar
                         </button>
-                        <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="bi bi-arrow-left me-1"></i> Voltar
-                        </a>
                     </div>
-                </form>
-            
+                </form>            
             </div>
         </div>
-
     </div>
-
 @endsection
 
 @push('plugins')

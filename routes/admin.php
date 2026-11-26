@@ -146,7 +146,9 @@ Route::prefix('gestao')
             ->name('archives.')
             ->group(function () {
                 Route::get('/', [ArchiveController::class, 'index'])
-                    ->name('index');
+                    ->name('index');                
+                Route::get('novo', [ArchiveController::class, 'create'])
+                    ->name('create');
                 Route::post('salvar', [ArchiveController::class, 'store'])
                     ->name('store');
                 Route::get('editar/{archive}', [ArchiveController::class, 'edit'])
