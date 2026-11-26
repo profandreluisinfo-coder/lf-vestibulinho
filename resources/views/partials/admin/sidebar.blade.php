@@ -211,7 +211,7 @@
 
                     <a href="{{ route('admin.import.index') }}"
                         class="dropdown-item-custom {{ request()->routeIs('admin.import.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-ol"></i> Lista de Classificação
+                        <i class="bi bi-list-ol"></i> Classificação
                     </a>
                 </div>
             </div>
