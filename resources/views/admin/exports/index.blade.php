@@ -2,13 +2,27 @@
 
 @section('page-title', 'Planilha de Notas')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', ['items' => [
+        ['label' => 'Início', 'url' => route('admin.index')],
+        ['label' => 'Planilha de Notas'],
+    ]])
+@endsection
+
 @section('content')
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-file-excel text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Planilha de Notas</h6>
+    {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark-zip"></i>
+                </div>
+                <div>
+                    <h4>Planilha de Notas</h4>
+                    <span>
+                        Exporte uma planilha do Excel para preenchimento das notas dos candidatos
+                    </span>
+                </div>
             </div>
         </div>
 
