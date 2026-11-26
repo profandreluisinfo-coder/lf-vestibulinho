@@ -24,7 +24,7 @@
         <div class="page-header">
             <div class="page-header-title">
                 <div class="icon-wrap">
-                    <i class="bi bi-file-earmark-zip"></i>
+                    <i class="bi bi-list-ol"></i>
                 </div>
                 <div>
                     <h4>Classificação</h4>
@@ -37,13 +37,6 @@
         {{-- Cabeçalho e ações --}}
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
-                <h5 class="mb-1">
-                    <i class="bi bi-list-ol me-2 text-primary"></i>
-                    Classificação
-                </h5>
-                <p class="text-muted small mb-0">
-                    Notas importadas e situação de cada candidato no processo seletivo.
-                </p>
                 @if ((int) $stats->scored > 0)
                     <div class="mt-2">
                         <span class="badge bg-{{ $isPublished ? 'success' : 'warning text-dark' }}">

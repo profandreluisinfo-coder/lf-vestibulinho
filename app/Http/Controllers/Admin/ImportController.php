@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Imports\SimpleImport;
+use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Inscription;
 use App\Models\Lgbt;
@@ -27,7 +28,10 @@ class ImportController extends Controller
     }
 
     /**
-     * Lista de classificação do processo atual no painel administrativo.
+     * Exibe a lista de classificação do processo atual no painel administrativo.
+     * 
+     * @param Request $request
+     * @return View
      */
     public function index(Request $request): View
     {
@@ -74,7 +78,8 @@ class ImportController extends Controller
 
         $tiedKeys = $tied->mapWithKeys(fn($t) => [$t->score . '|' . $t->birth => true]);
 
-        $vacancies = (int) $process?->courses()->sum('course_process.vacancies');
+        // $vacancies = (int) $process?->courses()->sum('course_process.vacancies');
+        $vacancies = (int) Course::sum('vacancies');
         $limit = $vacancies * ExamRankingService::LIST_MULTIPLIER;
 
         // Lista paginada
