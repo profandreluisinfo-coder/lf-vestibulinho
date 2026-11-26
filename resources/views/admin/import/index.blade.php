@@ -85,7 +85,7 @@
                     <p class="text-muted mb-3">
                         Exporte a planilha, preencha os pontos e importe o arquivo para gerar a classificação.
                     </p>
-                    <a href="{{ route('admin.import.create') }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('admin.import.create') }}" class="btn btn-primary btn-sm" aria-label="Importar notas">
                         <i class="bi bi-upload me-1"></i> Importar notas
                     </a>
                 </div>
