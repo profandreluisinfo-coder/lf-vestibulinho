@@ -75,7 +75,7 @@
             <div class="menu-item">
                 <a href="{{ route('admin.inscriptions.index') }}"
                     class="menu-link {{ request()->routeIs('admin.inscriptions.index') ? 'active' : '' }}">
-                    <i class="bi bi-file-earmark-text"></i> Inscrições
+                    <i class="bi bi-person-lines-fill"></i> Inscrições
                 </a>
             </div>
             <!-- Gerenciar Análises -->
