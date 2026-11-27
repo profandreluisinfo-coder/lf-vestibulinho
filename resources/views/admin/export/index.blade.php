@@ -10,20 +10,6 @@
 
 @section('content')
     <div class="container">
-        {{-- Cabeçalho da página --}}
-        {{-- <div class="page-header">
-            <div class="page-header-title">
-                <div class="icon-wrap">
-                    <i class="bi bi-file-earmark-zip"></i>
-                </div>
-                <div>
-                    <h4>Planilha de Notas</h4>
-                    <span>
-                        Exporte uma planilha do Excel para preenchimento das notas das provas
-                    </span>
-                </div>
-            </div>
-        </div> --}}
 
         @if ($appealsPeriodOpen)
             <div class="alert alert-warning d-flex align-items-start gap-2" role="alert">

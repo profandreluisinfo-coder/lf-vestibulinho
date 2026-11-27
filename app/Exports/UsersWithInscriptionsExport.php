@@ -55,7 +55,7 @@ class UsersWithInscriptionsExport implements FromCollection, WithHeadings, WithM
             $inscription->user->id,
             $inscription->user->cpf,
             $this->displayName($inscription),
-            $inscription->user->birth,
+            $inscription->user->birth?->format('Y-m-d'),
             '',
         ];
     }
