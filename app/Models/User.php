@@ -144,7 +144,7 @@ class User extends Authenticatable
 
     public static function getWithoutInscription()
     {
-        return static::where('role', '!=', 'admin')->doesntHave('inscription')->get();
+        return static::where('role', '!=', 'admin')->doesntHave('inscription')->paginate(10);
     }
 
     public function hasConfirmedCall(): bool

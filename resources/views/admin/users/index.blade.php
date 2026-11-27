@@ -2,23 +2,34 @@
 
 @section('page-title', 'Lista de Usuários Cadastrados')
 
-@push('datatable-styles')
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-@endpush
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Usuários Cadastrados'],
+        ],
+    ])
+@endsection
 
 @section('content')
 
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-people text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Usuários Cadastrados</h6>
+        {{-- Cabeçalho --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div>
+                    <h4>Usuários Cadastrados</h4>
+                    <span>
+                        {{ $users->total() }}
+                        {{ $users->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
         </div>
-
+        
         <div class="mb-3">
             <label class="text-muted me-2">
                 <input type="checkbox" id="filterVerified" class="form-check-input me-2"> Mostrar apenas e-mails verificados
@@ -36,12 +47,11 @@
             </div>
         @endif
 
-        <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
-            <caption>Vestibulinho LF {{ $process?->year }} - Lista de usuários cadastrados</caption>
-            <thead class="table-success text-center">
+        <table id="subscribers" class="table table-striped align-middle">
+            <thead class="table-success">
                 <tr>
                     <th>E-mail</th>
-                    <th>Verificado</th>
+                    <th class="text-center">Verificado</th>
                     <th>Registro</th>
                     <th>Validação</th>
                     <th>Ações</th>
@@ -53,7 +63,7 @@
                         <th scope="row">
                             {{ $user?->email }}
                         </th>
-                        <td>
+                        <td class="text-center">
                             <i class="bi {{ $user->email_verified_at ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger' }} fs-5"
                                 data-bs-toggle="popover" data-bs-trigger="hover"
                                 data-bs-content="{{ $user->email_verified_at ? 'Sim' : 'Não' }}"></i>
@@ -68,8 +78,8 @@
                         <td>
                             @if ($user->role === 'user' && $user?->inscription)
                                 <a href="{{ route('admin.inscriptions.show', $user->id) }}"
-                                    class="btn btn-sm btn-primary btn-sm" title="Visualizar detalhes">
-                                    <i class="bi bi-search"></i> Detalhes
+                                    class="btn btn-sm btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Visualizar detalhes" aria-label="Visualizar detalhes">
+                                    <i class="bi bi-search"></i>
                                 </a>
                             @elseif ($user->role === 'guest' || ($user->role === 'user' && !$user?->inscription))
                                 <form id="delete-form-{{ $user->id }}"
@@ -78,9 +88,9 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="button" class="btn btn-sm btn-danger" title="Excluir"
-                                        onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
-                                        <i class="bi bi-trash"></i> Excluir
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Excluir"
+                                        aria-label="Excluir" onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
                             @else
@@ -95,29 +105,14 @@
                 @endforelse
             </tbody>
         </table>
-
+        
+        {{-- Paginação --}}
+        <div class="mt-3">
+            {{ $users->links() }}
+        </div>
     </div>
 
 @endsection
-
-@push('plugins')
-    <!-- Datatables -->
-    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <!-- DataTables Buttons -->
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.colVis.min.js"></script>
-    <!-- PDF e Excel (para botões de exportação) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="{{ asset('assets/js/admin/datatables/users.js') }}"></script>
-@endpush
 
 @push('scripts')
     <script>

@@ -8,36 +8,51 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Candidatos Inscritos'],
+        ],
+    ])
+@endsection
+
 @section('content')
 
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-people text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Candidatos Inscritos</h6>
+{{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-book"></i>
+                </div>
+                <div>
+                    <h4>Candidatos Inscritos</h4>
+                    <span>
+                        Gere relatórios e exporte dados dos candidatos
+                    </span>
+                </div>
             </div>
-
             <button id="pdfButton" class="btn btn-sm btn-danger">
                 <i class="bi bi-filetype-pdf"></i>
                 <span>Gerar PDF (Todos)</span>
             </button>
         </div>
-        <table id="subscribers" class="table table-striped table-hover caption-top align-middle">
-            <caption>Lista Geral de Inscritos</caption>
-            <thead class="table-success text-center">
+        <div class="table-responsive">
+        <table id="subscribers" class="table table-striped align-middle">
+            <thead class="table-success">
                 <tr>                    
-                    <th><i class="bi bi-hash me-1"></i>Inscrição</th>
-                    <th><i class="bi bi-person me-1"></i>Candidato</th>
-                    <th><i class="bi bi-credit-card me-1"></i>CPF</th>
-                    <th><i class="bi bi-gear me-1"></i>Ações</th>
+                    <th class="text-center">Inscrição</th>
+                    <th>Candidato</th>
+                    <th class="text-center">CPF</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <!-- Os dados serão carregados via AJAX -->
             </tbody>
         </table>
-    </div>
+        </div>
 @endsection
 
 @push('plugins')
@@ -71,9 +86,9 @@
                     }
                 },
                 columns: [                    
-                    { data: 'inscription_id', name: 'inscription_id' },
+                    { data: 'inscription_id', name: 'inscription_id', className: 'text-center' },
                     { data: 'name',           name: 'name' },
-                    { data: 'cpf',            name: 'cpf' },
+                    { data: 'cpf',            name: 'cpf', className: 'text-center' },
                     { data: 'actions',        name: 'actions', orderable: false, searchable: false, className: 'text-center no-export' }
                 ],
                 language: {
