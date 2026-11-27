@@ -2,11 +2,36 @@
 
 @section('page-title', 'Convocação para matrícula')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Convocações'],
+        ],
+    ])
+@endsection
+
 @section('content')
     @php
         $show = $callLists->isNotEmpty();
     @endphp
     <div class="container">
+        {{-- Cabeçalho --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-broadcast-pin"></i>
+                </div>
+                <div>
+                    <h4>Convocação para matrícula</h4>
+                    <span>
+                        {{ $callLists->count() }}
+                        {{ $callLists->count() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
         @if (session('success'))
             <div class="alert alert-success" role="status">{{ session('success') }}</div>
         @endif
@@ -22,14 +47,10 @@
         @endif
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-broadcast-pin text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Convocação para matrícula</h6>
-            </div>
             <div class="d-flex flex-wrap gap-2">
                 @if ($show)
                     <a href="{{ route('admin.calls.all') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-list-ol me-1"></i>Todos os convocados ()
+                        <i class="bi bi-list-ol me-1"></i>Todos os convocados
                     </a>
                 @endif
                 @if ($countResults > 0)
