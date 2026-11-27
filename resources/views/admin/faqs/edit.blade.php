@@ -72,7 +72,7 @@
                     </div>
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success btn-sm">
-                            <i class="bi bi-check-circle me-1"></i>Salvar
+                            <i class="bi bi-check-lg"></i>Salvar
                         </button>
                     </div>
                 </form>            

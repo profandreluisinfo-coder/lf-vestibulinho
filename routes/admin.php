@@ -114,8 +114,8 @@ Route::prefix('gestao')
             ->group(function () {
                 Route::get('/', [TemplateController::class, 'index'])
                     ->name('index');
-                Route::get('visualizar/{template}', [TemplateController::class, 'preview'])
-                    ->name('preview');
+                Route::get('novo', [TemplateController::class, 'create'])
+                    ->name('create');
                 Route::post('salvar', [TemplateController::class, 'store'])
                     ->name('store');
                 Route::get('editar/{template}', [TemplateController::class, 'edit'])

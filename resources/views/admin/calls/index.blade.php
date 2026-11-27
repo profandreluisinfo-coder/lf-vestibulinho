@@ -167,7 +167,7 @@
                                 <button type="button" class="btn btn-outline-secondary"
                                     data-bs-dismiss="modal">Cancelar</button>
                                 <button type="submit" class="btn btn-success"><i
-                                        class="bi bi-check-circle me-1"></i>Salvar chamada</button>
+                                        class="bi bi-check-lg"></i>Salvar chamada</button>
                             </div>
                         </form>
                     </div>

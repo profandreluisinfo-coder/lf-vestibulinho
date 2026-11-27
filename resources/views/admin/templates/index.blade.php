@@ -2,76 +2,93 @@
 
 @section('page-title', 'Modelos de Autorização de Uso de Nome Social')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [['label' => 'Início', 'url' => route('admin.index')], ['label' => 'Modelos']],
+    ])
+@endsection
+
 @section('content')
 
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-file-earmark-zip text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Modelo de Autorização de Uso de Nome Social</h6>
+        {{-- Cabeçalho da página --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-file-earmark"></i>
+                </div>
+                <div>
+                    <h4>Modelos</h4>
+                    <span>
+                        {{ $templates->total() }}
+                        {{ $templates->total() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-
-            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#setFile">
-                <i class="bi bi-upload me-1"></i> Importar
+            <a href="{{ route('admin.templates.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Novo
             </a>
         </div>
 
         <div class="table-responsive">
-            <table class="table-striped table caption-top">
-                <caption>Modelos de Documentos</caption>
-                <thead class="table-success text-center">
+            <table class="table table-striped">
+                <thead class="table-success">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Ano do Processo</th>
+                        <th scope="col">Vestibulinho</th>
                         <th scope="col">Arquivo</th>
-                        <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Status</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
 
-                    @forelse($files as $file)
+                    @forelse($templates as $template)
                         <tr>
-                            <td scope="row">{{ $file->id }}</td>
                             <td>
-                                {{ $file->process?->year ? 'Vestibulinho ' . $file->process->year : 'Sem processo vinculado' }}
+                                {{ $template->process?->year ?? 'Sem processo vinculado' }}
                             </td>
                             <td>
-                                <a href="{{ route('admin.templates.preview', $file) }}" target="_blank">
-                                    Visualizar <i class="bi bi-box-arrow-up-right ms-2"></i>
+                                <a href="{{ Storage::url($template->file_path) }}" target="_blank">
+                                    Modelo {{ $template->id }} - Nome Social <i class="bi bi-box-arrow-up-right ms-2"></i>
                                 </a>
                             </td>
-                            <td><span
-                                    class="badge bg-{{ $file->status === 'active' ? 'success' : 'warning' }}">{{ $file->status === 'active' ? 'ativo' : 'inativo' }}</span>
+                            <td class="text-center">
+                                <span class="status-pill {{ $template->status ? 'status-open' : 'status-closed' }}">
+                                    <i class="bi bi-{{ $template->status ? 'unlock' : 'lock' }}"></i>
+                                    {{ $template->status ? 'Ativo' : 'Inativo' }}
+                                </span>
                             </td>
-                            <td class="d-flex align-items-center justify-content-center gap-2">
-
+                            <td class="d-flex gap-2">
                                 {{-- Botão de Ativar (alterar status) --}}
-                                <form id="archive-form-{{ $file->id }}"
-                                    action="{{ route('admin.templates.publish', $file->id) }}" method="POST"
+                                <form id="archive-form-{{ $template->id }}"
+                                    action="{{ route('admin.templates.publish', ['template' => $template]) }}" method="POST"
                                     class="d-none">
                                     @csrf
                                     @method('PUT')
                                 </form>
                                 <button type="button"
-                                    class="btn btn-sm btn-{{ $file->status === 'active' ? 'secondary' : 'success' }} l"
-                                    title="{{ $file->status === 'active' ? 'Inativar' : 'Ativar' }}"
-                                    onclick="confirmFilePublish({{ $file->id }}, 'Vestibulinho {{ $file->year }}')">
-                                    <i class="bi bi-{{ $file->status === 'active' ? 'eye-slash' : 'eye' }} me-1"></i>
-                                    {{ $file->status === 'active' ? 'Inativar' : 'Ativar' }}
+                                    class="btn btn-sm btn-outline-{{ $template->status === 'active' ? 'warning' : 'success' }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-title="{{ $template->status ? 'Desativar' : 'Ativar' }}"
+                                    onclick="confirmFilePublish({{ $template->id }}, 'Modelo {{ $template->id }} - Nome Social')"
+                                    aria-label="{{ $template->status === 'active' ? 'Desativar' : 'Ativar' }}">
+                                    <i class="bi bi-{{ $template->status === 'active' ? 'eye-slash' : 'eye' }}"></i>
                                 </button>
-
-                                <a href="{{ route('admin.templates.edit', $file->id) }}" class="btn btn-sm btn-primary l"
-                                    title="Editar">
-                                    <i class="bi bi-pencil-square me-1"></i> Editar
+                                {{-- Botão de Editar --}}
+                                <a href="{{ route('admin.templates.edit', ['template' => $template]) }}"
+                                    class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Editar" aria-label="Editar">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
-
-                                <form action="{{ route('admin.templates.destroy', $file->id) }}" method="post">
+                                {{-- Botão de Excluir --}}
+                                <form id="delete-template-form-{{ $template->id }}" action="{{ route('admin.templates.destroy', ['template' => $template]) }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger l" title="Excluir">
-                                        <i class="bi bi-trash me-1"></i> Excluir
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" data-bs-title="Excluir" aria-label="Excluir"
+                                        onclick="confirmTemplateDelete({{ $template->id }}, 'Modelo {{ $template->id }} - Nome Social')">
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -85,80 +102,11 @@
             </table>
         </div>
 
-        <div class="modal fade" id="setFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="createArchiveModalLabel">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-light">
-                        <h5 class="modal-title" id="setFileLabel"><i class="bi bi-file-earmark-zip me-1"></i>Importar
-                            Modelo
-                        </h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-
-                                <form id="form-file" action="{{ route('admin.templates.store') }}" method="POST"
-                                    enctype="multipart/form-data" novalidate>
-                                    @csrf
-
-                                    {{-- Ano do processo seletivo --}}
-                                    <div class="form-group mb-3">
-                                        <label for="process_id" class="form-label required">Processo Seletivo:</label>
-                                        <select name="process_id" id="process_id"
-                                            class="form-control @error('process_id') is-invalid @enderror" required>
-                                            <option value="">Selecione o processo</option>
-                                            @foreach ($vests as $vest)
-                                                <option value="{{ $vest->id }}"
-                                                    {{ old('process_id') == $vest->id ? 'selected' : '' }}>
-                                                    Vestibulinho {{ $vest->year }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('process_id')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    {{-- Arquivo relacionado --}}
-                                    <div class="form-group mb-3">
-                                        <label for="file" class="form-label required">Selecione o arquivo do
-                                            modelo:</label>
-                                        <input type="file" name="file"
-                                            class="form-control @error('file') is-invalid @enderror" id="file"
-                                            required>
-                                        @error('file')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            <i class="bi bi-check-circle me-1"></i>Salvar
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"><i
-                                class="bi bi-x-circle me-1"></i>Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/admin/templates/index.js') }}"></script>
     <script src="{{ asset('assets/js/admin/templates/publish.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/templates/delete.js') }}"></script>
 @endpush

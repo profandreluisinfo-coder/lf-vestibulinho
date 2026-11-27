@@ -12,17 +12,23 @@ use Illuminate\Support\Facades\Storage;
 
 class TemplateController extends Controller
 {
+    /**
+     * Exibe uma lista paginada de modelos.
+     */
     public function index()
     {
         $vests = Process::all();
-        $files = Template::with('process')->get();
+        $templates = Template::with('process')->paginate(10);
 
         return view('admin.templates.index', [
             'vests' => $vests,
-            'files' => $files
+            'templates' => $templates
         ]);
     }
 
+    /**
+     * Exibe o arquivo de modelo em formato PDF.
+     */
     public function preview(Template $template)
     {
         $disk = Storage::disk('public');
@@ -32,6 +38,21 @@ class TemplateController extends Controller
         return $disk->response($template->file_path);
     }
 
+    /**
+     * Exibe o formulário para criar um novo modelo.
+     */
+    public function create()
+    {
+        $vests = Process::all();
+
+        return view('admin.templates.create', [
+            'vests' => $vests
+        ]);
+    }
+
+    /**
+     * Cria um novo modelo.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -64,10 +85,12 @@ class TemplateController extends Controller
             'file_path' => $pathForArchive, // ex: modelos/2025_modelo_1691778382.pdf
         ]);
 
-        return redirect()->back()->with('success', 'Modelo importado com sucesso.');
+        return alertSuccess('Modelo importado com sucesso.', 'admin.templates.index');
     }
 
-    // Route::get('editar/{template}', [TemplateController::class, 'edit'])->name('edit');
+    /**
+     * Exibe o formulário para editar um modelo.
+     */
     public function edit(Template $template)
     {
         $vests = Process::all();
@@ -78,6 +101,9 @@ class TemplateController extends Controller
         ]);
     }
 
+    /**
+     * Atualiza o modelo.
+     */
     public function update(Request $request, Template $template)
     {
         $request->validate([
@@ -116,10 +142,12 @@ class TemplateController extends Controller
         // Salva as alterações no banco
         $template->save();
 
-        return redirect()->back()->with('success', 'Modelo atualizado com sucesso.');
+        return alertSuccess('Modelo atualizado com sucesso.', 'admin.templates.index');
     }
 
-    // Route::delete('excluir/{template}', [TemplateController::class, 'destroy'])->name('destroy');
+    /**
+     * Remove o modelo especificado do armazenamento.
+     */
     public function destroy(Template $template): RedirectResponse
     {
         // Deleta o arquivo do disco
@@ -128,9 +156,12 @@ class TemplateController extends Controller
         // Deleta o registro do banco
         $template->delete();
 
-        return redirect()->back()->with('success', 'Modelo excluído com sucesso.');
+        return alertSuccess('Modelo excluído com sucesso.');
     }
 
+    /**
+     * Alterna o status de publicação do modelo.
+     */
     public function publish(Template $template): RedirectResponse
     {
         DB::transaction(function () use ($template) {
@@ -144,6 +175,6 @@ class TemplateController extends Controller
             }
         });
 
-        return redirect()->back()->with('success', 'Alterado com sucesso!');
+        return alertSuccess('Alterado com sucesso!');
     }
 }

@@ -85,7 +85,7 @@
                         @enderror
                     </div>
                     <button type="submit" class="btn btn-success btn-sm">
-                        <i class="bi bi-check-circle me-1"></i>Salvar alterações
+                        <i class="bi bi-check-lg"></i>Salvar alterações
                     </button>
                     <a href="{{ route('admin.courses.index') }}" class="btn btn-secondary btn-sm">
                         <i class="bi bi-arrow-left me-1"></i> Voltar
