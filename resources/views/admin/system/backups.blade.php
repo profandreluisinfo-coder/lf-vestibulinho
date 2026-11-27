@@ -2,29 +2,44 @@
 
 @section('page-title', 'Backups do Sistema')
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Backups do Sistema'],
+        ],
+    ])
+@endsection
+
 @section('content')
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-gear text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Lista de Backups do Sistema</h6>
+        {{-- Cabeçalho --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-hdd"></i>
+                </div>
+                <div>
+                    <h4>Backups do Sistema</h4>
+                    <span>
+                        {{ $backups->count() }}
+                        {{ $backups->count() === 1 ? 'registro encontrado' : 'registros encontrados' }}
+                    </span>
+                </div>
             </div>
-
             <form id="form-gerar-backup" action="{{ route('admin.system.backups.store') }}" method="POST">
                 @csrf
                 <button type="submit" id="btn-gerar-backup" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle me-1"></i>
+                    <i class="bi bi-hdd"></i>
                     <span id="btn-gerar-backup-texto">Gerar novo backup</span>
                 </button>
             </form>
         </div>
-
         <p class="text-muted mb-4">
             Aqui você pode visualizar, baixar e excluir os backups do sistema. Eles também são gerados automaticamente antes do
             processo de redefinição do sistema e ficam armazenados no servidor. Certifique-se de fazer o download dos backups
             importantes antes de excluí-los.
-        </p>
+        </p>        
 
         <div class="row g-4">
 
