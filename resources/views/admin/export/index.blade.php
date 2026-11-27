@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
         {{-- Cabeçalho da página --}}
-        <div class="page-header">
+        {{-- <div class="page-header">
             <div class="page-header-title">
                 <div class="icon-wrap">
                     <i class="bi bi-file-earmark-zip"></i>
@@ -19,11 +19,11 @@
                 <div>
                     <h4>Planilha de Notas</h4>
                     <span>
-                        Exporte uma planilha do Excel para preenchimento das notas dos candidatos
+                        Exporte uma planilha do Excel para preenchimento das notas das provas
                     </span>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         @if ($appealsPeriodOpen)
             <div class="alert alert-warning d-flex align-items-start gap-2" role="alert">
@@ -58,7 +58,7 @@
         <div class="row g-3">
             <div class="col-12 col-md-6 col-lg-4">
                 @if ($canExportCandidates)
-                    <a href="{{ route('admin.exports.excel') }}" class="card h-100 text-decoration-none text-dark shadow-sm"
+                    <a href="{{ route('admin.export.excel') }}" class="card h-100 text-decoration-none text-dark shadow-sm"
                         id="export-candidates-card">
                     @else
                         <div class="card h-100 text-muted shadow-sm bg-light" aria-disabled="true">
@@ -82,11 +82,65 @@
     </div>
 
     </div>
+    <div id="export-loading-overlay" class="export-loading-overlay" aria-hidden="true">
+        <div class="export-loading-card" role="status" aria-live="polite" aria-atomic="true">
+            <span class="spinner-border mb-3" aria-hidden="true"></span>
+            <h2 class="h5 mb-2">Gerando planilha</h2>
+            <p class="text-muted mb-0">Aguarde enquanto preparamos o arquivo para download.</p>
+        </div>
+    </div>
 @endsection
+
+@push('styles')
+    <style>
+        .export-loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(10, 20, 35, .68);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .2s ease, visibility .2s ease;
+        }
+
+        .export-loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .export-loading-card {
+            width: min(100%, 360px);
+            padding: 2rem;
+            border-radius: 1rem;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .25);
+        }
+
+        .export-loading-overlay .spinner-border {
+            width: 2.5rem;
+            height: 2.5rem;
+            color: var(--color-teal, #00a896);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .export-loading-overlay {
+                transition: none;
+            }
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script>
-        document.getElementById('export-candidates-card')?.addEventListener('click', async function(event) {
+        const exportCard = document.getElementById('export-candidates-card');
+        const exportOverlay = document.getElementById('export-loading-overlay');
+
+        exportCard?.addEventListener('click', async function(event) {
             event.preventDefault();
 
             const card = this;
@@ -94,6 +148,10 @@
 
             card.dataset.loading = 'true';
             card.setAttribute('aria-busy', 'true');
+            card.setAttribute('aria-disabled', 'true');
+            exportOverlay?.classList.add('show');
+            exportOverlay?.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
 
             try {
                 const response = await fetch(card.href, {
@@ -139,6 +197,10 @@
             } finally {
                 delete card.dataset.loading;
                 card.removeAttribute('aria-busy');
+                card.removeAttribute('aria-disabled');
+                exportOverlay?.classList.remove('show');
+                exportOverlay?.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
             }
         });
     </script>

@@ -25,7 +25,7 @@ class ExportController extends Controller
         $hasExam = $process
             && Exam::whereHas('inscription', fn ($query) => $query->forProcess($process->id))->exists();
 
-        return view('admin.exports.index', [
+        return view('admin.export.index', [
             'hasCurrentProcess' => (bool) $process,
             'hasApprovedInscriptions' => (bool) $hasApprovedInscriptions,
             'hasExam' => (bool) $hasExam,

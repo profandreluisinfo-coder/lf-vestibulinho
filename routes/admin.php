@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\{DashboardController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
-use App\Http\Controllers\Admin\CourseProcessController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -173,7 +172,7 @@ Route::prefix('gestao')
 
         // Exportação
         Route::prefix('exportar')
-            ->name('exports.')
+            ->name('export.')
             ->group(function () {
                 Route::get('planilha-de-notas', [ExportController::class, 'index'])
                     ->name('index');

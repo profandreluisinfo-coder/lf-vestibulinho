@@ -196,11 +196,11 @@
                     <span>Classificação</span>
                     <i class="bi bi-chevron-down"></i>
                 </button>
-                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.exports.index', 'admin.import.*']) ? 'show' : '' }}"
+                <div class="dropdown-menu-custom {{ request()->routeIs(['admin.export.index', 'admin.import.*']) ? 'show' : '' }}"
                     id="menuResultados">
 
-                    <a href="{{ route('admin.exports.index') }}"
-                        class="dropdown-item-custom {{ request()->routeIs('admin.exports.index') ? 'active' : '' }}">
+                    <a href="{{ route('admin.export.index') }}"
+                        class="dropdown-item-custom {{ request()->routeIs('admin.export.index') ? 'active' : '' }}">
                         <i class="bi bi-file-excel me-1"></i> Planilha de Notas
                     </a>
 
