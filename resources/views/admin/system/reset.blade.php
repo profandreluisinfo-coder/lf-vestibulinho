@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Configurações do Sistema')
+@section('page-title', 'Redefinir Sistema')
 
 @push('styles')
     <style>
@@ -15,16 +15,32 @@
     </style>
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Redefinir Sistema'],
+        ],
+    ])
+@endsection
+
 @section('content')
     <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-gear text-muted"></i>
-                <h6 class="mb-0 text-muted fw-normal">Configurações do Sistema</h6>
+        {{-- Cabeçalho --}}
+        <div class="page-header">
+            <div class="page-header-title">
+                <div class="icon-wrap">
+                    <i class="bi bi-gear"></i>
+                </div>
+                <div>
+                    <h4>Redefinir Sistema</h4>
+                    <span>
+                        Remova usuários, inscrições, calendário atual e eventos vinculados ao processo seletivo e inicie um novo processo seletivo.
+                    </span>
+                </div>
             </div>
         </div>
-
+        
         <div class="row g-4">
 
             {{-- Card: Redefinir Sistema --}}

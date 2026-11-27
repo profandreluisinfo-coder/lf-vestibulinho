@@ -28,7 +28,7 @@ class SettingController extends Controller
      */
     public function index(): View
     {
-        return view('admin.system.index');
+        return view('admin.system.reset');
     }
 
     /**
@@ -379,8 +379,6 @@ class SettingController extends Controller
 
         Storage::disk('local')->delete($path);
 
-        return redirect()
-            ->route('admin.system.backups.index') // troque pelo nome da sua rota de listagem
-            ->with('success', 'Backup excluído com sucesso.');
+        return alertSuccess('Backup excluído com sucesso.');
     }
 }
