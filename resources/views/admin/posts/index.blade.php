@@ -9,6 +9,15 @@
 <link rel="stylesheet" href="{{ asset('assets/css/admin/posts/index.css') }}">
 @endpush
 
+@section('breadcrumb')
+    @include('partials.admin.breadcrumb', [
+        'items' => [
+            ['label' => 'Início', 'url' => route('admin.index')],
+            ['label' => 'Notícias e Comunicados'],
+        ],
+    ])
+@endsection
+
 {{-- =====================================================================
      CONTEÚDO
 ====================================================================== --}}
