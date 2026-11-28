@@ -47,7 +47,7 @@
             </div>
         @endif
 
-        <table id="subscribers" class="table table-striped align-middle">
+        <table id="subscribers" class="table table-striped">
             <thead class="table-success">
                 <tr>
                     <th>E-mail</th>

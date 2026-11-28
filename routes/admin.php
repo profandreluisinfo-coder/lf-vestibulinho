@@ -1,6 +1,25 @@
 <?php
 
-use App\Http\Controllers\Admin\{DashboardController, AppealController, ArchiveController, CallController, CourseController, AnalyseController, ExamController, ExportController, FaqController, ImportController, InscriptionController, LocationController, PostController, ProcessController, PublicationController, ReportController, SettingController, ChartController, TemplateController, UserController};
+use App\Http\Controllers\Admin\AnalyseController;
+use App\Http\Controllers\Admin\AppealController;
+use App\Http\Controllers\Admin\ArchiveController;
+use App\Http\Controllers\Admin\CallController;
+use App\Http\Controllers\Admin\ChartController;
+use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ImportController;
+use App\Http\Controllers\Admin\InscriptionController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProcessController;
+use App\Http\Controllers\Admin\PublicationController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TemplateController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
@@ -57,7 +76,7 @@ Route::prefix('gestao')
             ->name('faqs.')
             ->group(function () {
                 Route::get('/', [FaqController::class, 'index'])
-                    ->name('index');                
+                    ->name('index');
                 Route::get('create', [FaqController::class, 'create'])
                     ->name('create');
                 Route::post('gravar', [FaqController::class, 'store'])
@@ -145,7 +164,7 @@ Route::prefix('gestao')
             ->name('archives.')
             ->group(function () {
                 Route::get('/', [ArchiveController::class, 'index'])
-                    ->name('index');                
+                    ->name('index');
                 Route::get('novo', [ArchiveController::class, 'create'])
                     ->name('create');
                 Route::post('salvar', [ArchiveController::class, 'store'])
@@ -221,12 +240,13 @@ Route::prefix('gestao')
             ->name('calls.')
             ->group(function () {
                 Route::get('registros', [CallController::class, 'index'])->name('index');
-                  Route::get('convocados', [CallController::class, 'allCandidates'])->name('all');
+                Route::get('novo', [CallController::class, 'create'])->name('create');
                 Route::post('salvar', [CallController::class, 'store'])->name('store');
                 Route::delete('apagar/{callList}', [CallController::class, 'destroy'])->name('destroy');
                 Route::get('numero/{callListId}', [CallController::class, 'show'])->name('show');
                 Route::patch('{callList}/finalizar', [CallController::class, 'finalize'])->name('finalize');
                 Route::get('numero/{callListId}/pdf', [CallController::class, 'pdf'])->name('pdf');
+                Route::get('convocados', [CallController::class, 'allCandidates'])->name('all');
             });
 
         // Local

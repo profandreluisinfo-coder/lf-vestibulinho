@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Course;
 use App\Models\Process;
 use App\Models\Result;
 use DomainException;
@@ -27,7 +28,7 @@ class ExamRankingService
      */
     public function calculate(Process $process): array
     {
-        $vacancies = (int) $process?->courses()->sum('course_process.vacancies');
+        $vacancies = (int) Course::sum('vacancies');
 
         if ($vacancies < 1) {
             throw new DomainException(

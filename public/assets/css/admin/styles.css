@@ -129,6 +129,10 @@ i {
     align-self: center;
 }
 
+.text-justify {
+    text-align: justify;
+}
+
 /* ==================== 3. LAYOUT PRINCIPAL ==================== */
 /* Sidebar */
 .sidebar {

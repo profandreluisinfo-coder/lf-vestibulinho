@@ -30,6 +30,8 @@ class CallController extends Controller
             ? CallList::query()
                 ->where('process_id', $process?->id)
                 ->withCount('calls')
+                ->withCount(['calls as pcd_calls_count' => fn ($query) => $query
+                    ->whereHas('result.inscription.user.pne', fn ($query) => $query->where('status', 'accepted'))])
                 ->with(['calls.result.inscription.user.lgbt', 'calls.result.inscription.user.pne'])
                 ->orderByDesc('id')
                 ->get()
@@ -47,26 +49,11 @@ class CallController extends Controller
         return view('admin.calls.index', compact('process', 'callLists', 'countResults'));
     }
 
-    public function allCandidates(): View
+    public function create(): View
     {
         $process = Process::current();
 
-        $calls = $process
-            ? Call::query()
-                ->select('calls.*')
-                ->join('call_lists', 'call_lists.id', '=', 'calls.call_list_id')
-                ->join('results', 'results.id', '=', 'calls.result_id')
-                ->where('call_lists.process_id', $process?->id)
-                ->with(['callList', 'result.inscription.user.lgbt', 'result.inscription.user.pne'])
-                ->orderBy('call_lists.number')
-                ->orderBy('call_lists.date')
-                ->orderBy('call_lists.time')
-                ->orderBy('results.ranking')
-                ->orderBy('calls.id')
-                ->get()
-            : collect();
-
-        return view('admin.calls.all', compact('process', 'calls'));
+        return view('admin.calls.create', compact('process'));
     }
 
     public function store(Request $request, CallCandidateSelector $selector): RedirectResponse
@@ -133,12 +120,11 @@ class CallController extends Controller
             return back()->withErrors(['error' => $exception->getMessage()])->withInput();
         } catch (\Throwable $exception) {
             report($exception);
+
             return back()->withErrors(['error' => 'Não foi possível preparar a chamada.'])->withInput();
         }
 
-        return redirect()
-            ->route('admin.calls.index')
-            ->with('success', "Rascunho da chamada nº {$data['number']} criado com {$results[1]} convocados, incluindo {$results[2]} PcD.");
+        return alertSuccess("Rascunho da chamada nº {$data['number']} criado com {$results[1]} convocados, incluindo {$results[2]} PcD.", 'admin.calls.index');
     }
 
     public function show(int $callListId): View
@@ -160,7 +146,7 @@ class CallController extends Controller
         $number = $callList->number;
         $callList->delete();
 
-        return redirect()->route('admin.calls.index')->with('success', "Chamada nº {$number} excluída.");
+        return alertSuccess("Chamada nº {$number} excluída.");
     }
 
     public function finalize(CallList $callList): RedirectResponse
@@ -196,6 +182,7 @@ class CallController extends Controller
 
             if (! $user?->email) {
                 Log::warning("Candidato sem e-mail na chamada ID {$call->id}");
+
                 continue;
             }
 
@@ -266,5 +253,27 @@ class CallController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream("fichas-matricula-chamada-{$callList->number}_{$callList->id}.pdf");
+    }
+
+    public function allCandidates(): View
+    {
+        $process = Process::current();
+
+        $calls = $process
+            ? Call::query()
+                ->select('calls.*')
+                ->join('call_lists', 'call_lists.id', '=', 'calls.call_list_id')
+                ->join('results', 'results.id', '=', 'calls.result_id')
+                ->where('call_lists.process_id', $process?->id)
+                ->with(['callList', 'result.inscription.user.lgbt', 'result.inscription.user.pne'])
+                ->orderBy('call_lists.number')
+                ->orderBy('call_lists.date')
+                ->orderBy('call_lists.time')
+                ->orderBy('results.ranking')
+                ->orderBy('calls.id')
+                ->get()
+            : collect();
+
+        return view('admin.calls.all', compact('process', 'calls'));
     }
 }

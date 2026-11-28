@@ -37,7 +37,7 @@
                 <input type="search" id="filter" class="form-control"
                        inputmode="numeric" placeholder="Digite o início do número" autocomplete="off" aria-describedby="results-count">
             </div>
-            <p class="small text-muted mb-3">
+            <p class="small text-success mb-3">
                 Role a página para carregar mais candidatos. Se preferir, use o botão ao final da lista.
             </p>
 

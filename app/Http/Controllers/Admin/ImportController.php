@@ -43,7 +43,7 @@ class ImportController extends Controller
             ->pluck('is_published');
         $isPublished = $publicationStates->isNotEmpty() && $publicationStates->every(fn ($state) => (bool) $state);
 
-        $situation = in_array($request->query('situation'), ['classified', 'eliminated', 'tied'], true)
+        $situation = in_array($request->query('situation'), ['classified', 'eliminated', 'tied', 'pcd'], true)
             ? $request->query('situation')
             : 'all';
 
@@ -86,6 +86,15 @@ class ImportController extends Controller
         $results = (clone $base)
             ->when($situation === 'classified', fn($q) => $q->where('results.classified', true))
             ->when($situation === 'eliminated', fn($q) => $q->where('results.classified', false))
+            ->when($situation === 'pcd', function ($q) {
+                $q->where('results.classified', true)
+                    ->whereExists(function ($subquery) {
+                        $subquery->selectRaw('1')
+                            ->from('pnes')
+                            ->whereColumn('pnes.user_id', 'users.id')
+                            ->where('pnes.status', 'accepted');
+                    });
+            })
             ->when($situation === 'tied', function ($q) use ($tied) {
                 if ($tied->isEmpty()) {
                     $q->whereRaw('1 = 0');

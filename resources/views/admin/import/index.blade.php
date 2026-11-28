@@ -148,7 +148,7 @@
             {{-- Filtro por situação e busca --}}
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
                 <ul class="nav nav-pills small">
-                    @foreach (['all' => 'Todos', 'classified' => 'Classificados', 'eliminated' => 'Eliminados', 'tied' => 'Empatados'] as $key => $label)
+                    @foreach (['all' => 'Todos', 'classified' => 'Classificados', 'pcd' => 'PcD classificados', 'eliminated' => 'Eliminados', 'tied' => 'Empatados'] as $key => $label)
                         <li class="nav-item">
                             {{-- ROTA: esta mesma página (index) --}}
                             <a class="nav-link py-1 {{ $situation === $key ? 'active' : '' }}"
@@ -182,9 +182,16 @@
                 </form>
             </div>
 
-            @if ($search !== '')
+            @if ($search !== '' || $situation !== 'all')
                 <p class="text-muted small">
-                    {{ $results->total() }} resultado(s) para “{{ $search }}”.
+                    {{ $results->total() }} candidato(s) encontrado(s)
+                    @if ($search !== '')
+                        para “{{ $search }}”
+                    @endif
+                    @if ($situation !== 'all')
+                        na lista filtrada
+                    @endif
+                    .
                 </p>
             @endif
 
@@ -194,19 +201,19 @@
                     <table class="table table-hover table-sm align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center" style="width: 90px;">Posição</th>
-                                <th class="text-center" style="width: 110px;">Inscrição</th>
-                                <th>Candidato</th>
-                                <th class="text-center" style="width: 130px;">Nascimento</th>
-                                <th class="text-center" style="width: 110px;">Pontuação</th>
-                                <th class="text-center" style="width: 150px;">Situação</th>
+                                <th scope="col" class="text-center" style="width: 90px;">Posição</th>
+                                <th scope="col" class="text-center" style="width: 110px;">Inscrição</th>
+                                <th scope="col">Candidato</th>
+                                <th scope="col" class="text-center" style="width: 130px;">Nascimento</th>
+                                <th scope="col" class="text-center" style="width: 110px;">Pontuação</th>
+                                <th scope="col" class="text-center" style="width: 150px;">Situação</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($results as $result)
                                 @php($isTied = $tiedKeys->has($result->score . '|' . $result->birth))
                                 <tr class="{{ $isTied ? 'table-warning' : '' }}">
-                                    <td class="text-center">{{ $result->ranking }}º</td>
+                                    <th scope="row" class="text-center">{{ $result->ranking }}º</th>
                                     <td class="text-center text-muted">{{ $result->inscription_id }}</td>
                                     <td class="text-break">
                                         {{ $result->social_name ?? $result->name }}
